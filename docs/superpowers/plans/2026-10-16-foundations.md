@@ -44,14 +44,14 @@ prompt originali nella directory adiacente dello starter kit.
 `docs/DEVELOPMENT.md`; Cargo.lock esistente, da registrare nel commit.
 **Interfaces:** produce toolchain fissata per CI; nessuna modifica a src o API.
 
-- [ ] Verificare disponibilità della versione 1.99.1 scelta dall'autore e fonti ufficiali;
+- [x] Verificare disponibilità della versione 1.99.1 scelta dall'autore e fonti ufficiali;
   installazione toolchain/target solo tramite i permessi dell'ambiente.
-- [ ] Profilo minimal, rustfmt/clippy, target x86_64-pc-windows-gnu.
-- [ ] Attributi `* text=auto`, fixture e golden `-text`; verificare con
+- [x] Profilo minimal, rustfmt/clippy, target x86_64-pc-windows-gnu.
+- [x] Attributi `* text=auto`, fixture e golden `-text`; verificare con
   `git check-attr` e roundtrip sintetico LF/CRLF in repository temporaneo.
-- [ ] Configurare linker mingw/runner wine esclusivamente per target GNU;
+- [x] Configurare linker mingw/runner wine esclusivamente per target GNU;
   documentare sviluppo Arch e separazione dalla CI MSVC.
-- [ ] Eseguire fmt/check/clippy/test e cross-check disponibile, registrare
+- [x] Eseguire fmt/check/clippy/test e cross-check disponibile, registrare
   output reale e limitazioni; commit coeso se identità disponibile; review.
 
 ### Task 2: T-P0-01 — Inventario input normativi (indipendente)
@@ -60,11 +60,11 @@ prompt originali nella directory adiacente dello starter kit.
 **Files:** `docs/normative/INPUT_INVENTORY.md`.
 **Interfaces:** classificazione ricevuto/mancante/non applicabile per DET §154.
 
-- [ ] Leggere DET §106 e §154, inventario preesistente e manifest del kit.
-- [ ] Verificare file realmente presenti e provenienza; separare PDF/XLSX
+- [x] Leggere DET §106 e §154, inventario preesistente e manifest del kit.
+- [x] Verificare file realmente presenti e provenienza; separare PDF/XLSX
   normativi dagli schemi derivati, dataset ufficiali e fixture mancanti.
-- [ ] Coprire ogni categoria di DET §154 con stato, evidenza e lacune.
-- [ ] Verificare completezza/tracciabilità; non inventare test di runtime;
+- [x] Coprire ogni categoria di DET §154 con stato, evidenza e lacune.
+- [x] Verificare completezza/tracciabilità; non inventare test di runtime;
   consegnare elenco mancanti e review; nessuna chiusura G0.
 
 ### Task 3: T-P1-03 — CI Linux/Windows
@@ -88,15 +88,15 @@ prompt originali nella directory adiacente dello starter kit.
 **Files:** `docs/normative/reference-datasets.md`.
 **Interfaces:** schede documentali DET §108–109, nessuna API/runtime o import dati.
 
-- [ ] Leggere prompt T-P0-06, inventario verificato, specifica reference SIOC,
+- [x] Leggere prompt T-P0-06, inventario verificato, specifica reference SIOC,
   manifest SIOC/CAD, tre JSON CAD e relative decisioni approvate.
-- [ ] Scheda per ciascuna delle dodici dipendenze SIOC e dei tre dataset CAD:
+- [x] Scheda per ciascuna delle dodici dipendenze SIOC e dei tre dataset CAD:
   id/nome, versione/validità, fonte, formato, chiave/lunghezza, encoding,
   normalizzazione e validità temporale; dato assente = lacuna esplicita.
-- [ ] Distinguere catalogo completo non fornito, estrazione regionale fornita,
+- [x] Distinguere catalogo completo non fornito, estrazione regionale fornita,
   sentinel dello schema e dataset posizionale; non inventare normalizzazioni
   o validità temporali né ridurre attributi a semplice insieme di codici.
-- [ ] Verificare schede rispetto agli input e registrare lacune/review;
+- [x] Verificare schede rispetto agli input e registrare lacune/review;
   nessun test runtime artificiale e nessuna chiusura G0.
 
 ### Task 5: T-P0-02 — Tabelle campi per revisione (dopo Task 2)
@@ -106,17 +106,66 @@ prompt originali nella directory adiacente dello starter kit.
 `docs/normative/cad/<trace>-fields.json`, relativa nota di provenienza/revisione.
 **Interfaces:** tabelle documentali dei campi, nessun compiler o modifica schemi.
 
-- [ ] Leggere prompt T-P0-02 e DET §107, inventario e baseline ricevute.
-- [ ] Trascrivere meccanicamente tutti i campi (ID, descrizione, tipo,
+- [x] Leggere prompt T-P0-02 e DET §107, inventario e baseline ricevute.
+- [x] Trascrivere meccanicamente tutti i campi (ID, descrizione, tipo,
   posizione, lunghezza, obbligatorietà e note originali) dai JSON ricevuti,
   dichiarando sempre che per SIOC la fonte ricevuta è FROZEN derivata,
   mentre XLSX primario non è disponibile; CAD è RELEASE_CANDIDATE.
-- [ ] Per CAD confrontare disposizione fisica e note con PDF ufficiale
+- [x] Per CAD confrontare disposizione fisica e note con PDF ufficiale
   disponibile, segnalando ogni limite/discrepanza senza correggere la fonte.
-- [ ] Verificare conteggi, fedeltà ai JSON e continuità/gap/overlap;
+- [x] Verificare conteggi, fedeltà ai JSON e continuità/gap/overlap;
   alias mantenuti senza inventare normalizzazioni. Nessun dato sanitario.
-- [ ] Consegna per revisione umana a campione richiesta dalla task;
+- [x] Consegna per revisione umana a campione richiesta dalla task;
   senza approvazione non marcare DONE né avanzare a T-P0-03/04.
+
+### Task 6: T-P0-03 — Matrici presenza/assenza/padding (dopo Task 5 approvata)
+
+**Prerequisito:** T-P0-02, campione approvato dall'autore il 2026-10-16.
+**Files:** `docs/normative/sioc/presence-matrix.md`,
+`docs/normative/cad/presence-matrix.md`.
+**Interfaces:** documentazione per campo; nessuna nuova policy runtime.
+
+- [ ] Leggere prompt originale e DET §14–15/§106–107, schemi ricevuti e
+  tabelle approvate; mantenere separate obbligatorietà sorgente e schema.
+- [ ] Per tutti i 218 campi trascrivere presenza, condizioni dichiarate,
+  missing-value policy e alignment/padding ricevuti; zero semantico mai
+  automaticamente vuoto. Mancanza = boundary motivata, nessuna norma inventata.
+- [ ] Documentare alias OBB/FAC/NBB e CAD SI/NO senza appiattire colonne,
+  tipi sorgente o condizioni già configurate; citare eccezioni/decisioni.
+- [ ] Verificare copertura e fedeltà a tutti i campi/AST/policy ricevuti;
+  review indipendente e stato. Nessun compiler o test runtime artificiale.
+
+### Task 7: T-P0-04 — Classificazione note (parallela a Task 6)
+
+**Prerequisito:** T-P0-02 approvata; indipendente da Task 6.
+**Files:** `docs/normative/sioc/notes-matrix.md`,
+`docs/normative/cad/notes-matrix.md`.
+**Interfaces:** matrice documentale note/regole già ricevute/ambiguità.
+
+- [ ] Leggere prompt originale e ARCH §5.7/§36, DET §107/§144, audit e
+  decisioni ricevute; nessuna traduzione automatica di note in runtime.
+- [ ] Classificare ogni nota come metadata, regola eseguibile candidata o
+  ambigua, motivando la classe con vincoli/AST esistenti o decisioni ricevute.
+- [ ] Preservare note e riferimenti; registrare ambiguità puntuali DEC-05
+  senza correggere o approvare norme, distinguendo metadati storici superati.
+- [ ] Verificare copertura 218/218 e tracciabilità ai testi/tabelle/fonti;
+  review indipendente. Nessuna modifica di schema o nuova regola eseguibile.
+
+### Task 8: T-P0-05 — Regole, join e identità (dopo Task 7)
+
+**Prerequisito:** T-P0-04 verificata. Indipendente dal completamento di Task 6.
+**Files:** `docs/normative/sioc/rules-and-joins.md`,
+`docs/normative/cad/rules-and-joins.md`.
+**Interfaces:** catalogo documentale di regole/chiavi/policy ricevute.
+
+- [ ] Leggere prompt originale, ARCH §21–22 e DET §66–72/§91, matrice note,
+  JSON ricevuti e contratti persistenti approvati.
+- [ ] Elencare regole cross-field/cross-trace, identità, PK composte e join
+  con riferimenti esatti, cardinalità e policy mancanti senza inventare default.
+- [ ] Ogni join ha cardinalità/policy ricevuta oppure DEC-* esplicita;
+  distinguere requisiti di estensione e non-enforcement deliberato.
+- [ ] Verificare completezza contro tutte le regole/join/chiavi sorgenti,
+  rispettare audit-only SIOC inter-run e progressivi CAD/namespace; review.
 
 ## Handoff e ripresa
 

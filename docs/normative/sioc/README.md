@@ -1,6 +1,9 @@
 # SIOC — Tabelle campi per revisione, T-P0-02
 
-**DONE_UNVERIFIED — revisione umana a campione dell'autore ancora richiesta.**
+**DONE — campione verificato e approvato dall'autore il 2026-10-16.**
+L'esito corrente è registrato in `IMPLEMENTATION_STATUS.md`; `document_status`
+nei JSON e il report iniziale descrivono lo snapshot preparatorio antecedente
+all'approvazione. Nessun valore della fonte è stato riscritto.
 La fonte ricevuta è il JSON derivato **FROZEN** sotto
 `K/SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/`; l'XLSX ufficiale
 `SIOC_tracciato_regionale_20260420-definitivo_v05.xlsx` è assente.
@@ -44,7 +47,7 @@ ID duplicati, gap o overlap; ogni ultimo byte coincide con `record_length`.
 L'XLSX assente impedisce il confronto con le celle ufficiali. Nessun dato
 sanitario o export è stato letto; nessuna chiusura G0 o approvazione implicita.
 
-Esempi concreti per il campionamento umano, con esito ancora da registrare:
+Esempi consegnati per il campionamento umano, approvato dall'autore:
 
 - `1.1`: nota multilinea del 2026, inclusi refusi, e lunghezza fisica 20.
 - `1.9`, `2.4–2.6`: alias `Data`; `4.6`/`4.10`: alias `A`, senza normalizzarli.

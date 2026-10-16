@@ -25,7 +25,8 @@ i job devono essere verdi e registrati con URL/log in
 `IMPLEMENTATION_STATUS.md`. Un controllo locale o GNU da Linux non
 sostituisce il runner Windows reale.
 
-L'autore ha autorizzato la creazione di un repository privato `lintra`.
+L'autore ha creato il repository `lintra` e configurato
+`origin` su `https://github.com/UraganoAngelina/lintra.git`.
 L'accesso autenticato all'account è un prerequisito esterno: username o
 password scritti in chat non configurano un'integrazione GitHub.
 Non salvare password/token nei file o negli URL remote.
@@ -44,4 +45,7 @@ pubblicazione sono nelle task P15.
 - [Configurazione Cargo per target](https://doc.rust-lang.org/cargo/reference/config.html#target).
 
 Lo stato dell'esecuzione reale, compresa l'eventuale assenza di autenticazione,
-è nel consuntivo. Nessun esito CI viene dedotto dalla sola configurazione.
+è nel consuntivo. Il Git eseguito dall'agente non dispone ancora di credenziali
+utilizzabili; i commit/tracking remoti rilevati nell'app non attestano una run
+CI o la condivisione dell'autenticazione con il processo Git dell'agente.
+Nessun esito CI viene dedotto dalla sola configurazione.

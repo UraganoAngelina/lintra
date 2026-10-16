@@ -1,6 +1,9 @@
 # CAD/ADI — Tabelle campi per revisione, T-P0-02
 
-**DONE_UNVERIFIED — revisione umana a campione dell'autore ancora richiesta.**
+**DONE — campione verificato e approvato dall'autore il 2026-10-16.**
+L'esito corrente è registrato in `IMPLEMENTATION_STATUS.md`; `document_status`
+nei JSON e il report iniziale descrivono lo snapshot preparatorio antecedente
+all'approvazione. Nessun valore della fonte è stato riscritto.
 Le tabelle trascrivono il derivato **RELEASE_CANDIDATE**
 `K/CAD_REVISED_CANDIDATE/`, DSL `1.0.0`, revisione
 `2026-10-16.reviewed-g02-g06`. La fonte primaria ricevuta è
@@ -43,7 +46,7 @@ certifica celle, layout, colori, autenticità del PDF o interpretazione normativ
 `source_note_extraction` continua a richiedere revisione dei passaggi sensibili
 al layout. Non sono stati eseguiti confronti visuali né verifiche del runtime.
 
-Esempi per il campionamento umano, con esito ancora da registrare:
+Esempi consegnati per il campionamento umano, approvato dall'autore:
 
 - A `1.4`/`1.5`, p. 1: `NO (1*)` nella prima colonna e `NBB` in NSIS;
   A `1.16`/`1.17`: `SI` contro `NO`; conservare anche la nota a piè pagina.

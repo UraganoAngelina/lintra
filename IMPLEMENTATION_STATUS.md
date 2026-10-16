@@ -6,11 +6,15 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
 ## Posizione corrente e prerequisiti
 
 - P1 / **T-P1-01 — DONE**: scaffold compilabile del package `lintra`.
-- Sessione corrente: **T-P1-02 e T-P0-01 DONE**, controlli e review
-  indipendenti superati. T-P1-03 e T-P0-06 in esecuzione parallela su file distinti.
+- Sessione corrente: **T-P1-02, T-P0-01/02/06 DONE**, controlli e review
+  indipendenti superati. **T-P1-03 DONE_UNVERIFIED**: implementata e
+  revisionata, mancano run reali Linux/Windows. T-P0-03 e T-P0-04 documentali
+  in esecuzione parallela dopo approvazione umana T-P0-02; nessuna task
+  dipendente supera i gate aperti.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
-- Repository locale `lintra/`, accanto allo starter kit; nessun remote.
+- Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
+  dall'autore su `https://github.com/UraganoAngelina/lintra.git`.
   Lo starter kit non è parte del repository né una dipendenza di runtime.
 - Toolchain corrente: **Rust 1.99.1**, scelta esplicitamente dall'autore,
   installata e fissata; target `x86_64-pc-windows-gnu` disponibile.
@@ -56,9 +60,9 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | Gate | Stato | Evidenza / limite |
 |---|---|---|
 | G0 — normativa | IN_PROGRESS | SIOC FROZEN documentale, CAD release candidate; nessuna nuova chiusura |
-| G1 — repository CI | IN_PROGRESS | Repository locale presente; T-P1-02/03 ancora da eseguire |
-| QG-1 — controlli locali | PASS per lo scaffold Linux | fmt, build, check, clippy, test |
-| QG-2 — CI Linux/Windows | NOT_STARTED | T-P1-03; nessun merge gate dichiarato superato |
+| G1 — repository CI | IN_PROGRESS | Toolchain pronta e workflow revisionato; autenticazione e run reali mancanti |
+| QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
+| QG-2 — CI Linux/Windows | BLOCKED | Accesso Git remoto non autenticato; nessuna run reale disponibile |
 | QG-3 — architettura | PASS per lo scaffold | Moduli privati, CLI solo nel binario, nessun codice normativo o dipendenza |
 | QG-8 — documenti | PASS per lo scaffold | Copie identiche, nessun contratto modificato |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
@@ -68,26 +72,59 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | Milestone | Stato | Evidenza |
 |---|---|---|
 | M0 | NOT_REACHED | G0 non chiuso |
-| M1 | IN_PROGRESS | Solo T-P1-01; P1/P2 e CI da completare |
+| M1 | IN_PROGRESS | T-P1-01/02 completate; T-P1-03 implementata, CI reale e P2 mancanti |
 | M2–M9 | NOT_REACHED | Nessuna implementazione anticipata |
 
-`DONE` riguarda il criterio della task (scaffold compilabile, nessun codice
-di dominio). Non dichiara completati P1, M1 o il gate multipiattaforma.
+`DONE` riguarda i criteri della singola task. Non dichiara completati P1,
+M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
 
 ## Task
 
 | Task | Stato | Ultima sessione | Evidenza |
 |---|---|---|---|
 | T-P0-01 | DONE | 2026-10-16 | Commit 0b13581; inventario 11 categorie/27 righe; integrità e completezza verificate, review approvata |
-| T-P0-06 | IN_PROGRESS | 2026-10-16 | Onboarding documentale dei dataset, dopo T-P0-01 |
+| T-P0-02 | DONE | 2026-10-16 | Commit 419600d/6a4e9ac; 218 campi/0 gap, review indipendente e campione approvato dall'autore |
+| T-P0-03 | IN_PROGRESS | 2026-10-16 | Matrici di presenza/assenza/padding, dopo T-P0-02 approvata |
+| T-P0-04 | IN_PROGRESS | 2026-10-16 | Classificazione note e DEC-05, parallela a T-P0-03 |
+| T-P0-06 | DONE | 2026-10-16 | Commit 69dc995/a55a634; 15 schede/150 metadati, gap espliciti, review approvata |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
-| T-P1-03 | IN_PROGRESS | 2026-10-16 | Workflow/test piattaforma in preparazione; GitHub da autenticare, CI reale non eseguita |
-| T-P2-01..03 | NOT_STARTED | — | Nessun tipo dominio |
+| T-P1-03 | DONE_UNVERIFIED | 2026-10-16 | Commit 4f71663; workflow e 2 test, controlli locali/review approvati; CI reale non eseguita |
+| T-P2-01 | BLOCKED | 2026-10-16 | Prerequisito T-P1-03/QG-2 reale non soddisfatto; nessun codice dominio scritto |
+| T-P2-02..03 | NOT_STARTED | — | Attendono T-P2-01 |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
-## Registro verifiche — 2026-10-16, Linux locale
+## Registro verifiche corrente — 2026-10-16, Linux locale
+
+[Trascrizione finale](docs/verification/FOUNDATIONS.md),
+[T-P1-02](docs/verification/T-P1-02.md),
+[T-P0-01](docs/verification/T-P0-01.md),
+[T-P0-02](docs/verification/T-P0-02.md),
+[T-P0-06](docs/verification/T-P0-06.md).
+
+| Comando / controllo | Esito reale |
+|---|---|
+| `rustc --version` | 1.99.1 (58cf8f9c3 2026-10-13), pin attivo |
+| `cargo fmt --all -- --check` | PASS, exit 0 |
+| `cargo check --all-targets --locked` | PASS, exit 0 |
+| `cargo clippy --all-targets --target x86_64-unknown-linux-gnu --locked -- -D warnings` | PASS, exit 0 |
+| `cargo test --target x86_64-unknown-linux-gnu --locked` | PASS, exit 0: 2 integration test + 3 doctest |
+| `cargo build --release --target x86_64-unknown-linux-gnu --locked` | PASS, exit 0; sola verifica locale |
+| `cargo check --all-targets --target x86_64-pc-windows-gnu --locked` | PASS, exit 0; nessun linking/esecuzione Windows |
+| `cargo run --locked` | PASS, exit 0, nessun output applicativo |
+| Manifest Cargo e moduli | Nessuna dipendenza; undici mod.rs senza codice |
+| Copie ARCH/DET/PLAN/ADR/matrice | PASS, ancora identiche byte per byte alle fonti |
+| Roundtrip Git attributi | PASS, 66 confronti byte in tre modalità autocrlf |
+| Review indipendenti T-P1-02/T-P0-01/T-P1-03 | Approvate, nessun finding implementativo |
+| T-P0-02 | 218/218 proiezioni esatte, 0 gap/overlap; CAD 83/83 righe e note riscontrate nel PDF; 16 fonti conformi agli hash |
+| Accettazione umana T-P0-02 | Ricevuta: «Campione verificato: approvo»; nessuna approvazione runtime/G0 dedotta |
+| T-P0-06 | 15 schede/150 metadati, 12 dataset SIOC mancanti e 3 CAD forniti riconciliati; review approvata |
+| `git ls-remote --heads origin` | Prima fallisce per DNS sandbox; rieseguito con escalation, exit 128 `unable to get password from user`: autenticazione non disponibile |
+| Secondo `git ls-remote --heads origin` fuori sandbox | Exit 128: `could not read Username for 'https://github.com': No such device or address` |
+| GitHub Actions Linux/Windows | Non eseguite dall'agente; nessun push dell'agente effettuato |
+
+## Registro storico bootstrap T-P1-01 — 2026-10-16
 
 Trascrizione finale: [VERIFICATION.md](docs/bootstrap/VERIFICATION.md).
 
@@ -117,14 +154,38 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 - Controllo completo kit FAIL per gli export extra, nessun impatto bloccante
   su T-P1-01: documenti censiti integri e dati esclusi dal nuovo repository.
-- Remote GitHub assente; CI da predisporre/eseguire in T-P1-03.
+- Remote GitHub configurato dall'autore, accesso autenticato non disponibile;
+  integrazione GitHub risulta non installata. Workflow pronto, nessun push/run
+  dell'agente. Rilevati commit intermedi esterni al flusso agenti 1c1e94f e
+  69dc995, conservati; branch ora traccia origin/work/p1-foundations. Questo
+  stato locale non attesta accesso autenticato o esecuzione CI del processo Git.
 - `DEC-SIOC-HIST-01`: fino ad approvazione solo audit cross-run;
   non dedurre nuovi errori normativi dalla ripetizione di una PK.
 - Backend storage, gestione chiavi/retention/protezione prima dell'uso reale:
   decisioni future, nessun database scelto per default.
 - G0 CAD e versione runtime della DSL ancora da verificare.
+- Metadati SIOC ricevuti: manifest/flow dichiarano 2026-04-20, trace split e
+  annidati 2025-12-16; FREEZE_REPORT distingue baseline 2025 e profilo 2026.
+  Entrambi conservati e documentati nelle tabelle; nessuna ratifica della
+  versione runtime dedotta dalla sola approvazione della trascrizione.
+- CAD posizione 60: G03 già risolta (blank fuori UCPDOM); i pending/undecided
+  ancora in alcuni artefatti sono metadati storici superati, non nuova norma aperta.
 
-## Decisioni prese in implementazione
+## Decisioni della sessione corrente
+
+- Esecuzione continua/parallelismo autorizzati: implementer su file disgiunti,
+  coordinatore unico per stato e Git; review indipendente per task e finale.
+- Branch di lavoro `work/p1-foundations`; identità Git fornita dall'autore;
+  nessuna password/token in file, comandi o URL remote.
+- Rust 1.99.1 scelta dall'autore, installazione completata; nessuna nuova
+  dipendenza Rust o mutazione delle fonti architetturali/normative.
+- CI su Ubuntu 24.04/Windows 2025, target nativi espliciti, CRT statica MSVC,
+  permessi di sola lettura, checkout fissato a SHA verificato. Nessuna release
+  o scelta della baseline Linux distribuibile anticipata.
+- T-P2-01 resta bloccata dalla CI reale. P0 documentale procede dove gli
+  input consentono inventario/trascrizione, senza approvare norme o G0.
+
+## Decisioni storiche bootstrap T-P1-01
 
 | Decisione | Motivazione e fonte |
 |---|---|
@@ -139,17 +200,45 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Documenti da aggiornare
 
-Nessuno per T-P1-01. ARCH, DET, PLAN e ADR copiati senza modifiche.
+Nessuno per le task implementate. ARCH, DET, PLAN e ADR copiati senza modifiche.
 Nessun nuovo conflitto o cambiamento di contratto pubblico.
 
 ## Plan change log
 
 - **2026-10-16, autore (dal seed):** autorizzato adeguamento ARCH/DET al piano,
   nome Lintra confermato, persistenza promossa a core; ADR-PERSIST-001 approvata.
-- **Questa sessione:** nessuna modifica al Master Implementation Plan;
-  il piano operativo locale descrive solo l'esecuzione T-P1-01.
+- **Sessione successiva:** esecuzione continua e parallela autorizzata
+  dall'autore; nessuna modifica al Master Implementation Plan. Il piano
+  operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-16 — Superpowers / T-P0-02 e T-P0-06
+
+- **Stato:** entrambe DONE. T-P0-02: review indipendente approvata e
+  approvazione umana testuale «Campione verificato: approvo» ricevuta.
+- **File:** dieci tabelle JSON e README SIOC/CAD; reference-datasets.md;
+  report riproducibili versionati in docs/verification/.
+- **Evidenze:** 218 campi identici ai JSON, zero gap/overlap; CAD 83 righe e
+  83 note corroborate dal PDF; 16 fonti conformi agli hash. Dataset: 15 schede,
+  150 metadati con lacune, controlli e review superati.
+- **Limiti:** fonte primaria XLSX SIOC assente e metadati ereditati dichiarati;
+  nessuna norma cambiata. I JSON `document_status: DONE_UNVERIFIED` e i report
+  iniziali sono snapshot antecedenti all'approvazione; lo stato corrente è
+  registrato qui e nei README. G0 e gate runtime rimangono aperti.
+- **Next:** T-P0-03 e T-P0-04 avviate in parallelo su file disgiunti.
+
+HANDOFF — 2026-10-16 — Superpowers / T-P1-03
+
+- **Stato:** DONE_UNVERIFIED, commit 4f71663; review indipendente approvata.
+- **File:** .github/workflows/ci.yml e tests/platform_paths.rs; guida in docs/CI.md.
+- **Evidenze:** controlli locali e GNU verdi, 2 test di I/O su percorsi con
+  spazi e 3 doctest superati; nessuna dipendenza nuova o codice di dominio.
+- **Limite bloccante:** GitHub non autenticato, nessun push o run reale.
+  QG-2 resta aperto; T-P2-01 non avviata. Repo creato/configurato dall'autore,
+  accesso tramite integrazione o credenziali Git del computer ancora necessario.
+- **Next:** autenticare accesso, caricare il codice revisionato e verificare
+  entrambi i job; solo poi avviare T-P2-01 e le task dipendenti.
 
 HANDOFF — 2026-10-16 — Superpowers / T-P0-01
 
