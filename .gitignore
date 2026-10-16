@@ -1,0 +1,57 @@
+# Local build artifacts and editor scratch files.
+/target/
+**/*.rs.bk
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Starter kits and exports must remain outside the source repository.
+LINTRA_STARTER_KIT*/
+EXPORT_CAD/
+*.zip
+*.tar.gz
+
+# Real inputs are excluded by default; only synthetic test text is allowed.
+*.txt
+!tests/fixtures/**/*.txt
+A.txt
+B1.txt
+B2.txt
+C.txt
+D.txt
+patient-data/
+real-data/
+private/
+/input/
+/inputs/
+/input-data/
+
+# Runtime state, snapshots and generated reports may contain health data.
+/storage/
+/state/
+/snapshots/
+/history/
+/reports/
+/output/
+/outputs/
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.sqlite3-*
+*.log
+*.jsonl
+!tests/fixtures/**/*.jsonl
+!tests/golden/**/*.jsonl
+
+# Credentials and locally managed identity protection keys.
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets/

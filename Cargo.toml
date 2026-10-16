@@ -1,0 +1,13 @@
+[package]
+name = "lintra"
+version = "0.1.0"
+edition = "2024"
+description = "Configurable, versioned validation engine for fixed-width healthcare flows"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "lintra"
+path = "src/main.rs"
