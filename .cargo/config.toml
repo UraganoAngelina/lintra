@@ -1,0 +1,4 @@
+# Local Arch development only; CI builds Windows with the native MSVC target.
+[target.x86_64-pc-windows-gnu]
+linker = "x86_64-w64-mingw32-gcc"
+runner = "wine"
