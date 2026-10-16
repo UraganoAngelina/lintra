@@ -5,7 +5,7 @@ La fonte ricevuta è il JSON derivato **FROZEN** sotto
 `K/SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/`; l'XLSX ufficiale
 `SIOC_tracciato_regionale_20260420-definitivo_v05.xlsx` è assente.
 `K/` indica lo starter kit adiacente al repository. Vedi
-[inventario](../INPUT_INVENTORY.md) e [report con script e risultati](../../../.superpowers/sdd/2026-10-16-foundations/task-5-report.md).
+[inventario](../INPUT_INVENTORY.md) e [report con script e risultati](../../verification/T-P0-02.md).
 
 | Tabella | Campi | Intervallo one-based inclusivo |
 |---|---:|---|

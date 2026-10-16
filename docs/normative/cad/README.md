@@ -7,7 +7,7 @@ Le tabelle trascrivono il derivato **RELEASE_CANDIDATE**
 `K/SCHEMA_INPUTS/CAD_2024-06_SOURCE/2025-05-14_FLUSSO_ADI.pdf`, 7 pagine.
 `K/` indica lo starter kit adiacente al repository. Aggiornamento interno
 `2024-06` e data etichetta `2025-05-14` restano distinti da decorrenza normativa.
-Vedi [inventario](../INPUT_INVENTORY.md) e [report riproducibile](../../../.superpowers/sdd/2026-10-16-foundations/task-5-report.md).
+Vedi [inventario](../INPUT_INVENTORY.md) e [report riproducibile](../../verification/T-P0-02.md).
 
 | Tabella | Campi | Intervallo one-based inclusivo | Pagine PDF |
 |---|---:|---|---|
