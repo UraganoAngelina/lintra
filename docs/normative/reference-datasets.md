@@ -24,7 +24,7 @@ I percorsi `K/...` sono sotto
 | S1 | `K/SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/REFERENCE_DATA_SPEC.md` | Contratto delle dodici dipendenze, chiavi logiche e attributi richiesti; esempi JSON, non dataset ufficiali |
 | S2 | Manifest, flow schema e cinque `trace_*.json` nella stessa directory S1 | Schema derivato FROZEN, canonico `1.0.0`, normativa `2026-04-20`; dodici dipendenze `required: true`, `PENDING_DATASET`; campi fisici e vincoli dichiarati |
 | C1 | `K/SCHEMA_INPUTS/CAD_2024-06_SOURCE/2025-05-14_FLUSSO_ADI.pdf` | PDF regionale fornito, aggiornamento interno giugno 2024, etichetta file `2025-05-14`, sette pagine |
-| C2 | `K/CAD_REVISED_CANDIDATE/manifest.json`, `flow_schema.json`, `trace_b1.json`, `trace_d.json`, `DECISION_REGISTER.md`, `CAD_RUNTIME_PROFILE.json`; `K/MASTER_AGENT_PROMPT.md` | Candidato `RELEASE_CANDIDATE`, canonico `1.0.0`, normativa `2024-06`, revisione `2026-10-16.reviewed-g02-g06`; decisioni CAD-02/08/09/10/16 e G-05 |
+| C2 | `K/CAD_REVISED_CANDIDATE/manifest.json`, `flow_schema.json`, `trace_b1.json`, `trace_d.json`, `DECISION_REGISTER.md`, `CAD_RUNTIME_PROFILE.json`, `NOTES_AUDIT_INDEX.json`, `FREEZE_GATE_REPORT.md`, `schema_lint_report.json`; `K/MASTER_AGENT_PROMPT.md` | Candidato `RELEASE_CANDIDATE`, canonico `1.0.0`, normativa `2024-06`, revisione `2026-10-16.reviewed-g02-g06`; decisioni CAD-02/08/09/10/16 e G-05 |
 | C3 | Tre JSON in `K/CAD_REVISED_CANDIDATE/datasets/`, nominati nelle schede | Estrazioni `SOURCE_EXTRACTED_REVIEWED` da C1 pp. 5–7; nessun manifest temporale autonomo |
 
 L'originale SIOC `SIOC_tracciato_regionale_20260420-definitivo_v05.xlsx` e
@@ -295,7 +295,27 @@ schema C2. Il contesto documentale comune è C1/C2 (`2024-06`, filename
 | Encoding | C3 letto come UTF-8 senza BOM; encoding di un file regionale autonomo non dichiarato (C-G3). Il candidato C2 dichiara lo spazio ASCII per la posizione 60 fuori UCPDOM |
 | Normalizzazione ammessa | Nessuna conversione di codici dichiarata; preservare indice, ordine, dominio e condizione di ogni posizione. CAD-09 riguarda il padding fisico, non autorizza riordino, deduplicazione o riduzione a set |
 | Validità temporale | Nessun `effective_from`/`effective_to`, intervallo per posizione, supersessione o storia nel JSON (C-G2); non usare date del flusso/file come efficacia |
-| Attributi / uso / lacune specifiche | Conservare `position`, `label`, `default_domain`, `conditional`, `source_page` e metadati di dataset. Posizioni 1–59: valori 1/2; 61–70: fisso 2. C3 posizione 60 ha dominio 1/2 e `conditional` con rappresentazione fuori UCPDOM ancora `pending`; C2 2.22 e master prompt formalizzano già UCPDOM → 1/2, fuori UCPDOM → esattamente uno spazio ASCII. La nota pendente del JSON è una divergenza di aggiornamento documentale, non una nuova decisione da inventare o motivo per cambiare C3 in questa task (C-G5) |
+| Attributi / uso / lacune specifiche | Conservare `position`, `label`, `default_domain`, `conditional`, `source_page` e metadati di dataset. Posizioni 1–59: valori 1/2; 61–70: fisso 2. C3 posizione 60 ha dominio 1/2 e `conditional` con rappresentazione fuori UCPDOM ancora `pending`; C2 2.22 e master prompt formalizzano già UCPDOM → 1/2, fuori UCPDOM → esattamente uno spazio ASCII. Il `pending` è metadato storico superato dalla decisione approvata G03: nessuna ambiguità normativa residua sulla rappresentazione. Conservato fedelmente il JSON ricevuto, si applica la policy superiore già approvata; riscontri puntuali sotto (C-G5) |
+
+## Posizione 60 CAD: artefatto ricevuto e policy approvata
+
+**G03 è risolta:** fuori UCPDOM è richiesto esattamente uno spazio ASCII
+(`0x20`); in UCPDOM valgono 1/2. Il JSON ricevuto rimane descritto fedelmente
+senza elevarne il vecchio `pending` a norma aperta.
+
+| Riscontro puntuale nel kit | Significato e precedenza |
+|---|---|
+| `K/CAD_REVISED_CANDIDATE/datasets/cad_needs_70_positions_page6.json:605` | `conditional` conserva il testo storico `exact outside-UCPDOM representation pending`; descrive l'artefatto ricevuto, non la policy attuale |
+| `K/CAD_REVISED_CANDIDATE/CAD_RUNTIME_PROFILE.json:94`; `K/CAD_REVISED_CANDIDATE/NOTES_AUDIT_INDEX.json:4` | Decisione `source_decisions.G-03`: esattamente spazio ASCII; indice audit: `decision_G03: blank` |
+| `K/MASTER_AGENT_PROMPT.md:37`; `K/CAD_REVISED_CANDIDATE/FREEZE_GATE_REPORT.md:7` | Il master prescrive blank fuori UCPDOM; il gate report conferma G03, 1/2 in UCPDOM e 2 alle posizioni 61–70 |
+| `K/CAD_REVISED_CANDIDATE/trace_b1.json:1109`, `K/CAD_REVISED_CANDIDATE/trace_b1.json:1116`; `K/CAD_REVISED_CANDIDATE/flow_schema.json:2230`, `K/CAD_REVISED_CANDIDATE/flow_schema.json:2237` | Il vincolo e la nota di formalizzazione applicano già `outside_ucpdom: " "`, con decisione dell'utente del 2026-10-16 |
+| `K/CAD_REVISED_CANDIDATE/DECISION_REGISTER.md:29`; `K/CAD_REVISED_CANDIDATE/trace_b1.json:1934`; `K/CAD_REVISED_CANDIDATE/flow_schema.json:3055` | Residui documentali di verifica/`undecided`, superati sul valore fuori UCPDOM dalla G03 esplicita nel profilo, nel master e nel vincolo; non richiedono una nuova scelta normativa |
+| `K/CAD_REVISED_CANDIDATE/schema_lint_report.json:10`; `K/CAD_REVISED_CANDIDATE/CAD_RUNTIME_PROFILE.json:111` | La decisione è confermata; resta distinto il supporto del compilatore/DSL al vincolo condizionale, fuori scope T-P0-06 e non attestato come funzionante |
+
+La contraddizione testuale ancora presente nei metadati è documentata come
+**C-G5, disallineamento dell'artefatto**, senza impatto sulla policy approvata.
+Non è una lacuna normativa sulla scelta blank/1/2. Nessun dataset o schema
+viene corretto qui e nessun gate runtime viene dichiarato superato.
 
 ## Valori dello schema e limiti dei lookup
 
@@ -319,7 +339,7 @@ S1 distingue dataset richiesto non disponibile da codice paziente non valido:
 l'assenza è errore di reference data/engine. È un contratto documentato,
 non un comportamento runtime attestato da questa consegna.
 
-## Registro delle lacune e impatto
+## Registro delle lacune e note di allineamento
 
 | ID | Lacuna e ambito | Tracciabilità / limite |
 |---|---|---|
@@ -333,7 +353,7 @@ non un comportamento runtime attestato da questa consegna.
 | C-G2 | Tre tabelle CAD: efficacia, intervalli per voce/posizione e policy di storicizzazione non dichiarati | Inventario R2c/R4d/R5a; non assumere identità con versione o date del PDF |
 | C-G3 | Tre tabelle CAD: encoding di un file regionale autonomo non dichiarato | Ricevuti PDF e JSON derivati UTF-8, non un export ufficiale autonomo con specifica di encoding |
 | C-G4 | ICD CAD: due formule aperte al catalogo ICD non enumerate nel JSON | Conservate in `open_catalogue_fallbacks`; lookup corrente limitato alle 63 voci, senza estensione al catalogo completo (C2/G-05) |
-| C-G5 | Bisogni CAD: testo pendente in `conditional` posizione 60 non aggiornato alla formalizzazione di schema | Esporre entrambi gli stati; nessuna modifica a fonte/schema o nuova regola in questa task |
+| C-G5 | Disallineamento storico dell’artefatto bisogni CAD: `pending`/`undecided` in alcuni metadati, superati dalla G03 approvata | Policy risolta: spazio ASCII fuori UCPDOM, 1/2 in UCPDOM. Riferimenti puntuali sopra; nessuna ambiguità normativa residua sul valore, nessuna modifica alle fonti; supporto runtime ancora non attestato |
 
 L'elenco completa l'onboarding documentale ai sensi dell'accettazione
 «scheda completa o lacune elencate». Le assenze impediscono la verifica e l'uso
