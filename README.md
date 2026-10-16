@@ -3,10 +3,11 @@
 Motore generico e versionato per validare flussi sanitari fixed-width.
 **Il motore conosce come validare; gli schemi conoscono cosa è valido.**
 
-Questo repository contiene lo scaffold della sola **T-P1-01**: una libreria,
-un entrypoint CLI vuoto e i confini dei moduli. Il binario termina senza
-elaborare input o produrre output. La validazione sarà implementata nelle
-task successive del piano.
+Il repository contiene le fondamenta Rust: una libreria, un entrypoint CLI
+vuoto, i confini dei moduli e la configurazione di sviluppo. Il binario
+termina senza elaborare input o produrre output. Il consuntivo delle task
+e dei gate realmente verificati è in
+[IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md).
 
 ## Sviluppo locale
 
@@ -22,10 +23,12 @@ cargo test --locked
 cargo run --locked
 ```
 
-Il package non ha dipendenze esterne. `Cargo.lock` è incluso per eseguire
-i controlli con `--locked`. Il pin della toolchain e la configurazione
-di sviluppo Windows spettano a T-P1-02; la CI Linux/Windows a T-P1-03.
-Le verifiche locali non attestano il superamento di questi gate.
+Il package non ha dipendenze esterne. Rust è fissato alla versione **1.99.1**;
+rustup installa/seleziona il pin dichiarato e `Cargo.lock` è versionato.
+La [guida di sviluppo](docs/DEVELOPMENT.md) descrive preparazione su Arch,
+cross-check Windows GNU e conservazione dei byte delle fixture.
+La CI T-P1-03 usa runner Linux e Windows MSVC reali; le verifiche locali
+non attestano il superamento del gate multipiattaforma.
 
 ## Struttura
 
@@ -35,7 +38,8 @@ Le verifiche locali non attestano il superamento di questi gate.
 - `schemas/`, `reference-data/`: directory riservate ai bundle versionati;
   nessuno schema o dataset importato nello scaffold.
 - `tests/{integration,golden,fixtures,support}/`: directory riservate ai test
-  futuri. I test attuali sono doctest sul confine pubblico della libreria.
+  futuri. I doctest verificano il confine pubblico della libreria;
+  i test di piattaforma verificano I/O sintetico su percorsi con spazi.
 - `docs/`: copie inalterate delle specifiche approvate.
 - [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md): consuntivo,
   verifiche reali, decisioni e handoff.
@@ -58,8 +62,13 @@ Origine delle copie: directory adiacente
 `../LINTRA_STARTER_KIT_FINAL_20261016/`. Il kit originale contiene anche
 `MASTER_AGENT_PROMPT.md`, `TASK_DEPENDENCY_MAP.md`, `ATOMIC_TASKS_INDEX.md`
 e i prompt delle task successive. Non è una dipendenza di build/runtime.
-La prossima task prevista è **T-P1-02**, da avviare soltanto dopo revisione
-e autorizzazione dell'autore.
+L'autore ha autorizzato l'esecuzione continua e parallela dal 2026-10-16.
+Le task seguono le dipendenze effettive: nessun avanzamento supera un gate
+CI o normativo ancora aperto. Consultare lo stato per la frontiera corrente.
+
+L'[inventario degli input normativi](docs/normative/INPUT_INVENTORY.md)
+distingue fonti ricevute, configurazioni derivate e materiali mancanti;
+la ricezione di uno schema FROZEN non equivale a validazione Rust o chiusura G0.
 
 ## Dati locali
 

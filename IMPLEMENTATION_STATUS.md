@@ -6,16 +6,32 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
 ## Posizione corrente e prerequisiti
 
 - P1 / **T-P1-01 — DONE**: scaffold compilabile del package `lintra`.
-- Prossima task **T-P1-02 — NOT_STARTED**, solo dopo nuova autorizzazione.
+- Sessione corrente: **T-P1-02 e T-P0-01 DONE**, controlli e review
+  indipendenti superati. T-P1-03 e T-P0-06 in esecuzione parallela su file distinti.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; nessun remote.
   Lo starter kit non è parte del repository né una dipendenza di runtime.
-- Rust/Cargo 1.99.0, host `x86_64-unknown-linux-gnu`; nessun pin toolchain ora.
+- Toolchain corrente: **Rust 1.99.1**, scelta esplicitamente dall'autore,
+  installata e fissata; target `x86_64-pc-windows-gnu` disponibile.
 - UI: prototipo Slint dichiarato funzionante dall'autore, non verificato,
   non presente in questo scaffold e non considerato MVP.
 - `CNF-01..11`, `CNF-LINTRA-SOURCE-01`, `CNF-PERSIST-01` risolti
   documentalmente; ADR-PERSIST-001 approvata; `PCR-CAD-001` superata.
+
+## Autorizzazione corrente — 2026-10-16
+
+L'autore ha autorizzato esecuzione continua e parallelizzazione delle task,
+rispettando le dipendenze funzionali della mappa e dei prompt atomici.
+Questo mandato sostituisce lo stop ordinario dopo ogni task, senza derogare
+ai gate normativi, alla CI reale o alle decisioni umane ancora aperte.
+Ha inoltre autorizzato creazione autonoma del repository GitHub e fornito
+identità per i commit locali; nessuna password viene salvata nei file.
+DEC-11: scelta Rust 1.99.1 ricevuta. Baseline Linux di release ancora aperta.
+
+Piano di sessione: [fondamenta](docs/superpowers/plans/2026-10-16-foundations.md).
+Skill utilizzate: Superpowers pianificazione, esecuzione tramite agenti,
+parallelismo e review/verifica; integrazione GitHub suggerita perché assente.
 
 ## Integrità e baseline consultata
 
@@ -62,9 +78,11 @@ di dominio). Non dichiara completati P1, M1 o il gate multipiattaforma.
 
 | Task | Stato | Ultima sessione | Evidenza |
 |---|---|---|---|
+| T-P0-01 | DONE | 2026-10-16 | Commit 0b13581; inventario 11 categorie/27 righe; integrità e completezza verificate, review approvata |
+| T-P0-06 | IN_PROGRESS | 2026-10-16 | Onboarding documentale dei dataset, dopo T-P0-01 |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
-| T-P1-02 | NOT_STARTED | — | Pin toolchain, attributi Git e configurazione Windows rinviati |
-| T-P1-03 | NOT_STARTED | — | Nessun workflow CI o repository remoto creato |
+| T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
+| T-P1-03 | IN_PROGRESS | 2026-10-16 | Workflow/test piattaforma in preparazione; GitHub da autenticare, CI reale non eseguita |
 | T-P2-01..03 | NOT_STARTED | — | Nessun tipo dominio |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
@@ -132,6 +150,36 @@ Nessun nuovo conflitto o cambiamento di contratto pubblico.
   il piano operativo locale descrive solo l'esecuzione T-P1-01.
 
 ## Handoff
+
+HANDOFF — 2026-10-16 — Superpowers / T-P0-01
+
+- **Stato:** DONE; commit 0b13581, review indipendente approvata.
+- **File:** [INPUT_INVENTORY.md](docs/normative/INPUT_INVENTORY.md), matrice
+  completa DET §154: undici categorie, 27 sottovoci con stato e motivo.
+- **Evidenze:** controllo di completezza/tracciabilità superato; 196/196 file
+  censiti integri; kit completo FAIL solo per quattro extra non letti.
+- **Mancanti consegnati:** sorgente XLSX SIOC, dodici reference dataset SIOC,
+  fixture/golden sintetiche approvate e dettagli di efficacia/versioning
+  non desumibili dai materiali ricevuti. Elenco puntuale nell'inventario.
+- **Limiti:** G0 aperto; nessuna norma, source document, API o Rust modificati.
+- **Next:** T-P0-06 (schede con lacune ammesse) indipendente da CI;
+  T-P0-02 richiede fonti e revisione umana a campione, non presunte.
+
+HANDOFF — 2026-10-16 — Superpowers / T-P1-02
+
+- **Stato:** DONE. File: rust-toolchain.toml, .gitattributes, .cargo/config.toml,
+  docs/DEVELOPMENT.md. Lockfile già committato in c7ee1cd, invariato.
+- **Evidenze:** Rust 1.99.1 installata con componenti e target GNU; fmt,
+  check, clippy con warning negati, test (3 doctest), build e cross-check GNU
+  tutti exit 0; 66 confronti byte Git su fixture/golden sintetici superati.
+- **Review indipendente:** approvata, nessun finding implementativo.
+- **Decisioni:** Rust 1.99.1 scelta umana; baseline Linux di release aperta;
+  Windows 10+/Server 2016+ secondo architettura e documentazione toolchain.
+- **Limiti:** MinGW/Wine non installati, nessuna build collegata/test Wine;
+  nessuna CI reale dichiarata. Nessun contratto pubblico/dependency aggiunto.
+- **Git:** branch work/p1-foundations, commit 0186c0b; documenti di sessione
+  ancora in aggiornamento, nessun remote autenticato.
+- **Next:** T-P1-03, prerequisito locale verificato; nessuna deroga a QG-2.
 
 HANDOFF — 2026-10-16 16:30 CEST — Codex / bootstrap Lintra
 
