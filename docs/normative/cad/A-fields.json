@@ -1,0 +1,728 @@
+{
+  "document_status": "DONE_UNVERIFIED",
+  "purpose": "T-P0-02 documentary transcription; human spot-check pending",
+  "source_boundary": "Received RELEASE_CANDIDATE JSON; official PDF available",
+  "provenance": [
+    {
+      "role": "received_trace",
+      "kit_path": "CAD_REVISED_CANDIDATE/trace_a.json",
+      "sha256": "1b7850af503c0f832f3add306a997e2b3a9f072b590d46a34c6f7783dbf00876"
+    },
+    {
+      "role": "received_manifest",
+      "kit_path": "CAD_REVISED_CANDIDATE/manifest.json",
+      "sha256": "3b220a34cd317b4bf657a9702d56f841f17fc7435986711c3744a3dcdb5d4561"
+    },
+    {
+      "role": "received_flow",
+      "kit_path": "CAD_REVISED_CANDIDATE/flow_schema.json",
+      "sha256": "74d92f8e88d1eef70dbc21e0b63fa33823c6d3d1b9bfb23803c671ecd46adb16"
+    },
+    {
+      "role": "official_pdf_received",
+      "kit_path": "SCHEMA_INPUTS/CAD_2024-06_SOURCE/2025-05-14_FLUSSO_ADI.pdf",
+      "sha256": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29"
+    }
+  ],
+  "source_manifest_metadata": {
+    "flow_id": "CAD",
+    "schema_status": "RELEASE_CANDIDATE",
+    "canonical_schema_version": "1.0.0",
+    "regulatory_version": "2024-06",
+    "source": {
+      "title": "2025-05-14_FLUSSO_ADI.pdf",
+      "internal_heading_update": "2024-06",
+      "authority": "Regione del Veneto",
+      "source_label_date": "2025-05-14",
+      "pdf_pages": 7
+    },
+    "traces": [
+      {
+        "trace_id": "A",
+        "file": "trace_a.json",
+        "field_count": 24,
+        "record_length": 218,
+        "record_key": [
+          "1.1",
+          "1.23"
+        ]
+      },
+      {
+        "trace_id": "B1",
+        "file": "trace_b1.json",
+        "field_count": 36,
+        "record_length": 198,
+        "record_key": [
+          "2.1",
+          "2.36"
+        ]
+      },
+      {
+        "trace_id": "B2",
+        "file": "trace_b2.json",
+        "field_count": 5,
+        "record_length": 41,
+        "record_key": [
+          "3.1",
+          "3.5"
+        ]
+      },
+      {
+        "trace_id": "C",
+        "file": "trace_c.json",
+        "field_count": 11,
+        "record_length": 45,
+        "record_key": [
+          "4.1",
+          "4.2",
+          "4.4",
+          "4.5",
+          "4.11"
+        ]
+      },
+      {
+        "trace_id": "D",
+        "file": "trace_d.json",
+        "field_count": 7,
+        "record_length": 39,
+        "record_key": [
+          "5.1",
+          "5.2",
+          "5.3",
+          "5.4",
+          "5.7"
+        ]
+      }
+    ],
+    "reference_data": [
+      "cad-icd9-cm-clinical-signs",
+      "cad-prestation-types",
+      "cad-needs-70-positions"
+    ],
+    "extra_runtime_contract": "CAD_HISTORICAL_PROFILE.md",
+    "runtime_extension_contract": "CAD_RUNTIME_PROFILE.json",
+    "schema_revision": "2026-10-16.reviewed-g02-g06",
+    "review_status": "G02 field note extraction complete, G03–G06 configuration decisions recorded; G01/G07 not evidenced; runtime extension compilation pending"
+  },
+  "source_trace_metadata": {
+    "canonical_schema_version": "1.0.0",
+    "schema_status": "RELEASE_CANDIDATE",
+    "flow_id": "CAD",
+    "regulatory_version": "2024-06",
+    "trace_id": "A",
+    "trace_name": "Dati anagrafici",
+    "record_length": 218,
+    "value_model": {
+      "physical_positions": "one_based",
+      "raw_value": "exact fixed-width bytes",
+      "logical_value": "raw after declared padding removal"
+    },
+    "freeze_notes": [
+      "Normative release candidate; compiler integration and authoritative sign-off needed to set FROZEN.",
+      "CAD_HISTORICAL_PROFILE.md executable contract pending generic runtime support."
+    ]
+  },
+  "fields": [
+    {
+      "id": "1.1",
+      "name": "Azienda ULSS erogatrice",
+      "physical": {
+        "start": 1,
+        "length": 3,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.1",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": true,
+        "source_note": "Codice dell'azienda ULSS erogatrice es. 501 ,….,509",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.2",
+      "name": "Codice fiscale o altro identificativo utente",
+      "physical": {
+        "start": 4,
+        "length": 20,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.2",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Il campo va valorizzato con il Codice Fiscale per tutte le schede riferite a cittadini italiani. Per i cittadini stranieri, qualora non in possesso del\nCodice Fiscale, vanno indicati in alternativa tra loro il codice TEAM (Tessera europea assicurazione malattia) , o il codice ENI (Europei non\niscritti), o il codice STP (Straniero temporaneamente presente) per cittadino straniero non in regola con le norme relative all’ingresso e al\nsoggiorno.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.3",
+      "name": "Tipo identificativo utente",
+      "physical": {
+        "start": 24,
+        "length": 1,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.3",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "1. Codice fiscale\n2. Codice ENI\n3. Codice STP\n4. Codice ID utente della Tessera Europea d’Assicurazione Malattia (TEAM)\n5. Altro identificativo\n6. Soggetto che ha richiesto l'anonimato nei casi previsti dalla legge\n9. Identificativo non disponibile",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.4",
+      "name": "Codice istituzione pagatrice TEAM",
+      "physical": {
+        "start": 25,
+        "length": 28,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.4",
+        "source_obligation": "NO (1*)",
+        "source_nsis_obligation": "NBB",
+        "resolved_obligation": "NBB",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica il codice di identificazione assegnato a livello nazionale alla istituzione di assicurazione o di residenza competente ai sensi degli allegati 2\ne 3 al regolamento 574/72. Come previsto nella Tessera Europea di Assicurazione Malattia (Campo nr. 7 tessera Team). Obbligatorio per tipo\nidentificativo utente 4",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.5",
+      "name": "Data scadenza tessera TEAM",
+      "physical": {
+        "start": 53,
+        "length": 8,
+        "type": "date",
+        "source_type": "D",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.5",
+        "source_obligation": "NO (1*)",
+        "source_nsis_obligation": "NBB",
+        "resolved_obligation": "NBB",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indicare la data di scadenza della tessera TEAM per i cittadini comunitari non italiani. Utilizzare il formato GGMMAAAA. (Campo nr. 9\ntesssera Team). Obbligatorio per tipo identificativo utente 4",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.6",
+      "name": "MPI",
+      "physical": {
+        "start": 61,
+        "length": 28,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.6",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Master Patient Index (Id regionale della posizione anagrafica).\nChiave di identificazione univoca con cui la posizione anagrafica è stata censita in ambiente regionale (Anagrafe Unica). Disponibile per i\nresidenti e assistiti in Regione Veneto come servizio erogato dalla anagrafe unica regionale: progressivamente diventerà il riferimento\nanagrafico per la gestione dei flussi informativi per gli assistiti.\nFino a diversa indicazione la compilazione è facoltativa.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.7",
+      "name": "Codice sanitario",
+      "physical": {
+        "start": 89,
+        "length": 9,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.7",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Il campo va valorizzato, in combinazione con il codice fiscale, per i soli residenti in Veneto.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.8",
+      "name": "Cognome",
+      "physical": {
+        "start": 98,
+        "length": 30,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.8",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Il campo va valorizzato, in combinazione con il codice fiscale, obbligatorio quando non disponibile il codice fiscale",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.9",
+      "name": "Nome",
+      "physical": {
+        "start": 128,
+        "length": 20,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.9",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Il campo va valorizzato, in combinazione con il codice fiscale, obbligatorio quando non disponibile il codice fiscale",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.10",
+      "name": "Sesso",
+      "physical": {
+        "start": 148,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.10",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Utilizzare i codici seguenti: 1 - maschio, 2 - femmina.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.11",
+      "name": "Data di nascita",
+      "physical": {
+        "start": 149,
+        "length": 8,
+        "type": "date",
+        "source_type": "D",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.11",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Utilizzare il formato GGMMAAAA.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.12",
+      "name": "Comune o Stato estero di nascita",
+      "physical": {
+        "start": 157,
+        "length": 6,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.12",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Codici ISTAT (primi 3 caratteri per la provincia e i rimanenti 3 caratteri per il progressivo comune). Si raccomanda di non omettere la\nrilevazione dello “0” costituente il primo carattere del codice provincia. Per i residenti all’estero codificare 999 i primi 3 caratteri ed il codice\nstato estero nei successivi 3, utilizzando il codice stati esteri definito dal Ministero dell’Interno per l’anagrafe della popolazione.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.13",
+      "name": "Cittadinanza",
+      "physical": {
+        "start": 163,
+        "length": 3,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.13",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Identifica la cittadinanza dell’assistito alla fine del periodo di riferimento della rilevazione. Per i cittadini italiani codificare con 100. Per gli\napolidi codificare 999.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.14",
+      "name": "Comune o Stato estero di residenza",
+      "physical": {
+        "start": 166,
+        "length": 6,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.14",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Codici ISTAT (primi 3 caratteri per la provincia e i rimanenti 3 caratteri per il progressivo comune). Si raccomanda di non omettere la\nrilevazione dello “0” costituente il primo carattere del codice provincia. Per i residenti all’estero codificare 999 i primi 3 caratteri ed il codice\nstato estero nei successivi 3, utilizzando il codice stati esteri definito dal Ministero dell’Interno per l’anagrafe della popolazione.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.15",
+      "name": "Azienda ULSS di residenza",
+      "physical": {
+        "start": 172,
+        "length": 6,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.15",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Utilizzare il formato RRRUUU; RRR = codici ISTAT delle regioni UUU = codice azienda sanitaria",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.16",
+      "name": "Comune di domicilio",
+      "physical": {
+        "start": 178,
+        "length": 6,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.16",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NBB",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Codici ISTAT (primi 3 caratteri per la provincia e i rimanenti 3 caratteri per il progressivo comune). Si raccomanda di non omettere la\nrilevazione dello “0” costituente il primo carattere del codice provincia.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.17",
+      "name": "DSS di domicilio",
+      "physical": {
+        "start": 184,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.17",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NBB",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Codice del distretto relativo al comune di domicilio",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.18",
+      "name": "Codice MMG/PLS",
+      "physical": {
+        "start": 185,
+        "length": 16,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.18",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Codice fiscale del MMG o PLS.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.19",
+      "name": "Stato civile",
+      "physical": {
+        "start": 201,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.19",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica lo stato civile dell’assistito al momento della rilevazione: 1 - celibe/nubile, 2 - coniugato, 3 - separato, 4 - divorziato, 5 - vedovo, 9 - non\ndichiarato.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.20",
+      "name": "Nucleo familiare",
+      "physical": {
+        "start": 202,
+        "length": 2,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.20",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica il numero dei componenti del nucleo familiare convivente, escluso l’assistito e l’eventuale assistente non familiare convivente\n(rientrano nel conteggio ad esempio: coniuge/partner convivente, figlio/a, fratello/sorella, nipote, genero/nuora, cognato/a).",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.21",
+      "name": "Assistente non familiare",
+      "physical": {
+        "start": 204,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.21",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Asssitenza a pagamento fornita da una o più persone non appartenenti al nucleo familiare: 1 – occasionale, 2 – fino a 1h/giorno, 3- da 1 a 4\nh/giorno, 4- da 4 a 8 h/giorno; 5- presenza notturna, 6 - assistenza continuativa, 7 – non presente.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.22",
+      "name": "Titolo di studio",
+      "physical": {
+        "start": 205,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.22",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "1 – nessuno, 2 – licenza elementare, 3 – licenza media inferiore, 4 – diploma media superiore, 5 – diploma universitario, 6 – laurea, 7 – scuola\nprofessionale, 8 – altro",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.23",
+      "name": "Identificativo evento assistenziale di CD",
+      "physical": {
+        "start": 206,
+        "length": 12,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.23",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": true,
+        "source_note": "Numero che identifica univocamente l’ evento assistenziale di CD (pazienti diversi non possono avere lo stesso identificativo dell'evento\nassistenziale). Tale campo è necessario per riunire il file Anagrafico agli altri file del flusso, separati per il trasferimento dei dati in\nottemperanza alla normativa sulla privacy. E' obbligatorio associare ad ogni evento assistenziale di CD lo stesso codice nel tempo, per\ncorrelare efficacemente i record relativi alla stesso episodio di presa in carico.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "1.24",
+      "name": "Responsabilità genitoriale",
+      "physical": {
+        "start": 218,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.24",
+        "source_obligation": "NBB",
+        "source_nsis_obligation": "NBB",
+        "resolved_obligation": "NBB",
+        "source_page": 1,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica chi ha la responsabilità nei confronti dell’assistito se minorenne. Il campo deve essere valorizzato se l’età dell’assistito (anno della data\npresa in carico -anno di nascita) è minore o uguale a 17.\nI valori ammessi: 1 - materna, 2 - paterna, 3 - condivisa, 4 - da tutore, 5 - struttura pubblica o convenzionata, 9 - non disponibile*",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages",
+        "documented_runtime_rule": "See CAD_RUNTIME_PROFILE.json compiler_extensions_required and CAD_NOTES_AUDIT.md; not compiled by DSL v1.0.0"
+      }
+    }
+  ]
+}

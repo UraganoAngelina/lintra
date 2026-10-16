@@ -1,0 +1,1139 @@
+{
+  "document_status": "DONE_UNVERIFIED",
+  "purpose": "T-P0-02 documentary transcription; human spot-check pending",
+  "source_boundary": "Received derived FROZEN JSON; official XLSX absent",
+  "provenance": [
+    {
+      "role": "received_trace",
+      "kit_path": "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/trace_2.json",
+      "sha256": "e0b4b78ec5ac352761a3faf970af9c6b2d315038337a50920e18749cccc41ee1"
+    },
+    {
+      "role": "received_manifest",
+      "kit_path": "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/manifest.json",
+      "sha256": "9900ab3c0bf9f27abd4bcd6d8289dd0b6ee98a05833605f668a7fb9eb418a0fd"
+    },
+    {
+      "role": "received_flow",
+      "kit_path": "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/flow_schema.json",
+      "sha256": "3567bafd3cb9b762becdd46a356454b89df094c7b88c5b1538c97a1bbaf26c45"
+    },
+    {
+      "role": "received_freeze_report",
+      "kit_path": "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/FREEZE_REPORT.md",
+      "sha256": "613887ae24d3aef7d1426cd30df8d173da5671494442fd9ddf1a9b30e9a0da67"
+    }
+  ],
+  "source_manifest_metadata": {
+    "canonical_schema_version": "1.0.0",
+    "schema_status": "FROZEN",
+    "flow_id": "SIOC",
+    "regulatory_version": "2026-04-20",
+    "source": {
+      "title": "SIOC_tracciato_regionale_20260420-definitivo_v05.xlsx",
+      "last_update": "2026-04-20",
+      "authority": "Regione del Veneto"
+    },
+    "encoding": {
+      "mode": "runtime_required",
+      "position_unit": "byte",
+      "requirement": "The validator must receive an explicit encoding profile compatible with fixed-width byte slicing. The official XLSX does not declare a file character encoding.",
+      "line_endings": [
+        "LF",
+        "CRLF"
+      ]
+    },
+    "general_physical_rules": {
+      "alphanumeric": {
+        "alignment": "left",
+        "padding": "space",
+        "default_missing": "spaces"
+      },
+      "numeric": {
+        "alignment": "right",
+        "padding": "zero",
+        "missing": "field-specific; never inferred globally when zero is a valid semantic value"
+      },
+      "date": {
+        "format": "DDMMYYYY where declared",
+        "default_missing_for_optional_dates": "spaces"
+      }
+    },
+    "traces": [
+      {
+        "trace_id": "1",
+        "file": "trace_1.json",
+        "record_length": 206,
+        "field_count": 18
+      },
+      {
+        "trace_id": "2",
+        "file": "trace_2.json",
+        "record_length": 271,
+        "field_count": 50
+      },
+      {
+        "trace_id": "3",
+        "file": "trace_3.json",
+        "record_length": 135,
+        "field_count": 36
+      },
+      {
+        "trace_id": "4.1",
+        "file": "trace_4_1.json",
+        "record_length": 394,
+        "field_count": 20
+      },
+      {
+        "trace_id": "4.2",
+        "file": "trace_4_2.json",
+        "record_length": 67,
+        "field_count": 11
+      }
+    ],
+    "reference_data_dependencies": [
+      "foreign-country-codes",
+      "health-authority-codes",
+      "hsp11-structure-codes",
+      "icd9-cm-diagnosis-codes",
+      "icd9-cm-procedure-codes",
+      "icpc-codes",
+      "istat-municipality-codes",
+      "italian-region-codes",
+      "regional-entity-manager-codes-dgr-2961-2012",
+      "regional-udo-codes",
+      "ria11-structure-codes",
+      "sts11-structure-codes"
+    ],
+    "freeze_decisions": [
+      "2026 source identifiers 3.35/3.36 match canonical IDs; 2025 historical aliases 3.48/3.49 preserved in freeze changelog.",
+      "Trace 4.1 field 4.5 is N(1); raw 0 means not entered and values 1/2 are the valid domain.",
+      "Trace 4.1 field 4.8 is a flat three-character ULSS code; no Region->ULSS hierarchy is enforced.",
+      "Trace 4.2 field 4.29 may exist without 4.30; 4.30 requires 4.29 and references an existing 4.22.",
+      "No unconfirmed CF checksum semantics, 1.6 Veneto-residency presence semantics, COVID inference, or 4.28 predecessor-act relation is invented in canonical v1.",
+      "2026: 1.11 accepts special unknown-citizenship value 998 without modifying the foreign country reference dataset.",
+      "2026: 1.15 accepts 999999 for no fixed abode regardless of residence classification; exempted from Italian/foreign lookup conditional rules.",
+      "2026: 2.11, 2.14-2.22 and 2.30 normative note corrections do not change executable lookup or conditional-presence logic.",
+      "2026: 3.21 uses physical N(2), zero-padded at right alignment; domains 00/10/15/25/99 preserved.",
+      "2026: 3.27-3.32 source obligation NBB, but admission must have 00 (0 for 3.32) and discharge requires valid value; executable rules preserved.",
+      "2026: 3.34 source obligation NBB, enforced at admission and discharge, with 999 only in death discharge; age rule preserved. Normative NBB vs effective mandatory rule flagged for future clarification."
+    ]
+  },
+  "source_trace_metadata": {
+    "canonical_schema_version": "1.0.0",
+    "schema_status": "FROZEN",
+    "flow_id": "SIOC",
+    "regulatory_version": "2025-12-16",
+    "trace_id": "2",
+    "trace_name": "ADT",
+    "record_length": 271,
+    "value_model": {
+      "physical_positions": "one_based",
+      "raw_value": "exact fixed-width bytes",
+      "logical_value": "raw value after schema-declared padding removal",
+      "semantic_comparisons": "logical_value unless assertion explicitly targets raw_value"
+    },
+    "freeze_notes": [
+      "Field 2.8 uses raw '000000' as the field-specific physical-missing representation, following the regional general numeric rule; because the field is required, it fails presence validation."
+    ]
+  },
+  "fields": [
+    {
+      "id": "2.1",
+      "name": "Numero della scheda di ricovero (ex Identificativo univoco assistito per episodio di accoglimento)",
+      "physical": {
+        "start": 1,
+        "length": 20,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.1",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016)."
+      }
+    },
+    {
+      "id": "2.2",
+      "name": "Provenienza del Paziente",
+      "physical": {
+        "start": 21,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.2",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica la struttura o il luogo di provenienza dell’assistito. I valori ammessi sono:\n01. Domicilio dell’assistito con ADI (o SAD)\n02. Domicilio dell'assistito senza ADI (o SAD)\n03. Struttura socio-sanitaria residenziale extraospedaliera\n04. Struttura sociale (es. Casa albergo per anziani)\n05. Struttura ospedaliera pubblica\n06. Altra struttura di cure intermedie (URT)\n07. Paziente COVID19 proveniente da ospedale\n08. Paziente COVID19 proveniente da struttura socio-sanitaria residenziale extraospedaliera\n09. Altro\n10. Ospedale privato \n11. Hospice \n12. Altro ospedale di comunità \n13. Pronto Soccorso"
+      }
+    },
+    {
+      "id": "2.3",
+      "name": "Tipologia di ricovero",
+      "physical": {
+        "start": 23,
+        "length": 1,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.3",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica la tipologia di ricovero\n1. Ospedale di Comunità"
+      }
+    },
+    {
+      "id": "2.4",
+      "name": "Data richiesta accoglimento",
+      "physical": {
+        "start": 24,
+        "length": 8,
+        "type": "date",
+        "source_type": "Data",
+        "alignment": {
+          "kind": "exact"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.4",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indicare la data di dichiarazione di eleggibilità al ricovero (inserimento in lista di attesa del paziente valutato ed eleggibile). Utilizzare il formato GGMMAAAA."
+      }
+    },
+    {
+      "id": "2.5",
+      "name": "Data di ricovero",
+      "physical": {
+        "start": 32,
+        "length": 8,
+        "type": "date",
+        "source_type": "Data",
+        "alignment": {
+          "kind": "exact"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.5",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Data del ricovero in struttura. La data deve essere minore o uguale alla “data di dimissione”. Utilizzare il formato GGMMAAAA."
+      }
+    },
+    {
+      "id": "2.6",
+      "name": "Data di dimissione o di decesso",
+      "physical": {
+        "start": 40,
+        "length": 8,
+        "type": "date",
+        "source_type": "Data",
+        "alignment": {
+          "kind": "exact"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.6",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Data della dimissione dalla struttura, o del decesso in struttura. Utilizzare il formato GGMMAAAA."
+      }
+    },
+    {
+      "id": "2.7",
+      "name": "Modalità di dimissione",
+      "physical": {
+        "start": 48,
+        "length": 1,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.7",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Individua lo stato del paziente al momento della dimissione, e l’eventuale continuazione del percorso assistenziale in altre strutture, codificato con i valori di dominio indicati nelle specifiche funzionali.\n1. Domicilio dell’assistito con ADI (o SAD)\n2. Domicilio dell'assistito senza ADI (o SAD)\n3. Struttura socio-sanitaria residenziale extraospedaliera\n4. Struttura sociale (es. Casa albergo per anziani)\n5. Struttura ospedaliera\n6. Altre strutture di Cure Intermedie  (ODC, URT, Hospice)\n7. Dimissione volontaria\n8. Decesso\n9. Dimissione protetta con attivazione rete cure palliative (Hospice, Cure Palliative Domiciliari ecc.)\n0. Dimissione protetta al domicilio con attivazione altri servizi"
+      }
+    },
+    {
+      "id": "2.8",
+      "name": "Struttura erogatrice. Codice regionale dell'UDO",
+      "physical": {
+        "start": 49,
+        "length": 6,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.8",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica il codice regionale della struttura erogatrice."
+      }
+    },
+    {
+      "id": "2.9",
+      "name": "Struttura erogatrice. Codice MRA",
+      "physical": {
+        "start": 55,
+        "length": 15,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.9",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Campo che verrà valorizzato con la codifica MRA non appena diponibile."
+      }
+    },
+    {
+      "id": "2.10",
+      "name": "Azienda ULSS pagante",
+      "physical": {
+        "start": 70,
+        "length": 6,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.10",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Indica l'Azienda ULSS pagante la quota sanitaria giornaliera.\nIl formato del campo è il seguente: le prime tre cifre rappresentano il codice regione, le seconde tre il numero di Azienda sanitaria."
+      }
+    },
+    {
+      "id": "2.11",
+      "name": "Soggetto pagante la quota alberghiera",
+      "physical": {
+        "start": 76,
+        "length": 1,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.11",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Il campo va compilato solo quando è prevista la compartecipazione, come definito dalla DGR 1563/2024. I valori previsti sono: 1. Utente (in toto o con la compartecipazione della famiglia) 2. Utente (parzialmente, con la compartecipazione del Comune) 3. Comune (in toto) 4. Altro"
+      }
+    },
+    {
+      "id": "2.12",
+      "name": "Emissione quote",
+      "physical": {
+        "start": 77,
+        "length": 1,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.12",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Il campo integra la DGR 2683/2014 per rilevare la presenza di utenti solventi in proprio, non a carico del Sistema sanitario regionale\nI valori previsti sono:\n1. Utente con quota totalmente a carico del SSR\n2. Utente pagante in proprio"
+      }
+    },
+    {
+      "id": "2.13",
+      "name": "Problemi socio - familiari 1",
+      "physical": {
+        "start": 78,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.13",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Segnalazione dei problemi di natura socio-familiare rilevati al momento del ricovero, codificato con i valori di dominio indicati nelle specifiche tecniche.\nValori ammessi:\n00 = Nessun problema rilevato \n01 = In carico ai servizi sociali\n02 = Problemi relazionali/comportamentali/psichiatrici\n03 = Dipendenze\n04 = Problemi di autonomia, disabilità fisica\n05 = Problemi di carattere giudiziario\n06 = Difficoltà economiche\n07 = Difficoltà abitative\n08 = Vive solo/a\n09 = Assenza o inadeguatezza del caregiver\n10 = Presenza amministratore di sostegno/tutore\n99 = Dato mancante"
+      }
+    },
+    {
+      "id": "2.14",
+      "name": "Problemi socio - familiari 2",
+      "physical": {
+        "start": 80,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.14",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13"
+      }
+    },
+    {
+      "id": "2.15",
+      "name": "Problemi socio - familiari 3",
+      "physical": {
+        "start": 82,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.15",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13"
+      }
+    },
+    {
+      "id": "2.16",
+      "name": "Problemi socio - familiari 4",
+      "physical": {
+        "start": 84,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.16",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13"
+      }
+    },
+    {
+      "id": "2.17",
+      "name": "Problemi socio - familiari 5",
+      "physical": {
+        "start": 86,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.17",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13"
+      }
+    },
+    {
+      "id": "2.18",
+      "name": "Problemi socio - familiari 6",
+      "physical": {
+        "start": 88,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.18",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13"
+      }
+    },
+    {
+      "id": "2.19",
+      "name": "Problemi socio - familiari 7",
+      "physical": {
+        "start": 90,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.19",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13"
+      }
+    },
+    {
+      "id": "2.20",
+      "name": "Problemi socio - familiari 8",
+      "physical": {
+        "start": 92,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.20",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13"
+      }
+    },
+    {
+      "id": "2.21",
+      "name": "Problemi socio - familiari 9",
+      "physical": {
+        "start": 94,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.21",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13"
+      }
+    },
+    {
+      "id": "2.22",
+      "name": "Problemi socio - familiari 10",
+      "physical": {
+        "start": 96,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.22",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13"
+      }
+    },
+    {
+      "id": "2.23",
+      "name": "Soggetto proponente il ricovero",
+      "physical": {
+        "start": 98,
+        "length": 1,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.23",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Identifica il soggetto che ha richiesto il ricovero in struttura, codificato con i valori di dominio indicati nelle specifiche tecniche. \nValori ammessi:\n1 = medico di medicina generale;\n2 = medico di continuità assistenziale;\n3 = medico specialista ambulatoriale territoriale o ospedaliero; \n4 = medico del pronto soccorso;\n5 = pediatra di libera scelta."
+      }
+    },
+    {
+      "id": "2.24",
+      "name": "Soggetto segnalante al medico la possibilità di ricovero",
+      "physical": {
+        "start": 99,
+        "length": 1,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.24",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Indica se il caso sia stato segnalato al medico da un soggetto qualificato differente da quelli indicati nel campo \"Soggetto proponente il ricovero\". \nValori ammessi:\n1 = Infermiere\n2 = Assistente Sociale\n3 = Altra tipologia di medico non compresa nel campo \"Soggetto proponente il ricovero\"\n4 = Caregiver\n5 = Altro operatore dell’assistenza domiciliare \n9 = Altro"
+      }
+    },
+    {
+      "id": "2.25",
+      "name": "Indicare se il ricovero sia stato mediato attraverso le attività delle centrali operative territoriali (COT)",
+      "physical": {
+        "start": 100,
+        "length": 1,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.25",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica se, nel processo di valutazione dell'opportunità di ricoverare il paziente presso l'ospedale di comunità, abbia avuto un ruolo attivo una COT. Valori ammessi:\n1 = SI\n2 = NO"
+      }
+    },
+    {
+      "id": "2.26",
+      "name": "Codice COT",
+      "physical": {
+        "start": 101,
+        "length": 12,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.26",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Indica, qualora il ricovero sia stato mediato da una COT, la concatenazione del codice identificativo della Regione, della ASL e codice STS11."
+      }
+    },
+    {
+      "id": "2.27",
+      "name": "Giornate di assenza temporanea",
+      "physical": {
+        "start": 113,
+        "length": 3,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.27",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Numero di giornate nelle quali il paziente, durante il ricovero, è temporaneamente assente. Se paziente assente per meno di 24 ore si considera 1 giorno di assenza.\nNel caso in cui l'assenza temporanea esiti in ricovero in altra struttura, il ricovero in ODC deve essere chiuso utilizando la modalità di dimissione più appropriata."
+      }
+    },
+    {
+      "id": "2.28",
+      "name": "Motivo principale del ricovero",
+      "physical": {
+        "start": 116,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.28",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Identifica il motivo principale che ha determinato la necessità del ricovero, codificato con i valori di dominio indicati nelle specifiche funzionali. \nValori ammessi:\n01 = Sorveglianza e assistenza infermieristica continuativa \n02 = Patologia cronica riacutizzata\n03 = Monitoraggio clinico e stabilizzazione terapeutica\n04 = Educazione/addestramento del paziente e del caregiver \n05 = Riattivazione funzionale\n06 = Interventi riabilitativi/rieducativi/monodistretto o completamento di interventi estensivi\n07 = Acuzie minori\n08 = Isolamento per patologia infettiva \n99 = Altro\n"
+      }
+    },
+    {
+      "id": "2.29",
+      "name": "Codice Regione struttura di provenienza",
+      "physical": {
+        "start": 118,
+        "length": 3,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.29",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Se valore campo \"Provenienza del Paziente\" è diverso da \"01\" o \"02\", indica il codice identificativo della Regione dove si trova la struttura di provenienza del paziente. Il codice da utilizzare è quello a tre caratteri definito con DM 17 settembre 1986, pubblicato nella Gazzetta Ufficiale n.240 del 15 ottobre 1986, e successive modifiche, utilizzato anche nei modelli per le rilevazioni delle attività gestionali ed economiche delle Aziende unità sanitarie locali. Utilizzare 999 se proveniente da strutture all’estero."
+      }
+    },
+    {
+      "id": "2.30",
+      "name": "Codice ASL struttura di provenienza del paziente",
+      "physical": {
+        "start": 121,
+        "length": 3,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.30",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Se valore campo \"Codice Regione struttura di provenienza\" è diverso da \"999\" e campo \"Provenienza del Paziente\" diverso da \"01\" o \"02\" e regione di provenienza del paziente \"Codice Regione struttura di provenienza\" coincide con la regione inviante, indica il codice identificativo dell'Azienda dove si trova la struttura di provenienza del paziente. Il campo deve essere valorizzato con i codici a tre caratteri dell'Azienda sanitaria in cui è ubicata la struttura di provenienza del paziente."
+      }
+    },
+    {
+      "id": "2.31",
+      "name": "Codice struttura di provenienza del paziente",
+      "physical": {
+        "start": 124,
+        "length": 6,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.31",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Se valore campo \"Codice Regione struttura di provenienza\" è diverso da \"999\" e campo \"Provenienza del Paziente\" diverso da \"01\", \"02\", \"04\" o \"09\" e il campo \"Codice Regione struttura di provenienza\" coincide con la regione inviante, indica il codice identificativo della struttura di provenienza del paziente. \nI codici da utilizzare sono quelli indicati nei modelli ministeriali HSP11, RIA11, STS11. Inserire 999999 se dato mancante. "
+      }
+    },
+    {
+      "id": "2.32",
+      "name": "Codice diagnosi 1 ",
+      "physical": {
+        "start": 130,
+        "length": 7,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.32",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Identifica le patologie di cui il paziente è affeto, o condizioni nelle quali si trova (fino a un massimo di 6) utilizzando la codifica ICD9CM. Compilare alla dimissione. \nValori ammessi: ICD9-CM\n- il codice prevede sotto-classificazioni o sottocategorie;\n- se la patologia prevede un genere specifico, il sesso del paziente deve essere coerente con quello previsto per la diagnosi;\n- se la patologia prevede un range di età di validità, l’età del paziente deve essere compresa in questo range;\n- non è possibile indicare la stessa diagnosi più volte (con progressivi diversi)."
+      }
+    },
+    {
+      "id": "2.33",
+      "name": "Codice diagnosi 2",
+      "physical": {
+        "start": 137,
+        "length": 7,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.33",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.34",
+      "name": "Codice diagnosi 3",
+      "physical": {
+        "start": 144,
+        "length": 7,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.34",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.35",
+      "name": "Codice diagnosi 4",
+      "physical": {
+        "start": 151,
+        "length": 7,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.35",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.36",
+      "name": "Codice diagnosi 5",
+      "physical": {
+        "start": 158,
+        "length": 7,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.36",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.37",
+      "name": "Codice diagnosi 6",
+      "physical": {
+        "start": 165,
+        "length": 7,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.37",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.38",
+      "name": "Codice procedura 1",
+      "physical": {
+        "start": 172,
+        "length": 8,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.38",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Identifica gli interventi e le procedure effettuati/e durante il ricovero (fino ad un massimo di 11) utilizzando la codifica ICD9CM e successive modificazioni o integrazioni. Compilare alla dimissione. "
+      }
+    },
+    {
+      "id": "2.39",
+      "name": "Codice procedura 2",
+      "physical": {
+        "start": 180,
+        "length": 8,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.39",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.40",
+      "name": "Codice procedura 3",
+      "physical": {
+        "start": 188,
+        "length": 8,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.40",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.41",
+      "name": "Codice procedura 4",
+      "physical": {
+        "start": 196,
+        "length": 8,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.41",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.42",
+      "name": "Codice procedura 5",
+      "physical": {
+        "start": 204,
+        "length": 8,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.42",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.43",
+      "name": "Codice procedura 6",
+      "physical": {
+        "start": 212,
+        "length": 8,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.43",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.44",
+      "name": "Codice procedura 7",
+      "physical": {
+        "start": 220,
+        "length": 8,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.44",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.45",
+      "name": "Codice procedura 8",
+      "physical": {
+        "start": 228,
+        "length": 8,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.45",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.46",
+      "name": "Codice procedura 9",
+      "physical": {
+        "start": 236,
+        "length": 8,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.46",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.47",
+      "name": "Codice procedura 10",
+      "physical": {
+        "start": 244,
+        "length": 8,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.47",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.48",
+      "name": "Codice procedura 11",
+      "physical": {
+        "start": 252,
+        "length": 8,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.48",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.49",
+      "name": "Codice Azienda",
+      "physical": {
+        "start": 260,
+        "length": 6,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.49",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "CAMPO CHIAVE\nIl campo deve essere valorizzato con i codici a SEI  caratteri della azienda sanitaria in cui è ubicata la struttura OdC (050501,…)."
+      }
+    },
+    {
+      "id": "2.50",
+      "name": "Codice Struttura",
+      "physical": {
+        "start": 266,
+        "length": 6,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.50",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "CAMPO CHIAVE\nI codici da utilizzare sono quelli indicati nei modelli ministeriali STS11"
+      }
+    }
+  ]
+}

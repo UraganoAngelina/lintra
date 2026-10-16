@@ -1,0 +1,1036 @@
+{
+  "document_status": "DONE_UNVERIFIED",
+  "purpose": "T-P0-02 documentary transcription; human spot-check pending",
+  "source_boundary": "Received RELEASE_CANDIDATE JSON; official PDF available",
+  "provenance": [
+    {
+      "role": "received_trace",
+      "kit_path": "CAD_REVISED_CANDIDATE/trace_b1.json",
+      "sha256": "a6726cf3b2365c7b230c2b1e82b0ba00d8ba18d504c1f3aa3ec9c008674238a3"
+    },
+    {
+      "role": "received_manifest",
+      "kit_path": "CAD_REVISED_CANDIDATE/manifest.json",
+      "sha256": "3b220a34cd317b4bf657a9702d56f841f17fc7435986711c3744a3dcdb5d4561"
+    },
+    {
+      "role": "received_flow",
+      "kit_path": "CAD_REVISED_CANDIDATE/flow_schema.json",
+      "sha256": "74d92f8e88d1eef70dbc21e0b63fa33823c6d3d1b9bfb23803c671ecd46adb16"
+    },
+    {
+      "role": "official_pdf_received",
+      "kit_path": "SCHEMA_INPUTS/CAD_2024-06_SOURCE/2025-05-14_FLUSSO_ADI.pdf",
+      "sha256": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29"
+    }
+  ],
+  "source_manifest_metadata": {
+    "flow_id": "CAD",
+    "schema_status": "RELEASE_CANDIDATE",
+    "canonical_schema_version": "1.0.0",
+    "regulatory_version": "2024-06",
+    "source": {
+      "title": "2025-05-14_FLUSSO_ADI.pdf",
+      "internal_heading_update": "2024-06",
+      "authority": "Regione del Veneto",
+      "source_label_date": "2025-05-14",
+      "pdf_pages": 7
+    },
+    "traces": [
+      {
+        "trace_id": "A",
+        "file": "trace_a.json",
+        "field_count": 24,
+        "record_length": 218,
+        "record_key": [
+          "1.1",
+          "1.23"
+        ]
+      },
+      {
+        "trace_id": "B1",
+        "file": "trace_b1.json",
+        "field_count": 36,
+        "record_length": 198,
+        "record_key": [
+          "2.1",
+          "2.36"
+        ]
+      },
+      {
+        "trace_id": "B2",
+        "file": "trace_b2.json",
+        "field_count": 5,
+        "record_length": 41,
+        "record_key": [
+          "3.1",
+          "3.5"
+        ]
+      },
+      {
+        "trace_id": "C",
+        "file": "trace_c.json",
+        "field_count": 11,
+        "record_length": 45,
+        "record_key": [
+          "4.1",
+          "4.2",
+          "4.4",
+          "4.5",
+          "4.11"
+        ]
+      },
+      {
+        "trace_id": "D",
+        "file": "trace_d.json",
+        "field_count": 7,
+        "record_length": 39,
+        "record_key": [
+          "5.1",
+          "5.2",
+          "5.3",
+          "5.4",
+          "5.7"
+        ]
+      }
+    ],
+    "reference_data": [
+      "cad-icd9-cm-clinical-signs",
+      "cad-prestation-types",
+      "cad-needs-70-positions"
+    ],
+    "extra_runtime_contract": "CAD_HISTORICAL_PROFILE.md",
+    "runtime_extension_contract": "CAD_RUNTIME_PROFILE.json",
+    "schema_revision": "2026-10-16.reviewed-g02-g06",
+    "review_status": "G02 field note extraction complete, G03–G06 configuration decisions recorded; G01/G07 not evidenced; runtime extension compilation pending"
+  },
+  "source_trace_metadata": {
+    "canonical_schema_version": "1.0.0",
+    "schema_status": "RELEASE_CANDIDATE",
+    "flow_id": "CAD",
+    "regulatory_version": "2024-06",
+    "trace_id": "B1",
+    "trace_name": "Valutazione rivalutazione conclusione",
+    "record_length": 198,
+    "value_model": {
+      "physical_positions": "one_based",
+      "raw_value": "exact fixed-width bytes",
+      "logical_value": "raw after declared padding removal"
+    },
+    "freeze_notes": [
+      "Normative release candidate; compiler integration and authoritative sign-off needed to set FROZEN.",
+      "CAD_HISTORICAL_PROFILE.md executable contract pending generic runtime support.",
+      "2.22 position 60 outside UCPDOM remains undecided; no runtime value imposed."
+    ]
+  },
+  "fields": [
+    {
+      "id": "2.1",
+      "name": "Identificativo evento assistenziale di CD",
+      "physical": {
+        "start": 1,
+        "length": 12,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.1",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": true,
+        "source_note": "Ricollega il servizio erogato all’evento assistenziale di CD (vedi TRACCIATO DATI ANAGRAFICI)",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.2",
+      "name": "Soggetto richiedente cure domiciliari",
+      "physical": {
+        "start": 13,
+        "length": 2,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.2",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica il soggetto richiedente la evento assistenziale di CD INIZIALE. I valori ammessi sono i seguenti: 1 - servizi sociali Comune, 2 - servizi\nsociali Az. ULSS, 3 - MMG/PLS, 4 - Ospedale, 5 - Struttura residenziale extraospedaliera, 6 - Utente/familiari, 7 - Apertura amministrativa per\nriassetto territoriale ASL, 8 - Apertura amministrativa della stessa Persona presa in carico, 9 - altro, 10 - Hospice, 11 - Servizi\nterritoriali/distrettuali, 12 - Medico specialista, 13 - Ambulatorio cure palliative, 14 Ospedale per dimissione protetta.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.3",
+      "name": "Tipologia presa in carico",
+      "physical": {
+        "start": 15,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.3",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica la tipologia di presa in carico. I valori ammessi sono i seguenti: 1 - Cure domiciliari (DPCM 12 gennaio 2017 art. 22), 2 - UCPDOM",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.4",
+      "name": "Data inizio evento assistenziale di CD",
+      "physical": {
+        "start": 16,
+        "length": 8,
+        "type": "date",
+        "source_type": "D",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.4",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica la data dell’attuale evento assistenziale di CD (non varia fino alla chiusura dell’ evento assistenziale di CD).",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.5",
+      "name": "Pianificazione condivisa delle cure",
+      "physical": {
+        "start": 24,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.5",
+        "source_obligation": "NBB",
+        "source_nsis_obligation": "NBB",
+        "resolved_obligation": "NBB",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica se esiste una pianificazione condivisa delle cure in cartella/fascicolo ai sensi della l.219/2017 art. 5. Valori ammessi: 1 - Si, 2 - No, 9- non\ndisponibile*\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.6",
+      "name": "Data conclusione",
+      "physical": {
+        "start": 25,
+        "length": 8,
+        "type": "date",
+        "source_type": "D",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.6",
+        "source_obligation": "NBB",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "NBB",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica la data di conclusione della evento assistenziale di CD dell’assistito.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.7",
+      "name": "Motivo conclusione",
+      "physical": {
+        "start": 33,
+        "length": 2,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.7",
+        "source_obligation": "NBB",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "NBB",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Il campo ha dominio condizionato dal tipo presa in carico.\nValori ammessi sono:\n1 - Completamento del programma assistenziale, 2 - Ricoveri in ospedale, 3 - Decesso a domicilio, 4 - Decesso in ospedale, 5 - Trasferimento in\nstruttura residenziale, 6 - Trasferimento in Hospice, 7 - Decesso in Hospice, 8 - Trasferimento in altra tipologia di cure domiciliari, 9 - Cambio\nresidenza, 10 - Cambio medico, 11 - Volontà dell’utente, 12 - Chiusura amministrativa (in assenza di sospensione, qualora non vi siano\nprestazioni per 3 mesi), 13 - Passaggio dalla rete pediatrica alla rete adulti e viceversa, 80 - trasferimento in altra struttura\nresidenziale/intermedia, 82 – Decesso (se non rientra nei casi precedenti), 88 – Trasferimento (se non rientra nei casi precedenti), 97 -\nChiusura amministrativa per riassetto territoriale ASL, 98 - Chiusura amministrativa con riapertura nell’anno successivo in assenza di\nsospensione, 99 - altro\nNBB: obbligatorio se DATA_CONCLUSIONE valorizzata\nCodice 10 non valido per prese in carico di tipo UCPDOM\nCodice 13 non valido per prese in carico di tipo Cure Domiciliari",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.8",
+      "name": "Tipo valutazione",
+      "physical": {
+        "start": 35,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.8",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "valori ammessi: 1 - valutazione iniziale (per ogni nuovo evento assistenziale di CD), 2 - rivalutazione.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.9",
+      "name": "Data valutazione",
+      "physical": {
+        "start": 36,
+        "length": 8,
+        "type": "date",
+        "source_type": "D",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.9",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica la data nella quale è stata effettuata la valutazione iniziale oppure una rivalutazione (data ultimo aggiornamento di un qualsiasi\nelemento di valutazione:diagnosi, svama/scheda valutazione semplificata, scheda bisogni) relativa all’episodio di assistenza in corso.\nUtilizzare il formato GGMMAAAA",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.10",
+      "name": "Data ultima UVMD",
+      "physical": {
+        "start": 44,
+        "length": 8,
+        "type": "date",
+        "source_type": "D",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.10",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "indicare la data dell'ultima UVMD (anche se fatta nei periodi precedenti). Utilizzare il formato GGMMAAA",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.11",
+      "name": "Patologia prevalente",
+      "physical": {
+        "start": 52,
+        "length": 3,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.11",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Codice ICPC della diagnosi \"principale\" (quella che condiziona maggiormente il piano di assistenza).",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.12",
+      "name": "Patologia concomitante",
+      "physical": {
+        "start": 55,
+        "length": 3,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.12",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Codice ICPC della patologia concomitante in grado di condizionare la evento assistenziale di CD, se non è presente inserire il codice 000.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.13",
+      "name": "Profilo cognitivo",
+      "physical": {
+        "start": 58,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.13",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "da Svama completa o scheda di valutazione multidimensionale semplificata: 1 - lucido, 2 - confuso, 3 - molto confuso o stuporoso.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.14",
+      "name": "Disturbi comportamentali",
+      "physical": {
+        "start": 59,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.14",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "da NPI o scheda di valutazione multidimensionale semplificata: 1 - assenti / lievi, 2 - moderati, 3 - gravi.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.15",
+      "name": "Disturbi sensoriali",
+      "physical": {
+        "start": 60,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.15",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "per flusso riabilitazione territoriale: 1 - assenti / lievi, 2 - moderati, 3 - gravi.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.16",
+      "name": "Disturbi comunicazione",
+      "physical": {
+        "start": 61,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.16",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "per flusso riabilitazione territoriale: 1 - assenti / lievi, 2 - moderati, 3 - gravi.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.17",
+      "name": "Profilo mobilità",
+      "physical": {
+        "start": 62,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.17",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica il livello di autonomia dell’assistito nell’area di mobilità condizionato all’età - a partire dai 3 anni. Da Svama completa o scheda di\nvalutazione multidimensionale semplificata: 1 - si sposta da solo, 2 - si sposta assistito, 3 - non si sposta.\nNBB: Il campo deve essere valorizzato se l’età dell’assistito (anno della data presa in carico -anno di nascita) è maggiore o uguale a 3",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages",
+        "documented_runtime_rule": "See CAD_RUNTIME_PROFILE.json compiler_extensions_required and CAD_NOTES_AUDIT.md; not compiled by DSL v1.0.0"
+      }
+    },
+    {
+      "id": "2.18",
+      "name": "Profilo funzionale",
+      "physical": {
+        "start": 63,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.18",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica il livello di autonomia dell’assistito nell’area di mobilità condizionato all’età - a partire dai 6 anni. Da Svama completa o scheda di\nvalutazione multidimensionale semplificata: 1 - autonomo o quasi, 2 - dipendente, 3 - totalmente dipendente.\nNBB: Il campo deve essere valorizzato se l’età dell’assistito (anno della data presa in carico -anno di nascita) è maggiore o uguale a 6",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages",
+        "documented_runtime_rule": "See CAD_RUNTIME_PROFILE.json compiler_extensions_required and CAD_NOTES_AUDIT.md; not compiled by DSL v1.0.0"
+      }
+    },
+    {
+      "id": "2.19",
+      "name": "Profilo sanitario",
+      "physical": {
+        "start": 64,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.19",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "da Svama completa o scheda di valutazione multidimensionale semplificata: 1. bassa, 2. intermedia, 3. alta.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.20",
+      "name": "Profilo socio-assistenziale",
+      "physical": {
+        "start": 65,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.20",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "da Svama completa o scheda di valutazione multidimensionale semplificata: 1 - ben assistito, 2 - parzialmente assistito, 3 - non\nsufficientemente assistito.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.21",
+      "name": "Fragilità familiare",
+      "physical": {
+        "start": 66,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.21",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica la presenza di Fragilità familiare. Valore ammessi: 1 - presente, 2 -assente\n, 9- non disponibile*",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.22",
+      "name": "Problemi salute e bisogni assistenziali",
+      "physical": {
+        "start": 67,
+        "length": 70,
+        "type": "alphanumeric",
+        "source_type": "T",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.22",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "problemi di salute allineato con DM 17-12-2008; Codificare in questo modo: \"1\" in caso di problema presente, \"2\" in caso di problema\nassente.\nLa posizione del carattere si riferisce al \"bisogno assistenziale\" secondo la tabella allegato D - Bisogni_NEW\nI caratteri delle posizione 61-70 (bisogni \"vuoti\") vanno compilate con il carattere 2.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.23",
+      "name": "Rischio sanguinamento acuto",
+      "physical": {
+        "start": 137,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.23",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica se l’assistito è a rischio sanguinamento acuto. Valori ammessi: 1 - Si, 2 - No, 9- non disponibile*",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.24",
+      "name": "Forniture sanitarie attive",
+      "physical": {
+        "start": 138,
+        "length": 12,
+        "type": "alphanumeric",
+        "source_type": "T",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.24",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Codificare in questo modo:\"1\" in caso di servizio presente nel periodo\"; \"2\" in caso di servizio assente nel periodo\". La posizione del carattere\nsi riferisce alla tipologia del servizio erogato: 1 - farmaceutica ad erogazione diretta, 2 - assistenza protesica, 3 - fornitura O2 liquido, 4 -\nfornitura O2 concentratore, 5 - fornitura O2 in bombole, 6 - fornitura materiale per dialisi, 7 - fornitura alimenti per nutrizione enterale, 8 -\nfornitura presidi per nutrizione parenterale, 9 - fornitura materiale sanitario di consumo (es. medicazioni), 10 - altro.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.25",
+      "name": "Interventi servizio assistenza domiciliare",
+      "physical": {
+        "start": 150,
+        "length": 4,
+        "type": "alphanumeric",
+        "source_type": "T",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.25",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Codificare in questo modo:\"1\" in caso di servizio presente nel periodo\"; \"2\" in caso di servizio assente nel periodo\". La posizione del carattere\nsi riferisce alla tipologia del servizio erogato: 1 - prestazioni quotidiane di base - Attività di aiuto alla persona, 2 - prestazioni quotidiane di\nbase - Attività tese a favorire la deambulazione e/o mobilizzazione della persona, 3 - prestazioni quotidiane strumentali, 4 - altre prestazioni.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.26",
+      "name": "Interventi sostegno domiciliarità",
+      "physical": {
+        "start": 154,
+        "length": 4,
+        "type": "alphanumeric",
+        "source_type": "T",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.26",
+        "source_obligation": "NO",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NO",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Codificare in questo modo:\"1\" in caso di servizio presente nel periodo\"; \"2\" in caso di servizio assente nel periodo\". La posizione del carattere\nsi riferisce alla tipologia del servizio erogato: 1 - telesoccorso, 2 - pasti a domicilio, 3 - trasporto / accompagnamento, 4 - contributo\neconomico straordinario.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.27",
+      "name": "Appartenente alla rete",
+      "physical": {
+        "start": 158,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.27",
+        "source_obligation": "NBB",
+        "source_nsis_obligation": "NBB",
+        "resolved_obligation": "NBB",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica se l’erogatore appartiene alla rete.\nValori ammessi:1 - Si, 2 - No, 9 - non disponibile\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.28",
+      "name": "Tipo rete",
+      "physical": {
+        "start": 159,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.28",
+        "source_obligation": "NBB",
+        "source_nsis_obligation": "NBB",
+        "resolved_obligation": "NBB",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica a quale rete appartiene l’erogatore. Valori ammessi:1 - RLCP (rete locale di cure palliative), 2 - RCPPTD (rete di cure palliative\npediatriche e terapia del dolore), 3 - RLTD (rete locale di terapia del dolore), 9 - non disponibile*\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM e se l’erogatore appartiene alla rete",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.29",
+      "name": "Segno/sintomo clinico 1",
+      "physical": {
+        "start": 160,
+        "length": 5,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.29",
+        "source_obligation": "NBB",
+        "source_nsis_obligation": "NBB",
+        "resolved_obligation": "NBB",
+        "source_page": 3,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+        "source_note": "I valori ammessi sono riportati nella tabella di riferimento 5.1 (ICD 9 CM)\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.30",
+      "name": "Segno/sintomo clinico 2",
+      "physical": {
+        "start": 165,
+        "length": 5,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.30",
+        "source_obligation": "FAC",
+        "source_nsis_obligation": "FAC",
+        "resolved_obligation": "FAC",
+        "source_page": 4,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+        "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo può essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.31",
+      "name": "Segno/sintomo clinico 3",
+      "physical": {
+        "start": 170,
+        "length": 5,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.31",
+        "source_obligation": "FAC",
+        "source_nsis_obligation": "FAC",
+        "resolved_obligation": "FAC",
+        "source_page": 4,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+        "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo può essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.32",
+      "name": "Segno/sintomo clinico 4",
+      "physical": {
+        "start": 175,
+        "length": 5,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.32",
+        "source_obligation": "FAC",
+        "source_nsis_obligation": "FAC",
+        "resolved_obligation": "FAC",
+        "source_page": 4,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+        "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo può essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.33",
+      "name": "Segno/sintomo clinico 5",
+      "physical": {
+        "start": 180,
+        "length": 5,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.33",
+        "source_obligation": "FAC",
+        "source_nsis_obligation": "FAC",
+        "resolved_obligation": "FAC",
+        "source_page": 4,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+        "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo può essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.34",
+      "name": "Strumento identificazione bisogno CP",
+      "physical": {
+        "start": 185,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.34",
+        "source_obligation": "NBB",
+        "source_nsis_obligation": "NBB",
+        "resolved_obligation": "NBB",
+        "source_page": 4,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Valori ammessi: 1 - Si, 2 - No, 9- non disponibile*\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.35",
+      "name": "Strumento valutazione multidimensionale",
+      "physical": {
+        "start": 186,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.35",
+        "source_obligation": "NBB",
+        "source_nsis_obligation": "NBB",
+        "resolved_obligation": "NBB",
+        "source_page": 4,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Valori ammessi: 1 - Si, 2 - No, 9- non disponibile*\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.36",
+      "name": "Chiave progressivo record",
+      "physical": {
+        "start": 187,
+        "length": 12,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "2.36",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NBB",
+        "source_page": 4,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": true,
+        "pk_presence_resolution": "Required for complete CAD primary key and persistent identity; REGIONAL source SI, NSIS NO",
+        "source_note": "Identificativo univoco assoluto per il tipo record, valorizzato in fase di generazione del record, da utilizzare per le tutte le operazioni di\nalimentazione e aggiornamento della base dati regionale. Successivi rinvii dello stesso record devono utilizzare lo stesso progressivo.\nProgressivi record inviati in un trimestre, se non presenti in successivi invii, si intendono annullati.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    }
+  ]
+}

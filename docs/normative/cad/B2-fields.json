@@ -1,0 +1,253 @@
+{
+  "document_status": "DONE_UNVERIFIED",
+  "purpose": "T-P0-02 documentary transcription; human spot-check pending",
+  "source_boundary": "Received RELEASE_CANDIDATE JSON; official PDF available",
+  "provenance": [
+    {
+      "role": "received_trace",
+      "kit_path": "CAD_REVISED_CANDIDATE/trace_b2.json",
+      "sha256": "daa651271ca210485a9cd4b46c469a8364b807fd78adb6089cb6c76cb86cd148"
+    },
+    {
+      "role": "received_manifest",
+      "kit_path": "CAD_REVISED_CANDIDATE/manifest.json",
+      "sha256": "3b220a34cd317b4bf657a9702d56f841f17fc7435986711c3744a3dcdb5d4561"
+    },
+    {
+      "role": "received_flow",
+      "kit_path": "CAD_REVISED_CANDIDATE/flow_schema.json",
+      "sha256": "74d92f8e88d1eef70dbc21e0b63fa33823c6d3d1b9bfb23803c671ecd46adb16"
+    },
+    {
+      "role": "official_pdf_received",
+      "kit_path": "SCHEMA_INPUTS/CAD_2024-06_SOURCE/2025-05-14_FLUSSO_ADI.pdf",
+      "sha256": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29"
+    }
+  ],
+  "source_manifest_metadata": {
+    "flow_id": "CAD",
+    "schema_status": "RELEASE_CANDIDATE",
+    "canonical_schema_version": "1.0.0",
+    "regulatory_version": "2024-06",
+    "source": {
+      "title": "2025-05-14_FLUSSO_ADI.pdf",
+      "internal_heading_update": "2024-06",
+      "authority": "Regione del Veneto",
+      "source_label_date": "2025-05-14",
+      "pdf_pages": 7
+    },
+    "traces": [
+      {
+        "trace_id": "A",
+        "file": "trace_a.json",
+        "field_count": 24,
+        "record_length": 218,
+        "record_key": [
+          "1.1",
+          "1.23"
+        ]
+      },
+      {
+        "trace_id": "B1",
+        "file": "trace_b1.json",
+        "field_count": 36,
+        "record_length": 198,
+        "record_key": [
+          "2.1",
+          "2.36"
+        ]
+      },
+      {
+        "trace_id": "B2",
+        "file": "trace_b2.json",
+        "field_count": 5,
+        "record_length": 41,
+        "record_key": [
+          "3.1",
+          "3.5"
+        ]
+      },
+      {
+        "trace_id": "C",
+        "file": "trace_c.json",
+        "field_count": 11,
+        "record_length": 45,
+        "record_key": [
+          "4.1",
+          "4.2",
+          "4.4",
+          "4.5",
+          "4.11"
+        ]
+      },
+      {
+        "trace_id": "D",
+        "file": "trace_d.json",
+        "field_count": 7,
+        "record_length": 39,
+        "record_key": [
+          "5.1",
+          "5.2",
+          "5.3",
+          "5.4",
+          "5.7"
+        ]
+      }
+    ],
+    "reference_data": [
+      "cad-icd9-cm-clinical-signs",
+      "cad-prestation-types",
+      "cad-needs-70-positions"
+    ],
+    "extra_runtime_contract": "CAD_HISTORICAL_PROFILE.md",
+    "runtime_extension_contract": "CAD_RUNTIME_PROFILE.json",
+    "schema_revision": "2026-10-16.reviewed-g02-g06",
+    "review_status": "G02 field note extraction complete, G03–G06 configuration decisions recorded; G01/G07 not evidenced; runtime extension compilation pending"
+  },
+  "source_trace_metadata": {
+    "canonical_schema_version": "1.0.0",
+    "schema_status": "RELEASE_CANDIDATE",
+    "flow_id": "CAD",
+    "regulatory_version": "2024-06",
+    "trace_id": "B2",
+    "trace_name": "Sospensioni",
+    "record_length": 41,
+    "value_model": {
+      "physical_positions": "one_based",
+      "raw_value": "exact fixed-width bytes",
+      "logical_value": "raw after declared padding removal"
+    },
+    "freeze_notes": [
+      "Normative release candidate; compiler integration and authoritative sign-off needed to set FROZEN.",
+      "CAD_HISTORICAL_PROFILE.md executable contract pending generic runtime support."
+    ]
+  },
+  "fields": [
+    {
+      "id": "3.1",
+      "name": "Identificativo evento assistenziale di CD",
+      "physical": {
+        "start": 1,
+        "length": 12,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "3.1",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 4,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": true,
+        "source_note": "Ricollega il servizio erogato all’evento assistenziale di CD (vedi TRACCIATO DATI ANAGRAFICI)",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "3.2",
+      "name": "Data inizio sospensione",
+      "physical": {
+        "start": 13,
+        "length": 8,
+        "type": "date",
+        "source_type": "D",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "3.2",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 4,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica la data in cui inizia la sospensione dell’erogazione delle cure domiciliari all’assistito.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "3.3",
+      "name": "Data fine sospensione",
+      "physical": {
+        "start": 21,
+        "length": 8,
+        "type": "date",
+        "source_type": "D",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "3.3",
+        "source_obligation": "FAC",
+        "source_nsis_obligation": "FAC",
+        "resolved_obligation": "FAC",
+        "source_page": 4,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica la data in cui termina la sospensione dell’erogazione delle cure domiciliari all’assistito.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "3.4",
+      "name": "Motivo sospensione",
+      "physical": {
+        "start": 29,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "3.4",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 4,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "I valori ammessi sono: 1 - ricovero in ospedale, 2 - allontanamento temporaneo, 3 - ricovero temporaneo in struttura residenziale, 4 -\nricovero in HOSPICE, 7 - ricovero in altra struttura residenziale/intermedia, 9 - altro.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "3.5",
+      "name": "Chiave progressivo record",
+      "physical": {
+        "start": 30,
+        "length": 12,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "3.5",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "NO",
+        "resolved_obligation": "NBB",
+        "source_page": 4,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": true,
+        "pk_presence_resolution": "Required for complete CAD primary key and persistent identity; REGIONAL source SI, NSIS NO",
+        "source_note": "Identificativo univoco assoluto per il tipo record, valorizzato in fase di generazione del record, da utilizzare per le tutte le operazioni di\nalimentazione e aggiornamento della base dati regionale. Successivi rinvii dello stesso record devono utilizzare lo stesso progressivo.\nProgressivi record inviati in un trimestre, se non presenti in successivi invii, si intendono annullati.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    }
+  ]
+}

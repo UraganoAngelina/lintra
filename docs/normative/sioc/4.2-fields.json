@@ -1,0 +1,360 @@
+{
+  "document_status": "DONE_UNVERIFIED",
+  "purpose": "T-P0-02 documentary transcription; human spot-check pending",
+  "source_boundary": "Received derived FROZEN JSON; official XLSX absent",
+  "provenance": [
+    {
+      "role": "received_trace",
+      "kit_path": "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/trace_4_2.json",
+      "sha256": "9c3762da808007be9f1433da0e02ed0424f5992a69642de3d4775c38aab8d370"
+    },
+    {
+      "role": "received_manifest",
+      "kit_path": "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/manifest.json",
+      "sha256": "9900ab3c0bf9f27abd4bcd6d8289dd0b6ee98a05833605f668a7fb9eb418a0fd"
+    },
+    {
+      "role": "received_flow",
+      "kit_path": "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/flow_schema.json",
+      "sha256": "3567bafd3cb9b762becdd46a356454b89df094c7b88c5b1538c97a1bbaf26c45"
+    },
+    {
+      "role": "received_freeze_report",
+      "kit_path": "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/FREEZE_REPORT.md",
+      "sha256": "613887ae24d3aef7d1426cd30df8d173da5671494442fd9ddf1a9b30e9a0da67"
+    }
+  ],
+  "source_manifest_metadata": {
+    "canonical_schema_version": "1.0.0",
+    "schema_status": "FROZEN",
+    "flow_id": "SIOC",
+    "regulatory_version": "2026-04-20",
+    "source": {
+      "title": "SIOC_tracciato_regionale_20260420-definitivo_v05.xlsx",
+      "last_update": "2026-04-20",
+      "authority": "Regione del Veneto"
+    },
+    "encoding": {
+      "mode": "runtime_required",
+      "position_unit": "byte",
+      "requirement": "The validator must receive an explicit encoding profile compatible with fixed-width byte slicing. The official XLSX does not declare a file character encoding.",
+      "line_endings": [
+        "LF",
+        "CRLF"
+      ]
+    },
+    "general_physical_rules": {
+      "alphanumeric": {
+        "alignment": "left",
+        "padding": "space",
+        "default_missing": "spaces"
+      },
+      "numeric": {
+        "alignment": "right",
+        "padding": "zero",
+        "missing": "field-specific; never inferred globally when zero is a valid semantic value"
+      },
+      "date": {
+        "format": "DDMMYYYY where declared",
+        "default_missing_for_optional_dates": "spaces"
+      }
+    },
+    "traces": [
+      {
+        "trace_id": "1",
+        "file": "trace_1.json",
+        "record_length": 206,
+        "field_count": 18
+      },
+      {
+        "trace_id": "2",
+        "file": "trace_2.json",
+        "record_length": 271,
+        "field_count": 50
+      },
+      {
+        "trace_id": "3",
+        "file": "trace_3.json",
+        "record_length": 135,
+        "field_count": 36
+      },
+      {
+        "trace_id": "4.1",
+        "file": "trace_4_1.json",
+        "record_length": 394,
+        "field_count": 20
+      },
+      {
+        "trace_id": "4.2",
+        "file": "trace_4_2.json",
+        "record_length": 67,
+        "field_count": 11
+      }
+    ],
+    "reference_data_dependencies": [
+      "foreign-country-codes",
+      "health-authority-codes",
+      "hsp11-structure-codes",
+      "icd9-cm-diagnosis-codes",
+      "icd9-cm-procedure-codes",
+      "icpc-codes",
+      "istat-municipality-codes",
+      "italian-region-codes",
+      "regional-entity-manager-codes-dgr-2961-2012",
+      "regional-udo-codes",
+      "ria11-structure-codes",
+      "sts11-structure-codes"
+    ],
+    "freeze_decisions": [
+      "2026 source identifiers 3.35/3.36 match canonical IDs; 2025 historical aliases 3.48/3.49 preserved in freeze changelog.",
+      "Trace 4.1 field 4.5 is N(1); raw 0 means not entered and values 1/2 are the valid domain.",
+      "Trace 4.1 field 4.8 is a flat three-character ULSS code; no Region->ULSS hierarchy is enforced.",
+      "Trace 4.2 field 4.29 may exist without 4.30; 4.30 requires 4.29 and references an existing 4.22.",
+      "No unconfirmed CF checksum semantics, 1.6 Veneto-residency presence semantics, COVID inference, or 4.28 predecessor-act relation is invented in canonical v1.",
+      "2026: 1.11 accepts special unknown-citizenship value 998 without modifying the foreign country reference dataset.",
+      "2026: 1.15 accepts 999999 for no fixed abode regardless of residence classification; exempted from Italian/foreign lookup conditional rules.",
+      "2026: 2.11, 2.14-2.22 and 2.30 normative note corrections do not change executable lookup or conditional-presence logic.",
+      "2026: 3.21 uses physical N(2), zero-padded at right alignment; domains 00/10/15/25/99 preserved.",
+      "2026: 3.27-3.32 source obligation NBB, but admission must have 00 (0 for 3.32) and discharge requires valid value; executable rules preserved.",
+      "2026: 3.34 source obligation NBB, enforced at admission and discharge, with 999 only in death discharge; age rule preserved. Normative NBB vs effective mandatory rule flagged for future clarification."
+    ]
+  },
+  "source_trace_metadata": {
+    "canonical_schema_version": "1.0.0",
+    "schema_status": "FROZEN",
+    "flow_id": "SIOC",
+    "regulatory_version": "2025-12-16",
+    "trace_id": "4.2",
+    "trace_name": "Tracciato regionale Atti LR 22/2002",
+    "record_length": 67,
+    "value_model": {
+      "physical_positions": "one_based",
+      "raw_value": "exact fixed-width bytes",
+      "logical_value": "raw value after schema-declared padding removal",
+      "semantic_comparisons": "logical_value unless assertion explicitly targets raw_value"
+    },
+    "freeze_notes": [
+      "Field 4.29 may be populated while 4.30 is blank (e.g. cessation/expiry without revocation). Field 4.30 populated requires 4.29 populated."
+    ]
+  },
+  "fields": [
+    {
+      "id": "4.20",
+      "name": "Struttura erogatrice. Codice regionale dell'UDO",
+      "physical": {
+        "start": 1,
+        "length": 6,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "4.20",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Indica il codice regionale provvisorio della struttura erogatrice, in correlazione con il campo 4.1."
+      }
+    },
+    {
+      "id": "4.21",
+      "name": "Struttura erogatrice. Codice regionale MRA",
+      "physical": {
+        "start": 7,
+        "length": 15,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "4.21",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Codifica della struttura secondo il progetto MRA (in corso di definizione)"
+      }
+    },
+    {
+      "id": "4.22",
+      "name": "ID atto",
+      "physical": {
+        "start": 22,
+        "length": 10,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "4.22",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Numero univoco del record del tracciato 4.2"
+      }
+    },
+    {
+      "id": "4.23",
+      "name": "Oggetto dell'atto",
+      "physical": {
+        "start": 32,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "4.23",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori sono:\n1. Autorizzazione all'esercizio\n2. Accreditamento"
+      }
+    },
+    {
+      "id": "4.24",
+      "name": "Tipologia dell'Atto",
+      "physical": {
+        "start": 33,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "4.24",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori sono:\n1. Decreto dirigenziale\n2. Deliberazione della Giunta regionale"
+      }
+    },
+    {
+      "id": "4.25",
+      "name": "Numero dell'atto",
+      "physical": {
+        "start": 34,
+        "length": 4,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "4.25",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Numero intero dell'atto (DGR o DDR)"
+      }
+    },
+    {
+      "id": "4.26",
+      "name": "Data dell'atto",
+      "physical": {
+        "start": 38,
+        "length": 8,
+        "type": "date",
+        "source_type": "D",
+        "alignment": {
+          "kind": "exact"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "4.26",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Data di approvazione/adozione dell'atto"
+      }
+    },
+    {
+      "id": "4.27",
+      "name": "Numero di posti",
+      "physical": {
+        "start": 46,
+        "length": 3,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "4.27",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Numero di posti oggetti di autorizzazione/accreditamento."
+      }
+    },
+    {
+      "id": "4.28",
+      "name": "Caratteristiche dell'atto",
+      "physical": {
+        "start": 49,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "4.28",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Il valore viene usato per rilevare se l'atto:\n1. E' emesso per la prima volta\n2. Modifica atto precedente integrando numero posti (in questo caso indicare nel campo XX solo il numero di posti aggiunti)\n3. Revoca atto precedente definendo un nuovo totale dei posti\n4. Rinnova atto precedente senza modificare contenuto\n5. Modifica atto precedente senza variazioni del numero di posti (es. per variazioni EG, per variazioni di sede)"
+      }
+    },
+    {
+      "id": "4.29",
+      "name": "Data fine validità atto",
+      "physical": {
+        "start": 50,
+        "length": 8,
+        "type": "date",
+        "source_type": "D",
+        "alignment": {
+          "kind": "exact"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "4.29",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Data di cessazione della validità dell'atto"
+      }
+    },
+    {
+      "id": "4.30",
+      "name": "ID atto revocante",
+      "physical": {
+        "start": 58,
+        "length": 10,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "4.30",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "ID dell'atto di revoca del presente"
+      }
+    }
+  ]
+}

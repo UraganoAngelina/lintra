@@ -1,0 +1,499 @@
+{
+  "document_status": "DONE_UNVERIFIED",
+  "purpose": "T-P0-02 documentary transcription; human spot-check pending",
+  "source_boundary": "Received derived FROZEN JSON; official XLSX absent",
+  "provenance": [
+    {
+      "role": "received_trace",
+      "kit_path": "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/trace_1.json",
+      "sha256": "9d10512e716a27387fac12156b94fd2ea5c203de2bb37a1e28e2d0b82cdbb655"
+    },
+    {
+      "role": "received_manifest",
+      "kit_path": "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/manifest.json",
+      "sha256": "9900ab3c0bf9f27abd4bcd6d8289dd0b6ee98a05833605f668a7fb9eb418a0fd"
+    },
+    {
+      "role": "received_flow",
+      "kit_path": "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/flow_schema.json",
+      "sha256": "3567bafd3cb9b762becdd46a356454b89df094c7b88c5b1538c97a1bbaf26c45"
+    },
+    {
+      "role": "received_freeze_report",
+      "kit_path": "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/FREEZE_REPORT.md",
+      "sha256": "613887ae24d3aef7d1426cd30df8d173da5671494442fd9ddf1a9b30e9a0da67"
+    }
+  ],
+  "source_manifest_metadata": {
+    "canonical_schema_version": "1.0.0",
+    "schema_status": "FROZEN",
+    "flow_id": "SIOC",
+    "regulatory_version": "2026-04-20",
+    "source": {
+      "title": "SIOC_tracciato_regionale_20260420-definitivo_v05.xlsx",
+      "last_update": "2026-04-20",
+      "authority": "Regione del Veneto"
+    },
+    "encoding": {
+      "mode": "runtime_required",
+      "position_unit": "byte",
+      "requirement": "The validator must receive an explicit encoding profile compatible with fixed-width byte slicing. The official XLSX does not declare a file character encoding.",
+      "line_endings": [
+        "LF",
+        "CRLF"
+      ]
+    },
+    "general_physical_rules": {
+      "alphanumeric": {
+        "alignment": "left",
+        "padding": "space",
+        "default_missing": "spaces"
+      },
+      "numeric": {
+        "alignment": "right",
+        "padding": "zero",
+        "missing": "field-specific; never inferred globally when zero is a valid semantic value"
+      },
+      "date": {
+        "format": "DDMMYYYY where declared",
+        "default_missing_for_optional_dates": "spaces"
+      }
+    },
+    "traces": [
+      {
+        "trace_id": "1",
+        "file": "trace_1.json",
+        "record_length": 206,
+        "field_count": 18
+      },
+      {
+        "trace_id": "2",
+        "file": "trace_2.json",
+        "record_length": 271,
+        "field_count": 50
+      },
+      {
+        "trace_id": "3",
+        "file": "trace_3.json",
+        "record_length": 135,
+        "field_count": 36
+      },
+      {
+        "trace_id": "4.1",
+        "file": "trace_4_1.json",
+        "record_length": 394,
+        "field_count": 20
+      },
+      {
+        "trace_id": "4.2",
+        "file": "trace_4_2.json",
+        "record_length": 67,
+        "field_count": 11
+      }
+    ],
+    "reference_data_dependencies": [
+      "foreign-country-codes",
+      "health-authority-codes",
+      "hsp11-structure-codes",
+      "icd9-cm-diagnosis-codes",
+      "icd9-cm-procedure-codes",
+      "icpc-codes",
+      "istat-municipality-codes",
+      "italian-region-codes",
+      "regional-entity-manager-codes-dgr-2961-2012",
+      "regional-udo-codes",
+      "ria11-structure-codes",
+      "sts11-structure-codes"
+    ],
+    "freeze_decisions": [
+      "2026 source identifiers 3.35/3.36 match canonical IDs; 2025 historical aliases 3.48/3.49 preserved in freeze changelog.",
+      "Trace 4.1 field 4.5 is N(1); raw 0 means not entered and values 1/2 are the valid domain.",
+      "Trace 4.1 field 4.8 is a flat three-character ULSS code; no Region->ULSS hierarchy is enforced.",
+      "Trace 4.2 field 4.29 may exist without 4.30; 4.30 requires 4.29 and references an existing 4.22.",
+      "No unconfirmed CF checksum semantics, 1.6 Veneto-residency presence semantics, COVID inference, or 4.28 predecessor-act relation is invented in canonical v1.",
+      "2026: 1.11 accepts special unknown-citizenship value 998 without modifying the foreign country reference dataset.",
+      "2026: 1.15 accepts 999999 for no fixed abode regardless of residence classification; exempted from Italian/foreign lookup conditional rules.",
+      "2026: 2.11, 2.14-2.22 and 2.30 normative note corrections do not change executable lookup or conditional-presence logic.",
+      "2026: 3.21 uses physical N(2), zero-padded at right alignment; domains 00/10/15/25/99 preserved.",
+      "2026: 3.27-3.32 source obligation NBB, but admission must have 00 (0 for 3.32) and discharge requires valid value; executable rules preserved.",
+      "2026: 3.34 source obligation NBB, enforced at admission and discharge, with 999 only in death discharge; age rule preserved. Normative NBB vs effective mandatory rule flagged for future clarification."
+    ]
+  },
+  "source_trace_metadata": {
+    "canonical_schema_version": "1.0.0",
+    "schema_status": "FROZEN",
+    "flow_id": "SIOC",
+    "regulatory_version": "2025-12-16",
+    "trace_id": "1",
+    "trace_name": "Dati anagrafici assistito",
+    "record_length": 206,
+    "value_model": {
+      "physical_positions": "one_based",
+      "raw_value": "exact fixed-width bytes",
+      "logical_value": "raw value after schema-declared padding removal",
+      "semantic_comparisons": "logical_value unless assertion explicitly targets raw_value"
+    },
+    "freeze_notes": []
+  },
+  "fields": [
+    {
+      "id": "1.1",
+      "name": "Numero della scheda di ricovero (ex Identificativo univoco assistito per episodio di accoglimento)",
+      "physical": {
+        "start": 1,
+        "length": 20,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.1",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016)."
+      }
+    },
+    {
+      "id": "1.2",
+      "name": "Codice fiscale o altro codice identificativo utente",
+      "physical": {
+        "start": 21,
+        "length": 20,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.2",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Il campo va valorizzato con il Codice Fiscale per tutte le schede riferite a cittadini italiani. \nPer i cittadini stranieri, qualora non in possesso del Codice Fiscale, vanno indicati in alternativa tra loro il codice TEAM (Tessera europea assicurazione malattia) , o il codice ENI  (Europei non iscritti), o il codice STP (Straniero temporaneamente presente).\nPer le prestazioni coperte da riservatezza ai sensi di legge il campo deve essere compilato con il carattere \"A\" ripetuto 20 volte."
+      }
+    },
+    {
+      "id": "1.3",
+      "name": "Tipo identificativo utente",
+      "physical": {
+        "start": 41,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.3",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica il tipo dell’identificativo del beneficiario della prestazione. I  valori da indicare sono:\n01. Codice fiscale\n02. Codice ENI \n03. Codice STP \n04. Codice ID utente della Tessera Europea d’Assicurazione Malattia (TEAM) \n05. Altro identificativo \n09. Identificativo non disponibile \n97. codice STP non presente in anagrafica\n98. Assistito richiedente l’anonimato "
+      }
+    },
+    {
+      "id": "1.4",
+      "name": "Codice istituzione pagatrice TEAM (tessera europea)",
+      "physical": {
+        "start": 43,
+        "length": 28,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.4",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Indica il codice di identificazione assegnato a livello nazionale alla istituzione di assicurazione o di residenza competente ai sensi degli allegati 2 e 3 al regolamento 574/72. Come previsto nella Tessera Europea di Assicurazione Malattia  (Il numero di istituzione pagatrice  è riportato sotto quello di identificazione personale.)\nDa compilare se \"Tipo identificativo utente\" = 4\nNon compilare nei casi coperti da riservatezza ai sensi di legge"
+      }
+    },
+    {
+      "id": "1.5",
+      "name": "MPI",
+      "physical": {
+        "start": 71,
+        "length": 28,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.5",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Master Patient Index (Id regionale della posizione anagrafica). \nChiave di identificazione univoca con cui la posizione anagrafica è stata censita in ambiente regionale (Anagrafe Unica). Disponibile per i residenti e assititi in Regione Veneto, come servizio erogato dalla anagrafe unica regionale.\nNon compilare nei casi coperti da riservatezza ai sensi di legge"
+      }
+    },
+    {
+      "id": "1.6",
+      "name": "Codice sanitario",
+      "physical": {
+        "start": 99,
+        "length": 9,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.6",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Il campo va valorizzato, in combinazione con il codice fiscale, per i soli residenti in Veneto. \nNon compilare nei casi coperti da riservatezza ai sensi di legge"
+      }
+    },
+    {
+      "id": "1.7",
+      "name": "Cognome",
+      "physical": {
+        "start": 108,
+        "length": 30,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.7",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Campo da valorizzare, in lettere maiuscole.\nNei casi coperti da riservatezza ai sensi di legge dovrà essere posta la dicitura ANONIMO."
+      }
+    },
+    {
+      "id": "1.8",
+      "name": "Nome",
+      "physical": {
+        "start": 138,
+        "length": 30,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.8",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Campo da valorizzare, in lettere maiuscole.\nNei casi coperti da riservatezza ai sensi di legge dovrà essere posta la dicitura ANONIMO."
+      }
+    },
+    {
+      "id": "1.9",
+      "name": "Data di nascita",
+      "physical": {
+        "start": 168,
+        "length": 8,
+        "type": "date",
+        "source_type": "Data",
+        "alignment": {
+          "kind": "exact"
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.9",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Utilizzare il formato GGMMAAAA.\nNon valorizzare nei casi in cui è previsto il mantenimento dell’anonimato."
+      }
+    },
+    {
+      "id": "1.10",
+      "name": "Genere",
+      "physical": {
+        "start": 176,
+        "length": 1,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.10",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Utilizzare i codici seguenti: 1 – maschio, 2 – femmina, 3 - non specificato"
+      }
+    },
+    {
+      "id": "1.11",
+      "name": "Cittadinanza",
+      "physical": {
+        "start": 177,
+        "length": 3,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.11",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Identifica la cittadinanza dell’assistito al momento dell'ammissione. Per i cittadini italiani codificare con 100. Per gli altri cittadini stranieri utilizzare il codice stati esteri definito dal Ministero dell’Interno per l’anagrafe della popolazione. Per gli apolidi codificare 999. In caso di cittadinanza sconosciuta indicare 998."
+      }
+    },
+    {
+      "id": "1.12",
+      "name": "Titolo di studio ",
+      "physical": {
+        "start": 180,
+        "length": 1,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.12",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Titolo di studio conseguito dall’utente al momento dell’ammissione.\nValori ammessi:\n1 . Nessun titolo (meno di 5 anni di studio) \n2. Licenza elementare (5 anni di studio) \n3. Diploma di scuola media inferiore (8 anni di studio) \n4. Diploma di scuola media superiore (Qualifica professionale / Maturità) (13 anni di studio) \n5. Diploma universitario o laurea breve \n6. Laurea o superiore (17 o più anni di studio)\n7. scuola professionale\n9. sconosciuto"
+      }
+    },
+    {
+      "id": "1.13",
+      "name": "Regione di Residenza",
+      "physical": {
+        "start": 181,
+        "length": 3,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.13",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica la Regione di residenza dell'assistito .\nPer la codifica utilizzare il Codice Regioni di 3 caratteri definito con DM 17 settembre 1986, pubblicato nella Gazzetta Ufficiale n. 240 del 15 ottobre 1986, e successive modifiche. Se Stato estero valorizzare con 999."
+      }
+    },
+    {
+      "id": "1.14",
+      "name": "Azienda ULSS di Residenza",
+      "physical": {
+        "start": 184,
+        "length": 3,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.14",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica l'Azienda ULSS di residenza dell'assistito al momento dell'ingresso in struttura.\nSe stato estero valorizzare con 999."
+      }
+    },
+    {
+      "id": "1.15",
+      "name": "Comune/Stato estero  di  Residenza",
+      "physical": {
+        "start": 187,
+        "length": 6,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.15",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica il comune italiano, oppure eventualmente lo stato estero, presso il quale il paziente risulta legalmente residente alla ammissione. Codici ISTAT (primi 3 caratteri per la provincia e i rimanenti 3 caratteri per il progressivo comune). Si raccomanda di non omettere la rilevazione dello “0” costituente il primo carattere del codice provincia. Per i residenti all’estero codificare 999 i primi 3 caratteri ed il codice stato estero nei successivi 3, utilizzando il codice stati esteri definito dal Ministero dell’Interno per l’anagrafe della popolazione. Se senza fissa dimora indicare 999999 sul Comune di residenza."
+      }
+    },
+    {
+      "id": "1.16",
+      "name": "Stato civile",
+      "physical": {
+        "start": 193,
+        "length": 2,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.16",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Stato civile del paziente al momento del ricovero. \nValori ammessi\n01. Celibe/nubile\n02. Coniugato/a\n03. Separato/a\n04. Divorziato/a\n05. Vedovo/a\n06. Unito/a civilmente\n07. Già in unione civile (in decesso del partner)\n08. Già in unione civile (per scioglimento unione)\n09. Non rilevato (non è stata posta la domanda al paziente)\n99. Dato mancante (è stata posta la domanda al paziente e non ha risposto)"
+      }
+    },
+    {
+      "id": "1.17",
+      "name": "Codice Azienda",
+      "physical": {
+        "start": 195,
+        "length": 6,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.17",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "CAMPO CHIAVE\nIl campo deve essere valorizzato con i codici a SEI caratteri della azienda sanitaria in cui è ubicata la struttura OdC (050501,…)."
+      }
+    },
+    {
+      "id": "1.18",
+      "name": "Codice Struttura",
+      "physical": {
+        "start": 201,
+        "length": 6,
+        "type": "alphanumeric",
+        "source_type": "AN",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "regulatory_metadata": {
+        "source_id": "1.18",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "CAMPO CHIAVE\nI codici da utilizzare sono quelli indicati nei modelli ministeriali STS11"
+      }
+    }
+  ]
+}
