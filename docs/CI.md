@@ -49,3 +49,12 @@ Lo stato dell'esecuzione reale, compresa l'eventuale assenza di autenticazione,
 utilizzabili; i commit/tracking remoti rilevati nell'app non attestano una run
 CI o la condivisione dell'autenticazione con il processo Git dell'agente.
 Nessun esito CI viene dedotto dalla sola configurazione.
+
+## Evidenza aggiornata — 2026-10-19
+
+[Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518) sul commit
+34e67da, avviata manualmente sul branch work/p1-foundations: Linux GNU e
+Windows MSVC entrambi completed/success. gh usa il keyring dell’account;
+l’accesso funziona fuori dal sandbox. Le precedenti indicazioni di mancata
+autenticazione descrivono la sessione storica. Nuove modifiche Rust richiedono
+una nuova run: questo esito non viene esteso a commit futuri.

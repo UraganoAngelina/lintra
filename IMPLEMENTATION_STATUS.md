@@ -17,7 +17,8 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   Nessun compiler o validatore Rust normativo implementato.
   **T-P0-09 DONE / G0 APPROVED / M0 REACHED**: l’autore ha approvato
   la checklist del commit 407f89e con i rinvii indicati.
-  **T-P1-03 DONE_UNVERIFIED**: verifica accesso GitHub e CI in corso.
+  **T-P1-03 DONE / QG-2 PASS**: [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518)
+  sul commit 34e67da; autenticazione GitHub funzionante fuori sandbox.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -76,9 +77,9 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | Gate | Stato | Evidenza / limite |
 |---|---|---|
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
-| G1 — repository CI | IN_PROGRESS | Toolchain pronta e workflow revisionato; autenticazione e run reali mancanti |
+| G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
-| QG-2 — CI Linux/Windows | BLOCKED | Accesso Git remoto non autenticato; nessuna run reale disponibile |
+| QG-2 — CI Linux/Windows | PASS per 34e67da | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), entrambi i runner verdi; nuove modifiche Rust richiedono nuova CI |
 | QG-3 — architettura | PASS per lo scaffold | Moduli privati, CLI solo nel binario, nessun codice normativo o dipendenza |
 | QG-8 — documenti | PASS per lo scaffold | Copie identiche, nessun contratto modificato |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
@@ -114,7 +115,7 @@ come validazione superata. Tutti i dettagli sono nel report T-P0-08.
 
 G0 è chiuso con i rinvii indicati e M0 REACHED. Il solo prerequisito G0
 è soddisfatto; restano applicabili tutte le altre dipendenze e i blocchi
-puntuali della tabella. La CI reale mancante mantiene bloccata T-P2-01.
+puntuali della tabella. La CI reale del commit 34e67da ha ora soddisfatto il prerequisito di T-P2-01.
 ARCH/DET/Piano sorgenti non sono modificati; questa checklist registra
 contratti approvati e rinvii secondo la procedura di T-P0-09.
 
@@ -144,8 +145,8 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P0-09 | DONE | 2026-10-19 | Checklist commit 407f89e approvata dall’autore: «Approvo G0 con i rinvii indicati»; G0 chiuso, M0 raggiunta |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
-| T-P1-03 | DONE_UNVERIFIED | 2026-10-16 | Commit 4f71663; workflow e 2 test, controlli locali/review approvati; CI reale non eseguita |
-| T-P2-01 | BLOCKED | 2026-10-16 | Prerequisito T-P1-03/QG-2 reale non soddisfatto; nessun codice dominio scritto |
+| T-P1-03 | DONE | 2026-10-19 | CI su commit 34e67da: Linux GNU e Windows MSVC verdi, [run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518) |
+| T-P2-01 | IN_PROGRESS | 2026-10-19 | Prerequisito T-P1-03 verificato: CI reale verde; implementare newtype e ByteRange secondo DET §6–7 |
 | T-P2-02..03 | NOT_STARTED | — | Attendono T-P2-01 |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
@@ -242,11 +243,9 @@ I doctest verificano importabilità e divieto di importare `engine` e
   UVMD ricevuto e sentinel Barthel 99 non sono nuove decisioni aperte.
 - Controllo completo kit FAIL per gli export extra, nessun impatto bloccante
   su T-P1-01: documenti censiti integri e dati esclusi dal nuovo repository.
-- Remote GitHub configurato dall'autore, accesso autenticato non disponibile;
-  integrazione GitHub risulta non installata. Workflow pronto, nessun push/run
-  dell'agente. Rilevati commit intermedi esterni al flusso agenti 1c1e94f e
-  69dc995, conservati; branch ora traccia origin/work/p1-foundations. Questo
-  stato locale non attesta accesso autenticato o esecuzione CI del processo Git.
+- Accesso GitHub ora verificato tramite gh/keyring fuori sandbox. Push
+  non forzato 69dc995→34e67da e CI manuale sul branch preesistente;
+  precedenti limiti di autenticazione sono storici, non più bloccanti.
 - `DEC-SIOC-HIST-01`: fino ad approvazione solo audit cross-run;
   non dedurre nuovi errori normativi dalla ripetizione di una PK.
 - Backend storage, gestione chiavi/retention/protezione prima dell'uso reale:
@@ -354,6 +353,18 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P1-03 / CI reale completata
+
+- **Stato:** DONE; G1/QG-2 PASS sul commit 34e67da.
+- **Evidenza:** [run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), workflow_dispatch sul branch
+  work/p1-foundations. Linux job 117994423636 e Windows job 117994423276:
+  entrambi completed/success; fmt, clippy, test e build release eseguiti.
+- **Operazioni:** gh auth status fuori sandbox positivo; repository privata,
+  push non forzato dei soli commit, nessuna modifica remota estranea sovrascritta.
+- **File:** stato, docs/CI.md e report T-P1-03 aggiornati con evidenza corrente.
+- **Next:** T-P2-01 autorizzata e prerequisito verificato. Nessuna deroga a CI;
+  le modifiche di dominio richiederanno una nuova run su entrambi i runner.
 
 HANDOFF — 2026-10-19 — T-P0-09 / approvazione ricevuta
 
