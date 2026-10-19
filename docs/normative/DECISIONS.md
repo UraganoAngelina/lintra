@@ -173,3 +173,16 @@ completa SIOC o la promozione CAD a FROZEN. Restano tutti i prerequisiti
 tecnici, la CI Linux/Windows reale e i gate runtime/persistenti.
 
 [Checklist approvata](../../IMPLEMENTATION_STATUS.md#g0--checklist-t-p0-09-approvata).
+
+## CNF-DOMAIN-01 — PROPOSTA A APPROVATA, 2026-10-19
+
+L’autore approva integralmente la proposta A del
+[dossier T-P2-03](../verification/T-P2-03-preflight.md), superando il precedente
+blocco: SchemaKey neutra nel dominio, ScopeSummary Trace/Flow con soli ID e
+ordine preservato, parte autonoma di T-P2-03 consegnata prima del residuo.
+ValidationRunError resta nel confine applicativo con payload tecnici reali,
+senza placeholder; le task con prerequisiti atomici soddisfatti possono
+proseguire a partire da T-P3-01 dopo la verifica della parte autonoma.
+T-P2-03 e M1 non sono complete finché il residuo non è verificato.
+Nessuna modifica retroattiva di ARCH/DET/Piano o schemi FROZEN; nessuna
+semantica normativa aggiunta e nessuna implementazione storage anticipata.

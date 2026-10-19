@@ -20,8 +20,10 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P1-03 DONE / QG-2 PASS**: [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518)
   sul commit 34e67da; autenticazione GitHub funzionante fuori sandbox.
   **T-P2-01 e T-P2-02 DONE**, entrambe con CI Linux/Windows verde.
-  **T-P2-03 BLOCKED**: l’autore mantiene il blocco e chiede revisione dei
-  contratti; CNF-DOMAIN-01/proposta A non approvata, nessun riordino applicato.
+  **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
+  dall’autore; parte autonoma implementata e verificata in locale, CI richiesta.
+  Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
+  dopo CI della parte autonoma è autorizzata T-P3-01.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -127,7 +129,7 @@ contratti approvati e rinvii secondo la procedura di T-P0-09.
 | Milestone | Stato | Evidenza |
 |---|---|---|
 | M0 | REACHED | G0 approvato dall’autore con rinvii espliciti, 2026-10-19 |
-| M1 | IN_PROGRESS | P1 e T-P2-01/02 completate con CI reale; T-P2-03 bloccata sui contratti |
+| M1 | IN_PROGRESS | P1 e T-P2-01/02 complete; T-P2-03 parte autonoma in verifica, residuo applicativo aperto secondo proposta A approvata |
 | M2–M9 | NOT_REACHED | Nessuna implementazione anticipata |
 
 `DONE` riguarda i criteri della singola task. Non dichiara completati P1,
@@ -151,7 +153,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P1-03 | DONE | 2026-10-19 | CI su commit 34e67da: Linux GNU e Windows MSVC verdi, [run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518) |
 | T-P2-01 | DONE | 2026-10-19 | 7 newtype + ByteRange; 5 unit/2 integration/5 doctest; CI Linux/Windows verde su 6ac0fb8, run 39233324913 |
 | T-P2-02 | DONE | 2026-10-19 | Mapping unico, 9 unit/2 integration/5 doctest e release; [CI 39234593522](https://github.com/UraganoAngelina/lintra/actions/runs/39234593522) verde Linux/Windows su 30af262 |
-| T-P2-03 | BLOCKED | 2026-10-19 | CNF-DOMAIN-01: ScopeSummary indefinito, SchemaKey assegnata a P3 e payload errore applicativi nel dominio; autore mantiene il blocco, proposta A non approvata |
+| T-P2-03 | IN_PROGRESS | 2026-10-19 | Proposta A approvata; identità/chiave/scope/summary/outcome autonomi verificati in locale, CI richiesta; errore tecnico applicativo rinviato esplicitamente |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -232,12 +234,11 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Problemi noti e decisioni aperte
 
-- **CNF-DOMAIN-01 / T-P2-03:** tipo ScopeSummary non definito e dipendenze
-  anticipate/inverse per SchemaKey ed errori di esecuzione. Proposta concreta
-  in [preflight T-P2-03](docs/verification/T-P2-03-preflight.md): tipi neutri nel
-  dominio, errore tecnico applicativo, consegna suddivisa con riordino esplicito.
-  L’autore risponde «Mantieni il blocco; rivediamo i contratti»: proposta A
-  non approvata. Nessuna firma nuova, anticipazione o riordino applicato.
+- **CNF-DOMAIN-01 risolto con proposta A approvata:** SchemaKey nel dominio,
+  ScopeSummary Trace/Flow, parte autonoma prima dell’errore tecnico applicativo.
+  [Dossier](docs/verification/T-P2-03-preflight.md). Il precedente rifiuto è
+  superato dall’approvazione esplicita integrale. Riordino atomico autorizzato
+  dopo verifica della parte autonoma; T-P2-03/M1 restano aperte sul residuo.
 
 - **SIOC completo rinviato:** dodici dataset con versioni/hash/metadata ICD9
   assenti; controlli semantici esclusi dal profilo minimale per decisione
@@ -364,6 +365,20 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P2-03 / proposta A approvata, parte autonoma
+
+- **Stato:** IN_PROGRESS; parte autonoma locale verificata, CI da eseguire.
+- **Decisione umana:** «approvo la proposta A del dossier», riportata per
+  intero dall’autore; supera il precedente blocco CNF-DOMAIN-01.
+- **File:** domain/{identity,summary}.rs, Ord DatasetId, export lib/domain,
+  registro decisioni, dossier/report e stato. Nessuna dipendenza Cargo nuova.
+- **Evidenze:** fmt/check/clippy/test/release exit 0; 12 unit + 2 integration
+  + 5 doctest. Tipi neutri senza dipendenze applicative nel dominio.
+- **Residuo:** ValidationRunError applicativo con payload tecnici veri,
+  nessun placeholder; T-P2-03/M1 non complete fino alla sua verifica.
+- **Next:** CI Linux/Windows della parte autonoma; poi T-P3-01 secondo
+  riordino limitato autorizzato e soli prerequisiti atomici soddisfatti.
 
 HANDOFF — 2026-10-19 — T-P2-02 completata / T-P2-03 bloccata
 

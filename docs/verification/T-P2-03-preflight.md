@@ -1,8 +1,9 @@
 # T-P2-03 — Preflight e CNF-DOMAIN-01
 
-2026-10-19. **BLOCKED prima dell’implementazione dei contratti interessati.**
-Prerequisito T-P2-01 verificato nella run 39233324913. Nessuna modifica Rust
-T-P2-03 eseguita; non è un blocco normativo SIOC o una riapertura di G0.
+2026-10-19. **Proposta A successivamente APPROVATA: parte autonoma autorizzata.**
+Prerequisito T-P2-01 verificato nella run 39233324913. Il preflight originario
+non aveva modificato Rust; l’implementazione successiva è nel report
+[T-P2-03](T-P2-03.md). Nessuna riapertura di G0.
 
 ## Evidenze del conflitto
 
@@ -23,14 +24,23 @@ Non si risolve aggiungendo String/Option o tipi vuoti ai payload, eliminando
 campi dal summary, inventando dati normativi o simulando l’implementazione
 delle task successive. Nessun documento sorgente modificato autonomamente.
 
-## Risposta dell’autore — 2026-10-19
+## Risposta precedente dell’autore — 2026-10-19 (superata)
 
 **«Mantieni il blocco; rivediamo i contratti».** La proposta A seguente è
 NON APPROVATA. Non implementare nuovi contratti né applicare il riordino.
 T-P2-03 resta BLOCKED; M1 non raggiunta. Documenti ARCH/DET/Piano invariati.
 La proposta rimane solo materiale per la revisione, senza forza contrattuale.
 
-## Proposta A non approvata: separazione e consegna per dipendenze reali
+## Approvazione successiva dell’autore — 2026-10-19
+
+L’autore ha scritto «approvo la proposta A del dossier», riportandola
+integralmente, e «procediamo». Questa risposta supera il precedente blocco:
+proprietà dei tipi, ScopeSummary e riordino limitato sono autorizzati.
+T-P2-03/M1 restano aperte fino alla verifica del residuo applicativo.
+Le fonti originarie restano inalterate; questa decisione integra la loro
+applicazione nel progetto. Nessuna baseline normativa modificata.
+
+## Proposta A approvata: separazione e consegna per dipendenze reali
 
 - Spostare la proprietà del solo valore neutro `SchemaKey { flow_id: FlowId,
   version: SchemaVersion }` nel dominio; il modulo schema lo riutilizzerà.

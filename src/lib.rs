@@ -51,3 +51,8 @@ pub use domain::{
 };
 
 pub use domain::{InvalidValidationCode, ValidationCode};
+
+pub use domain::{
+    RecordIdentity, RunMetadata, RunStatus, SchemaKey, ScopeSummary, ValidationRunOutcome,
+    ValidationSummary,
+};

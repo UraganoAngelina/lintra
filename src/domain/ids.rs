@@ -12,7 +12,7 @@ pub struct FieldId(pub String);
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct SchemaVersion(pub String);
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct DatasetId(pub String);
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
