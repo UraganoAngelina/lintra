@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 locale verificata, CI pendente; prossima T-P3-05.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; prossima T-P3-05.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -157,7 +157,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-01 | DONE | 2026-10-19 | Raw DTO/AST formato 1, round-trip e negativi; 17 unit/2 integration/5 doctest; [CI 39236782609](https://github.com/UraganoAngelina/lintra/actions/runs/39236782609) verde Linux/Windows su 225419d |
 | T-P3-02 | DONE | 2026-10-19 | Compiled immutabile, piani tipizzati e indice derivato; 25 unit/2 integration/10 doctest; [CI 39250930467](https://github.com/UraganoAngelina/lintra/actions/runs/39250930467) verde Linux/Windows su f04bb60 |
 | T-P3-03 | DONE | 2026-10-19 | Repository filesystem/memoria e errori tecnici tipizzati; 25 unit/11 integration/10 doctest; [CI 39253152098](https://github.com/UraganoAngelina/lintra/actions/runs/39253152098) verde Linux/Windows su a39924d |
-| T-P3-04 | DONE_UNVERIFIED | 2026-10-19 | Linter fisico/tipi con 13 codici testati, aggregazione deterministica; 26 unit/25 integration/10 doctest; P0 senza issue; CI pendente |
+| T-P3-04 | DONE | 2026-10-19 | Linter fisico/tipi con 13 codici testati; 26 unit/25 integration/10 doctest; P0 senza issue; [CI 39257768950](https://github.com/UraganoAngelina/lintra/actions/runs/39257768950) verde Linux/Windows su a1ddabb |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -167,7 +167,7 @@ T-P3-04: fmt/check/clippy/test/release e diff-check tutti exit 0;
 26 unit + 25 integration + 10 doctest. Generazione raw --check PASS.
 Ricontrollo Rust profilo P0 SIOC (5 trace/135 campi) e tre flow sintetici:
 nessuna issue strutturale. Report [T-P3-04](docs/verification/T-P3-04.md).
-CI Linux/Windows pendente; nessuna compilabilità normativa presunta.
+[CI 39257768950](https://github.com/UraganoAngelina/lintra/actions/runs/39257768950) PASS su a1ddabb, Linux GNU/Windows MSVC; nessuna compilabilità normativa presunta.
 
 Evidenze documentali precedenti P0 (storiche):
 
@@ -386,6 +386,31 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-04 completata / CI reale verde
+
+- **Stato:** DONE; QG-2 PASS sul commit codice a1ddabb.
+- **Evidenze:** [run 39257768950](https://github.com/UraganoAngelina/lintra/actions/runs/39257768950),
+  Linux GNU job 118077279746 e Windows MSVC job 118077279423 entrambi
+  completed/success: fmt/clippy/test/build release nativi verdi.
+- **Locale:** fmt/check/clippy/test/release/diff-check e raw --check PASS;
+  26 unit + 25 integration + 10 doctest; 13 codici coperti da test.
+- **P0:** ricontrollo Rust strutturale completato senza issue, cinque trace
+  e 135 campi SIOC, proiezioni separate confrontate e lintate. Nessuna baseline modificata.
+- **File:** src/schema/linter.rs e tests/schema_linter.rs creati;
+  src/schema/mod.rs, src/lib.rs aggiornati; report T-P3-04 e stato registrati.
+- **Contratti/decisioni:** severity esplicita e codici non_exhaustive;
+  ordine flow/trace/campo, coordinate one-based. Dettagli nel report.
+- **Problemi/blocchi:** nessuno aperto per la task; prima lettura CI bloccata,
+  risolta con richiesta sostitutiva limitata nel tempo e verifica dello SHA.
+- **Residui/documenti:** compiler e semantica restano alle task pertinenti;
+  T-P2-03/M1 aperte sul residuo applicativo. Fonti ARCH/DET/Piano invariate.
+- **Git:** branch work/p1-foundations, codice a1ddabb su origin;
+  consuntivo finale solo documentale. Working tree con sola modifica storica
+  preesistente estranea alla task, intatta e fuori dai commit; nessun merge.
+- **Next:** T-P3-05 SchemaCompiler nucleo; T-P3-02 e T-P3-04 verificate
+  su Linux/Windows. Nessuna task successiva avviata in questa consegna.
+
 
 HANDOFF — 2026-10-19 — T-P3-04 / locale verificato, CI pendente
 
