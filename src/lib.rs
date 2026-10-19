@@ -111,3 +111,5 @@ pub use schema::linter::{SchemaIssue, SchemaIssueCode, SchemaIssueSeverity, lint
 pub use schema::{SchemaCompilationError, SchemaCompiler};
 
 pub use schema::compatibility::{EngineCapabilities, SchemaFormatVersion};
+
+pub use schema::registry::{SchemaRegistry, SchemaResolutionError};

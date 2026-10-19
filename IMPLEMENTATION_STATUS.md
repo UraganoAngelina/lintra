@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; prossima T-P3-07.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 locale verificata, CI pendente; prossima T-P4-01.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -37,6 +37,13 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   documentalmente; ADR-PERSIST-001 approvata; `PCR-CAD-001` superata.
 
 ## Autorizzazione corrente — 2026-10-19
+
+Mandato successivo: «non aspettare la mia approvazione per cominciare una task,
+cominciala subito se non ci sono problematiche nella task precedente».
+Dopo ogni task verificata, recap breve dei file e avvio della successiva se
+le dipendenze sono soddisfatte. Questo supera lo stop tra task dei prompt
+atomici; restano le decisioni realmente bloccanti e gli altri gate.
+
 
 L'autore ha revocato l'uso delle skill Superpowers. Esecuzione diretta,
 una task alla volta, senza subagenti in questa sessione. Dopo la verifica
@@ -160,10 +167,17 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-04 | DONE | 2026-10-19 | Linter fisico/tipi con 13 codici testati; 26 unit/25 integration/10 doctest; P0 senza issue; [CI 39257768950](https://github.com/UraganoAngelina/lintra/actions/runs/39257768950) verde Linux/Windows su a1ddabb |
 | T-P3-05 | DONE | 2026-10-19 | Proposta A approvata; compiler locale/binding Rust-only e rifiuto costrutti esclusi; 28 unit/36 integration/10 doctest; [CI 39264362959](https://github.com/UraganoAngelina/lintra/actions/runs/39264362959) verde Linux/Windows su b658e05 |
 | T-P3-06 | DONE | 2026-10-19 | Mappa ufficiale approvata 1→0.1.0 sviluppo; range/messaggi e 28 unit/42 integration/10 doctest; [CI 39269026995](https://github.com/UraganoAngelina/lintra/actions/runs/39269026995) verde Linux/Windows su 7522345 |
+| T-P3-07 | DONE_UNVERIFIED | 2026-10-19 | Registry senza cache, binding esplicito e cause tecniche preservate; 28 unit/48 integration/10 doctest; CI pendente |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — 2026-10-19, Linux locale
+
+T-P3-07: fmt/check/clippy/test/release/diff-check PASS;
+28 unit + 48 integration + 10 doctest, sei integration nuovi.
+Report [T-P3-07](docs/verification/T-P3-07.md); CI della task pendente.
+
+Evidenze precedenti T-P3-06:
 
 T-P3-06: fmt/check/clippy/test/release/diff-check e generatore --check PASS;
 28 unit + 42 integration + 10 doctest; sei integration nuovi rispetto a
@@ -315,6 +329,17 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Decisioni della sessione corrente
 
+- **T-P3-07 / CNF-DOMAIN-01 già approvato, DET §5/§62/§147:** il registry
+  del modulo schema restituisce SchemaResolutionError con i payload reali
+  Load/Compilation; application mapperà all’errore di run quando completo.
+  Nessuna dipendenza schema→application, nessun placeholder o violazione
+  normativa nell’errore tecnico. Rifinitura dichiarata nel report.
+- **T-P3-07 / binding già approvato:** encoding esplicito nel costruttore
+  Registry e autorevole per il run, nessun locale/default. resolve resta per
+  sola chiave, ricarica e ricompila sempre. Identità del raw verificata anche
+  per repository custom, nessuna cache o selezione implicita di versione.
+
+
 - **CNF-FORMAT-01 ratificato:** l’autore ha approvato la mappa dopo
   l’inventario completo. Baseline minima sviluppo 0.1.0 per formato 1,
   compiler b658e05; 0 e 2..=u32::MAX non definiti, senza eseguibile dichiarato.
@@ -441,6 +466,24 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-07 / registry locale verificato
+
+- **Stato:** DONE_UNVERIFIED; nessun blocco locale, CI Linux/Windows pendente.
+- **File/fatto:** registry.rs e tests/schema_registry.rs nuovi, mod/lib,
+  AGENTS.md, report e stato. Carica chiave esatta, binding esplicito, compila
+  a ogni resolve e restituisce Arc senza cache; nessuna nuova dipendenza.
+- **Verifiche:** fmt/check/clippy/test/release/diff-check PASS;
+  28 unit + 48 integration + 10 doctest, sei integration nuovi.
+- **Contratti/decisioni:** errore locale con cause Load/Compilation per
+  rispettare proprietà applicativa già approvata di ValidationRunError;
+  future conversioni nel livello applicativo. Encoding del chiamante obbligatorio.
+- **Residui:** T-P2-03/M1 restano aperte; nessuna capability normativa
+  aggiuntiva, validator o storage. Fonti originali e baseline invariate.
+- **Git:** work/p1-foundations; modifica storica estranea preservata.
+- **Next:** completare CI e iniziare T-P4-01 senza attendere conferma,
+  come richiesto dall’autore; prerequisito atomico T-P2-01 verificato.
+
 
 HANDOFF — 2026-10-19 — T-P3-06 completata / CI reale verde
 

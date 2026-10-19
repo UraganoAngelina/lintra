@@ -9,3 +9,5 @@ pub(crate) mod linter;
 pub use compiled::compiler::{SchemaCompilationError, SchemaCompiler};
 
 pub(crate) mod compatibility;
+
+pub(crate) mod registry;

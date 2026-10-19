@@ -11,3 +11,7 @@ Mandato dell'autore aggiornato il 2026-10-19:
   il nuovo mandato sostituisce il precedente flusso di orchestrazione.
 - Registrare stato, evidenze reali e handoff in `IMPLEMENTATION_STATUS.md`.
 - I file di pianificazione e orchestrazione precedenti sono materiale storico.
+- Mandato successivo dell'autore: dopo una task verificata, iniziare subito
+  la successiva se prerequisiti ed esito sono chiari. Questo mandato prevale
+  sullo stop tra task contenuto nei prompt atomici; restano i blocchi reali.
+- Alla fine di ogni task comunicare un breve recap dei file creati/modificati.
