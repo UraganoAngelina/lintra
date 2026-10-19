@@ -1,42 +1,11 @@
-use super::record::RawRecord;
-use std::{
-    error::Error,
-    fmt,
-    io::{self, BufRead},
-};
+use super::{error::InputError, record::RawRecord};
+use std::io::BufRead;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum NewlinePolicy {
     AutoLfOrCrlf,
     LfOnly,
     CrlfOnly,
-}
-
-#[derive(Debug)]
-#[non_exhaustive]
-pub enum InputError {
-    Read(io::Error),
-    LineNumberOverflow,
-    PreviousFailure,
-}
-impl fmt::Display for InputError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Read(_) => f.write_str("cannot read input record"),
-            Self::LineNumberOverflow => f.write_str("input record number exceeds u64::MAX"),
-            Self::PreviousFailure => {
-                f.write_str("record reader cannot resume after a previous failure")
-            }
-        }
-    }
-}
-impl Error for InputError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            Self::Read(source) => Some(source),
-            _ => None,
-        }
-    }
 }
 
 /// Streams records into the caller's reusable buffer; retains no borrowed record.

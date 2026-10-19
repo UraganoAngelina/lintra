@@ -115,6 +115,8 @@ pub use schema::compatibility::{EngineCapabilities, SchemaFormatVersion};
 pub use schema::registry::{SchemaRegistry, SchemaResolutionError};
 
 pub use input::{
-    reader::{InputError, NewlinePolicy, RecordReader},
+    error::{BomKind, InputError},
+    reader::{NewlinePolicy, RecordReader},
     record::RawRecord,
+    source::{BomCheckedReader, BomPolicy, preflight_bom},
 };
