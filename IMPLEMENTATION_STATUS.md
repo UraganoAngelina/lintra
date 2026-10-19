@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 locale verificata, CI pendente; prossima T-P4-02.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; prossima T-P4-02.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -168,7 +168,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-05 | DONE | 2026-10-19 | Proposta A approvata; compiler locale/binding Rust-only e rifiuto costrutti esclusi; 28 unit/36 integration/10 doctest; [CI 39264362959](https://github.com/UraganoAngelina/lintra/actions/runs/39264362959) verde Linux/Windows su b658e05 |
 | T-P3-06 | DONE | 2026-10-19 | Mappa ufficiale approvata 1→0.1.0 sviluppo; range/messaggi e 28 unit/42 integration/10 doctest; [CI 39269026995](https://github.com/UraganoAngelina/lintra/actions/runs/39269026995) verde Linux/Windows su 7522345 |
 | T-P3-07 | DONE | 2026-10-19 | Registry senza cache, binding esplicito/cause preservate; 28 unit/48 integration/10 doctest; [CI 39272551912](https://github.com/UraganoAngelina/lintra/actions/runs/39272551912) verde Linux/Windows su f671517 |
-| T-P4-01 | DONE_UNVERIFIED | 2026-10-19 | Lettura streaming byte/tre policy, buffer prestato, cause I/O e contatore checked; DEC-12 provvisorio; 29 unit/55 integration/10 doctest; CI pendente |
+| T-P4-01 | DONE | 2026-10-19 | Reader byte/tre policy, DEC-12 provvisorio; 29 unit/55 integration/10 doctest; [CI 39276070129](https://github.com/UraganoAngelina/lintra/actions/runs/39276070129) verde Linux/Windows su e18b9ba |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -176,7 +176,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 
 T-P4-01: fmt/check/clippy/test/release/diff-check PASS;
 29 unit + 55 integration + 10 doctest; un unit e sette integration nuovi.
-Report [T-P4-01](docs/verification/T-P4-01.md); CI pendente.
+Report [T-P4-01](docs/verification/T-P4-01.md); CI 39276070129 verde Linux/Windows su e18b9ba.
 
 Evidenze precedenti T-P3-07:
 
@@ -483,6 +483,17 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P4-01 completata / avvio automatico T-P4-02
+
+- **Stato:** DONE; CI 39276070129 su e18b9ba, Linux job 118140591245 e
+  Windows job 118140590466 completed/success; 94 test locali verdi.
+- **File:** input/{reader,record,mod}.rs, lib.rs, tests/record_reader.rs,
+  report/stato. Nessun blocco o dipendenza nuova; sorgenti normativi invariati.
+- **Git:** codice e18b9ba su origin, chiusura solo documentale, modifica
+  storica estranea preservata. Timeout TLS iniziale superato con retry.
+- **Next:** T-P4-02 BOM, prerequisito ora verde; avvio senza conferma ordinaria.
+
 
 HANDOFF — 2026-10-19 — T-P4-01 / lettore locale verificato
 
