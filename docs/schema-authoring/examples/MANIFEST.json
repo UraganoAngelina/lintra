@@ -1,0 +1,10 @@
+{
+  "bundle_version": "example-1",
+  "schema_format_version": 1,
+  "files": {
+    "schemas/compatible-history-flow.json": "2e9cf34a5212111961ca809320750b91a0491bed4bfaffd1470ccad85fde18b2",
+    "schemas/history-flow.json": "d30d44381b265037a52443a044274dac936f23d39730783eb058b3e2f3c39d0a",
+    "schemas/local-flow.json": "97b1f9b05360999dd6ec510b174c8cbfcc18344eda753fe432e6c4eb521d072b",
+    "reference-data/example-codes.json": "cc57ee9df8b96daa66787ded33fe2b6145ef853897836806698d0f07f2e6446c"
+  }
+}

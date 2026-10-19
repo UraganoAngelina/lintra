@@ -1,0 +1,1242 @@
+{
+  "schema_format_version": 1,
+  "flow_id": "EXAMPLE-LOCAL",
+  "schema_version": "example-1",
+  "regulatory_version": "synthetic-only",
+  "source": {
+    "note": "Authoring example only; no normative source or patient data"
+  },
+  "encoding": {
+    "mode": "runtime_required",
+    "position_unit": "byte"
+  },
+  "required_capabilities": [
+    "local.v1",
+    "expressions.v1",
+    "joins.v1",
+    "derived.substring.v1",
+    "derived.age_in_completed_years.v1",
+    "derived.calendar_year_delta.v1",
+    "reference_metadata.v1"
+  ],
+  "parameters": [
+    {
+      "id": "unit",
+      "type": "string",
+      "allowed_values": [
+        "EXAMPLE"
+      ]
+    },
+    {
+      "id": "year",
+      "type": "integer",
+      "min": 1,
+      "max": 9999
+    },
+    {
+      "id": "quarter",
+      "type": "integer",
+      "min": 1,
+      "max": 4
+    }
+  ],
+  "reference_data": [
+    {
+      "id": "codes",
+      "dataset_id": "example-codes",
+      "version": "example-1",
+      "sha256": "cc57ee9df8b96daa66787ded33fe2b6145ef853897836806698d0f07f2e6446c",
+      "path": "reference-data/example-codes.json",
+      "metadata_attributes": [
+        "kind",
+        "min_age"
+      ]
+    }
+  ],
+  "traces": [
+    {
+      "id": "P",
+      "name": "Synthetic P",
+      "record_length": 22,
+      "fields": [
+        {
+          "id": "ID",
+          "name": "Synthetic ID",
+          "physical": {
+            "start": 1,
+            "length": 4,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "REG",
+          "name": "Synthetic REG",
+          "physical": {
+            "start": 5,
+            "length": 2,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "BIRTH",
+          "name": "Synthetic BIRTH",
+          "physical": {
+            "start": 7,
+            "length": 8,
+            "type": "date",
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "END",
+          "name": "Synthetic END",
+          "physical": {
+            "start": 15,
+            "length": 8,
+            "type": "date",
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "ID"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "p_c",
+          "target_trace": "C",
+          "source_fields": [
+            "ID"
+          ],
+          "target_fields": [
+            "ID"
+          ],
+          "cardinality": "zero_or_one",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "unit"
+          ],
+          "on_missing_record": {
+            "policy": "not_applicable",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Parent present; related detail data absent"
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          }
+        }
+      ],
+      "identity": [],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [],
+      "documented_non_executable_rules": []
+    },
+    {
+      "id": "C",
+      "name": "Synthetic C",
+      "record_length": 36,
+      "fields": [
+        {
+          "id": "ID",
+          "name": "Synthetic ID",
+          "physical": {
+            "start": 1,
+            "length": 4,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "2601",
+                "2602"
+              ],
+              "target": "logical"
+            },
+            {
+              "kind": "regex",
+              "pattern": "^0+$",
+              "match": "forbidden",
+              "target": "logical"
+            },
+            {
+              "kind": "logical_length",
+              "equals": 4
+            },
+            {
+              "kind": "substring_not_equals",
+              "start": 1,
+              "length": 2,
+              "value": "ZZ",
+              "target": "logical"
+            },
+            {
+              "kind": "non_empty"
+            },
+            {
+              "kind": "no_lowercase"
+            }
+          ]
+        },
+        {
+          "id": "N",
+          "name": "Synthetic N",
+          "physical": {
+            "start": 5,
+            "length": 4,
+            "type": "numeric",
+            "alignment": {
+              "kind": "left_pad",
+              "fill_byte": 48,
+              "content_policy": "preserve_width"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "never_missing"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "numeric_range",
+              "min": 0,
+              "max": 9999
+            }
+          ]
+        },
+        {
+          "id": "DATE",
+          "name": "Synthetic DATE",
+          "physical": {
+            "start": 9,
+            "length": 8,
+            "type": "date",
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "date",
+              "format": "DDMMYYYY",
+              "calendar_valid": true
+            }
+          ]
+        },
+        {
+          "id": "TEXT",
+          "name": "Synthetic TEXT",
+          "physical": {
+            "start": 17,
+            "length": 8,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "eq": {
+                  "ref": {
+                    "field": "N"
+                  },
+                  "value": "0001"
+                }
+              },
+              {
+                "derived_compare": {
+                  "derived_value": "age",
+                  "operator": ">=",
+                  "value": 18
+                }
+              }
+            ],
+            "forbidden_if": [
+              {
+                "eq": {
+                  "ref": {
+                    "field": "N"
+                  },
+                  "value": "0002"
+                }
+              }
+            ]
+          },
+          "constraints": []
+        },
+        {
+          "id": "CODE",
+          "name": "Synthetic CODE",
+          "physical": {
+            "start": 25,
+            "length": 4,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "codes"
+              ],
+              "fallback_values": [
+                "NONE"
+              ],
+              "metadata_bindings": []
+            },
+            {
+              "kind": "composite_segments",
+              "target": "logical",
+              "segments": [
+                {
+                  "start": 1,
+                  "length": 2,
+                  "check": {
+                    "equals": "AB"
+                  }
+                },
+                {
+                  "start": 3,
+                  "length": 2,
+                  "check": {
+                    "dataset": "codes"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "FLAGS",
+          "name": "Synthetic FLAGS",
+          "physical": {
+            "start": 29,
+            "length": 4,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "positional_bitset",
+              "positions": [
+                {
+                  "start": 1,
+                  "length": 1,
+                  "values": [
+                    "0",
+                    "1"
+                  ],
+                  "when": {
+                    "const": true
+                  },
+                  "otherwise_values": [
+                    "0"
+                  ]
+                },
+                {
+                  "start": 2,
+                  "length": 1,
+                  "values": [
+                    "0",
+                    "1"
+                  ],
+                  "when": {
+                    "const": true
+                  },
+                  "otherwise_values": [
+                    "0"
+                  ]
+                },
+                {
+                  "start": 3,
+                  "length": 1,
+                  "values": [
+                    "0",
+                    "1"
+                  ],
+                  "when": {
+                    "const": true
+                  },
+                  "otherwise_values": [
+                    "0"
+                  ]
+                },
+                {
+                  "start": 4,
+                  "length": 1,
+                  "values": [
+                    "0",
+                    "1"
+                  ],
+                  "when": {
+                    "const": true
+                  },
+                  "otherwise_values": [
+                    "0"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "EXACT",
+          "name": "Synthetic EXACT",
+          "physical": {
+            "start": 33,
+            "length": 2,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "XX"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "ANY",
+          "name": "Synthetic ANY",
+          "physical": {
+            "start": 35,
+            "length": 2,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "any_of",
+            "raw_values": [
+              "  ",
+              "00"
+            ]
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "ID"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "c_p",
+          "target_trace": "P",
+          "source_fields": [
+            "ID"
+          ],
+          "target_fields": [
+            "ID"
+          ],
+          "cardinality": "exactly_one",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "unit"
+          ],
+          "on_missing_record": {
+            "policy": "violation",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            },
+            "error_code": "E_EXAMPLE_MISSING_RELATED"
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          }
+        }
+      ],
+      "identity": [
+        {
+          "target": "sioc_record_id",
+          "field": "ID"
+        },
+        {
+          "target": "episode_id",
+          "field": "ID"
+        },
+        {
+          "target": "fiscal_code",
+          "field": "TEXT"
+        },
+        {
+          "target": "technical",
+          "field": "N",
+          "technical_name": "sample_number"
+        }
+      ],
+      "named_conditions": {
+        "sample": {
+          "eq": {
+            "ref": {
+              "field": "N"
+            },
+            "value": "0001"
+          }
+        },
+        "legacy_example": {
+          "and": [
+            {
+              "derived_compare": {
+                "derived_value": "admit_year",
+                "operator": "==",
+                "value": "2025"
+              }
+            },
+            {
+              "derived_compare": {
+                "derived_value": "end_year",
+                "operator": "==",
+                "value": "2026"
+              }
+            }
+          ]
+        }
+      },
+      "derived_values": {
+        "region": {
+          "kind": "substring",
+          "source_ref": {
+            "trace": "P",
+            "field": "REG",
+            "join": "c_p"
+          },
+          "target": "logical",
+          "start": 1,
+          "length": 2
+        },
+        "age": {
+          "kind": "age_in_completed_years",
+          "birth_date_ref": {
+            "trace": "P",
+            "field": "BIRTH",
+            "join": "c_p"
+          },
+          "reference_date_ref": {
+            "field": "DATE"
+          },
+          "date_format": "DDMMYYYY",
+          "leap_day_anniversary": "mar01"
+        },
+        "year_delta": {
+          "kind": "calendar_year_delta",
+          "birth_date_ref": {
+            "trace": "P",
+            "field": "BIRTH",
+            "join": "c_p"
+          },
+          "reference_date_ref": {
+            "field": "DATE"
+          },
+          "date_format": "DDMMYYYY"
+        },
+        "admit_year": {
+          "kind": "substring",
+          "source_ref": {
+            "field": "DATE"
+          },
+          "target": "logical",
+          "start": 5,
+          "length": 4
+        },
+        "end_year": {
+          "kind": "substring",
+          "source_ref": {
+            "trace": "P",
+            "field": "END",
+            "join": "c_p"
+          },
+          "target": "logical",
+          "start": 5,
+          "length": 4
+        }
+      },
+      "repeated_groups": [
+        {
+          "id": "sample_slots",
+          "fields": [
+            "EXACT",
+            "ANY"
+          ],
+          "required_slots": [],
+          "optional_slots": [
+            "EXACT",
+            "ANY"
+          ],
+          "contiguity_required": false,
+          "unique_non_missing": true,
+          "unused_slot_value": "00"
+        }
+      ],
+      "rules": [
+        {
+          "id": "EXPR-0",
+          "when": {
+            "eq": {
+              "ref": {
+                "field": "N"
+              },
+              "value": "0001"
+            }
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "ID"
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "EXPR-1",
+          "when": {
+            "ne": {
+              "ref": {
+                "field": "N"
+              },
+              "value": "0002"
+            }
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "ID"
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "EXPR-2",
+          "when": {
+            "in": {
+              "ref": {
+                "field": "N"
+              },
+              "values": [
+                "0001",
+                "0002"
+              ]
+            }
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "ID"
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "EXPR-3",
+          "when": {
+            "not_in": {
+              "ref": {
+                "field": "N"
+              },
+              "values": [
+                "0003"
+              ]
+            }
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "ID"
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "EXPR-4",
+          "when": {
+            "is_present": {
+              "ref": {
+                "field": "TEXT"
+              }
+            }
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "ID"
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "EXPR-5",
+          "when": {
+            "is_missing": {
+              "ref": {
+                "field": "ANY"
+              }
+            }
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "ID"
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "EXPR-6",
+          "when": {
+            "and": [
+              {
+                "eq": {
+                  "ref": {
+                    "field": "N"
+                  },
+                  "value": "0001"
+                }
+              },
+              {
+                "is_present": {
+                  "ref": {
+                    "field": "TEXT"
+                  }
+                }
+              }
+            ]
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "ID"
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "EXPR-7",
+          "when": {
+            "or": [
+              {
+                "eq": {
+                  "ref": {
+                    "field": "N"
+                  },
+                  "value": "0001"
+                }
+              },
+              {
+                "is_present": {
+                  "ref": {
+                    "field": "TEXT"
+                  }
+                }
+              }
+            ]
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "ID"
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "EXPR-8",
+          "when": {
+            "not": {
+              "eq": {
+                "ref": {
+                  "field": "N"
+                },
+                "value": "0002"
+              }
+            }
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "ID"
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "EXPR-9",
+          "when": {
+            "condition": "sample"
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "ID"
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "EXPR-10",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "ID"
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "EXPR-11",
+          "when": {
+            "derived_eq": {
+              "ref": {
+                "field": "CODE"
+              },
+              "derived_value": "region"
+            }
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "ID"
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "ASSERTIONS",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "constraint",
+              "field": {
+                "field": "N"
+              },
+              "constraint": {
+                "kind": "numeric_range",
+                "min": 0,
+                "max": 9999
+              }
+            },
+            {
+              "kind": "field_compare",
+              "left": {
+                "ref": {
+                  "field": "DATE"
+                }
+              },
+              "operator": "<=",
+              "right": {
+                "ref": {
+                  "trace": "P",
+                  "field": "END",
+                  "join": "c_p"
+                }
+              },
+              "value_type": "date"
+            },
+            {
+              "kind": "equals_concat",
+              "field": {
+                "field": "CODE"
+              },
+              "parts": [
+                {
+                  "trace": "P",
+                  "field": "REG",
+                  "join": "c_p"
+                },
+                {
+                  "trace": "P",
+                  "field": "REG",
+                  "join": "c_p"
+                }
+              ]
+            },
+            {
+              "kind": "condition_true",
+              "condition": {
+                "condition": "sample"
+              }
+            },
+            {
+              "kind": "derived_compare",
+              "derived_value": "age",
+              "operator": ">=",
+              "value": 18
+            },
+            {
+              "kind": "record_exists",
+              "join": "c_p"
+            },
+            {
+              "kind": "substring_equals_derived_year",
+              "field": {
+                "field": "ID"
+              },
+              "start": 1,
+              "length": 2,
+              "source_ref": {
+                "field": "DATE"
+              },
+              "source_format": "DDMMYYYY",
+              "year_digits": 2
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "INTEGER-COMPARE",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "field_compare",
+              "left": {
+                "ref": {
+                  "field": "N"
+                }
+              },
+              "operator": ">=",
+              "right": {
+                "literal": 0
+              },
+              "value_type": "integer"
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "REF-METADATA",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "constraint",
+              "field": {
+                "field": "CODE"
+              },
+              "constraint": {
+                "kind": "reference_data",
+                "datasets": [
+                  "codes"
+                ],
+                "fallback_values": [],
+                "metadata_bindings": [
+                  {
+                    "attribute": "kind",
+                    "operand": {
+                      "ref": {
+                        "field": "N"
+                      }
+                    },
+                    "operator": "eq",
+                    "value_type": "integer"
+                  }
+                ]
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "REF-METADATA-AGE",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "constraint",
+              "field": {
+                "field": "CODE"
+              },
+              "constraint": {
+                "kind": "reference_data",
+                "datasets": [
+                  "codes"
+                ],
+                "fallback_values": [],
+                "metadata_bindings": [
+                  {
+                    "attribute": "min_age",
+                    "operand": {
+                      "derived_value": "age"
+                    },
+                    "operator": "ge",
+                    "value_type": "integer"
+                  }
+                ]
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        },
+        {
+          "id": "BYTES-COMPARE",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "field_compare",
+              "left": {
+                "ref": {
+                  "field": "ID"
+                }
+              },
+              "operator": "==",
+              "right": {
+                "literal": "2601"
+              },
+              "value_type": "bytes"
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        }
+      ],
+      "documented_non_executable_rules": [
+        {
+          "id": "EXAMPLE-DEFERRED",
+          "fields": [
+            "TEXT"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Synthetic example of an explicit reviewed omission",
+          "decision_reference": "EXAMPLE-DECISION-ONLY"
+        }
+      ]
+    }
+  ],
+  "persistence_policy": null
+}

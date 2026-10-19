@@ -6,14 +6,12 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
 ## Posizione corrente e prerequisiti
 
 - P1 / **T-P1-01 — DONE**: scaffold compilabile del package `lintra`.
-- Sessione corrente: **T-P0-05 DONE** per il dossier documentale di regole,
-  join e identità. Decisione CAD iniziale nello storico dell’evento, incluso
-  invio corrente, registrata; 74 regole ricevute, dieci join dichiarati,
-  una ricerca implicita di esistenza e trenta presence condizionali verificati.
-  **T-P0-07 BLOCKED** sul nuovo conflitto CNF-LINTRA-DSL-01: i profili
-  ricevuti richiedono derivati rinviati da Piano §13.5/DET §135. Bozza
-  di riconciliazione preparata, contratto completo non approvato. Parent
-  opzionale SIOC risolto: NotApplicable con spiegazione esplicita.
+- Sessione corrente: **T-P0-07 DONE_UNVERIFIED**, contratto ed artefatti
+  completi pronti per la revisione umana richiesta dalla task. Deroga ai tre
+  derivati approvata (CNF-LINTRA-DSL-01 risolta). Due JSON Schema, tre flow
+  sintetici, manifest/hash e 33 casi negativi strutturali verificati.
+  Nessun compiler o validatore Rust normativo implementato.
+  **T-P0-08 non avviata**, attende revisione umana del contratto completo.
   **T-P1-03 DONE_UNVERIFIED**: nessuna nuova evidenza CI in questa sessione.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
@@ -101,7 +99,8 @@ M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
 | T-P0-04 | DONE | 2026-10-19 | 218 note classificate, hash/riferimenti/DEC-05 verificati; 000, ID legacy SIOC e ambito iniziale CAD risolti |
 | T-P0-05 | DONE | 2026-10-19 | Dossier SIOC/CAD: 74 regole, 10 join + ricerca esistenza; PK, identity e policy/DEC verificate; parent opzionale SIOC risolto dall’autore |
 | T-P0-06 | DONE | 2026-10-16 | Commit 69dc995/a55a634; 15 schede/150 metadati, gap espliciti, review approvata |
-| T-P0-07 | BLOCKED | 2026-10-19 | Prerequisiti verificati; bozza authoring e CNF-LINTRA-DSL-01 con alternative; scope derivati da decidere prima del contratto completo |
+| T-P0-07 | DONE_UNVERIFIED | 2026-10-19 | Deroga derivati approvata; contratto/2 JSON Schema/3 flow/manifest e mapping pronti; 33 casi negativi e checker passati; manca revisione umana finale |
+| T-P0-08 | BLOCKED | 2026-10-19 | Non avviata: attende accettazione umana T-P0-07 |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
 | T-P1-03 | DONE_UNVERIFIED | 2026-10-16 | Commit 4f71663; workflow e 2 test, controlli locali/review approvati; CI reale non eseguita |
@@ -119,7 +118,7 @@ Evidenze e proposta: [T-P0-03](docs/verification/T-P0-03.md).
 | `python3 docs/verification/check_presence.py` | PASS, exit 0: 135 SIOC + 83 CAD; dieci trace, policy/AST fedeli, quattordici fonti integre |
 | `python3 docs/verification/check_notes.py` | PASS, exit 0: 218 note, indici/hash/pagine, constraint e ID regola, conteggi classi e citazioni DEC-05 |
 | `python3 docs/verification/check_rules_and_joins.py` | PASS, exit 0: dieci trace, 74 regole, dieci join con cardinalità/policy o DEC, trenta presence, tre gruppi, profilo CAD completo e riferimenti; policy SIOC NotApplicable e spiegazione verificate |
-| Python stdlib, bozza T-P0-07 | PASS: due blocchi JSON parsabili, formato numerico, digest sintetico e link; nessuna validazione JSON Schema o compilazione DSL |
+| `uv run … --with jsonschema==4.26.0 python docs/verification/check_authoring.py` | PASS: 2 meta-schemi, 3 flow e manifest; 4 hash, copertura 19 constraint/14 assertion legacy e 13 nodi Expr; 33 casi negativi rifiutati; nessuna compilazione DSL Rust |
 | `cargo fmt --all -- --check` | PASS |
 | `cargo check --all-targets --locked` | PASS |
 | `cargo clippy --all-targets --locked -- -D warnings` | PASS |
@@ -186,20 +185,18 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Problemi noti e decisioni aperte
 
-- **CNF-LINTRA-DSL-01, aperto in T-P0-07:** SIOC richiede substring ed età
-  compiuta e CAD richiede differenza anni; Piano §13.5/DET §135 rinviano i
-  valori derivati. [Bozza e alternative](docs/SCHEMA_AUTHORING.md),
-  [evidenze e impatto](docs/verification/T-P0-07.md). Serve scelta autore:
-  deroga circoscritta per i soli operatori richiesti, oppure mantenere il
-  rinvio e rifiutare i profili che li richiedono fino alla revisione.
+- **T-P0-07, revisione umana del contratto completo pendente:**
+  [Authoring](docs/SCHEMA_AUTHORING.md), [artefatti](docs/schema-authoring/README.md),
+  [evidenze](docs/verification/T-P0-07.md). La deroga derivati è approvata,
+  non equivale all’accettazione del formato/contratto finale.
 - **DEC-AUTHORING-FORMAT-01, proposta non ratificata:** schema_format_version
   u32 richiesto da Addendum A.1 ma assente nei flow ricevuti; mantenere DSL,
   versioni normative e versione del bundle distinte. Proposti nuovi artefatti
   formato 1 con import esplicito e provenienza, senza cambiare il FROZEN.
 
-- **DEC-05-CAD-EVENT-CONTEXT / SET-CONTRACT:** contratto dei piani per
-  insiemi e riduzioni deterministiche da formalizzare in T-P0-07; nessuna
-  implementazione o nuova serializzazione approvata.
+- **DEC-05-CAD-EVENT-CONTEXT / SET-CONTRACT:** piani per insiemi
+  e riduzioni deterministiche formalizzati nella proposta T-P0-07; attende
+  revisione finale, nessuna implementazione o serializzazione già ratificata.
 - Dossier ed evidenze: [T-P0-05](docs/verification/T-P0-05.md).
 - Dettagli e citazioni in [T-P0-04](docs/verification/T-P0-04.md). Le clausole
   SIOC 1.6/4.28 mantengono il non-enforcement v1 già ricevuto; G03, formato
@@ -224,6 +221,15 @@ I doctest verificano importabilità e divieto di importare `engine` e
   ancora in alcuni artefatti sono metadati storici superati, non nuova norma aperta.
 
 ## Decisioni della sessione corrente
+
+- **CNF-LINTRA-DSL-01 risolta dall’autore il 2026-10-19:** «Approvo la
+  deroga circoscritta (consigliata)». Contratti dei soli substring, età
+  compiuta e differenza anni necessari ai profili; implementazione futura
+  nelle task pertinenti con gate/test. [Decisione](docs/normative/DECISIONS.md).
+  Non approva automaticamente il contratto completo di authoring.
+- **Tool documentale:** jsonschema 4.26.0 in ambiente/cache temporanei /tmp
+  via uv, download autorizzato tramite escalation; nessuna dipendenza Rust
+  o pacchetto aggiunto al progetto. Fonte primaria [EXT] nel README artefatti.
 
 - **DEC-05-SIOC-OPTIONAL-PARENT risolta dall’autore il 2026-10-19:**
   `NotApplicable` per target assente, con evidenza esplicita di anagrafica
@@ -278,18 +284,19 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Documenti da aggiornare
 
-ARCH, DET, PLAN e ADR sorgenti rimangono inalterati. Aperto
-CNF-LINTRA-DSL-01 con fonti e proposta: eventuale adeguamento dello scope
-Piano §13.5/DET §135 e delle task richiede prima la decisione dell’autore.
-SCHEMA_AUTHORING.md è una bozza di riconciliazione, non il contratto definitivo.
+ARCH, DET, PLAN e ADR sorgenti rimangono inalterati. CNF-LINTRA-DSL-01
+risolta dalla deroga circoscritta approvata dall’autore; l’eventuale
+allineamento documentale delle task è proposto in SCHEMA_AUTHORING.md e
+lowering.json e deve essere ratificato prima delle relative implementazioni.
+Il contratto completo T-P0-07 è pronto per revisione, non già approvato.
 Nessun contratto pubblico Rust modificato o implementazione anticipata.
 
 ## Plan change log
 
-- **2026-10-19, proposta NON approvata:** CNF-LINTRA-DSL-01 propone di
-  ammettere i soli derivati già richiesti dalle fonti, con implementazione
-  futura nelle task autorizzate. Alternativa: mantenere il rinvio e rifiutare
-  i profili incompatibili. Nessuna modifica al piano eseguita o inferita.
+- **2026-10-19, autore:** approvata la proposta A, deroga circoscritta per
+  substring, età compiuta e differenza anni. Implementazione futura con
+  prerequisiti/gate/test; nessuna modifica automatica a Piano o DET.
+  Allineamento delle task proposto nel contratto T-P0-07 da revisionare.
 
 - **2026-10-16, autore (dal seed):** autorizzato adeguamento ARCH/DET al piano,
   nome Lintra confermato, persistenza promossa a core; ADR-PERSIST-001 approvata.
@@ -298,6 +305,26 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P0-07 / contratto pronto per revisione
+
+- **Stato:** DONE_UNVERIFIED, attende revisione umana finale del contratto.
+- **Decisione:** deroga circoscritta ai tre derivati approvata dall’autore;
+  CNF-LINTRA-DSL-01 risolta, registrata senza cambiare i documenti sorgente.
+- **File:** SCHEMA_AUTHORING.md, docs/schema-authoring/* (2 meta-schemi,
+  lowering, indice, 3 flow, dataset/manifest sintetici), check_authoring.py,
+  report, DECISIONS.md, attributi Git limitati agli esempi e questo stato.
+- **Evidenze:** JSON Schema reale jsonschema 4.26.0 temporaneo: 3 flow e
+  manifest validi, 4 hash verificati, 33 casi negativi rifiutati, 15 confronti byte con filtri Git autocrlf;
+  famiglie 19 constraint/14 assertion legacy/13 Expr coperte; checker P0 precedenti
+  passati, 218 campi/fonti integri. Nessun Rust modificato o Cargo rieseguito.
+- **Limiti:** prove strutturali, non compilazione DSL Rust né test normativi;
+  boundary lessicali/dataset e policy 29 febbraio del profilo esplicite.
+  Formato/payload compiled/persistenza richiedono la revisione completa.
+- **Git:** work/p1-foundations; piano storico preesistente preservato;
+  nessun push o nuova CI. Nessuna dipendenza Cargo aggiunta.
+- **Next:** ricevere revisione T-P0-07 e solo poi esaminare T-P0-08; G0
+  rimane aperto, P2 continua ad attendere la CI reale Linux/Windows.
 
 HANDOFF — 2026-10-19 — T-P0-07 / riconciliazione bloccata
 

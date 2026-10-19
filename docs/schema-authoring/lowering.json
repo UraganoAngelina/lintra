@@ -1,0 +1,173 @@
+{
+  "status": "REVIEW_REQUIRED_SPEC_ONLY",
+  "source_constraints": {
+    "allowed_values": {
+      "canonical_kind": "allowed_values",
+      "lowering": "logical bytes; no padding of domain literals"
+    },
+    "numeric_range": {
+      "canonical_kind": "numeric_range",
+      "lowering": "integer comparison, inclusive limits"
+    },
+    "digits_only": {
+      "canonical_kind": "regex",
+      "lowering": "required ^[0-9]+$ on logical bytes"
+    },
+    "digits_only_if_present": {
+      "canonical_kind": "regex",
+      "lowering": "same check after the common missing/presence stage"
+    },
+    "logical_length": {
+      "canonical_kind": "logical_length",
+      "lowering": "length in bytes"
+    },
+    "logical_length_if_present": {
+      "canonical_kind": "logical_length",
+      "lowering": "same check after presence stage"
+    },
+    "substring_not_equals": {
+      "canonical_kind": "substring_not_equals",
+      "lowering": "one-based byte slice, explicit target"
+    },
+    "no_lowercase_if_present": {
+      "canonical_kind": "no_lowercase",
+      "lowering": "explicit case byte class; no locale-derived mapping"
+    },
+    "date": {
+      "canonical_kind": "date",
+      "lowering": "DDMMYYYY and calendar validity"
+    },
+    "date_if_present": {
+      "canonical_kind": "date",
+      "lowering": "same check after presence stage"
+    },
+    "reference_data": {
+      "canonical_kind": "reference_data",
+      "lowering": "explicit versioned binding; metadata_checks requires reviewed bindings"
+    },
+    "reference_data_if_present": {
+      "canonical_kind": "reference_data",
+      "lowering": "same check after presence stage"
+    },
+    "reference_data_or_values": {
+      "canonical_kind": "reference_data",
+      "lowering": "datasets array plus explicit fallback values"
+    },
+    "composite_segments": {
+      "canonical_kind": "composite_segments",
+      "lowering": "ordered resolved segments"
+    },
+    "composite_segments_if_present": {
+      "canonical_kind": "composite_segments",
+      "lowering": "same check after presence stage"
+    },
+    "positional_bitset": {
+      "canonical_kind": "positional_bitset",
+      "lowering": "expand ranges and forced/unused positions; conditional position values explicit"
+    },
+    "non_empty": {
+      "canonical_kind": "non_empty",
+      "lowering": "logical value nonempty after declared padding"
+    },
+    "structure_only": {
+      "canonical_kind": null,
+      "lowering": "physical/padding checks only; metadata preserved, no semantic no-op executor"
+    },
+    "structure_only_if_present": {
+      "canonical_kind": null,
+      "lowering": "physical/padding checks when applicable; metadata preserved"
+    }
+  },
+  "source_assertions": {
+    "raw_equals": {
+      "canonical_kind": "constraint",
+      "lowering": "allowed_values singleton with target raw"
+    },
+    "logical_equals": {
+      "canonical_kind": "constraint",
+      "lowering": "allowed_values singleton with target logical"
+    },
+    "allowed_values": {
+      "canonical_kind": "constraint",
+      "lowering": "allowed_values on local field"
+    },
+    "numeric_range": {
+      "canonical_kind": "constraint",
+      "lowering": "numeric_range on local field"
+    },
+    "not_allowed_values": {
+      "canonical_kind": "condition_true",
+      "lowering": "not(in(field, values)); no regex interpolation"
+    },
+    "reference_data": {
+      "canonical_kind": "constraint",
+      "lowering": "reference_data binding on local field"
+    },
+    "composite": {
+      "canonical_kind": "constraint",
+      "lowering": "composite_segments"
+    },
+    "field_present": {
+      "canonical_kind": "field_present",
+      "lowering": "resolved field reference"
+    },
+    "field_compare": {
+      "canonical_kind": "field_compare",
+      "lowering": "typed operands and explicit operator"
+    },
+    "equals_concat": {
+      "canonical_kind": "equals_concat",
+      "lowering": "ordered logical byte concatenation"
+    },
+    "substring_equals_derived_year": {
+      "canonical_kind": "substring_equals_derived_year",
+      "lowering": "validated source date, year digits 2 or 4"
+    },
+    "condition_true": {
+      "canonical_kind": "condition_true",
+      "lowering": "resolve named condition as expression"
+    },
+    "derived_compare": {
+      "canonical_kind": "derived_compare",
+      "lowering": "resolved typed DerivedValuePlan"
+    },
+    "record_exists": {
+      "canonical_kind": "record_exists",
+      "lowering": "materialize explicit join; source match pairs preserved, one_or_many and missing policy explicit"
+    }
+  },
+  "source_expressions": {
+    "eq": "resolved eq",
+    "ne": "resolved ne",
+    "in": "resolved in",
+    "not_in": "resolved not_in",
+    "is_present": "resolved is_present",
+    "is_missing": "resolved is_missing",
+    "and": "resolved and",
+    "or": "resolved or",
+    "not": "resolved not",
+    "condition": "inline named condition with cycle detection",
+    "derived_eq": "typed derived comparison",
+    "const": "resolved const"
+  },
+  "compiled_contracts": {
+    "constraint": "CompiledConstraint: AllowedValues/Range/Regex/ReferenceData plus closed typed payloads for length, substring, case, date, segments, bitset and nonempty; not an untyped builtin string",
+    "expr": "CompiledExpr DET17 plus Const, typed DerivedEq and DerivedCompare; condition names inlined, references resolved; Unknown semantics DET19 retained",
+    "derived": "DerivedValuePlan: Substring, AgeInCompletedYears, CalendarYearDelta; read-only DAG with checked byte ranges and typed values",
+    "assertion": "CompiledRule: closed typed assertion plans, fixed order; no eval or dynamically registered executable code",
+    "join": "CompiledJoinSpec with explicit cardinality/policies; ZeroOrMany required for set relations; consensus reduces tuples without first()",
+    "identity": "IdentityExtractionPlan/IdentityBinding DET36",
+    "persistence": "PersistencePolicy DET168: explicit keys, namespace and version group; transaction and secure storage configuration outside normative JSON",
+    "temporal": "CrossRecordValidationPlan with closed interval/after-date/inactivity plans; required unsupported capability is SchemaIssue"
+  },
+  "implementation_tasks": {
+    "T-P3-01..05": "raw shapes, schema validation, resolution, capabilities, compiled plans; no runtime implementation in T-P0-07",
+    "T-P10-01..06": "typed expressions and three approved derivations, truth tables, presence, assertion evaluation and tests; proposed scope addendum only",
+    "T-P13-01..07": "cardinality/policies, set context, consensus and deterministic projection; task scope alignment requires review before implementation",
+    "T-PERSIST-01..12": "generic repository, audit, snapshots, privacy and transactional tests",
+    "T-CAD-01..12": "versioned CAD policies and temporal profile, after core gates"
+  },
+  "new_expressions": {
+    "derived_compare": "Typed derived-to-literal comparison needed for legacy year guards and CAD age thresholds; no new derivation operation"
+  }
+}

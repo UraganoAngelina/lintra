@@ -103,3 +103,18 @@ applicazione nella configurazione versionata della task pertinente.
 
 Evidenze: [dossier SIOC](sioc/rules-and-joins.md),
 [verifica T-P0-05](../verification/T-P0-05.md).
+
+## CNF-LINTRA-DSL-01 — DEROGA CIRCOSCRITTA APPROVATA, 2026-10-19
+
+L’autore ha risposto **«Approvo la deroga circoscritta (consigliata)»**
+alla proposta A di T-P0-07. È autorizzata la definizione del contratto per
+`substring`, `age_in_completed_years` e `calendar_year_delta`, necessari
+ai profili ricevuti, in deroga al rinvio di Piano §13.5 / DET §135.
+
+Implementazione nelle future task pertinenti, con prerequisiti, gate e test;
+nessun codice Rust dei derivati, storage, temporali CAD o UI in T-P0-07.
+L’autorizzazione non estende la DSL a funzioni arbitrarie e non approva
+automaticamente il formato o l’intero contratto di authoring, che richiede
+revisione umana finale. ARCH, DET e Master Plan sorgenti restano inalterati.
+
+[Contratto da revisionare](../SCHEMA_AUTHORING.md).

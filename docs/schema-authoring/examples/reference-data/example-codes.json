@@ -1,0 +1,34 @@
+{
+  "dataset_id": "example-codes",
+  "version": "example-1",
+  "entries": [
+    {
+      "key": "ABCD",
+      "metadata": {
+        "kind": 1,
+        "min_age": 0
+      }
+    },
+    {
+      "key": "CD",
+      "metadata": {
+        "kind": 1,
+        "min_age": 0
+      }
+    },
+    {
+      "key": "AB",
+      "metadata": {
+        "kind": 1,
+        "min_age": 0
+      }
+    },
+    {
+      "key": "ABAB",
+      "metadata": {
+        "kind": 1,
+        "min_age": 0
+      }
+    }
+  ]
+}

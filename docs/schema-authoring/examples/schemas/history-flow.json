@@ -1,0 +1,1302 @@
+{
+  "schema_format_version": 1,
+  "flow_id": "EXAMPLE-HISTORY",
+  "schema_version": "example-1",
+  "regulatory_version": "synthetic-only",
+  "source": {
+    "note": "Authoring example only; no normative source or patient data"
+  },
+  "encoding": {
+    "mode": "runtime_required",
+    "position_unit": "byte"
+  },
+  "required_capabilities": [
+    "local.v1",
+    "expressions.v1",
+    "joins.v1",
+    "joins.sets.v1",
+    "joins.consensus.v1",
+    "persistence.audit.v1",
+    "persistence.snapshot.v1",
+    "history.existence.v1",
+    "temporal.intervals.v1",
+    "temporal.after_date.v1",
+    "temporal.inactivity.v1"
+  ],
+  "parameters": [
+    {
+      "id": "unit",
+      "type": "string",
+      "allowed_values": [
+        "EXAMPLE"
+      ]
+    },
+    {
+      "id": "year",
+      "type": "integer",
+      "min": 1,
+      "max": 9999
+    },
+    {
+      "id": "quarter",
+      "type": "integer",
+      "min": 1,
+      "max": 4
+    }
+  ],
+  "reference_data": [
+    {
+      "id": "codes",
+      "dataset_id": "example-codes",
+      "version": "example-1",
+      "sha256": "cc57ee9df8b96daa66787ded33fe2b6145ef853897836806698d0f07f2e6446c",
+      "path": "reference-data/example-codes.json",
+      "metadata_attributes": [
+        "kind",
+        "min_age"
+      ]
+    }
+  ],
+  "traces": [
+    {
+      "id": "E",
+      "name": "Synthetic E",
+      "record_length": 4,
+      "fields": [
+        {
+          "id": "EVENT",
+          "name": "Synthetic EVENT",
+          "physical": {
+            "start": 1,
+            "length": 4,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "EVENT"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "E_V",
+          "target_trace": "V",
+          "source_fields": [
+            "EVENT"
+          ],
+          "target_fields": [
+            "EVENT"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "history_including_current",
+          "namespace_parameters": [
+            "unit"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          }
+        },
+        {
+          "id": "E_S",
+          "target_trace": "S",
+          "source_fields": [
+            "EVENT"
+          ],
+          "target_fields": [
+            "EVENT"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "history_including_current",
+          "namespace_parameters": [
+            "unit"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          }
+        },
+        {
+          "id": "E_X",
+          "target_trace": "X",
+          "source_fields": [
+            "EVENT"
+          ],
+          "target_fields": [
+            "EVENT"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "history_including_current",
+          "namespace_parameters": [
+            "unit"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          }
+        },
+        {
+          "id": "E_Q",
+          "target_trace": "Q",
+          "source_fields": [
+            "EVENT"
+          ],
+          "target_fields": [
+            "EVENT"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "history_including_current",
+          "namespace_parameters": [
+            "unit"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          }
+        },
+        {
+          "id": "E_INITIAL",
+          "target_trace": "V",
+          "source_fields": [
+            "EVENT"
+          ],
+          "target_fields": [
+            "EVENT"
+          ],
+          "cardinality": "one_or_many",
+          "scope": "history_including_current",
+          "namespace_parameters": [
+            "unit"
+          ],
+          "on_missing_record": {
+            "policy": "violation",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            },
+            "error_code": "E_EXAMPLE_MISSING_RELATED"
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          }
+        }
+      ],
+      "identity": [
+        {
+          "target": "episode_id",
+          "field": "EVENT"
+        }
+      ],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [
+        {
+          "id": "INITIAL-HISTORY",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "set_exists",
+              "join": "E_INITIAL",
+              "predicate": {
+                "eq": {
+                  "ref": {
+                    "field": "INITIAL"
+                  },
+                  "value": "1"
+                }
+              }
+            }
+          ],
+          "error_code": "E_EXAMPLE_RULE",
+          "message_template": "Synthetic rule {rule_id}"
+        }
+      ],
+      "documented_non_executable_rules": []
+    },
+    {
+      "id": "V",
+      "name": "Synthetic V",
+      "record_length": 27,
+      "fields": [
+        {
+          "id": "EVENT",
+          "name": "Synthetic EVENT",
+          "physical": {
+            "start": 1,
+            "length": 4,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "SEQ",
+          "name": "Synthetic SEQ",
+          "physical": {
+            "start": 5,
+            "length": 4,
+            "type": "numeric",
+            "alignment": {
+              "kind": "left_pad",
+              "fill_byte": 48,
+              "content_policy": "preserve_width"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "START",
+          "name": "Synthetic START",
+          "physical": {
+            "start": 9,
+            "length": 8,
+            "type": "date",
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "END",
+          "name": "Synthetic END",
+          "physical": {
+            "start": 17,
+            "length": 8,
+            "type": "date",
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "REASON",
+          "name": "Synthetic REASON",
+          "physical": {
+            "start": 25,
+            "length": 2,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "INITIAL",
+          "name": "Synthetic INITIAL",
+          "physical": {
+            "start": 27,
+            "length": 1,
+            "type": "numeric",
+            "alignment": {
+              "kind": "left_pad",
+              "fill_byte": 48,
+              "content_policy": "preserve_width"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "EVENT",
+          "SEQ"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [],
+      "identity": [
+        {
+          "target": "episode_id",
+          "field": "EVENT"
+        },
+        {
+          "target": "technical",
+          "field": "SEQ",
+          "technical_name": "progressive"
+        }
+      ],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [],
+      "documented_non_executable_rules": []
+    },
+    {
+      "id": "S",
+      "name": "Synthetic S",
+      "record_length": 24,
+      "fields": [
+        {
+          "id": "EVENT",
+          "name": "Synthetic EVENT",
+          "physical": {
+            "start": 1,
+            "length": 4,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "SEQ",
+          "name": "Synthetic SEQ",
+          "physical": {
+            "start": 5,
+            "length": 4,
+            "type": "numeric",
+            "alignment": {
+              "kind": "left_pad",
+              "fill_byte": 48,
+              "content_policy": "preserve_width"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "FROM",
+          "name": "Synthetic FROM",
+          "physical": {
+            "start": 9,
+            "length": 8,
+            "type": "date",
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "TO",
+          "name": "Synthetic TO",
+          "physical": {
+            "start": 17,
+            "length": 8,
+            "type": "date",
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "EVENT",
+          "SEQ"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [],
+      "identity": [
+        {
+          "target": "episode_id",
+          "field": "EVENT"
+        },
+        {
+          "target": "technical",
+          "field": "SEQ",
+          "technical_name": "progressive"
+        }
+      ],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [],
+      "documented_non_executable_rules": []
+    },
+    {
+      "id": "X",
+      "name": "Synthetic X",
+      "record_length": 20,
+      "fields": [
+        {
+          "id": "EVENT",
+          "name": "Synthetic EVENT",
+          "physical": {
+            "start": 1,
+            "length": 4,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "DATE",
+          "name": "Synthetic DATE",
+          "physical": {
+            "start": 5,
+            "length": 8,
+            "type": "date",
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "TYPE",
+          "name": "Synthetic TYPE",
+          "physical": {
+            "start": 13,
+            "length": 1,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "PROF",
+          "name": "Synthetic PROF",
+          "physical": {
+            "start": 14,
+            "length": 2,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "SEQ",
+          "name": "Synthetic SEQ",
+          "physical": {
+            "start": 16,
+            "length": 4,
+            "type": "numeric",
+            "alignment": {
+              "kind": "left_pad",
+              "fill_byte": 48,
+              "content_policy": "preserve_width"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "VENUE",
+          "name": "Synthetic VENUE",
+          "physical": {
+            "start": 20,
+            "length": 1,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "EVENT",
+          "DATE",
+          "TYPE",
+          "PROF",
+          "SEQ"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "X_V",
+          "target_trace": "V",
+          "source_fields": [
+            "EVENT"
+          ],
+          "target_fields": [
+            "EVENT"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "history_including_current",
+          "namespace_parameters": [
+            "unit"
+          ],
+          "on_missing_record": {
+            "policy": "not_applicable",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          },
+          "reduction": {
+            "kind": "consensus",
+            "fields": [
+              "END",
+              "REASON"
+            ],
+            "include_if": {
+              "is_present": {
+                "ref": {
+                  "field": "END"
+                }
+              }
+            },
+            "on_conflict": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONFLICT",
+              "message_template": "Conflicting conclusion data for event"
+            }
+          }
+        },
+        {
+          "id": "X_S",
+          "target_trace": "S",
+          "source_fields": [
+            "EVENT"
+          ],
+          "target_fields": [
+            "EVENT"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "history_including_current",
+          "namespace_parameters": [
+            "unit"
+          ],
+          "on_missing_record": {
+            "policy": "not_applicable",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          }
+        }
+      ],
+      "identity": [
+        {
+          "target": "episode_id",
+          "field": "EVENT"
+        },
+        {
+          "target": "technical",
+          "field": "SEQ",
+          "technical_name": "progressive"
+        }
+      ],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [],
+      "documented_non_executable_rules": []
+    },
+    {
+      "id": "Q",
+      "name": "Synthetic Q",
+      "record_length": 19,
+      "fields": [
+        {
+          "id": "EVENT",
+          "name": "Synthetic EVENT",
+          "physical": {
+            "start": 1,
+            "length": 4,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "DATE",
+          "name": "Synthetic DATE",
+          "physical": {
+            "start": 5,
+            "length": 8,
+            "type": "date",
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "TYPE",
+          "name": "Synthetic TYPE",
+          "physical": {
+            "start": 13,
+            "length": 1,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "PROF",
+          "name": "Synthetic PROF",
+          "physical": {
+            "start": 14,
+            "length": 2,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "SEQ",
+          "name": "Synthetic SEQ",
+          "physical": {
+            "start": 16,
+            "length": 4,
+            "type": "numeric",
+            "alignment": {
+              "kind": "left_pad",
+              "fill_byte": 48,
+              "content_policy": "preserve_width"
+            },
+            "lexical": {
+              "kind": "byte_set",
+              "allowed_bytes": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126],
+              "lowercase_bytes": [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "EVENT",
+          "DATE",
+          "TYPE",
+          "PROF",
+          "SEQ"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "Q_X",
+          "target_trace": "X",
+          "source_fields": [
+            "EVENT",
+            "DATE",
+            "TYPE",
+            "PROF"
+          ],
+          "target_fields": [
+            "EVENT",
+            "DATE",
+            "TYPE",
+            "PROF"
+          ],
+          "cardinality": "one_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "unit"
+          ],
+          "on_missing_record": {
+            "policy": "violation",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            },
+            "error_code": "E_EXAMPLE_MISSING_RELATED"
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "EXAMPLE_CONTEXT",
+              "message_template": "Required context unavailable"
+            }
+          }
+        }
+      ],
+      "identity": [
+        {
+          "target": "episode_id",
+          "field": "EVENT"
+        },
+        {
+          "target": "technical",
+          "field": "SEQ",
+          "technical_name": "progressive"
+        }
+      ],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [],
+      "documented_non_executable_rules": []
+    }
+  ],
+  "persistence_policy": {
+    "namespace_parameters": [
+      "unit"
+    ],
+    "version_compatibility": {
+      "kind": "same_schema_version"
+    },
+    "run_uniqueness": [
+      {
+        "trace": "E",
+        "key": "record_key"
+      },
+      {
+        "trace": "V",
+        "key": "record_key"
+      },
+      {
+        "trace": "S",
+        "key": "record_key"
+      },
+      {
+        "trace": "X",
+        "key": "record_key"
+      },
+      {
+        "trace": "Q",
+        "key": "record_key"
+      }
+    ],
+    "cross_run_audit": [
+      {
+        "trace": "E",
+        "key": "record_key"
+      },
+      {
+        "trace": "V",
+        "key": "record_key"
+      },
+      {
+        "trace": "S",
+        "key": "record_key"
+      },
+      {
+        "trace": "X",
+        "key": "record_key"
+      },
+      {
+        "trace": "Q",
+        "key": "record_key"
+      }
+    ],
+    "history_identity_invariants": [
+      {
+        "trace": "V",
+        "progressive_fields": [
+          "SEQ"
+        ],
+        "event_fields": [
+          "EVENT"
+        ],
+        "on_reassignment_error": "E_EXAMPLE_REASSIGNMENT",
+        "reactivate_same_event": true
+      },
+      {
+        "trace": "S",
+        "progressive_fields": [
+          "SEQ"
+        ],
+        "event_fields": [
+          "EVENT"
+        ],
+        "on_reassignment_error": "E_EXAMPLE_REASSIGNMENT",
+        "reactivate_same_event": true
+      },
+      {
+        "trace": "X",
+        "progressive_fields": [
+          "SEQ"
+        ],
+        "event_fields": [
+          "EVENT"
+        ],
+        "on_reassignment_error": "E_EXAMPLE_REASSIGNMENT",
+        "reactivate_same_event": true
+      },
+      {
+        "trace": "Q",
+        "progressive_fields": [
+          "SEQ"
+        ],
+        "event_fields": [
+          "EVENT"
+        ],
+        "on_reassignment_error": "E_EXAMPLE_REASSIGNMENT",
+        "reactivate_same_event": true
+      }
+    ],
+    "snapshot": {
+      "scope_parameters": [
+        "unit"
+      ],
+      "period": {
+        "year_parameter": "year",
+        "quarter_parameter": "quarter"
+      },
+      "approved_immutable": true,
+      "require_explicit_approval": true,
+      "commit": "atomic_idempotent",
+      "missing_trace_policy": {
+        "consent": "proceed_or_abort",
+        "warning_code": "W_EXAMPLE_MISSING_TRACE",
+        "on_absent_trace": "preserve",
+        "present_trace_is_complete": true
+      }
+    },
+    "temporal_rules": [
+      {
+        "kind": "interval_exclusion",
+        "owner_trace": "X",
+        "when": {
+          "eq": {
+            "ref": {
+              "field": "VENUE"
+            },
+            "value": "1"
+          }
+        },
+        "point_field": "DATE",
+        "interval_join": "X_S",
+        "start_field": "FROM",
+        "end_field": "TO",
+        "boundaries": "open",
+        "missing_end": "open_until_horizon",
+        "on_missing_trace": {
+          "policy": "unknown",
+          "diagnostic": {
+            "code": "EXAMPLE_CONTEXT",
+            "message_template": "Required context unavailable"
+          }
+        },
+        "error_code": "E_EXAMPLE_INTERVAL"
+      },
+      {
+        "kind": "after_date_restriction",
+        "owner_trace": "X",
+        "when": {
+          "const": true
+        },
+        "date_field": "DATE",
+        "conclusion_join": "X_V",
+        "conclusion_date_field": "END",
+        "target_when": {
+          "const": true
+        },
+        "restricted_field": "VENUE",
+        "forbidden_values": [
+          "1"
+        ],
+        "comparison": "strict_after",
+        "on_missing_trace": {
+          "policy": "unknown",
+          "diagnostic": {
+            "code": "EXAMPLE_CONTEXT",
+            "message_template": "Required context unavailable"
+          }
+        },
+        "error_code": "E_EXAMPLE_AFTER_END"
+      },
+      {
+        "kind": "inactivity_with_pauses",
+        "owner_trace": "E",
+        "evaluations_join": "E_V",
+        "suspensions_join": "E_S",
+        "accesses_join": "E_X",
+        "provisions_join": "E_Q",
+        "access_fields": [
+          "EVENT",
+          "DATE",
+          "TYPE",
+          "PROF"
+        ],
+        "provision_fields": [
+          "EVENT",
+          "DATE",
+          "TYPE",
+          "PROF"
+        ],
+        "start_field": "START",
+        "access_date_field": "DATE",
+        "suspension_start_field": "FROM",
+        "suspension_end_field": "TO",
+        "conclusion_date_field": "END",
+        "conclusion_code_field": "REASON",
+        "required_conclusion_code": "12",
+        "threshold": {
+          "calendar_months": 3,
+          "invalid_day": "clamp_to_month_end",
+          "pause_days": "strictly_inside_union",
+          "extension": "until_fixed_point"
+        },
+        "horizon": "session_quarter_end",
+        "no_activity": "use_event_start",
+        "already_closed": "no_second_closure",
+        "on_missing_trace": {
+          "policy": "unknown",
+          "diagnostic": {
+            "code": "EXAMPLE_CONTEXT",
+            "message_template": "Required context unavailable"
+          }
+        },
+        "error_code": "E_EXAMPLE_INACTIVITY"
+      }
+    ],
+    "storage_protection": "external_secure_configuration_required"
+  }
+}
