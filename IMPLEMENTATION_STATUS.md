@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  prerequisito della parte autonoma soddisfatto, T-P3-01 in corso.
+  parte autonoma e T-P3-01 verificate, prossima T-P3-02.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -84,8 +84,8 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
-| QG-2 — CI Linux/Windows | PASS per 30af262 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39234593522), entrambi i runner verdi; nuove modifiche Rust richiedono nuova CI |
-| QG-3 — architettura | PASS per lo scaffold | Moduli privati, CLI solo nel binario, nessun codice normativo o dipendenza |
+| QG-2 — CI Linux/Windows | PASS per 225419d | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39236782609), entrambi i runner verdi; nuove modifiche Rust richiedono nuova CI |
+| QG-3 — architettura | PASS per dominio/raw | Moduli privati, export espliciti, DTO non eseguibili, nessuna logica normativa nel core; serde/serde_json motivate |
 | QG-8 — documenti | PASS per lo scaffold | Copie identiche, nessun contratto modificato |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
 | G-SIOC-HIST | OPEN_POLICY | DEC-SIOC-HIST-01, non blocca scaffold |
@@ -154,7 +154,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P2-01 | DONE | 2026-10-19 | 7 newtype + ByteRange; 5 unit/2 integration/5 doctest; CI Linux/Windows verde su 6ac0fb8, run 39233324913 |
 | T-P2-02 | DONE | 2026-10-19 | Mapping unico, 9 unit/2 integration/5 doctest e release; [CI 39234593522](https://github.com/UraganoAngelina/lintra/actions/runs/39234593522) verde Linux/Windows su 30af262 |
 | T-P2-03 | IN_PROGRESS | 2026-10-19 | Proposta A approvata; identità/chiave/scope/summary/outcome verificati in locale e CI 39235805213, 70cdb5e; errore tecnico applicativo rinviato esplicitamente |
-| T-P3-01 | DONE_UNVERIFIED | 2026-10-19 | DTO raw formato 1 e AST tipizzato; 3 esempi + SIOC round-trip, campi ignoti rifiutati; 17 unit/2 integration/5 doctest e build locali verdi, nuova CI richiesta |
+| T-P3-01 | DONE | 2026-10-19 | Raw DTO/AST formato 1, round-trip e negativi; 17 unit/2 integration/5 doctest; [CI 39236782609](https://github.com/UraganoAngelina/lintra/actions/runs/39236782609) verde Linux/Windows su 225419d |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -366,6 +366,22 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-01 completata, riordino A applicato
+
+- **Stato:** T-P3-01 DONE; parte autonoma T-P2-03 verificata, residuo
+  ValidationRunError applicativo aperto, M1 non dichiarata completa.
+- **Evidenza:** [run 39236782609](https://github.com/UraganoAngelina/lintra/actions/runs/39236782609) su 225419d,
+  Windows MSVC job 118007665215 e Linux GNU job 118007665508 completed/success.
+  17 unit, 2 integration, 5 doctest; fmt/clippy/test/release nativi verdi.
+- **Documenti:** report T-P2-03/T-P3-01 e stato aggiornati; approvazione A
+  registrata in DECISIONS e dossier. ARCH/DET/Piano e baseline invariati.
+- **Git:** codice e lockfile verificati nel commit 225419d già su origin;
+  aggiornamento finale solo documentale, nessuna modifica Rust dopo la CI.
+  File storico Superpowers preesistente lasciato fuori dallo staging/commit.
+- **Next:** T-P3-02: modello compiled riutilizzando SchemaKey del dominio;
+  non confondere RawFlowSchema con un artefatto eseguibile. Lint dei profili
+  P0 obbligatorio in T-P3-04; residuo T-P2-03 da riprendere con payload reali.
 
 HANDOFF — 2026-10-19 — T-P3-01 / Raw model locale verificato
 
