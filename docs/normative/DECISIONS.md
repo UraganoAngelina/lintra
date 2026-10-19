@@ -162,3 +162,14 @@ Persistenza minima PK/audit mantenuta come contratto, nessun backend implementat
 Artefatti e limiti: [profilo minimale](../../schemas/sioc/2026-04-20.structural-minimal.1/README.md),
 [verifica T-P0-08](../verification/T-P0-08.md). Il gate G0 richiede ancora la
 propria approvazione; questa decisione non vale come approvazione G0.
+
+## T-P0-09 — G0 APPROVATO CON RINVII, 2026-10-19
+
+L’autore ha risposto **«Approvo G0 con i rinvii indicati»** alla checklist
+concreta del commit `407f89e`. T-P0-09 è DONE, G0 è chiuso con i rinvii
+esplicitamente elencati e M0 raggiunta. L’ambito è il contratto generico
+corrente e il profilo SIOC iniziale minimale, non la conformità normativa
+completa SIOC o la promozione CAD a FROZEN. Restano tutti i prerequisiti
+tecnici, la CI Linux/Windows reale e i gate runtime/persistenti.
+
+[Checklist approvata](../../IMPLEMENTATION_STATUS.md#g0--checklist-t-p0-09-approvata).

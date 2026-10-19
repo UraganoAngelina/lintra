@@ -15,7 +15,9 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   minima con 050 nell’ambito confermato; encoding runtime esplicito, mar01
   per il futuro controllo età. Lint Rust obbligatorio appena T-P3-04 esiste.
   Nessun compiler o validatore Rust normativo implementato.
-  **T-P1-03 DONE_UNVERIFIED**: nessuna nuova evidenza CI in questa sessione.
+  **T-P0-09 DONE / G0 APPROVED / M0 REACHED**: l’autore ha approvato
+  la checklist del commit 407f89e con i rinvii indicati.
+  **T-P1-03 DONE_UNVERIFIED**: verifica accesso GitHub e CI in corso.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -73,7 +75,7 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 
 | Gate | Stato | Evidenza / limite |
 |---|---|---|
-| G0 — normativa | AWAITING_AUTHOR_APPROVAL | Checklist T-P0-09 pronta nello scope minimale; nessuna firma G0 presunta |
+| G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | IN_PROGRESS | Toolchain pronta e workflow revisionato; autenticazione e run reali mancanti |
 | QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
 | QG-2 — CI Linux/Windows | BLOCKED | Accesso Git remoto non autenticato; nessuna run reale disponibile |
@@ -83,13 +85,14 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G-SIOC-HIST | OPEN_POLICY | DEC-SIOC-HIST-01, non blocca scaffold |
 | G-CAD-RUNTIME | NOT_STARTED | Richiede compiler, cross-record e persistenza |
 
-## G0 — checklist T-P0-09 da approvare
+## G0 — checklist T-P0-09 approvata
 
-**Proposta 2026-10-19, approvazione dell’autore: NON ANCORA RICEVUTA.**
+**Approvazione ricevuta il 2026-10-19:** «Approvo G0 con i rinvii indicati».
+La risposta si riferisce alla checklist concreta del commit `407f89e`.
 T-P0-01..08 verificati su artefatti effettivi: [report T-P0-09](docs/verification/T-P0-09.md).
 Contratto formato 1 approvato in T-P0-07; profilo iniziale SIOC minimale
-approvato in DEC-SIOC-MINIMAL-01. Questa è una richiesta distinta di chiusura
-G0 per la formalizzazione corrente con i rinvii espliciti sotto.
+approvato in DEC-SIOC-MINIMAL-01. L’approvazione chiude G0 per la formalizzazione corrente con i rinvii
+espliciti sotto; non dichiara implementate le capability o ricevuti i dataset.
 
 | Voce DET §106 | Esito proposto, evidenza e rinvio | Task/accettazioni bloccate dal rinvio |
 |---|---|---|
@@ -109,9 +112,9 @@ lint Rust sugli schemi obbligatorio in T-P3-04; fixture/golden sintetiche
 pianificate ma non ancora prodotte o approvate. Nessun blocco viene nascosto
 come validazione superata. Tutti i dettagli sono nel report T-P0-08.
 
-Fino alla firma, G0 resta aperto e M0 NOT_REACHED. Restano bloccate le task
-che richiedono G0 (T-P3-01, T-P3-06, T-P9-02/03, T-P14-01 e discendenti).
-La CI reale mancante mantiene indipendentemente bloccata T-P2-01.
+G0 è chiuso con i rinvii indicati e M0 REACHED. Il solo prerequisito G0
+è soddisfatto; restano applicabili tutte le altre dipendenze e i blocchi
+puntuali della tabella. La CI reale mancante mantiene bloccata T-P2-01.
 ARCH/DET/Piano sorgenti non sono modificati; questa checklist registra
 contratti approvati e rinvii secondo la procedura di T-P0-09.
 
@@ -119,12 +122,12 @@ contratti approvati e rinvii secondo la procedura di T-P0-09.
 
 | Milestone | Stato | Evidenza |
 |---|---|---|
-| M0 | NOT_REACHED | G0 non chiuso |
+| M0 | REACHED | G0 approvato dall’autore con rinvii espliciti, 2026-10-19 |
 | M1 | IN_PROGRESS | T-P1-01/02 completate; T-P1-03 implementata, CI reale e P2 mancanti |
 | M2–M9 | NOT_REACHED | Nessuna implementazione anticipata |
 
 `DONE` riguarda i criteri della singola task. Non dichiara completati P1,
-M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
+M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 
 ## Task
 
@@ -138,7 +141,7 @@ M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
 | T-P0-06 | DONE | 2026-10-16 | Commit 69dc995/a55a634; 15 schede/150 metadati, gap espliciti, review approvata |
 | T-P0-07 | DONE | 2026-10-19 | Commit 72f9f5e: contratto completo/artefatti approvati dall’autore; 33 casi negativi e checker passati, limiti espliciti |
 | T-P0-08 | DONE | 2026-10-19 | Profilo structural-minimal.1 autorizzato; flow+5 trace, 135 campi/5 PK/6 join, ledger, lint authoring e piano verificati; ricontrollo T-P3-04 obbligatorio |
-| T-P0-09 | DONE_UNVERIFIED | 2026-10-19 | Nove voci DET §106 chiuse/rinviate nella checklist seguente; evidenze P0 ricontrollate; attesa approvazione esplicita dell’autore |
+| T-P0-09 | DONE | 2026-10-19 | Checklist commit 407f89e approvata dall’autore: «Approvo G0 con i rinvii indicati»; G0 chiuso, M0 raggiunta |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
 | T-P1-03 | DONE_UNVERIFIED | 2026-10-16 | Commit 4f71663; workflow e 2 test, controlli locali/review approvati; CI reale non eseguita |
@@ -351,6 +354,17 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P0-09 / approvazione ricevuta
+
+- **Stato:** DONE; G0 APPROVED_WITH_DEFERRALS, M0 REACHED.
+- **Evidenza umana:** «Approvo G0 con i rinvii indicati», riferita al commit
+  407f89e. Conservati tutti i nove esiti e i rinvii puntuali approvati.
+- **File:** IMPLEMENTATION_STATUS, report T-P0-09, registro DECISIONS.
+- **Verifica:** coerenza stato/checklist/report e diff-check; nessun codice
+  Rust modificato, test precedenti non dichiarati come nuove esecuzioni.
+- **Next:** completare T-P1-03 con CI Linux/Windows reale prima di T-P2-01.
+  gh è ora installato; accesso autenticato verificato fuori sandbox.
 
 HANDOFF — 2026-10-19 — T-P0-09 / checklist pronta
 
