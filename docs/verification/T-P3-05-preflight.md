@@ -1,6 +1,9 @@
 # T-P3-05 — Preflight e CNF-COMPILER-01
 
-2026-10-19. **BLOCKED: serve una decisione sul contratto delle capability.**
+2026-10-19. **Proposta A APPROVATA dall’autore: CNF-COMPILER-01 risolto.**
+Risposta: «Approvo A: compiler incrementale con rifiuto esplicito dei costrutti esclusi».
+Il preflight sotto conserva problema e proposta sottoposta alla decisione;
+la consegna effettiva è registrata nel report T-P3-05.
 Nessun codice di produzione modificato, nessuna task successiva avviata.
 
 ## Prerequisiti verificati
@@ -44,7 +47,7 @@ prevista da T-P3-05. Implementare in anticipo tutti i costrutti locali
 supererebbe lo scope autorizzato. T-P3-05 e le sue dipendenti restano ferme.
 Nessuna violazione normativa viene convertita in errore tecnico o viceversa.
 
-## Proposta A — da approvare: compilazione incrementale verificata sull’AST
+## Proposta A — approvata: compilazione incrementale verificata sull’AST
 
 Deroga circoscritta al solo gate di compilazione di local.v1 durante lo
 sviluppo incrementale, senza dichiarare completa la capability del motore:

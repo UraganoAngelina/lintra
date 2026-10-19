@@ -93,10 +93,13 @@ pub use domain::{
 
 pub use schema::raw::{
     RawEncodingSpec, RawFieldSpec, RawFlowSchema, RawIdentitySpec, RawJoinSpec, RawRecordSchema,
-    RawReferenceDataDependency, RawRule,
+    RawReferenceDataDependency, RawResolvedEncoding, RawRule,
 };
 
-pub use schema::compiled::{CompiledFieldSpec, CompiledFlowSchema, CompiledRecordSchema};
+pub use schema::compiled::{
+    AlignmentRule, BasePresence, CompiledFieldSpec, CompiledFlowSchema, CompiledRecordSchema,
+    ContentBoundaryPolicy, EncodingSpec, FieldType, LexicalPlan, MissingValuePolicy,
+};
 
 pub use schema::repository::{
     FileSystemSchemaRepository, InMemorySchemaRepository, SchemaKeyComponent, SchemaKeyError,
@@ -104,3 +107,5 @@ pub use schema::repository::{
 };
 
 pub use schema::linter::{SchemaIssue, SchemaIssueCode, SchemaIssueSeverity, lint_raw_schema};
+
+pub use schema::{SchemaCompilationError, SchemaCompiler};

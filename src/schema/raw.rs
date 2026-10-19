@@ -7,6 +7,15 @@ use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::{Number, Value};
 use std::{collections::BTreeMap, fmt, marker::PhantomData};
 
+/// Adapter-supplied binding, excluded from authoring JSON and never inferred.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum RawResolvedEncoding {
+    Utf8,
+    Windows1252,
+    Iso8859_1,
+    Other(String),
+}
+
 /// Exact JSON integer, including values beyond i64/u64; no rounding via float.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(try_from = "Number", into = "Number")]
@@ -1039,6 +1048,9 @@ pub enum RawEncodingSpecPositionUnit {
 pub struct RawEncodingSpec {
     pub mode: RawEncodingSpecMode,
     pub position_unit: RawEncodingSpecPositionUnit,
+    /// Explicit adapter binding, never part of authoring JSON.
+    #[serde(skip)]
+    pub resolved: Option<RawResolvedEncoding>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

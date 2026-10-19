@@ -14,7 +14,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   piano fixture verificati. DEC-SIOC-MINIMAL-01: nessun dataset, semantica
   minima con 050 nell’ambito confermato; encoding runtime esplicito, mar01
   per il futuro controllo età. Ricontrollo strutturale Rust T-P3-04 eseguito: nessuna issue sui cinque trace/135 campi.
-  Nessun compiler o validatore Rust normativo implementato.
+  Compiler Rust incrementale locale verificato; nessun validatore normativo runtime implementato.
   **T-P0-09 DONE / G0 APPROVED / M0 REACHED**: l’autore ha approvato
   la checklist del commit 407f89e con i rinvii indicati.
   **T-P1-03 DONE / QG-2 PASS**: [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518)
@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 BLOCKED per CNF-COMPILER-01 (gate capability e sottoinsieme incrementale).
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 locale verificata, CI pendente; CNF-COMPILER-01/proposta A approvata; prossima T-P3-06.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -158,11 +158,18 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-02 | DONE | 2026-10-19 | Compiled immutabile, piani tipizzati e indice derivato; 25 unit/2 integration/10 doctest; [CI 39250930467](https://github.com/UraganoAngelina/lintra/actions/runs/39250930467) verde Linux/Windows su f04bb60 |
 | T-P3-03 | DONE | 2026-10-19 | Repository filesystem/memoria e errori tecnici tipizzati; 25 unit/11 integration/10 doctest; [CI 39253152098](https://github.com/UraganoAngelina/lintra/actions/runs/39253152098) verde Linux/Windows su a39924d |
 | T-P3-04 | DONE | 2026-10-19 | Linter fisico/tipi con 13 codici testati; 26 unit/25 integration/10 doctest; P0 senza issue; [CI 39257768950](https://github.com/UraganoAngelina/lintra/actions/runs/39257768950) verde Linux/Windows su a1ddabb |
-| T-P3-05 | BLOCKED | 2026-10-19 | Prerequisiti verdi; CNF-COMPILER-01: local.v1 completa vs nucleo incrementale; proposta A in docs/verification/T-P3-05-preflight.md da approvare |
+| T-P3-05 | DONE_UNVERIFIED | 2026-10-19 | Proposta A approvata; compiler del sottoinsieme locale, binding encoding Rust-only, rifiuto dei costrutti esclusi; 28 unit/36 integration/10 doctest; CI pendente |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — 2026-10-19, Linux locale
+
+T-P3-05: fmt/check/clippy/test/release/diff-check e generate_raw_model --check
+PASS; 28 unit + 36 integration + 10 doctest. Nucleo sintetico positivo;
+esempi completi/SIOC esplicitamente rifiutati per costrutti esclusi.
+Report [T-P3-05](docs/verification/T-P3-05.md); CI Linux/Windows pendente.
+
+Evidenze precedenti T-P3-04:
 
 T-P3-04: fmt/check/clippy/test/release e diff-check tutti exit 0;
 26 unit + 25 integration + 10 doctest. Generazione raw --check PASS.
@@ -247,13 +254,11 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Problemi noti e decisioni aperte
 
-- **CNF-COMPILER-01 / T-P3-05 BLOCKED:** il contratto capability richiede
-  local.v1 completa (inclusi scalar constraint), la task autorizza un nucleo
-  incrementale e assegna i restanti costrutti a task successive. Proposta A:
-  gate per ogni costrutto effettivamente presente, nessun local.v1 del motore
-  pubblicizzato completo, nessun costrutto non supportato ignorato.
-  Alternativa B: mantenere blocco e rivedere contratti/piano. Decisione umana
-  pendente; [dossier completo](docs/verification/T-P3-05-preflight.md).
+- **CNF-COMPILER-01 RISOLTO:** autore: «Approvo A: compiler incrementale con
+  rifiuto esplicito dei costrutti esclusi». Gate per costrutti presenti nel solo
+  sottoinsieme verificato; nessuna capability completa pubblicizzata dal motore.
+  Binding encoding Rust-only attuato senza cambiare il JSON; DEC-13 regionale
+  resta aperta. [Proposta approvata](docs/verification/T-P3-05-preflight.md).
 
 
 - **CNF-DOMAIN-01 risolto con proposta A approvata:** SchemaKey nel dominio,
@@ -293,6 +298,17 @@ I doctest verificano importabilità e divieto di importare `engine` e
   ancora in alcuni artefatti sono metadati storici superati, non nuova norma aperta.
 
 ## Decisioni della sessione corrente
+
+- **CNF-COMPILER-01 / proposta A approvata dall’autore:** compilazione
+  incrementale di local.v1 per ogni costrutto effettivamente verificato;
+  altri costrutti/capability rifiutati, nessuna capability del motore dichiarata
+  completa. Integrazione in SCHEMA_AUTHORING, nessuna modifica ad ARCH/DET/Piano.
+- **T-P3-05 / binding encoding e modello:** RawEncodingSpec.resolved escluso
+  dal JSON e generato riproducibilmente; UTF-8 esplicito nel solo nucleo attuale,
+  nessun default o scelta regionale. Source metadata conservati nel compiled,
+  factory sempre private e conversione unica in compiler.rs. DET §11/§157 e
+  contratto di authoring; dettagli e limiti nel report T-P3-05.
+
 
 - **T-P3-04 / DET §12/§141–142 e ARCH §14:** SchemaIssue aggiunge severity
   richiesta da §142; enum non_exhaustive con i soli 13 controlli consegnati.
@@ -396,6 +412,28 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-05 / compiler locale verificato, CI pendente
+
+- **Stato:** DONE_UNVERIFIED; CNF-COMPILER-01 risolto dall’approvazione A.
+- **Fatto:** compile(raw) con lint/preflight aggregato e conversione unica,
+  binding in memoria obbligatorio, PK/projection risolte e metadati conservati.
+  Costruttori compiled privati, nessun no-op di costrutti obbligatori esclusi.
+- **File:** compiler.rs e tests/schema_compiler.rs nuovi; mod/export lib,
+  raw/generatore, compiled/test, codici issue; contratto/preflight/report e stato.
+- **Evidenze:** fmt/check/clippy/test/release/diff-check e generatore --check
+  PASS; 28 unit + 36 integration + 10 doctest (2 unit/11 integration nuovi).
+- **Contratti/decisioni:** signature DET §11 invariata; SchemaCompilationError
+  reale, dieci nuovi codici; RawResolvedEncoding solo Rust. UTF-8 esplicito
+  per il sottoinsieme sintetico; non seleziona encoding SIOC/CAD o default.
+- **Blocchi/residui:** nessun blocco locale. CI Linux/Windows pendente.
+  T-P2-03/M1 aperte; niente validator/runtime/storage/EngineCapabilities.
+- **Documenti:** integrazione approvata in SCHEMA_AUTHORING e preflight;
+  ARCH/DET/Piano/grammatica/baseline inalterati. Report con supporto esatto.
+- **Git:** work/p1-foundations; modifica storica preesistente estranea
+  intatta e fuori dallo staging. Codice e CI da registrare alla chiusura.
+- **Next:** T-P3-06, dopo CI della task; prerequisito G0 già approvato.
+
 
 HANDOFF — 2026-10-19 — T-P3-05 preflight / CNF-COMPILER-01
 

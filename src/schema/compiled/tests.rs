@@ -59,6 +59,7 @@ fn flow_parts(traces: Vec<CompiledRecordSchema>) -> FlowParts {
         },
         schema_format_version: 1,
         regulatory_version: "synthetic-only".into(),
+        source: Default::default(),
         encoding: EncodingSpec::Utf8,
         traces,
         required_reference_data: vec![],

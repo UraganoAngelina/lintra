@@ -58,6 +58,9 @@ def fields(node, name, exclude=()):
         elif ty.startswith('BTreeMap<'):
             lines.append('    #[serde(deserialize_with = "unique_map")]')
         lines.append(f'    pub {field_name(key)}: {ty},')
+    if name == 'RawEncodingSpec':
+        # Approved Rust-only runtime binding; not an authoring JSON property.
+        lines.extend(['    /// Explicit adapter binding, never part of authoring JSON.', '    #[serde(skip)]', '    pub resolved: Option<RawResolvedEncoding>,'])
     return '\n'.join(lines)
 
 
@@ -149,6 +152,15 @@ use serde::{Deserialize, Deserializer, Serialize};
 use serde::de::{Error, MapAccess, Visitor};
 use serde_json::{Number, Value};
 use std::{collections::BTreeMap, fmt, marker::PhantomData};
+
+/// Adapter-supplied binding, excluded from authoring JSON and never inferred.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum RawResolvedEncoding {
+    Utf8,
+    Windows1252,
+    Iso8859_1,
+    Other(String),
+}
 
 /// Exact JSON integer, including values beyond i64/u64; no rounding via float.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

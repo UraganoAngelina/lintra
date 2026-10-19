@@ -1,8 +1,10 @@
 //! Immutable compiled schema models. Raw data cannot construct these types.
 //!
-//! The future compiler implementation belongs in a child module of this module
-//! (reexported by schema), so only that construction boundary can access private
-//! fields and constructors. No production compiler/factory exists in T-P3-02.
+//! Only the compiler child module (reexported by schema) constructs production
+//! values. Engine and adapters cannot access fields or constructors.
+
+#[path = "compiler.rs"]
+pub(crate) mod compiler;
 
 pub(crate) mod plans;
 pub use plans::*;
@@ -66,13 +68,6 @@ pub struct CompiledRecordSchema {
 }
 
 // Private construction input; a sibling engine/adapter cannot instantiate it.
-#[cfg_attr(
-    not(test),
-    expect(
-        dead_code,
-        reason = "private construction boundary consumed by T-P3-05"
-    )
-)]
 struct RecordParts {
     id: TraceId,
     name: Arc<str>,
@@ -88,13 +83,6 @@ struct RecordParts {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[cfg_attr(
-    not(test),
-    expect(
-        dead_code,
-        reason = "internal constructor failures become compiler issues in T-P3-05"
-    )
-)]
 enum ModelInvariantError {
     EmptyRecord,
     DuplicateFieldId(FieldId),
@@ -126,13 +114,6 @@ impl CompiledRecordSchema {
             .and_then(|index| self.fields.get(index))
     }
 
-    #[cfg_attr(
-        not(test),
-        expect(
-            dead_code,
-            reason = "private constructor reserved for the future compiler child module"
-        )
-    )]
     fn from_parts(parts: RecordParts) -> Result<Self, ModelInvariantError> {
         if parts.record_length == 0 || parts.fields.is_empty() {
             return Err(ModelInvariantError::EmptyRecord);
@@ -191,6 +172,7 @@ pub struct CompiledFlowSchema {
     key: SchemaKey,
     schema_format_version: u32,
     regulatory_version: Arc<str>,
+    source: std::collections::BTreeMap<String, serde_json::Value>,
     encoding: EncodingSpec,
     traces: Vec<CompiledRecordSchema>,
     required_reference_data: Vec<ReferenceDependency>,
@@ -200,14 +182,11 @@ pub struct CompiledFlowSchema {
     persistence_policy: Option<PersistencePolicy>,
 }
 
-#[cfg_attr(
-    not(test),
-    expect(dead_code, reason = "private construction input reserved for T-P3-05")
-)]
 struct FlowParts {
     key: SchemaKey,
     schema_format_version: u32,
     regulatory_version: Arc<str>,
+    source: std::collections::BTreeMap<String, serde_json::Value>,
     encoding: EncodingSpec,
     traces: Vec<CompiledRecordSchema>,
     required_reference_data: Vec<ReferenceDependency>,
@@ -219,7 +198,8 @@ struct FlowParts {
 
 impl CompiledFlowSchema {
     borrowed_readers! {
-        key: SchemaKey, regulatory_version: str, encoding: EncodingSpec,
+        key: SchemaKey, regulatory_version: str,
+        source: std::collections::BTreeMap<String, serde_json::Value>, encoding: EncodingSpec,
         traces: [CompiledRecordSchema], required_reference_data: [ReferenceDependency],
         cross_record_plan: CrossRecordValidationPlan, parameters: [ParameterDefinition],
         required_capabilities: [Capability], persistence_policy: Option<PersistencePolicy>,
@@ -231,13 +211,6 @@ impl CompiledFlowSchema {
         self.traces.iter().find(|trace| trace.id == *id)
     }
 
-    #[cfg_attr(
-        not(test),
-        expect(
-            dead_code,
-            reason = "private constructor reserved for the future compiler child module"
-        )
-    )]
     fn from_parts(parts: FlowParts) -> Result<Self, ModelInvariantError> {
         if parts.traces.is_empty() {
             return Err(ModelInvariantError::EmptyFlow);
@@ -254,6 +227,7 @@ impl CompiledFlowSchema {
             key: parts.key,
             schema_format_version: parts.schema_format_version,
             regulatory_version: parts.regulatory_version,
+            source: parts.source,
             encoding: parts.encoding,
             traces: parts.traces,
             required_reference_data: parts.required_reference_data,

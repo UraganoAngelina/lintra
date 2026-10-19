@@ -362,6 +362,20 @@ compilazione; un motore non pubblicizza una capability implementata solo
 parzialmente. Non è sufficiente che il numero di formato sia riconosciuto.
 Nessuna di queste capability è dichiarata implementata nello scaffold attuale.
 
+### Deroga di sviluppo CNF-COMPILER-01 — approvata
+
+L’autore ha approvato la proposta A del [dossier T-P3-05](verification/T-P3-05-preflight.md):
+«Approvo A: compiler incrementale con rifiuto esplicito dei costrutti esclusi».
+Durante la consegna incrementale, il compiler può accettare local.v1 solo
+per schemi i cui costrutti presenti siano tutti supportati e verificati;
+la dichiarazione local.v1 rimane obbligatoria. Ogni costrutto escluso e ogni
+altra capability non supportata causa Error, senza no-op o cancellazioni.
+Questa deroga riguarda il gate del compiler, non autorizza il motore a
+pubblicizzare local.v1 completa. Non cambia formato JSON, baseline normative,
+encoding regionale o la signature compile(raw). Il binding di encoding
+previsto sopra è una proprietà solo Rust in memoria, esclusa dal JSON.
+Lo scope esatto di ogni consegna rimane nel relativo report di verifica.
+
 ## Persistenza e piani temporali
 
 Persistence_policy null significa nessuna policy persistente attiva; non

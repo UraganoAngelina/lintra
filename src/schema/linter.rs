@@ -27,6 +27,16 @@ pub enum SchemaIssueCode {
     Overlap,
     RecordLengthMismatch,
     InvalidTypeParameters,
+    MissingEncodingBinding,
+    UnsupportedEncoding,
+    MissingCapability,
+    UnsupportedCapability,
+    UnsupportedConstruct,
+    InvalidSchemaValue,
+    InvalidRecordKey,
+    MissingFieldReference,
+    InvalidDiagnosticCode,
+    InternalCompilerInvariant,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
