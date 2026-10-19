@@ -1,0 +1,4018 @@
+{
+  "status": "DRAFT_INPUT_GAPS_NOT_EXECUTABLE",
+  "task": "T-P0-08",
+  "flow_id": "SIOC",
+  "source_flow_sha256": "3567bafd3cb9b762becdd46a356454b89df094c7b88c5b1538c97a1bbaf26c45",
+  "source_regulatory_version": "2026-04-20",
+  "target_schema_version": "2026-04-20.lintra-1-draft",
+  "reference_dependencies": [
+    "foreign-country-codes",
+    "health-authority-codes",
+    "hsp11-structure-codes",
+    "icd9-cm-diagnosis-codes",
+    "icd9-cm-procedure-codes",
+    "icpc-codes",
+    "istat-municipality-codes",
+    "italian-region-codes",
+    "regional-entity-manager-codes-dgr-2961-2012",
+    "regional-udo-codes",
+    "ria11-structure-codes",
+    "sts11-structure-codes"
+  ],
+  "fields": [
+    {
+      "trace_id": "1",
+      "field_id": "1.1",
+      "source_index": 0,
+      "source_field_sha256": "8193fdaab15c3266295c12d45d099352fc029efeeab338601a351044dd06ba26",
+      "cases": [
+        {
+          "id": "SIOC-1-1.1-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-1-1.1-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.1-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "logical_length",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-1-1.1-constraint-1",
+          "constraint_index": 1,
+          "constraint_kind": "digits_only",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-1-1.1-constraint-2",
+          "constraint_index": 2,
+          "constraint_kind": "substring_not_equals",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.2",
+      "source_index": 1,
+      "source_field_sha256": "4e9b46dc79bebc7c244e53fdf7d3223ee6a08748cbb7b1e260610ae8dda2a30a",
+      "cases": [
+        {
+          "id": "SIOC-1-1.2-required_if",
+          "template": "required_condition"
+        },
+        {
+          "id": "SIOC-1-1.2-forbidden_if",
+          "template": "forbidden_condition"
+        },
+        {
+          "id": "SIOC-1-1.2-datatype",
+          "template": "datatype_text_pending"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.3",
+      "source_index": 2,
+      "source_field_sha256": "00b79a81bf0c1253f472a997eacde3d48088af6f57ef2ba9026c8a565099327d",
+      "cases": [
+        {
+          "id": "SIOC-1-1.3-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-1-1.3-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.3-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.4",
+      "source_index": 3,
+      "source_field_sha256": "c0389f6b84e0e9c4e3c9dd3ff05d5bffcc8f4a11196d03427befadad18924a3b",
+      "cases": [
+        {
+          "id": "SIOC-1-1.4-required_if",
+          "template": "required_condition"
+        },
+        {
+          "id": "SIOC-1-1.4-forbidden_if",
+          "template": "forbidden_condition"
+        },
+        {
+          "id": "SIOC-1-1.4-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.4-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "structure_only",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.5",
+      "source_index": 4,
+      "source_field_sha256": "a5d419bb5ee082bd75e98ba77c07e9c1088b12c957f34802e954f4b69fb97a3d",
+      "cases": [
+        {
+          "id": "SIOC-1-1.5-forbidden_if",
+          "template": "forbidden_condition"
+        },
+        {
+          "id": "SIOC-1-1.5-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.5-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "structure_only",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.6",
+      "source_index": 5,
+      "source_field_sha256": "9b6a19e5195bf4d5cb025db44e455a363066aa33a4e66c1cc3503efff0b2ebeb",
+      "cases": [
+        {
+          "id": "SIOC-1-1.6-forbidden_if",
+          "template": "forbidden_condition"
+        },
+        {
+          "id": "SIOC-1-1.6-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.6-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "digits_only_if_present",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-1-1.6-constraint-1",
+          "constraint_index": 1,
+          "constraint_kind": "logical_length_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.7",
+      "source_index": 6,
+      "source_field_sha256": "112961bd48c52f85248c536bd80792064ab5e6a4e47fc013cc0659a8c1b4a190",
+      "cases": [
+        {
+          "id": "SIOC-1-1.7-required_if",
+          "template": "required_condition"
+        },
+        {
+          "id": "SIOC-1-1.7-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.7-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "no_lowercase_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.8",
+      "source_index": 7,
+      "source_field_sha256": "9c132cbb499e910e8d20f671081dd00ad807b5184ab3c49e95f562773392932b",
+      "cases": [
+        {
+          "id": "SIOC-1-1.8-required_if",
+          "template": "required_condition"
+        },
+        {
+          "id": "SIOC-1-1.8-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.8-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "no_lowercase_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.9",
+      "source_index": 8,
+      "source_field_sha256": "36628f402e93c86fb2ccf965ee589cd12041a241b6870070f303b8fa394af3e4",
+      "cases": [
+        {
+          "id": "SIOC-1-1.9-required_if",
+          "template": "required_condition"
+        },
+        {
+          "id": "SIOC-1-1.9-forbidden_if",
+          "template": "forbidden_condition"
+        },
+        {
+          "id": "SIOC-1-1.9-datatype",
+          "template": "datatype_date"
+        },
+        {
+          "id": "SIOC-1-1.9-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "date",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.10",
+      "source_index": 9,
+      "source_field_sha256": "444b5e66a1ad13dd2558fbd0369c269e7da28d85f5c5635dce27cd1f74f1a2e5",
+      "cases": [
+        {
+          "id": "SIOC-1-1.10-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-1-1.10-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.10-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.11",
+      "source_index": 10,
+      "source_field_sha256": "b1a480bc375d1b1fd2afd19dd50c21892310b80d7c818fb45723c5b8b0b8897e",
+      "cases": [
+        {
+          "id": "SIOC-1-1.11-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-1-1.11-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.11-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_or_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.12",
+      "source_index": 11,
+      "source_field_sha256": "5dd69c0830fc99dd204a82644541282404a0216d81aacd33c8a199f594ffeb90",
+      "cases": [
+        {
+          "id": "SIOC-1-1.12-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-1-1.12-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.12-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.13",
+      "source_index": 12,
+      "source_field_sha256": "7c72baab7de1b9b8422793ee9e60d5c10297a9e0c8fd8391269bd2bfa85fff02",
+      "cases": [
+        {
+          "id": "SIOC-1-1.13-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-1-1.13-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.13-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_or_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.14",
+      "source_index": 13,
+      "source_field_sha256": "013087436853a0f1f63e9d06e87b69b81f1651ecb5d0381017ae6c6facfb66d6",
+      "cases": [
+        {
+          "id": "SIOC-1-1.14-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-1-1.14-datatype",
+          "template": "datatype_text_pending"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.15",
+      "source_index": 14,
+      "source_field_sha256": "9fc648960320827c89983f6aec0e157c558cff435b440cf8796547db143de09c",
+      "cases": [
+        {
+          "id": "SIOC-1-1.15-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-1-1.15-datatype",
+          "template": "datatype_text_pending"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.16",
+      "source_index": 15,
+      "source_field_sha256": "5e4616b6dd12eb0a6ac3da8d4776b09614ec378ca20a4d357e3914ec2e9b36d8",
+      "cases": [
+        {
+          "id": "SIOC-1-1.16-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-1-1.16-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.16-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.17",
+      "source_index": 16,
+      "source_field_sha256": "d234ce943d0c1a0bd32a7fee7d9913ee59eadfcabec573083308148bea662491",
+      "cases": [
+        {
+          "id": "SIOC-1-1.17-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-1-1.17-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.17-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "logical_length",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-1-1.17-constraint-1",
+          "constraint_index": 1,
+          "constraint_kind": "digits_only",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-1-1.17-constraint-2",
+          "constraint_index": 2,
+          "constraint_kind": "composite_segments",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "1",
+      "field_id": "1.18",
+      "source_index": 17,
+      "source_field_sha256": "bcb541f3e4dd3b1e473ebc596d3cc4ad06d5f757063189aa01e85943ab696de8",
+      "cases": [
+        {
+          "id": "SIOC-1-1.18-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-1-1.18-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-1-1.18-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.1",
+      "source_index": 0,
+      "source_field_sha256": "bfe3480609ddb63680850fa65b9e9b96f6186dfb9d0493727511093257a6f4c9",
+      "cases": [
+        {
+          "id": "SIOC-2-2.1-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.1-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.1-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "logical_length",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-2-2.1-constraint-1",
+          "constraint_index": 1,
+          "constraint_kind": "digits_only",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-2-2.1-constraint-2",
+          "constraint_index": 2,
+          "constraint_kind": "substring_not_equals",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.2",
+      "source_index": 1,
+      "source_field_sha256": "2a9c3e4a57f5a45ffe6af8f1cef29a2af18000b6b2cf7f0c47c108498621b78f",
+      "cases": [
+        {
+          "id": "SIOC-2-2.2-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.2-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.2-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.3",
+      "source_index": 2,
+      "source_field_sha256": "51fb59aa58413d623d5e3d6feaed7d843b6c91a9498db46dd632417da6be106c",
+      "cases": [
+        {
+          "id": "SIOC-2-2.3-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.3-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.3-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.4",
+      "source_index": 3,
+      "source_field_sha256": "d6756b2ed1b8f3a3e9733306e6e72820b96471855217614c655ad3d95e4c6e58",
+      "cases": [
+        {
+          "id": "SIOC-2-2.4-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.4-datatype",
+          "template": "datatype_date"
+        },
+        {
+          "id": "SIOC-2-2.4-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "date",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.5",
+      "source_index": 4,
+      "source_field_sha256": "68dc6f21d01549f077802d1302fdc011338ca2ced8cc0f5bb778c7d1a91eae54",
+      "cases": [
+        {
+          "id": "SIOC-2-2.5-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.5-datatype",
+          "template": "datatype_date"
+        },
+        {
+          "id": "SIOC-2-2.5-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "date",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.6",
+      "source_index": 5,
+      "source_field_sha256": "b01f846dda693d5a36ba9fddfc9ea6090abef50f583cc2007817ba9014f87b7e",
+      "cases": [
+        {
+          "id": "SIOC-2-2.6-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.6-datatype",
+          "template": "datatype_date"
+        },
+        {
+          "id": "SIOC-2-2.6-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "date",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.7",
+      "source_index": 6,
+      "source_field_sha256": "f068f5bb6865c384febf7cb8f25578e97f92152d8386caeac5190c073fd23d38",
+      "cases": [
+        {
+          "id": "SIOC-2-2.7-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.7-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.7-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.8",
+      "source_index": 7,
+      "source_field_sha256": "8dab5a8a0c4fb636164f8f4452fa0e534ad6c9efe90dd503ba9132018399394d",
+      "cases": [
+        {
+          "id": "SIOC-2-2.8-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.8-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-2-2.8-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.9",
+      "source_index": 8,
+      "source_field_sha256": "5cafd254f8a54dbf38651da20a621ea3493ca8651b9634071b59e34f1a93c785",
+      "cases": [
+        {
+          "id": "SIOC-2-2.9-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.9-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "structure_only",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.10",
+      "source_index": 9,
+      "source_field_sha256": "10602e0a3e87c9565057f8f271775c9aad9004d31678b3e77d28a5c5edf5204f",
+      "cases": [
+        {
+          "id": "SIOC-2-2.10-required_if",
+          "template": "required_condition"
+        },
+        {
+          "id": "SIOC-2-2.10-datatype",
+          "template": "datatype_text_pending"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.11",
+      "source_index": 10,
+      "source_field_sha256": "abdc91f39d097ed81317a7f7cbdf1de740be957bc5f9305aefc2781e0fa3368b",
+      "cases": [
+        {
+          "id": "SIOC-2-2.11-required_if",
+          "template": "required_condition"
+        },
+        {
+          "id": "SIOC-2-2.11-forbidden_if",
+          "template": "forbidden_condition"
+        },
+        {
+          "id": "SIOC-2-2.11-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.11-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.12",
+      "source_index": 11,
+      "source_field_sha256": "ded7c3b739421376968f97579b618e20c55e4473246bb5de6eb244280d2d5526",
+      "cases": [
+        {
+          "id": "SIOC-2-2.12-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.12-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.12-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.13",
+      "source_index": 12,
+      "source_field_sha256": "67ecebf1e374b50eeb7d49c14e0ed63368de8446baef5592ca82187a2095cfda",
+      "cases": [
+        {
+          "id": "SIOC-2-2.13-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.13-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.13-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.14",
+      "source_index": 13,
+      "source_field_sha256": "872cf93d256510767199410c447723714f93a8358d3379e2f2076bdb14485045",
+      "cases": [
+        {
+          "id": "SIOC-2-2.14-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.14-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.14-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.15",
+      "source_index": 14,
+      "source_field_sha256": "12bbd317a8c961e2b9501cf25ded5bcf482ceff818412cce18eb08803cb3b0e3",
+      "cases": [
+        {
+          "id": "SIOC-2-2.15-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.15-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.15-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.16",
+      "source_index": 15,
+      "source_field_sha256": "f950f4bc1297d070d4765e8f0cc45ea8a12fe525750c6eab3cb9586fecd805d5",
+      "cases": [
+        {
+          "id": "SIOC-2-2.16-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.16-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.16-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.17",
+      "source_index": 16,
+      "source_field_sha256": "cbdec89847ec14e63d46f060fc1161b761e93695904aaaddb459d0f11a3a5111",
+      "cases": [
+        {
+          "id": "SIOC-2-2.17-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.17-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.17-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.18",
+      "source_index": 17,
+      "source_field_sha256": "621d5c87b1b1ef9da11ab0efb02bdc9a874d264a65446a94fdf407e0676f9249",
+      "cases": [
+        {
+          "id": "SIOC-2-2.18-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.18-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.18-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.19",
+      "source_index": 18,
+      "source_field_sha256": "9ade632a34a8e52b822bb6f295769833f374821f4a37fb746b725bf82745c1ac",
+      "cases": [
+        {
+          "id": "SIOC-2-2.19-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.19-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.19-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.20",
+      "source_index": 19,
+      "source_field_sha256": "ed6e9613e975d5c766a44492ad209a12545bdc90305f94f7b3fa9c60b41c46d9",
+      "cases": [
+        {
+          "id": "SIOC-2-2.20-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.20-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.20-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.21",
+      "source_index": 20,
+      "source_field_sha256": "86b0dad1fc4f9dfd921c89d6a43c32a3481c20b6ad96ced1f59372c9aafbd563",
+      "cases": [
+        {
+          "id": "SIOC-2-2.21-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.21-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.21-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.22",
+      "source_index": 21,
+      "source_field_sha256": "ade1c530f9f66b3c0ef1654e5353009b274a07258a8afe3287efee5a8ba3dbd6",
+      "cases": [
+        {
+          "id": "SIOC-2-2.22-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.22-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.22-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.23",
+      "source_index": 22,
+      "source_field_sha256": "4b459c330a72645db6e977c0b7fd3795c56e6f09a61e99ee9102295cdd0f41e7",
+      "cases": [
+        {
+          "id": "SIOC-2-2.23-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.23-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.23-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.24",
+      "source_index": 23,
+      "source_field_sha256": "7442b8269460f3caebe8fdd5ca1582bb7f7a7fceaf0c3d955ca3c3769d1af86b",
+      "cases": [
+        {
+          "id": "SIOC-2-2.24-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.24-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.25",
+      "source_index": 24,
+      "source_field_sha256": "719d807b7857bd2587bd6f25966e2113b6c7f2a2d3d466f8aed1829ff7149b05",
+      "cases": [
+        {
+          "id": "SIOC-2-2.25-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.25-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.25-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.26",
+      "source_index": 25,
+      "source_field_sha256": "72494d6b78101f27bc2437622348772ad2f8a4fe221463edb783d651bffd419c",
+      "cases": [
+        {
+          "id": "SIOC-2-2.26-required_if",
+          "template": "required_condition"
+        },
+        {
+          "id": "SIOC-2-2.26-forbidden_if",
+          "template": "forbidden_condition"
+        },
+        {
+          "id": "SIOC-2-2.26-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.26-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "composite_segments_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.27",
+      "source_index": 26,
+      "source_field_sha256": "0e9c7158165c967e8f4ad86736065d32062cb54f7529282c73c7273dc471c763",
+      "cases": [
+        {
+          "id": "SIOC-2-2.27-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-2-2.27-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-2-2.27-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "digits_only",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-2-2.27-constraint-1",
+          "constraint_index": 1,
+          "constraint_kind": "numeric_range",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.28",
+      "source_index": 27,
+      "source_field_sha256": "ad82f25c1a3fb38bb739fcaaf59cc4c3b3f97b99b0b440e7411346a340781fe9",
+      "cases": [
+        {
+          "id": "SIOC-2-2.28-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.28-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.28-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.29",
+      "source_index": 28,
+      "source_field_sha256": "b478635b3bfa52f4c322260f27eb0f62898457460b08f51d6219b7092e9bd886",
+      "cases": [
+        {
+          "id": "SIOC-2-2.29-required_if",
+          "template": "required_condition"
+        },
+        {
+          "id": "SIOC-2-2.29-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.29-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_or_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.30",
+      "source_index": 29,
+      "source_field_sha256": "c2f123108b050ff7b04b25bb6bd89d091d63d50a418c6c959512c219f3ac05d0",
+      "cases": [
+        {
+          "id": "SIOC-2-2.30-required_if",
+          "template": "required_condition"
+        },
+        {
+          "id": "SIOC-2-2.30-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.30-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.31",
+      "source_index": 30,
+      "source_field_sha256": "87bf976485af417d49040c09f1fbf234e0621637b7e63e4491bcf3f62c22c458",
+      "cases": [
+        {
+          "id": "SIOC-2-2.31-required_if",
+          "template": "required_condition"
+        },
+        {
+          "id": "SIOC-2-2.31-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.31-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_or_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.32",
+      "source_index": 31,
+      "source_field_sha256": "85e8373e5f1615542394a86a6f0a45b2e2c31c9abfd89e4f243bca111673c934",
+      "cases": [
+        {
+          "id": "SIOC-2-2.32-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.32-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.32-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.33",
+      "source_index": 32,
+      "source_field_sha256": "bb659cad23c2052bfd2a63dd7dfb7164dc96c04fcf33134ea7ae69c2021b1686",
+      "cases": [
+        {
+          "id": "SIOC-2-2.33-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.33-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.34",
+      "source_index": 33,
+      "source_field_sha256": "ec63751e7a861230727b4e3565b965adcf6bc71ef6289d242133b0a16732ed9f",
+      "cases": [
+        {
+          "id": "SIOC-2-2.34-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.34-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.35",
+      "source_index": 34,
+      "source_field_sha256": "0512ae06f44ea077db3f6b4c282ed2bc34a3546c462e93d4418df38c2a5eb303",
+      "cases": [
+        {
+          "id": "SIOC-2-2.35-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.35-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.36",
+      "source_index": 35,
+      "source_field_sha256": "ede25d3429f8f974de5fa7b889a4337789fdfdfcb809fcbd20a27baf73ba3f57",
+      "cases": [
+        {
+          "id": "SIOC-2-2.36-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.36-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.37",
+      "source_index": 36,
+      "source_field_sha256": "05f1a44ee358691b6c648876b60a417b935f262c61bb5180dbf5bc65ccf26dbf",
+      "cases": [
+        {
+          "id": "SIOC-2-2.37-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.37-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.38",
+      "source_index": 37,
+      "source_field_sha256": "5e1db5a6a942c3dcf98d238de7c7e2e847f2b0bce8abbdfcced8f273a2c7d7a1",
+      "cases": [
+        {
+          "id": "SIOC-2-2.38-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.38-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.39",
+      "source_index": 38,
+      "source_field_sha256": "97de0803cf6e1713326826052d5a4e47ad144e15fe8ee71892664b341f3225fb",
+      "cases": [
+        {
+          "id": "SIOC-2-2.39-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.39-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.40",
+      "source_index": 39,
+      "source_field_sha256": "445cd667a59fe82dd4f05dd09651aa351fc87a5701fe2f24c0222ad7b9d5b3d6",
+      "cases": [
+        {
+          "id": "SIOC-2-2.40-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.40-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.41",
+      "source_index": 40,
+      "source_field_sha256": "411706e3088d6ce23ae106855391a82eb49b309400b699a0919cc3f4a55bcafb",
+      "cases": [
+        {
+          "id": "SIOC-2-2.41-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.41-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.42",
+      "source_index": 41,
+      "source_field_sha256": "7ad77b3c1a35b9451af7f58bc8abba35cb381883ea7d99c95b5b1ed77dd28af5",
+      "cases": [
+        {
+          "id": "SIOC-2-2.42-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.42-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.43",
+      "source_index": 42,
+      "source_field_sha256": "9942d3f274f4f1f0f2e47efa341794bc4c80b3e575fe17689ec7d2effa627a31",
+      "cases": [
+        {
+          "id": "SIOC-2-2.43-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.43-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.44",
+      "source_index": 43,
+      "source_field_sha256": "7024550b6e15b9bbbe9ce9d1bcec94c94b1a308ad4b34ad5ff56b54d40b25f22",
+      "cases": [
+        {
+          "id": "SIOC-2-2.44-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.44-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.45",
+      "source_index": 44,
+      "source_field_sha256": "c841d4a1a18a0b1e275c2481c16b7da9d07ec850e6d97efb4fa7c50d49fa1678",
+      "cases": [
+        {
+          "id": "SIOC-2-2.45-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.45-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.46",
+      "source_index": 45,
+      "source_field_sha256": "0fe267a15df0b5cdfe22460a18aca7b64065829bd0a9db3802051c61953219f0",
+      "cases": [
+        {
+          "id": "SIOC-2-2.46-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.46-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.47",
+      "source_index": 46,
+      "source_field_sha256": "685ac61f7eef2fa1aeeb88b3a235f5d7c7fa8ba7bb58ac82ff373e1282d7d146",
+      "cases": [
+        {
+          "id": "SIOC-2-2.47-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.47-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.48",
+      "source_index": 47,
+      "source_field_sha256": "73a794a9bad9b049832d4d3ba9cdd4a165b9169aadbf60bafc5cb23513c58b27",
+      "cases": [
+        {
+          "id": "SIOC-2-2.48-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.48-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.49",
+      "source_index": 48,
+      "source_field_sha256": "e6267453b01ebfd398080ce30537eb8f6d56f14ce486d7d1c73d2a3136a295e8",
+      "cases": [
+        {
+          "id": "SIOC-2-2.49-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.49-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.49-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "logical_length",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-2-2.49-constraint-1",
+          "constraint_index": 1,
+          "constraint_kind": "digits_only",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-2-2.49-constraint-2",
+          "constraint_index": 2,
+          "constraint_kind": "composite_segments",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "field_id": "2.50",
+      "source_index": 49,
+      "source_field_sha256": "d4b36954a77e26ae11b4c36f56a7cc79492a8652410a4f4d582681783e834513",
+      "cases": [
+        {
+          "id": "SIOC-2-2.50-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-2-2.50-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-2-2.50-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.1",
+      "source_index": 0,
+      "source_field_sha256": "703051434569e50c4f79e3a05b87b28435c20b89148bd223ac12b29d4c252f6f",
+      "cases": [
+        {
+          "id": "SIOC-3-3.1-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-3-3.1-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-3-3.1-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "logical_length",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-3-3.1-constraint-1",
+          "constraint_index": 1,
+          "constraint_kind": "digits_only",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-3-3.1-constraint-2",
+          "constraint_index": 2,
+          "constraint_kind": "substring_not_equals",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.2",
+      "source_index": 1,
+      "source_field_sha256": "418b8130c1fbe3b733e1a5171514d531a7ada7c86b3450d86ce82cd1c5f4fc3c",
+      "cases": [
+        {
+          "id": "SIOC-3-3.2-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-3-3.2-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-3-3.2-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "structure_only",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.3",
+      "source_index": 2,
+      "source_field_sha256": "d7e9f09d57d70b53ab8476cf24731bf82d8fde036420ce736011ba2084014f3a",
+      "cases": [
+        {
+          "id": "SIOC-3-3.3-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-3-3.3-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-3-3.3-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.4",
+      "source_index": 3,
+      "source_field_sha256": "131c9cd79cb4587a1b8d655be086d803be34a8087855419f92e481d7ae18ffa4",
+      "cases": [
+        {
+          "id": "SIOC-3-3.4-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-3-3.4-datatype",
+          "template": "datatype_date"
+        },
+        {
+          "id": "SIOC-3-3.4-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "date",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.5",
+      "source_index": 4,
+      "source_field_sha256": "6e1c66a7961dd2351655b26167bf3890998de058d900875276a1b3961c494755",
+      "cases": [
+        {
+          "id": "SIOC-3-3.5-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-3-3.5-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-3-3.5-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.6",
+      "source_index": 5,
+      "source_field_sha256": "d0ce672a02afe7d29bafd547dd42fb296f1db3058e77e06807bc9bb71ddd07ee",
+      "cases": [
+        {
+          "id": "SIOC-3-3.6-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-3-3.6-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.7",
+      "source_index": 6,
+      "source_field_sha256": "f4bcb9d514c54657fc91f0f32ac1ef0b505049624905e2b17dbcfc7750bb0d1f",
+      "cases": [
+        {
+          "id": "SIOC-3-3.7-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-3-3.7-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.8",
+      "source_index": 7,
+      "source_field_sha256": "8687a76592c0c73124a43c2a100d423206b7b1696d45f19f335f752005878dd8",
+      "cases": [
+        {
+          "id": "SIOC-3-3.8-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.8-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.9",
+      "source_index": 8,
+      "source_field_sha256": "55b2a81f146921edf0693150481badb317c901bc3560e828ea79b7979fc066f2",
+      "cases": [
+        {
+          "id": "SIOC-3-3.9-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.9-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.10",
+      "source_index": 9,
+      "source_field_sha256": "afef3080b984c8a36aa4301564f251b8e6f02daf5c347c24ee93d44dc16e91ff",
+      "cases": [
+        {
+          "id": "SIOC-3-3.10-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.10-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.11",
+      "source_index": 10,
+      "source_field_sha256": "467d8235a704ac1aaf5e3afb9a1261a0d028cf4d38ff252a2daaf50cb52f8abc",
+      "cases": [
+        {
+          "id": "SIOC-3-3.11-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.11-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.12",
+      "source_index": 11,
+      "source_field_sha256": "076f59c14292485996214c16699f6bde4059b1118f67b9328c2c84aa942c9d2a",
+      "cases": [
+        {
+          "id": "SIOC-3-3.12-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.12-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.13",
+      "source_index": 12,
+      "source_field_sha256": "587a312da6b27cd803fe8cb17b762ec4024417cc2f4a76b6632c90aefb422166",
+      "cases": [
+        {
+          "id": "SIOC-3-3.13-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.13-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.14",
+      "source_index": 13,
+      "source_field_sha256": "812b59ea11b3617692ec2742544d2f78a20a734566285196474066297f8c2190",
+      "cases": [
+        {
+          "id": "SIOC-3-3.14-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.14-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.15",
+      "source_index": 14,
+      "source_field_sha256": "ac6782ca3df4eb25c3a08f8f26a29a9af02a76d46048b8f07728fa36188f263e",
+      "cases": [
+        {
+          "id": "SIOC-3-3.15-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.15-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.16",
+      "source_index": 15,
+      "source_field_sha256": "0565b94255b0508327057506a79d8d3c78352b17e47c0a1b28686c2f8f8ea7b4",
+      "cases": [
+        {
+          "id": "SIOC-3-3.16-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.16-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.17",
+      "source_index": 16,
+      "source_field_sha256": "5bd040f714f3df0b1651fb65bb7377a221cc8a6c9a5b9bb638d91e4b118ba5e7",
+      "cases": [
+        {
+          "id": "SIOC-3-3.17-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.17-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-3-3.17-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.18",
+      "source_index": 17,
+      "source_field_sha256": "9e6243652d3b49803b89dee5773d0e6f1e4d5f4f30da7167929afe97012d7439",
+      "cases": [
+        {
+          "id": "SIOC-3-3.18-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.18-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.19",
+      "source_index": 18,
+      "source_field_sha256": "99874c39724389a4a3c5708da0c7e4ea56d371c89f4fb48b919897fc4a89b47a",
+      "cases": [
+        {
+          "id": "SIOC-3-3.19-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.19-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-3-3.19-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "positional_bitset",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.20",
+      "source_index": 19,
+      "source_field_sha256": "6798011dca8dbac8f17beee49e166e3e495889939ebbc08565db60f788a27758",
+      "cases": [
+        {
+          "id": "SIOC-3-3.20-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.20-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.21",
+      "source_index": 20,
+      "source_field_sha256": "982bbeb09e2b039e3ca0d4ba9b170aeafdfe10805372b157756450b94e9f5683",
+      "cases": [
+        {
+          "id": "SIOC-3-3.21-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.21-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.22",
+      "source_index": 21,
+      "source_field_sha256": "fe2ada56da17e12b4aae462e6e965d22f9a478739fab514a325a4c0d74733151",
+      "cases": [
+        {
+          "id": "SIOC-3-3.22-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.22-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.23",
+      "source_index": 22,
+      "source_field_sha256": "46c15d0ab5c284c068b6d7a935ce7371b4f323d8a7ff54fc0550acc1080b5b5e",
+      "cases": [
+        {
+          "id": "SIOC-3-3.23-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-3-3.23-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.24",
+      "source_index": 23,
+      "source_field_sha256": "e17a27b25bd5d77ddbf69d0b898497dc211b6f57d9c11fda2cc77736919159ae",
+      "cases": [
+        {
+          "id": "SIOC-3-3.24-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.24-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.25",
+      "source_index": 24,
+      "source_field_sha256": "d3b498a6f5dd5ac4e730327c19ce48f592f99501aa12e803d8fc96f2bbd37180",
+      "cases": [
+        {
+          "id": "SIOC-3-3.25-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.25-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.26",
+      "source_index": 25,
+      "source_field_sha256": "c816199469f263ba1e80ebf43e1b268b7cd39e51f3f77a662785ae47869ee441",
+      "cases": [
+        {
+          "id": "SIOC-3-3.26-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.26-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.27",
+      "source_index": 26,
+      "source_field_sha256": "331b3c016424178ec8ea52d27706aa6fb133644194f53577b1443cb165007756",
+      "cases": [
+        {
+          "id": "SIOC-3-3.27-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.27-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.28",
+      "source_index": 27,
+      "source_field_sha256": "0b1f1d17be33760c4cced3bd07fa757046a74f088cd00749939d2a4616f0a113",
+      "cases": [
+        {
+          "id": "SIOC-3-3.28-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.28-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.29",
+      "source_index": 28,
+      "source_field_sha256": "3c1fd54f156c447418bc16b254e841fc7f08a71464d4b5319b03ad7072747a2c",
+      "cases": [
+        {
+          "id": "SIOC-3-3.29-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.29-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.30",
+      "source_index": 29,
+      "source_field_sha256": "3679fa3661e9525d03d32b55e4042c29b2b3219b10d2dede3c4e4328ca83bd95",
+      "cases": [
+        {
+          "id": "SIOC-3-3.30-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.30-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.31",
+      "source_index": 30,
+      "source_field_sha256": "78c47508880d60dbb6f8e976f67ab0d37b40113c6f7a3938742994fce9df4e18",
+      "cases": [
+        {
+          "id": "SIOC-3-3.31-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.31-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.32",
+      "source_index": 31,
+      "source_field_sha256": "a8c3adf8efb9ecb6830e5bb005ebc26c6bcce510596201a74d5590a1ea5aa742",
+      "cases": [
+        {
+          "id": "SIOC-3-3.32-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.32-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.33",
+      "source_index": 32,
+      "source_field_sha256": "1fb56e8e69c455485d63c0daeea3078b87c85bf298b584069a2323812593faa9",
+      "cases": [
+        {
+          "id": "SIOC-3-3.33-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-3-3.33-datatype",
+          "template": "datatype_text_pending"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.34",
+      "source_index": 33,
+      "source_field_sha256": "99d81b91843b75f8d35f70cddfea535268d8d27f3f685e0d2c8a0128303e7dc1",
+      "cases": [
+        {
+          "id": "SIOC-3-3.34-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-3-3.34-datatype",
+          "template": "datatype_numeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.35",
+      "source_index": 34,
+      "source_field_sha256": "6368853c7621cb34856bc2d928b57bdabfd3a0e1db7eaffce9b73941f1c33297",
+      "cases": [
+        {
+          "id": "SIOC-3-3.35-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-3-3.35-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-3-3.35-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "logical_length",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-3-3.35-constraint-1",
+          "constraint_index": 1,
+          "constraint_kind": "digits_only",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-3-3.35-constraint-2",
+          "constraint_index": 2,
+          "constraint_kind": "composite_segments",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "field_id": "3.36",
+      "source_index": 35,
+      "source_field_sha256": "41b9c658e2ee1c949718c63ceab35ce2cb3722b9360b8b180bba96e25be3b13c",
+      "cases": [
+        {
+          "id": "SIOC-3-3.36-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-3-3.36-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-3-3.36-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.1",
+      "source_index": 0,
+      "source_field_sha256": "b7cb991f01b25251fa4a771239526d8766d5a1491dd27f99caba5d0b48636e11",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.1-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.1-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.1-4.1-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.2",
+      "source_index": 1,
+      "source_field_sha256": "feb3af01755a1b76e2f429972097ca72f40e59dca9421fdfa402de310d99b4fb",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.2-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.2-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-4.1-4.2-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "structure_only",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.3",
+      "source_index": 2,
+      "source_field_sha256": "575b04c124e48454eb26d4cabe527578bc4b2a354b99c58308b4365ba6b8e656",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.3-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.3-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.1-4.3-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.4",
+      "source_index": 3,
+      "source_field_sha256": "9eac4a729ee8e1cfc487bb1ff32eb2e84273a706c3896fd4117de6a0f0866e61",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.4-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.4-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.1-4.4-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.5",
+      "source_index": 4,
+      "source_field_sha256": "9063e8cda6beaeb6a31de7bce196bd402e21e98ab263c20e7b11c857c92f8628",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.5-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.5-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.1-4.5-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.6",
+      "source_index": 5,
+      "source_field_sha256": "34acfba5c4328814eb9fa67d1e465ec320ac651278c4b9a726e546363ea10b06",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.6-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.6-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-4.1-4.6-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "non_empty",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.7",
+      "source_index": 6,
+      "source_field_sha256": "f932e9c14a594d583929e9196623578b43377936e7417280948db23ba4ae0439",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.7-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.7-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-4.1-4.7-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.8",
+      "source_index": 7,
+      "source_field_sha256": "5ad5dffbaaa5b4991f0bfc6a4a2ceac7454b8d1e5d2650cc27adac4871418ce2",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.8-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.8-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-4.1-4.8-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.9",
+      "source_index": 8,
+      "source_field_sha256": "6c3509c363de94ba5e8d2a7d2191147a5476d35a3a1d2cb65ce88fc8a1856884",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.9-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.9-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.1-4.9-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.10",
+      "source_index": 9,
+      "source_field_sha256": "a9192f0fe74e65f1ae94bd9d7306d778e46fb78b94b80d25038b56d7dcff3ccd",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.10-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.10-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-4.1-4.10-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "non_empty",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.11",
+      "source_index": 10,
+      "source_field_sha256": "40373c1b10be4a5be9b3a34052ea01dfb6c938f6cba1a4d596014748075b9cc6",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.11-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.11-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.1-4.11-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.12",
+      "source_index": 11,
+      "source_field_sha256": "571c06f62ef9332db75007ba48c195b508cee252b5d38064c3172bea423c82e6",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.12-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.12-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-4.1-4.12-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "non_empty",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.13",
+      "source_index": 12,
+      "source_field_sha256": "f56808e25df2ff14a107d76d93ae8cd3a40cf16f63ba031c16ec0eed561d78af",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.13-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.13-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.1-4.13-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.14",
+      "source_index": 13,
+      "source_field_sha256": "caf0ed2b657decf8c68db54a50e06e8db6e4a60b959f452daf2b8120c6edaffe",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.14-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.14-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.1-4.14-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.15",
+      "source_index": 14,
+      "source_field_sha256": "8bd1bbd9b794a88af7ca17aa3518af0437a71e702be0a8b133a57db144305fcf",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.15-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.15-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-4.1-4.15-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "non_empty",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.16",
+      "source_index": 15,
+      "source_field_sha256": "a0999246e676dd2ec4b76a664738dd299dba47f398295e402592da923d5125a5",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.16-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.16-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.1-4.16-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "digits_only",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-4.1-4.16-constraint-1",
+          "constraint_index": 1,
+          "constraint_kind": "logical_length",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.17",
+      "source_index": 16,
+      "source_field_sha256": "051085ed0ce8558aa5679bb78e3c97cf75aff1804e22450de6f7fb9bc03f535e",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.17-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.17-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.1-4.17-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "digits_only",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-4.1-4.17-constraint-1",
+          "constraint_index": 1,
+          "constraint_kind": "logical_length",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.18",
+      "source_index": 17,
+      "source_field_sha256": "aee5c7107c602287de43ac683ca36fa506775994425ade033a90da8ff9e470c2",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.18-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.18-datatype",
+          "template": "datatype_date"
+        },
+        {
+          "id": "SIOC-4.1-4.18-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "date",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.19",
+      "source_index": 18,
+      "source_field_sha256": "aa1c63a477a616fe432f54006f442906af3e43665f9e8608c0d4cbe855b84ff5",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.19-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.19-datatype",
+          "template": "datatype_date"
+        },
+        {
+          "id": "SIOC-4.1-4.19-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "date",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "field_id": "4.19.1",
+      "source_index": 19,
+      "source_field_sha256": "8d7838762b683c21600bb5fbd3aa77ee3f80b142b875bb6f8db9aff43c52972e",
+      "cases": [
+        {
+          "id": "SIOC-4.1-4.19.1-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.1-4.19.1-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-4.1-4.19.1-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.2",
+      "field_id": "4.20",
+      "source_index": 0,
+      "source_field_sha256": "b388d1f646791b33a5546382b4ca578a326b1b0cac3b6e0892b79dc943386da0",
+      "cases": [
+        {
+          "id": "SIOC-4.2-4.20-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.2-4.20-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.2-4.20-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "reference_data",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.2",
+      "field_id": "4.21",
+      "source_index": 1,
+      "source_field_sha256": "69e9ab4418bbda8ab603af47a388dd1304eaaadd67f46bbac40a36d0cc4a5a65",
+      "cases": [
+        {
+          "id": "SIOC-4.2-4.21-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.2-4.21-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-4.2-4.21-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "structure_only",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.2",
+      "field_id": "4.22",
+      "source_index": 2,
+      "source_field_sha256": "736ebfcf2c91df59f2f062494f0c555dc268bf782b01fb421c88bc0a89ffa0ec",
+      "cases": [
+        {
+          "id": "SIOC-4.2-4.22-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.2-4.22-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-4.2-4.22-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "structure_only",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.2",
+      "field_id": "4.23",
+      "source_index": 3,
+      "source_field_sha256": "97d81cc31396eaf40cfb24cc23ef52f0b0ad16aac227ca245f2670dc4c3e7c30",
+      "cases": [
+        {
+          "id": "SIOC-4.2-4.23-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.2-4.23-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.2-4.23-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.2",
+      "field_id": "4.24",
+      "source_index": 4,
+      "source_field_sha256": "4c062db991fc8a670b608949111f7e4b52f16627ff1bdc0b3b1665ec7fa1059e",
+      "cases": [
+        {
+          "id": "SIOC-4.2-4.24-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.2-4.24-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.2-4.24-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.2",
+      "field_id": "4.25",
+      "source_index": 5,
+      "source_field_sha256": "2b8abf9a3a4a58a971fc7c270cce4676dd1d24a3abe2feb6d9176cdac0c4438e",
+      "cases": [
+        {
+          "id": "SIOC-4.2-4.25-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.2-4.25-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.2-4.25-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "digits_only",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.2",
+      "field_id": "4.26",
+      "source_index": 6,
+      "source_field_sha256": "423b8eb49fb981956903f97a43d57feb70689912ea871dd214743ec8f1d57755",
+      "cases": [
+        {
+          "id": "SIOC-4.2-4.26-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.2-4.26-datatype",
+          "template": "datatype_date"
+        },
+        {
+          "id": "SIOC-4.2-4.26-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "date",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.2",
+      "field_id": "4.27",
+      "source_index": 7,
+      "source_field_sha256": "18693ae201eb007395791a5108465b14a3750bf1f12c12501724d5ca27bd26d0",
+      "cases": [
+        {
+          "id": "SIOC-4.2-4.27-never-missing",
+          "template": "never_missing"
+        },
+        {
+          "id": "SIOC-4.2-4.27-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.2-4.27-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "digits_only",
+          "template": "constraint_witness"
+        },
+        {
+          "id": "SIOC-4.2-4.27-constraint-1",
+          "constraint_index": 1,
+          "constraint_kind": "numeric_range",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.2",
+      "field_id": "4.28",
+      "source_index": 8,
+      "source_field_sha256": "49bb0cca82c5f7b2d49d012303c01c77d4785cdadde2681c49942d97e82826e8",
+      "cases": [
+        {
+          "id": "SIOC-4.2-4.28-required",
+          "template": "required_raw_missing"
+        },
+        {
+          "id": "SIOC-4.2-4.28-datatype",
+          "template": "datatype_numeric"
+        },
+        {
+          "id": "SIOC-4.2-4.28-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "allowed_values",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.2",
+      "field_id": "4.29",
+      "source_index": 9,
+      "source_field_sha256": "5e8d2ef68e93b667a8dfc93295325a534e8f44d58335466e6f38c3bbf948a101",
+      "cases": [
+        {
+          "id": "SIOC-4.2-4.29-datatype",
+          "template": "datatype_date"
+        },
+        {
+          "id": "SIOC-4.2-4.29-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "date_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.2",
+      "field_id": "4.30",
+      "source_index": 10,
+      "source_field_sha256": "eaaea49f32c651d41950de41619073cc39b267174215968e37748d85db05a402",
+      "cases": [
+        {
+          "id": "SIOC-4.2-4.30-datatype",
+          "template": "datatype_text_pending"
+        },
+        {
+          "id": "SIOC-4.2-4.30-constraint-0",
+          "constraint_index": 0,
+          "constraint_kind": "structure_only_if_present",
+          "template": "constraint_witness"
+        }
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "trace_id": "1",
+      "rule_id": "R-1.1-ADMISSION-YEAR",
+      "source_index": 0,
+      "source_rule_sha256": "72e6b167e86320898aa4e8921f4944148269a71ef0df0199809dd9214b22c900",
+      "when": {
+        "is_present": {
+          "ref": {
+            "field": {
+              "trace": "2",
+              "field": "2.5",
+              "join": "trace1_to_trace2_episode"
+            }
+          }
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "substring_equals_derived_year"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "1",
+      "rule_id": "R-1.2-ANONYMOUS-SENTINEL",
+      "source_index": 1,
+      "source_rule_sha256": "795b1d6ef2b12c396e5532e6709beae5310aae7255ab8a6b520e2c79bb999ac9",
+      "when": {
+        "condition": "is_anonymous"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "1",
+      "rule_id": "R-1.7-ANONYMOUS-NAME",
+      "source_index": 2,
+      "source_rule_sha256": "e34092a1614118789299646287f04c0d0f542beb9f7050b99ad1e9410b87bf78",
+      "when": {
+        "condition": "is_anonymous"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "logical_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "1",
+      "rule_id": "R-1.8-ANONYMOUS-NAME",
+      "source_index": 3,
+      "source_rule_sha256": "3a37e0de5087d125682a9e9ec08613f54a2bca70457dbbc9c83215b9b52fe864",
+      "when": {
+        "condition": "is_anonymous"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "logical_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "1",
+      "rule_id": "R-1.14-FOREIGN",
+      "source_index": 4,
+      "source_rule_sha256": "cc08114398a2e40cbccc19ea24d35b99137a35820290efc4d3ff2c52e03e27ee",
+      "when": {
+        "condition": "is_foreign_resident"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "logical_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "1",
+      "rule_id": "R-1.14-ITALIAN",
+      "source_index": 5,
+      "source_rule_sha256": "32f5f364a3f436bf06cfc3f89246a5b79890ec717801b42a7a32420074448948",
+      "when": {
+        "condition": "is_italian_resident"
+      },
+      "source_error_code": "E011",
+      "assertion_kinds": [
+        "reference_data"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "1",
+      "rule_id": "R-1.15-FOREIGN",
+      "source_index": 6,
+      "source_rule_sha256": "f9900f08758c74c37c792ae5fbfee5842d4a6fd0047efa0b95d21fa9c093c851",
+      "when": {
+        "and": [
+          {
+            "condition": "is_foreign_resident"
+          },
+          {
+            "ne": {
+              "ref": {
+                "field": "1.15"
+              },
+              "value": "999999"
+            }
+          }
+        ]
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "composite"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "1",
+      "rule_id": "R-1.15-ITALIAN",
+      "source_index": 7,
+      "source_rule_sha256": "4427724537af0c77f87191cf78a586667286e3f60154856b86efc63cf55db74a",
+      "when": {
+        "and": [
+          {
+            "condition": "is_italian_resident"
+          },
+          {
+            "ne": {
+              "ref": {
+                "field": "1.15"
+              },
+              "value": "999999"
+            }
+          }
+        ]
+      },
+      "source_error_code": "E011",
+      "assertion_kinds": [
+        "reference_data"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "2",
+      "rule_id": "R-2.1-ADMISSION-YEAR",
+      "source_index": 0,
+      "source_rule_sha256": "95a1eb795bfc95afb8bb6b86abd64eb843eb498102cbcb809d3d228f6c9ae818",
+      "when": {
+        "const": true
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "substring_equals_derived_year"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "2",
+      "rule_id": "R-2.10-SSR-PAYER",
+      "source_index": 1,
+      "source_rule_sha256": "7843a3e75924ecdab9d32a86938721969d6cbe41c80cde0463bdc2195f4340ab",
+      "when": {
+        "condition": "ssr_fully_pays"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "equals_concat"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "2",
+      "rule_id": "R-2.4-LE-2.5",
+      "source_index": 2,
+      "source_rule_sha256": "441419ad6e60cd73c5be4ce6c6dd9c018d866d1ba85e8385f7fde2ca2e72ce6e",
+      "when": {
+        "const": true
+      },
+      "source_error_code": "E_TEMPORAL_ORDER",
+      "assertion_kinds": [
+        "field_compare"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "2",
+      "rule_id": "R-2.5-LE-2.6",
+      "source_index": 3,
+      "source_rule_sha256": "fbef3ceadbf909f1bdc69a5530e7213a657f550da21532e4f7240fbcf48320b1",
+      "when": {
+        "const": true
+      },
+      "source_error_code": "E_TEMPORAL_ORDER",
+      "assertion_kinds": [
+        "field_compare"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.1-ADMISSION-YEAR",
+      "source_index": 0,
+      "source_rule_sha256": "14d2bdc39c9b2f30396122f6841135a085f0ab876e76275ba93ef413918f46c2",
+      "when": {
+        "const": true
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "substring_equals_derived_year"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.8-DEATH",
+      "source_index": 1,
+      "source_rule_sha256": "c77328f92966b2e7d672f5624d490a62c7981438e10050dabbbaa3708c287055",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.8-NORMAL",
+      "source_index": 2,
+      "source_rule_sha256": "bd3da835e43544d986481e4b06e87208794de6a90b3a655ec67d889c595a1479",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.9-DEATH",
+      "source_index": 3,
+      "source_rule_sha256": "d7a01db3d05a66a394f0ec6bbce42f7b08223cfd48927404c8035ea748ccd96d",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.9-NORMAL",
+      "source_index": 4,
+      "source_rule_sha256": "372cf118f21ec7a33ae92fd05c5c94466c055cfae918600ed5c02d1e7d5839e2",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.10-DEATH",
+      "source_index": 5,
+      "source_rule_sha256": "95cb95a4d8194e1effc397bc51e1afc046eda52644d965af5a7cabd5381afe85",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.10-NORMAL",
+      "source_index": 6,
+      "source_rule_sha256": "645549d9be20dbf1cf00ead7bad43bb857a253b7d0bd6d9ace3d98118f7e340b",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.11-DEATH",
+      "source_index": 7,
+      "source_rule_sha256": "b26b6a5cb0d993a6451a1f9793da6442915819a883321ac6c8ed5b9bec9c85d5",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.11-NORMAL",
+      "source_index": 8,
+      "source_rule_sha256": "4941d1957dc0d0ac44662a62f782e37179f41c096e74d88b5a4320b62d203826",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.12-DEATH",
+      "source_index": 9,
+      "source_rule_sha256": "0d52a8d67f8583f3d7ac8fb510fe3cf869cbd93f9de89b12076b107919608cb5",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.12-NORMAL",
+      "source_index": 10,
+      "source_rule_sha256": "eaed97a0dadf138f6a978cc43b9e673e54ec4d5ecaa248ba738887e03d2b3df4",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.13-DEATH",
+      "source_index": 11,
+      "source_rule_sha256": "4f468c22a56bdb12f0de184745255a558a8a9379dd85e960345dc8068bc21882",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.13-NORMAL",
+      "source_index": 12,
+      "source_rule_sha256": "c19389041981e03c8b9107128695459db30a5d36c16db1babf6f1403e77a5da9",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.14-DEATH",
+      "source_index": 13,
+      "source_rule_sha256": "d6bb4c5aa7127fd17ef6c4ea33afbedfa1fcd75172c62d967f208a4682fb8564",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.14-NORMAL",
+      "source_index": 14,
+      "source_rule_sha256": "69129c048f91212d0505243647578f80dcf6bd3d4b2b10d2ae1c01c12ee0130a",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.15-DEATH",
+      "source_index": 15,
+      "source_rule_sha256": "da03621a77c2c30462ad0de5a0bd42b36ac470a42e4dd7e983a3b7598d93b6cc",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.15-NORMAL",
+      "source_index": 16,
+      "source_rule_sha256": "077789c6f48c1c9e9354d251bc9ca4817b636c8da9e159ac2e0bf1ba39b06c6f",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.16-DEATH",
+      "source_index": 17,
+      "source_rule_sha256": "9a96027d279f538d47d08a65e2b0a970539db337f2986e4d2f6f42baf341faeb",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.16-NORMAL",
+      "source_index": 18,
+      "source_rule_sha256": "41b4cfc2737311fa2e8d605b4267134dfe6c33fb1d73122556384c3809c75298",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.18-DEATH",
+      "source_index": 19,
+      "source_rule_sha256": "13f11d19ed5fce7033a6a88269a55cbc46ce3dc8a0423ab0506e548e5c9d4af8",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.18-NORMAL",
+      "source_index": 20,
+      "source_rule_sha256": "eb650635b6ed07936c7bedefbb44eeaf39c328ac0a63d4f94efabf138ac2705a",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.20-DEATH",
+      "source_index": 21,
+      "source_rule_sha256": "59b5210fc160f54942799cb75f88c04346a9f9693ef60ec49aa9444207d71f9c",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.20-NORMAL",
+      "source_index": 22,
+      "source_rule_sha256": "2b89f573763c5f4c840819d2cfc0e6d6ce97f403f3750f163b2fa088c068f822",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.21-DEATH",
+      "source_index": 23,
+      "source_rule_sha256": "1d5d396f2ceb3898c8ff2c4fa24b842237055049ec58eda909ad60ed9ceb4b0e",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.21-NORMAL",
+      "source_index": 24,
+      "source_rule_sha256": "15c763a8a717c9820d0711628d69eedffb7fa88a1e117605d98f63d9b053c649",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.23-DEATH",
+      "source_index": 25,
+      "source_rule_sha256": "4bef1020e0d4e21a3fb94a907482c828d3407ebfff3c1c188462cc53332b30dc",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.23-NORMAL",
+      "source_index": 26,
+      "source_rule_sha256": "b99a3543d8940943d4592c4bb40ceb70ebaf1ea8bb744e3795ddd15f331bed0c",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.19-DEATH",
+      "source_index": 27,
+      "source_rule_sha256": "ce59c0d3936939b1783df3ae3e84af8bd57417e58d756fbb7cd0b094f6e80aea",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.22-DEATH",
+      "source_index": 28,
+      "source_rule_sha256": "fea4eff997a0caf29f581fddcc0804349d1f2ece9d79dd3067fd0fe29303fb9d",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.22-NORMAL",
+      "source_index": 29,
+      "source_rule_sha256": "4eaf54dabd13a077d811ef9e32f69b00be77e64f78a25ae7296041e00e3e9ed9",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "numeric_range"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.24-DEATH-TO-00",
+      "source_index": 30,
+      "source_rule_sha256": "8e7fc9a0f22c235f5c61aac94dfefb27c626d8ce579259377d26f7d1149558c1",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.24-00-TO-DEATH",
+      "source_index": 31,
+      "source_rule_sha256": "0a2892f0b049c25378e407d16b571652394b2a55a3f82e3a3ae6d6f35cc7772a",
+      "when": {
+        "eq": {
+          "ref": {
+            "field": "3.24"
+          },
+          "value": "00"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "condition_true"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.24-NORMAL-RANGE",
+      "source_index": 32,
+      "source_rule_sha256": "d5d673b53a76a12ce12def290b9aa95d63ca78070f7415ea2eb120ff014a732e",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "numeric_range"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.25-ADMISSION",
+      "source_index": 33,
+      "source_rule_sha256": "85a69793d31ed0c66871e8736e0d65314c938d58360defa50dd4acac9c604931",
+      "when": {
+        "condition": "is_admission_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.25-DISCHARGE",
+      "source_index": 34,
+      "source_rule_sha256": "bee22be512ee1f2f106e47e787b5405d188e5aa729223453d0cf56de0dc6955f",
+      "when": {
+        "condition": "is_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.26-ADMISSION",
+      "source_index": 35,
+      "source_rule_sha256": "8d2f41e20fdd8a1ab93f5e76269db56a0a2de69d2eaa9395393e00348f6ec0b7",
+      "when": {
+        "condition": "is_admission_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.26-DISCHARGE",
+      "source_index": 36,
+      "source_rule_sha256": "30a5be408d2f4cd532f90a38c056eac57343c85e2a08f6eee04bcbd4cb38abe9",
+      "when": {
+        "condition": "is_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.26-DEATH-TO-4",
+      "source_index": 37,
+      "source_rule_sha256": "04425f2264aa2accf95819d5d2cf9866254d5a7f884185d51a76191c95a96ac7",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.26-4-TO-DEATH",
+      "source_index": 38,
+      "source_rule_sha256": "90686fe486a009d1e28cc79193bd044eef13e5f7865f5490b6f2cdabc8d70e69",
+      "when": {
+        "eq": {
+          "ref": {
+            "field": "3.26"
+          },
+          "value": "4"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "condition_true"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.27-ADMISSION",
+      "source_index": 39,
+      "source_rule_sha256": "f842c85c6af0efaf66f757eba2428a323606d7ffa438cc3fe7c8244b2ec6f886",
+      "when": {
+        "condition": "is_admission_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.27-DISCHARGE",
+      "source_index": 40,
+      "source_rule_sha256": "3c23040e31da091ca6efb1e75bd29dee2ec89f33f40f103bc6ad6c9d2535d130",
+      "when": {
+        "condition": "is_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "numeric_range"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.28-ADMISSION",
+      "source_index": 41,
+      "source_rule_sha256": "5eb1e8b384cea4b214d0a877893f0a6f2395e98998e1cdd8790d52a715c8b32f",
+      "when": {
+        "condition": "is_admission_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.28-DISCHARGE",
+      "source_index": 42,
+      "source_rule_sha256": "4d41531a2084f9ea6b470fbd519d859b2802ee121406c47a80d153c9469a0f32",
+      "when": {
+        "condition": "is_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "numeric_range"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.29-ADMISSION",
+      "source_index": 43,
+      "source_rule_sha256": "42d731907c557b4fb89672370f99fd5e48848cdd23d8f0399324ba80afb4b1cb",
+      "when": {
+        "condition": "is_admission_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.29-DISCHARGE",
+      "source_index": 44,
+      "source_rule_sha256": "e9dcccee58cacb30e0c13f38622bd25399ae8c72f203d601b8582acbd4233cb0",
+      "when": {
+        "condition": "is_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "numeric_range"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.30-ADMISSION",
+      "source_index": 45,
+      "source_rule_sha256": "230b29852e5e4abe07136b593c7cf018c41833020a315d55dd34d04414cc1013",
+      "when": {
+        "condition": "is_admission_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.30-DISCHARGE",
+      "source_index": 46,
+      "source_rule_sha256": "9fc132e2767731e84c8f9ded6d283052ae37a3d44dc38d10f47f99ef308a2070",
+      "when": {
+        "condition": "is_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "numeric_range"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.31-ADMISSION",
+      "source_index": 47,
+      "source_rule_sha256": "8bb4eb55fa7756d6a88d97f3524bc68c95ce30184bfeaa41a77b3728217e361e",
+      "when": {
+        "condition": "is_admission_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.31-DISCHARGE",
+      "source_index": 48,
+      "source_rule_sha256": "b91fd4923946898d4e323214b159e9fe0ec946f2f820a38fcf779f9c0e32fdd4",
+      "when": {
+        "condition": "is_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "numeric_range"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.32-ADMISSION",
+      "source_index": 49,
+      "source_rule_sha256": "210de4895c11f8c74bd7b4be619cc5a6434e6f4d2b5a9508136e6fe25f1668bd",
+      "when": {
+        "condition": "is_admission_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.32-DISCHARGE",
+      "source_index": 50,
+      "source_rule_sha256": "d4751a8e5748711e8dc3fbe1d73a0dcf1604a99765350b2c5f515058b2129247",
+      "when": {
+        "condition": "is_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.33-DEATH",
+      "source_index": 51,
+      "source_rule_sha256": "ca678d14174fa61990ff65260beed15c276c448f0328c4c42552ea0a244dc648",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.33-NORMAL",
+      "source_index": 52,
+      "source_rule_sha256": "352a3f4dedbb01de372d23ef092aad4e4904267598d074d325d26b8d0bd51ba3",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "allowed_values"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.34-AGE",
+      "source_index": 53,
+      "source_rule_sha256": "efc9f16e11f79ec23b9b7c6be77efcde4350d726d06a254c1fe544cbae9ab714",
+      "when": {
+        "const": true
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "derived_compare"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.34-DEATH",
+      "source_index": 54,
+      "source_rule_sha256": "eb34bd737e72743d2bc9d5b91472693353819ccfdb6e5691f1dffc76b63a7a74",
+      "when": {
+        "condition": "is_death_discharge_evaluation"
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "raw_equals"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.34-NORMAL",
+      "source_index": 55,
+      "source_rule_sha256": "f18bd5fbe6923661af7253f6d9520e4ada48724e771949014e86f544871c96aa",
+      "when": {
+        "not": {
+          "condition": "is_death_discharge_evaluation"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "numeric_range"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "3",
+      "rule_id": "R-3.34-999-TO-DEATH",
+      "source_index": 56,
+      "source_rule_sha256": "8f6578c5c3baccf55aa23ca5ae0b760a905141fe119170cfb9cd88f665895a54",
+      "when": {
+        "eq": {
+          "ref": {
+            "field": "3.34"
+          },
+          "value": "999"
+        }
+      },
+      "source_error_code": "E010",
+      "assertion_kinds": [
+        "condition_true"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "4.1",
+      "rule_id": "R-4.18-LE-4.19",
+      "source_index": 0,
+      "source_rule_sha256": "da4a3984971b4e4ee5f43fb3f2a29ed2395468fb86b0fe2b68e5376d57b62a81",
+      "when": {
+        "const": true
+      },
+      "source_error_code": "E_TEMPORAL_ORDER",
+      "assertion_kinds": [
+        "field_compare"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "4.2",
+      "rule_id": "R-4.30-REQUIRES-4.29",
+      "source_index": 0,
+      "source_rule_sha256": "449783043e9f6784c87e62a06aebdd19dce64ed53e7f82ae1f9d92b96e3e2373",
+      "when": {
+        "is_present": {
+          "ref": {
+            "field": "4.30"
+          }
+        }
+      },
+      "source_error_code": "E003",
+      "assertion_kinds": [
+        "field_present"
+      ],
+      "case_template": "rule_variants"
+    },
+    {
+      "trace_id": "4.2",
+      "rule_id": "R-4.30-REFERENCES-4.22",
+      "source_index": 1,
+      "source_rule_sha256": "9985722252e78db6d6e45e04d4b4245ce5835004d0c455bfaa9f746100f4cf39",
+      "when": {
+        "is_present": {
+          "ref": {
+            "field": "4.30"
+          }
+        }
+      },
+      "source_error_code": "E012",
+      "assertion_kinds": [
+        "record_exists"
+      ],
+      "case_template": "rule_variants"
+    }
+  ],
+  "mandatory_followup": {
+    "task": "T-P3-04",
+    "action": "Rieseguire linter automatico Rust sui canonical schema effettivi; i controlli documentali non lo sostituiscono"
+  },
+  "case_templates": {
+    "required_raw_missing": {
+      "category": "required",
+      "status": "PLANNED",
+      "mutation": "usare esattamente missing_value della fonte, con contesto altrimenti valido",
+      "expected": "ValidationCode::RequiredField sul campo; non InvalidDomain dedotto dal placeholder"
+    },
+    "datatype_text_pending": {
+      "category": "datatype",
+      "status": "BLOCKED_PROFILE",
+      "mutation": "definire byte illegale solo dopo il profilo di encoding/caratteri approvato",
+      "expected": "Errore di rappresentazione previsto dal profilo effettivo, senza inventare ASCII-only"
+    },
+    "constraint_witness": {
+      "category": "domain",
+      "status": "PLANNED_WITH_SOURCE_WITNESS",
+      "mutation": "testimone positivo e negativo/boundary dalla constraint citata; verificare che la mutazione sia fisicamente rappresentabile",
+      "expected": "Esito della constraint della fonte; codice simbolico risolto nel mapping T-P2-02/T-P5. Se negativo non isolabile nel width, documentare il limite senza creare una fixture di record-length al suo posto"
+    },
+    "required_condition": {
+      "category": "required",
+      "status": "PLANNED",
+      "mutation": "attivare la condizione required_if della fonte; campo rispettivamente mancante o presente",
+      "expected": "ValidationCode::ConditionalRequired; contesto e conflitti controllati separatamente"
+    },
+    "forbidden_condition": {
+      "category": "required",
+      "status": "PLANNED",
+      "mutation": "attivare la condizione forbidden_if della fonte; campo rispettivamente mancante o presente",
+      "expected": "ValidationCode::ForbiddenField; contesto e conflitti controllati separatamente"
+    },
+    "datatype_date": {
+      "category": "datatype",
+      "status": "PLANNED",
+      "mutation": "raw = 31022026, otto byte DDMMYYYY non mancanti",
+      "expected": "ValidationCode::InvalidDate per data di calendario impossibile"
+    },
+    "datatype_numeric": {
+      "category": "datatype",
+      "status": "PLANNED",
+      "mutation": "raw = X seguito da zeri fino alla larghezza fisica; non mancante",
+      "expected": "ValidationCode::InvalidType; nessuna conversione numerica permissiva"
+    },
+    "never_missing": {
+      "category": "required",
+      "status": "PLANNED",
+      "mutation": "raw slice della larghezza corretta; nessun valore è missing per questa policy",
+      "expected": "Nessun RequiredField causato dalla sola rappresentazione fisica; datatype/domain possono fallire separatamente"
+    }
+  },
+  "rule_templates": {
+    "rule_variants": {
+      "planned_cases": [
+        "when_true_assertion_satisfied",
+        "when_true_assertion_violated_if_representable",
+        "when_false",
+        "required_context_unavailable"
+      ],
+      "expected": "Derivare i testimoni dalle assertion e dalle decisioni approvate; mai dall’output dell’engine; Unknown/NotApplicable non diventano Satisfied"
+    }
+  }
+}
