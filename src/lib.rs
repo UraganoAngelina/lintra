@@ -113,3 +113,8 @@ pub use schema::{SchemaCompilationError, SchemaCompiler};
 pub use schema::compatibility::{EngineCapabilities, SchemaFormatVersion};
 
 pub use schema::registry::{SchemaRegistry, SchemaResolutionError};
+
+pub use input::{
+    reader::{InputError, NewlinePolicy, RecordReader},
+    record::RawRecord,
+};

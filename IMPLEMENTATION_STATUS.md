@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; prossima T-P4-01.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 locale verificata, CI pendente; prossima T-P4-02.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -168,10 +168,17 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-05 | DONE | 2026-10-19 | Proposta A approvata; compiler locale/binding Rust-only e rifiuto costrutti esclusi; 28 unit/36 integration/10 doctest; [CI 39264362959](https://github.com/UraganoAngelina/lintra/actions/runs/39264362959) verde Linux/Windows su b658e05 |
 | T-P3-06 | DONE | 2026-10-19 | Mappa ufficiale approvata 1→0.1.0 sviluppo; range/messaggi e 28 unit/42 integration/10 doctest; [CI 39269026995](https://github.com/UraganoAngelina/lintra/actions/runs/39269026995) verde Linux/Windows su 7522345 |
 | T-P3-07 | DONE | 2026-10-19 | Registry senza cache, binding esplicito/cause preservate; 28 unit/48 integration/10 doctest; [CI 39272551912](https://github.com/UraganoAngelina/lintra/actions/runs/39272551912) verde Linux/Windows su f671517 |
+| T-P4-01 | DONE_UNVERIFIED | 2026-10-19 | Lettura streaming byte/tre policy, buffer prestato, cause I/O e contatore checked; DEC-12 provvisorio; 29 unit/55 integration/10 doctest; CI pendente |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — 2026-10-19, Linux locale
+
+T-P4-01: fmt/check/clippy/test/release/diff-check PASS;
+29 unit + 55 integration + 10 doctest; un unit e sette integration nuovi.
+Report [T-P4-01](docs/verification/T-P4-01.md); CI pendente.
+
+Evidenze precedenti T-P3-07:
 
 T-P3-07: fmt/check/clippy/test/release/diff-check PASS;
 28 unit + 48 integration + 10 doctest, sei integration nuovi.
@@ -329,6 +336,16 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Decisioni della sessione corrente
 
+- **T-P4-01 / DET §28–29, DEC-12 provvisorio:** righe vuote conservate
+  come record di lunghezza zero, EOF senza record fantasma; nessuna norma
+  inferita o DEC-12 chiusa. LfOnly conserva CR, CrlfOnly conserva LF isolati
+  come dati non terminatori; Auto rimuove LF o CRLF e nulla oltre.
+- **T-P4-01 / integrità trasporto:** I/O e overflow sono errori tecnici
+  con reader terminale dopo fallimento, per non produrre code troncate dopo
+  consumo parziale. Buffer sempre clear e nessuna avanzata di contatore
+  su errore/EOF. Nessuna nuova dipendenza o gestione BOM anticipata.
+
+
 - **T-P3-07 / CNF-DOMAIN-01 già approvato, DET §5/§62/§147:** il registry
   del modulo schema restituisce SchemaResolutionError con i payload reali
   Load/Compilation; application mapperà all’errore di run quando completo.
@@ -466,6 +483,22 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P4-01 / lettore locale verificato
+
+- **Stato:** DONE_UNVERIFIED, solo CI Linux/Windows pendente.
+- **File:** input/{reader,record,mod}.rs, lib.rs, tests/record_reader.rs,
+  report e stato. RawRecord prestato e RecordReader streaming senza trim.
+- **Evidenze:** fmt/check/clippy/test/release/diff-check PASS;
+  29 unit + 55 integration + 10 doctest. Pointer reuse/lifetime, terminatori,
+  vuoti/EOF, I/O parziale e contatore checked verificati con dati sintetici.
+- **Decisioni:** DEC-12 provvisorio già autorizzato, nessun record fantasma;
+  sole sequenze terminatrici configurate rimosse; terminale dopo guasto I/O.
+- **Residui:** InputError reale disponibile ma T-P2-03/M1 restano aperte;
+  nessuna gestione BOM, validator o storage anticipata.
+- **Git:** work/p1-foundations; modifica storica estranea intatta.
+- **Next:** CI della task, poi T-P4-02 automaticamente, prerequisito T-P4-01.
+
 
 HANDOFF — 2026-10-19 — T-P3-07 completata / avvio automatico T-P4-01
 
