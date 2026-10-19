@@ -8,8 +8,9 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
 - P1 / **T-P1-01 — DONE**: scaffold compilabile del package `lintra`.
 - Sessione corrente: **T-P0-04 DONE** per la classificazione documentale:
   218 note verificate. CAD B1 `2.12` risolta dall'autore: `000` valido,
-  spazi mancanti, obbligo conservato. **T-P0-05 non avviata**: rimangono
-  due chiarimenti, ID SIOC degli ingressi 2025 e valutazione iniziale CAD.
+  spazi mancanti, obbligo conservato. **T-P0-05 non avviata**: resta
+  il chiarimento sulla valutazione iniziale CAD. Deroga ID SIOC per ricoveri
+  iniziati nel 2025 e terminati nel 2026 risolta dall’autore (vedi decisioni).
   **T-P1-03 DONE_UNVERIFIED**: nessuna nuova evidenza CI in questa sessione.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
@@ -94,8 +95,8 @@ M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
 | T-P0-01 | DONE | 2026-10-16 | Commit 0b13581; inventario 11 categorie/27 righe; integrità e completezza verificate, review approvata |
 | T-P0-02 | DONE | 2026-10-16 | Commit 419600d/6a4e9ac; 218 campi/0 gap, review indipendente e campione approvato dall'autore |
 | T-P0-03 | DONE | 2026-10-19 | 218/218 campi e policy/AST verificati; fonti integre; conflitto CAD 2.12 esplicitato, nessuna correzione normativa applicata |
-| T-P0-04 | DONE | 2026-10-19 | 218 note classificate, hash/riferimenti/DEC-05 verificati; 000 risolto, due nuove decisioni aperte |
-| T-P0-05 | BLOCKED | 2026-10-19 | Non avviata: attende chiarimenti SIOC-ID-2026 e CAD-VALUTAZIONE-INIZIALE secondo il mandato sequenziale |
+| T-P0-04 | DONE | 2026-10-19 | 218 note classificate, hash/riferimenti/DEC-05 verificati; 000 e ID legacy SIOC risolti, una decisione CAD aperta |
+| T-P0-05 | BLOCKED | 2026-10-19 | Non avviata: attende chiarimento CAD-VALUTAZIONE-INIZIALE secondo il mandato sequenziale |
 | T-P0-06 | DONE | 2026-10-16 | Commit 69dc995/a55a634; 15 schede/150 metadati, gap espliciti, review approvata |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
@@ -179,9 +180,6 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Problemi noti e decisioni aperte
 
-- **DEC-05-SIOC-ID-2026:** precisare lunghezza, caratteri, prefisso anno e
-  progressivo per gli ID mantenuti dagli ingressi 2025; i vincoli ricevuti
-  sono incondizionati. Nessuna deroga o nuovo vincolo inferiti.
 - **DEC-05-CAD-VALUTAZIONE-INIZIALE:** precisare se l'almeno una iniziale
   riguarda lo storico dell'evento o il solo invio corrente.
 - Dettagli e citazioni in [T-P0-04](docs/verification/T-P0-04.md). Le clausole
@@ -207,6 +205,13 @@ I doctest verificano importabilità e divieto di importare `engine` e
   ancora in alcuni artefatti sono metadati storici superati, non nuova norma aperta.
 
 ## Decisioni della sessione corrente
+
+- **DEC-05-SIOC-ID-2026 risolta dall’autore il 2026-10-19:** per ricoveri
+  iniziati nel 2025 e terminati nel 2026, ID alfanumerico valorizzato,
+  diverso da tutti zeri, larghezza fisica 20 byte e padding ricevuto.
+  Nessun controllo di lunghezza logica otto, sole cifre, prefisso anno o
+  progressivo in questo ramo. [Decisione registrata](docs/normative/DECISIONS.md).
+  Fonti FROZEN inalterate; applicazione nella task di schema pertinente.
 
 - **DEC-05-CAD-ICPC-000 risolta dall'autore il 2026-10-19:** «Confermo: 000
   valido, spazi mancanti». Campo obbligatorio, nessun lookup ICPC aggiunto.
@@ -254,6 +259,15 @@ Nessun nuovo conflitto o cambiamento di contratto pubblico.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — chiarimento SIOC-ID-2026
+
+- **Decisione:** registrata la deroga autorizzata per ingressi 2025 conclusi
+  nel 2026; aggiornati registro decisioni, matrice note e report T-P0-04.
+- **Verifica:** check_notes.py, check_presence.py e git diff --check superati;
+  nessun Rust o schema ricevuto modificato, nessuna nuova esecuzione Cargo.
+- **Next:** T-P0-05 resta non avviata, in attesa della sola decisione CAD
+  sull’ambito della valutazione iniziale (storico evento o singolo invio).
 
 HANDOFF — 2026-10-19 — esecuzione diretta / T-P0-04
 

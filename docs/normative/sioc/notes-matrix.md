@@ -236,7 +236,7 @@ a questa registrazione. Citazioni esatte estratte dal source_note, senza
 compressione whitespace interna. La motivazione distingue il testo ambiguo
 dall’AST ricevuto e dalle decisioni già approvate.
 
-### DEC-05-SIOC-ID-2026
+### DEC-05-SIOC-ID-2026 — RISOLTA dall’autore
 
 Campi: `sioc/1/1.1` (`fields[0]` nella tabella di tracciato sopra), `sioc/2/2.1` (`fields[0]` nella tabella di tracciato sopra), `sioc/3/3.1` (`fields[0]` nella tabella di tracciato sopra).
 
@@ -248,7 +248,7 @@ Citazione esatta comune a tutte le note citate:
 
 Motivo e fonte decisionale: Le note 2026 riservano le nuove istruzioni ai ricoveri dal2026, ma constraints e R-*-ADMISSION-YEAR ricevuti sono incondizionati rispetto a tale decorrenza. La PK intra-trace non dimostra inoltre memoria dell’unicità per struttura/anno tra invii.
 
-Domanda aperta: Quali vincoli applicare agli ID mantenuti per ingressi2025 e come esprimere formalmente la deroga nel profilo2026? Nessuna modifica alla baseline FROZEN o regola inter-invio è autorizzata qui.
+Decisione dell’autore, 2026-10-19: per ricoveri iniziati nel 2025 e terminati nel 2026 verificare valore alfanumerico valorizzato, diverso da tutti zeri, e padding del campo. Restano larghezza fisica 20 byte e allineamento a sinistra con spazi; non si applicano lunghezza logica otto, sole cifre, prefisso anno o progressivo. [Decisione completa](../DECISIONS.md#dec-05-sioc-id-2026--risolta-2026-10-19). Le tre righe restano classificate come ambigue rispetto al testo e all’AST originari, ora con decisione risolta; nessuna modifica alla baseline FROZEN o nuova regola inter-invio.
 
 ### DEC-05-SIOC-RESIDENZA — DIFFERITA nel profilo ricevuto v1
 
