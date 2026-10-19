@@ -1,16 +1,16 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo del 2026-10-16, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-10-19**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
 ## Posizione corrente e prerequisiti
 
 - P1 / **T-P1-01 — DONE**: scaffold compilabile del package `lintra`.
-- Sessione corrente: **T-P1-02, T-P0-01/02/06 DONE**, controlli e review
-  indipendenti superati. **T-P1-03 DONE_UNVERIFIED**: implementata e
-  revisionata, mancano run reali Linux/Windows. T-P0-03 e T-P0-04 documentali
-  in esecuzione parallela dopo approvazione umana T-P0-02; nessuna task
-  dipendente supera i gate aperti.
+- Sessione corrente: **T-P0-03 DONE** per le matrici documentali, verificate
+  direttamente su 218 campi. Avanzamento sospeso per il disallineamento CAD
+  B1 `2.12` descritto in [T-P0-03](docs/verification/T-P0-03.md).
+  T-P0-04 conserva bozze della sessione interrotta, ancora da verificare.
+  **T-P1-03 DONE_UNVERIFIED**: nessuna nuova evidenza CI in questa sessione.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -23,7 +23,16 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
 - `CNF-01..11`, `CNF-LINTRA-SOURCE-01`, `CNF-PERSIST-01` risolti
   documentalmente; ADR-PERSIST-001 approvata; `PCR-CAD-001` superata.
 
-## Autorizzazione corrente — 2026-10-16
+## Autorizzazione corrente — 2026-10-19
+
+L'autore ha revocato l'uso delle skill Superpowers. Esecuzione diretta,
+una task alla volta, senza subagenti in questa sessione. Dopo la verifica
+si procede senza conferme ordinarie solo se prerequisiti e risultati sono
+chiari; le ambiguità richiedono chiarimento prima della task successiva.
+Queste istruzioni sono conservate in `AGENTS.md`. Nessuna skill Superpowers,
+orchestrazione o nuovo piano del relativo framework utilizzati il 2026-10-19.
+
+## Autorizzazione storica — 2026-10-16
 
 L'autore ha autorizzato esecuzione continua e parallelizzazione delle task,
 rispettando le dipendenze funzionali della mappa e dei prompt atomici.
@@ -33,8 +42,8 @@ Ha inoltre autorizzato creazione autonoma del repository GitHub e fornito
 identità per i commit locali; nessuna password viene salvata nei file.
 DEC-11: scelta Rust 1.99.1 ricevuta. Baseline Linux di release ancora aperta.
 
-Piano di sessione: [fondamenta](docs/superpowers/plans/2026-10-16-foundations.md).
-Skill utilizzate: Superpowers pianificazione, esecuzione tramite agenti,
+Piano storico: [fondamenta](docs/superpowers/plans/2026-10-16-foundations.md).
+Skill utilizzate nella sessione precedente: Superpowers pianificazione, esecuzione tramite agenti,
 parallelismo e review/verifica; integrazione GitHub suggerita perché assente.
 
 ## Integrità e baseline consultata
@@ -84,8 +93,8 @@ M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
 |---|---|---|---|
 | T-P0-01 | DONE | 2026-10-16 | Commit 0b13581; inventario 11 categorie/27 righe; integrità e completezza verificate, review approvata |
 | T-P0-02 | DONE | 2026-10-16 | Commit 419600d/6a4e9ac; 218 campi/0 gap, review indipendente e campione approvato dall'autore |
-| T-P0-03 | IN_PROGRESS | 2026-10-16 | Matrici di presenza/assenza/padding, dopo T-P0-02 approvata |
-| T-P0-04 | IN_PROGRESS | 2026-10-16 | Classificazione note e DEC-05, parallela a T-P0-03 |
+| T-P0-03 | DONE | 2026-10-19 | 218/218 campi e policy/AST verificati; fonti integre; conflitto CAD 2.12 esplicitato, nessuna correzione normativa applicata |
+| T-P0-04 | IN_PROGRESS | 2026-10-19 | Bozze dalla sessione interrotta; verifica e avanzamento sospesi in attesa del chiarimento CAD 2.12 |
 | T-P0-06 | DONE | 2026-10-16 | Commit 69dc995/a55a634; 15 schede/150 metadati, gap espliciti, review approvata |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
@@ -95,7 +104,23 @@ M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
-## Registro verifiche corrente — 2026-10-16, Linux locale
+## Registro verifiche corrente — 2026-10-19, Linux locale
+
+Evidenze e proposta: [T-P0-03](docs/verification/T-P0-03.md).
+
+| Comando | Esito |
+|---|---|
+| `python3 docs/verification/check_presence.py` | PASS, exit 0: 135 SIOC + 83 CAD; dieci trace, policy/AST fedeli, quattordici fonti integre |
+| `cargo fmt --all -- --check` | PASS |
+| `cargo check --all-targets --locked` | PASS |
+| `cargo clippy --all-targets --locked -- -D warnings` | PASS |
+| `cargo test --locked` | PASS: due integration test e tre doctest |
+
+Nessun Rust modificato e nessun test normativo inventato. Nessuna nuova
+run Windows/GitHub eseguita o presunta. Controlli documentali diretti;
+nessun nuovo agente o review tramite framework.
+
+## Registro storico — 2026-10-16, Linux locale
 
 [Trascrizione finale](docs/verification/FOUNDATIONS.md),
 [T-P1-02](docs/verification/T-P1-02.md),
@@ -152,6 +177,11 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Problemi noti e decisioni aperte
 
+- **DEC-05-CAD-ICPC-000:** per B1 `2.12`, la nota ammette `000` come
+  assenza della patologia, ma il candidato dichiara missing exact `000`
+  insieme a presenza required. Proposta concreta nel report T-P0-03:
+  `000` valido, tre spazi mancanti, obbligo conservato. Chiarimento richiesto;
+  nessuna modifica a baseline o policy prima della risposta dell'autore.
 - Controllo completo kit FAIL per gli export extra, nessun impatto bloccante
   su T-P1-01: documenti censiti integri e dati esclusi dal nuovo repository.
 - Remote GitHub configurato dall'autore, accesso autenticato non disponibile;
@@ -212,6 +242,21 @@ Nessun nuovo conflitto o cambiamento di contratto pubblico.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — esecuzione diretta / T-P0-03
+
+- **Stato:** DONE per la consegna documentale; avanzamento sospeso per ambiguità.
+- **File:** matrici presenza SIOC/CAD, report T-P0-03, checker documentale,
+  AGENTS.md e questo stato. Le bozze note e il vecchio piano sono conservati.
+- **Evidenze:** 218/218 campi, contesti e fonti verificati; fmt/check/clippy
+  e test Rust superati, due integration test e tre doctest.
+- **Decisioni:** niente Superpowers o nuovi subagenti; nessuna modifica
+  a policy, contratti pubblici, dipendenze o documenti architetturali.
+- **Problema:** DEC-05-CAD-ICPC-000, proposta e domanda inviate all'autore.
+- **Git:** branch work/p1-foundations; nessun push in questa sessione;
+  bozze T-P0-04 e piano precedente preesistenti non alterati da questa task.
+- **Next:** registrare il chiarimento, poi verificare T-P0-04; nessuna
+  task successiva avviata autonomamente in presenza dell'ambiguità.
 
 HANDOFF — 2026-10-16 — Superpowers / T-P0-02 e T-P0-06
 
