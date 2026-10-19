@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 locali verificate; CI comune BOM/view/rendering 39282115064 avviata sullo snapshot 7168a05; prossima T-P4-05 dopo gate.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 locali verificate; CI comune BOM/view/rendering 39282115064 avviata sullo snapshot 7168a05; T-P6-01 locale verificata e CI pendente; prossima T-P4-05 dopo gate.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -170,8 +170,9 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-07 | DONE | 2026-10-19 | Registry senza cache, binding esplicito/cause preservate; 28 unit/48 integration/10 doctest; [CI 39272551912](https://github.com/UraganoAngelina/lintra/actions/runs/39272551912) verde Linux/Windows su f671517 |
 | T-P4-01 | DONE | 2026-10-19 | Reader byte/tre policy, DEC-12 provvisorio; 29 unit/55 integration/10 doctest; [CI 39276070129](https://github.com/UraganoAngelina/lintra/actions/runs/39276070129) verde Linux/Windows su e18b9ba |
 | T-P4-02 | DONE_UNVERIFIED | 2026-10-19 | Preflight BOM max 4 byte/Reject default/strip esplicito e replay payload; 29 unit/61 integration/10 doctest; CI pendente |
-| T-P4-03 | DONE_UNVERIFIED | 2026-10-19 | View/slice zero-copy su range compiled, fuori range None; 29 unit/64 integration/10 doctest; CI da eseguire dopo run BOM in coda |
-| T-P4-04 | DONE_UNVERIFIED | 2026-10-19 | Rendering UTF-8/CP1252/Latin1, escape+hex senza scelta regionale; 29 unit/70 integration/10 doctest; CI comune con T-P4-03 da eseguire |
+| T-P4-03 | DONE_UNVERIFIED | 2026-10-19 | View/slice zero-copy su range compiled, fuori range None; 29 unit/64 integration/10 doctest; [CI comune 39282115064](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064) queued su 7168a05 |
+| T-P4-04 | DONE_UNVERIFIED | 2026-10-19 | Rendering UTF-8/CP1252/Latin1, escape+hex senza scelta regionale; 29 unit/70 integration/10 doctest; [CI comune 39282115064](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064) queued su 7168a05 |
+| T-P4-05 | BLOCKED | 2026-10-19 | Gate CI T-P4-02..04 non conclusi; nessuna decisione umana richiesta, codice non iniziato |
 | T-P6-01 | DONE_UNVERIFIED | 2026-10-19 | is_missing pura, enum compiled riusata, quattro integration; 113 test locali; CI pendente |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
