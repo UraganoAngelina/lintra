@@ -73,7 +73,7 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 
 | Gate | Stato | Evidenza / limite |
 |---|---|---|
-| G0 — normativa | IN_PROGRESS | SIOC FROZEN documentale, CAD release candidate; nessuna nuova chiusura |
+| G0 — normativa | AWAITING_AUTHOR_APPROVAL | Checklist T-P0-09 pronta nello scope minimale; nessuna firma G0 presunta |
 | G1 — repository CI | IN_PROGRESS | Toolchain pronta e workflow revisionato; autenticazione e run reali mancanti |
 | QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
 | QG-2 — CI Linux/Windows | BLOCKED | Accesso Git remoto non autenticato; nessuna run reale disponibile |
@@ -82,6 +82,40 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
 | G-SIOC-HIST | OPEN_POLICY | DEC-SIOC-HIST-01, non blocca scaffold |
 | G-CAD-RUNTIME | NOT_STARTED | Richiede compiler, cross-record e persistenza |
+
+## G0 — checklist T-P0-09 da approvare
+
+**Proposta 2026-10-19, approvazione dell’autore: NON ANCORA RICEVUTA.**
+T-P0-01..08 verificati su artefatti effettivi: [report T-P0-09](docs/verification/T-P0-09.md).
+Contratto formato 1 approvato in T-P0-07; profilo iniziale SIOC minimale
+approvato in DEC-SIOC-MINIMAL-01. Questa è una richiesta distinta di chiusura
+G0 per la formalizzazione corrente con i rinvii espliciti sotto.
+
+| Voce DET §106 | Esito proposto, evidenza e rinvio | Task/accettazioni bloccate dal rinvio |
+|---|---|---|
+| Forma JSON canonica | CHIUSA per formato 1: SCHEMA_AUTHORING e meta-schema approvati; flow SIOC minimale e cinque trace validi. CAD canonico operativo rinviato alle task CAD: candidato ricevuto non promosso | Esecuzione/certificazione profilo CAD completo, non tipi raw generici |
+| FieldType | CHIUSO sottoinsieme numeric/alphanumeric/date con lessico esplicito. Alphabetic/Decimal RINVIATI: assenza di repertorio e specifica separatore/segno/scala | T-P6-04 ramo Alphabetic e T-P9-03 Decimal non accettabili come supportati senza ampliamento approvato; nessun no-op |
+| AlignmentRule | CHIUSA: exact/right_pad/left_pad, fill_byte e content_policy per campo; preserve_width per codici significativi. Nessun trim globale | Nessun blocco normativo aggiuntivo per il sottoinsieme corrente |
+| Sintassi DSL | CHIUSA: AST tipizzato, operatori/capability chiusi, lowering esaustivo. Deroga limitata substring/età compiuta/delta anni già approvata; implementazione futura | Capability non implementate bloccano esecuzione profili che le richiedono; non la definizione dei contratti |
+| Mapping OBB/FAC/NBB | CHIUSO: basi/condizioni approvate e fonte conservata per 218 campi, check_presence positivo; NBB non diventa optional incondizionato | Nessun blocco aggiuntivo; nuove ambiguità normative richiedono decisione |
+| Regole cross-trace | CHIUSE strutturali SIOC: parent, PK e revoca con policy esplicite. RINVIATE congruenze cliniche/anno/età/temporali in minimal. CAD storico formalizzato nel contratto, runtime successivo | Golden e accettazione SIOC semantico completo; task runtime CAD e relativo gate finché compiler/persistenza e prove non esistono |
+| Identità e join | CHIUSE: cinque PK e sei join canonici SIOC, inventario CAD e scope storico documentati; NotApplicable esplicito. Enforcement cross-run SIOC resta fuori dall’audit | Enforcement storico SIOC oltre audit senza DEC-SIOC-HIST-01 risolta; runtime CAD prima delle task persistenti |
+| Formato dataset | CHIUSO contratto id/version/hash/path/normalizzazione e metadata; 15 schede verificate. RINVIATA fornitura dei dodici dataset ufficiali SIOC, esclusi dal minimale | Accettazione T-P11-05/06 su dati reali SIOC e golden di lookup completo; provider generici verificabili con dati sintetici dichiarati |
+| Versioning reale tabelle | CHIUSO formato revisioni/hash, no latest; RINVIATE release/efficacia/provenienza reali delle tabelle SIOC mancanti e lacune temporali CAD documentate | Preflight e audit di tali tabelle in T-P11-03/06 e accettazioni normative complete; nessuna versione inventata |
+
+Ulteriori limiti trasversali: encoding obbligatorio runtime, controllo
+minuscole rinviato; layout export reali da chiarire prima del loro uso;
+lint Rust sugli schemi obbligatorio in T-P3-04; fixture/golden sintetiche
+pianificate ma non ancora prodotte o approvate. Nessun blocco viene nascosto
+come validazione superata. Tutti i dettagli sono nel report T-P0-08.
+
+Fino alla firma, G0 resta aperto e M0 NOT_REACHED. Restano bloccate le task
+che richiedono G0 (T-P3-01, T-P3-06, T-P9-02/03, T-P14-01 e discendenti).
+La CI reale mancante mantiene indipendentemente bloccata T-P2-01.
+ARCH/DET/Piano sorgenti non sono modificati; questa checklist registra
+contratti approvati e rinvii secondo la procedura di T-P0-09.
+
+## Milestone
 
 | Milestone | Stato | Evidenza |
 |---|---|---|
@@ -104,7 +138,7 @@ M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
 | T-P0-06 | DONE | 2026-10-16 | Commit 69dc995/a55a634; 15 schede/150 metadati, gap espliciti, review approvata |
 | T-P0-07 | DONE | 2026-10-19 | Commit 72f9f5e: contratto completo/artefatti approvati dall’autore; 33 casi negativi e checker passati, limiti espliciti |
 | T-P0-08 | DONE | 2026-10-19 | Profilo structural-minimal.1 autorizzato; flow+5 trace, 135 campi/5 PK/6 join, ledger, lint authoring e piano verificati; ricontrollo T-P3-04 obbligatorio |
-| T-P0-09 | NOT_STARTED | 2026-10-19 | Prerequisiti documentali pronti nello scope minimale; checklist e approvazione G0 ancora da ottenere |
+| T-P0-09 | DONE_UNVERIFIED | 2026-10-19 | Nove voci DET §106 chiuse/rinviate nella checklist seguente; evidenze P0 ricontrollate; attesa approvazione esplicita dell’autore |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
 | T-P1-03 | DONE_UNVERIFIED | 2026-10-16 | Commit 4f71663; workflow e 2 test, controlli locali/review approvati; CI reale non eseguita |
@@ -317,6 +351,23 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P0-09 / checklist pronta
+
+- **Stato:** DONE_UNVERIFIED; G0 AWAITING_AUTHOR_APPROVAL, M0 NOT_REACHED.
+- **File:** sezione G0 di IMPLEMENTATION_STATUS e docs/verification/T-P0-09.md.
+- **Evidenze:** nove voci DET §106 coperte, ciascuna chiusa per contratto
+  corrente o rinviata con ragione e accettazioni/task interessate; riscontro
+  di 218 proiezioni campo e riesecuzione controllo T-P0-06 (15/150).
+  Controlli T-P0-03..08 e Cargo già positivi nella stessa sessione;
+  link e diff-check finali. Nessun test/CI normativo dichiarato.
+- **Decisione richiesta:** approvazione esplicita della checklist G0 con
+  scope minimale e rinvii. Obbligo dal prompt T-P0-09/Piano §9, non da skill.
+- **Limiti:** nessun avanzamento delle task dipendenti fino all’approvazione;
+  CI Linux/Windows reale resta prerequisito separato per T-P2-01.
+- **Git:** nessun push; modifica storica estranea lasciata fuori dal commit.
+- **Next:** registrare risposta autore per chiudere G0; poi risolvere QG-2
+  prima dello sviluppo dei tipi T-P2-01. Nessuna task successiva iniziata.
 
 HANDOFF — 2026-10-19 — T-P0-08 / profilo minimale autorizzato
 
