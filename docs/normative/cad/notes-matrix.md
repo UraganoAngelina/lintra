@@ -196,7 +196,7 @@ a questa registrazione. Citazioni esatte estratte dal source_note, senza
 compressione whitespace interna. La motivazione distingue il testo ambiguo
 dall’AST ricevuto e dalle decisioni già approvate.
 
-### DEC-05-CAD-VALUTAZIONE-INIZIALE
+### DEC-05-CAD-VALUTAZIONE-INIZIALE — RISOLTA dall’autore
 
 Campi: `cad/B1/2.8` (`fields[7]` nella tabella di tracciato sopra).
 
@@ -206,7 +206,7 @@ Citazione esatta:
 
 Motivo e fonte decisionale: Audit PENDING_FLOW_CARDINALITY_AT_LEAST_ONE_INITIAL_EVAL e sezione Lacune eseguibili punto5 chiedono conferma delle eventuali eccezioni. allowed_values1/2 non esprime la cardinalità; profilo storico da solo non ne chiude il significato.
 
-Domanda aperta: Confermare ambito temporale e possibili eccezioni dell’almeno una iniziale: nuovo evento nell’invio o intero storico approvato? Non inventare errore per una iniziale assente in un solo trimestre.
+Decisione dell’autore, 2026-10-19: «Nello storico dell’evento», incluso l’invio corrente come specificato nella domanda. Almeno una iniziale nel namespace ULSS/evento, senza obbligo di ripeterla in ogni invio. [Decisione completa](../DECISIONS.md#dec-05-cad-valutazione-iniziale--risolta-2026-10-19). La riga resta classificata come ambigua rispetto alla fonte originaria; la decisione è ora risolta.
 
 ### DEC-05-CAD-FORMATO-UVMD — CHIUSA come rilievo tecnico
 

@@ -52,3 +52,27 @@ le tabelle che ne attestano il contenuto restano inalterati.
 
 Fonti ed evidenze: [matrice note SIOC](sioc/notes-matrix.md#dec-05-sioc-id-2026--risolta-dallautore),
 [T-P0-04](../verification/T-P0-04.md).
+
+## DEC-05-CAD-VALUTAZIONE-INIZIALE — RISOLTA, 2026-10-19
+
+Ambito: CAD B1, campo `2.8`, almeno una valutazione iniziale per evento.
+
+Alla domanda «nell’intero storico disponibile (incluso l’invio corrente)
+oppure in ogni singolo invio?» l’autore ha risposto: **«Nello storico
+dell’evento»**.
+
+- Cercare almeno una B1 con `2.8 = 1` nello storico dell’evento, includendo
+  l’invio corrente, nel namespace ULSS pertinente.
+- Un invio con sole rivalutazioni non viola questo obbligo se l’iniziale
+  risulta nello storico del medesimo evento.
+- La decisione riguarda l’esistenza, non impone esattamente una iniziale.
+- Contesto o tracciato indispensabile indisponibile non dimostrano una
+  violazione: applicare la distinzione `Unknown` / `NOT_EVALUABLE` già
+  prevista dal contratto, senza modificare lo storico durante la verifica.
+
+La regola verrà espressa nel profilo versionato, usando la persistenza core
+e la preview autorizzata; non viene implementata né aggiunta ai JSON ricevuti
+in T-P0-05. Nessuna nuova eccezione normativa è dedotta dalla risposta.
+
+Evidenze: [regole e join CAD](cad/rules-and-joins.md),
+[matrice note CAD](cad/notes-matrix.md#dec-05-cad-valutazione-iniziale--risolta-dallautore).

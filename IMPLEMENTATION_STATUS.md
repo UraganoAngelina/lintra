@@ -6,11 +6,12 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
 ## Posizione corrente e prerequisiti
 
 - P1 / **T-P1-01 — DONE**: scaffold compilabile del package `lintra`.
-- Sessione corrente: **T-P0-04 DONE** per la classificazione documentale:
-  218 note verificate. CAD B1 `2.12` risolta dall'autore: `000` valido,
-  spazi mancanti, obbligo conservato. **T-P0-05 non avviata**: resta
-  il chiarimento sulla valutazione iniziale CAD. Deroga ID SIOC per ricoveri
-  iniziati nel 2025 e terminati nel 2026 risolta dall’autore (vedi decisioni).
+- Sessione corrente: **T-P0-05 DONE** per il dossier documentale di regole,
+  join e identità. Decisione CAD iniziale nello storico dell’evento, incluso
+  invio corrente, registrata; 74 regole ricevute, dieci join dichiarati,
+  una ricerca implicita di esistenza e trenta presence condizionali verificati.
+  **T-P0-07 non avviata**: resta da confermare la policy del parent opzionale
+  SIOC (DEC-05-SIOC-OPTIONAL-PARENT); boundary dei piani CAD documentate.
   **T-P1-03 DONE_UNVERIFIED**: nessuna nuova evidenza CI in questa sessione.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
@@ -95,9 +96,10 @@ M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
 | T-P0-01 | DONE | 2026-10-16 | Commit 0b13581; inventario 11 categorie/27 righe; integrità e completezza verificate, review approvata |
 | T-P0-02 | DONE | 2026-10-16 | Commit 419600d/6a4e9ac; 218 campi/0 gap, review indipendente e campione approvato dall'autore |
 | T-P0-03 | DONE | 2026-10-19 | 218/218 campi e policy/AST verificati; fonti integre; conflitto CAD 2.12 esplicitato, nessuna correzione normativa applicata |
-| T-P0-04 | DONE | 2026-10-19 | 218 note classificate, hash/riferimenti/DEC-05 verificati; 000 e ID legacy SIOC risolti, una decisione CAD aperta |
-| T-P0-05 | BLOCKED | 2026-10-19 | Non avviata: attende chiarimento CAD-VALUTAZIONE-INIZIALE secondo il mandato sequenziale |
+| T-P0-04 | DONE | 2026-10-19 | 218 note classificate, hash/riferimenti/DEC-05 verificati; 000, ID legacy SIOC e ambito iniziale CAD risolti |
+| T-P0-05 | DONE | 2026-10-19 | Dossier SIOC/CAD: 74 regole, 10 join + ricerca esistenza; PK, identity e policy/DEC verificate; chiarimento parent opzionale SIOC aperto |
 | T-P0-06 | DONE | 2026-10-16 | Commit 69dc995/a55a634; 15 schede/150 metadati, gap espliciti, review approvata |
+| T-P0-07 | BLOCKED | 2026-10-19 | Non avviata: chiarimento parent opzionale SIOC aperto; formato e piani CAD da proporre/revisionare nella task |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
 | T-P1-03 | DONE_UNVERIFIED | 2026-10-16 | Commit 4f71663; workflow e 2 test, controlli locali/review approvati; CI reale non eseguita |
@@ -114,6 +116,7 @@ Evidenze e proposta: [T-P0-03](docs/verification/T-P0-03.md).
 |---|---|
 | `python3 docs/verification/check_presence.py` | PASS, exit 0: 135 SIOC + 83 CAD; dieci trace, policy/AST fedeli, quattordici fonti integre |
 | `python3 docs/verification/check_notes.py` | PASS, exit 0: 218 note, indici/hash/pagine, constraint e ID regola, conteggi classi e citazioni DEC-05 |
+| `python3 docs/verification/check_rules_and_joins.py` | PASS, exit 0: dieci trace, 74 regole, dieci join con cardinalità/policy o DEC, trenta presence, tre gruppi, profilo CAD completo e riferimenti |
 | `cargo fmt --all -- --check` | PASS |
 | `cargo check --all-targets --locked` | PASS |
 | `cargo clippy --all-targets --locked -- -D warnings` | PASS |
@@ -180,8 +183,13 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Problemi noti e decisioni aperte
 
-- **DEC-05-CAD-VALUTAZIONE-INIZIALE:** precisare se l'almeno una iniziale
-  riguarda lo storico dell'evento o il solo invio corrente.
+- **DEC-05-SIOC-OPTIONAL-PARENT:** join opzionale trace1_to_trace2_episode:
+  scegliere policy esplicita per il controllo anno se il parent manca;
+  proposta Unknown/non valutabile, senza errore di parent mancante.
+- **DEC-05-CAD-EVENT-CONTEXT / SET-CONTRACT:** contratto dei piani per
+  insiemi e riduzioni deterministiche da formalizzare in T-P0-07; nessuna
+  implementazione o nuova serializzazione approvata.
+- Dossier ed evidenze: [T-P0-05](docs/verification/T-P0-05.md).
 - Dettagli e citazioni in [T-P0-04](docs/verification/T-P0-04.md). Le clausole
   SIOC 1.6/4.28 mantengono il non-enforcement v1 già ricevuto; G03, formato
   UVMD ricevuto e sentinel Barthel 99 non sono nuove decisioni aperte.
@@ -205,6 +213,12 @@ I doctest verificano importabilità e divieto di importare `engine` e
   ancora in alcuni artefatti sono metadati storici superati, non nuova norma aperta.
 
 ## Decisioni della sessione corrente
+
+- **DEC-05-CAD-VALUTAZIONE-INIZIALE risolta dall’autore il 2026-10-19:**
+  «Nello storico dell’evento», incluso invio corrente come nella domanda.
+  Non richiede un’iniziale nuova in ciascun invio né esattamente una.
+  Namespace ULSS conservato, contesto indisponibile distinto da violazione.
+  [Decisione registrata](docs/normative/DECISIONS.md).
 
 - **DEC-05-SIOC-ID-2026 risolta dall’autore il 2026-10-19:** per ricoveri
   iniziati nel 2025 e terminati nel 2026, ID alfanumerico valorizzato,
@@ -259,6 +273,23 @@ Nessun nuovo conflitto o cambiamento di contratto pubblico.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — esecuzione diretta / T-P0-05
+
+- **Stato:** DONE, criteri documentali verificati; G0 ancora aperto.
+- **File:** rules-and-joins.md SIOC/CAD, checker e report T-P0-05;
+  DECISIONS.md, matrice note CAD, report T-P0-04 e stato aggiornati.
+- **Evidenze:** checker regole/join, note e presenza superati; 74 regole,
+  dieci join, trenta presence condizionali; fonti ricevute integre.
+- **Decisione:** iniziale CAD nello storico; ricerca atto SIOC conserva
+  match sull’ID ricevuto (esistenza), senza introdurre filtro UDO.
+- **Limiti:** policy parent opzionale SIOC da chiarire; piani CAD da
+  formalizzare in T-P0-07. Nessun Rust, runtime normativo o schema mutato.
+- **Verifiche:** git diff --check superato; Cargo non rieseguito per soli
+  documenti. Nessuna nuova CI/Linux-Windows o push.
+- **Git:** work/p1-foundations; modifiche preesistenti al piano storico
+  lasciate inalterate.
+- **Next:** chiarimento SIOC e quindi T-P0-07; P2 continua ad attendere CI.
 
 HANDOFF — 2026-10-19 — chiarimento SIOC-ID-2026
 
