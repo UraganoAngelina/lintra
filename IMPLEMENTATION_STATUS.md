@@ -79,7 +79,7 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
-| QG-2 — CI Linux/Windows | PASS per 34e67da | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), entrambi i runner verdi; nuove modifiche Rust richiedono nuova CI |
+| QG-2 — CI Linux/Windows | PASS per 6ac0fb8 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39233324913), entrambi i runner verdi; nuove modifiche Rust richiedono nuova CI |
 | QG-3 — architettura | PASS per lo scaffold | Moduli privati, CLI solo nel binario, nessun codice normativo o dipendenza |
 | QG-8 — documenti | PASS per lo scaffold | Copie identiche, nessun contratto modificato |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
@@ -146,8 +146,9 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
 | T-P1-03 | DONE | 2026-10-19 | CI su commit 34e67da: Linux GNU e Windows MSVC verdi, [run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518) |
-| T-P2-01 | DONE_UNVERIFIED | 2026-10-19 | 7 newtype + ByteRange verificati in locale: 5 unit, 2 integration, 5 doctest; nuova CI Linux/Windows richiesta |
-| T-P2-02..03 | NOT_STARTED | — | Attendono T-P2-01 |
+| T-P2-01 | DONE | 2026-10-19 | 7 newtype + ByteRange; 5 unit/2 integration/5 doctest; CI Linux/Windows verde su 6ac0fb8, run 39233324913 |
+| T-P2-02 | DONE_UNVERIFIED | 2026-10-19 | Mapping unico 15 codici core + RegulatoryRule, registro e 4 nuovi test; fmt/check/clippy/test/release verdi, nuova CI richiesta |
+| T-P2-03 | NOT_STARTED | — | Prerequisito T-P2-01 soddisfatto |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -353,6 +354,19 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P2-02 / mapping unico locale verificato
+
+- **Stato:** DONE_UNVERIFIED; CI della modifica da completare.
+- **Prerequisito:** T-P2-01 DONE, CI 39233324913 su 6ac0fb8 entrambi success.
+- **File:** domain/errors.rs, export lib/domain, docs/VALIDATION_CODES,
+  report T-P2-01/02 e questo stato.
+- **Evidenze:** fmt/check/clippy/test/release exit 0; 9 unit, 2 integration,
+  5 doctest. Quattro nuovi unit per round-trip, simboli attesi, unicità,
+  ordine stabile, RegulatoryRule e negativi/alias/legacy.
+- **Decisioni:** DEC-02 applicata senza cambiare ARCH/DET; nessun serializer
+  JSON anticipato, mapping unico riutilizzabile dai futuri sink.
+- **Next:** CI Linux/Windows, poi preflight T-P2-03.
 
 HANDOFF — 2026-10-19 — T-P2-01 / implementazione locale
 

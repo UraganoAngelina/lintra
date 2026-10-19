@@ -49,3 +49,5 @@ pub use domain::{
     ByteRange, ByteRangeError, DatasetId, DatasetVersion, FieldId, FlowId, JoinId, SchemaVersion,
     TraceId,
 };
+
+pub use domain::{InvalidValidationCode, ValidationCode};
