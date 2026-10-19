@@ -33,6 +33,40 @@
 //! assert_eq!(range.slice(b"ABCD"), Some(&b"BC"[..]));
 //! ```
 
+//!
+//! Compiled schemas cannot be forged from JSON, defaulted or constructed directly:
+//!
+//! ```compile_fail,E0277
+//! use lintra::CompiledFlowSchema;
+//! let schema: CompiledFlowSchema = serde_json::from_str("{}").unwrap();
+//! ```
+//!
+//! ```compile_fail,E0451
+//! use lintra::CompiledFlowSchema;
+//! fn forge(schema: CompiledFlowSchema) -> CompiledFlowSchema {
+//!     CompiledFlowSchema { ..schema }
+//! }
+//! ```
+//!
+//! ```compile_fail,E0599
+//! use lintra::CompiledFlowSchema;
+//! let schema = CompiledFlowSchema::default();
+//! ```
+//!
+//! ```compile_fail,E0451
+//! use lintra::CompiledRecordSchema;
+//! fn forge(schema: CompiledRecordSchema) -> CompiledRecordSchema {
+//!     CompiledRecordSchema { ..schema }
+//! }
+//! ```
+//!
+//! ```compile_fail,E0451
+//! use lintra::CompiledFieldSpec;
+//! fn forge(field: CompiledFieldSpec) -> CompiledFieldSpec {
+//!     CompiledFieldSpec { ..field }
+//! }
+//! ```
+
 mod application;
 mod context;
 mod domain;
@@ -61,3 +95,5 @@ pub use schema::raw::{
     RawEncodingSpec, RawFieldSpec, RawFlowSchema, RawIdentitySpec, RawJoinSpec, RawRecordSchema,
     RawReferenceDataDependency, RawRule,
 };
+
+pub use schema::compiled::{CompiledFieldSpec, CompiledFlowSchema, CompiledRecordSchema};

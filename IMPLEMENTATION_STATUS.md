@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma e T-P3-01 verificate, prossima T-P3-02.
+  parte autonoma e T-P3-01 verificate; T-P3-02 locale verificata, CI in attesa.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -155,6 +155,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P2-02 | DONE | 2026-10-19 | Mapping unico, 9 unit/2 integration/5 doctest e release; [CI 39234593522](https://github.com/UraganoAngelina/lintra/actions/runs/39234593522) verde Linux/Windows su 30af262 |
 | T-P2-03 | IN_PROGRESS | 2026-10-19 | Proposta A approvata; identità/chiave/scope/summary/outcome verificati in locale e CI 39235805213, 70cdb5e; errore tecnico applicativo rinviato esplicitamente |
 | T-P3-01 | DONE | 2026-10-19 | Raw DTO/AST formato 1, round-trip e negativi; 17 unit/2 integration/5 doctest; [CI 39236782609](https://github.com/UraganoAngelina/lintra/actions/runs/39236782609) verde Linux/Windows su 225419d |
+| T-P3-02 | DONE_UNVERIFIED | 2026-10-19 | Modello compiled immutabile, piani tipizzati e indice derivato; 25 unit/2 integration/10 doctest, fmt/check/clippy/release locali verdi; nuova CI richiesta |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -366,6 +367,25 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-02 / modello compiled locale verificato
+
+- **Stato:** DONE_UNVERIFIED, CI della modifica da eseguire.
+- **File:** schema/compiled.rs, compiled/{plans,tests}.rs, schema/mod.rs,
+  export/doctest lib, Cargo.toml/lock, report T-P3-02 e stato.
+- **Contratti:** campi privati e accesso condiviso; nessuna costruzione
+  pubblica/Deserialize/Default; SchemaKey di dominio riutilizzata. Vec
+  ordinate, field_index privato derivato; piani chiusi e ref risolti tipizzati.
+- **Evidenze:** fmt/check/clippy/test/release exit 0; 25 unit, 2 integration,
+  10 doctest, inclusi confini di costruzione e invarianti di indici/layout.
+  Generato raw invariato; diff-check e cargo tree verificati.
+- **Dipendenza:** regex 1.13.1 necessaria al programma byte precompilato,
+  quattro nuovi package Rust nel lockfile, nessuna libreria di sistema.
+- **Limiti:** nessun compiler/evaluator/backend implementato; nessuna
+  capability dichiarata eseguibile. Factory privata riservata a T-P3-05;
+  le guardie locali non sostituiscono il lint/compile semantico completo.
+- **Next:** CI Linux/Windows della task; poi T-P3-03. Residuo T-P2-03/M1 e
+  obbligo lint Rust dei profili P0 in T-P3-04 invariati.
 
 HANDOFF — 2026-10-19 — T-P3-01 completata, riordino A applicato
 
