@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma e T-P3-01 verificate; T-P3-02 locale verificata, CI in attesa.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; prossima T-P3-03.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -84,8 +84,8 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
-| QG-2 — CI Linux/Windows | PASS per 225419d | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39236782609), entrambi i runner verdi; nuove modifiche Rust richiedono nuova CI |
-| QG-3 — architettura | PASS per dominio/raw | Moduli privati, export espliciti, DTO non eseguibili, nessuna logica normativa nel core; serde/serde_json motivate |
+| QG-2 — CI Linux/Windows | PASS per f04bb60 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39250930467), entrambi i runner verdi; nuove modifiche Rust richiedono nuova CI |
+| QG-3 — architettura | PASS per dominio/raw/compiled | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
 | QG-8 — documenti | PASS per lo scaffold | Copie identiche, nessun contratto modificato |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
 | G-SIOC-HIST | OPEN_POLICY | DEC-SIOC-HIST-01, non blocca scaffold |
@@ -155,7 +155,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P2-02 | DONE | 2026-10-19 | Mapping unico, 9 unit/2 integration/5 doctest e release; [CI 39234593522](https://github.com/UraganoAngelina/lintra/actions/runs/39234593522) verde Linux/Windows su 30af262 |
 | T-P2-03 | IN_PROGRESS | 2026-10-19 | Proposta A approvata; identità/chiave/scope/summary/outcome verificati in locale e CI 39235805213, 70cdb5e; errore tecnico applicativo rinviato esplicitamente |
 | T-P3-01 | DONE | 2026-10-19 | Raw DTO/AST formato 1, round-trip e negativi; 17 unit/2 integration/5 doctest; [CI 39236782609](https://github.com/UraganoAngelina/lintra/actions/runs/39236782609) verde Linux/Windows su 225419d |
-| T-P3-02 | DONE_UNVERIFIED | 2026-10-19 | Modello compiled immutabile, piani tipizzati e indice derivato; 25 unit/2 integration/10 doctest, fmt/check/clippy/release locali verdi; nuova CI richiesta |
+| T-P3-02 | DONE | 2026-10-19 | Compiled immutabile, piani tipizzati e indice derivato; 25 unit/2 integration/10 doctest; [CI 39250930467](https://github.com/UraganoAngelina/lintra/actions/runs/39250930467) verde Linux/Windows su f04bb60 |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -367,6 +367,28 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-02 completata / CI reale verde
+
+- **Stato:** T-P3-02 DONE; nessuna task successiva avviata in questa consegna.
+- **Evidenza:** [run 39250930467](https://github.com/UraganoAngelina/lintra/actions/runs/39250930467) sul commit
+  f04bb60: Linux GNU job 118054251065 e Windows MSVC job 118054251729
+  completed/success, fmt/clippy/test/build release nativi verdi.
+- **Locale:** fmt/check/clippy/test/release tutti exit 0; 25 unit + 2
+  integration + 10 doctest, negativi delle invarianti e della costruzione
+  esterna inclusi. Riproducibilità raw e diff-check verificati.
+- **Decisioni tecniche:** SchemaKey di dominio unica; Vec per ordine fisico
+  e trace, HashMap solo field_index derivato; costruttori privati nel boundary
+  compiled e consumer compiler futuro discendente/reexport. Interi literal
+  esatti senza limite macchina, programmi regex byte posseduti nel modello.
+  Rifiniture DET §147 e limiti sono nel report, nessuna fonte modificata.
+- **Residui:** compiler/evaluator/backend non implementati e nessuna nuova
+  capability eseguibile; T-P2-03/M1 aperte sul residuo applicativo. Lint Rust
+  dei profili P0 ancora obbligatorio in T-P3-04.
+- **Git:** codice/lockfile nel commit verificato f04bb60 su origin;
+  consuntivo finale solo documentale. File storico preesistente intatto,
+  fuori dal commit. Nessun merge su main.
+- **Next:** T-P3-03 SchemaRepository, secondo dipendenze atomiche autorizzate.
 
 HANDOFF — 2026-10-19 — T-P3-02 / modello compiled locale verificato
 
