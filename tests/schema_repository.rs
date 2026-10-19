@@ -358,3 +358,61 @@ fn sioc_draft_loads_when_explicitly_staged_in_the_registry_layout() {
         serde_json::to_value(expected).unwrap()
     );
 }
+
+#[test]
+fn schema_format_is_required_and_never_defaulted_or_coerced_during_loading() {
+    let directory = TempDirectory::new().unwrap();
+    let repository = FileSystemSchemaRepository::new(directory.0.clone()).unwrap();
+    let selection = key("v1");
+    for invalid in [
+        None,
+        Some(json!(null)),
+        Some(json!("1")),
+        Some(json!("1.0.0")),
+        Some(json!(-1)),
+        Some(json!(1.5)),
+        Some(json!(4294967296_u64)),
+        Some(json!(true)),
+    ] {
+        let mut value = serde_json::to_value(raw(&selection)).unwrap();
+        match invalid {
+            Some(version) => {
+                value["schema_format_version"] = version;
+            }
+            None => {
+                value
+                    .as_object_mut()
+                    .unwrap()
+                    .remove("schema_format_version");
+            }
+        }
+        write_fixture(
+            &directory.0,
+            &selection,
+            "flow.json",
+            &serde_json::to_vec(&value).unwrap(),
+        )
+        .unwrap();
+        let error = repository.load_raw(&selection).unwrap_err();
+        assert!(matches!(error,SchemaLoadError::Json {ref source,..} if source.is_data()));
+    }
+    // Repository remains a deserializer; numeric compatibility belongs to lint/compiler.
+    for version in [0, 1, 2, u32::MAX] {
+        let mut value = raw(&selection);
+        value.schema_format_version = version;
+        write_fixture(
+            &directory.0,
+            &selection,
+            "flow.json",
+            &serde_json::to_vec(&value).unwrap(),
+        )
+        .unwrap();
+        assert_eq!(
+            repository
+                .load_raw(&selection)
+                .unwrap()
+                .schema_format_version,
+            version
+        );
+    }
+}

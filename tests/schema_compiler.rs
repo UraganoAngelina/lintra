@@ -446,3 +446,16 @@ fn successful_compilation_preserves_trace_order_and_local_key_scopes() {
         assert_eq!(trace.fields()[1].id().0, "A");
     }
 }
+
+#[test]
+fn format_range_is_enforced_by_the_compiler_without_a_fallback() {
+    let compiled = SchemaCompiler.compile(bound(sample())).unwrap();
+    assert_eq!(compiled.schema_format_version(), 1);
+    for version in [0, 2, u32::MAX] {
+        let mut value = sample();
+        value["schema_format_version"] = json!(version);
+        let failure = error(value);
+        assert_eq!(failure.issues.len(), 1);
+        assert_eq!(failure.issues[0].code, Code::UnsupportedSchemaFormat);
+    }
+}

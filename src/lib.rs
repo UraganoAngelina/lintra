@@ -109,3 +109,5 @@ pub use schema::repository::{
 pub use schema::linter::{SchemaIssue, SchemaIssueCode, SchemaIssueSeverity, lint_raw_schema};
 
 pub use schema::{SchemaCompilationError, SchemaCompiler};
+
+pub use schema::compatibility::{EngineCapabilities, SchemaFormatVersion};

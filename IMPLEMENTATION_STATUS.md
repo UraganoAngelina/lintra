@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; prossima T-P3-06.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 in corso: parte indipendente verificata, CNF-FORMAT-01 in attesa di mappatura ufficiale.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -159,6 +159,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-03 | DONE | 2026-10-19 | Repository filesystem/memoria e errori tecnici tipizzati; 25 unit/11 integration/10 doctest; [CI 39253152098](https://github.com/UraganoAngelina/lintra/actions/runs/39253152098) verde Linux/Windows su a39924d |
 | T-P3-04 | DONE | 2026-10-19 | Linter fisico/tipi con 13 codici testati; 26 unit/25 integration/10 doctest; P0 senza issue; [CI 39257768950](https://github.com/UraganoAngelina/lintra/actions/runs/39257768950) verde Linux/Windows su a1ddabb |
 | T-P3-05 | DONE | 2026-10-19 | Proposta A approvata; compiler locale/binding Rust-only e rifiuto costrutti esclusi; 28 unit/36 integration/10 doctest; [CI 39264362959](https://github.com/UraganoAngelina/lintra/actions/runs/39264362959) verde Linux/Windows su b658e05 |
+| T-P3-06 | IN_PROGRESS | 2026-10-19 | EngineCapabilities/range condiviso e formato obbligatorio verificati; 28 unit/41 integration/10 doctest; inventario CNF-FORMAT-01 da ratificare, messaggio finale e CI pendenti |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -253,6 +254,16 @@ I doctest verificano importabilità e divieto di importare `engine` e
 `persistence` dall'esterno (DET §94). Nessun test di validazione fittizio.
 
 ## Problemi noti e decisioni aperte
+
+- **CNF-FORMAT-01 / T-P3-06:** ARCH/DET richiedono la release minima per
+  formati fuori range, ma esiste solo formato 1 e nessuna release GitHub.
+  L’autore ha richiesto l’inventario completo e una mappatura ufficiale,
+  senza approvare il messaggio provvisorio di versione minima non disponibile.
+  [Inventario](docs/schema-authoring/FORMAT_COMPATIBILITY.md): proposta formato
+  1 → baseline sviluppo 0.1.0/commit verificato; 0 e 2..=u32::MAX non definiti;
+  input mancanti/non conformi rifiutati. Decisione da ratificare, nessuna
+  nuova baseline o versione futura assegnata autonomamente.
+
 
 - **CNF-COMPILER-01 RISOLTO:** autore: «Approvo A: compiler incrementale con
   rifiuto esplicito dei costrutti esclusi». Gate per costrutti presenti nel solo
@@ -412,6 +423,26 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-06 / inventario mapping richiesto dall’autore
+
+- **Stato:** IN_PROGRESS; solo parte indipendente implementata, messaggio
+  di versione minima e completamento task subordinati alla mappatura ufficiale.
+- **Fatto/file:** compatibility.rs e tests/schema_compatibility.rs nuovi;
+  lint usa il descrittore corrente, mod/lib esportano i tipi; test compiler e
+  repository estesi. Preflight/inventario documentano CNF-FORMAT-01.
+- **Verifiche:** fmt/check/clippy/test/release/diff-check e generatore --check
+  PASS; 28 unit + 41 integration + 10 doctest. Cinque integration nuovi.
+  CI della task non ancora eseguita; nessun DONE o esito remoto presunto.
+- **Evidenze mapping:** nessun tag locale; GitHub release list [] exit 0;
+  solo formato 1 definito, package 0.1.0 di sviluppo. Prerequisiti T-P3-05/G0 verdi.
+- **Decisione richiesta:** ratificare la matrice completa in
+  docs/schema-authoring/FORMAT_COMPATIBILITY.md; proposta A del preflight
+  non approvata dalla sola richiesta dell’inventario.
+- **Git:** work/p1-foundations; modifica storica estranea preservata.
+  Nessun cambiamento ad ARCH/DET/Piano, schema JSON o baseline normative.
+- **Next:** completare T-P3-06 dopo decisione; nessuna task successiva avviata.
+
 
 HANDOFF — 2026-10-19 — T-P3-05 completata / CI reale verde
 

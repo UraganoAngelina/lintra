@@ -1,6 +1,9 @@
 //! Structural lint only. An empty result is not a compiled or executable schema.
 
-use super::raw::{RawFlowSchema, RawLexical, RawPhysical, RawRecordSchema};
+use super::{
+    compatibility::{EngineCapabilities, SchemaFormatVersion},
+    raw::{RawFlowSchema, RawLexical, RawPhysical, RawRecordSchema},
+};
 use crate::domain::{FieldId, FlowId, TraceId};
 use std::collections::HashSet;
 
@@ -246,7 +249,9 @@ pub fn lint_raw_schema(raw: &RawFlowSchema) -> Vec<SchemaIssue> {
     };
     diagnostics.identifier(&raw.flow_id, None, None);
     diagnostics.identifier(&raw.schema_version, None, None);
-    if raw.schema_format_version != 1 {
+    if !EngineCapabilities::current()
+        .supports_schema_format(SchemaFormatVersion(raw.schema_format_version))
+    {
         diagnostics.error(
             SchemaIssueCode::UnsupportedSchemaFormat,
             None,
