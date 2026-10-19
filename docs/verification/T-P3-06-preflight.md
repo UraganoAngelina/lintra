@@ -28,7 +28,7 @@ versione di sviluppo corrente, non prova una release compatibile con
 qualsiasi formato futuro. Non si può dedurre che formato 2 richieda motore
 2.x, né che una versione inferiore del formato sia automaticamente accettata.
 
-## Proposta A — da approvare
+## Proposta A iniziale — superata dalla mappa ufficiale
 
 - EngineCapabilities dichiara il range effettivo 1..=1, con SchemaFormatVersion
   tipizzato ed engine_version ricavata dalla versione del package corrente.
@@ -61,7 +61,7 @@ Il descrittore dell’eseguibile corrente è costruito dal codice; un descrittor
 ipotetico creato dal chiamante non riconfigura il compiler e non autorizza
 un formato diverso da quello implementato.
 
-## Alternativa B
+## Alternativa B iniziale — storico
 
 Mantenere aperto il requisito della versione minima concreta finché esiste
 una fonte ufficiale approvata per il mapping. T-P3-06 non viene dichiarata

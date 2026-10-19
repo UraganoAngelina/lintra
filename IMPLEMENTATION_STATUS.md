@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 locale verificata, CI pendente; CNF-FORMAT-01 risolto con mappa approvata; prossima T-P3-07.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; prossima T-P3-07.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -159,7 +159,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-03 | DONE | 2026-10-19 | Repository filesystem/memoria e errori tecnici tipizzati; 25 unit/11 integration/10 doctest; [CI 39253152098](https://github.com/UraganoAngelina/lintra/actions/runs/39253152098) verde Linux/Windows su a39924d |
 | T-P3-04 | DONE | 2026-10-19 | Linter fisico/tipi con 13 codici testati; 26 unit/25 integration/10 doctest; P0 senza issue; [CI 39257768950](https://github.com/UraganoAngelina/lintra/actions/runs/39257768950) verde Linux/Windows su a1ddabb |
 | T-P3-05 | DONE | 2026-10-19 | Proposta A approvata; compiler locale/binding Rust-only e rifiuto costrutti esclusi; 28 unit/36 integration/10 doctest; [CI 39264362959](https://github.com/UraganoAngelina/lintra/actions/runs/39264362959) verde Linux/Windows su b658e05 |
-| T-P3-06 | DONE_UNVERIFIED | 2026-10-19 | Mappa ufficiale approvata 1→0.1.0 sviluppo; range condiviso e messaggi verificati; 28 unit/42 integration/10 doctest; CI pendente |
+| T-P3-06 | DONE | 2026-10-19 | Mappa ufficiale approvata 1→0.1.0 sviluppo; range/messaggi e 28 unit/42 integration/10 doctest; [CI 39269026995](https://github.com/UraganoAngelina/lintra/actions/runs/39269026995) verde Linux/Windows su 7522345 |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -168,7 +168,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 T-P3-06: fmt/check/clippy/test/release/diff-check e generatore --check PASS;
 28 unit + 42 integration + 10 doctest; sei integration nuovi rispetto a
 T-P3-05. Range/formato assente/non conforme e messaggi/mappa verificati.
-CI della task pendente; report [T-P3-06](docs/verification/T-P3-06.md).
+[CI 39269026995](https://github.com/UraganoAngelina/lintra/actions/runs/39269026995) PASS Linux GNU/Windows MSVC su 7522345; report [T-P3-06](docs/verification/T-P3-06.md).
 
 Evidenze precedenti T-P3-05:
 
@@ -267,7 +267,7 @@ I doctest verificano importabilità e divieto di importare `engine` e
   2..=u32::MAX non definiti/nessun eseguibile compatibile dichiarato.
   [Mappa ufficiale](docs/schema-authoring/FORMAT_COMPATIBILITY.md).
   Nessuna release futura inventata, prima proposta provvisoria superata;
-  T-P3-06 locale verificata, CI pendente.
+  T-P3-06 verificata in locale e CI Linux/Windows.
 
 
 - **CNF-COMPILER-01 RISOLTO:** autore: «Approvo A: compiler incrementale con
@@ -441,6 +441,32 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-06 completata / CI reale verde
+
+- **Stato:** DONE; QG-2 PASS sul commit codice 7522345. CNF-FORMAT-01
+  risolto dalla mappa approvata, nessuna decisione della task ancora pendente.
+- **Fatto:** descrittore formato tipizzato/range 1..=1 condiviso da lint/compiler;
+  formato obbligatorio senza default; minime e messaggi basati sulla mappa.
+- **Decisione:** formato 1→minimo 0.1.0 sviluppo/compiler b658e05; 0 e
+  2..=u32::MAX non definiti, nessun eseguibile compatibile dichiarato. Input
+  assenti/non conformi rifiutati in caricamento. Nessuna release pubblicata inventata.
+- **Evidenze:** [run 39269026995](https://github.com/UraganoAngelina/lintra/actions/runs/39269026995),
+  Linux GNU job 118116145345 e Windows MSVC job 118116144743 completed/success,
+  SHA 7522345 verificato, fmt/clippy/test/release verdi. Timeout di una lettura
+  GitHub superato con retry; nessun fallimento di test o build riscontrato.
+- **Locale:** fmt/check/clippy/test/release/diff-check e generatore --check PASS;
+  28 unit + 42 integration + 10 doctest, sei integration nuovi. P0 ancora verde.
+- **File/contratti:** compatibility.rs, linter, mod/lib, tre file test;
+  SCHEMA_AUTHORING, mappa ufficiale, preflight/report e stato. Raw/compiler
+  riusati, nessuna signature, dipendenza, grammatica o baseline modificata.
+- **Residui:** supporto formato distinto dal supporto local.v1; nessun registry,
+  bundle resolver o runtime anticipato. T-P2-03/M1 restano aperte sul residuo applicativo.
+- **Git:** work/p1-foundations, codice 81c685e/7522345 su origin;
+  consuntivo finale solo documentale. Modifica storica estranea intatta,
+  fuori dai commit; nessun merge su main o task successiva avviata.
+- **Next:** T-P3-07 SchemaRegistry; T-P3-03 e T-P3-05 verificate Linux/Windows.
+
 
 HANDOFF — 2026-10-19 — T-P3-06 / mappa approvata e locale verificato
 
