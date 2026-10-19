@@ -1,8 +1,9 @@
 # Piano fixture SIOC — T-P0-08
 
-Stato: **DRAFT_INPUT_GAPS**, 2026-10-19. Il contratto T-P0-07 del commit
-72f9f5e è approvato dall’autore. Questo documento pianifica fixture e output
-attesi; non contiene record paziente, golden eseguiti o test normativi passati.
+Stato: **DRAFT_STRUCTURAL_MINIMAL**, 2026-10-19. Il contratto T-P0-07 è
+approvato. Il profilo iniziale è ridotto con DEC-SIOC-MINIMAL-01; non sono
+ancora prodotti record sintetici o golden. Le sezioni cliniche del catalogo
+restano backlog per un futuro profilo completo, non controlli attivi.
 
 Fonti: ARCH §12; DET §107 punti 12–14 e §111; prompt T-P0-08;
 [authoring approvato](../SCHEMA_AUTHORING.md),
@@ -18,34 +19,36 @@ con versione/hash; la fonte li dichiara tutti PENDING_DATASET. Nessun binding
 viene popolato con hash fittizi, dati sintetici spacciati per ufficiali o
 versioni dedotte dalla data del flow. [Schede e lacune](reference-datasets.md).
 
-Restano da chiarire encoding/repertorio di caratteri e riconoscimento delle
-minuscole per 1.7/1.8; l’AN generico non autorizza un set ASCII-only. Per
-age_in_completed_years il parametro leap_day_anniversary è obbligatorio:
-l’esempio sintetico mar01 non decide la policy normativa SIOC. Per ICD9
-occorrono i metadata reali e i binding sex/min_age/max_age del provider;
-un sex:true/age:true legacy non è già un binding compilabile.
+Il profilo minimale non usa lookup o no_lowercase: non occorre inferire
+un repertorio dai file reali. Encoding comunque esplicito a runtime; il 29
+febbraio usa **mar01** per il futuro profilo completo. ICD9/età/ordinamenti
+sono rinviati, ciascuno tracciato nel ledger. I dodici dataset restano
+necessari alla futura conformità semantica completa.
 
-Di conseguenza non si creano oggi flow canonici apparentemente completi con
-policy inventate o ref disattivati. T-P0-08 resta bloccata sulle parti che
-richiedono tali input; il presente piano è il lavoro indipendente verificabile.
+Il [profilo canonico](../../schemas/sioc/2026-04-20.structural-minimal.1/README.md)
+contiene flow, cinque trace e ledger. Nel catalogo ogni caso ha
+`minimal_profile_disposition`: active, physical_only, partial_050_only,
+deferred oppure runtime_encoding_required. Un caso rinviato non genera un
+errore atteso nel profilo minimale. I template di constraint usano il vincolo
+canonico attivo, non la parte sorgente esplicitamente rinviata.
 
 ## Layout previsto
 
-La revisione operativa di bozza proposta è `2026-04-20.lintra-1-draft`,
+La revisione operativa di bozza proposta è `2026-04-20.structural-minimal.1`,
 distinta dalla versione normativa 2026-04-20 e dalla DSL legacy 1.0.0.
 Il metadato 2025-12-16 dei trace ricevuti resta provenienza, non viene corretto.
 La bozza non è una release, né un’alterazione del FROZEN ricevuto.
 
 ```text
-schemas/sioc/2026-04-20.lintra-1-draft/
-  flow.json
+schemas/sioc/2026-04-20.structural-minimal.1/
+  flow_schema.json
   trace-1.json
   trace-2.json
   trace-3.json
   trace-4.1.json
   trace-4.2.json
 
-tests/golden/sioc/2026-04-20.lintra-1-draft/
+tests/golden/sioc/2026-04-20.structural-minimal.1/
   trace-1/{valid,required,datatype,domain}/<scenario>/
   trace-2/{valid,required,datatype,domain}/<scenario>/
   trace-3/{valid,required,datatype,domain}/<scenario>/
@@ -95,7 +98,7 @@ Il catalogo contiene per ogni campo trace/id/indice/hash e:
 | required | Campo con base required: raw missing esatto della fonte → RequiredField. NeverMissing: nessun RequiredField basato sul solo raw di width corretto, senza promettere che datatype/domain siano validi |
 | required condizionale | Condizione required_if vera e raw missing → ConditionalRequired; forbidden_if vera e dato presente → ForbiddenField; conflitti e Unknown separati |
 | datatype numeric | Byte X seguito da zeri fino al width, non missing → InvalidType |
-| datatype date | 31022026, otto byte, non missing → InvalidDate; completare positivi di calendario e bisestili una volta fissata la policy di età |
+| datatype date | 31022026, otto byte, non missing → InvalidDate; completare positivi di calendario e bisestili; indipendenti dalla futura regola di età |
 | datatype AN | Testimone illecito solo dopo profilo lessicale; non dichiarare invalidi accenti o punteggiatura per deduzione |
 | domain | Ogni constraint della fonte ha indice/kind e casi positivo/negativo o boundary rappresentabile; lookup richiede dati ufficiali/versionati |
 
@@ -108,6 +111,30 @@ socio-familiari con sentinel 99; nessuna contiguità o unicità procedure
 inventata. Le non esecuzioni v1 deliberate restano metadata/decisioni.
 
 ## Scenari trasversali e modifiche approvate
+
+Nel minimale sono attivi VALID (senza dataset), ID-LEGACY e non-tutti-zeri,
+JOIN, REVOCATION, CESSATION, SEMANTIC-ZERO per la sola presenza, PK e il
+contratto futuro CROSS-RUN. ANON conserva solo i divieti/obblighi di presenza.
+ID-2026, sentinelle/nome ANON, DEATH-SCORES, AGE-BOUNDARY, DATES-ORDER e
+UNION-LOOKUP sono backlog esplicito del profilo normativo completo.
+
+Scenari aggiuntivi attivi, con contesto sintetico altrimenti valido:
+
+| ID | Mutazione | Output bersaglio da produrre |
+|---|---|---|
+| WIDTH-1/2/3/41/42 | Lunghezza esatta / un byte in meno / uno in più | Accettazione del layout / errore lunghezza record; terminatore escluso |
+| PAD-ID | ID logico sintetico seguito da spazi fino a 20 byte | Nessun errore di presenza/padding; spazi finali preservati nel file |
+| ZERO-ID | Da uno a venti zeri con padding coerente | Violazione del regex non-tutti-zeri, anche per ricovero 2025 |
+| VENETO-SENDER | Prefisso 050 / 030 in 1.17, 2.49, 3.35 | Constraint segmento soddisfatta / violata; ultime tre cifre senza lookup |
+| VENETO-UDO | 4.7 uguale 050 / 030 | AllowedValues soddisfatta / violata |
+| OUTSIDE-REGION | 1.13 o 2.29 uguale 030, contesto condizionale coerente | Nessun errore per il solo fatto di essere fuori Veneto |
+| MINIMAL-DOMAIN | Codice fisicamente valido ma non verificato da dataset | Nessun lookup eseguito; non significa codice normativamente corretto |
+| BITSET | 3.19 posizioni 17–20 tutte zero / una a 1 | Rappresentazione conforme / constraint violata |
+
+I valori 030 sono solo controesempi sintetici per un confronto con 050,
+non un dataset di regioni. Gli esiti si riferiscono al controllo bersaglio,
+non promettono un conteggio globale di errori già misurato.
+
 
 | ID | Preparazione sintetica futura | Predicato atteso / fonte |
 |---|---|---|
@@ -124,7 +151,7 @@ inventata. Le non esecuzioni v1 deliberate restano metadata/decisioni.
 | REVOCATION | 4.30 presente e target 4.22 esistente/assente nell’intero trace 4.2 | 4.29 richiesto; ricerca per solo ID, nessun filtro UDO introdotto; assenza target viola record_exists |
 | CESSATION | 4.29 presente con 4.30 mancante | Nessuna imposizione del verso inverso; nota e decisione conservate |
 | DEATH-SCORES | Valutazione dimissione e parent 2.7=8, sentinel delle scale | R-3.*-DEATH/NORMAL, inclusi versi inversi Karnofsky/esito; non trattare sentinel come assenza fisica |
-| AGE-BOUNDARY | Date che distinguono età compiuta da differenza anni e compleanno 29 febbraio | R-3.34-AGE, boundary 18/19; convenzione bisestile ancora da confermare per il profilo reale |
+| AGE-BOUNDARY | Date che distinguono età compiuta da differenza anni e compleanno 29 febbraio | R-3.34-AGE, boundary 18/19; convenzione bisestile mar01 approvata; regola rinviata nel minimale |
 | DATES-ORDER | 2.4≤2.5≤2.6 e 4.18≤4.19, uguaglianza inclusa | Regole temporali locali ricevute, confronto fra date valide |
 | SEMANTIC-ZERO | Campo con NeverMissing e valore zero valido da dominio del caso | Non emettere required automaticamente; ammissibilità valutata dalla constraint specifica |
 | UNION-LOOKUP | 2.31 valido in una sola delle tre tabelle oppure sentinel 999999 | Unione hsp11/ria11/sts11 e valore esplicito; tabelle non inventate né concatenate nel loop |
@@ -138,8 +165,8 @@ anticipata in questo piano SIOC.
 
 ## Ricontrolli obbligatori
 
-1. Dopo gli input mancanti: creare e revisionare i cinque trace e il flow
-   secondo il formato approvato, con provenienza e binding reali.
+1. Bozza minimale prodotta: flow e cinque trace, con ledger dei rinvii.
+   Il futuro profilo completo richiede dataset ufficiali e repertorio minuscole.
 2. Lint manuale rispetto a SCHEMA_AUTHORING, JSON Schema strutturale e
    tracciabilità completa di campi/regole/decisioni.
 3. Appena **T-P3-04** esiste, rieseguire il linter automatico Rust sui file

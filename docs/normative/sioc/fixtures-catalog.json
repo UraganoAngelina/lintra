@@ -1,10 +1,10 @@
 {
-  "status": "DRAFT_INPUT_GAPS_NOT_EXECUTABLE",
+  "status": "SOURCE_BACKLOG_WITH_MINIMAL_PROFILE",
   "task": "T-P0-08",
   "flow_id": "SIOC",
   "source_flow_sha256": "3567bafd3cb9b762becdd46a356454b89df094c7b88c5b1538c97a1bbaf26c45",
   "source_regulatory_version": "2026-04-20",
-  "target_schema_version": "2026-04-20.lintra-1-draft",
+  "target_schema_version": "2026-04-20.structural-minimal.1",
   "reference_dependencies": [
     "foreign-country-codes",
     "health-authority-codes",
@@ -28,29 +28,34 @@
       "cases": [
         {
           "id": "SIOC-1-1.1-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.1-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.1-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "logical_length",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         },
         {
           "id": "SIOC-1-1.1-constraint-1",
           "constraint_index": 1,
           "constraint_kind": "digits_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         },
         {
           "id": "SIOC-1-1.1-constraint-2",
           "constraint_index": 2,
           "constraint_kind": "substring_not_equals",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -62,15 +67,18 @@
       "cases": [
         {
           "id": "SIOC-1-1.2-required_if",
-          "template": "required_condition"
+          "template": "required_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.2-forbidden_if",
-          "template": "forbidden_condition"
+          "template": "forbidden_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.2-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         }
       ]
     },
@@ -82,17 +90,20 @@
       "cases": [
         {
           "id": "SIOC-1-1.3-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.3-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.3-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -104,21 +115,25 @@
       "cases": [
         {
           "id": "SIOC-1-1.4-required_if",
-          "template": "required_condition"
+          "template": "required_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.4-forbidden_if",
-          "template": "forbidden_condition"
+          "template": "forbidden_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.4-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.4-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "structure_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "physical_only"
         }
       ]
     },
@@ -130,17 +145,20 @@
       "cases": [
         {
           "id": "SIOC-1-1.5-forbidden_if",
-          "template": "forbidden_condition"
+          "template": "forbidden_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.5-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.5-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "structure_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "physical_only"
         }
       ]
     },
@@ -152,23 +170,27 @@
       "cases": [
         {
           "id": "SIOC-1-1.6-forbidden_if",
-          "template": "forbidden_condition"
+          "template": "forbidden_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.6-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.6-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "digits_only_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.6-constraint-1",
           "constraint_index": 1,
           "constraint_kind": "logical_length_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -180,17 +202,20 @@
       "cases": [
         {
           "id": "SIOC-1-1.7-required_if",
-          "template": "required_condition"
+          "template": "required_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.7-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.7-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "no_lowercase_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -202,17 +227,20 @@
       "cases": [
         {
           "id": "SIOC-1-1.8-required_if",
-          "template": "required_condition"
+          "template": "required_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.8-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.8-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "no_lowercase_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -224,21 +252,25 @@
       "cases": [
         {
           "id": "SIOC-1-1.9-required_if",
-          "template": "required_condition"
+          "template": "required_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.9-forbidden_if",
-          "template": "forbidden_condition"
+          "template": "forbidden_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.9-datatype",
-          "template": "datatype_date"
+          "template": "datatype_date",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.9-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "date",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -250,17 +282,20 @@
       "cases": [
         {
           "id": "SIOC-1-1.10-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.10-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.10-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -272,17 +307,20 @@
       "cases": [
         {
           "id": "SIOC-1-1.11-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.11-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.11-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_or_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -294,17 +332,20 @@
       "cases": [
         {
           "id": "SIOC-1-1.12-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.12-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.12-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -316,17 +357,20 @@
       "cases": [
         {
           "id": "SIOC-1-1.13-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.13-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.13-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_or_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -338,11 +382,13 @@
       "cases": [
         {
           "id": "SIOC-1-1.14-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.14-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         }
       ]
     },
@@ -354,11 +400,13 @@
       "cases": [
         {
           "id": "SIOC-1-1.15-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.15-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         }
       ]
     },
@@ -370,17 +418,20 @@
       "cases": [
         {
           "id": "SIOC-1-1.16-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.16-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.16-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -392,29 +443,34 @@
       "cases": [
         {
           "id": "SIOC-1-1.17-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.17-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.17-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "logical_length",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.17-constraint-1",
           "constraint_index": 1,
           "constraint_kind": "digits_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.17-constraint-2",
           "constraint_index": 2,
           "constraint_kind": "composite_segments",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "partial_050_only"
         }
       ]
     },
@@ -426,17 +482,20 @@
       "cases": [
         {
           "id": "SIOC-1-1.18-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-1-1.18-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-1-1.18-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -448,29 +507,34 @@
       "cases": [
         {
           "id": "SIOC-2-2.1-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.1-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.1-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "logical_length",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         },
         {
           "id": "SIOC-2-2.1-constraint-1",
           "constraint_index": 1,
           "constraint_kind": "digits_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         },
         {
           "id": "SIOC-2-2.1-constraint-2",
           "constraint_index": 2,
           "constraint_kind": "substring_not_equals",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -482,17 +546,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.2-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.2-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.2-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -504,17 +571,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.3-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.3-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.3-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -526,17 +596,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.4-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.4-datatype",
-          "template": "datatype_date"
+          "template": "datatype_date",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.4-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "date",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -548,17 +621,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.5-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.5-datatype",
-          "template": "datatype_date"
+          "template": "datatype_date",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.5-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "date",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -570,17 +646,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.6-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.6-datatype",
-          "template": "datatype_date"
+          "template": "datatype_date",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.6-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "date",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -592,17 +671,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.7-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.7-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.7-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -614,17 +696,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.8-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.8-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.8-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -636,13 +721,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.9-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.9-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "structure_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "physical_only"
         }
       ]
     },
@@ -654,11 +741,13 @@
       "cases": [
         {
           "id": "SIOC-2-2.10-required_if",
-          "template": "required_condition"
+          "template": "required_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.10-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         }
       ]
     },
@@ -670,21 +759,25 @@
       "cases": [
         {
           "id": "SIOC-2-2.11-required_if",
-          "template": "required_condition"
+          "template": "required_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.11-forbidden_if",
-          "template": "forbidden_condition"
+          "template": "forbidden_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.11-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.11-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -696,17 +789,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.12-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.12-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.12-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -718,17 +814,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.13-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.13-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.13-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -740,17 +839,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.14-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.14-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.14-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -762,17 +864,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.15-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.15-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.15-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -784,17 +889,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.16-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.16-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.16-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -806,17 +914,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.17-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.17-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.17-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -828,17 +939,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.18-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.18-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.18-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -850,17 +964,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.19-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.19-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.19-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -872,17 +989,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.20-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.20-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.20-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -894,17 +1014,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.21-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.21-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.21-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -916,17 +1039,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.22-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.22-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.22-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -938,17 +1064,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.23-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.23-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.23-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -960,13 +1089,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.24-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.24-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -978,17 +1109,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.25-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.25-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.25-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1000,21 +1134,25 @@
       "cases": [
         {
           "id": "SIOC-2-2.26-required_if",
-          "template": "required_condition"
+          "template": "required_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.26-forbidden_if",
-          "template": "forbidden_condition"
+          "template": "forbidden_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.26-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.26-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "composite_segments_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1026,23 +1164,27 @@
       "cases": [
         {
           "id": "SIOC-2-2.27-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.27-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.27-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "digits_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.27-constraint-1",
           "constraint_index": 1,
           "constraint_kind": "numeric_range",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1054,17 +1196,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.28-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.28-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.28-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1076,17 +1221,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.29-required_if",
-          "template": "required_condition"
+          "template": "required_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.29-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.29-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_or_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1098,17 +1246,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.30-required_if",
-          "template": "required_condition"
+          "template": "required_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.30-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.30-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1120,17 +1271,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.31-required_if",
-          "template": "required_condition"
+          "template": "required_condition",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.31-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.31-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_or_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1142,17 +1296,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.32-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.32-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.32-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1164,13 +1321,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.33-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.33-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1182,13 +1341,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.34-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.34-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1200,13 +1361,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.35-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.35-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1218,13 +1381,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.36-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.36-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1236,13 +1401,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.37-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.37-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1254,13 +1421,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.38-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.38-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1272,13 +1441,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.39-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.39-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1290,13 +1461,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.40-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.40-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1308,13 +1481,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.41-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.41-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1326,13 +1501,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.42-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.42-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1344,13 +1521,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.43-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.43-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1362,13 +1541,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.44-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.44-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1380,13 +1561,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.45-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.45-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1398,13 +1581,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.46-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.46-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1416,13 +1601,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.47-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.47-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1434,13 +1621,15 @@
       "cases": [
         {
           "id": "SIOC-2-2.48-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.48-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1452,29 +1641,34 @@
       "cases": [
         {
           "id": "SIOC-2-2.49-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.49-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.49-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "logical_length",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.49-constraint-1",
           "constraint_index": 1,
           "constraint_kind": "digits_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.49-constraint-2",
           "constraint_index": 2,
           "constraint_kind": "composite_segments",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "partial_050_only"
         }
       ]
     },
@@ -1486,17 +1680,20 @@
       "cases": [
         {
           "id": "SIOC-2-2.50-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-2-2.50-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-2-2.50-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1508,29 +1705,34 @@
       "cases": [
         {
           "id": "SIOC-3-3.1-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.1-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-3-3.1-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "logical_length",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         },
         {
           "id": "SIOC-3-3.1-constraint-1",
           "constraint_index": 1,
           "constraint_kind": "digits_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         },
         {
           "id": "SIOC-3-3.1-constraint-2",
           "constraint_index": 2,
           "constraint_kind": "substring_not_equals",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1542,17 +1744,20 @@
       "cases": [
         {
           "id": "SIOC-3-3.2-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.2-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-3-3.2-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "structure_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "physical_only"
         }
       ]
     },
@@ -1564,17 +1769,20 @@
       "cases": [
         {
           "id": "SIOC-3-3.3-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.3-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-3-3.3-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1586,17 +1794,20 @@
       "cases": [
         {
           "id": "SIOC-3-3.4-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.4-datatype",
-          "template": "datatype_date"
+          "template": "datatype_date",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.4-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "date",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1608,17 +1819,20 @@
       "cases": [
         {
           "id": "SIOC-3-3.5-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.5-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-3-3.5-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1630,13 +1844,15 @@
       "cases": [
         {
           "id": "SIOC-3-3.6-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-3-3.6-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1648,13 +1864,15 @@
       "cases": [
         {
           "id": "SIOC-3-3.7-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-3-3.7-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1666,11 +1884,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.8-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.8-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1682,11 +1902,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.9-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.9-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1698,11 +1920,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.10-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.10-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1714,11 +1938,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.11-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.11-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1730,11 +1956,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.12-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.12-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1746,11 +1974,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.13-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.13-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1762,11 +1992,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.14-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.14-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1778,11 +2010,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.15-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.15-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1794,11 +2028,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.16-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.16-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1810,17 +2046,20 @@
       "cases": [
         {
           "id": "SIOC-3-3.17-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.17-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.17-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -1832,11 +2071,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.18-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.18-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1848,17 +2089,20 @@
       "cases": [
         {
           "id": "SIOC-3-3.19-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.19-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.19-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "positional_bitset",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1870,11 +2114,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.20-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.20-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1886,11 +2132,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.21-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.21-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1902,11 +2150,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.22-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.22-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1918,11 +2168,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.23-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.23-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1934,11 +2186,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.24-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.24-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1950,11 +2204,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.25-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.25-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1966,11 +2222,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.26-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.26-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1982,11 +2240,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.27-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.27-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -1998,11 +2258,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.28-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.28-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2014,11 +2276,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.29-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.29-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2030,11 +2294,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.30-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.30-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2046,11 +2312,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.31-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.31-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2062,11 +2330,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.32-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.32-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2078,11 +2348,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.33-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.33-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         }
       ]
     },
@@ -2094,11 +2366,13 @@
       "cases": [
         {
           "id": "SIOC-3-3.34-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.34-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2110,29 +2384,34 @@
       "cases": [
         {
           "id": "SIOC-3-3.35-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.35-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-3-3.35-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "logical_length",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.35-constraint-1",
           "constraint_index": 1,
           "constraint_kind": "digits_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.35-constraint-2",
           "constraint_index": 2,
           "constraint_kind": "composite_segments",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "partial_050_only"
         }
       ]
     },
@@ -2144,17 +2423,20 @@
       "cases": [
         {
           "id": "SIOC-3-3.36-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-3-3.36-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-3-3.36-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2166,17 +2448,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.1-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.1-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.1-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2188,17 +2473,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.2-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.2-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-4.1-4.2-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "structure_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "physical_only"
         }
       ]
     },
@@ -2210,17 +2498,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.3-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.3-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.3-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2232,17 +2523,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.4-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.4-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.4-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2254,17 +2548,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.5-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.5-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.5-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2276,17 +2573,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.6-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.6-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-4.1-4.6-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "non_empty",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2298,17 +2598,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.7-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.7-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-4.1-4.7-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2320,17 +2623,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.8-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.8-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-4.1-4.8-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2342,17 +2648,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.9-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.9-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.9-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2364,17 +2673,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.10-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.10-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-4.1-4.10-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "non_empty",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2386,17 +2698,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.11-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.11-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.11-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2408,17 +2723,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.12-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.12-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-4.1-4.12-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "non_empty",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2430,17 +2748,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.13-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.13-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.13-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2452,17 +2773,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.14-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.14-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.14-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2474,17 +2798,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.15-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.15-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-4.1-4.15-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "non_empty",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2496,23 +2823,27 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.16-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.16-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.16-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "digits_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.16-constraint-1",
           "constraint_index": 1,
           "constraint_kind": "logical_length",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2524,23 +2855,27 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.17-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.17-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.17-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "digits_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.17-constraint-1",
           "constraint_index": 1,
           "constraint_kind": "logical_length",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2552,17 +2887,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.18-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.18-datatype",
-          "template": "datatype_date"
+          "template": "datatype_date",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.18-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "date",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2574,17 +2912,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.19-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.19-datatype",
-          "template": "datatype_date"
+          "template": "datatype_date",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.19-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "date",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2596,17 +2937,20 @@
       "cases": [
         {
           "id": "SIOC-4.1-4.19.1-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.1-4.19.1-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-4.1-4.19.1-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2618,17 +2962,20 @@
       "cases": [
         {
           "id": "SIOC-4.2-4.20-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.20-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.20-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "reference_data",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2640,17 +2987,20 @@
       "cases": [
         {
           "id": "SIOC-4.2-4.21-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.21-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-4.2-4.21-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "structure_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "physical_only"
         }
       ]
     },
@@ -2662,17 +3012,20 @@
       "cases": [
         {
           "id": "SIOC-4.2-4.22-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.22-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-4.2-4.22-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "structure_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "physical_only"
         }
       ]
     },
@@ -2684,17 +3037,20 @@
       "cases": [
         {
           "id": "SIOC-4.2-4.23-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.23-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.23-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2706,17 +3062,20 @@
       "cases": [
         {
           "id": "SIOC-4.2-4.24-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.24-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.24-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2728,17 +3087,20 @@
       "cases": [
         {
           "id": "SIOC-4.2-4.25-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.25-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.25-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "digits_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2750,17 +3112,20 @@
       "cases": [
         {
           "id": "SIOC-4.2-4.26-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.26-datatype",
-          "template": "datatype_date"
+          "template": "datatype_date",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.26-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "date",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2772,23 +3137,27 @@
       "cases": [
         {
           "id": "SIOC-4.2-4.27-never-missing",
-          "template": "never_missing"
+          "template": "never_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.27-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.27-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "digits_only",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.27-constraint-1",
           "constraint_index": 1,
           "constraint_kind": "numeric_range",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2800,17 +3169,20 @@
       "cases": [
         {
           "id": "SIOC-4.2-4.28-required",
-          "template": "required_raw_missing"
+          "template": "required_raw_missing",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.28-datatype",
-          "template": "datatype_numeric"
+          "template": "datatype_numeric",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.28-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "allowed_values",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "deferred"
         }
       ]
     },
@@ -2822,13 +3194,15 @@
       "cases": [
         {
           "id": "SIOC-4.2-4.29-datatype",
-          "template": "datatype_date"
+          "template": "datatype_date",
+          "minimal_profile_disposition": "active"
         },
         {
           "id": "SIOC-4.2-4.29-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "date_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "active"
         }
       ]
     },
@@ -2840,13 +3214,15 @@
       "cases": [
         {
           "id": "SIOC-4.2-4.30-datatype",
-          "template": "datatype_text_pending"
+          "template": "datatype_text_pending",
+          "minimal_profile_disposition": "runtime_encoding_required"
         },
         {
           "id": "SIOC-4.2-4.30-constraint-0",
           "constraint_index": 0,
           "constraint_kind": "structure_only_if_present",
-          "template": "constraint_witness"
+          "template": "constraint_witness",
+          "minimal_profile_disposition": "physical_only"
         }
       ]
     }
@@ -2872,7 +3248,8 @@
       "assertion_kinds": [
         "substring_equals_derived_year"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "1",
@@ -2886,7 +3263,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "1",
@@ -2900,7 +3278,8 @@
       "assertion_kinds": [
         "logical_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "1",
@@ -2914,7 +3293,8 @@
       "assertion_kinds": [
         "logical_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "1",
@@ -2928,7 +3308,8 @@
       "assertion_kinds": [
         "logical_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "1",
@@ -2942,7 +3323,8 @@
       "assertion_kinds": [
         "reference_data"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "1",
@@ -2968,7 +3350,8 @@
       "assertion_kinds": [
         "composite"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "1",
@@ -2994,7 +3377,8 @@
       "assertion_kinds": [
         "reference_data"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "2",
@@ -3008,7 +3392,8 @@
       "assertion_kinds": [
         "substring_equals_derived_year"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "2",
@@ -3022,7 +3407,8 @@
       "assertion_kinds": [
         "equals_concat"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "2",
@@ -3036,7 +3422,8 @@
       "assertion_kinds": [
         "field_compare"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "2",
@@ -3050,7 +3437,8 @@
       "assertion_kinds": [
         "field_compare"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3064,7 +3452,8 @@
       "assertion_kinds": [
         "substring_equals_derived_year"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3078,7 +3467,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3094,7 +3484,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3108,7 +3499,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3124,7 +3516,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3138,7 +3531,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3154,7 +3548,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3168,7 +3563,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3184,7 +3580,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3198,7 +3595,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3214,7 +3612,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3228,7 +3627,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3244,7 +3644,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3258,7 +3659,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3274,7 +3676,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3288,7 +3691,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3304,7 +3708,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3318,7 +3723,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3334,7 +3740,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3348,7 +3755,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3364,7 +3772,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3378,7 +3787,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3394,7 +3804,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3408,7 +3819,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3424,7 +3836,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3438,7 +3851,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3454,7 +3868,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3468,7 +3883,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3482,7 +3898,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3498,7 +3915,8 @@
       "assertion_kinds": [
         "numeric_range"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3512,7 +3930,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3531,7 +3950,8 @@
       "assertion_kinds": [
         "condition_true"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3547,7 +3967,8 @@
       "assertion_kinds": [
         "numeric_range"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3561,7 +3982,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3575,7 +3997,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3589,7 +4012,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3603,7 +4027,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3617,7 +4042,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3636,7 +4062,8 @@
       "assertion_kinds": [
         "condition_true"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3650,7 +4077,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3664,7 +4092,8 @@
       "assertion_kinds": [
         "numeric_range"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3678,7 +4107,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3692,7 +4122,8 @@
       "assertion_kinds": [
         "numeric_range"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3706,7 +4137,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3720,7 +4152,8 @@
       "assertion_kinds": [
         "numeric_range"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3734,7 +4167,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3748,7 +4182,8 @@
       "assertion_kinds": [
         "numeric_range"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3762,7 +4197,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3776,7 +4212,8 @@
       "assertion_kinds": [
         "numeric_range"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3790,7 +4227,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3804,7 +4242,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3818,7 +4257,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3834,7 +4274,8 @@
       "assertion_kinds": [
         "allowed_values"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3848,7 +4289,8 @@
       "assertion_kinds": [
         "derived_compare"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3862,7 +4304,8 @@
       "assertion_kinds": [
         "raw_equals"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3878,7 +4321,8 @@
       "assertion_kinds": [
         "numeric_range"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "3",
@@ -3897,7 +4341,8 @@
       "assertion_kinds": [
         "condition_true"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "4.1",
@@ -3911,7 +4356,8 @@
       "assertion_kinds": [
         "field_compare"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "deferred"
     },
     {
       "trace_id": "4.2",
@@ -3929,7 +4375,8 @@
       "assertion_kinds": [
         "field_present"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "active"
     },
     {
       "trace_id": "4.2",
@@ -3947,7 +4394,8 @@
       "assertion_kinds": [
         "record_exists"
       ],
-      "case_template": "rule_variants"
+      "case_template": "rule_variants",
+      "minimal_profile_disposition": "active"
     }
   ],
   "mandatory_followup": {

@@ -1,0 +1,556 @@
+{
+  "id": "4.2",
+  "name": "Tracciato regionale Atti LR 22/2002",
+  "record_length": 67,
+  "fields": [
+    {
+      "id": "4.20",
+      "name": "Struttura erogatrice. Codice regionale dell'UDO",
+      "physical": {
+        "start": 1,
+        "length": 6,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "000000"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.20",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Indica il codice regionale provvisorio della struttura erogatrice, in correlazione con il campo 4.1."
+      }
+    },
+    {
+      "id": "4.21",
+      "name": "Struttura erogatrice. Codice regionale MRA",
+      "physical": {
+        "start": 7,
+        "length": 15,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.21",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Codifica della struttura secondo il progetto MRA (in corso di definizione)"
+      }
+    },
+    {
+      "id": "4.22",
+      "name": "ID atto",
+      "physical": {
+        "start": 22,
+        "length": 10,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.22",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Numero univoco del record del tracciato 4.2"
+      }
+    },
+    {
+      "id": "4.23",
+      "name": "Oggetto dell'atto",
+      "physical": {
+        "start": 32,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "0"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.23",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori sono:\n1. Autorizzazione all'esercizio\n2. Accreditamento"
+      }
+    },
+    {
+      "id": "4.24",
+      "name": "Tipologia dell'Atto",
+      "physical": {
+        "start": 33,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "0"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.24",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori sono:\n1. Decreto dirigenziale\n2. Deliberazione della Giunta regionale"
+      }
+    },
+    {
+      "id": "4.25",
+      "name": "Numero dell'atto",
+      "physical": {
+        "start": 34,
+        "length": 4,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "0000"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "regex",
+          "pattern": "^[0-9]+$",
+          "match": "required",
+          "target": "logical"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.25",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Numero intero dell'atto (DGR o DDR)"
+      }
+    },
+    {
+      "id": "4.26",
+      "name": "Data dell'atto",
+      "physical": {
+        "start": 38,
+        "length": 8,
+        "type": "date",
+        "alignment": {
+          "kind": "exact"
+        },
+        "format": "DDMMYYYY"
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "date",
+          "format": "DDMMYYYY",
+          "calendar_valid": true
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.26",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Data di approvazione/adozione dell'atto"
+      }
+    },
+    {
+      "id": "4.27",
+      "name": "Numero di posti",
+      "physical": {
+        "start": 46,
+        "length": 3,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "regex",
+          "pattern": "^[0-9]+$",
+          "match": "required",
+          "target": "logical"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.27",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Numero di posti oggetti di autorizzazione/accreditamento."
+      }
+    },
+    {
+      "id": "4.28",
+      "name": "Caratteristiche dell'atto",
+      "physical": {
+        "start": 49,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "0"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.28",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Il valore viene usato per rilevare se l'atto:\n1. E' emesso per la prima volta\n2. Modifica atto precedente integrando numero posti (in questo caso indicare nel campo XX solo il numero di posti aggiunti)\n3. Revoca atto precedente definendo un nuovo totale dei posti\n4. Rinnova atto precedente senza modificare contenuto\n5. Modifica atto precedente senza variazioni del numero di posti (es. per variazioni EG, per variazioni di sede)"
+      }
+    },
+    {
+      "id": "4.29",
+      "name": "Data fine validità atto",
+      "physical": {
+        "start": 50,
+        "length": 8,
+        "type": "date",
+        "alignment": {
+          "kind": "exact"
+        },
+        "format": "DDMMYYYY"
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "date",
+          "format": "DDMMYYYY",
+          "calendar_valid": true
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.29",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Data di cessazione della validità dell'atto"
+      }
+    },
+    {
+      "id": "4.30",
+      "name": "ID atto revocante",
+      "physical": {
+        "start": 58,
+        "length": 10,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.30",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "ID dell'atto di revoca del presente"
+      }
+    }
+  ],
+  "record_key": {
+    "fields": [
+      "4.20",
+      "4.22"
+    ],
+    "uniqueness_scope": "trace",
+    "error_code": "E_DUPLICATE_RECORD_KEY"
+  },
+  "joins": [
+    {
+      "id": "trace42_to_trace41",
+      "target_trace": "4.1",
+      "source_fields": [
+        "4.20",
+        "4.21"
+      ],
+      "target_fields": [
+        "4.1",
+        "4.2"
+      ],
+      "cardinality": "one_or_many",
+      "scope": "current_submission",
+      "namespace_parameters": [],
+      "on_missing_record": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "on_missing_trace": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      }
+    },
+    {
+      "id": "revoking_act",
+      "target_trace": "4.2",
+      "source_fields": [
+        "4.30"
+      ],
+      "target_fields": [
+        "4.22"
+      ],
+      "cardinality": "zero_or_many",
+      "scope": "current_submission",
+      "namespace_parameters": [],
+      "on_missing_record": {
+        "policy": "not_applicable",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Nessun atto corrispondente"
+        }
+      },
+      "on_missing_trace": {
+        "policy": "not_applicable",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Nessun atto corrispondente"
+        }
+      }
+    }
+  ],
+  "identity": [],
+  "named_conditions": {},
+  "derived_values": {},
+  "repeated_groups": [],
+  "rules": [
+    {
+      "id": "R-4.30-REQUIRES-4.29",
+      "when": {
+        "is_present": {
+          "ref": {
+            "field": "4.30"
+          }
+        }
+      },
+      "assertions": [
+        {
+          "kind": "field_present",
+          "field": {
+            "field": "4.29"
+          }
+        }
+      ],
+      "error_code": "E_CROSS_FIELD",
+      "message_template": "R-4.30-REQUIRES-4.29",
+      "regulatory_metadata": {
+        "source_error_code": "E003"
+      }
+    },
+    {
+      "id": "R-4.30-REFERENCES-4.22",
+      "when": {
+        "is_present": {
+          "ref": {
+            "field": "4.30"
+          }
+        }
+      },
+      "assertions": [
+        {
+          "kind": "record_exists",
+          "join": "revoking_act"
+        }
+      ],
+      "error_code": "E_RELATED_RECORD_MISSING",
+      "message_template": "R-4.30-REFERENCES-4.22",
+      "regulatory_metadata": {
+        "source_error_code": "E012"
+      }
+    }
+  ],
+  "documented_non_executable_rules": [
+    {
+      "id": "DEFER-4.20-CONSTRAINT-0",
+      "fields": [
+        "4.20"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.23-CONSTRAINT-0",
+      "fields": [
+        "4.23"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.24-CONSTRAINT-0",
+      "fields": [
+        "4.24"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.27-CONSTRAINT-1",
+      "fields": [
+        "4.27"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.28-CONSTRAINT-0",
+      "fields": [
+        "4.28"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "POLICY-4.28-PREVIOUS-ACT",
+      "fields": [
+        "4.28"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Values 2-5 refer to a previous act, but the trace does not expose a predecessor-act identifier. No cross-record relation is invented.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    }
+  ]
+}

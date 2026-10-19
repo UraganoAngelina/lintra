@@ -131,3 +131,34 @@ a compiler implementato, G0 chiuso, dataset SIOC ricevuti o profili
 regionali eseguibili. Restano le boundary normative esplicite del contratto.
 ARCH/DET/Master Plan originali non sono modificati; gli adeguamenti di
 contratto delle task future sono quelli approvati nell’authoring.
+
+## DEC-SIOC-MINIMAL-01 — PROFILO INIZIALE APPROVATO, 2026-10-19
+
+L’autore richiede un validatore iniziale strutturalmente completo con controlli
+semantici minimi e autorizza a procedere senza i dodici dataset mancanti.
+È una riduzione esplicita del profilo iniziale, non una modifica della baseline
+FROZEN o una dichiarazione di conformità normativa completa.
+
+Conferma successiva ricevuta: `050` sul prefisso azienda inviante 1.17, 2.49,
+3.35 e sulla regione sede UDO 4.7. Non imporre `050` a residenza 1.13 o
+provenienza 2.29, che possono essere esterne al Veneto.
+
+Nel profilo `2026-04-20.structural-minimal.1` restano layout byte-oriented,
+tipi, padding, missing, presenza anche condizionale, PK e relazioni strutturali.
+Si rinviano lookup, domini clinici, congruenze cliniche/temporali e codifica
+anno/progressivo dell’ID; l’ID resta valorizzato e diverso da soli zeri.
+Il rinvio della codifica ID in questo profilo minimale comprende anche il
+2026; nel futuro profilo normativo completo resta la precedente distinzione
+approvata per ricoveri iniziati nel 2025. Ogni omissione è registrata nel ledger.
+Il controllo minuscole non viene attivato senza un repertorio esplicito;
+la segnalazione dell’autore di dati maiuscoli non definisce una code page.
+
+Per il futuro controllo dell’età compiuta SIOC l’autore sceglie **1 marzo**
+(`mar01`) per i nati il 29 febbraio negli anni non bisestili. Non si abilita
+il controllo d’età nel profilo minimale. I dataset sintetici dell’authoring
+non sostituiscono quelli ufficiali. Encoding sempre richiesto al chiamante.
+Persistenza minima PK/audit mantenuta come contratto, nessun backend implementato.
+
+Artefatti e limiti: [profilo minimale](../../schemas/sioc/2026-04-20.structural-minimal.1/README.md),
+[verifica T-P0-08](../verification/T-P0-08.md). Il gate G0 richiede ancora la
+propria approvazione; questa decisione non vale come approvazione G0.

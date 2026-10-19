@@ -1,0 +1,2139 @@
+{
+  "id": "3",
+  "name": "Valutazione",
+  "record_length": 135,
+  "fields": [
+    {
+      "id": "3.1",
+      "name": "Numero della scheda di ricovero (ex Identificativo univoco assistito per episodio di accoglimento)",
+      "physical": {
+        "start": 1,
+        "length": 20,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "regex",
+          "pattern": "^0+$",
+          "match": "forbidden",
+          "target": "logical"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "3.1",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016)."
+      }
+    },
+    {
+      "id": "3.2",
+      "name": "Numero di valutazione",
+      "physical": {
+        "start": 21,
+        "length": 20,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.2",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Codice identificativo univoco assegnato alla valutazione sull'assistito ed inserito nell'archivio aziendale delle valutazioni."
+      }
+    },
+    {
+      "id": "3.3",
+      "name": "Momento valutazione",
+      "physical": {
+        "start": 41,
+        "length": 1,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.3",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori ammessi sono\n1. Ricovero\n2. Dimissione"
+      }
+    },
+    {
+      "id": "3.4",
+      "name": "Data valutazione",
+      "physical": {
+        "start": 42,
+        "length": 8,
+        "type": "date",
+        "alignment": {
+          "kind": "exact"
+        },
+        "format": "DDMMYYYY"
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "date",
+          "format": "DDMMYYYY",
+          "calendar_valid": true
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "3.4",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica la data di valutazione. Utilizzare il formato GGMMAAAA."
+      }
+    },
+    {
+      "id": "3.5",
+      "name": "SVAMA Patologia prevalente",
+      "physical": {
+        "start": 50,
+        "length": 3,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.5",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Vedi valore del codice ICPC, assegnato alla patologia prevalente, in scheda SVaMA aggiornata (DGR 96/2025, Allegato A). Per pazienti COVID utilizzare obbligatoriamente nella valutazione all'ingresso il codice ICPC: R83-Altre infezioni del sistema respiratorio"
+      }
+    },
+    {
+      "id": "3.6",
+      "name": "SVAMA Patologia concomitante",
+      "physical": {
+        "start": 53,
+        "length": 3,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.6",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi valore del codice ICPC, assegnato alla patologia concomitante in scheda SVaMA aggiornata (DGR 96/2025, Allegato A)."
+      }
+    },
+    {
+      "id": "3.7",
+      "name": "SVAMA Patologia concomitante 2",
+      "physical": {
+        "start": 56,
+        "length": 3,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.7",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi valore del codice ICPC, assegnato alla seconda patologia concomitante in scheda SVaMA aggiornata (DGR 96/2025, Allegato A)."
+      }
+    },
+    {
+      "id": "3.8",
+      "name": "SVAMA Barthel - alimentazione",
+      "physical": {
+        "start": 59,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.8",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "\nI valori ai fini della definizione della situazione funzionale (Indice di Barthel) sono ricavati dalla SVaMA (DGR 96/2025, Allegato A). Sono omessi in caso di dimissione per decesso.\nI valori ammessi per questo campo sono: 00, 02, 05, 08, 10. Tutti i valori dell'indice di Barthel sono conferiti secondo le regole di SVaMA. \nSe il paziente è deceduto (2.7='8'), compilare con 99. "
+      }
+    },
+    {
+      "id": "3.9",
+      "name": "SVAMA Barthel ADL - bagno/doccia ",
+      "physical": {
+        "start": 61,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.9",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori ammessi per questo campo sono: 0, 1, 2, 4, 5. \nSe il paziente è deceduto (2.7='8'), compilare con 9."
+      }
+    },
+    {
+      "id": "3.10",
+      "name": "SVAMA Barthel ADL - igiene personale",
+      "physical": {
+        "start": 62,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.10",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori ammessi per questo campo sono: 0, 1, 2, 4, 5. \nSe il paziente è deceduto (2.7='8'), compilare con 9."
+      }
+    },
+    {
+      "id": "3.11",
+      "name": "SVAMA Barthel ADL - abbigliamento",
+      "physical": {
+        "start": 63,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.11",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori ammessi per questo campo sono: 00, 02, 05, 08, 10. \nSe il paziente è deceduto (2.7='8'), compilare con 99."
+      }
+    },
+    {
+      "id": "3.12",
+      "name": "SVAMA Barthel ADL - continenza intestinale",
+      "physical": {
+        "start": 65,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.12",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori ammessi per questo campo sono: 00, 02, 05, 08, 10.\nSe il paziente è deceduto (2.7='8'), compilare con 99. "
+      }
+    },
+    {
+      "id": "3.13",
+      "name": "SVAMA Barthel ADL - continenza urinaria",
+      "physical": {
+        "start": 67,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.13",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori ammessi per questo campo sono: 00, 02, 05, 08, 10.\nSe il paziente è deceduto (2.7='8'), compilare con 99. "
+      }
+    },
+    {
+      "id": "3.14",
+      "name": "SVAMA Barthel ADL - uso del gabinetto",
+      "physical": {
+        "start": 69,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.14",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori ammessi per questo campo sono: 00, 02, 05, 08, 10.\nSe il paziente è deceduto (2.7='8'), compilare con 99. "
+      }
+    },
+    {
+      "id": "3.15",
+      "name": "SVAMA Barthel MOB - letto/sedia/carrozzina",
+      "physical": {
+        "start": 71,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.15",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori ammessi per questo campo sono: 00, 03, 07, 12, 15.\nSe il paziente è deceduto (2.7='8'), compilare con 99. "
+      }
+    },
+    {
+      "id": "3.16",
+      "name": "SVAMA Barthel MOB - deambul./carrozzina",
+      "physical": {
+        "start": 73,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.16",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori ammessi per questo campo sono: 00, 03, 07, 10, 11, 12, 14, 15.\nSe il paziente è deceduto (2.7='8'), compilare con 99. "
+      }
+    },
+    {
+      "id": "3.17",
+      "name": "SVAMA Barthel MOB - uso carrozzina",
+      "physical": {
+        "start": 75,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.17",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indicare se è stata utilizzata la scala USO della carrozzina. I valori sono:\n0. no\n1. si"
+      }
+    },
+    {
+      "id": "3.18",
+      "name": "SVAMA Barthel MOB - scale",
+      "physical": {
+        "start": 76,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.18",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "I valori ammessi per questo campo sono: 00, 02, 05, 08, 10.\nSe il paziente è deceduto (2.7='8'), compilare con 99. "
+      }
+    },
+    {
+      "id": "3.19",
+      "name": "SVAMA Assistenza Infermieristica",
+      "physical": {
+        "start": 78,
+        "length": 20,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "positional_bitset",
+          "positions": [
+            {
+              "start": 1,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 2,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 3,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 4,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 5,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 6,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 7,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 8,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 9,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 10,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 11,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 12,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 13,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 14,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 15,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 16,
+              "length": 1,
+              "values": [
+                "0",
+                "1"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0",
+                "1"
+              ]
+            },
+            {
+              "start": 17,
+              "length": 1,
+              "values": [
+                "0"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0"
+              ]
+            },
+            {
+              "start": 18,
+              "length": 1,
+              "values": [
+                "0"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0"
+              ]
+            },
+            {
+              "start": 19,
+              "length": 1,
+              "values": [
+                "0"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0"
+              ]
+            },
+            {
+              "start": 20,
+              "length": 1,
+              "values": [
+                "0"
+              ],
+              "when": {
+                "const": true
+              },
+              "otherwise_values": [
+                "0"
+              ]
+            }
+          ]
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "3.19",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Condizioni che necessitano di prestazioni infermieristiche o specialistiche. Codificare alla dimissione solo se l'esito è diverso dal decesso.\nCodificare in questo modo:\"1\" in caso di prestazione erogata nel periodo\"; \"0\" in caso di prestazione assente nel periodo\". La posizione del carattere si riferisce alla tipologia della prestazione (es. se presenti Cirrosi scompensata e PEG, la stringa sarà la seguente: 0010010000000000000) erogata nel periodo. \n(compilare tutti i valori da 17 fino a 20 con 0: al momento sono da gestire i primi 16)\nLe posizioni sono le seguenti: \n1. Diabete insulinodipendente, \n2. Scompenso cardiaco in classe 3-4 NYHA con necessità di monitoraggio frequente del bilancio idrico (≥75 mg. Furosemide pro die), alimentare e parametri vitali (polso, pressione, frequenza cardiaca), \n3. Cirrosi scompensata e altre forme di ascite con necessità come sopra elencate, \n4. Tracheostomia, \n5. Ossigenoterapia continuativa a lungo termine (>3 h al dì), \n6. Sondino naso-gastrico, gastrostomia (PEG), \n7. Catetere venoso centrale o nutrizione parenterale totale o terapia infusionale quotidiana, \n8. Catetere vescicale, \n9. Ano artificiale e/o ureterostomia, \n10. Nefrostomia o terapia peridurale a lungo termine o terapia antalgica con oppioidi che richiede adeguamento della posologia.\n11. Ulcere da decubito (Ulcere distrofiche agli arti e/o altre lesione della cute chirurgiche, traumatiche, oncologiche), \n12. Respiratorie/Ventilazione Assistita, \n13. Dialisi o dialisi peritoneale\n14. Presenza di dolore (neoplastico o non neoplastico)\n15. Dipendenza da apparecchiature elettromedicali\n16. Paziente neoplastico allettato\nLe informazioni richieste sono presenti nella SVaMA, tabella valutazione sanitaria (DGR 96/2025, Allegato A)."
+      }
+    },
+    {
+      "id": "3.20",
+      "name": "SVAMA Assistenza Infermieristica (VIP)",
+      "physical": {
+        "start": 98,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.20",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indicatore relativo alla necessità di assistenza infermieristica. Punteggio VIP della scheda SVAMA (DGR 96/2025, Allegato A). Valori ammessi 00, 05, 10, 15 …, 80. \nSe il paziente è deceduto (2.7='8'), compilare con 99. "
+      }
+    },
+    {
+      "id": "3.21",
+      "name": "SVAMA Rischio decubiti (VPIA)",
+      "physical": {
+        "start": 100,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.21",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indicatore relativo al rischio decubiti. Punteggio VPIA della scheda SVAMA (DGR 96/2025, Allegato A). Il punteggio può essere attribuito anche direttamente con i seguenti valori:\n00. Rischio non elevato di lesioni da decubito\n10. Rischio elevato di lesioni da decubito (Usare indice di Exton Smith)\n15. Presenza di una piaga\n25. Presenza di due o più piaghe\nSe il paziente è deceduto (2.7='8'), compilare con 99. "
+      }
+    },
+    {
+      "id": "3.22",
+      "name": "SVAMA Area Cognitiva (VCOG)",
+      "physical": {
+        "start": 102,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.22",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica il livello di fragilità relativo all’area cognitiva e funzionale dell’assistito. Punteggio VCOG della scheda SVAMA (DGR 96/2025, Allegato A, Valutazione cognitiva e funzionale, esito del test SPMSQ). \nSe il paziente è deceduto (2.7='8'), compilare con 99. ",
+        "source_semantic_null_values": [
+          {
+            "value": "99",
+            "meaning": "Deceduto",
+            "valid_if": "is_death_discharge_evaluation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3.23",
+      "name": "SVAMA Supporto rete sociale (PSOC)",
+      "physical": {
+        "start": 104,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "0"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.23",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica l’eventuale presenza del supporto delle reti formali ed informali (famiglia, privato, vicinato e volontariato). Punteggio PSOC della scheda SVAMA (DGR 96/2025, Allegato A).\nI valori sono:\n1. Ben assistito\n2. Parzialmente assistito\n3. Non sufficientemente assitito\nSe il paziente è deceduto (2.7='8'), compilare con 9. "
+      }
+    },
+    {
+      "id": "3.24",
+      "name": "Punteggio Karnofsky ",
+      "physical": {
+        "start": 105,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.24",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Punteggio Karnofsky. Valori tra 00 a 90. Valore 00 (= morte) è consentito solo in caso di dimissione per decesso."
+      }
+    },
+    {
+      "id": "3.25",
+      "name": "Traiettoria prognostica \"Tp\"",
+      "physical": {
+        "start": 107,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.25",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Valori da compilare solo al ricovero [3.3=1]. I valori sono:\n1. Pazienti con funzioni/abilità perse ma recuperabili, da riabilitare\n2. Pazienti con alcune funzionalità/abilità perse, da stabilizzare\n3. Pazienti con alcune funzionalità/abilità sicuramente perse, in cure palliative",
+        "source_semantic_null_values": [
+          {
+            "value": "0",
+            "meaning": "Non applicabile alla dimissione",
+            "valid_if": "is_discharge_evaluation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3.26",
+      "name": "Esiti funzionali alla dimissione \"Ef\"",
+      "physical": {
+        "start": 108,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.26",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Valori da compilare solo alla dimissione [3.3=2]. I valori sono:\n1. Funzioni recuperate\n2. Funzioni stabilizzate\n3. Funzioni peggiorate\n4. Decesso"
+      }
+    },
+    {
+      "id": "3.27",
+      "name": "Numero di infezioni urinarie",
+      "physical": {
+        "start": 109,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.27",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Valori da compilare solo alla dimissione [3.3=2]. Numero di infezioni urinarie verificate durante il ricovero. I valori da utilizzare sono compresi tra \"0\" e \"99\""
+      }
+    },
+    {
+      "id": "3.28",
+      "name": "Numero di infezioni non urinarie",
+      "physical": {
+        "start": 111,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.28",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Valori da compilare solo alla dimissione [3.3=2]. Numero di infezioni non urinarie verificate durante il ricovero. I valori da utilizzare sono compresi tra \"0\" e \"99\""
+      }
+    },
+    {
+      "id": "3.29",
+      "name": "Numero di cadute lievi",
+      "physical": {
+        "start": 113,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.29",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Valori da compilare solo alla dimissione [3.3=2]. Numero di cadute nell'intervallo di tempo, senza conseguenze o con conseguenze minori o lievi, trattate in struttura. Il valore da utilizzare è compreso tra \"0\" e \"99\"."
+      }
+    },
+    {
+      "id": "3.30",
+      "name": "Numero di cadute moderate",
+      "physical": {
+        "start": 115,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.30",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Valori da compilare solo alla dimissione [3.3=2]. Numero di cadute nell'intervallo di tempo, con conseguenze moderate (accesso a PS o a prestazione diagnostica/specialistica, senza ricovero o frattura). Il valore da utilizzare è compreso tra \"0\" e \"99\"."
+      }
+    },
+    {
+      "id": "3.31",
+      "name": "Numero di cadute gravi",
+      "physical": {
+        "start": 117,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.31",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Valori da compilare solo alla dimissione [3.3=2]. Numero di cadute nell'intervallo di tempo, con conseguenze gravi (con ricovero o frattura). Il valore da utilizzare è compreso tra \"0\" e \"99\"."
+      }
+    },
+    {
+      "id": "3.32",
+      "name": "Contenzione",
+      "physical": {
+        "start": 119,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.32",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Valori da compilare solo alla dimissione [3.3=2]. Presenza di contenzione. I codici da utilizzare sono: 1. Nessuna 2. Diurna 3. Notturna 4. Continua"
+      }
+    },
+    {
+      "id": "3.33",
+      "name": "SVAMA Presenza disturbi del comportamento (PCOMP)",
+      "physical": {
+        "start": 120,
+        "length": 1,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.33",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica la presenza o meno di disturbi comportamentali.  Punteggio PCOMP della scheda SVAMA (DGR 96/2025, Allegato A, Profilo dell'autonomia). Valori ammessi:\n1. Assente/Lieve\n2. Moderato\n3. Grave\n9. Deceduto\nSe il paziente è deceduto (2.7='8'), compilare con 9. "
+      }
+    },
+    {
+      "id": "3.34",
+      "name": "Valutazione ADL con scala di Barthel",
+      "physical": {
+        "start": 121,
+        "length": 3,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.34",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Se (valore data di ricovero – anno di nascita) >= 19, indica il punteggio individuale, secondo la scala “Indice di Barthel modificato”, misurato all’ingresso in struttura. Il valore deve essere compreso fra 0 e 100. «Indice di Barthel modificato» in coerenza con quanto già rilevato in altri flussi NSIS (in particolare SDO-R). Da compilare nella valutazione all'ingresso e nella valutazione alla dimissione. Se nella valutazione alla dimissione il valore campo \"2.7 Modalità di dimissione\" = '8.Decesso', compilare con 999."
+      }
+    },
+    {
+      "id": "3.35",
+      "name": "Codice Azienda",
+      "physical": {
+        "start": 124,
+        "length": 6,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "logical_length",
+          "equals": 6
+        },
+        {
+          "kind": "regex",
+          "pattern": "^[0-9]+$",
+          "match": "required",
+          "target": "logical"
+        },
+        {
+          "kind": "composite_segments",
+          "target": "logical",
+          "segments": [
+            {
+              "start": 1,
+              "length": 3,
+              "check": {
+                "equals": "050"
+              }
+            }
+          ]
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "3.35",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "CAMPO CHIAVE\nIl campo deve essere valorizzato con i codici a sei caratteri della azienda sanitaria in cui è ubicata la struttura OdC (050501,…).",
+        "source_source_id": "3.35"
+      }
+    },
+    {
+      "id": "3.36",
+      "name": "Codice Struttura",
+      "physical": {
+        "start": 130,
+        "length": 6,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "3.36",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "CAMPO CHIAVE\nI codici da utilizzare sono quelli indicati nei modelli ministeriali STS11",
+        "source_source_id": "3.36"
+      }
+    }
+  ],
+  "record_key": {
+    "fields": [
+      "3.1",
+      "3.2",
+      "3.35",
+      "3.36"
+    ],
+    "uniqueness_scope": "trace",
+    "error_code": "E_DUPLICATE_RECORD_KEY"
+  },
+  "joins": [
+    {
+      "id": "trace3_to_trace2",
+      "target_trace": "2",
+      "source_fields": [
+        "3.1",
+        "3.35",
+        "3.36"
+      ],
+      "target_fields": [
+        "2.1",
+        "2.49",
+        "2.50"
+      ],
+      "cardinality": "exactly_one",
+      "scope": "current_submission",
+      "namespace_parameters": [],
+      "on_missing_record": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "on_missing_trace": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      }
+    },
+    {
+      "id": "trace3_to_trace1",
+      "target_trace": "1",
+      "source_fields": [
+        "3.1",
+        "3.35",
+        "3.36"
+      ],
+      "target_fields": [
+        "1.1",
+        "1.17",
+        "1.18"
+      ],
+      "cardinality": "exactly_one",
+      "scope": "current_submission",
+      "namespace_parameters": [],
+      "on_missing_record": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "on_missing_trace": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      }
+    }
+  ],
+  "identity": [
+    {
+      "target": "sioc_record_id",
+      "field": "3.1"
+    }
+  ],
+  "named_conditions": {
+    "is_admission_evaluation": {
+      "eq": {
+        "ref": {
+          "field": "3.3"
+        },
+        "value": "1"
+      }
+    },
+    "is_discharge_evaluation": {
+      "eq": {
+        "ref": {
+          "field": "3.3"
+        },
+        "value": "2"
+      }
+    },
+    "is_deceased_episode": {
+      "eq": {
+        "ref": {
+          "trace": "2",
+          "field": "2.7",
+          "join": "trace3_to_trace2"
+        },
+        "value": "8"
+      }
+    },
+    "is_death_discharge_evaluation": {
+      "and": [
+        {
+          "condition": "is_discharge_evaluation"
+        },
+        {
+          "condition": "is_deceased_episode"
+        }
+      ]
+    }
+  },
+  "derived_values": {},
+  "repeated_groups": [],
+  "rules": [],
+  "documented_non_executable_rules": [
+    {
+      "id": "DEFER-3.1-CONSTRAINT-0",
+      "fields": [
+        "3.1"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-3.1-CONSTRAINT-1",
+      "fields": [
+        "3.1"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-3.1-CONSTRAINT-2",
+      "fields": [
+        "3.1"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-3.3-CONSTRAINT-0",
+      "fields": [
+        "3.3"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-3.5-CONSTRAINT-0",
+      "fields": [
+        "3.5"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-3.6-CONSTRAINT-0",
+      "fields": [
+        "3.6"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-3.7-CONSTRAINT-0",
+      "fields": [
+        "3.7"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-3.17-CONSTRAINT-0",
+      "fields": [
+        "3.17"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-3.35-CONSTRAINT-2",
+      "fields": [
+        "3.35"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-3.36-CONSTRAINT-0",
+      "fields": [
+        "3.36"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-DERIVED-age_at_admission_years",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.1-ADMISSION-YEAR",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.8-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.8-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.9-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.9-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.10-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.10-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.11-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.11-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.12-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.12-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.13-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.13-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.14-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.14-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.15-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.15-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.16-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.16-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.18-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.18-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.20-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.20-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.21-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.21-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.23-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.23-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.19-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.22-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.22-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.24-DEATH-TO-00",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.24-00-TO-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.24-NORMAL-RANGE",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.25-ADMISSION",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.25-DISCHARGE",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.26-ADMISSION",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.26-DISCHARGE",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.26-DEATH-TO-4",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.26-4-TO-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.27-ADMISSION",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.27-DISCHARGE",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.28-ADMISSION",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.28-DISCHARGE",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.29-ADMISSION",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.29-DISCHARGE",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.30-ADMISSION",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.30-DISCHARGE",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.31-ADMISSION",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.31-DISCHARGE",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.32-ADMISSION",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.32-DISCHARGE",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.33-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.33-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.34-AGE",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.34-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.34-NORMAL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-3.34-999-TO-DEATH",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "POLICY-3.5-COVID-R83",
+      "fields": [
+        "3.5"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "COVID status is an internal clinical semantic convention and is not reliably derivable from the fixed-width SIOC flow.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    }
+  ]
+}

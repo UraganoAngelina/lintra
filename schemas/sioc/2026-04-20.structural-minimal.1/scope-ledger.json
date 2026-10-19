@@ -1,0 +1,3280 @@
+{
+  "decision": "DEC-SIOC-MINIMAL-01",
+  "source_flow_sha256": "3567bafd3cb9b762becdd46a356454b89df094c7b88c5b1538c97a1bbaf26c45",
+  "schema_version": "2026-04-20.structural-minimal.1",
+  "constraints": [
+    {
+      "trace": "1",
+      "field": "1.1",
+      "index": 0,
+      "source": {
+        "kind": "logical_length",
+        "equals": 8
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "field": "1.1",
+      "index": 1,
+      "source": {
+        "kind": "digits_only"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "field": "1.1",
+      "index": 2,
+      "source": {
+        "kind": "substring_not_equals",
+        "target": "logical_value",
+        "start": 3,
+        "length": 6,
+        "value": "000000"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "field": "1.3",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "09",
+          "97",
+          "98"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "field": "1.4",
+      "index": 0,
+      "source": {
+        "kind": "structure_only"
+      },
+      "disposition": "physical_only"
+    },
+    {
+      "trace": "1",
+      "field": "1.5",
+      "index": 0,
+      "source": {
+        "kind": "structure_only"
+      },
+      "disposition": "physical_only"
+    },
+    {
+      "trace": "1",
+      "field": "1.6",
+      "index": 0,
+      "source": {
+        "kind": "digits_only_if_present"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "1",
+      "field": "1.6",
+      "index": 1,
+      "source": {
+        "kind": "logical_length_if_present",
+        "equals": 9
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "1",
+      "field": "1.7",
+      "index": 0,
+      "source": {
+        "kind": "no_lowercase_if_present"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "field": "1.8",
+      "index": 0,
+      "source": {
+        "kind": "no_lowercase_if_present"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "field": "1.9",
+      "index": 0,
+      "source": {
+        "kind": "date",
+        "format": "DDMMYYYY",
+        "calendar_valid": true
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "1",
+      "field": "1.10",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2",
+          "3"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "field": "1.11",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_or_values",
+        "dataset": "foreign-country-codes",
+        "values": [
+          "100",
+          "999",
+          "998"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "field": "1.12",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "9"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "field": "1.13",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_or_values",
+        "dataset": "italian-region-codes",
+        "values": [
+          "999"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "field": "1.16",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "99"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "field": "1.17",
+      "index": 0,
+      "source": {
+        "kind": "logical_length",
+        "equals": 6
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "1",
+      "field": "1.17",
+      "index": 1,
+      "source": {
+        "kind": "digits_only"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "1",
+      "field": "1.17",
+      "index": 2,
+      "source": {
+        "kind": "composite_segments",
+        "segments": [
+          {
+            "name": "region_code",
+            "start": 1,
+            "length": 3,
+            "equals": "050"
+          },
+          {
+            "name": "health_authority_code",
+            "start": 4,
+            "length": 3,
+            "reference_data": "health-authority-codes"
+          }
+        ]
+      },
+      "disposition": "partial_050_only"
+    },
+    {
+      "trace": "1",
+      "field": "1.18",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "sts11-structure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.1",
+      "index": 0,
+      "source": {
+        "kind": "logical_length",
+        "equals": 8
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.1",
+      "index": 1,
+      "source": {
+        "kind": "digits_only"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.1",
+      "index": 2,
+      "source": {
+        "kind": "substring_not_equals",
+        "target": "logical_value",
+        "start": 3,
+        "length": 6,
+        "value": "000000"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.2",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.3",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.4",
+      "index": 0,
+      "source": {
+        "kind": "date",
+        "format": "DDMMYYYY",
+        "calendar_valid": true
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "2",
+      "field": "2.5",
+      "index": 0,
+      "source": {
+        "kind": "date",
+        "format": "DDMMYYYY",
+        "calendar_valid": true
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "2",
+      "field": "2.6",
+      "index": 0,
+      "source": {
+        "kind": "date",
+        "format": "DDMMYYYY",
+        "calendar_valid": true
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "2",
+      "field": "2.7",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.8",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "regional-udo-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.9",
+      "index": 0,
+      "source": {
+        "kind": "structure_only"
+      },
+      "disposition": "physical_only"
+    },
+    {
+      "trace": "2",
+      "field": "2.11",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.12",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.13",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "99"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.14",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "99"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.15",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "99"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.16",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "99"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.17",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "99"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.18",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "99"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.19",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "99"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.20",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "99"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.21",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "99"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.22",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "99"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.23",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.24",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "9"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.25",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.26",
+      "index": 0,
+      "source": {
+        "kind": "composite_segments_if_present",
+        "segments": [
+          {
+            "name": "region",
+            "start": 1,
+            "length": 3,
+            "reference_data": "italian-region-codes"
+          },
+          {
+            "name": "health_authority",
+            "start": 4,
+            "length": 3,
+            "reference_data": "health-authority-codes"
+          },
+          {
+            "name": "sts11",
+            "start": 7,
+            "length": 6,
+            "reference_data": "sts11-structure-codes"
+          }
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.27",
+      "index": 0,
+      "source": {
+        "kind": "digits_only"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "2",
+      "field": "2.27",
+      "index": 1,
+      "source": {
+        "kind": "numeric_range",
+        "min": 0,
+        "max": 999
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.28",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "99"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.29",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_or_values",
+        "dataset": "italian-region-codes",
+        "values": [
+          "999"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.30",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "health-authority-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.31",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_or_values",
+        "datasets": [
+          "hsp11-structure-codes",
+          "ria11-structure-codes",
+          "sts11-structure-codes"
+        ],
+        "values": [
+          "999999"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.32",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "icd9-cm-diagnosis-codes",
+        "metadata_checks": {
+          "sex": true,
+          "age": true
+        }
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.33",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-diagnosis-codes",
+        "metadata_checks": {
+          "sex": true,
+          "age": true
+        }
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.34",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-diagnosis-codes",
+        "metadata_checks": {
+          "sex": true,
+          "age": true
+        }
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.35",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-diagnosis-codes",
+        "metadata_checks": {
+          "sex": true,
+          "age": true
+        }
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.36",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-diagnosis-codes",
+        "metadata_checks": {
+          "sex": true,
+          "age": true
+        }
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.37",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-diagnosis-codes",
+        "metadata_checks": {
+          "sex": true,
+          "age": true
+        }
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.38",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.39",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.40",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.41",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.42",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.43",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.44",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.45",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.46",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.47",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.48",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "field": "2.49",
+      "index": 0,
+      "source": {
+        "kind": "logical_length",
+        "equals": 6
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "2",
+      "field": "2.49",
+      "index": 1,
+      "source": {
+        "kind": "digits_only"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "2",
+      "field": "2.49",
+      "index": 2,
+      "source": {
+        "kind": "composite_segments",
+        "segments": [
+          {
+            "name": "region_code",
+            "start": 1,
+            "length": 3,
+            "equals": "050"
+          },
+          {
+            "name": "health_authority_code",
+            "start": 4,
+            "length": 3,
+            "reference_data": "health-authority-codes"
+          }
+        ]
+      },
+      "disposition": "partial_050_only"
+    },
+    {
+      "trace": "2",
+      "field": "2.50",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "sts11-structure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "field": "3.1",
+      "index": 0,
+      "source": {
+        "kind": "logical_length",
+        "equals": 8
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "field": "3.1",
+      "index": 1,
+      "source": {
+        "kind": "digits_only"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "field": "3.1",
+      "index": 2,
+      "source": {
+        "kind": "substring_not_equals",
+        "target": "logical_value",
+        "start": 3,
+        "length": 6,
+        "value": "000000"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "field": "3.2",
+      "index": 0,
+      "source": {
+        "kind": "structure_only"
+      },
+      "disposition": "physical_only"
+    },
+    {
+      "trace": "3",
+      "field": "3.3",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "field": "3.4",
+      "index": 0,
+      "source": {
+        "kind": "date",
+        "format": "DDMMYYYY",
+        "calendar_valid": true
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "3",
+      "field": "3.5",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "icpc-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "field": "3.6",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icpc-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "field": "3.7",
+      "index": 0,
+      "source": {
+        "kind": "reference_data_if_present",
+        "dataset": "icpc-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "field": "3.17",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "0",
+          "1"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "field": "3.19",
+      "index": 0,
+      "source": {
+        "kind": "positional_bitset",
+        "length": 20,
+        "allowed_chars": [
+          "0",
+          "1"
+        ],
+        "forced_positions": {
+          "17": "0",
+          "18": "0",
+          "19": "0",
+          "20": "0"
+        }
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "3",
+      "field": "3.35",
+      "index": 0,
+      "source": {
+        "kind": "logical_length",
+        "equals": 6
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "3",
+      "field": "3.35",
+      "index": 1,
+      "source": {
+        "kind": "digits_only"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "3",
+      "field": "3.35",
+      "index": 2,
+      "source": {
+        "kind": "composite_segments",
+        "segments": [
+          {
+            "name": "region_code",
+            "start": 1,
+            "length": 3,
+            "equals": "050"
+          },
+          {
+            "name": "health_authority_code",
+            "start": 4,
+            "length": 3,
+            "reference_data": "health-authority-codes"
+          }
+        ]
+      },
+      "disposition": "partial_050_only"
+    },
+    {
+      "trace": "3",
+      "field": "3.36",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "sts11-structure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.1",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "regional-udo-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.2",
+      "index": 0,
+      "source": {
+        "kind": "structure_only"
+      },
+      "disposition": "physical_only"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.3",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.4",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.5",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.6",
+      "index": 0,
+      "source": {
+        "kind": "non_empty"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.7",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "italian-region-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.8",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "health-authority-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.9",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "istat-municipality-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.10",
+      "index": 0,
+      "source": {
+        "kind": "non_empty"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.11",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "regional-entity-manager-codes-dgr-2961-2012"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.12",
+      "index": 0,
+      "source": {
+        "kind": "non_empty"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.13",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.14",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "istat-municipality-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.15",
+      "index": 0,
+      "source": {
+        "kind": "non_empty"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.16",
+      "index": 0,
+      "source": {
+        "kind": "digits_only"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.16",
+      "index": 1,
+      "source": {
+        "kind": "logical_length",
+        "equals": 11
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.17",
+      "index": 0,
+      "source": {
+        "kind": "digits_only"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.17",
+      "index": 1,
+      "source": {
+        "kind": "logical_length",
+        "equals": 11
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.18",
+      "index": 0,
+      "source": {
+        "kind": "date",
+        "format": "DDMMYYYY",
+        "calendar_valid": true
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.19",
+      "index": 0,
+      "source": {
+        "kind": "date",
+        "format": "DDMMYYYY",
+        "calendar_valid": true
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.19.1",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "sts11-structure-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.20",
+      "index": 0,
+      "source": {
+        "kind": "reference_data",
+        "dataset": "regional-udo-codes"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.21",
+      "index": 0,
+      "source": {
+        "kind": "structure_only"
+      },
+      "disposition": "physical_only"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.22",
+      "index": 0,
+      "source": {
+        "kind": "structure_only"
+      },
+      "disposition": "physical_only"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.23",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.24",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.25",
+      "index": 0,
+      "source": {
+        "kind": "digits_only"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.26",
+      "index": 0,
+      "source": {
+        "kind": "date",
+        "format": "DDMMYYYY",
+        "calendar_valid": true
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.27",
+      "index": 0,
+      "source": {
+        "kind": "digits_only"
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.27",
+      "index": 1,
+      "source": {
+        "kind": "numeric_range",
+        "min": 0,
+        "max": 999
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.28",
+      "index": 0,
+      "source": {
+        "kind": "allowed_values",
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ]
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.29",
+      "index": 0,
+      "source": {
+        "kind": "date_if_present",
+        "format": "DDMMYYYY",
+        "calendar_valid": true
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.30",
+      "index": 0,
+      "source": {
+        "kind": "structure_only_if_present"
+      },
+      "disposition": "physical_only"
+    }
+  ],
+  "rules": [
+    {
+      "trace": "1",
+      "source": {
+        "id": "R-1.1-ADMISSION-YEAR",
+        "when": {
+          "is_present": {
+            "ref": {
+              "field": {
+                "trace": "2",
+                "field": "2.5",
+                "join": "trace1_to_trace2_episode"
+              }
+            }
+          }
+        },
+        "assertions": [
+          {
+            "kind": "substring_equals_derived_year",
+            "field": "1.1",
+            "start": 1,
+            "length": 2,
+            "source_ref": {
+              "field": {
+                "trace": "2",
+                "field": "2.5",
+                "join": "trace1_to_trace2_episode"
+              }
+            },
+            "source_format": "DDMMYYYY",
+            "year_digits": 2
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "source": {
+        "id": "R-1.2-ANONYMOUS-SENTINEL",
+        "when": {
+          "condition": "is_anonymous"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "1.2",
+            "value": "AAAAAAAAAAAAAAAAAAAA"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "source": {
+        "id": "R-1.7-ANONYMOUS-NAME",
+        "when": {
+          "condition": "is_anonymous"
+        },
+        "assertions": [
+          {
+            "kind": "logical_equals",
+            "field": "1.7",
+            "value": "ANONIMO"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "source": {
+        "id": "R-1.8-ANONYMOUS-NAME",
+        "when": {
+          "condition": "is_anonymous"
+        },
+        "assertions": [
+          {
+            "kind": "logical_equals",
+            "field": "1.8",
+            "value": "ANONIMO"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "source": {
+        "id": "R-1.14-FOREIGN",
+        "when": {
+          "condition": "is_foreign_resident"
+        },
+        "assertions": [
+          {
+            "kind": "logical_equals",
+            "field": "1.14",
+            "value": "999"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "source": {
+        "id": "R-1.14-ITALIAN",
+        "when": {
+          "condition": "is_italian_resident"
+        },
+        "assertions": [
+          {
+            "kind": "reference_data",
+            "field": "1.14",
+            "dataset": "health-authority-codes"
+          }
+        ],
+        "error_code": "E011"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "source": {
+        "id": "R-1.15-FOREIGN",
+        "when": {
+          "and": [
+            {
+              "condition": "is_foreign_resident"
+            },
+            {
+              "ne": {
+                "ref": {
+                  "field": "1.15"
+                },
+                "value": "999999"
+              }
+            }
+          ]
+        },
+        "assertions": [
+          {
+            "kind": "composite",
+            "field": "1.15",
+            "segments": [
+              {
+                "start": 1,
+                "length": 3,
+                "equals": "999"
+              },
+              {
+                "start": 4,
+                "length": 3,
+                "reference_data": "foreign-country-codes"
+              }
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "1",
+      "source": {
+        "id": "R-1.15-ITALIAN",
+        "when": {
+          "and": [
+            {
+              "condition": "is_italian_resident"
+            },
+            {
+              "ne": {
+                "ref": {
+                  "field": "1.15"
+                },
+                "value": "999999"
+              }
+            }
+          ]
+        },
+        "assertions": [
+          {
+            "kind": "reference_data",
+            "field": "1.15",
+            "dataset": "istat-municipality-codes"
+          }
+        ],
+        "error_code": "E011"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "source": {
+        "id": "R-2.1-ADMISSION-YEAR",
+        "when": {
+          "const": true
+        },
+        "assertions": [
+          {
+            "kind": "substring_equals_derived_year",
+            "field": "2.1",
+            "start": 1,
+            "length": 2,
+            "source_ref": {
+              "field": "2.5"
+            },
+            "source_format": "DDMMYYYY",
+            "year_digits": 2
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "source": {
+        "id": "R-2.10-SSR-PAYER",
+        "when": {
+          "condition": "ssr_fully_pays"
+        },
+        "assertions": [
+          {
+            "kind": "equals_concat",
+            "field": "2.10",
+            "parts": [
+              {
+                "field": {
+                  "trace": "1",
+                  "field": "1.13",
+                  "join": "trace2_to_trace1"
+                }
+              },
+              {
+                "field": {
+                  "trace": "1",
+                  "field": "1.14",
+                  "join": "trace2_to_trace1"
+                }
+              }
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "source": {
+        "id": "R-2.4-LE-2.5",
+        "when": {
+          "const": true
+        },
+        "assertions": [
+          {
+            "kind": "field_compare",
+            "left": {
+              "field": "2.4"
+            },
+            "operator": "<=",
+            "right": {
+              "field": "2.5"
+            },
+            "value_type": "date"
+          }
+        ],
+        "error_code": "E_TEMPORAL_ORDER"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "source": {
+        "id": "R-2.5-LE-2.6",
+        "when": {
+          "const": true
+        },
+        "assertions": [
+          {
+            "kind": "field_compare",
+            "left": {
+              "field": "2.5"
+            },
+            "operator": "<=",
+            "right": {
+              "field": "2.6"
+            },
+            "value_type": "date"
+          }
+        ],
+        "error_code": "E_TEMPORAL_ORDER"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.1-ADMISSION-YEAR",
+        "when": {
+          "const": true
+        },
+        "assertions": [
+          {
+            "kind": "substring_equals_derived_year",
+            "field": "3.1",
+            "start": 1,
+            "length": 2,
+            "source_ref": {
+              "field": {
+                "trace": "2",
+                "field": "2.5",
+                "join": "trace3_to_trace2"
+              }
+            },
+            "source_format": "DDMMYYYY",
+            "year_digits": 2
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.8-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.8",
+            "value": "99"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.8-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.8",
+            "values": [
+              "00",
+              "02",
+              "05",
+              "08",
+              "10"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.9-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.9",
+            "value": "9"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.9-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.9",
+            "values": [
+              "0",
+              "1",
+              "2",
+              "4",
+              "5"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.10-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.10",
+            "value": "9"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.10-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.10",
+            "values": [
+              "0",
+              "1",
+              "2",
+              "4",
+              "5"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.11-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.11",
+            "value": "99"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.11-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.11",
+            "values": [
+              "00",
+              "02",
+              "05",
+              "08",
+              "10"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.12-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.12",
+            "value": "99"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.12-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.12",
+            "values": [
+              "00",
+              "02",
+              "05",
+              "08",
+              "10"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.13-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.13",
+            "value": "99"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.13-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.13",
+            "values": [
+              "00",
+              "02",
+              "05",
+              "08",
+              "10"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.14-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.14",
+            "value": "99"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.14-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.14",
+            "values": [
+              "00",
+              "02",
+              "05",
+              "08",
+              "10"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.15-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.15",
+            "value": "99"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.15-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.15",
+            "values": [
+              "00",
+              "03",
+              "07",
+              "12",
+              "15"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.16-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.16",
+            "value": "99"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.16-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.16",
+            "values": [
+              "00",
+              "03",
+              "07",
+              "10",
+              "11",
+              "12",
+              "14",
+              "15"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.18-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.18",
+            "value": "99"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.18-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.18",
+            "values": [
+              "00",
+              "02",
+              "05",
+              "08",
+              "10"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.20-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.20",
+            "value": "99"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.20-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.20",
+            "values": [
+              "00",
+              "05",
+              "10",
+              "15",
+              "20",
+              "25",
+              "30",
+              "35",
+              "40",
+              "45",
+              "50",
+              "55",
+              "60",
+              "65",
+              "70",
+              "75",
+              "80"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.21-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.21",
+            "value": "99"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.21-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.21",
+            "values": [
+              "00",
+              "10",
+              "15",
+              "25"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.23-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.23",
+            "value": "9"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.23-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.23",
+            "values": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.19-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.19",
+            "value": "00000000000000000000"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.22-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.22",
+            "value": "99"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.22-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "numeric_range",
+            "field": "3.22",
+            "min": 0,
+            "max": 98
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.24-DEATH-TO-00",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.24",
+            "value": "00"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.24-00-TO-DEATH",
+        "when": {
+          "eq": {
+            "ref": {
+              "field": "3.24"
+            },
+            "value": "00"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "condition_true",
+            "condition": "is_death_discharge_evaluation"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.24-NORMAL-RANGE",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "numeric_range",
+            "field": "3.24",
+            "min": 1,
+            "max": 90
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.25-ADMISSION",
+        "when": {
+          "condition": "is_admission_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.25",
+            "values": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.25-DISCHARGE",
+        "when": {
+          "condition": "is_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.25",
+            "value": "0"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.26-ADMISSION",
+        "when": {
+          "condition": "is_admission_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.26",
+            "value": "0"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.26-DISCHARGE",
+        "when": {
+          "condition": "is_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.26",
+            "values": [
+              "1",
+              "2",
+              "3",
+              "4"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.26-DEATH-TO-4",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.26",
+            "value": "4"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.26-4-TO-DEATH",
+        "when": {
+          "eq": {
+            "ref": {
+              "field": "3.26"
+            },
+            "value": "4"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "condition_true",
+            "condition": "is_death_discharge_evaluation"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.27-ADMISSION",
+        "when": {
+          "condition": "is_admission_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.27",
+            "value": "00"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.27-DISCHARGE",
+        "when": {
+          "condition": "is_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "numeric_range",
+            "field": "3.27",
+            "min": 0,
+            "max": 99
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.28-ADMISSION",
+        "when": {
+          "condition": "is_admission_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.28",
+            "value": "00"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.28-DISCHARGE",
+        "when": {
+          "condition": "is_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "numeric_range",
+            "field": "3.28",
+            "min": 0,
+            "max": 99
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.29-ADMISSION",
+        "when": {
+          "condition": "is_admission_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.29",
+            "value": "00"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.29-DISCHARGE",
+        "when": {
+          "condition": "is_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "numeric_range",
+            "field": "3.29",
+            "min": 0,
+            "max": 99
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.30-ADMISSION",
+        "when": {
+          "condition": "is_admission_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.30",
+            "value": "00"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.30-DISCHARGE",
+        "when": {
+          "condition": "is_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "numeric_range",
+            "field": "3.30",
+            "min": 0,
+            "max": 99
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.31-ADMISSION",
+        "when": {
+          "condition": "is_admission_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.31",
+            "value": "00"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.31-DISCHARGE",
+        "when": {
+          "condition": "is_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "numeric_range",
+            "field": "3.31",
+            "min": 0,
+            "max": 99
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.32-ADMISSION",
+        "when": {
+          "condition": "is_admission_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.32",
+            "value": "0"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.32-DISCHARGE",
+        "when": {
+          "condition": "is_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.32",
+            "values": [
+              "1",
+              "2",
+              "3",
+              "4"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.33-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.33",
+            "value": "9"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.33-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "allowed_values",
+            "field": "3.33",
+            "values": [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.34-AGE",
+        "when": {
+          "const": true
+        },
+        "assertions": [
+          {
+            "kind": "derived_compare",
+            "derived_value": "age_at_admission_years",
+            "operator": ">=",
+            "value": 19
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.34-DEATH",
+        "when": {
+          "condition": "is_death_discharge_evaluation"
+        },
+        "assertions": [
+          {
+            "kind": "raw_equals",
+            "field": "3.34",
+            "value": "999"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.34-NORMAL",
+        "when": {
+          "not": {
+            "condition": "is_death_discharge_evaluation"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "numeric_range",
+            "field": "3.34",
+            "min": 0,
+            "max": 100
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "3",
+      "source": {
+        "id": "R-3.34-999-TO-DEATH",
+        "when": {
+          "eq": {
+            "ref": {
+              "field": "3.34"
+            },
+            "value": "999"
+          }
+        },
+        "assertions": [
+          {
+            "kind": "condition_true",
+            "condition": "is_death_discharge_evaluation"
+          }
+        ],
+        "error_code": "E010"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.1",
+      "source": {
+        "id": "R-4.18-LE-4.19",
+        "when": {
+          "const": true
+        },
+        "assertions": [
+          {
+            "kind": "field_compare",
+            "left": {
+              "field": "4.18"
+            },
+            "operator": "<=",
+            "right": {
+              "field": "4.19"
+            },
+            "value_type": "date"
+          }
+        ],
+        "error_code": "E_TEMPORAL_ORDER"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "4.2",
+      "source": {
+        "id": "R-4.30-REQUIRES-4.29",
+        "when": {
+          "is_present": {
+            "ref": {
+              "field": "4.30"
+            }
+          }
+        },
+        "assertions": [
+          {
+            "kind": "field_present",
+            "field": "4.29"
+          }
+        ],
+        "error_code": "E003",
+        "note": "A revoking act necessarily terminates validity; however a cessation date may exist without a revoking act."
+      },
+      "disposition": "active"
+    },
+    {
+      "trace": "4.2",
+      "source": {
+        "id": "R-4.30-REFERENCES-4.22",
+        "when": {
+          "is_present": {
+            "ref": {
+              "field": "4.30"
+            }
+          }
+        },
+        "assertions": [
+          {
+            "kind": "record_exists",
+            "trace": "4.2",
+            "match": [
+              {
+                "target_field": "4.22",
+                "source_field": "4.30"
+              }
+            ]
+          }
+        ],
+        "error_code": "E012"
+      },
+      "disposition": "active"
+    }
+  ],
+  "groups": [
+    {
+      "trace": "2",
+      "source": {
+        "id": "socio_family_problems",
+        "fields": [
+          "2.13",
+          "2.14",
+          "2.15",
+          "2.16",
+          "2.17",
+          "2.18",
+          "2.19",
+          "2.20",
+          "2.21",
+          "2.22"
+        ],
+        "required_slots": [
+          "2.13",
+          "2.14",
+          "2.15",
+          "2.16",
+          "2.17",
+          "2.18",
+          "2.19",
+          "2.20",
+          "2.21",
+          "2.22"
+        ],
+        "optional_slots": [],
+        "contiguity_required": false,
+        "unique_non_missing": false,
+        "unused_slot_value": "99"
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "source": {
+        "id": "diagnoses",
+        "fields": [
+          "2.32",
+          "2.33",
+          "2.34",
+          "2.35",
+          "2.36",
+          "2.37"
+        ],
+        "required_slots": [
+          "2.32"
+        ],
+        "optional_slots": [
+          "2.33",
+          "2.34",
+          "2.35",
+          "2.36",
+          "2.37"
+        ],
+        "contiguity_required": false,
+        "unique_non_missing": true
+      },
+      "disposition": "deferred"
+    },
+    {
+      "trace": "2",
+      "source": {
+        "id": "procedures",
+        "fields": [
+          "2.38",
+          "2.39",
+          "2.40",
+          "2.41",
+          "2.42",
+          "2.43",
+          "2.44",
+          "2.45",
+          "2.46",
+          "2.47",
+          "2.48"
+        ],
+        "required_slots": [],
+        "optional_slots": [
+          "2.38",
+          "2.39",
+          "2.40",
+          "2.41",
+          "2.42",
+          "2.43",
+          "2.44",
+          "2.45",
+          "2.46",
+          "2.47",
+          "2.48"
+        ],
+        "contiguity_required": false,
+        "unique_non_missing": false
+      },
+      "disposition": "deferred"
+    }
+  ]
+}

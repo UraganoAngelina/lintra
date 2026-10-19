@@ -1,0 +1,833 @@
+{
+  "id": "4.1",
+  "name": "Tracciato regionale UDO",
+  "record_length": 394,
+  "fields": [
+    {
+      "id": "4.1",
+      "name": "Struttura erogatrice. Codice regionale dell'UDO",
+      "physical": {
+        "start": 1,
+        "length": 6,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "000000"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.1",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Indica il codice regionale provvisorio della struttura erogatrice."
+      }
+    },
+    {
+      "id": "4.2",
+      "name": "Struttura erogatrice. Codice regionale MRA",
+      "physical": {
+        "start": 7,
+        "length": 15,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.2",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Codifica della struttura secondo il progetto MRA (in corso di definizione)"
+      }
+    },
+    {
+      "id": "4.3",
+      "name": "Tipologia di UDO",
+      "physical": {
+        "start": 22,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "0"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.3",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica la tipologia di UDO. I codici da utilizzare sono:\n1. Ospedale di Comunità\n"
+      }
+    },
+    {
+      "id": "4.4",
+      "name": "Modello assistenziale",
+      "physical": {
+        "start": 23,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "0"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.4",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica il modello assistenziale come definito  per la struttura. I valori sono:\n1. assistenza medica affidata a medici e personale specialista provenienti o incardinati nell'area geriatrica o internistica dell'ospedale o del territorio\n2. struttura gestita dai MMG\n3. struttura gestita con l'utilizzo di medici della continuità assistenziale\n4. assistenza medica affidata a medici con specifiche capacità professionali della struttura o del  Centro servizi."
+      }
+    },
+    {
+      "id": "4.5",
+      "name": "Responsabile sanitario",
+      "physical": {
+        "start": 24,
+        "length": 1,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "0"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.5",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica se il responsabile sanitario è incardinato presso:\n1. Territorio\n2. Ospedale",
+        "source_missing_meaning": "Valore non immesso"
+      }
+    },
+    {
+      "id": "4.6",
+      "name": "Denominazione dell'UDO",
+      "physical": {
+        "start": 25,
+        "length": 120,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "non_empty"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.6",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Denominazione dell'Unità di Offerta, come specificata nell'atto di autorizzazione o accreditamento."
+      }
+    },
+    {
+      "id": "4.7",
+      "name": "Regione sede UDO",
+      "physical": {
+        "start": 145,
+        "length": 3,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "allowed_values",
+          "values": [
+            "050"
+          ],
+          "target": "logical"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.7",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Codice della Regione dove ha sede l'UDO. Il codice da utilizzare è quello a tre caratteri definito con DM 17 settembre 1986, pubblicato nella Gazzetta Ufficiale n.240 del 15 ottobre 1986, e successive modifiche, utilizzato anche nei modelli per le rilevazioni delle attività gestionali ed economiche delle Aziende unità sanitarie locali."
+      }
+    },
+    {
+      "id": "4.8",
+      "name": "ULSS sede UDO",
+      "physical": {
+        "start": 148,
+        "length": 3,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.8",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Codice della Azienda ULSS dove ha sede l'UDO. Il campo deve essere valorizzato con i codici a tre caratteri dell' Azienda sanitaria in cui è ubicata la struttura OdC.",
+        "canonical_interpretation": "Three-character ULSS/health-authority code; no hierarchical validation against 4.7."
+      }
+    },
+    {
+      "id": "4.9",
+      "name": "Comune sede UDO",
+      "physical": {
+        "start": 151,
+        "length": 6,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "000000"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.9",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Codice ISTAT del Comune dove ha sede l'UDO.\nCodici ISTAT (primi 3 caratteri per la provincia e i rimanenti 3 caratteri per il progressivo comune). "
+      }
+    },
+    {
+      "id": "4.10",
+      "name": "Indirizzo UDO",
+      "physical": {
+        "start": 157,
+        "length": 30,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "non_empty"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.10",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indicare l'indirizzo fisico comprensivo di numero civico."
+      }
+    },
+    {
+      "id": "4.11",
+      "name": "Codice regionale dell'Ente gestore",
+      "physical": {
+        "start": 187,
+        "length": 6,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "000000"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.11",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica il codice regionale dell'Ente Gestore. Utilizzare la stessa codifica di EG del flusso di cui alla DGR 2961/2012."
+      }
+    },
+    {
+      "id": "4.12",
+      "name": "Denominazione dell'Ente gestore",
+      "physical": {
+        "start": 193,
+        "length": 120,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "non_empty"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.12",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Denominazione dell'Ente Gestore."
+      }
+    },
+    {
+      "id": "4.13",
+      "name": "Ragione giuridica dell'Ente gestore",
+      "physical": {
+        "start": 313,
+        "length": 2,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "00"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.13",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica la ragione giuridica dell'Ente titolare della gestione. La codifica è la seguente\n1. ULSS\n2. IPAB\n3. Comune o Altro Ente locale\n4. Azienda speciale\n5. Fondazione\n6. Società di capitali\n7. Società cooperativa\n8. Associazione non profit\n9. Ente ecclesiastico\n10. Altro"
+      }
+    },
+    {
+      "id": "4.14",
+      "name": "Comune sede EG",
+      "physical": {
+        "start": 315,
+        "length": 6,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "000000"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.14",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Codice ISTAT del Comune sede dell'EG.\nCodici ISTAT (primi 3 caratteri per la provincia e i rimanenti 3 caratteri per il progressivo comune). "
+      }
+    },
+    {
+      "id": "4.15",
+      "name": "Indirizzo EG",
+      "physical": {
+        "start": 321,
+        "length": 30,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "non_empty"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.15",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indicare l'indirizzo fisico comprensivo di numero civico"
+      }
+    },
+    {
+      "id": "4.16",
+      "name": "Partita IVA EG",
+      "physical": {
+        "start": 351,
+        "length": 11,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "00000000000"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "regex",
+          "pattern": "^[0-9]+$",
+          "match": "required",
+          "target": "logical"
+        },
+        {
+          "kind": "logical_length",
+          "equals": 11
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.16",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Numero di Partita IVA dell'Ente Gestore"
+      }
+    },
+    {
+      "id": "4.17",
+      "name": "Codice fiscale EG",
+      "physical": {
+        "start": 362,
+        "length": 11,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "00000000000"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "regex",
+          "pattern": "^[0-9]+$",
+          "match": "required",
+          "target": "logical"
+        },
+        {
+          "kind": "logical_length",
+          "equals": 11
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.17",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Codice Fiscale dell'Ente Gestore"
+      }
+    },
+    {
+      "id": "4.18",
+      "name": "Data inizio validità",
+      "physical": {
+        "start": 373,
+        "length": 8,
+        "type": "date",
+        "alignment": {
+          "kind": "exact"
+        },
+        "format": "DDMMYYYY"
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "date",
+          "format": "DDMMYYYY",
+          "calendar_valid": true
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.18",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Data di inizio validità del record anagrafico"
+      }
+    },
+    {
+      "id": "4.19",
+      "name": "Data fine validità",
+      "physical": {
+        "start": 381,
+        "length": 8,
+        "type": "date",
+        "alignment": {
+          "kind": "exact"
+        },
+        "format": "DDMMYYYY"
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "date",
+          "format": "DDMMYYYY",
+          "calendar_valid": true
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "4.19",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Data di fine validità del record anagrafico"
+      }
+    },
+    {
+      "id": "4.19.1",
+      "name": "COD_STRUT_EROG_STS",
+      "physical": {
+        "start": 389,
+        "length": 6,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "4.19.1",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Struttura erogatrice Codice STS11"
+      }
+    }
+  ],
+  "record_key": {
+    "fields": [
+      "4.1",
+      "4.7",
+      "4.8",
+      "4.19.1"
+    ],
+    "uniqueness_scope": "trace",
+    "error_code": "E_DUPLICATE_RECORD_KEY"
+  },
+  "joins": [],
+  "identity": [],
+  "named_conditions": {},
+  "derived_values": {},
+  "repeated_groups": [],
+  "rules": [],
+  "documented_non_executable_rules": [
+    {
+      "id": "DEFER-4.1-CONSTRAINT-0",
+      "fields": [
+        "4.1"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.3-CONSTRAINT-0",
+      "fields": [
+        "4.3"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.4-CONSTRAINT-0",
+      "fields": [
+        "4.4"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.5-CONSTRAINT-0",
+      "fields": [
+        "4.5"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.7-CONSTRAINT-0",
+      "fields": [
+        "4.7"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.8-CONSTRAINT-0",
+      "fields": [
+        "4.8"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.9-CONSTRAINT-0",
+      "fields": [
+        "4.9"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.11-CONSTRAINT-0",
+      "fields": [
+        "4.11"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.13-CONSTRAINT-0",
+      "fields": [
+        "4.13"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.14-CONSTRAINT-0",
+      "fields": [
+        "4.14"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-4.19.1-CONSTRAINT-0",
+      "fields": [
+        "4.19.1"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-4.18-LE-4.19",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    }
+  ]
+}

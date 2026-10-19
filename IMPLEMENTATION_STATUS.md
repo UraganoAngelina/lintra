@@ -9,10 +9,11 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
 - Sessione corrente: **T-P0-07 DONE**, contratto del commit 72f9f5e
   approvato dall’autore con «Approvo il contratto T-P0-07». Verifiche
   strutturali e limiti restano registrati nel report.
-  **T-P0-08 BLOCKED** sugli input normativi: dataset/versioni/binding,
-  profilo encoding/caratteri e policy 29 febbraio. Piano fixture indipendente
-  preparato e verificato: 135 campi, 72 regole, 376 specifiche di caso.
-  Nessun canonical schema completo generato con valori inventati.
+  **T-P0-08 DONE nello scope minimale autorizzato**: profilo versionato con
+  flow e cinque trace, 135 campi, cinque PK, sei join; ledger dei rinvii e
+  piano fixture verificati. DEC-SIOC-MINIMAL-01: nessun dataset, semantica
+  minima con 050 nell’ambito confermato; encoding runtime esplicito, mar01
+  per il futuro controllo età. Lint Rust obbligatorio appena T-P3-04 esiste.
   Nessun compiler o validatore Rust normativo implementato.
   **T-P1-03 DONE_UNVERIFIED**: nessuna nuova evidenza CI in questa sessione.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
@@ -102,8 +103,8 @@ M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
 | T-P0-05 | DONE | 2026-10-19 | Dossier SIOC/CAD: 74 regole, 10 join + ricerca esistenza; PK, identity e policy/DEC verificate; parent opzionale SIOC risolto dall’autore |
 | T-P0-06 | DONE | 2026-10-16 | Commit 69dc995/a55a634; 15 schede/150 metadati, gap espliciti, review approvata |
 | T-P0-07 | DONE | 2026-10-19 | Commit 72f9f5e: contratto completo/artefatti approvati dall’autore; 33 casi negativi e checker passati, limiti espliciti |
-| T-P0-08 | BLOCKED | 2026-10-19 | T-P0-07 accettata; piano fixture/catalogo verificati (135 campi, 72 regole, 376 specifiche); schemi sospesi su input normativi mancanti |
-| T-P0-09 | BLOCKED | 2026-10-19 | Non avviata: T-P0-08 incompleta; nessuna approvazione G0 dedotta da T-P0-07 |
+| T-P0-08 | DONE | 2026-10-19 | Profilo structural-minimal.1 autorizzato; flow+5 trace, 135 campi/5 PK/6 join, ledger, lint authoring e piano verificati; ricontrollo T-P3-04 obbligatorio |
+| T-P0-09 | NOT_STARTED | 2026-10-19 | Prerequisiti documentali pronti nello scope minimale; checklist e approvazione G0 ancora da ottenere |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
 | T-P1-03 | DONE_UNVERIFIED | 2026-10-16 | Commit 4f71663; workflow e 2 test, controlli locali/review approvati; CI reale non eseguita |
@@ -189,11 +190,13 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Problemi noti e decisioni aperte
 
-- **T-P0-08, input mancanti:** dodici dataset ufficiali SIOC con versioni,
-  path/hash e metadata ICD9, profilo encoding/caratteri per 1.7/1.8,
-  convenzione feb28/mar01 per età compiuta. Domande all’autore pendenti.
-  Non scegliere ASCII-only, data di release dei dataset o policy bisestile
-  dai soli esempi sintetici del contratto. [Evidenze](docs/verification/T-P0-08.md).
+- **SIOC completo rinviato:** dodici dataset con versioni/hash/metadata ICD9
+  assenti; controlli semantici esclusi dal profilo minimale per decisione
+  dell’autore. mar01 approvato, encoding richiesto al chiamante senza dedurlo
+  dai campioni. Nessuna domanda precedente resta pendente su questi punti.
+- **Export SIOC:** larghezze aggregate diverse dai layout normativi; chiarire
+  il formato prima dell’uso come input del futuro validatore. Nessun adattatore
+  o stripping dedotto. [Evidenze](docs/verification/T-P0-08.md).
 - **Contratto T-P0-07 approvato:** DEC-AUTHORING-FORMAT-01 e forme dei
   piani insiemi/consenso ratificate; restano da implementare con i gate.
 - Dossier ed evidenze: [T-P0-05](docs/verification/T-P0-05.md).
@@ -314,6 +317,30 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P0-08 / profilo minimale autorizzato
+
+- **Stato:** DONE per DEC-SIOC-MINIMAL-01; baseline FROZEN non modificata.
+- **File:** schemas/sioc/2026-04-20.structural-minimal.1 (flow, cinque trace,
+  ledger, README); fixtures-plan/catalogo, decisioni, report e verificatori.
+- **Evidenze effettive, exit 0:** sioc_minimal_profile.py (JSON Schema,
+  riproducibilità, 135 layout, riferimenti, 5 PK/6 join, due negativi);
+  check_authoring.py (33 negativi), check_fixtures_plan.py (376 casi pianificati),
+  check_rules_and_joins.py, check_notes.py, check_presence.py (218 campi).
+  cargo fmt --all -- --check; cargo check --locked;
+  cargo clippy --all-targets --locked -- -D warnings; cargo test --locked
+  (2 integration test e 3 doctest). Nessun test normativo runtime.
+- **Verifiche JSON:** uv run --cache-dir /tmp/lintra-authoring-uv --offline
+  --no-project --with jsonschema==4.26.0 python docs/verification/<script>.py.
+- **Decisioni:** 050 solo tre prefissi inviante e 4.7; niente lookup; mar01
+  futuro; regole omesse esplicite. Persistenza PK/audit resta contratto.
+- **Limiti:** lint Rust da rieseguire in T-P3-04; niente compiler, golden,
+  validazione pazienti o CI reale. Export letti solo per aggregati tecnici;
+  larghezze anomale documentate, nessun dato sanitario copiato nel repo.
+- **Git:** file storico Superpowers già modificato lasciato intatto e fuori
+  dal commit; nessun push. Risultati più recenti prevalgono sui handoff storici.
+- **Next:** T-P0-09, checklist concreta e approvazione finale obbligatoria.
+  P2 resta separatamente bloccata sulla CI reale.
 
 HANDOFF — 2026-10-19 — T-P0-08 / preflight e fixture-plan
 

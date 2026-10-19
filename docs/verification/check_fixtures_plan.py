@@ -10,10 +10,21 @@ KIT = ROOT.parent / "LINTRA_STARTER_KIT_FINAL_20261016"
 raw = (KIT / "SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/flow_schema.json").read_bytes()
 source = json.loads(raw)
 catalog = json.loads((ROOT / "docs/normative/sioc/fixtures-catalog.json").read_text())
-assert catalog["status"] == "DRAFT_INPUT_GAPS_NOT_EXECUTABLE"
+assert catalog["status"] == "SOURCE_BACKLOG_WITH_MINIMAL_PROFILE"
 assert catalog["source_flow_sha256"] == sha256(raw).hexdigest()
 assert catalog["reference_dependencies"] == [d["dataset"] for d in source["reference_data"]]
 assert catalog["mandatory_followup"]["task"] == "T-P3-04"
+ledger = json.loads((ROOT / "schemas/sioc" / catalog["target_schema_version"] / "scope-ledger.json").read_text())
+constraints = {(v["trace"], v["field"], v["index"]): v["disposition"] for v in ledger["constraints"]}
+rule_dispositions = {(v["trace"], v["source"]["id"]): v["disposition"] for v in ledger["rules"]}
+for entry in catalog["fields"]:
+    for case in entry["cases"]:
+        expected = (constraints[entry["trace_id"], entry["field_id"], case["constraint_index"]]
+                    if "constraint_index" in case else "runtime_encoding_required"
+                    if case["template"] == "datatype_text_pending" else "active")
+        assert case["minimal_profile_disposition"] == expected
+for entry in catalog["rules"]:
+    assert entry["minimal_profile_disposition"] == rule_dispositions[entry["trace_id"], entry["rule_id"]]
 expected_fields = [(t["trace_id"], f["id"], i)
                    for t in source["traces"] for i, f in enumerate(t["fields"])]
 actual_fields = [(f["trace_id"], f["field_id"], f["source_index"]) for f in catalog["fields"]]
@@ -61,4 +72,4 @@ for path in (ROOT / "docs/normative/fixtures-plan.md", ROOT / "docs/verification
         assert (path.parent / target.split("#")[0]).exists(), (path, target)
 assert len(expected_fields) == 135 and len(expected_rules) == 72
 print(f"PASS: {len(expected_fields)} campi, {len(expected_rules)} regole, {case_count} specifiche di caso campo; hash/indici/template/lookup dichiarati tracciati")
-print("PASS: ricontrollo T-P3-04 esplicito e link locali; nessun record, golden o schema canonico dichiarato eseguibile")
+print("PASS: ricontrollo T-P3-04 esplicito e link locali; nessun record, golden o runtime di schema dichiarato eseguito")

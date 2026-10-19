@@ -1,0 +1,959 @@
+{
+  "id": "1",
+  "name": "Dati anagrafici assistito",
+  "record_length": 206,
+  "fields": [
+    {
+      "id": "1.1",
+      "name": "Numero della scheda di ricovero (ex Identificativo univoco assistito per episodio di accoglimento)",
+      "physical": {
+        "start": 1,
+        "length": 20,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "regex",
+          "pattern": "^0+$",
+          "match": "forbidden",
+          "target": "logical"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "1.1",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016)."
+      }
+    },
+    {
+      "id": "1.2",
+      "name": "Codice fiscale o altro codice identificativo utente",
+      "physical": {
+        "start": 21,
+        "length": 20,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [
+          {
+            "not": {
+              "condition": "identifier_unavailable"
+            }
+          }
+        ],
+        "forbidden_if": [
+          {
+            "condition": "identifier_unavailable"
+          }
+        ]
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.2",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Il campo va valorizzato con il Codice Fiscale per tutte le schede riferite a cittadini italiani. \nPer i cittadini stranieri, qualora non in possesso del Codice Fiscale, vanno indicati in alternativa tra loro il codice TEAM (Tessera europea assicurazione malattia) , o il codice ENI  (Europei non iscritti), o il codice STP (Straniero temporaneamente presente).\nPer le prestazioni coperte da riservatezza ai sensi di legge il campo deve essere compilato con il carattere \"A\" ripetuto 20 volte."
+      }
+    },
+    {
+      "id": "1.3",
+      "name": "Tipo identificativo utente",
+      "physical": {
+        "start": 41,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.3",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica il tipo dell’identificativo del beneficiario della prestazione. I  valori da indicare sono:\n01. Codice fiscale\n02. Codice ENI \n03. Codice STP \n04. Codice ID utente della Tessera Europea d’Assicurazione Malattia (TEAM) \n05. Altro identificativo \n09. Identificativo non disponibile \n97. codice STP non presente in anagrafica\n98. Assistito richiedente l’anonimato "
+      }
+    },
+    {
+      "id": "1.4",
+      "name": "Codice istituzione pagatrice TEAM (tessera europea)",
+      "physical": {
+        "start": 43,
+        "length": 28,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [
+          {
+            "eq": {
+              "ref": {
+                "field": "1.3"
+              },
+              "value": "04"
+            }
+          }
+        ],
+        "forbidden_if": [
+          {
+            "ne": {
+              "ref": {
+                "field": "1.3"
+              },
+              "value": "04"
+            }
+          }
+        ]
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.4",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Indica il codice di identificazione assegnato a livello nazionale alla istituzione di assicurazione o di residenza competente ai sensi degli allegati 2 e 3 al regolamento 574/72. Come previsto nella Tessera Europea di Assicurazione Malattia  (Il numero di istituzione pagatrice  è riportato sotto quello di identificazione personale.)\nDa compilare se \"Tipo identificativo utente\" = 4\nNon compilare nei casi coperti da riservatezza ai sensi di legge"
+      }
+    },
+    {
+      "id": "1.5",
+      "name": "MPI",
+      "physical": {
+        "start": 71,
+        "length": 28,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": [
+          {
+            "condition": "is_anonymous"
+          }
+        ]
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.5",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Master Patient Index (Id regionale della posizione anagrafica). \nChiave di identificazione univoca con cui la posizione anagrafica è stata censita in ambiente regionale (Anagrafe Unica). Disponibile per i residenti e assititi in Regione Veneto, come servizio erogato dalla anagrafe unica regionale.\nNon compilare nei casi coperti da riservatezza ai sensi di legge"
+      }
+    },
+    {
+      "id": "1.6",
+      "name": "Codice sanitario",
+      "physical": {
+        "start": 99,
+        "length": 9,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": [
+          {
+            "condition": "is_anonymous"
+          }
+        ]
+      },
+      "constraints": [
+        {
+          "kind": "regex",
+          "pattern": "^[0-9]+$",
+          "match": "required",
+          "target": "logical"
+        },
+        {
+          "kind": "logical_length",
+          "equals": 9
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "1.6",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Il campo va valorizzato, in combinazione con il codice fiscale, per i soli residenti in Veneto. \nNon compilare nei casi coperti da riservatezza ai sensi di legge"
+      }
+    },
+    {
+      "id": "1.7",
+      "name": "Cognome",
+      "physical": {
+        "start": 108,
+        "length": 30,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [
+          {
+            "condition": "is_anonymous"
+          }
+        ],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.7",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Campo da valorizzare, in lettere maiuscole.\nNei casi coperti da riservatezza ai sensi di legge dovrà essere posta la dicitura ANONIMO."
+      }
+    },
+    {
+      "id": "1.8",
+      "name": "Nome",
+      "physical": {
+        "start": 138,
+        "length": 30,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [
+          {
+            "condition": "is_anonymous"
+          }
+        ],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.8",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Campo da valorizzare, in lettere maiuscole.\nNei casi coperti da riservatezza ai sensi di legge dovrà essere posta la dicitura ANONIMO."
+      }
+    },
+    {
+      "id": "1.9",
+      "name": "Data di nascita",
+      "physical": {
+        "start": 168,
+        "length": 8,
+        "type": "date",
+        "alignment": {
+          "kind": "exact"
+        },
+        "format": "DDMMYYYY"
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [
+          {
+            "not": {
+              "condition": "is_anonymous"
+            }
+          }
+        ],
+        "forbidden_if": [
+          {
+            "condition": "is_anonymous"
+          }
+        ]
+      },
+      "constraints": [
+        {
+          "kind": "date",
+          "format": "DDMMYYYY",
+          "calendar_valid": true
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "1.9",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Utilizzare il formato GGMMAAAA.\nNon valorizzare nei casi in cui è previsto il mantenimento dell’anonimato."
+      }
+    },
+    {
+      "id": "1.10",
+      "name": "Genere",
+      "physical": {
+        "start": 176,
+        "length": 1,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.10",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Utilizzare i codici seguenti: 1 – maschio, 2 – femmina, 3 - non specificato"
+      }
+    },
+    {
+      "id": "1.11",
+      "name": "Cittadinanza",
+      "physical": {
+        "start": 177,
+        "length": 3,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.11",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Identifica la cittadinanza dell’assistito al momento dell'ammissione. Per i cittadini italiani codificare con 100. Per gli altri cittadini stranieri utilizzare il codice stati esteri definito dal Ministero dell’Interno per l’anagrafe della popolazione. Per gli apolidi codificare 999. In caso di cittadinanza sconosciuta indicare 998."
+      }
+    },
+    {
+      "id": "1.12",
+      "name": "Titolo di studio ",
+      "physical": {
+        "start": 180,
+        "length": 1,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.12",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Titolo di studio conseguito dall’utente al momento dell’ammissione.\nValori ammessi:\n1 . Nessun titolo (meno di 5 anni di studio) \n2. Licenza elementare (5 anni di studio) \n3. Diploma di scuola media inferiore (8 anni di studio) \n4. Diploma di scuola media superiore (Qualifica professionale / Maturità) (13 anni di studio) \n5. Diploma universitario o laurea breve \n6. Laurea o superiore (17 o più anni di studio)\n7. scuola professionale\n9. sconosciuto"
+      }
+    },
+    {
+      "id": "1.13",
+      "name": "Regione di Residenza",
+      "physical": {
+        "start": 181,
+        "length": 3,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.13",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica la Regione di residenza dell'assistito .\nPer la codifica utilizzare il Codice Regioni di 3 caratteri definito con DM 17 settembre 1986, pubblicato nella Gazzetta Ufficiale n. 240 del 15 ottobre 1986, e successive modifiche. Se Stato estero valorizzare con 999."
+      }
+    },
+    {
+      "id": "1.14",
+      "name": "Azienda ULSS di Residenza",
+      "physical": {
+        "start": 184,
+        "length": 3,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.14",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica l'Azienda ULSS di residenza dell'assistito al momento dell'ingresso in struttura.\nSe stato estero valorizzare con 999."
+      }
+    },
+    {
+      "id": "1.15",
+      "name": "Comune/Stato estero  di  Residenza",
+      "physical": {
+        "start": 187,
+        "length": 6,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.15",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica il comune italiano, oppure eventualmente lo stato estero, presso il quale il paziente risulta legalmente residente alla ammissione. Codici ISTAT (primi 3 caratteri per la provincia e i rimanenti 3 caratteri per il progressivo comune). Si raccomanda di non omettere la rilevazione dello “0” costituente il primo carattere del codice provincia. Per i residenti all’estero codificare 999 i primi 3 caratteri ed il codice stato estero nei successivi 3, utilizzando il codice stati esteri definito dal Ministero dell’Interno per l’anagrafe della popolazione. Se senza fissa dimora indicare 999999 sul Comune di residenza."
+      }
+    },
+    {
+      "id": "1.16",
+      "name": "Stato civile",
+      "physical": {
+        "start": 193,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.16",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Stato civile del paziente al momento del ricovero. \nValori ammessi\n01. Celibe/nubile\n02. Coniugato/a\n03. Separato/a\n04. Divorziato/a\n05. Vedovo/a\n06. Unito/a civilmente\n07. Già in unione civile (in decesso del partner)\n08. Già in unione civile (per scioglimento unione)\n09. Non rilevato (non è stata posta la domanda al paziente)\n99. Dato mancante (è stata posta la domanda al paziente e non ha risposto)"
+      }
+    },
+    {
+      "id": "1.17",
+      "name": "Codice Azienda",
+      "physical": {
+        "start": 195,
+        "length": 6,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "logical_length",
+          "equals": 6
+        },
+        {
+          "kind": "regex",
+          "pattern": "^[0-9]+$",
+          "match": "required",
+          "target": "logical"
+        },
+        {
+          "kind": "composite_segments",
+          "target": "logical",
+          "segments": [
+            {
+              "start": 1,
+              "length": 3,
+              "check": {
+                "equals": "050"
+              }
+            }
+          ]
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "1.17",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "CAMPO CHIAVE\nIl campo deve essere valorizzato con i codici a SEI caratteri della azienda sanitaria in cui è ubicata la struttura OdC (050501,…)."
+      }
+    },
+    {
+      "id": "1.18",
+      "name": "Codice Struttura",
+      "physical": {
+        "start": 201,
+        "length": 6,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "1.18",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "CAMPO CHIAVE\nI codici da utilizzare sono quelli indicati nei modelli ministeriali STS11"
+      }
+    }
+  ],
+  "record_key": {
+    "fields": [
+      "1.1",
+      "1.17",
+      "1.18"
+    ],
+    "uniqueness_scope": "trace",
+    "error_code": "E_DUPLICATE_RECORD_KEY"
+  },
+  "joins": [
+    {
+      "id": "trace1_to_trace2_episode",
+      "target_trace": "2",
+      "source_fields": [
+        "1.1",
+        "1.17",
+        "1.18"
+      ],
+      "target_fields": [
+        "2.1",
+        "2.49",
+        "2.50"
+      ],
+      "cardinality": "zero_or_one",
+      "scope": "current_submission",
+      "namespace_parameters": [],
+      "on_missing_record": {
+        "policy": "not_applicable",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Anagrafica presente; dati del ricovero correlato assenti"
+        }
+      },
+      "on_missing_trace": {
+        "policy": "not_applicable",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Anagrafica presente; dati del ricovero correlato assenti"
+        }
+      }
+    }
+  ],
+  "identity": [
+    {
+      "target": "sioc_record_id",
+      "field": "1.1"
+    }
+  ],
+  "named_conditions": {
+    "is_anonymous": {
+      "eq": {
+        "ref": {
+          "field": "1.3"
+        },
+        "value": "98"
+      }
+    },
+    "identifier_unavailable": {
+      "eq": {
+        "ref": {
+          "field": "1.3"
+        },
+        "value": "09"
+      }
+    },
+    "is_foreign_resident": {
+      "eq": {
+        "ref": {
+          "field": "1.13"
+        },
+        "value": "999"
+      }
+    },
+    "is_italian_resident": {
+      "ne": {
+        "ref": {
+          "field": "1.13"
+        },
+        "value": "999"
+      }
+    }
+  },
+  "derived_values": {},
+  "repeated_groups": [],
+  "rules": [],
+  "documented_non_executable_rules": [
+    {
+      "id": "DEFER-1.1-CONSTRAINT-0",
+      "fields": [
+        "1.1"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-1.1-CONSTRAINT-1",
+      "fields": [
+        "1.1"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-1.1-CONSTRAINT-2",
+      "fields": [
+        "1.1"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-1.3-CONSTRAINT-0",
+      "fields": [
+        "1.3"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-1.7-CONSTRAINT-0",
+      "fields": [
+        "1.7"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-1.8-CONSTRAINT-0",
+      "fields": [
+        "1.8"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-1.10-CONSTRAINT-0",
+      "fields": [
+        "1.10"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-1.11-CONSTRAINT-0",
+      "fields": [
+        "1.11"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-1.12-CONSTRAINT-0",
+      "fields": [
+        "1.12"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-1.13-CONSTRAINT-0",
+      "fields": [
+        "1.13"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-1.16-CONSTRAINT-0",
+      "fields": [
+        "1.16"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-1.17-CONSTRAINT-2",
+      "fields": [
+        "1.17"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-1.18-CONSTRAINT-0",
+      "fields": [
+        "1.18"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-1.1-ADMISSION-YEAR",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-1.2-ANONYMOUS-SENTINEL",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-1.7-ANONYMOUS-NAME",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-1.8-ANONYMOUS-NAME",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-1.14-FOREIGN",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-1.14-ITALIAN",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-1.15-FOREIGN",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-1.15-ITALIAN",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "POLICY-1.2-CF-SEMANTICS",
+      "fields": [
+        "1.2"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "The regional trace defines when CF/ENI/STP/TEAM/other identifiers are used but does not define a confirmed checksum/semantic-validation depth. Canonical v1 validates physical representation and identifier-type-dependent presence only.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "POLICY-1.6-VENETO-RESIDENCY",
+      "fields": [
+        "1.6"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Operational interpretation of 'in combinazione con il codice fiscale, per i soli residenti in Veneto' was not functionally confirmed; v1 preserves the note but does not infer a resident/identifier-type presence rule.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    }
+  ]
+}
