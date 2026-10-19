@@ -117,6 +117,6 @@ pub use schema::registry::{SchemaRegistry, SchemaResolutionError};
 pub use input::{
     error::{BomKind, InputError},
     reader::{NewlinePolicy, RecordReader},
-    record::RawRecord,
+    record::{FieldSlice, RawRecord, RecordView},
     source::{BomCheckedReader, BomPolicy, preflight_bom},
 };

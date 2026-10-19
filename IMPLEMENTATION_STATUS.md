@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02 locale verificata, CI pendente; prossima T-P4-03.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02 e T-P4-03 locali verificate, CI pendenti; prossima indipendente T-P4-04.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -170,10 +170,18 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-07 | DONE | 2026-10-19 | Registry senza cache, binding esplicito/cause preservate; 28 unit/48 integration/10 doctest; [CI 39272551912](https://github.com/UraganoAngelina/lintra/actions/runs/39272551912) verde Linux/Windows su f671517 |
 | T-P4-01 | DONE | 2026-10-19 | Reader byte/tre policy, DEC-12 provvisorio; 29 unit/55 integration/10 doctest; [CI 39276070129](https://github.com/UraganoAngelina/lintra/actions/runs/39276070129) verde Linux/Windows su e18b9ba |
 | T-P4-02 | DONE_UNVERIFIED | 2026-10-19 | Preflight BOM max 4 byte/Reject default/strip esplicito e replay payload; 29 unit/61 integration/10 doctest; CI pendente |
+| T-P4-03 | DONE_UNVERIFIED | 2026-10-19 | View/slice zero-copy su range compiled, fuori range None; 29 unit/64 integration/10 doctest; CI da eseguire dopo run BOM in coda |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — 2026-10-19, Linux locale
+
+T-P4-03: fmt/check/clippy/test/release/diff-check PASS;
+29 unit + 64 integration + 10 doctest; tre integration nuovi.
+Report [T-P4-03](docs/verification/T-P4-03.md); CI ancora da eseguire.
+T-P4-02 run 39278768796 su f600a4b ancora queued, non dichiarata verde.
+
+Evidenze precedenti T-P4-02:
 
 T-P4-02: fmt/check/clippy/test/release/diff-check PASS;
 29 unit + 61 integration + 10 doctest, sei integration nuovi.
@@ -498,6 +506,20 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P4-03 / locale verificato, attesa CI BOM
+
+- **Stato:** DONE_UNVERIFIED; 103 test locali verdi e fmt/check/clippy/release/diff.
+- **File:** input/record.rs, lib.rs, tests/record_view.rs, report/stato.
+- **Fatto:** RecordView/FieldSlice borrowed, ByteRange::slice, nessun trim/copia,
+  None fuori range. Lifetime e puntatori testati con compiled reali.
+- **Gate:** T-P4-02 CI 39278768796 resta queued; nessun nuovo dispatch
+  concorrente per non annullarla. Nessuna di queste due task dichiarata DONE.
+- **Avanzamento:** MIP §14.2 e prerequisiti atomici verificati consentono
+  T-P4-04 indipendente (solo T-P2-01), una task di codice alla volta.
+- **Git:** work/p1-foundations, modifica storica estranea intatta;
+  nessuna nuova dipendenza o fonte normativa modificata.
+
 
 HANDOFF — 2026-10-19 — T-P4-02 / BOM locale verificato
 
