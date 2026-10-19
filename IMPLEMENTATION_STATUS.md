@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02 e T-P4-03 locali verificate, CI pendenti; prossima indipendente T-P4-04.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 locali verificate; CI BOM in corso, CI comune view/rendering da eseguire; prossima T-P4-05 dopo gate.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -171,10 +171,18 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P4-01 | DONE | 2026-10-19 | Reader byte/tre policy, DEC-12 provvisorio; 29 unit/55 integration/10 doctest; [CI 39276070129](https://github.com/UraganoAngelina/lintra/actions/runs/39276070129) verde Linux/Windows su e18b9ba |
 | T-P4-02 | DONE_UNVERIFIED | 2026-10-19 | Preflight BOM max 4 byte/Reject default/strip esplicito e replay payload; 29 unit/61 integration/10 doctest; CI pendente |
 | T-P4-03 | DONE_UNVERIFIED | 2026-10-19 | View/slice zero-copy su range compiled, fuori range None; 29 unit/64 integration/10 doctest; CI da eseguire dopo run BOM in coda |
+| T-P4-04 | DONE_UNVERIFIED | 2026-10-19 | Rendering UTF-8/CP1252/Latin1, escape+hex senza scelta regionale; 29 unit/70 integration/10 doctest; CI comune con T-P4-03 da eseguire |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — 2026-10-19, Linux locale
+
+T-P4-04: fmt/check/clippy/test/release/diff-check PASS;
+29 unit + 70 integration + 10 doctest, sei integration nuovi.
+Report [T-P4-04](docs/verification/T-P4-04.md). CI ancora da eseguire.
+Run BOM 39278768796 ora in_progress su entrambi i runner, non ancora verde.
+
+Evidenze precedenti T-P4-03:
 
 T-P4-03: fmt/check/clippy/test/release/diff-check PASS;
 29 unit + 64 integration + 10 doctest; tre integration nuovi.
@@ -351,6 +359,17 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Decisioni della sessione corrente
 
+- **T-P4-04 / DET §33–34:** EncodingSpec esistente riusata senza duplicati.
+  Rendering diagnostico esplicito UTF-8/Windows-1252/Latin1; controlli e
+  backslash escaped, hex esatto se lossy/escaped o profilo Other sconosciuto.
+  Tabella primaria Unicode/Microsoft verificata nel report; nessuna dipendenza.
+  Non seleziona codec regionale o amplia il compiler, DEC-13 resta aperta.
+- **CI in attesa:** codice indipendente T-P4-03 e T-P4-04 sviluppato e
+  verificato una task alla volta mentre GitHub teneva in coda la run BOM.
+  Gate di entrambe ancora aperti; suite CI comune sullo snapshot contenente
+  entrambi i commit, dopo run BOM, evita annullamenti del concurrency group.
+
+
 - **T-P4-02 / DET §30, DEC-12:** Reject default provvisorio; strip dei soli
   marker Unicode noti iniziali su richiesta, senza transcodifica o selezione
   encoding. Probe limitato a 4 byte, replay del payload, niente Seek.
@@ -506,6 +525,21 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P4-04 / rendering locale verificato
+
+- **Stato:** DONE_UNVERIFIED; 109 test locali verdi e fmt/check/clippy/release/diff.
+- **File:** input/encoding.rs, input/mod.rs, lib.rs, diagnostic_rendering.rs,
+  report/stato. Nessuna dipendenza nuova o encoding regionale dedotto.
+- **Fatto:** rendering esplicito UTF-8/CP1252/Latin1, byte non decodificabili
+  preservati con hex, controlli/backslash visibili, Other senza fallback.
+- **Gate:** T-P4-02 CI 39278768796 in_progress; poi CI comune T-P4-03/04
+  sullo snapshot comprendente i commit e tutti i rispettivi test.
+- **Git:** work/p1-foundations; task atomiche in commit distinti, modifica
+  storica estranea intatta. Nessuna falsa dichiarazione DONE per CI pendente.
+- **Next:** completare gate T-P4-02..04, poi T-P4-05 automaticamente.
+  T-P2-03/M1 e DEC-13 restano aperte.
+
 
 HANDOFF — 2026-10-19 — T-P4-03 / locale verificato, attesa CI BOM
 

@@ -120,3 +120,5 @@ pub use input::{
     record::{FieldSlice, RawRecord, RecordView},
     source::{BomCheckedReader, BomPolicy, preflight_bom},
 };
+
+pub use input::encoding::{DiagnosticValue, render_diagnostic_value};
