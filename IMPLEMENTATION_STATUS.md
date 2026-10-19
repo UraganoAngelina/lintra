@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 locale verificata, CI pendente; CNF-COMPILER-01/proposta A approvata; prossima T-P3-06.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; prossima T-P3-06.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -158,7 +158,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-02 | DONE | 2026-10-19 | Compiled immutabile, piani tipizzati e indice derivato; 25 unit/2 integration/10 doctest; [CI 39250930467](https://github.com/UraganoAngelina/lintra/actions/runs/39250930467) verde Linux/Windows su f04bb60 |
 | T-P3-03 | DONE | 2026-10-19 | Repository filesystem/memoria e errori tecnici tipizzati; 25 unit/11 integration/10 doctest; [CI 39253152098](https://github.com/UraganoAngelina/lintra/actions/runs/39253152098) verde Linux/Windows su a39924d |
 | T-P3-04 | DONE | 2026-10-19 | Linter fisico/tipi con 13 codici testati; 26 unit/25 integration/10 doctest; P0 senza issue; [CI 39257768950](https://github.com/UraganoAngelina/lintra/actions/runs/39257768950) verde Linux/Windows su a1ddabb |
-| T-P3-05 | DONE_UNVERIFIED | 2026-10-19 | Proposta A approvata; compiler del sottoinsieme locale, binding encoding Rust-only, rifiuto dei costrutti esclusi; 28 unit/36 integration/10 doctest; CI pendente |
+| T-P3-05 | DONE | 2026-10-19 | Proposta A approvata; compiler locale/binding Rust-only e rifiuto costrutti esclusi; 28 unit/36 integration/10 doctest; [CI 39264362959](https://github.com/UraganoAngelina/lintra/actions/runs/39264362959) verde Linux/Windows su b658e05 |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -167,7 +167,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 T-P3-05: fmt/check/clippy/test/release/diff-check e generate_raw_model --check
 PASS; 28 unit + 36 integration + 10 doctest. Nucleo sintetico positivo;
 esempi completi/SIOC esplicitamente rifiutati per costrutti esclusi.
-Report [T-P3-05](docs/verification/T-P3-05.md); CI Linux/Windows pendente.
+Report [T-P3-05](docs/verification/T-P3-05.md); [CI 39264362959](https://github.com/UraganoAngelina/lintra/actions/runs/39264362959) PASS Linux GNU/Windows MSVC su b658e05.
 
 Evidenze precedenti T-P3-04:
 
@@ -392,7 +392,7 @@ contrattuale delle task in SCHEMA_AUTHORING.md/lowering.json è stato ratificato
 con l’approvazione completa; implementazione solo dopo prerequisiti e gate.
 Il contratto completo T-P0-07 è approvato; nessun sorgente architetturale
 originale viene riscritto per registrare l’accettazione.
-Nessun contratto pubblico Rust modificato o implementazione anticipata.
+Contratti pubblici Rust consegnati e relativi confini documentati nei report delle task; signature compile(raw) invariata, nessun runtime normativo anticipato.
 
 ## Plan change log
 
@@ -412,6 +412,34 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-05 completata / CI reale verde
+
+- **Stato:** DONE; QG-2 PASS sul commit codice b658e05. CNF-COMPILER-01
+  risolto con approvazione A, registrata nel contratto e nel dossier.
+- **Fatto:** SchemaCompiler del sottoinsieme Numeric/AN, Required/Optional,
+  padding/missing/lessico, PK/projection e metadati; conversione unica;
+  binding encoding Rust-only obbligatorio. Costrutti esclusi sempre Error.
+- **Evidenze:** [run 39264362959](https://github.com/UraganoAngelina/lintra/actions/runs/39264362959)
+  Linux GNU job 118099968302 e Windows MSVC job 118099968669 entrambi
+  completed/success, SHA b658e05 verificato; fmt/clippy/test/release verdi.
+- **Locale:** fmt/check/clippy/test/release/diff-check e generatore --check
+  PASS; 28 unit + 36 integration + 10 doctest; Rust 1.99.1 verificato.
+- **File:** compiler.rs e tests/schema_compiler.rs nuovi; compiled/test,
+  raw/generatore, linter, mod/export; SCHEMA_AUTHORING, preflight/report e stato.
+  Nessuna nuova dipendenza, grammatica o baseline modificata.
+- **Contratti/decisioni:** API DET §11 e distinzione esiti invariati;
+  local.v1 non dichiarata completa dal motore, encoding regionale non scelto.
+  Dettagli e perimetro effettivo nel report T-P3-05.
+- **Blocchi/residui:** nessun blocco della task; SIOC richiede ancora costrutti
+  esclusi e fallisce esplicitamente. T-P2-03/M1 restano aperte sul residuo
+  applicativo, pur con SchemaCompilationError ora disponibile come payload reale.
+- **Git:** work/p1-foundations, codice b658e05 su origin; chiusura successiva
+  solo documentale. Working tree con modifica storica estranea intatta,
+  fuori dai commit. Nessun merge su main o task successiva avviata.
+- **Next:** T-P3-06, compatibilità formato/EngineCapabilities; T-P3-05 e
+  G0 verificati. Mantenere distinta la deroga compiler dalle capability runtime.
+
 
 HANDOFF — 2026-10-19 — T-P3-05 / compiler locale verificato, CI pendente
 
