@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 locali verificate; CI BOM in corso, CI comune view/rendering da eseguire; prossima T-P4-05 dopo gate.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 locali verificate; CI comune BOM/view/rendering 39282115064 avviata sullo snapshot 7168a05; prossima T-P4-05 dopo gate.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -172,15 +172,25 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P4-02 | DONE_UNVERIFIED | 2026-10-19 | Preflight BOM max 4 byte/Reject default/strip esplicito e replay payload; 29 unit/61 integration/10 doctest; CI pendente |
 | T-P4-03 | DONE_UNVERIFIED | 2026-10-19 | View/slice zero-copy su range compiled, fuori range None; 29 unit/64 integration/10 doctest; CI da eseguire dopo run BOM in coda |
 | T-P4-04 | DONE_UNVERIFIED | 2026-10-19 | Rendering UTF-8/CP1252/Latin1, escape+hex senza scelta regionale; 29 unit/70 integration/10 doctest; CI comune con T-P4-03 da eseguire |
+| T-P6-01 | DONE_UNVERIFIED | 2026-10-19 | is_missing pura, enum compiled riusata, quattro integration; 113 test locali; CI pendente |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — 2026-10-19, Linux locale
 
+T-P6-01: fmt/check/clippy/test/release/diff-check PASS;
+29 unit + 74 integration + 10 doctest = 113.
+Report [T-P6-01](docs/verification/T-P6-01.md); CI pendente dopo CI input.
+Prerequisito atomico T-P3-02 verde; attività indipendente durante la coda
+esterna, nessuna dichiarazione di completamento P4/P5/M1.
+
+
 T-P4-04: fmt/check/clippy/test/release/diff-check PASS;
 29 unit + 70 integration + 10 doctest, sei integration nuovi.
 Report [T-P4-04](docs/verification/T-P4-04.md). CI ancora da eseguire.
-Run BOM 39278768796 ora in_progress su entrambi i runner, non ancora verde.
+Run BOM 39278768796: Linux success; Windows tutti gli step success ma stato
+aggregato bloccato in_progress. Nuova [CI comune 39282115064](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064) sullo snapshot 7168a05;
+nessun gate dichiarato completo prima del relativo esito aggregato.
 
 Evidenze precedenti T-P4-03:
 
@@ -525,6 +535,19 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P6-01 locale verificata
+
+- **Consegna:** is_missing pura sulle quattro varianti già compiled.
+- **File:** validators/presence.rs, validators/mod.rs, lib.rs,
+  tests/missing_value.rs, report e stato. Nessun crate o baseline modificato.
+- **Test:** 113 test, fmt/check/clippy/release/diff-check verdi in locale.
+- **Gate:** CI input 39282115064 in attesa; CI di questa task da eseguire.
+- **Decisione:** helper senza controllo width; stage record-length resta
+  precedente e obbligatorio. Nessun default per gli zeri.
+- **Git:** escluso il file di piano storico già modificato dall’autore.
+- **Next:** chiudere CI input, poi T-P4-05 senza conferma ordinaria.
+
 
 HANDOFF — 2026-10-19 — T-P4-04 / rendering locale verificato
 

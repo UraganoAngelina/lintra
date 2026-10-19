@@ -114,6 +114,8 @@ pub use schema::compatibility::{EngineCapabilities, SchemaFormatVersion};
 
 pub use schema::registry::{SchemaRegistry, SchemaResolutionError};
 
+pub use validators::presence::is_missing;
+
 pub use input::{
     error::{BomKind, InputError},
     reader::{NewlinePolicy, RecordReader},
