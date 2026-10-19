@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; prossima T-P3-05.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 BLOCKED per CNF-COMPILER-01 (gate capability e sottoinsieme incrementale).
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -158,6 +158,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-02 | DONE | 2026-10-19 | Compiled immutabile, piani tipizzati e indice derivato; 25 unit/2 integration/10 doctest; [CI 39250930467](https://github.com/UraganoAngelina/lintra/actions/runs/39250930467) verde Linux/Windows su f04bb60 |
 | T-P3-03 | DONE | 2026-10-19 | Repository filesystem/memoria e errori tecnici tipizzati; 25 unit/11 integration/10 doctest; [CI 39253152098](https://github.com/UraganoAngelina/lintra/actions/runs/39253152098) verde Linux/Windows su a39924d |
 | T-P3-04 | DONE | 2026-10-19 | Linter fisico/tipi con 13 codici testati; 26 unit/25 integration/10 doctest; P0 senza issue; [CI 39257768950](https://github.com/UraganoAngelina/lintra/actions/runs/39257768950) verde Linux/Windows su a1ddabb |
+| T-P3-05 | BLOCKED | 2026-10-19 | Prerequisiti verdi; CNF-COMPILER-01: local.v1 completa vs nucleo incrementale; proposta A in docs/verification/T-P3-05-preflight.md da approvare |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -245,6 +246,15 @@ I doctest verificano importabilità e divieto di importare `engine` e
 `persistence` dall'esterno (DET §94). Nessun test di validazione fittizio.
 
 ## Problemi noti e decisioni aperte
+
+- **CNF-COMPILER-01 / T-P3-05 BLOCKED:** il contratto capability richiede
+  local.v1 completa (inclusi scalar constraint), la task autorizza un nucleo
+  incrementale e assegna i restanti costrutti a task successive. Proposta A:
+  gate per ogni costrutto effettivamente presente, nessun local.v1 del motore
+  pubblicizzato completo, nessun costrutto non supportato ignorato.
+  Alternativa B: mantenere blocco e rivedere contratti/piano. Decisione umana
+  pendente; [dossier completo](docs/verification/T-P3-05-preflight.md).
+
 
 - **CNF-DOMAIN-01 risolto con proposta A approvata:** SchemaKey nel dominio,
   ScopeSummary Trace/Flow, parte autonoma prima dell’errore tecnico applicativo.
@@ -386,6 +396,22 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-05 preflight / CNF-COMPILER-01
+
+- **Stato:** BLOCKED su contratto capability; prerequisiti T-P3-02 e
+  T-P3-04 verificati da CI Linux/Windows, nessuna dipendenza mancante.
+- **Fatto/file:** dossier T-P3-05-preflight e stato; nessun codice modificato.
+- **Evidenze:** lettura contratti, raw/compiled/linter e script preflight PASS;
+  cargo/test/CI non eseguiti perché modifica solo documentale.
+- **Decisione richiesta:** proposta A circoscritta nel dossier oppure blocco B.
+  Binding encoding Rust-only segue il contratto in memoria già approvato;
+  nessun default regionale o modifica dei JSON è proposto.
+- **Git:** work/p1-foundations; modifica storica preesistente estranea intatta.
+  Nessuna nuova dipendenza, baseline o fonte architetturale modificata.
+- **Next:** risolvere CNF-COMPILER-01, poi riprendere T-P3-05. Nessuna task
+  successiva avviata; T-P2-03/M1 restano aperte sul residuo applicativo.
+
 
 HANDOFF — 2026-10-19 — T-P3-04 completata / CI reale verde
 
