@@ -1,5 +1,5 @@
 {
-  "status": "REVIEW_REQUIRED_SPEC_ONLY",
+  "status": "APPROVED_SPEC_NOT_IMPLEMENTED",
   "source_constraints": {
     "allowed_values": {
       "canonical_kind": "allowed_values",
@@ -162,8 +162,8 @@
   },
   "implementation_tasks": {
     "T-P3-01..05": "raw shapes, schema validation, resolution, capabilities, compiled plans; no runtime implementation in T-P0-07",
-    "T-P10-01..06": "typed expressions and three approved derivations, truth tables, presence, assertion evaluation and tests; proposed scope addendum only",
-    "T-P13-01..07": "cardinality/policies, set context, consensus and deterministic projection; task scope alignment requires review before implementation",
+    "T-P10-01..06": "typed expressions and three approved derivations, truth tables, presence, assertion evaluation and tests; authoring scope approved; implementation after prerequisites/gates",
+    "T-P13-01..07": "cardinality/policies, set context, consensus and deterministic projection; authoring scope approved; implementation after prerequisites/gates",
     "T-PERSIST-01..12": "generic repository, audit, snapshots, privacy and transactional tests",
     "T-CAD-01..12": "versioned CAD policies and temporal profile, after core gates"
   },

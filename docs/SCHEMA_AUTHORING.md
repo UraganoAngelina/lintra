@@ -1,9 +1,9 @@
-# Schema authoring Lintra — proposta completa di formato 1
+# Schema authoring Lintra — contratto di formato 1
 
-Stato: **REVIEW_REQUIRED / DONE_UNVERIFIED**, T-P0-07, 2026-10-19.
-JSON Schema, esempi completi e mapping sono pronti per revisione umana.
-La deroga circoscritta sui derivati è approvata; il contratto completo e
-le estensioni compiled qui proposte non sono ancora ratificati.
+Stato: **APPROVATO / T-P0-07 DONE**, 2026-10-19.
+L’autore ha approvato il contratto completo del commit 72f9f5e: formato 1,
+JSON Schema, esempi, mapping, policy persistenti ed estensioni compiled.
+I riferimenti a «proposta» nel seguito descrivono il testo ora approvato.
 Nessun compiler Rust, storage o validatore normativo è implementato qui.
 
 ## Fonti, autorità e perimetro
@@ -462,7 +462,7 @@ P3 raw/compiled/capabilities e piani tipizzati; P10 i tre derivati approvati e
 lowering di const/derived_eq/derived_compare; P13 cardinalità ZeroOrMany, consenso e policy
 NotApplicable con diagnostica; PERSIST core generico e profili CAD dopo i gate.
 Riferimenti e payload richiesti sono in lowering.json/compiled_contracts.
-Sono estensioni esplicite dei placeholder DET §16–18/§72, da ratificare nella
+Sono estensioni esplicite dei placeholder DET §16–18/§72, ratificate nella
 revisione umana di T-P0-07; non executor Builtin con payload arbitrario.
 
 Verifica: [check_authoring.py](verification/check_authoring.py) usa un validatore
@@ -475,7 +475,8 @@ Non dimostra che i profili normativi legacy siano compilati o validi in Rust.
 - [x] JSON Schema flow/manifest, tre flow completi e manifest dimostrativo.
 - [x] DSL/constraint, identità, presence, join, reference, versioning e persistenza definiti.
 - [x] Mapping delle fonti e piani raw→compiled, scope delle task future esplicito.
-- [ ] Revisione umana finale del contratto, estensioni compiled e formato 1.
+- [x] Revisione umana finale ricevuta: «Approvo il contratto T-P0-07».
 
-T-P0-07 resta DONE_UNVERIFIED fino alla revisione umana richiesta dal prompt;
-T-P0-08 e il gate G0 non avanzano automaticamente.
+T-P0-07 è DONE dopo la revisione umana del contratto completo. È autorizzata
+la verifica della task successiva; G0 e l’eseguibilità dei profili restano
+gate separati. Le boundary normative indicate non sono colmate per deduzione.

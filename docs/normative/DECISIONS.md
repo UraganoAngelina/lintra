@@ -118,3 +118,16 @@ automaticamente il formato o l’intero contratto di authoring, che richiede
 revisione umana finale. ARCH, DET e Master Plan sorgenti restano inalterati.
 
 [Contratto da revisionare](../SCHEMA_AUTHORING.md).
+
+## T-P0-07 — CONTRATTO COMPLETO APPROVATO, 2026-10-19
+
+L’autore ha risposto **«Approvo il contratto T-P0-07»** alla revisione
+del commit `72f9f5e`: SCHEMA_AUTHORING.md e artefatti collegati, inclusi
+formato 1, policy persistenti, insiemi/consenso e piani compiled tipizzati.
+
+L’accettazione chiude T-P0-07 e ratifica DEC-AUTHORING-FORMAT-01 e le
+forme contrattuali di DEC-05-CAD-SET-CONTRACT / EVENT-CONTEXT. Non equivale
+a compiler implementato, G0 chiuso, dataset SIOC ricevuti o profili
+regionali eseguibili. Restano le boundary normative esplicite del contratto.
+ARCH/DET/Master Plan originali non sono modificati; gli adeguamenti di
+contratto delle task future sono quelli approvati nell’authoring.

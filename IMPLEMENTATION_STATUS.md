@@ -6,12 +6,11 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
 ## Posizione corrente e prerequisiti
 
 - P1 / **T-P1-01 — DONE**: scaffold compilabile del package `lintra`.
-- Sessione corrente: **T-P0-07 DONE_UNVERIFIED**, contratto ed artefatti
-  completi pronti per la revisione umana richiesta dalla task. Deroga ai tre
-  derivati approvata (CNF-LINTRA-DSL-01 risolta). Due JSON Schema, tre flow
-  sintetici, manifest/hash e 33 casi negativi strutturali verificati.
+- Sessione corrente: **T-P0-07 DONE**, contratto del commit 72f9f5e
+  approvato dall’autore con «Approvo il contratto T-P0-07». Verifiche
+  strutturali e limiti restano registrati nel report.
+  **T-P0-08 IN_PROGRESS**, verifica input e preparazione delle fixture.
   Nessun compiler o validatore Rust normativo implementato.
-  **T-P0-08 non avviata**, attende revisione umana del contratto completo.
   **T-P1-03 DONE_UNVERIFIED**: nessuna nuova evidenza CI in questa sessione.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
@@ -99,8 +98,8 @@ M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
 | T-P0-04 | DONE | 2026-10-19 | 218 note classificate, hash/riferimenti/DEC-05 verificati; 000, ID legacy SIOC e ambito iniziale CAD risolti |
 | T-P0-05 | DONE | 2026-10-19 | Dossier SIOC/CAD: 74 regole, 10 join + ricerca esistenza; PK, identity e policy/DEC verificate; parent opzionale SIOC risolto dall’autore |
 | T-P0-06 | DONE | 2026-10-16 | Commit 69dc995/a55a634; 15 schede/150 metadati, gap espliciti, review approvata |
-| T-P0-07 | DONE_UNVERIFIED | 2026-10-19 | Deroga derivati approvata; contratto/2 JSON Schema/3 flow/manifest e mapping pronti; 33 casi negativi e checker passati; manca revisione umana finale |
-| T-P0-08 | BLOCKED | 2026-10-19 | Non avviata: attende accettazione umana T-P0-07 |
+| T-P0-07 | DONE | 2026-10-19 | Commit 72f9f5e: contratto completo/artefatti approvati dall’autore; 33 casi negativi e checker passati, limiti espliciti |
+| T-P0-08 | IN_PROGRESS | 2026-10-19 | T-P0-07 accettata; verifica binding e boundary prima della creazione degli schemi SIOC |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
 | T-P1-03 | DONE_UNVERIFIED | 2026-10-16 | Commit 4f71663; workflow e 2 test, controlli locali/review approvati; CI reale non eseguita |
@@ -185,18 +184,10 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Problemi noti e decisioni aperte
 
-- **T-P0-07, revisione umana del contratto completo pendente:**
-  [Authoring](docs/SCHEMA_AUTHORING.md), [artefatti](docs/schema-authoring/README.md),
-  [evidenze](docs/verification/T-P0-07.md). La deroga derivati è approvata,
-  non equivale all’accettazione del formato/contratto finale.
-- **DEC-AUTHORING-FORMAT-01, proposta non ratificata:** schema_format_version
-  u32 richiesto da Addendum A.1 ma assente nei flow ricevuti; mantenere DSL,
-  versioni normative e versione del bundle distinte. Proposti nuovi artefatti
-  formato 1 con import esplicito e provenienza, senza cambiare il FROZEN.
-
-- **DEC-05-CAD-EVENT-CONTEXT / SET-CONTRACT:** piani per insiemi
-  e riduzioni deterministiche formalizzati nella proposta T-P0-07; attende
-  revisione finale, nessuna implementazione o serializzazione già ratificata.
+- **T-P0-08:** verificare gli input normativi necessari alla bozza SIOC;
+  dataset ufficiali e relativi binding mancanti non possono essere inventati.
+- **Contratto T-P0-07 approvato:** DEC-AUTHORING-FORMAT-01 e forme dei
+  piani insiemi/consenso ratificate; restano da implementare con i gate.
 - Dossier ed evidenze: [T-P0-05](docs/verification/T-P0-05.md).
 - Dettagli e citazioni in [T-P0-04](docs/verification/T-P0-04.md). Le clausole
   SIOC 1.6/4.28 mantengono il non-enforcement v1 già ricevuto; G03, formato
@@ -221,6 +212,11 @@ I doctest verificano importabilità e divieto di importare `engine` e
   ancora in alcuni artefatti sono metadati storici superati, non nuova norma aperta.
 
 ## Decisioni della sessione corrente
+
+- **T-P0-07 approvata dall’autore il 2026-10-19:** «Approvo il contratto
+  T-P0-07», revisione completa del commit 72f9f5e. Formato 1, policy
+  persistenti, insiemi/consenso e piani compiled ratificati; non approva
+  automaticamente dati mancanti, G0 o runtime.
 
 - **CNF-LINTRA-DSL-01 risolta dall’autore il 2026-10-19:** «Approvo la
   deroga circoscritta (consigliata)». Contratti dei soli substring, età
@@ -285,13 +281,18 @@ I doctest verificano importabilità e divieto di importare `engine` e
 ## Documenti da aggiornare
 
 ARCH, DET, PLAN e ADR sorgenti rimangono inalterati. CNF-LINTRA-DSL-01
-risolta dalla deroga circoscritta approvata dall’autore; l’eventuale
-allineamento documentale delle task è proposto in SCHEMA_AUTHORING.md e
-lowering.json e deve essere ratificato prima delle relative implementazioni.
-Il contratto completo T-P0-07 è pronto per revisione, non già approvato.
+risolta dalla deroga circoscritta approvata dall’autore; l’allineamento
+contrattuale delle task in SCHEMA_AUTHORING.md/lowering.json è stato ratificato
+con l’approvazione completa; implementazione solo dopo prerequisiti e gate.
+Il contratto completo T-P0-07 è approvato; nessun sorgente architetturale
+originale viene riscritto per registrare l’accettazione.
 Nessun contratto pubblico Rust modificato o implementazione anticipata.
 
 ## Plan change log
+
+- **2026-10-19, autore:** approvato il contratto completo T-P0-07
+  (commit 72f9f5e), inclusi formato e allineamenti compiled. Nessuna
+  modifica autonoma ai documenti sorgente, nessun avanzamento dei gate runtime.
 
 - **2026-10-19, autore:** approvata la proposta A, deroga circoscritta per
   substring, età compiuta e differenza anni. Implementazione futura con
@@ -305,6 +306,15 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P0-07 / accettazione umana ricevuta
+
+- **Stato:** DONE; autore: «Approvo il contratto T-P0-07» sul commit 72f9f5e.
+- **File:** stato/decisioni, intestazioni di authoring/artefatti e report
+  aggiornati; nessun cambiamento delle regole o degli esempi approvati.
+- **Verifiche:** check_authoring.py rieseguito, 33 casi negativi superati;
+  git diff --check superato. Nessun Rust modificato o Cargo rieseguito.
+- **Next:** T-P0-08, previo riscontro delle boundary normative; G0 resta aperto.
 
 HANDOFF — 2026-10-19 — T-P0-07 / contratto pronto per revisione
 

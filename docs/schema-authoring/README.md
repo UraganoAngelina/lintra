@@ -1,8 +1,8 @@
-# Artefatti di authoring — proposta formato 1
+# Artefatti di authoring — formato 1 approvato
 
-Stato: **REVIEW_REQUIRED**, T-P0-07. Il contratto è in
-[SCHEMA_AUTHORING.md](../SCHEMA_AUTHORING.md); l’approvazione della deroga
-sui derivati non equivale all’approvazione di questi artefatti.
+Stato: **APPROVATO**, T-P0-07, risposta «Approvo il contratto T-P0-07»
+sul commit 72f9f5e. Il contratto è in
+[SCHEMA_AUTHORING.md](../SCHEMA_AUTHORING.md); nessun runtime è ancora implementato.
 
 | Artefatto | Scopo |
 |---|---|
