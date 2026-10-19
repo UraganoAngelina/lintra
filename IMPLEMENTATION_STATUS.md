@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 locale verificata, CI pendente; prossima T-P4-01.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; prossima T-P4-01.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -91,7 +91,7 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
-| QG-2 — CI Linux/Windows | PASS per f04bb60 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39250930467), entrambi i runner verdi; nuove modifiche Rust richiedono nuova CI |
+| QG-2 — CI Linux/Windows | PASS per f671517 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39272551912), entrambi i runner verdi; nuove modifiche Rust richiedono nuova CI |
 | QG-3 — architettura | PASS per dominio/raw/compiled | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
 | QG-8 — documenti | PASS per lo scaffold | Copie identiche, nessun contratto modificato |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
@@ -167,7 +167,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-04 | DONE | 2026-10-19 | Linter fisico/tipi con 13 codici testati; 26 unit/25 integration/10 doctest; P0 senza issue; [CI 39257768950](https://github.com/UraganoAngelina/lintra/actions/runs/39257768950) verde Linux/Windows su a1ddabb |
 | T-P3-05 | DONE | 2026-10-19 | Proposta A approvata; compiler locale/binding Rust-only e rifiuto costrutti esclusi; 28 unit/36 integration/10 doctest; [CI 39264362959](https://github.com/UraganoAngelina/lintra/actions/runs/39264362959) verde Linux/Windows su b658e05 |
 | T-P3-06 | DONE | 2026-10-19 | Mappa ufficiale approvata 1→0.1.0 sviluppo; range/messaggi e 28 unit/42 integration/10 doctest; [CI 39269026995](https://github.com/UraganoAngelina/lintra/actions/runs/39269026995) verde Linux/Windows su 7522345 |
-| T-P3-07 | DONE_UNVERIFIED | 2026-10-19 | Registry senza cache, binding esplicito e cause tecniche preservate; 28 unit/48 integration/10 doctest; CI pendente |
+| T-P3-07 | DONE | 2026-10-19 | Registry senza cache, binding esplicito/cause preservate; 28 unit/48 integration/10 doctest; [CI 39272551912](https://github.com/UraganoAngelina/lintra/actions/runs/39272551912) verde Linux/Windows su f671517 |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -175,7 +175,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 
 T-P3-07: fmt/check/clippy/test/release/diff-check PASS;
 28 unit + 48 integration + 10 doctest, sei integration nuovi.
-Report [T-P3-07](docs/verification/T-P3-07.md); CI della task pendente.
+Report [T-P3-07](docs/verification/T-P3-07.md); CI 39272551912 verde Linux GNU/Windows MSVC su f671517.
 
 Evidenze precedenti T-P3-06:
 
@@ -466,6 +466,19 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-07 completata / avvio automatico T-P4-01
+
+- **Stato:** DONE, CI 39272551912 su f671517 completed/success Linux GNU
+  job 118128384953 e Windows MSVC job 118128385000; 86 test locali verdi.
+- **File:** registry.rs, tests/schema_registry.rs, mod/lib, AGENTS, report/stato.
+- **Decisioni:** errori schema locali preservano payload reali, encoding esplicito;
+  nessuna cache o dipendenza applicativa nel modulo schema.
+- **Git:** codice f671517 su origin, chiusura solo documentale;
+  modifica storica estranea intatta. Nessun blocco; residuo T-P2-03/M1 invariato.
+- **Next:** T-P4-01 avviata senza nuova conferma, prerequisito T-P2-01 verde;
+  seguire DEC-12 provvisorio già autorizzato nel Piano.
+
 
 HANDOFF — 2026-10-19 — T-P3-07 / registry locale verificato
 
