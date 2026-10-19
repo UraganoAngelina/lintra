@@ -102,3 +102,5 @@ pub use schema::repository::{
     FileSystemSchemaRepository, InMemorySchemaRepository, SchemaKeyComponent, SchemaKeyError,
     SchemaLoadError, SchemaRepository,
 };
+
+pub use schema::linter::{SchemaIssue, SchemaIssueCode, SchemaIssueSeverity, lint_raw_schema};

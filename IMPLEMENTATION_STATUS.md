@@ -13,7 +13,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   flow e cinque trace, 135 campi, cinque PK, sei join; ledger dei rinvii e
   piano fixture verificati. DEC-SIOC-MINIMAL-01: nessun dataset, semantica
   minima con 050 nell’ambito confermato; encoding runtime esplicito, mar01
-  per il futuro controllo età. Lint Rust obbligatorio appena T-P3-04 esiste.
+  per il futuro controllo età. Ricontrollo strutturale Rust T-P3-04 eseguito: nessuna issue sui cinque trace/135 campi.
   Nessun compiler o validatore Rust normativo implementato.
   **T-P0-09 DONE / G0 APPROVED / M0 REACHED**: l’autore ha approvato
   la checklist del commit 407f89e con i rinvii indicati.
@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; prossima T-P3-04.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 locale verificata, CI pendente; prossima T-P3-05.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -114,7 +114,7 @@ espliciti sotto; non dichiara implementate le capability o ricevuti i dataset.
 
 Ulteriori limiti trasversali: encoding obbligatorio runtime, controllo
 minuscole rinviato; layout export reali da chiarire prima del loro uso;
-lint Rust sugli schemi obbligatorio in T-P3-04; fixture/golden sintetiche
+ricontrollo strutturale Rust sugli schemi eseguito in T-P3-04 senza issue; fixture/golden sintetiche
 pianificate ma non ancora prodotte o approvate. Nessun blocco viene nascosto
 come validazione superata. Tutti i dettagli sono nel report T-P0-08.
 
@@ -146,7 +146,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P0-05 | DONE | 2026-10-19 | Dossier SIOC/CAD: 74 regole, 10 join + ricerca esistenza; PK, identity e policy/DEC verificate; parent opzionale SIOC risolto dall’autore |
 | T-P0-06 | DONE | 2026-10-16 | Commit 69dc995/a55a634; 15 schede/150 metadati, gap espliciti, review approvata |
 | T-P0-07 | DONE | 2026-10-19 | Commit 72f9f5e: contratto completo/artefatti approvati dall’autore; 33 casi negativi e checker passati, limiti espliciti |
-| T-P0-08 | DONE | 2026-10-19 | Profilo structural-minimal.1 autorizzato; flow+5 trace, 135 campi/5 PK/6 join, ledger, lint authoring e piano verificati; ricontrollo T-P3-04 obbligatorio |
+| T-P0-08 | DONE | 2026-10-19 | Profilo structural-minimal.1 autorizzato; flow+5 trace, 135 campi/5 PK/6 join, ledger, lint authoring e piano verificati; ricontrollo strutturale Rust T-P3-04 eseguito senza issue |
 | T-P0-09 | DONE | 2026-10-19 | Checklist commit 407f89e approvata dall’autore: «Approvo G0 con i rinvii indicati»; G0 chiuso, M0 raggiunta |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
@@ -157,10 +157,19 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-01 | DONE | 2026-10-19 | Raw DTO/AST formato 1, round-trip e negativi; 17 unit/2 integration/5 doctest; [CI 39236782609](https://github.com/UraganoAngelina/lintra/actions/runs/39236782609) verde Linux/Windows su 225419d |
 | T-P3-02 | DONE | 2026-10-19 | Compiled immutabile, piani tipizzati e indice derivato; 25 unit/2 integration/10 doctest; [CI 39250930467](https://github.com/UraganoAngelina/lintra/actions/runs/39250930467) verde Linux/Windows su f04bb60 |
 | T-P3-03 | DONE | 2026-10-19 | Repository filesystem/memoria e errori tecnici tipizzati; 25 unit/11 integration/10 doctest; [CI 39253152098](https://github.com/UraganoAngelina/lintra/actions/runs/39253152098) verde Linux/Windows su a39924d |
+| T-P3-04 | DONE_UNVERIFIED | 2026-10-19 | Linter fisico/tipi con 13 codici testati, aggregazione deterministica; 26 unit/25 integration/10 doctest; P0 senza issue; CI pendente |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — 2026-10-19, Linux locale
+
+T-P3-04: fmt/check/clippy/test/release e diff-check tutti exit 0;
+26 unit + 25 integration + 10 doctest. Generazione raw --check PASS.
+Ricontrollo Rust profilo P0 SIOC (5 trace/135 campi) e tre flow sintetici:
+nessuna issue strutturale. Report [T-P3-04](docs/verification/T-P3-04.md).
+CI Linux/Windows pendente; nessuna compilabilità normativa presunta.
+
+Evidenze documentali precedenti P0 (storiche):
 
 Evidenze e proposta: [T-P0-03](docs/verification/T-P0-03.md).
 
@@ -275,6 +284,15 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Decisioni della sessione corrente
 
+- **T-P3-04 / DET §12/§141–142 e ARCH §14:** SchemaIssue aggiunge severity
+  richiesta da §142; enum non_exhaustive con i soli 13 controlli consegnati.
+  Tipi/alias sconosciuti restano errori di parsing raw, parametri fisici sono
+  verificati dal lint. Ordine esplicito flow/trace/campo con membership hash
+  indipendente dall’emissione. Nessuna issue di compiler futura inventata.
+  Coordinate sorgente one-based, conversione runtime rinviata a T-P3-05;
+  nessuna modifica alla proprietà dei tipi o alla semantica normativa.
+
+
 - **T-P0-07 approvata dall’autore il 2026-10-19:** «Approvo il contratto
   T-P0-07», revisione completa del commit 72f9f5e. Formato 1, policy
   persistenti, insiemi/consenso e piani compiled ratificati; non approva
@@ -368,6 +386,25 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-04 / locale verificato, CI pendente
+
+- **Stato:** DONE_UNVERIFIED, solo CI Linux/Windows da completare.
+- **Fatto/file:** linter.rs, tests/schema_linter.rs, mod/export lib,
+  report T-P3-04 e stato; nessuna nuova dipendenza o modifica delle baseline.
+- **Verifiche:** fmt/check/clippy/test/release/diff-check e raw --check PASS;
+  26 unit + 25 integration + 10 doctest. Uno unitario e 14 integration nuovi.
+- **P0:** flow SIOC con 5 trace/135 campi e cinque proiezioni sottoposti
+  al lint Rust senza issue; tre flow sintetici verdi. Nessun record reale.
+- **Contratti/decisioni:** API lint condivisibile con futuro compiler;
+  diagnostiche tipizzate/severity, ordine stabile; dettagli nel report.
+- **Problemi/blocchi:** nessuno locale; T-P2-03/M1 aperte sul residuo già approvato.
+- **Rinvii:** risoluzione ref, compatibilità constraint, encoding/capability,
+  compiler/runtime/storage; nessun profilo dichiarato eseguibile.
+- **Git:** branch work/p1-foundations; file storico preesistente intatto e
+  fuori dallo staging; commit e CI da registrare alla chiusura.
+- **Next:** T-P3-05, prerequisiti T-P3-02 e lint T-P3-04 verificato dopo CI.
+
 
 HANDOFF — 2026-10-19 — T-P3-03 completata / CI reale verde
 
