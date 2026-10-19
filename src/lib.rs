@@ -97,3 +97,8 @@ pub use schema::raw::{
 };
 
 pub use schema::compiled::{CompiledFieldSpec, CompiledFlowSchema, CompiledRecordSchema};
+
+pub use schema::repository::{
+    FileSystemSchemaRepository, InMemorySchemaRepository, SchemaKeyComponent, SchemaKeyError,
+    SchemaLoadError, SchemaRepository,
+};

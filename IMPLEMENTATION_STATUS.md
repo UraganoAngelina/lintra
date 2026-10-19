@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; prossima T-P3-03.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 locale verificata, CI pendente; prossima T-P3-04.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -156,6 +156,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P2-03 | IN_PROGRESS | 2026-10-19 | Proposta A approvata; identità/chiave/scope/summary/outcome verificati in locale e CI 39235805213, 70cdb5e; errore tecnico applicativo rinviato esplicitamente |
 | T-P3-01 | DONE | 2026-10-19 | Raw DTO/AST formato 1, round-trip e negativi; 17 unit/2 integration/5 doctest; [CI 39236782609](https://github.com/UraganoAngelina/lintra/actions/runs/39236782609) verde Linux/Windows su 225419d |
 | T-P3-02 | DONE | 2026-10-19 | Compiled immutabile, piani tipizzati e indice derivato; 25 unit/2 integration/10 doctest; [CI 39250930467](https://github.com/UraganoAngelina/lintra/actions/runs/39250930467) verde Linux/Windows su f04bb60 |
+| T-P3-03 | DONE_UNVERIFIED | 2026-10-19 | Repository filesystem/memoria e errori tecnici tipizzati; locale 25 unit/11 integration/10 doctest; CI Linux/Windows pendente |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -367,6 +368,21 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-03 / locale verificato, CI pendente
+
+- **Stato:** repository filesystem e memoria implementati; nessuna task successiva avviata.
+- **Locale:** fmt/check/clippy/test/release e diff-check tutti exit 0;
+  25 unit + 11 integration + 10 doctest, nove nuovi casi repository.
+- **Contratti:** chiave e versione esatte, layout ARCH §12 con flow.json,
+  nessun fallback; JSON/identità selezionata verificati, nessun lint semantico.
+  Draft SIOC invariato, staging esplicito verificato in directory temporanea.
+- **File:** repository.rs, test pubblico, mod/export e
+  [report T-P3-03](docs/verification/T-P3-03.md); nessuna nuova dipendenza.
+- **Residui:** T-P2-03/M1 aperte; SchemaLoadError disponibile ma gli altri
+  payload applicativi non ancora implementati. Nessun compiler o validator.
+- **Next:** CI Linux/Windows, poi T-P3-04 con lint obbligatorio dei profili P0.
+
 
 HANDOFF — 2026-10-19 — T-P3-02 completata / CI reale verde
 
