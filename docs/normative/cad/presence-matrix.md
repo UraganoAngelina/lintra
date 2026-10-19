@@ -935,4 +935,3 @@ nella tabella collegata; le policy non sono dedotte dalle note.
   ]
 }
 ```
-
