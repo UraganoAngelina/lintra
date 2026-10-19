@@ -56,3 +56,8 @@ pub use domain::{
     RecordIdentity, RunMetadata, RunStatus, SchemaKey, ScopeSummary, ValidationRunOutcome,
     ValidationSummary,
 };
+
+pub use schema::raw::{
+    RawEncodingSpec, RawFieldSpec, RawFlowSchema, RawIdentitySpec, RawJoinSpec, RawRecordSchema,
+    RawReferenceDataDependency, RawRule,
+};

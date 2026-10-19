@@ -21,9 +21,9 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   sul commit 34e67da; autenticazione GitHub funzionante fuori sandbox.
   **T-P2-01 e T-P2-02 DONE**, entrambe con CI Linux/Windows verde.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
-  dall’autore; parte autonoma implementata e verificata in locale, CI richiesta.
+  dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  dopo CI della parte autonoma è autorizzata T-P3-01.
+  prerequisito della parte autonoma soddisfatto, T-P3-01 in corso.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -153,7 +153,8 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P1-03 | DONE | 2026-10-19 | CI su commit 34e67da: Linux GNU e Windows MSVC verdi, [run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518) |
 | T-P2-01 | DONE | 2026-10-19 | 7 newtype + ByteRange; 5 unit/2 integration/5 doctest; CI Linux/Windows verde su 6ac0fb8, run 39233324913 |
 | T-P2-02 | DONE | 2026-10-19 | Mapping unico, 9 unit/2 integration/5 doctest e release; [CI 39234593522](https://github.com/UraganoAngelina/lintra/actions/runs/39234593522) verde Linux/Windows su 30af262 |
-| T-P2-03 | IN_PROGRESS | 2026-10-19 | Proposta A approvata; identità/chiave/scope/summary/outcome autonomi verificati in locale, CI richiesta; errore tecnico applicativo rinviato esplicitamente |
+| T-P2-03 | IN_PROGRESS | 2026-10-19 | Proposta A approvata; identità/chiave/scope/summary/outcome verificati in locale e CI 39235805213, 70cdb5e; errore tecnico applicativo rinviato esplicitamente |
+| T-P3-01 | DONE_UNVERIFIED | 2026-10-19 | DTO raw formato 1 e AST tipizzato; 3 esempi + SIOC round-trip, campi ignoti rifiutati; 17 unit/2 integration/5 doctest e build locali verdi, nuova CI richiesta |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -365,6 +366,23 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P3-01 / Raw model locale verificato
+
+- **Stato:** DONE_UNVERIFIED; nuova CI da eseguire. Parte autonoma T-P2-03
+  verificata Linux/Windows su 70cdb5e, run 39235805213; residuo ancora aperto.
+- **File:** schema/raw.rs, raw_tests.rs, schema/mod.rs, export lib;
+  generatore DTO documentale, report T-P3-01, Cargo.toml/lock e stato.
+- **Contratti:** modello formato 1 tipizzato, metadata aperti separati,
+  proprietà operative sconosciute rifiutate, start one-based preservato.
+  Raw non è compilato; vincoli scalari/condizionali e risoluzione restano
+  esplicitamente al lint/compiler successivo, senza dichiarare esecuzione.
+- **Dipendenze:** serde 1.0.229/serde_json 1.0.151, lockfile aggiornato offline;
+  derive e arbitrary_precision necessari per DTO/metadata/interi esatti.
+- **Evidenze:** fmt/check/clippy/test/release exit 0; 17 unit, 2 integration,
+  5 doctest. Riproducibilità del generato verificata contro grammatica invariata.
+- **Next:** CI Linux/Windows della modifica, poi T-P3-02; SchemaKey rimane
+  nel dominio. Obbligo lint Rust T-P3-04 sui profili P0 non ancora adempiuto.
 
 HANDOFF — 2026-10-19 — T-P2-03 / proposta A approvata, parte autonoma
 

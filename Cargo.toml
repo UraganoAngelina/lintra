@@ -11,3 +11,7 @@ path = "src/lib.rs"
 [[bin]]
 name = "lintra"
 path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = { version = "1.0.151", features = ["arbitrary_precision"] }
