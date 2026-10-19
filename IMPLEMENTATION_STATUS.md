@@ -6,10 +6,10 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
 ## Posizione corrente e prerequisiti
 
 - P1 / **T-P1-01 — DONE**: scaffold compilabile del package `lintra`.
-- Sessione corrente: **T-P0-03 DONE** per le matrici documentali, verificate
-  direttamente su 218 campi. Avanzamento sospeso per il disallineamento CAD
-  B1 `2.12` descritto in [T-P0-03](docs/verification/T-P0-03.md).
-  T-P0-04 conserva bozze della sessione interrotta, ancora da verificare.
+- Sessione corrente: **T-P0-04 DONE** per la classificazione documentale:
+  218 note verificate. CAD B1 `2.12` risolta dall'autore: `000` valido,
+  spazi mancanti, obbligo conservato. **T-P0-05 non avviata**: rimangono
+  due chiarimenti, ID SIOC degli ingressi 2025 e valutazione iniziale CAD.
   **T-P1-03 DONE_UNVERIFIED**: nessuna nuova evidenza CI in questa sessione.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
@@ -94,7 +94,8 @@ M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
 | T-P0-01 | DONE | 2026-10-16 | Commit 0b13581; inventario 11 categorie/27 righe; integrità e completezza verificate, review approvata |
 | T-P0-02 | DONE | 2026-10-16 | Commit 419600d/6a4e9ac; 218 campi/0 gap, review indipendente e campione approvato dall'autore |
 | T-P0-03 | DONE | 2026-10-19 | 218/218 campi e policy/AST verificati; fonti integre; conflitto CAD 2.12 esplicitato, nessuna correzione normativa applicata |
-| T-P0-04 | IN_PROGRESS | 2026-10-19 | Bozze dalla sessione interrotta; verifica e avanzamento sospesi in attesa del chiarimento CAD 2.12 |
+| T-P0-04 | DONE | 2026-10-19 | 218 note classificate, hash/riferimenti/DEC-05 verificati; 000 risolto, due nuove decisioni aperte |
+| T-P0-05 | BLOCKED | 2026-10-19 | Non avviata: attende chiarimenti SIOC-ID-2026 e CAD-VALUTAZIONE-INIZIALE secondo il mandato sequenziale |
 | T-P0-06 | DONE | 2026-10-16 | Commit 69dc995/a55a634; 15 schede/150 metadati, gap espliciti, review approvata |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
@@ -111,6 +112,7 @@ Evidenze e proposta: [T-P0-03](docs/verification/T-P0-03.md).
 | Comando | Esito |
 |---|---|
 | `python3 docs/verification/check_presence.py` | PASS, exit 0: 135 SIOC + 83 CAD; dieci trace, policy/AST fedeli, quattordici fonti integre |
+| `python3 docs/verification/check_notes.py` | PASS, exit 0: 218 note, indici/hash/pagine, constraint e ID regola, conteggi classi e citazioni DEC-05 |
 | `cargo fmt --all -- --check` | PASS |
 | `cargo check --all-targets --locked` | PASS |
 | `cargo clippy --all-targets --locked -- -D warnings` | PASS |
@@ -177,11 +179,14 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Problemi noti e decisioni aperte
 
-- **DEC-05-CAD-ICPC-000:** per B1 `2.12`, la nota ammette `000` come
-  assenza della patologia, ma il candidato dichiara missing exact `000`
-  insieme a presenza required. Proposta concreta nel report T-P0-03:
-  `000` valido, tre spazi mancanti, obbligo conservato. Chiarimento richiesto;
-  nessuna modifica a baseline o policy prima della risposta dell'autore.
+- **DEC-05-SIOC-ID-2026:** precisare lunghezza, caratteri, prefisso anno e
+  progressivo per gli ID mantenuti dagli ingressi 2025; i vincoli ricevuti
+  sono incondizionati. Nessuna deroga o nuovo vincolo inferiti.
+- **DEC-05-CAD-VALUTAZIONE-INIZIALE:** precisare se l'almeno una iniziale
+  riguarda lo storico dell'evento o il solo invio corrente.
+- Dettagli e citazioni in [T-P0-04](docs/verification/T-P0-04.md). Le clausole
+  SIOC 1.6/4.28 mantengono il non-enforcement v1 già ricevuto; G03, formato
+  UVMD ricevuto e sentinel Barthel 99 non sono nuove decisioni aperte.
 - Controllo completo kit FAIL per gli export extra, nessun impatto bloccante
   su T-P1-01: documenti censiti integri e dati esclusi dal nuovo repository.
 - Remote GitHub configurato dall'autore, accesso autenticato non disponibile;
@@ -202,6 +207,13 @@ I doctest verificano importabilità e divieto di importare `engine` e
   ancora in alcuni artefatti sono metadati storici superati, non nuova norma aperta.
 
 ## Decisioni della sessione corrente
+
+- **DEC-05-CAD-ICPC-000 risolta dall'autore il 2026-10-19:** «Confermo: 000
+  valido, spazi mancanti». Campo obbligatorio, nessun lookup ICPC aggiunto.
+  [Decisione registrata](docs/normative/DECISIONS.md); correzione della
+  configurazione nella task pertinente, senza alterare il kit originale.
+
+## Decisioni della sessione precedente — 2026-10-16
 
 - Esecuzione continua/parallelismo autorizzati: implementer su file disgiunti,
   coordinatore unico per stato e Git; review indipendente per task e finale.
@@ -242,6 +254,22 @@ Nessun nuovo conflitto o cambiamento di contratto pubblico.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — esecuzione diretta / T-P0-04
+
+- **Stato:** DONE per classificazione e registro delle ambiguità; avanzamento
+  a T-P0-05 sospeso per due decisioni normative ancora aperte.
+- **File:** matrici note SIOC/CAD, DECISIONS.md, report e checker T-P0-04;
+  aggiornamento del report T-P0-03 e di questo stato.
+- **Evidenze:** 218 note con hash/indici/riferimenti e citazioni verificate;
+  26 metadata, 186 candidate, sei note ambigue (incluse clausole differite v1).
+- **Decisioni:** ricevuta e registrata la risposta CAD 2.12; nessuna modifica
+  delle fonti. Nessuna nuova esecuzione Cargo rivendicata per soli documenti.
+- **Limiti:** definire vincoli ID SIOC 2025 e ambito iniziale CAD. Nessun
+  codice Rust, compiler, schema normativo o dipendenza modificato.
+- **Git:** branch work/p1-foundations; vecchio piano preesistente lasciato
+  invariato; nessun push o nuova evidenza CI in questa sessione.
+- **Next:** chiarire i due punti e poi procedere a T-P0-05, senza Superpowers.
 
 HANDOFF — 2026-10-19 — esecuzione diretta / T-P0-03
 
