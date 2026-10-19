@@ -1,4 +1,4 @@
-//! Generic fixed-width validation engine: initial module boundaries.
+//! Generic fixed-width validation engine.
 //!
 //! The library can be linked by an external consumer:
 //!
@@ -18,7 +18,20 @@
 //! use lintra::persistence;
 //! ```
 //!
-//! Public application types will be introduced by their authorized tasks.
+//! Domain identifiers cannot be substituted for one another:
+//!
+//! ```compile_fail,E0308
+//! use lintra::{FlowId, TraceId};
+//! let flow: FlowId = TraceId("EXAMPLE".to_owned());
+//! ```
+//!
+//! Byte ranges use zero-based byte offsets, without decoding or copying:
+//!
+//! ```
+//! use lintra::ByteRange;
+//! let range = ByteRange::new(1, 2).unwrap();
+//! assert_eq!(range.slice(b"ABCD"), Some(&b"BC"[..]));
+//! ```
 
 mod application;
 mod context;
@@ -30,3 +43,9 @@ mod reference_data;
 mod report;
 mod schema;
 mod validators;
+
+// Explicit domain primitives; module internals remain private.
+pub use domain::{
+    ByteRange, ByteRangeError, DatasetId, DatasetVersion, FieldId, FlowId, JoinId, SchemaVersion,
+    TraceId,
+};

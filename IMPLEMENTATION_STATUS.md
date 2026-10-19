@@ -146,7 +146,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
 | T-P1-03 | DONE | 2026-10-19 | CI su commit 34e67da: Linux GNU e Windows MSVC verdi, [run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518) |
-| T-P2-01 | IN_PROGRESS | 2026-10-19 | Prerequisito T-P1-03 verificato: CI reale verde; implementare newtype e ByteRange secondo DET §6–7 |
+| T-P2-01 | DONE_UNVERIFIED | 2026-10-19 | 7 newtype + ByteRange verificati in locale: 5 unit, 2 integration, 5 doctest; nuova CI Linux/Windows richiesta |
 | T-P2-02..03 | NOT_STARTED | — | Attendono T-P2-01 |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
@@ -353,6 +353,18 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P2-01 / implementazione locale
+
+- **Stato:** DONE_UNVERIFIED, CI della modifica da eseguire.
+- **File:** domain/{ids,byte_range,mod}.rs, lib.rs, report T-P2-01 e stato.
+- **Evidenze:** fmt/check/clippy/test/build release exit 0; 5 unit + 2
+  integration + 5 doctest, inclusi overflow, zero, slice byte senza copie,
+  griglia limite 576 combinazioni e impossibilità di scambiare FlowId/TraceId.
+- **Contratti:** sette newtype DET §6 e ByteRange a costruzione verificata;
+  errori di costruzione tipizzati, nessuna conversione one-based nel dominio.
+- **Limiti:** nessun compiler/persistenza/validator normativo; zero dipendenze.
+- **Next:** CI Linux/Windows sul nuovo commit prima di T-P2-02.
 
 HANDOFF — 2026-10-19 — T-P1-03 / CI reale completata
 
