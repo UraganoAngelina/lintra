@@ -19,6 +19,9 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   la checklist del commit 407f89e con i rinvii indicati.
   **T-P1-03 DONE / QG-2 PASS**: [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518)
   sul commit 34e67da; autenticazione GitHub funzionante fuori sandbox.
+  **T-P2-01 e T-P2-02 DONE**, entrambe con CI Linux/Windows verde.
+  **T-P2-03 BLOCKED**: l’autore mantiene il blocco e chiede revisione dei
+  contratti; CNF-DOMAIN-01/proposta A non approvata, nessun riordino applicato.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -79,7 +82,7 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
-| QG-2 — CI Linux/Windows | PASS per 6ac0fb8 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39233324913), entrambi i runner verdi; nuove modifiche Rust richiedono nuova CI |
+| QG-2 — CI Linux/Windows | PASS per 30af262 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39234593522), entrambi i runner verdi; nuove modifiche Rust richiedono nuova CI |
 | QG-3 — architettura | PASS per lo scaffold | Moduli privati, CLI solo nel binario, nessun codice normativo o dipendenza |
 | QG-8 — documenti | PASS per lo scaffold | Copie identiche, nessun contratto modificato |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
@@ -124,7 +127,7 @@ contratti approvati e rinvii secondo la procedura di T-P0-09.
 | Milestone | Stato | Evidenza |
 |---|---|---|
 | M0 | REACHED | G0 approvato dall’autore con rinvii espliciti, 2026-10-19 |
-| M1 | IN_PROGRESS | T-P1-01/02 completate; T-P1-03 implementata, CI reale e P2 mancanti |
+| M1 | IN_PROGRESS | P1 e T-P2-01/02 completate con CI reale; T-P2-03 bloccata sui contratti |
 | M2–M9 | NOT_REACHED | Nessuna implementazione anticipata |
 
 `DONE` riguarda i criteri della singola task. Non dichiara completati P1,
@@ -147,8 +150,8 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
 | T-P1-03 | DONE | 2026-10-19 | CI su commit 34e67da: Linux GNU e Windows MSVC verdi, [run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518) |
 | T-P2-01 | DONE | 2026-10-19 | 7 newtype + ByteRange; 5 unit/2 integration/5 doctest; CI Linux/Windows verde su 6ac0fb8, run 39233324913 |
-| T-P2-02 | DONE_UNVERIFIED | 2026-10-19 | Mapping unico 15 codici core + RegulatoryRule, registro e 4 nuovi test; fmt/check/clippy/test/release verdi, nuova CI richiesta |
-| T-P2-03 | NOT_STARTED | — | Prerequisito T-P2-01 soddisfatto |
+| T-P2-02 | DONE | 2026-10-19 | Mapping unico, 9 unit/2 integration/5 doctest e release; [CI 39234593522](https://github.com/UraganoAngelina/lintra/actions/runs/39234593522) verde Linux/Windows su 30af262 |
+| T-P2-03 | BLOCKED | 2026-10-19 | CNF-DOMAIN-01: ScopeSummary indefinito, SchemaKey assegnata a P3 e payload errore applicativi nel dominio; autore mantiene il blocco, proposta A non approvata |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -228,6 +231,13 @@ I doctest verificano importabilità e divieto di importare `engine` e
 `persistence` dall'esterno (DET §94). Nessun test di validazione fittizio.
 
 ## Problemi noti e decisioni aperte
+
+- **CNF-DOMAIN-01 / T-P2-03:** tipo ScopeSummary non definito e dipendenze
+  anticipate/inverse per SchemaKey ed errori di esecuzione. Proposta concreta
+  in [preflight T-P2-03](docs/verification/T-P2-03-preflight.md): tipi neutri nel
+  dominio, errore tecnico applicativo, consegna suddivisa con riordino esplicito.
+  L’autore risponde «Mantieni il blocco; rivediamo i contratti»: proposta A
+  non approvata. Nessuna firma nuova, anticipazione o riordino applicato.
 
 - **SIOC completo rinviato:** dodici dataset con versioni/hash/metadata ICD9
   assenti; controlli semantici esclusi dal profilo minimale per decisione
@@ -354,6 +364,24 @@ Nessun contratto pubblico Rust modificato o implementazione anticipata.
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-19 — T-P2-02 completata / T-P2-03 bloccata
+
+- **Stato:** T-P2-02 DONE, T-P2-03 BLOCKED, M1 IN_PROGRESS.
+- **CI effettiva:** [run 39234593522](https://github.com/UraganoAngelina/lintra/actions/runs/39234593522) sul commit
+  30af262, Linux GNU job 118000501047 e Windows MSVC job 118000500610
+  completed/success. fmt, clippy, test e release nativi verificati.
+- **Locale:** 9 unit + 2 integration + 5 doctest; check e release verdi.
+- **Decisione umana:** «Mantieni il blocco; rivediamo i contratti» per
+  CNF-DOMAIN-01. Proposta A non approvata, nessun contratto T-P2-03 scritto,
+  nessun documento architetturale o ordine delle task modificato.
+- **File:** report T-P2-02, preflight T-P2-03 e questo stato; le modifiche
+  Rust sono già nel commit verificato 30af262, nessuna modifica dopo la CI.
+- **Next:** rivedere ScopeSummary, proprietà di SchemaKey e collocazione/
+  dipendenze di ValidationRunError prima di riprendere T-P2-03 o discendenti.
+  Nessuna nuova domanda ordinaria o riapertura di G0.
+- **Git:** branch work/p1-foundations, nessuna integrazione/merge su main;
+  modifica storica Superpowers preesistente lasciata intatta e non committata.
 
 HANDOFF — 2026-10-19 — T-P2-02 / mapping unico locale verificato
 
