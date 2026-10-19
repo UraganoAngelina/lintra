@@ -74,6 +74,8 @@ for flow, directory, expected_traces in (
             assert any(x in columns[3] for x in ("Violation", "Unknown", "NotApplicable", "DEC-"))
             if not join["required"]:
                 assert "DEC-05-SIOC-OPTIONAL-PARENT" in columns[3]
+                assert "NotApplicable" in columns[3]
+                assert "anagrafica presente e dati ricovero correlato assenti" in columns[3]
             join_count += 1
         for group in trace["repeated_groups"]:
             assert set(group["fields"]) <= local_ids

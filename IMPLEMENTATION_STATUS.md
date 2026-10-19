@@ -10,8 +10,9 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   join e identità. Decisione CAD iniziale nello storico dell’evento, incluso
   invio corrente, registrata; 74 regole ricevute, dieci join dichiarati,
   una ricerca implicita di esistenza e trenta presence condizionali verificati.
-  **T-P0-07 non avviata**: resta da confermare la policy del parent opzionale
-  SIOC (DEC-05-SIOC-OPTIONAL-PARENT); boundary dei piani CAD documentate.
+  **T-P0-07 in analisi**: parent opzionale SIOC risolto dall’autore:
+  NotApplicable con esplicita evidenza di anagrafica presente e dati
+  ricovero correlato assenti. Boundary dei piani CAD documentate.
   **T-P1-03 DONE_UNVERIFIED**: nessuna nuova evidenza CI in questa sessione.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
@@ -97,9 +98,9 @@ M1, G0 o il gate multipiattaforma; i limiti sono annotati separatamente.
 | T-P0-02 | DONE | 2026-10-16 | Commit 419600d/6a4e9ac; 218 campi/0 gap, review indipendente e campione approvato dall'autore |
 | T-P0-03 | DONE | 2026-10-19 | 218/218 campi e policy/AST verificati; fonti integre; conflitto CAD 2.12 esplicitato, nessuna correzione normativa applicata |
 | T-P0-04 | DONE | 2026-10-19 | 218 note classificate, hash/riferimenti/DEC-05 verificati; 000, ID legacy SIOC e ambito iniziale CAD risolti |
-| T-P0-05 | DONE | 2026-10-19 | Dossier SIOC/CAD: 74 regole, 10 join + ricerca esistenza; PK, identity e policy/DEC verificate; chiarimento parent opzionale SIOC aperto |
+| T-P0-05 | DONE | 2026-10-19 | Dossier SIOC/CAD: 74 regole, 10 join + ricerca esistenza; PK, identity e policy/DEC verificate; parent opzionale SIOC risolto dall’autore |
 | T-P0-06 | DONE | 2026-10-16 | Commit 69dc995/a55a634; 15 schede/150 metadati, gap espliciti, review approvata |
-| T-P0-07 | BLOCKED | 2026-10-19 | Non avviata: chiarimento parent opzionale SIOC aperto; formato e piani CAD da proporre/revisionare nella task |
+| T-P0-07 | IN_PROGRESS | 2026-10-19 | Prerequisiti verificati; analisi del formato e della compatibilità dei contratti raw/compiled |
 | T-P1-01 | DONE | 2026-10-16 | Build e controlli Linux; 3 doctest; copie e gitignore verificati |
 | T-P1-02 | DONE | 2026-10-16 | Commit 0186c0b; pin Rust 1.99.1, attributi/config; STD-VERIFY e cross-check GNU superati; review approvata |
 | T-P1-03 | DONE_UNVERIFIED | 2026-10-16 | Commit 4f71663; workflow e 2 test, controlli locali/review approvati; CI reale non eseguita |
@@ -183,9 +184,6 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Problemi noti e decisioni aperte
 
-- **DEC-05-SIOC-OPTIONAL-PARENT:** join opzionale trace1_to_trace2_episode:
-  scegliere policy esplicita per il controllo anno se il parent manca;
-  proposta Unknown/non valutabile, senza errore di parent mancante.
 - **DEC-05-CAD-EVENT-CONTEXT / SET-CONTRACT:** contratto dei piani per
   insiemi e riduzioni deterministiche da formalizzare in T-P0-07; nessuna
   implementazione o nuova serializzazione approvata.
@@ -213,6 +211,12 @@ I doctest verificano importabilità e divieto di importare `engine` e
   ancora in alcuni artefatti sono metadati storici superati, non nuova norma aperta.
 
 ## Decisioni della sessione corrente
+
+- **DEC-05-SIOC-OPTIONAL-PARENT risolta dall’autore il 2026-10-19:**
+  `NotApplicable` per target assente, con evidenza esplicita di anagrafica
+  presente e dati del ricovero correlato assenti; nessun errore parent.
+  Superata la proposta Unknown per questo caso, senza estendere la policy
+  a target ambiguo o invalido. [Decisione registrata](docs/normative/DECISIONS.md).
 
 - **DEC-05-CAD-VALUTAZIONE-INIZIALE risolta dall’autore il 2026-10-19:**
   «Nello storico dell’evento», incluso invio corrente come nella domanda.

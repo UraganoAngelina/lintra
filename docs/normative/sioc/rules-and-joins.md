@@ -49,7 +49,7 @@ estensione di episodi ai tracciati amministrativi 4.1/4.2 è dedotta.
 
 | ID | Sorgente → target e chiavi ordinate | Cardinalità ricevuta | Target mancante / evidenza |
 |---|---|---|---|
-| trace1_to_trace2_episode | 1.(1.1,1.17,1.18) → 2.(2.1,2.49,2.50) | zero_or_one | DEC-05-SIOC-OPTIONAL-PARENT: required=false non sceglie fra Unknown e NotApplicable |
+| trace1_to_trace2_episode | 1.(1.1,1.17,1.18) → 2.(2.1,2.49,2.50) | zero_or_one | NotApplicable, decisione autore DEC-05-SIOC-OPTIONAL-PARENT; esplicitare anagrafica presente e dati ricovero correlato assenti |
 | trace2_to_trace1 | 2.(2.1,2.49,2.50) → 1.(1.1,1.17,1.18) | exactly_one | Violation, required=true + E_MISSING_PARENT_RECORD ricevuti |
 | trace3_to_trace2 | 3.(3.1,3.35,3.36) → 2.(2.1,2.49,2.50) | exactly_one | Violation, required=true + E_MISSING_PARENT_RECORD ricevuti |
 | trace3_to_trace1 | 3.(3.1,3.35,3.36) → 1.(1.1,1.17,1.18) | exactly_one | Violation, required=true + E_MISSING_PARENT_RECORD ricevuti |
@@ -61,7 +61,7 @@ possibili e devono essere diagnosticati. La join 4.2→4.1 usa due campi,
 non l’intera PK di 4.1; più target sono quindi possibili per definizione.
 Le dichiarazioni legacy non contengono il membro esplicito
 `MissingRelatedRecordPolicy`: la tabella separa i casi determinati da
-required/error_code dall’unico caso non determinato. La serializzazione
+required/error_code dal caso opzionale ora risolto dall’autore. La serializzazione
 normalizzata deve essere definita in T-P0-07, senza riscrivere il FROZEN.
 
 ## Relazioni implicite nelle assertion
@@ -107,13 +107,15 @@ regole eseguite con questa consegna. Reference data: [schede](../reference-datas
 
 ## Decisioni residue e casi limite
 
-### DEC-05-SIOC-OPTIONAL-PARENT — APERTA
+### DEC-05-SIOC-OPTIONAL-PARENT — RISOLTA dall’autore
 
-Fonte: trace 1, `joins[0]`, R-1.1-ADMISSION-YEAR. Mancano policy esplicita
-e comportamento a join opzionale senza target. Proposta da approvare:
-nessuna violazione di parent mancante; il controllo dell’anno non valutabile
-è `Unknown`, anziché dichiararlo superato o falso. Se il record c’è ma
-2.5 è invalido, conservare l’errore locale e non confrontare un anno fittizio.
+Fonte: trace 1, `joins[0]`, R-1.1-ADMISSION-YEAR. Decisione ricevuta
+il 2026-10-19: target assente → `NotApplicable`, nessun errore di parent
+mancante. Esplicitare nell’esito «Anagrafica presente; dati del ricovero
+correlato assenti», con riferimento al join. La proposta Unknown è superata
+per questo solo caso. Se il target è presente ma 2.5 è invalido, conservare
+l’errore locale e non confrontare un anno fittizio; target multipli non
+sono coperti dalla deroga. [Decisione completa](../DECISIONS.md).
 
 ### DEC-05-SIOC-REVOKING-ACT — CHIUSA come lettura dell’AST
 

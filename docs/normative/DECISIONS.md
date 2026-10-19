@@ -76,3 +76,30 @@ in T-P0-05. Nessuna nuova eccezione normativa è dedotta dalla risposta.
 
 Evidenze: [regole e join CAD](cad/rules-and-joins.md),
 [matrice note CAD](cad/notes-matrix.md#dec-05-cad-valutazione-iniziale--risolta-dallautore).
+
+## DEC-05-SIOC-OPTIONAL-PARENT — RISOLTA, 2026-10-19
+
+Ambito: join opzionale `trace1_to_trace2_episode`, anagrafica SIOC del
+tracciato 1 presente senza ricovero correlato del tracciato 2.
+
+L’autore ha risposto:
+
+> in questo caso è non applicabile e deve essere esplicitato che abbiamo l'anagrafica ma non i dati del ricovero correlato
+
+- Policy del caso indicato: `NotApplicable`, nessun errore di parent mancante.
+- Il controllo dell’anno nell’ID non viene dichiarato superato né fallito:
+  è non applicabile perché mancano i dati del ricovero correlato.
+- L’esito deve riportare esplicitamente «Anagrafica presente; dati del
+  ricovero correlato assenti», con riferimento alla relazione interessata.
+- La policy va dichiarata nello schema/profilo e il testo diagnostico resta
+  configurabile; nessuna conoscenza dei campi SIOC nel core generico.
+- La decisione riguarda l’assenza del target del join opzionale, non un
+  target multiplo/ambiguo o una data invalida in un target presente. Questi
+  casi conservano i controlli e gli esiti Unknown previsti dal contratto.
+
+La precedente proposta Unknown per il target assente è superata dalla
+risposta umana. Il kit FROZEN e gli snapshot ricevuti restano inalterati;
+applicazione nella configurazione versionata della task pertinente.
+
+Evidenze: [dossier SIOC](sioc/rules-and-joins.md),
+[verifica T-P0-05](../verification/T-P0-05.md).
