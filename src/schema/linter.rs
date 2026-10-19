@@ -249,14 +249,14 @@ pub fn lint_raw_schema(raw: &RawFlowSchema) -> Vec<SchemaIssue> {
     };
     diagnostics.identifier(&raw.flow_id, None, None);
     diagnostics.identifier(&raw.schema_version, None, None);
-    if !EngineCapabilities::current()
-        .supports_schema_format(SchemaFormatVersion(raw.schema_format_version))
+    if let Some(message) = EngineCapabilities::current()
+        .incompatibility_message(SchemaFormatVersion(raw.schema_format_version))
     {
         diagnostics.error(
             SchemaIssueCode::UnsupportedSchemaFormat,
             None,
             None,
-            "only schema_format_version 1 is supported",
+            message,
         );
     }
     if raw.traces.is_empty() {

@@ -457,5 +457,15 @@ fn format_range_is_enforced_by_the_compiler_without_a_fallback() {
         let failure = error(value);
         assert_eq!(failure.issues.len(), 1);
         assert_eq!(failure.issues[0].code, Code::UnsupportedSchemaFormat);
+        let message = &failure.issues[0].message;
+        assert!(message.contains(&format!("schema_format_version {version}")));
+        assert!(message.contains(&format!("engine version {}", env!("CARGO_PKG_VERSION"))));
+        assert!(message.contains("supported schema formats 1..=1"));
+        assert!(message.contains("no compatible executable is declared"));
+        assert!(message.contains(
+            "minimum required executable version: not applicable to an undefined format"
+        ));
+        assert!(message.contains("defined format 1 minimum engine version: 0.1.0"));
+        assert!(message.contains("development baseline; verified compiler b658e05"));
     }
 }

@@ -373,6 +373,8 @@ fn schema_format_is_required_and_never_defaulted_or_coerced_during_loading() {
         Some(json!(1.5)),
         Some(json!(4294967296_u64)),
         Some(json!(true)),
+        Some(json!([])),
+        Some(json!({})),
     ] {
         let mut value = serde_json::to_value(raw(&selection)).unwrap();
         match invalid {

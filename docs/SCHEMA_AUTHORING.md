@@ -69,6 +69,18 @@ un operatore nuovo richiede una capability versionata riconosciuta.
 La prima release compatibile definirà la versione minima del binario;
 non si inventa oggi un numero di release non implementata.
 
+### Mappa formato / eseguibile CNF-FORMAT-01 — approvata
+
+L’autore ha approvato «Approvo la mappa con baseline di sviluppo 0.1.0».
+La [mappa ufficiale](schema-authoring/FORMAT_COMPATIBILITY.md) assegna al
+formato 1 la baseline minima di sviluppo 0.1.0, compiler verificato b658e05;
+non la presenta come release pubblicata. Formato 0 e numeri 2..=u32::MAX
+non hanno una specifica o un eseguibile compatibile dichiarato: la versione
+minima non è applicabile a un formato non definito. Input assenti/non conformi
+sono errori di caricamento senza default. Ogni futuro formato avrà un’entry
+con versione minima concreta quando viene definito, senza deduzioni da semver.
+Questa mappa non dichiara implementata local.v1 completa e non modifica i JSON.
+
 ## Import, mapping e preservazione della fonte
 
 L’import è esplicito e revisionato, mai un fallback durante la validazione:

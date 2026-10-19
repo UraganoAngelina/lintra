@@ -1,8 +1,10 @@
 # T-P3-06 — Formati e versione minima: CNF-FORMAT-01
 
-2026-10-19. Proposta A non approvata: l’autore ha richiesto un inventario
-completo e una mappatura ufficiale. [Inventario e decisioni proposte](../schema-authoring/FORMAT_COMPATIBILITY.md).
-Nessuna versione futura inventata; attività indipendenti implementate e verificate in locale.
+2026-10-19. **CNF-FORMAT-01 RISOLTO:** dopo la richiesta di inventario,
+l’autore ha approvato «Approvo la mappa con baseline di sviluppo 0.1.0».
+La [mappa ratificata](../schema-authoring/FORMAT_COMPATIBILITY.md) sostituisce
+la proposta A provvisoria qui conservata come storico; nessuna versione futura inventata.
+Consegna e verifiche nel report T-P3-06.
 
 ## Prerequisiti
 
