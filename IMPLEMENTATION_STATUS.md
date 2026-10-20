@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 DONE, CNF-AUDIT-01 risolta; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) Linux/Windows verde su 85f1ac7, 155 test locali; stop rispettato e successivamente revocato per avviare T-P5-06. **T-P5-06 DONE**: output atomico e spiegazioni dettagliate del codice; 170 test locali, 171 Windows; [CI 39405353679](https://github.com/UraganoAngelina/lintra/actions/runs/39405353679) Linux/Windows verde su 0c48768. **T-P5-07 DONE**: harness golden generico e sei scenari sintetici; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) Linux/Windows verde su b0e5ce7. **T-P6-02 DONE_UNVERIFIED**: presenza Required/Optional e boundary Unknown, 186 test locali; CI da eseguire.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 DONE, CNF-AUDIT-01 risolta; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) Linux/Windows verde su 85f1ac7, 155 test locali; stop rispettato e successivamente revocato per avviare T-P5-06. **T-P5-06 DONE**: output atomico e spiegazioni dettagliate del codice; 170 test locali, 171 Windows; [CI 39405353679](https://github.com/UraganoAngelina/lintra/actions/runs/39405353679) Linux/Windows verde su 0c48768. **T-P5-07 DONE**: harness golden generico e sei scenari sintetici; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) Linux/Windows verde su b0e5ce7. **T-P6-02 DONE**: presenza Required/Optional e boundary Unknown; 186 test locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) Linux/Windows verde su c34649b. Avvio autonomo preflight T-P6-03.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -115,7 +115,7 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS per T-P6-02 | fmt/check/clippy/release, 34 unit + 141 integration + 11 doctest = 186 |
-| QG-2 — CI Linux/Windows | PASS per b0e5ce7 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983), Linux GNU 118606873792 e Windows MSVC 118606874264 completed/success; stessa suite golden byte esatta |
+| QG-2 — CI Linux/Windows | PASS per c34649b | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154), Linux GNU 118614279561 e Windows MSVC 118614279377 completed/success; 186 test locali, 187 Windows |
 | QG-3 — architettura | PASS per dominio/raw/compiled | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
 | QG-8 — documenti | PASS per la frontiera consegnata | Sorgenti ARCH/DET/Piano invariati; integrazioni e adattamenti tracciati nei report; CNF-AUDIT-01 applicata previa approvazione |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
@@ -205,7 +205,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P5-06 | DONE | 2026-10-20 | Output atomico, cleanup e policy diagnostica; 170 test locali, 171 Windows; [CI 39405353679](https://github.com/UraganoAngelina/lintra/actions/runs/39405353679) verde Linux/Windows su 0c48768; [spiegazione](docs/verification/T-P5-06.md) |
 | T-P5-07 | DONE | 2026-10-20 | Sei scenari sintetici, confronto byte esatto e opt-in aggiornamenti; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) verde su b0e5ce7; [spiegazione](docs/verification/T-P5-07.md) |
 | T-P6-01 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
-| T-P6-02 | DONE_UNVERIFIED | 2026-10-20 | Presenza base, Unknown per condizioni non valutate; 186 test locali, CI da eseguire; [spiegazione](docs/verification/T-P6-02.md) |
+| T-P6-02 | DONE | 2026-10-20 | Presenza base, Unknown per condizioni non valutate; 186 locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) verde su c34649b; [spiegazione](docs/verification/T-P6-02.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -214,7 +214,10 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 T-P6-02: fmt/check/clippy/test/release/GNU-all-targets/diff-check PASS;
 186 test locali (34 unit + 141 integration + 11 doctest), cinque integration
 presence e un unit boundary nuovi. Prerequisiti T-P6-01 e T-P5-02 riconfermati
-via API, entrambe CI Linux/Windows completed/success. Nuova QG-2 PENDING.
+via API, entrambe CI Linux/Windows completed/success. QG-2 PASS su
+c34649b0873fa3a8bfc837ec314093c8322f1919: CI 39418788154,
+Linux 118614279561 e Windows 118614279377 completed/success.
+Log Windows verificato: 187 test PASS, inclusi i nuovi test presence.
 [Contratto, adattamento DET §147 e spiegazioni](docs/verification/T-P6-02.md).
 
 T-P5-07: fmt/check/clippy/test/release/GNU-all-targets/diff-check PASS;
@@ -725,6 +728,25 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-20 — T-P6-02 DONE / progressione autonoma ripristinata
+
+- **Stato:** DONE; nessun blocco residuo nella task.
+- **File:** AGENTS.md; validators/presence.rs; lib.rs; compiled/tests.rs;
+  tests/presence.rs; report tecnico T-P6-02 e questo stato.
+- **Comportamento:** presenza base sul raw con MissingValuePolicy; Required
+  assente -> FieldViolation RequiredField, Optional assente -> MissingOptional,
+  valore presente -> Present. Condizioni compiled non valutate -> Unknown.
+- **Spiegazioni:** enum, funzione, condizioni e test descritti nel codice e
+  in docs/verification/T-P6-02.md; adattamento DET §147 dichiarato.
+- **Evidenze:** 186 locali e 187 Windows; fmt/check/clippy/release/GNU PASS.
+  CI 39418788154 su c34649b, job Linux 118614279561 e Windows 118614279377
+  completed/success. Payload ErrorFactory e boundary condizioni verificati.
+- **Decisioni/limiti:** nessun evaluator o pipeline P10 anticipato; niente
+  dipendenze/norme nuove. Nuovo mandato supera gli stop ordinari e storici.
+- **Git:** c34649b sul branch work/p1-foundations; chiusura documentale
+  separata; modifica preesistente al piano storico esclusa.
+- **Next:** avvio autonomo T-P6-03, verificando prima il contratto padding.
 
 HANDOFF — 2026-10-20 — T-P6-02 locale verificata / CI da eseguire
 
