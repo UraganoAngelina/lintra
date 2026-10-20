@@ -103,3 +103,10 @@ consegna di projection/reference data. Nessuna anticipazione automatica P11/P13.
 
 Codice T-P6-08 non scritto. T-P6-07 e la sua CI sono completati. L'avanzamento interessato (T-P6-08/P7/P8 e dipendenti) attende
 ratifica; non aggirare il gate passando direttamente alla task seguente.
+
+
+## Esito implementativo successivo
+
+Consegna locale completata: **DONE — LocalOnly scope approved by CNF-RECORD-01**.
+Sorgenti daa9f15, CI 39449345726 Linux/Windows success; evidenze e rinvii nel
+[report T-P6-08](T-P6-08.md). Stop dopo la task rispettato; P7 non avviata.
