@@ -25,3 +25,7 @@ e x86_64-pc-windows-msvc non abilita libc; chrono ha solo std/alloc.
 Controllati anche MIT OR Apache-2.0 e MSRV di cpufeatures, digest,
 block-buffer, crypto-common, hybrid-array, typenum, num-traits, autocfg, cfg-if.
 Tutti compatibili con la toolchain 1.99.1; esito native CI nel report T-P5-05.
+
+Compatibilità nativa effettivamente verificata dalla [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949)
+su 85f1ac7: Linux x86_64 GNU e Windows x86_64 MSVC entrambi success,
+con test/build release; oltre al check locale Windows GNU all-targets.
