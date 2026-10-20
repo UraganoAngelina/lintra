@@ -38,3 +38,9 @@ Mandato più recente — ripresa del workflow autonomo, 2026-10-20:
   T-P5-05. Restano vincolanti i gate e le decisioni realmente mancanti.
 - Restano esclusi Superpowers, subagenti e processi locali in background;
   mantenere spiegazioni dettagliate del codice e recap dei file per ogni task.
+
+Decisione successiva — CNF-ALIGNMENT-01, scelta B:
+- L'autore ha scelto «B: definiamo prima il contratto fisico».
+- Non attuare la proposta A di consegna parziale/prosecuzione con residuo.
+- Definire e sottoporre il contratto fisico completo prima di implementare
+  T-P6-03; la scelta B non approva automaticamente i dettagli proposti.

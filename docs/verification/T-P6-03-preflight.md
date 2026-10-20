@@ -2,6 +2,15 @@
 
 2026-10-20. **BLOCKED — decisione contrattuale richiesta, nessun codice alignment scritto.**
 
+## Decisione successiva dell'autore
+
+Ricevuta la scelta **«B: definiamo prima il contratto fisico»**.
+La proposta A sotto resta storica e non approvata; non è autorizzata la
+consegna parziale né la prosecuzione con il residuo fisico aperto.
+Preparata la [proposta completa di contratto fisico](../proposals/alignment-physical-contract.md),
+ancora DRAFT da approvare prima del codice. Le fonti approvate non sono
+state modificate e T-P6-03 rimane BLOCKED durante la definizione.
+
 Avvio autonomo dopo T-P6-02 verificata, secondo l'ultimo mandato dell'autore.
 Prerequisito T-P6-01 riconfermato in questa sessione: CI 39389225120,
 46ab648f8ad96458cf4a7dbfef83a93f68bd7be1, Linux/Windows completed/success.
@@ -68,7 +77,7 @@ con un residuo esplicito richiede però chiarimento rispetto all'ultimo mandato
 di avanzare solo in assenza di punti aperti nelle task precedenti.
 T-P2-03/M1 conservano il proprio residuo distinto, già autorizzato.
 
-## Proposta A — consegna incrementale circoscritta, da approvare
+## Proposta A — consegna incrementale circoscritta, non approvata (scelta B)
 
 1. Implementare nella parte autonoma di T-P6-03 **soltanto l'estrazione del
    logical**: helper zero-copy da AlignmentRule e FieldSlice a slice preso in
@@ -104,4 +113,5 @@ Consultati fonti e codice raw/compiled/compiler/lowering; nessun Rust scritto
 per T-P6-03, nessuna nuova esecuzione Cargo rivendicata. Test e CI di T-P6-02
 sono registrati nel report relativo, non usati come prova di T-P6-03.
 File di questa attività: questo dossier e IMPLEMENTATION_STATUS.md.
-Attesa decisione dell'autore A oppure revisione del contratto (B).
+Scelta B ricevuta: ora attesa ratifica/revisione del contratto fisico proposto,
+non una nuova scelta A/B. Nessuna implementazione parziale avviata.
