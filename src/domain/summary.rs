@@ -1,6 +1,8 @@
 //! Neutral run results and audit metadata. No execution or persistence policy.
 
-use super::{DatasetId, DatasetVersion, FlowId, SchemaVersion, TraceId, ValidationCode};
+use super::{
+    DatasetId, DatasetVersion, FlowId, InputAudit, SchemaVersion, TraceId, ValidationCode,
+};
 use std::{
     collections::BTreeMap,
     time::{Duration, SystemTime},
@@ -35,6 +37,7 @@ pub struct RunMetadata {
     pub schema_hash: String,
     pub reference_data_versions: BTreeMap<DatasetId, DatasetVersion>,
     pub started_at: SystemTime,
+    pub inputs: Vec<InputAudit>,
 }
 
 /// Counters and metadata for the actual extent of a validation run.
@@ -55,6 +58,7 @@ pub struct ValidationSummary {
     pub schema_hash: String,
     pub reference_data_versions: BTreeMap<DatasetId, DatasetVersion>,
     pub elapsed: Duration,
+    pub inputs: Vec<InputAudit>,
 }
 
 /// Neutral controlled outcome. Technical failures belong to the application boundary.
@@ -97,6 +101,7 @@ mod tests {
                 (DatasetId("A".into()), DatasetVersion("v1".into())),
             ]),
             started_at: SystemTime::UNIX_EPOCH,
+            inputs: Vec::new(),
         };
         let summary = ValidationSummary {
             run_status: RunStatus::Cancelled,
@@ -121,6 +126,7 @@ mod tests {
             schema_hash: metadata.schema_hash.clone(),
             reference_data_versions: metadata.reference_data_versions.clone(),
             elapsed: Duration::from_millis(12),
+            inputs: metadata.inputs.clone(),
         };
         let outcome = ValidationRunOutcome {
             status: RunStatus::Cancelled,

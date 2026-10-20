@@ -15,3 +15,9 @@ Mandato dell'autore aggiornato il 2026-10-19:
   la successiva se prerequisiti ed esito sono chiari. Questo mandato prevale
   sullo stop tra task contenuto nei prompt atomici; restano i blocchi reali.
 - Alla fine di ogni task comunicare un breve recap dei file creati/modificati.
+
+Mandato specifico successivo — CNF-AUDIT-01 approvata:
+- Implementare T-P5-05 con le precisazioni dell’autore su EOF, sorgente
+  autorevole degli audit, overflow, cancellazione e test.
+- Fermarsi al termine di T-P5-05 e attendere autorizzazione prima della
+  task successiva; questo mandato supera la progressione autonoma generale.

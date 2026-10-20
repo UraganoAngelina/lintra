@@ -11,7 +11,12 @@ pub use errors::{
 };
 
 mod identity;
+mod input_audit;
 mod summary;
+mod summary_builder;
+pub use summary_builder::{SummaryBuildError, SummaryCounter, ValidationSummaryBuilder};
+
+pub use input_audit::{InputAudit, InputAuditCompletion, InvalidInputAudit, Sha256Digest};
 
 pub use identity::RecordIdentity;
 pub use summary::{

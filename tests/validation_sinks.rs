@@ -41,6 +41,7 @@ fn summary() -> ValidationSummary {
         schema_hash: "synthetic-hash".into(),
         reference_data_versions: BTreeMap::new(),
         elapsed: Duration::from_millis(3),
+        inputs: Vec::new(),
     }
 }
 

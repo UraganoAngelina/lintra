@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 BLOCKED su CNF-AUDIT-01, proposta A in attesa di decisione.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 locale verificata (155 test), CNF-AUDIT-01 risolta; CI nativa da completare, poi stop obbligatorio.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -93,7 +93,7 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | QG-1 — controlli locali | PASS per a804956 | fmt/check/clippy/release, 29 unit + 98 integration + 10 doctest = 137 |
 | QG-2 — CI Linux/Windows | PASS per a804956 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39391897709), entrambi i runner verdi; 137 test e confronto byte per byte JSONL |
 | QG-3 — architettura | PASS per dominio/raw/compiled | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
-| QG-8 — documenti | PASS per la frontiera consegnata | Sorgenti ARCH/DET/Piano invariati; integrazioni e adattamenti tracciati nei report; proposta CNF-AUDIT-01 non applicata |
+| QG-8 — documenti | PASS per la frontiera consegnata | Sorgenti ARCH/DET/Piano invariati; integrazioni e adattamenti tracciati nei report; CNF-AUDIT-01 applicata previa approvazione |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
 | G-SIOC-HIST | OPEN_POLICY | DEC-SIOC-HIST-01, non blocca scaffold |
 | G-CAD-RUNTIME | NOT_STARTED | Richiede compiler, cross-record e persistenza |
@@ -177,12 +177,19 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P5-02 | DONE | 2026-10-20 | [CI 39390492669](https://github.com/UraganoAngelina/lintra/actions/runs/39390492669) verde Linux/Windows su 39ed9b2; 127 test |
 | T-P5-03 | DONE | 2026-10-20 | [CI 39390829911](https://github.com/UraganoAngelina/lintra/actions/runs/39390829911) verde Linux/Windows su 0f7b2df; 132 test |
 | T-P5-04 | DONE | 2026-10-20 | [CI 39391897709](https://github.com/UraganoAngelina/lintra/actions/runs/39391897709) verde Linux/Windows su a804956; 137 test, fixture JSONL byte identici |
-| T-P5-05 | BLOCKED | 2026-10-20 | Preflight CNF-AUDIT-01: payload input audit assente, SHA-256/annullamento prima di EOF; proposta A reviewabile, nessun Rust modificato |
+| T-P5-05 | DONE_UNVERIFIED | 2026-10-20 | CNF-AUDIT-01 approvata; audit raw/EOF, builder e summary; 155 test, 12 casi coperti; CI pendente |
 | T-P6-01 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — 2026-10-20, Linux locale
+
+T-P5-05: fmt/check/clippy/test/release/diff-check PASS.
+31 unit + 114 integration + 10 doctest = 155. Sedici integration e
+due unit nuovi coprono i dodici casi richiesti e i boundary tecnici.
+Check all-targets Windows GNU PASS; non equivale a test MSVC nativi.
+[Report](docs/verification/T-P5-05.md); CI Linux/Windows pendente.
+
 
 T-P5-04: fmt/check/clippy/test/release/diff-check PASS;
 29 unit + 98 integration + 10 doctest = 137.
@@ -407,13 +414,29 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Decisioni della sessione corrente
 
-- **CNF-AUDIT-01 / T-P5-05 — APERTA:** audit nome/dimensione/SHA-256
+- **CNF-AUDIT-01 — APPROVATA con precisazioni:** decisione integrale
+  dell’autore ricevuta dopo 625850b. Audit tecnico generico, fonte unica,
+  Complete solo con EOF e dimensione coerente, hash raw inclusi BOM/CRLF;
+  Incomplete senza digest su annullamento/troncamento prima di EOF.
+  RunMetadata/ValidationSummary ricevono inputs, ordine selezione preservato.
+  Overflow e nomi non UTF-8 sono guasti tecnici; nessun locking/snapshot
+  dei file sorgente, limite modifiche concorrenti a dimensione invariata
+  documentato. Test aggiuntivi 1–12 obbligatori, nessuna revisione dei sorgenti.
+- **Mandato operativo specifico:** completare esclusivamente T-P5-05 e
+  fermarsi prima della successiva, superando la progressione generale.
+- **DEC-15 / T-P5-05:** sha2 =0.11.1 e chrono =0.4.45 (solo std),
+  licenza MIT OR Apache-2.0; scopo/fonti/configurazione in
+  docs/DEPENDENCIES.md, registrati prima di Cargo.toml.
+
+
+- **CNF-AUDIT-01 / T-P5-05 — origine storica del conflitto, ora RISOLTA:** audit nome/dimensione/SHA-256
   obbligatorio (ARCH §39C.3) ma payload assente in DET §57/§101;
   annullamento prima di EOF non può produrre hash file dalla sola lettura
   eseguita (DET §119). Proposta A non approvata in
   docs/verification/T-P5-05-preflight.md, due JSON sintetici reviewabili.
-  T-P5-05 ferma; nessun hash parziale presentato come completo o nuova
-  scansione dopo annullamento. Non blocca i rami indipendenti.
+  Proposta successivamente approvata con precisazioni e implementata in
+  T-P5-05; nessun hash parziale presentato come completo o nuova scansione
+  dopo annullamento. Lo stop finale è ora richiesto dall’autore.
 
 
 - **T-P5-04 / ARCH §25, DET §34/§52–55:** DTO wire con alias dell’esempio
@@ -615,6 +638,23 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-20 — T-P5-05 locale verificata / CI da completare
+
+- **Consegna:** audit tecnico generico con sessione autorevole e hashing
+  raw incrementale; Complete solo a EOF coerente; builder e JSON summary.
+- **File:** quattro moduli nuovi domain/input_audit, summary_builder,
+  input/audit, report/summary; metadata/errori/moduli/export; Cargo/lock;
+  test e fixture; DEC-15/documentazione/AGENTS e registro approvazione.
+- **Test:** 155 verdi, fmt/check/clippy/release/diff-check; Windows GNU
+  all-targets check verde, dipendenze verificate per Linux/MSVC.
+- **Gate:** CI nativa da avviare; nessun successo Windows dichiarato prima.
+- **Limiti:** niente lock/snapshot sorgente contro modifiche di stessa
+  dimensione, niente service o pubblicazione atomica dei file anticipati.
+- **Git:** escluso il piano storico già modificato dall’autore.
+- **Next:** completare CI e fermarsi, attendere autorizzazione prima
+  di T-P5-06. T-P2-03/M1 ancora aperte, nessuna baseline modificata.
+
 
 HANDOFF — 2026-10-20 — T-P5-04 completata / T-P5-05 bloccata
 

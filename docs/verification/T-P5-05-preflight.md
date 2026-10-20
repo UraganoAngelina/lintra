@@ -1,6 +1,6 @@
 # T-P5-05 — Preflight / CNF-AUDIT-01
 
-2026-10-20. **BLOCCO DI CONTRATTO: proposta A non ancora approvata.**
+2026-10-20. **RISOLTO: proposta A approvata dall’autore con precisazioni successive.**
 Task letta, nessuna implementazione Rust o dipendenza SHA-256 aggiunta.
 Prerequisito T-P5-04 verificato su a804956, CI 39391897709
 completed/success Linux/Windows. Gate soddisfatto; resta il solo blocco
@@ -103,3 +103,13 @@ pubblica l’hash del prefisso come file hash. Fino alla decisione T-P5-05
 e le task che dipendono dal nuovo summary restano ferme; T-P5-06 o altri
 rami indipendenti non sono architetturalmente bloccati da CNF-AUDIT-01.
 T-P2-03/M1 rimangono aperte come già approvato.
+
+## Approvazione successiva
+
+L’autore approva CNF-AUDIT-01 con precisazioni vincolanti: fonte autorevole
+unica, contatori checked, EOF osservato e dimensione coerente per Complete;
+nessuna lettura dopo annullamento, nessun digest parziale, I/O tecnico;
+limite concorrente documentato, nomi UTF-8 espliciti, test 1–12 e CI.
+Autorizzata implementazione completa T-P5-05; stop obbligatorio alla fine.
+Il testo precedente rimane traccia della proposta, superato dalla decisione
+dell’autore e dalla consegna finale nei punti integrati.

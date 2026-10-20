@@ -129,6 +129,13 @@ pub use report::{
 
 pub use report::jsonl::JsonlSink;
 
+pub use domain::{
+    InputAudit, InputAuditCompletion, InvalidInputAudit, Sha256Digest, SummaryBuildError,
+    SummaryCounter, ValidationSummaryBuilder,
+};
+pub use input::audit::{AuditedReader, InputAuditError, InputAuditSession};
+pub use report::summary::write_summary;
+
 pub use input::{
     error::{BomKind, InputError},
     reader::{NewlinePolicy, RecordReader},

@@ -35,6 +35,7 @@ impl fmt::Display for BomKind {
 #[derive(Debug)]
 #[non_exhaustive]
 pub enum InputError {
+    Audit(super::audit::InputAuditError),
     /// Source preflight failure, before record framing has started.
     Read(io::Error),
     /// Framing failed after this many complete records; the partial row is not valid.
@@ -61,6 +62,7 @@ impl InputError {
 impl fmt::Display for InputError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::Audit(_) => f.write_str("input audit failed"),
             Self::Read(_) => f.write_str("cannot read input source"),
             Self::RecordRead {
                 last_completed_line,
@@ -86,6 +88,7 @@ impl fmt::Display for InputError {
 impl Error for InputError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
+            Self::Audit(source) => Some(source),
             Self::Read(source) | Self::RecordRead { source, .. } => Some(source),
             _ => None,
         }
