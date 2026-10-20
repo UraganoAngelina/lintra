@@ -125,6 +125,7 @@ pub use validators::presence::{PresenceValidationResult, is_missing, validate_pr
 
 pub use engine::error_factory::ErrorFactory;
 pub use engine::field_pipeline::{FieldPipeline, FieldPipelineError, FieldPipelineResult};
+pub use engine::identity_extractor::{IdentityExtractionError, IdentityExtractor};
 pub use validators::FieldViolation;
 
 pub use report::{

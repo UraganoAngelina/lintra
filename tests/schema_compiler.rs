@@ -240,7 +240,6 @@ fn every_excluded_ast_collection_is_a_blocking_boundary() {
     .unwrap();
     for name in [
         "joins",
-        "identity",
         "named_conditions",
         "derived_values",
         "repeated_groups",

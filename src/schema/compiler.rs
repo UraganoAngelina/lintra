@@ -70,13 +70,37 @@ impl Checks<'_> {
         }
         for (present, name) in [
             (!record.joins.is_empty(), "joins"),
-            (!record.identity.is_empty(), "identity"),
             (!record.named_conditions.is_empty(), "named_conditions"),
             (!record.derived_values.is_empty(), "derived_values"),
             (!record.repeated_groups.is_empty(), "repeated_groups"),
             (!record.rules.is_empty(), "rules"),
         ] {
             self.unsupported(present, trace, None, name);
+        }
+        // Resolve identity like other local references. A destination can hold
+        // only one value: reject collisions instead of silently overwriting.
+        let mut identity_targets = HashSet::new();
+        for binding in &record.identity {
+            self.reference(record, &binding.field);
+            match identity_target(binding) {
+                Ok(target) => {
+                    let key = match target {
+                        IdentityTarget::SiocRecordId => (0, String::new()),
+                        IdentityTarget::FiscalCode => (1, String::new()),
+                        IdentityTarget::EpisodeId => (2, String::new()),
+                        IdentityTarget::Technical(name) => (3, name.to_string()),
+                    };
+                    if !identity_targets.insert(key) {
+                        self.error(
+                            Code::InvalidSchemaValue,
+                            trace,
+                            Some(&binding.field),
+                            "identity destination must be unique",
+                        );
+                    }
+                }
+                Err((code, message)) => self.error(code, trace, Some(&binding.field), message),
+            }
         }
         if record.record_key.fields.is_empty() {
             self.error(
@@ -599,6 +623,23 @@ fn index(record: &RawRecordSchema, id: &str) -> Result<usize, (Code, String)> {
             "local field reference does not exist".to_owned(),
         ))
 }
+/// Match the approved raw target vocabulary without deriving identity from a
+/// field name. Only technical targets accept a nonempty technical_name.
+fn identity_target(raw: &RawIdentitySpec) -> Result<IdentityTarget, (Code, String)> {
+    match (&raw.target, &raw.technical_name) {
+        (RawIdentitySpecTarget::SiocRecordId, None) => Ok(IdentityTarget::SiocRecordId),
+        (RawIdentitySpecTarget::FiscalCode, None) => Ok(IdentityTarget::FiscalCode),
+        (RawIdentitySpecTarget::EpisodeId, None) => Ok(IdentityTarget::EpisodeId),
+        (RawIdentitySpecTarget::Technical, Some(name)) if !name.is_empty() => {
+            Ok(IdentityTarget::Technical(name.as_str().into()))
+        }
+        _ => Err((
+            Code::InvalidSchemaValue,
+            "identity technical_name must be nonempty and present only for technical targets"
+                .into(),
+        )),
+    }
+}
 fn compile_record(raw: &RawRecordSchema) -> Result<CompiledRecordSchema, (Code, String)> {
     let fields = raw
         .fields
@@ -652,7 +693,20 @@ fn compile_record(raw: &RawRecordSchema) -> Result<CompiledRecordSchema, (Code, 
         fields,
         local_rules: vec![],
         derived_values: vec![],
-        identity_plan: IdentityExtractionPlan { bindings: vec![] },
+        identity_plan: IdentityExtractionPlan {
+            // Preflight checked targets and references; retain typed defensive
+            // failures here rather than dropping an unresolved binding.
+            bindings: raw
+                .identity
+                .iter()
+                .map(|binding| {
+                    Ok(IdentityBinding {
+                        target: identity_target(binding)?,
+                        field_index: index(raw, &binding.field)?,
+                    })
+                })
+                .collect::<Result<Vec<_>, (Code, String)>>()?,
+        },
         projection_plan: ContextProjectionPlan {
             field_indexes: projection,
             join_indexes: vec![],
