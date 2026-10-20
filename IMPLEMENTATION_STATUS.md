@@ -90,10 +90,10 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 |---|---|---|
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
-| QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
+| QG-1 — controlli locali | PASS per a804956 | fmt/check/clippy/release, 29 unit + 98 integration + 10 doctest = 137 |
 | QG-2 — CI Linux/Windows | PASS per a804956 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39391897709), entrambi i runner verdi; 137 test e confronto byte per byte JSONL |
 | QG-3 — architettura | PASS per dominio/raw/compiled | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
-| QG-8 — documenti | PASS per lo scaffold | Copie identiche, nessun contratto modificato |
+| QG-8 — documenti | PASS per la frontiera consegnata | Sorgenti ARCH/DET/Piano invariati; integrazioni e adattamenti tracciati nei report; proposta CNF-AUDIT-01 non applicata |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
 | G-SIOC-HIST | OPEN_POLICY | DEC-SIOC-HIST-01, non blocca scaffold |
 | G-CAD-RUNTIME | NOT_STARTED | Richiede compiler, cross-record e persistenza |
