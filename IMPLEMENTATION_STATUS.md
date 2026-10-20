@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 DONE, CNF-AUDIT-01 risolta; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) Linux/Windows verde su 85f1ac7, 155 test locali; stop rispettato e successivamente revocato per avviare T-P5-06. **T-P5-06 DONE**: output atomico e spiegazioni dettagliate del codice; 170 test locali, 171 Windows; [CI 39405353679](https://github.com/UraganoAngelina/lintra/actions/runs/39405353679) Linux/Windows verde su 0c48768. **T-P5-07 DONE**: harness golden generico e sei scenari sintetici; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) Linux/Windows verde su b0e5ce7. **T-P6-02 DONE**: presenza Required/Optional e boundary Unknown; 186 test locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) Linux/Windows verde su c34649b. Avvio autonomo preflight T-P6-03.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 DONE, CNF-AUDIT-01 risolta; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) Linux/Windows verde su 85f1ac7, 155 test locali; stop rispettato e successivamente revocato per avviare T-P5-06. **T-P5-06 DONE**: output atomico e spiegazioni dettagliate del codice; 170 test locali, 171 Windows; [CI 39405353679](https://github.com/UraganoAngelina/lintra/actions/runs/39405353679) Linux/Windows verde su 0c48768. **T-P5-07 DONE**: harness golden generico e sei scenari sintetici; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) Linux/Windows verde su b0e5ce7. **T-P6-02 DONE**: presenza Required/Optional e boundary Unknown; 186 test locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) Linux/Windows verde su c34649b. **T-P6-03 BLOCKED** nel preflight: CNF-ALIGNMENT-01, mancano criteri per distinguere fill/contenuto e provare padding errato senza euristiche; proposta incrementale da approvare.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -206,6 +206,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P5-07 | DONE | 2026-10-20 | Sei scenari sintetici, confronto byte esatto e opt-in aggiornamenti; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) verde su b0e5ce7; [spiegazione](docs/verification/T-P5-07.md) |
 | T-P6-01 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
 | T-P6-02 | DONE | 2026-10-20 | Presenza base, Unknown per condizioni non valutate; 186 locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) verde su c34649b; [spiegazione](docs/verification/T-P6-02.md) |
+| T-P6-03 | BLOCKED | 2026-10-20 | CNF-ALIGNMENT-01: estrazione logical definita, criterio fisico padding insufficiente; [dossier e proposta A](docs/verification/T-P6-03-preflight.md), nessun Rust scritto |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -473,6 +474,17 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Decisioni della sessione corrente
 
+- **CNF-ALIGNMENT-01 / T-P6-03 — APERTA:** Rule + raw non distinguono sempre
+  fill di contenuto e padding. Esempio: LeftPad zero, raw 1000 può essere
+  valore 1000 senza padding, non necessariamente valore 1 padded a destra.
+  SCHEMA_AUTHORING definisce estrazione logical ma non un divieto universale
+  di fill interno/al bordo opposto. Vietate euristiche e validator fittizio.
+  Proposta A da approvare: consegnare helper logical zero-copy, mantenere
+  aperto residuo fisico T-P6-03 e proseguire sole dipendenze atomiche soddisfatte.
+  Alternativa B: definire prima i vincoli fisici espliciti. Nessuna modifica
+  a ARCH/DET/Piano/schemi e nessun codice della task ancora implementato.
+
+
 - **T-P6-02 / DET §42/§147:** validate_presence omette il contesto non usato
   nella sola presenza base; nessun EvaluationContext fittizio o evaluator
   anticipato. Condizioni compiled non vuote restituiscono Unknown, mai base
@@ -728,6 +740,23 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-20 — T-P6-03 preflight BLOCKED / T-P6-02 DONE
+
+- **Stato:** T-P6-02 DONE; T-P6-03 avviata autonomamente e BLOCKED prima del
+  codice per CNF-ALIGNMENT-01, senza dichiarare verifiche di padding inesistenti.
+- **File task corrente:** docs/verification/T-P6-03-preflight.md e questo stato.
+  Recap T-P6-02 nel relativo handoff e report tecnico.
+- **Evidenze:** prerequisito T-P6-01 CI Linux/Windows riconfermato; DET §15/44,
+  SCHEMA_AUTHORING e grammatica analizzati. Nessun Cargo aggiuntivo rivendicato.
+- **Problema:** lo stesso raw può rappresentare contenuto legittimo o padding
+  sul lato sbagliato; la funzione non riceve informazione sufficiente a decidere.
+- **Decisione richiesta:** A, estrazione logical autonoma con residuo fisico
+  esplicito e prosecuzione atomica, oppure B, completare prima il contratto.
+- **Git:** work/p1-foundations; documentazione del blocco separata da codice;
+  modifica preesistente al piano storico preservata ed esclusa.
+- **Next:** attendere decisione; nessun validator euristico, schema o task
+  successiva avviati per aggirare il blocco.
 
 HANDOFF — 2026-10-20 — T-P6-02 DONE / progressione autonoma ripristinata
 
