@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 DONE, CNF-AUDIT-01 risolta; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) Linux/Windows verde su 85f1ac7, 155 test locali; stop rispettato e successivamente revocato per avviare T-P5-06. **T-P5-06 DONE**: output atomico e spiegazioni dettagliate del codice; 170 test locali, 171 Windows; [CI 39405353679](https://github.com/UraganoAngelina/lintra/actions/runs/39405353679) Linux/Windows verde su 0c48768. **T-P5-07 DONE**: harness golden generico e sei scenari sintetici; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) Linux/Windows verde su b0e5ce7. **T-P6-02 DONE**: presenza Required/Optional e boundary Unknown; 186 test locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) Linux/Windows verde su c34649b. **T-P6-03 DONE**: sola estrazione logical, nessun controllo fisico/residuo formato 1; CNF-ALIGNMENT-01 archiviata. 193 locali, 194 Windows; [CI 39425268285](https://github.com/UraganoAngelina/lintra/actions/runs/39425268285) verde su bd49791. **T-P6-04 DONE_UNVERIFIED**: datatype Numeric/Alphanumeric, encoding e ByteSet; 205 locali, CI nativa da eseguire.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 DONE, CNF-AUDIT-01 risolta; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) Linux/Windows verde su 85f1ac7, 155 test locali; stop rispettato e successivamente revocato per avviare T-P5-06. **T-P5-06 DONE**: output atomico e spiegazioni dettagliate del codice; 170 test locali, 171 Windows; [CI 39405353679](https://github.com/UraganoAngelina/lintra/actions/runs/39405353679) Linux/Windows verde su 0c48768. **T-P5-07 DONE**: harness golden generico e sei scenari sintetici; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) Linux/Windows verde su b0e5ce7. **T-P6-02 DONE**: presenza Required/Optional e boundary Unknown; 186 test locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) Linux/Windows verde su c34649b. **T-P6-03 DONE**: sola estrazione logical, nessun controllo fisico/residuo formato 1; CNF-ALIGNMENT-01 archiviata. 193 locali, 194 Windows; [CI 39425268285](https://github.com/UraganoAngelina/lintra/actions/runs/39425268285) verde su bd49791. **T-P6-04 DONE**: datatype Numeric/AN, encoding e ByteSet; 205 locali, [CI 39430943109](https://github.com/UraganoAngelina/lintra/actions/runs/39430943109) Linux/Windows verde su 24b0e02. Avvio autonomo T-P6-05.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -124,7 +124,7 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS per T-P6-04 | fmt/check/clippy/release/GNU, 35 unit + 159 integration + 11 doctest = 205 |
-| QG-2 — CI Linux/Windows | PASS per bd49791 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39425268285), Linux 118636134483 e Windows 118636134182 completed/success; 193 locali/194 Windows |
+| QG-2 — CI Linux/Windows | PASS per 24b0e02 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39430943109), Linux 118655543578 e Windows 118655542644 completed/success |
 | QG-3 — architettura | PASS per dominio/raw/compiled | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
 | QG-8 — documenti | PASS con revisione autorizzata T-P6-03 | DET §44 e prompt kit aggiornati per mandato esplicito; hash prima/dopo registrati; ARCH/Piano invariati; nessun residuo fisico formato 1 |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
@@ -216,7 +216,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P6-01 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
 | T-P6-02 | DONE | 2026-10-20 | Presenza base, Unknown per condizioni non valutate; 186 locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) verde su c34649b; [spiegazione](docs/verification/T-P6-02.md) |
 | T-P6-03 | DONE | 2026-10-20 | Mandato finale: solo logical, nessun residuo; 193 locali/194 Windows, [CI 39425268285](https://github.com/UraganoAngelina/lintra/actions/runs/39425268285) verde bd49791; [evidenze](docs/verification/T-P6-03.md) |
-| T-P6-04 | DONE_UNVERIFIED | 2026-10-20 | Numeric/AN, profili/ByteSet, 205 test locali; CI da eseguire; [spiegazione](docs/verification/T-P6-04.md) |
+| T-P6-04 | DONE | 2026-10-20 | Numeric/AN, profili/ByteSet, 205 locali, [CI 39430943109](https://github.com/UraganoAngelina/lintra/actions/runs/39430943109) Linux/Windows success su 24b0e02; [spiegazione](docs/verification/T-P6-04.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -225,7 +225,8 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 T-P6-04: fmt/check/clippy/test/release/GNU-all-targets/diff-check PASS;
 205 test locali, 35 unit + 159 integration + 11 doctest. Undici integration
 Datatype e un unit tecnico nuovi. Tutti i 256 byte verificati per CP1252/ISO,
-nessun cambiamento al binding compiler UTF-8-only. CI nativa PENDING.
+nessun cambiamento al binding compiler UTF-8-only. CI 39430943109 su 24b0e02:
+Linux 118655543578 e Windows 118655542644 completed/success.
 [API, confini e spiegazioni](docs/verification/T-P6-04.md).
 
 T-P6-03: fmt/clippy/test/release/GNU-all-targets PASS, 193 test locali;
@@ -793,6 +794,20 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-20 — T-P6-04 DONE / avvio autonomo T-P6-05
+
+- **Stato:** DONE; Numeric/AN e profili espliciti verificati.
+- **File:** datatype.rs, input/encoding.rs, validators/mod.rs, lib.rs,
+  compiled/tests.rs, datatype.rs integration, report e stato.
+- **Evidenze:** 205 locali; fmt/check/clippy/release/GNU/diff PASS;
+  CI 39430943109 su 24b0e02: Linux 118655543578 e Windows 118655542644 success.
+- **Decisioni:** enum esiti normativi distinta da errori tecnici; classe
+  lessicale esplicita e nessun dominio AN o trim. Nessuna dichiarazione di
+  compiler completo o di binding aggiuntivi. Spiegazioni in T-P6-04.md.
+- **Git:** 24b0e02 pubblicato, chiusura documentale separata;
+  cancellazione storica preesistente esclusa.
+- **Next:** T-P6-05 AllowedValues, preflight e implementazione se contratti chiari.
 
 HANDOFF — 2026-10-20 — T-P6-04 locale verificata / CI da eseguire
 
