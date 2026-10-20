@@ -177,6 +177,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P5-02 | DONE | 2026-10-20 | [CI 39390492669](https://github.com/UraganoAngelina/lintra/actions/runs/39390492669) verde Linux/Windows su 39ed9b2; 127 test |
 | T-P5-03 | DONE | 2026-10-20 | [CI 39390829911](https://github.com/UraganoAngelina/lintra/actions/runs/39390829911) verde Linux/Windows su 0f7b2df; 132 test |
 | T-P5-04 | DONE_UNVERIFIED | 2026-10-20 | JsonlSink/DTO/protocollo e fixture byte per byte; 137 test, CI pendente |
+| T-P5-05 | BLOCKED | 2026-10-20 | Preflight CNF-AUDIT-01: payload input audit assente, SHA-256/annullamento prima di EOF; proposta A reviewabile, nessun Rust modificato |
 | T-P6-01 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
@@ -404,6 +405,15 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Decisioni della sessione corrente
 
+- **CNF-AUDIT-01 / T-P5-05 — APERTA:** audit nome/dimensione/SHA-256
+  obbligatorio (ARCH §39C.3) ma payload assente in DET §57/§101;
+  annullamento prima di EOF non può produrre hash file dalla sola lettura
+  eseguita (DET §119). Proposta A non approvata in
+  docs/verification/T-P5-05-preflight.md, due JSON sintetici reviewabili.
+  T-P5-05 ferma; nessun hash parziale presentato come completo o nuova
+  scansione dopo annullamento. Non blocca i rami indipendenti.
+
+
 - **T-P5-04 / ARCH §25, DET §34/§52–55:** DTO wire con alias dell’esempio
   ARCH e payload completi di diagnostica/context DET, evitando perdita di
   raw_hex o collisioni fra trace. Contratto in docs/REPORT_JSONL.md.
@@ -603,6 +613,19 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-20 — preflight T-P5-05 / CNF-AUDIT-01
+
+- **Blocco:** contratto audit su input non interamente letto; serve scelta
+  dell’autore prima di estendere RunMetadata/ValidationSummary.
+- **Proposta reviewabile:** dossier T-P5-05-preflight.md e due JSON
+  docs/proposals/input-audit/, sintesi/hash verificati senza codice Rust.
+- **Stato:** T-P5-04 locale verificata/CI in corso; T-P5-05 BLOCKED.
+- **Decisione richiesta:** approvare proposta A oppure fornire policy
+  alternativa coerente con hash dell’intero input e cancellazione.
+- **Indipendenti:** T-P5-06 e rami con prerequisiti verdi non invalidati;
+  il blocco non è una richiesta di autorizzazione ordinaria all’avanzamento.
+
 
 HANDOFF — 2026-10-20 — T-P5-04 locale verificata
 

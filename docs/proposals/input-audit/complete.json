@@ -1,0 +1,10 @@
+{
+  "trace_id": "T1",
+  "file_name": "synthetic-T1.txt",
+  "file_size_bytes": 7,
+  "bytes_read": 7,
+  "completion": {
+    "kind": "complete",
+    "sha256": "35899abbe5d8c2a046d198e84ddc27c4a45f4f5cffcaa29368c83492d7611fc9"
+  }
+}

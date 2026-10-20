@@ -1,0 +1,9 @@
+{
+  "trace_id": "T1",
+  "file_name": "synthetic-T1.txt",
+  "file_size_bytes": 7,
+  "bytes_read": 3,
+  "completion": {
+    "kind": "incomplete"
+  }
+}
