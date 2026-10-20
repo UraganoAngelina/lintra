@@ -124,6 +124,7 @@ pub use validators::domain::validate_allowed_values;
 pub use validators::presence::{PresenceValidationResult, is_missing, validate_presence};
 
 pub use engine::error_factory::ErrorFactory;
+pub use engine::field_pipeline::{FieldPipeline, FieldPipelineError, FieldPipelineResult};
 pub use validators::FieldViolation;
 
 pub use report::{

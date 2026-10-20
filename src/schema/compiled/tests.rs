@@ -1,6 +1,81 @@
 use super::*;
 use crate::domain::{FlowId, SchemaVersion, ValidationCode};
 
+/// A private synthetic field lets the runtime boundaries be tested without
+/// admitting unimplemented plans through the real production compiler.
+fn run_private_pipeline_fixture(
+    spec: &CompiledFieldSpec,
+) -> Result<crate::FieldPipelineResult, crate::FieldPipelineError> {
+    let key = SchemaKey {
+        flow_id: FlowId("EXAMPLE".into()),
+        version: SchemaVersion("v1".into()),
+    };
+    let trace = TraceId("T".into());
+    let mut summary = crate::ValidationSummaryBuilder::new(
+        key.clone(),
+        crate::ScopeSummary::Trace {
+            trace_id: trace.clone(),
+        },
+    );
+    let mut sink = crate::VecSink::default();
+    crate::FieldPipeline::new(
+        crate::ErrorFactory {
+            flow_id: &key.flow_id,
+            schema_version: &key.version,
+            trace_id: &trace,
+            encoding: &EncodingSpec::Utf8,
+        },
+        &mut sink,
+        &mut summary,
+    )
+    .run(
+        spec,
+        crate::FieldSlice { raw: b"ABC" },
+        1,
+        &crate::RecordIdentity::default(),
+    )
+}
+
+/// Unknown stops before malformed later plans; once presence is resolved,
+/// bad extraction/datatype/constraint plans remain typed technical failures.
+#[test]
+fn pipeline_unknown_and_unsupported_plan_boundaries_are_explicit() {
+    use crate::{FieldPipelineError as Failure, FieldPipelineResult as Outcome};
+    let mut spec = field("F", 0, 3);
+    spec.presence_policy
+        .required_if
+        .push(CompiledExpr::Const(true));
+    spec.alignment = AlignmentRule::RightPad {
+        fill: b' ',
+        content_policy: ContentBoundaryPolicy::StripLeadingFill,
+    };
+    assert_eq!(
+        run_private_pipeline_fixture(&spec).unwrap(),
+        Outcome::SkippedDueToUnknownPresence
+    );
+    spec.presence_policy.required_if.clear();
+    assert!(matches!(
+        run_private_pipeline_fixture(&spec),
+        Err(Failure::Logical(
+            crate::LogicalValueError::IncompatibleContentPolicy
+        ))
+    ));
+    spec.alignment = AlignmentRule::Exact;
+    spec.field_type = FieldType::Date(DateFormat::DdMmYyyy);
+    assert!(matches!(
+        run_private_pipeline_fixture(&spec),
+        Err(Failure::Datatype(crate::DatatypeError::UnsupportedType(_)))
+    ));
+    spec.field_type = FieldType::Alphanumeric;
+    spec.constraints.push(CompiledConstraint::Range {
+        min: "1".parse().unwrap(),
+        max: "2".parse().unwrap(),
+    });
+    assert!(
+        matches!(run_private_pipeline_fixture(&spec), Err(Failure::UnsupportedConstraint { field_id, constraint_index: 0 }) if field_id.0 == "F")
+    );
+}
+
 /// Private models cover unsupported plans without opening compiler constructors
 /// or pretending the current compiler accepts Date. No record violation may
 /// hide a missing lexical plan or an unimplemented datatype.
