@@ -15,6 +15,7 @@ EXPORT_CAD/
 # Real inputs are excluded by default; only synthetic test text is allowed.
 *.txt
 !tests/fixtures/**/*.txt
+!tests/golden/synthetic/**/input.txt
 A.txt
 B1.txt
 B2.txt

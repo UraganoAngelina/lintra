@@ -1,4 +1,6 @@
 * text=auto
 tests/fixtures/** -text
 tests/golden/** -text
+# Fixed-width fixture padding/CRLF are data, not source-style whitespace errors.
+tests/golden/synthetic/**/input.txt -whitespace
 docs/schema-authoring/examples/** -text
