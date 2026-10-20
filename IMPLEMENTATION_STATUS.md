@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 locale verificata, CI 39390492669 in corso; T-P5-03 locale verificata (132 test), CI successiva pendente.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 locale verificata (132 test), CI successiva pendente.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -91,7 +91,7 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
-| QG-2 — CI Linux/Windows | PASS per a679f40 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39389657166), entrambi i runner verdi; T-P5-02 richiede nuova CI |
+| QG-2 — CI Linux/Windows | PASS per 39ed9b2 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39390492669), entrambi i runner verdi; T-P5-03 richiede nuova CI |
 | QG-3 — architettura | PASS per dominio/raw/compiled | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
 | QG-8 — documenti | PASS per lo scaffold | Copie identiche, nessun contratto modificato |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
@@ -174,7 +174,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P4-04 | DONE | 2026-10-20 | CI comune [39282115064](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064) verde Linux/Windows su 7168a05; dettagli nel report |
 | T-P4-05 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
 | T-P5-01 | DONE | 2026-10-20 | [CI 39389657166](https://github.com/UraganoAngelina/lintra/actions/runs/39389657166) verde Linux/Windows su a679f40; 123 test |
-| T-P5-02 | DONE_UNVERIFIED | 2026-10-20 | ErrorFactory/template e FieldViolation; 127 test, snapshot codici; CI pendente |
+| T-P5-02 | DONE | 2026-10-20 | [CI 39390492669](https://github.com/UraganoAngelina/lintra/actions/runs/39390492669) verde Linux/Windows su 39ed9b2; 127 test |
 | T-P5-03 | DONE_UNVERIFIED | 2026-10-20 | ValidationSink/VecSink/CompositeSink, ReportError con cause, fail-fast; 132 test locali, CI pendente |
 | T-P6-01 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
