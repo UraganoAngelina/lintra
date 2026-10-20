@@ -117,7 +117,7 @@ pub use schema::compatibility::{EngineCapabilities, SchemaFormatVersion};
 
 pub use schema::registry::{SchemaRegistry, SchemaResolutionError};
 
-pub use validators::presence::is_missing;
+pub use validators::presence::{PresenceValidationResult, is_missing, validate_presence};
 
 pub use engine::error_factory::ErrorFactory;
 pub use validators::FieldViolation;

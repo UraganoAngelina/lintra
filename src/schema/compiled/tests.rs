@@ -1,6 +1,32 @@
 use super::*;
 use crate::domain::{FlowId, SchemaVersion, ValidationCode};
 
+/// Private fixture access can construct future conditional plans without
+/// relaxing compiled-model constructors or enabling unsupported compiler ASTs.
+/// The base presence stage must refuse both kinds, for present/missing values.
+#[test]
+fn base_presence_never_ignores_compiled_conditions() {
+    use crate::{FieldSlice, PresenceValidationResult, validate_presence};
+    for required in [false, true] {
+        let mut spec = field("F", 0, 3);
+        if required {
+            spec.presence_policy
+                .required_if
+                .push(CompiledExpr::Const(true));
+        } else {
+            spec.presence_policy
+                .forbidden_if
+                .push(CompiledExpr::Const(false));
+        }
+        for raw in [b"   ".as_slice(), b"ABC"] {
+            assert_eq!(
+                validate_presence(&spec, FieldSlice { raw }),
+                Ok(PresenceValidationResult::Unknown)
+            );
+        }
+    }
+}
+
 fn field(id: &str, start: usize, len: usize) -> CompiledFieldSpec {
     CompiledFieldSpec {
         id: FieldId(id.into()),

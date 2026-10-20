@@ -30,3 +30,11 @@ Mandato successivo dell'autore — 2026-10-20:
 - Accompagnare quindi il codice nuovo o modificato con spiegazioni del
   comportamento e delle ragioni di correttezza: documentazione/commenti
   pertinenti, spiegazione tecnica consultabile e recap finale dei file.
+
+Mandato più recente — ripresa del workflow autonomo, 2026-10-20:
+- Dopo T-P5-07, procedere da T-P6-02 e iniziare autonomamente le task successive
+  quando la precedente è verificata e prerequisiti/contratti non presentano blocchi.
+- Questo mandato supera gli stop ordinari dei prompt e lo stop storico dopo
+  T-P5-05. Restano vincolanti i gate e le decisioni realmente mancanti.
+- Restano esclusi Superpowers, subagenti e processi locali in background;
+  mantenere spiegazioni dettagliate del codice e recap dei file per ogni task.
