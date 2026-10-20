@@ -2,8 +2,9 @@
 
 2026-10-20. **BLOCCO DI CONTRATTO: proposta A non ancora approvata.**
 Task letta, nessuna implementazione Rust o dipendenza SHA-256 aggiunta.
-Prerequisito T-P5-04 locale verificato su a804956, relativa CI in corso.
-Questa analisi non salta il gate né dichiara pronta la task.
+Prerequisito T-P5-04 verificato su a804956, CI 39391897709
+completed/success Linux/Windows. Gate soddisfatto; resta il solo blocco
+di contratto descritto sotto.
 
 ## Evidenze e problema circoscritto
 
