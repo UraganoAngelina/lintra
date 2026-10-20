@@ -154,3 +154,7 @@ pub use input::{
 };
 
 pub use input::encoding::{DiagnosticValue, render_diagnostic_value};
+
+pub use engine::record_validator::{
+    LocalRecordValidationArtifacts, RecordValidationError, RecordValidator, UnsupportedLocalFeature,
+};

@@ -1,0 +1,266 @@
+//! Explicit LocalOnly record validation, ratified by CNF-RECORD-01.
+use super::{
+    error_factory::ErrorFactory,
+    field_pipeline::{FieldPipeline, FieldPipelineError, FieldPipelineResult},
+    identity_extractor::{IdentityExtractionError, IdentityExtractor},
+};
+use crate::{
+    domain::{FieldId, RecordIdentity, SummaryBuildError, TraceId, ValidationSummaryBuilder},
+    input::record::{RawRecord, RecordView},
+    report::sink::{ReportError, ValidationSink},
+    schema::compiled::{CompiledConstraint, CompiledFlowSchema, CompiledRecordSchema},
+};
+use std::{error::Error, fmt};
+
+/// Only locally executed checks are represented. `valid` is not a statement
+/// about Full validation, cross-record rules, datasets or persistent history.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct LocalRecordValidationArtifacts {
+    pub identity: Option<RecordIdentity>,
+    pub valid: bool,
+}
+
+/// Features required inside the local scope that have no executor yet.
+/// Projection is deliberately absent: it belongs to Full, not to LocalOnly.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum UnsupportedLocalFeature {
+    Rules,
+    DerivedValues,
+    RepeatedGroups,
+    ConditionalPresence,
+    Constraint,
+}
+
+/// Technical failures only. Normative ValidationError values go to the sink,
+/// never inside this enum. Application will compose this payload in P7.
+#[derive(Debug)]
+pub enum RecordValidationError {
+    TraceNotFound(TraceId),
+    UnsupportedLocalPlan {
+        feature: UnsupportedLocalFeature,
+        field_id: Option<FieldId>,
+    },
+    InvalidLineNumber,
+    FieldOutOfBounds {
+        field_id: FieldId,
+    },
+    Identity(IdentityExtractionError),
+    Pipeline(FieldPipelineError),
+    Report(ReportError),
+    Summary(SummaryBuildError),
+    PreviousFailure,
+}
+impl fmt::Display for RecordValidationError {
+    /// Messages omit record bytes and patient identity; typed payloads retain
+    /// schema context for the caller without inventing generic string errors.
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(match self {
+            Self::TraceNotFound(_) => "local validation trace does not exist",
+            Self::UnsupportedLocalPlan { .. } => "required local plan is not supported",
+            Self::InvalidLineNumber => "record line number must be one-based",
+            Self::FieldOutOfBounds { .. } => "record field range is outside source bytes",
+            Self::Identity(_) => "record identity extraction failed",
+            Self::Pipeline(_) => "record field pipeline failed",
+            Self::Report(_) => "record diagnostic emission failed",
+            Self::Summary(_) => "record counter update failed",
+            Self::PreviousFailure => "record validator cannot resume after a technical failure",
+        })
+    }
+}
+impl Error for RecordValidationError {
+    /// Original technical causes survive wrapping and can be mapped without
+    /// parsing human text. Context-only variants have no nested source.
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match self {
+            Self::Identity(error) => Some(error),
+            Self::Pipeline(error) => Some(error),
+            Self::Report(error) => Some(error),
+            Self::Summary(error) => Some(error),
+            _ => None,
+        }
+    }
+}
+
+/// Borrows one compiled trace and its flow's diagnostic metadata. No reader,
+/// dataset, projection, application type or owned record is stored here.
+/// A technical failure is terminal for this instance; normative Invalid is not.
+pub struct RecordValidator<'schema> {
+    schema: &'schema CompiledRecordSchema,
+    factory: ErrorFactory<'schema>,
+    failed: bool,
+}
+impl<'schema> RecordValidator<'schema> {
+    /// Resolve a trace through its actual compiled flow, preventing inconsistent
+    /// flow/trace/encoding metadata. Reject unsupported local plans once, before
+    /// any record or summary mutation. Nonempty projection plans are permitted.
+    pub fn new(
+        flow: &'schema CompiledFlowSchema,
+        trace_id: &TraceId,
+    ) -> Result<Self, RecordValidationError> {
+        let schema = flow
+            .trace(trace_id)
+            .ok_or_else(|| RecordValidationError::TraceNotFound(trace_id.clone()))?;
+        check_local_plan(schema)?;
+        Ok(Self {
+            schema,
+            factory: ErrorFactory {
+                flow_id: &flow.key().flow_id,
+                schema_version: &flow.key().version,
+                trace_id: schema.id(),
+                encoding: flow.encoding(),
+            },
+            failed: false,
+        })
+    }
+
+    /// StrictSkipRecord: malformed width emits only E_RECORD_LENGTH and returns
+    /// no identity. On a full-width record all fields are checked in schema
+    /// order; Invalid never suppresses independent later fields. The caller
+    /// must abort its report on Err and must not publish a definitive summary.
+    /// This API intentionally cannot request or claim Full validation.
+    pub fn validate_local(
+        &mut self,
+        record: RawRecord<'_>,
+        sink: &mut dyn ValidationSink,
+        summary: &mut ValidationSummaryBuilder,
+    ) -> Result<LocalRecordValidationArtifacts, RecordValidationError> {
+        if self.failed {
+            return Err(RecordValidationError::PreviousFailure);
+        }
+        let result = self.validate_record(record, sink, summary);
+        if result.is_err() {
+            self.failed = true;
+        }
+        result
+    }
+
+    /// Keep the technical terminal-state transition in the public wrapper so
+    /// every early `?` below has the same failure behavior.
+    fn validate_record(
+        &self,
+        record: RawRecord<'_>,
+        sink: &mut dyn ValidationSink,
+        summary: &mut ValidationSummaryBuilder,
+    ) -> Result<LocalRecordValidationArtifacts, RecordValidationError> {
+        if record.line_number == 0 {
+            return Err(RecordValidationError::InvalidLineNumber);
+        }
+        summary
+            .record_processed()
+            .map_err(RecordValidationError::Summary)?;
+        if record.bytes.len() != self.schema.record_length() {
+            let error = self.factory.record_length_error(
+                record.line_number,
+                None,
+                self.schema.record_length(),
+                record.bytes.len(),
+            );
+            // Count only a successfully emitted error. If either dependency
+            // fails the caller receives Err, never a fabricated valid result.
+            sink.on_error(&error)
+                .map_err(RecordValidationError::Report)?;
+            summary
+                .error_emitted(&error.code)
+                .map_err(RecordValidationError::Summary)?;
+            summary
+                .record_invalid()
+                .map_err(RecordValidationError::Summary)?;
+            return Ok(LocalRecordValidationArtifacts {
+                identity: None,
+                valid: false,
+            });
+        }
+        let view = RecordView::new(record.bytes);
+        let identity = IdentityExtractor
+            .extract(&view, self.schema, self.factory.encoding)
+            .map_err(RecordValidationError::Identity)?;
+        let factory = ErrorFactory {
+            flow_id: self.factory.flow_id,
+            schema_version: self.factory.schema_version,
+            trace_id: self.factory.trace_id,
+            encoding: self.factory.encoding,
+        };
+        let mut pipeline = FieldPipeline::new(factory, sink, summary);
+        let mut valid = true;
+        for field in self.schema.fields() {
+            let value =
+                view.field(field)
+                    .ok_or_else(|| RecordValidationError::FieldOutOfBounds {
+                        field_id: field.id().clone(),
+                    })?;
+            match pipeline
+                .run(field, value, record.line_number, &identity)
+                .map_err(RecordValidationError::Pipeline)?
+            {
+                FieldPipelineResult::Valid | FieldPipelineResult::MissingOptional => {}
+                FieldPipelineResult::Invalid => valid = false,
+                FieldPipelineResult::SkippedDueToUnknownPresence => {
+                    // Defensive even after check_local_plan: Unknown cannot be
+                    // promoted to a local pass or a normative violation.
+                    return Err(RecordValidationError::UnsupportedLocalPlan {
+                        feature: UnsupportedLocalFeature::ConditionalPresence,
+                        field_id: Some(field.id().clone()),
+                    });
+                }
+            }
+        }
+        if valid {
+            summary.record_valid()
+        } else {
+            summary.record_invalid()
+        }
+        .map_err(RecordValidationError::Summary)?;
+        Ok(LocalRecordValidationArtifacts {
+            identity: Some(identity),
+            valid,
+        })
+    }
+}
+
+/// Public compilation already rejects these features. Defend the runtime
+/// boundary as it evolves: a future compiled local obligation cannot disappear
+/// merely because the current executor does not know how to evaluate it.
+fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidationError> {
+    for (present, feature) in [
+        (
+            !schema.local_rules().is_empty(),
+            UnsupportedLocalFeature::Rules,
+        ),
+        (
+            !schema.derived_values().is_empty(),
+            UnsupportedLocalFeature::DerivedValues,
+        ),
+        (
+            !schema.repeated_groups().is_empty(),
+            UnsupportedLocalFeature::RepeatedGroups,
+        ),
+    ] {
+        if present {
+            return Err(RecordValidationError::UnsupportedLocalPlan {
+                feature,
+                field_id: None,
+            });
+        }
+    }
+    for field in schema.fields() {
+        let policy = field.presence_policy();
+        let feature = if !policy.required_if.is_empty() || !policy.forbidden_if.is_empty() {
+            Some(UnsupportedLocalFeature::ConditionalPresence)
+        } else if field
+            .constraints()
+            .iter()
+            .any(|constraint| !matches!(constraint, CompiledConstraint::AllowedValues { .. }))
+        {
+            Some(UnsupportedLocalFeature::Constraint)
+        } else {
+            None
+        };
+        if let Some(feature) = feature {
+            return Err(RecordValidationError::UnsupportedLocalPlan {
+                feature,
+                field_id: Some(field.id().clone()),
+            });
+        }
+    }
+    Ok(())
+}

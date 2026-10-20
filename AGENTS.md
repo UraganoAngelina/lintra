@@ -54,3 +54,15 @@ Decisione finale dell'autore — supera la precedente scelta B:
   futura non implementata. Dopo verifica procedere a T-P6-04.
 - Lo spazio iniziale in testo libero resta lecito; altri stage verificano
   valori, larghezza, chiavi e date senza garanzia assoluta sugli shift di colonne.
+
+Ratifica CNF-RECORD-01 — T-P6-08 LocalOnly:
+- Proposta A approvata con precisazioni dell'autore: validate_local restituisce
+  LocalRecordValidationArtifacts { identity, valid }; valid riguarda solo
+  controlli locali supportati, mai conformità globale.
+- Errori tecnici RecordValidationError nell'engine, senza import application.
+- ProjectionPlan invariato e non consumato in LocalOnly: non è un errore se
+  non vuoto. Regole locali/condizioni richieste ma non supportate vanno rifiutate.
+- Nessun placeholder, reference dataset o proiezione simulata; P11/P13 e
+  residuo T-P2-03/M1 restano aperti; fonti architetturali invariate.
+- STOP obbligatorio dopo T-P6-08 e handoff: non implementare P7 o altre task
+  senza nuova autorizzazione. Il riordino P7 è approvato solo come piano.

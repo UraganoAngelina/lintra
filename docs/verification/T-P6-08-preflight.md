@@ -1,7 +1,23 @@
 # T-P6-08 — Preflight / CNF-RECORD-01
 
-2026-10-20. **BLOCKED sul contratto**, nessun codice T-P6-08 implementato.
-Proposta seguente **non approvata**. Nessuna modifica a ARCH/DET/Piano.
+2026-10-20. **CNF-RECORD-01 RISOLTA: proposta A APPROVATA con precisazioni
+vincolanti dell'autore**. Implementazione T-P6-08 LocalOnly autorizzata.
+Nessuna modifica a ARCH/DET/Piano. Le evidenze del blocco sotto sono storiche.
+
+## Ratifica e precisazioni vincolanti
+
+L'autore approva validate_local e LocalRecordValidationArtifacts { identity,
+valid }, con valid riferito solo ai controlli locali supportati. Nessun
+projected_record/placeholder. RecordValidationError nell'engine conserva i
+payload reali senza dipendere dall'application. ProjectionPlan invariato,
+anche non vuoto, non impedisce LocalOnly; regole/condizioni locali necessarie
+non supportate sono invece rifiutate. Reference data e proiezioni restano P11/P13.
+ValidationRunError incrementale autorizzato; T-P2-03/M1 restano aperte.
+Chiusura consentita solo come **DONE — LocalOnly scope approved by CNF-RECORD-01**,
+con rinvii e test futuri espliciti. Nessuna modifica alle semantiche degli esiti.
+Il riordino P7 è ratificato come piano, **non autorizza l'esecuzione**:
+STOP dopo T-P6-08 e handoff, attendere nuovo mandato prima di qualsiasi task.
+Questa precisazione supera il punto operativo 7 e l'handoff storico sottostanti.
 
 ## Evidenze e impatto
 

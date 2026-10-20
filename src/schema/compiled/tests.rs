@@ -386,3 +386,129 @@ fn physical_order_gaps_overlaps_and_trailing_uncovered_bytes_are_rejected() {
         ModelInvariantError::RecordLengthMismatch
     );
 }
+
+/// Execute the actual record boundary with private malformed/future models.
+/// Production constructors remain closed: no unsupported AST is enabled just
+/// to make a runtime failure test reachable.
+fn run_private_record(
+    schema: &CompiledFlowSchema,
+    bytes: &[u8],
+) -> Result<crate::LocalRecordValidationArtifacts, crate::RecordValidationError> {
+    let trace = &schema.traces()[0];
+    let mut sink = crate::VecSink::default();
+    let mut summary = crate::ValidationSummaryBuilder::new(
+        schema.key().clone(),
+        crate::ScopeSummary::Trace {
+            trace_id: trace.id().clone(),
+        },
+    );
+    let result = crate::RecordValidator::new(schema, trace.id())?.validate_local(
+        crate::RawRecord {
+            line_number: 1,
+            bytes,
+        },
+        &mut sink,
+        &mut summary,
+    );
+    if result.is_err() {
+        assert!(
+            sink.errors().is_empty(),
+            "technical failure must not become a normative error"
+        );
+    }
+    result
+}
+
+/// A true identity indexing failure and a real pipeline extraction failure
+/// keep their original payloads; malformed width never reaches either stage.
+#[test]
+fn local_record_preserves_identity_and_pipeline_technical_causes() {
+    use crate::{FieldPipelineError, RecordValidationError as Failure};
+    let trace = CompiledRecordSchema::from_parts(record_parts("T")).unwrap();
+    let mut schema = CompiledFlowSchema::from_parts(flow_parts(vec![trace])).unwrap();
+    schema.traces[0].identity_plan.bindings[0].field_index = usize::MAX;
+    assert!(matches!(
+        run_private_record(&schema, b"ABCDE"),
+        Err(Failure::Identity(
+            crate::IdentityExtractionError::InvalidFieldIndex {
+                field_index: usize::MAX
+            }
+        ))
+    ));
+    let malformed = run_private_record(&schema, b"x").unwrap();
+    assert!(!malformed.valid && malformed.identity.is_none());
+    schema.traces[0].identity_plan.bindings[0].field_index = 0;
+    schema.traces[0].fields[0].alignment = AlignmentRule::RightPad {
+        fill: b' ',
+        content_policy: ContentBoundaryPolicy::StripLeadingFill,
+    };
+    assert!(matches!(
+        run_private_record(&schema, b"ABCDE"),
+        Err(Failure::Pipeline(FieldPipelineError::Logical(
+            crate::LogicalValueError::IncompatibleContentPolicy
+        )))
+    ));
+    schema.traces[0].fields[0].alignment = AlignmentRule::Exact;
+    schema.traces[0].fields[0].range = ByteRange::new(20, 3).unwrap();
+    // Skip identity so the record's own checked field access is exercised.
+    schema.traces[0].identity_plan.bindings.clear();
+    assert!(
+        matches!(run_private_record(&schema,b"ABCDE"),Err(Failure::FieldOutOfBounds{field_id}) if field_id.0=="Z")
+    );
+}
+
+/// Future compiled local obligations cannot silently pass the current runtime,
+/// even on blank fields where the field pipeline would otherwise stop early.
+#[test]
+fn local_record_rejects_every_unimplemented_local_plan_before_processing() {
+    use crate::{RecordValidationError as Failure, UnsupportedLocalFeature as Feature};
+    let trace = CompiledRecordSchema::from_parts(record_parts("T")).unwrap();
+    let base = CompiledFlowSchema::from_parts(flow_parts(vec![trace])).unwrap();
+    for feature in [
+        Feature::Rules,
+        Feature::DerivedValues,
+        Feature::RepeatedGroups,
+        Feature::ConditionalPresence,
+        Feature::Constraint,
+    ] {
+        let mut schema = base.clone();
+        let trace = &mut schema.traces[0];
+        match feature {
+            Feature::Rules => trace.local_rules.push(CompiledRule {
+                id: "synthetic".into(),
+                when: CompiledExpr::Const(true),
+                assertions: vec![],
+                error_code: ValidationCode::CrossField,
+                message_template: "synthetic".into(),
+            }),
+            Feature::DerivedValues => trace.derived_values.push(DerivedValuePlan::Substring {
+                source: ResolvedFieldRef::Local {
+                    field_index: 0,
+                    field_id: FieldId("Z".into()),
+                },
+                target: ValueTarget::Raw,
+                range: ByteRange::new(0, 1).unwrap(),
+            }),
+            Feature::RepeatedGroups => trace.repeated_groups.push(RepeatedGroupPlan {
+                id: "synthetic".into(),
+                fields: vec![0],
+                required_slots: vec![],
+                optional_slots: vec![],
+                contiguity_required: false,
+                unique_non_missing: false,
+                unused_slot_value: None,
+            }),
+            Feature::ConditionalPresence => trace.fields[0]
+                .presence_policy
+                .forbidden_if
+                .push(CompiledExpr::Const(false)),
+            Feature::Constraint => trace.fields[0].constraints.push(CompiledConstraint::Range {
+                min: "0".parse().unwrap(),
+                max: "1".parse().unwrap(),
+            }),
+        }
+        assert!(
+            matches!(run_private_record(&schema,b"     "),Err(Failure::UnsupportedLocalPlan{feature:found,..}) if found==feature)
+        );
+    }
+}
