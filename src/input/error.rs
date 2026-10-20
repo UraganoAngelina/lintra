@@ -35,15 +35,43 @@ impl fmt::Display for BomKind {
 #[derive(Debug)]
 #[non_exhaustive]
 pub enum InputError {
+    /// Source preflight failure, before record framing has started.
     Read(io::Error),
+    /// Framing failed after this many complete records; the partial row is not valid.
+    RecordRead {
+        last_completed_line: u64,
+        source: io::Error,
+    },
     BomRejected(BomKind),
     LineNumberOverflow,
     PreviousFailure,
 }
+impl InputError {
+    /// One-based failing record, when available. Preflight has no record number.
+    pub fn line_number(&self) -> Option<u64> {
+        match self {
+            Self::RecordRead {
+                last_completed_line,
+                ..
+            } => last_completed_line.checked_add(1),
+            _ => None,
+        }
+    }
+}
 impl fmt::Display for InputError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::Read(_) => f.write_str("cannot read input record"),
+            Self::Read(_) => f.write_str("cannot read input source"),
+            Self::RecordRead {
+                last_completed_line,
+                ..
+            } => match self.line_number() {
+                Some(line) => write!(f, "cannot read input record at line {line}"),
+                None => write!(
+                    f,
+                    "cannot read input record after line {last_completed_line}"
+                ),
+            },
             Self::BomRejected(kind) => write!(
                 f,
                 "input begins with a {kind} BOM; policy Reject forbids it; explicitly select BomPolicy::StripKnownBom to remove the initial marker"
@@ -58,7 +86,7 @@ impl fmt::Display for InputError {
 impl Error for InputError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
-            Self::Read(source) => Some(source),
+            Self::Read(source) | Self::RecordRead { source, .. } => Some(source),
             _ => None,
         }
     }

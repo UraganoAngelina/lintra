@@ -1,6 +1,6 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-10-19**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-10-20**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
 ## Posizione corrente e prerequisiti
@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 locali verificate; CI comune BOM/view/rendering 39282115064 avviata sullo snapshot 7168a05; T-P6-01 locale verificata e CI pendente; prossima T-P4-05 dopo gate.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 locale verificata e CI pendente; T-P4-05 locale verificata (118 test), CI congiunta con T-P6-01 da avviare.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -91,7 +91,7 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
-| QG-2 — CI Linux/Windows | PASS per f671517 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39272551912), entrambi i runner verdi; nuove modifiche Rust richiedono nuova CI |
+| QG-2 — CI Linux/Windows | PASS per 7168a05 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064), entrambi i runner verdi; T-P6-01 e T-P4-05 richiedono nuova CI |
 | QG-3 — architettura | PASS per dominio/raw/compiled | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
 | QG-8 — documenti | PASS per lo scaffold | Copie identiche, nessun contratto modificato |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
@@ -169,15 +169,22 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P3-06 | DONE | 2026-10-19 | Mappa ufficiale approvata 1→0.1.0 sviluppo; range/messaggi e 28 unit/42 integration/10 doctest; [CI 39269026995](https://github.com/UraganoAngelina/lintra/actions/runs/39269026995) verde Linux/Windows su 7522345 |
 | T-P3-07 | DONE | 2026-10-19 | Registry senza cache, binding esplicito/cause preservate; 28 unit/48 integration/10 doctest; [CI 39272551912](https://github.com/UraganoAngelina/lintra/actions/runs/39272551912) verde Linux/Windows su f671517 |
 | T-P4-01 | DONE | 2026-10-19 | Reader byte/tre policy, DEC-12 provvisorio; 29 unit/55 integration/10 doctest; [CI 39276070129](https://github.com/UraganoAngelina/lintra/actions/runs/39276070129) verde Linux/Windows su e18b9ba |
-| T-P4-02 | DONE_UNVERIFIED | 2026-10-19 | Preflight BOM max 4 byte/Reject default/strip esplicito e replay payload; 29 unit/61 integration/10 doctest; CI pendente |
-| T-P4-03 | DONE_UNVERIFIED | 2026-10-19 | View/slice zero-copy su range compiled, fuori range None; 29 unit/64 integration/10 doctest; [CI comune 39282115064](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064) queued su 7168a05 |
-| T-P4-04 | DONE_UNVERIFIED | 2026-10-19 | Rendering UTF-8/CP1252/Latin1, escape+hex senza scelta regionale; 29 unit/70 integration/10 doctest; [CI comune 39282115064](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064) queued su 7168a05 |
-| T-P4-05 | BLOCKED | 2026-10-19 | Gate CI T-P4-02..04 non conclusi; nessuna decisione umana richiesta, codice non iniziato |
+| T-P4-02 | DONE | 2026-10-20 | CI comune [39282115064](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064) verde Linux/Windows su 7168a05; dettagli nel report |
+| T-P4-03 | DONE | 2026-10-20 | CI comune [39282115064](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064) verde Linux/Windows su 7168a05; dettagli nel report |
+| T-P4-04 | DONE | 2026-10-20 | CI comune [39282115064](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064) verde Linux/Windows su 7168a05; dettagli nel report |
+| T-P4-05 | DONE_UNVERIFIED | 2026-10-20 | Matrice memoria/file e 1 MiB; RecordRead con riga/causa; 118 test locali, CI pendente |
 | T-P6-01 | DONE_UNVERIFIED | 2026-10-19 | is_missing pura, enum compiled riusata, quattro integration; 113 test locali; CI pendente |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
-## Registro verifiche corrente — 2026-10-19, Linux locale
+## Registro verifiche corrente — 2026-10-20, Linux locale
+
+T-P4-05: fmt/check/clippy/test/release/diff-check PASS.
+29 unit + 79 integration + 10 doctest = 118, cinque integration nuovi.
+Report [T-P4-05](docs/verification/T-P4-05.md); CI con T-P6-01 pendente.
+T-P4-02..04: CI 39282115064 completed/success su entrambi i runner,
+commit 7168a05. I pending sottostanti sono cronologia superata.
+
 
 T-P6-01: fmt/check/clippy/test/release/diff-check PASS;
 29 unit + 74 integration + 10 doctest = 113.
@@ -370,6 +377,12 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Decisioni della sessione corrente
 
+- **T-P4-05 / DET §117, task:** InputError esteso con RecordRead e checkpoint
+  last_completed_line, causa io::Error intatta, getter per riga one-based.
+  Preflight senza riga; overflow esplicito senza saturazione. Nessun cambio
+  di read_next o trasformazione di guasti tecnici in violazioni normative.
+
+
 - **T-P4-04 / DET §33–34:** EncodingSpec esistente riusata senza duplicati.
   Rendering diagnostico esplicito UTF-8/Windows-1252/Latin1; controlli e
   backslash escaped, hex esatto se lossy/escaped o profilo Other sconosciuto.
@@ -536,6 +549,26 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-20 — T-P4-05 locale verificata
+
+- **Consegna:** matrice memoria/file e contesto di riga negli errori I/O.
+- **File:** input/error.rs, input/reader.rs, tests/input_matrix.rs,
+  tests/record_reader.rs, report/stato e consuntivo CI T-P4-02..04.
+- **Evidenza:** 118 test, fmt/check/clippy/release/diff-check tutti exit 0.
+- **Gate:** nuova CI necessaria per T-P4-05 e T-P6-01.
+- **Git:** file storico di piano preesistente conservato ed escluso.
+- **Next:** CI, poi T-P5-01 secondo dipendenze atomiche autorizzate.
+
+
+HANDOFF — 2026-10-20 — chiusura CI input / avvio T-P4-05
+
+- **DONE:** T-P4-02, T-P4-03 e T-P4-04, CI 39282115064 su 7168a05.
+- **Evidenza:** Linux 118158318317 e Windows 118158317939 completed/success.
+- **File:** aggiornati i tre report e questo consuntivo.
+- **Next:** T-P4-05 iniziata autonomamente, ora tutti i prerequisiti verdi.
+- **Residui:** T-P6-01 necessita CI; T-P2-03/M1 ancora aperte come approvato.
+
 
 HANDOFF — 2026-10-19 — T-P6-01 locale verificata
 

@@ -168,7 +168,8 @@ fn partial_io_failure_is_not_a_record_and_cannot_resume_as_a_truncated_record() 
         1
     );
     let error = reader.read_next(&mut buffer).unwrap_err();
-    assert!(matches!(error, InputError::Read(_)));
+    assert!(matches!(error, InputError::RecordRead { .. }));
+    assert_eq!(error.line_number(), Some(2));
     assert_eq!(
         error
             .source()

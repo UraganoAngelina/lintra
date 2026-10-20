@@ -43,7 +43,10 @@ impl<R: BufRead> RecordReader<R> {
                 Ok(count) => count,
                 Err(source) => {
                     self.failed = true;
-                    return Err(InputError::Read(source));
+                    return Err(InputError::RecordRead {
+                        last_completed_line: self.line_number,
+                        source,
+                    });
                 }
             };
             if count == 0 {
