@@ -21,3 +21,12 @@ Mandato specifico successivo — CNF-AUDIT-01 approvata:
   autorevole degli audit, overflow, cancellazione e test.
 - Fermarsi al termine di T-P5-05 e attendere autorizzazione prima della
   task successiva; questo mandato supera la progressione autonoma generale.
+
+Mandato successivo dell'autore — 2026-10-20:
+- Autorizzata la prossima task, T-P5-06, dopo la consegna di T-P5-05.
+- Regola vincolante: «OGNI QUAL VOLTA SCRIVI DEL CODICE DEVI ESPRIMERE
+  DETTAGLIATAMENTE COSA FA E COME MAI FUNZIONA, CON DEL CODICE INTENDO
+  STRUCT FUNZIONI IMPLEMENTAZIONI E CONDIZIONI».
+- Accompagnare quindi il codice nuovo o modificato con spiegazioni del
+  comportamento e delle ragioni di correttezza: documentazione/commenti
+  pertinenti, spiegazione tecnica consultabile e recap finale dei file.

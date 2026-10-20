@@ -1,3 +1,4 @@
+use super::atomic::OutputOperation;
 use crate::domain::{InvalidDiagnostic, SummaryBuildError, ValidationError, ValidationSummary};
 use std::{error::Error, fmt, io};
 
@@ -5,6 +6,17 @@ use std::{error::Error, fmt, io};
 #[derive(Debug)]
 #[non_exhaustive]
 pub enum ReportError {
+    /// Filesystem publication failure, distinct from JSON/diagnostic errors.
+    Output {
+        operation: OutputOperation,
+        source: io::Error,
+    },
+    /// Cleanup can fail independently: retain the initial failure as well as
+    /// the cleanup cause instead of hiding either one behind a generic message.
+    OutputCleanup {
+        original: Option<Box<ReportError>>,
+        source: io::Error,
+    },
     InvalidSummary(SummaryBuildError),
     InvalidTimestamp,
     Write(io::Error),
@@ -15,6 +27,8 @@ pub enum ReportError {
 impl fmt::Display for ReportError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(match self {
+            Self::Output { .. } => "cannot prepare or publish validation report",
+            Self::OutputCleanup { .. } => "cannot remove incomplete validation report",
             Self::InvalidSummary(_) => "cannot write inconsistent validation summary",
             Self::InvalidTimestamp => "summary timestamp cannot be represented as UTC RFC3339",
             Self::Write(_) => "cannot write validation report",
@@ -27,6 +41,7 @@ impl fmt::Display for ReportError {
 impl Error for ReportError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
+            Self::Output { source, .. } | Self::OutputCleanup { source, .. } => Some(source),
             Self::InvalidSummary(source) => Some(source),
             Self::InvalidTimestamp => None,
             Self::Write(source) => Some(source),

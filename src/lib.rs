@@ -127,6 +127,10 @@ pub use report::{
     sink::{ReportError, ValidationSink, VecSink},
 };
 
+pub use report::atomic::{
+    AtomicOutputOutcome, AtomicReportFile, OutputOperation, PartialOutputPolicy, ReportCompletion,
+    write_atomic_report,
+};
 pub use report::jsonl::JsonlSink;
 
 pub use domain::{

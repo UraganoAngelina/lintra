@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 DONE, CNF-AUDIT-01 risolta; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) Linux/Windows verde su 85f1ac7, 155 test locali; STOP richiesto prima della task successiva.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 DONE, CNF-AUDIT-01 risolta; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) Linux/Windows verde su 85f1ac7, 155 test locali; stop rispettato e successivamente revocato per avviare T-P5-06. **T-P5-06 DONE_UNVERIFIED**: output atomico e spiegazioni del codice implementati, 170 test locali verdi; QG-2 sulla nuova implementazione da eseguire.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -35,6 +35,15 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   non presente in questo scaffold e non considerato MVP.
 - `CNF-01..11`, `CNF-LINTRA-SOURCE-01`, `CNF-PERSIST-01` risolti
   documentalmente; ADR-PERSIST-001 approvata; `PCR-CAD-001` superata.
+
+## Mandato successivo — 2026-10-20
+
+Autore: «PROCEDI CON LA PROSSIMA TASK». Autorizzata T-P5-06 dopo lo stop
+rispettato di T-P5-05. Nuova regola vincolante in AGENTS.md: spiegare
+**dettagliatamente cosa fa e perché funziona ogni codice scritto**, incluse
+struct, funzioni, implementazioni e condizioni. Applicata con commenti,
+rustdoc e [spiegazione completa T-P5-06](docs/verification/T-P5-06.md).
+Esecuzione senza Superpowers, subagenti o processi locali in background.
 
 ## Autorizzazione corrente — 2026-10-19
 
@@ -90,7 +99,7 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 |---|---|---|
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
-| QG-1 — controlli locali | PASS per T-P5-05 | fmt/check/clippy/release, 31 unit + 114 integration + 10 doctest = 155 |
+| QG-1 — controlli locali | PASS per T-P5-06 | fmt/check/clippy/release, 33 unit + 126 integration + 11 doctest = 170 |
 | QG-2 — CI Linux/Windows | PASS per 85f1ac7 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949), Linux GNU e Windows MSVC completed/success; summary fixture byte identici |
 | QG-3 — architettura | PASS per dominio/raw/compiled | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
 | QG-8 — documenti | PASS per la frontiera consegnata | Sorgenti ARCH/DET/Piano invariati; integrazioni e adattamenti tracciati nei report; CNF-AUDIT-01 applicata previa approvazione |
@@ -178,11 +187,18 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P5-03 | DONE | 2026-10-20 | [CI 39390829911](https://github.com/UraganoAngelina/lintra/actions/runs/39390829911) verde Linux/Windows su 0f7b2df; 132 test |
 | T-P5-04 | DONE | 2026-10-20 | [CI 39391897709](https://github.com/UraganoAngelina/lintra/actions/runs/39391897709) verde Linux/Windows su a804956; 137 test, fixture JSONL byte identici |
 | T-P5-05 | DONE | 2026-10-20 | Audit/builder/summary e 12 casi; 155 test; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) verde Linux/Windows su 85f1ac7 |
+| T-P5-06 | DONE_UNVERIFIED | 2026-10-20 | Output atomico, cleanup e policy diagnostica; 170 test locali; CI Linux/Windows da eseguire; [dettagli](docs/verification/T-P5-06.md) |
 | T-P6-01 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — 2026-10-20, Linux locale
+
+T-P5-06: fmt/check/clippy/test/release/diff-check PASS; 170 test locali.
+Cross-check GNU all-targets PASS, nessun test Windows locale rivendicato.
+Prerequisito T-P5-04 verificato via API: run 39391897709, commit a8049568,
+Linux 118525169500 e Windows 118525169146 completed/success.
+Nuova QG-2 PENDING; [spiegazione e verifiche](docs/verification/T-P5-06.md).
 
 T-P5-05: fmt/check/clippy/test/release/diff-check PASS.
 31 unit + 114 integration + 10 doctest = 155. Sedici integration e
@@ -424,6 +440,14 @@ I doctest verificano importabilità e divieto di importare `engine` e
   Overflow e nomi non UTF-8 sono guasti tecnici; nessun locking/snapshot
   dei file sorgente, limite modifiche concorrenti a dimensione invariata
   documentato. Test aggiuntivi 1–12 obbligatori, nessuna revisione dei sorgenti.
+- **T-P5-06 / DET §56/117/119:** sostituzione del definitivo solo dopo
+  produzione riuscita non cancellata/non troncata, flush/sync/chiusura/rename;
+  `.part` esclusivo, default eliminato, conservazione diagnostica esplicita.
+  Nessuna rimozione preventiva del definitivo su Windows. Errori cleanup
+  tipizzati con causa iniziale conservata. API di report generiche aggiunte;
+  nessuna modifica a formati wire, documenti sorgente o dipendenze.
+- **Regola autore 2026-10-20:** spiegazioni dettagliate del codice obbligatorie;
+  registrata in AGENTS.md e applicata al report tecnico T-P5-06.
 - **Mandato operativo specifico:** completare esclusivamente T-P5-05 e
   fermarsi prima della successiva, superando la progressione generale.
 - **DEC-15 / T-P5-05:** sha2 =0.11.1 e chrono =0.4.45 (solo std),
@@ -640,6 +664,22 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-20 — T-P5-06 locale verificata / CI da eseguire
+
+- **Stato:** DONE_UNVERIFIED fino a QG-2 nativa Linux/Windows.
+- **File:** AGENTS.md, report/atomic.rs, report/mod.rs, report/sink.rs,
+  lib.rs, tests/atomic_report.rs, report di verifica e questo stato.
+- **Comportamento:** `.part` esclusivo; pubblicazione solo per conclusione
+  riuscita e non troncata; errore/cancellazione eliminano o conservano
+  esplicitamente il parziale. Definitivo precedente preservato fino al rename.
+- **Evidenze:** fmt/check/clippy/test/release/diff-check e cross-check GNU PASS;
+  170 test Linux locali. Test lock destinazione Windows compilato, non ancora
+  eseguito nativamente. Nuove spiegazioni dettagliate nel report tecnico.
+- **Decisioni:** nessuna dipendenza o norma nuova; guard per mantenere tipizzati
+  gli errori upstream; atomicità per file, nessuna transazione multireport.
+- **Git:** branch work/p1-foundations; piano storico preesistente escluso.
+- **Next:** ottenere QG-2; poi T-P5-07 prevista, non avviata.
 
 HANDOFF — 2026-10-20 — T-P5-05 DONE / STOP richiesto
 
