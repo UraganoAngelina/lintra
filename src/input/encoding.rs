@@ -1,4 +1,4 @@
-//! Diagnostic-only rendering. Never changes the byte-oriented validation input.
+//! Explicit encoding checks and diagnostic rendering. Source bytes stay unchanged.
 pub use crate::domain::DiagnosticValue;
 use crate::schema::compiled::EncodingSpec;
 
@@ -39,6 +39,20 @@ const CP1252_SPECIAL: [Option<char>; 32] = [
     Some('\u{017e}'),
     Some('\u{0178}'),
 ];
+
+/// Validate representation without decoding into owned text or changing bytes.
+/// None is an unsupported profile, not malformed data. The existing mapping
+/// is authoritative for the five undefined CP1252 bytes; ISO-8859-1 maps all 256.
+pub(crate) fn is_valid_encoded_text(bytes: &[u8], encoding: &EncodingSpec) -> Option<bool> {
+    match encoding {
+        EncodingSpec::Utf8 => Some(std::str::from_utf8(bytes).is_ok()),
+        EncodingSpec::Iso8859_1 => Some(true),
+        EncodingSpec::Windows1252 => Some(bytes.iter().all(|&byte| {
+            !(0x80..=0x9f).contains(&byte) || CP1252_SPECIAL[usize::from(byte - 0x80)].is_some()
+        })),
+        EncodingSpec::Other(_) => None,
+    }
+}
 
 fn hex(bytes: &[u8]) -> String {
     const DIGITS: &[u8; 16] = b"0123456789ABCDEF";

@@ -1,6 +1,27 @@
 use super::*;
 use crate::domain::{FlowId, SchemaVersion, ValidationCode};
 
+/// Private models cover unsupported plans without opening compiler constructors
+/// or pretending the current compiler accepts Date. No record violation may
+/// hide a missing lexical plan or an unimplemented datatype.
+#[test]
+fn datatype_plan_boundaries_are_technical_errors() {
+    use crate::{DatatypeError, FieldSlice, validate_datatype};
+    let mut spec = field("F", 0, 3);
+    spec.lexical = None;
+    assert_eq!(
+        validate_datatype(&spec, FieldSlice { raw: b"ABC" }, &EncodingSpec::Utf8),
+        Err(DatatypeError::MissingLexicalPlan)
+    );
+    spec.field_type = FieldType::Date(DateFormat::DdMmYyyy);
+    assert_eq!(
+        validate_datatype(&spec, FieldSlice { raw: b"01012026" }, &EncodingSpec::Utf8),
+        Err(DatatypeError::UnsupportedType(FieldType::Date(
+            DateFormat::DdMmYyyy
+        )))
+    );
+}
+
 /// Private fixture access can construct future conditional plans without
 /// relaxing compiled-model constructors or enabling unsupported compiler ASTs.
 /// The base presence stage must refuse both kinds, for present/missing values.
