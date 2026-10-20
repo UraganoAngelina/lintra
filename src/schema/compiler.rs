@@ -144,7 +144,6 @@ impl Checks<'_> {
                     "field name must be nonempty",
                 );
             }
-            self.unsupported(!field.constraints.is_empty(), trace, id, "constraints");
             self.unsupported(
                 !field.presence.required_if.is_empty() || !field.presence.forbidden_if.is_empty(),
                 trace,
@@ -180,6 +179,7 @@ impl Checks<'_> {
                     *length
                 }
             };
+            self.allowed_values(field, length, trace);
             let values = match &field.missing_value {
                 RawMissing::Exact { raw } => vec![raw],
                 RawMissing::AnyOf { raw_values } => {
@@ -211,6 +211,89 @@ impl Checks<'_> {
             }
         }
     }
+    /// Expand only the newly delivered byte-domain subset. Unsupported nodes
+    /// remain blocking issues, even when another constraint is supported.
+    /// Literal checks use the explicit UTF-8 binding currently accepted by the
+    /// compiler; there is no implicit encoding selection for other profiles.
+    fn allowed_values(&mut self, field: &RawFieldSpec, width: u32, trace: Option<&str>) {
+        let id = Some(field.id.as_str());
+        let alignment = match &field.physical {
+            RawPhysical::Numeric { alignment, .. }
+            | RawPhysical::Alphanumeric { alignment, .. } => alignment,
+            RawPhysical::Date { .. } => return, // Already a blocking unsupported field.
+        };
+        for constraint in &field.constraints {
+            let RawConstraint::AllowedValues { values, target } = constraint else {
+                self.unsupported(true, trace, id, "constraint kind");
+                continue;
+            };
+            let unique: HashSet<_> = values.iter().collect();
+            if values.is_empty() || unique.len() != values.len() {
+                self.error(
+                    Code::InvalidSchemaValue,
+                    trace,
+                    id,
+                    "allowed_values requires nonempty unique values",
+                );
+            }
+            if !matches!(self.raw.encoding.resolved, Some(RawResolvedEncoding::Utf8)) {
+                continue; // Binding errors are emitted globally; no wrong encoding is assumed.
+            }
+            let Ok(width) = usize::try_from(width) else {
+                self.error(
+                    Code::RangeOverflow,
+                    trace,
+                    id,
+                    "domain field width is not representable",
+                );
+                continue;
+            };
+            let fixed = matches!(target, RawConstraintAllowedValuesTarget::Raw)
+                || matches!(
+                    alignment,
+                    RawAlignment::Exact {}
+                        | RawAlignment::RightPad {
+                            content_policy: RawAlignmentRightPadContentPolicy::PreserveWidth,
+                            ..
+                        }
+                        | RawAlignment::LeftPad {
+                            content_policy: RawAlignmentLeftPadContentPolicy::PreserveWidth,
+                            ..
+                        }
+                );
+            for value in values {
+                let bytes = value.as_bytes();
+                if (fixed && bytes.len() != width) || (!fixed && bytes.len() > width) {
+                    self.error(
+                        Code::InvalidTypeParameters,
+                        trace,
+                        id,
+                        "domain literal byte width is incompatible with its target",
+                    );
+                }
+                // A logical literal is never padded/stripped by the compiler.
+                // A fill on its stripping edge cannot occur in any extracted
+                // logical value, so reject this unreachable literal as schema.
+                if matches!(target, RawConstraintAllowedValuesTarget::Logical) {
+                    let noncanonical = match alignment {
+                        RawAlignment::RightPad {
+                            fill_byte,
+                            content_policy: RawAlignmentRightPadContentPolicy::StripTrailingFill,
+                        } => bytes.last() == Some(fill_byte),
+                        RawAlignment::LeftPad {
+                            fill_byte,
+                            content_policy: RawAlignmentLeftPadContentPolicy::StripLeadingFill,
+                        } => bytes.first() == Some(fill_byte),
+                        _ => false,
+                    };
+                    if noncanonical {
+                        self.error(Code::InvalidTypeParameters, trace, id, "logical domain literal must already have its declared logical representation");
+                    }
+                }
+            }
+        }
+    }
+
     fn reference(&mut self, record: &RawRecordSchema, id: &str) {
         if !record.fields.iter().any(|field| field.id == id) {
             self.error(
@@ -481,7 +564,28 @@ fn compile_field(raw: &RawFieldSpec) -> Result<CompiledFieldSpec, Code> {
         },
         alignment: alignment(raw_alignment),
         lexical: Some(lexical(raw_lexical)),
-        constraints: vec![],
+        // Preflight checked shape/encoding/width; lower each literal once,
+        // preserving bytes, target and declared order. Keep a typed refusal
+        // here as well instead of silently dropping a future unsupported node.
+        constraints: raw
+            .constraints
+            .iter()
+            .map(|constraint| match constraint {
+                RawConstraint::AllowedValues { values, target } => {
+                    Ok(CompiledConstraint::AllowedValues {
+                        values: values
+                            .iter()
+                            .map(|value| value.as_bytes().to_vec())
+                            .collect(),
+                        target: match target {
+                            RawConstraintAllowedValuesTarget::Raw => ValueTarget::Raw,
+                            RawConstraintAllowedValuesTarget::Logical => ValueTarget::Logical,
+                        },
+                    })
+                }
+                _ => Err(Code::UnsupportedConstruct),
+            })
+            .collect::<Result<Vec<_>, _>>()?,
         regulatory_metadata: raw.regulatory_metadata.clone(),
     })
 }
