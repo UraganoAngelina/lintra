@@ -1,11 +1,6 @@
 //! Diagnostic-only rendering. Never changes the byte-oriented validation input.
+pub use crate::domain::DiagnosticValue;
 use crate::schema::compiled::EncodingSpec;
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct DiagnosticValue {
-    pub display: String,
-    pub raw_hex: Option<String>,
-}
 
 // Unicode/Microsoft mapping 2.01, CP1252.TXT (1998-04-15):
 // https://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1252.TXT

@@ -2,6 +2,148 @@
 
 use std::{error::Error, fmt, str::FromStr, sync::Arc};
 
+use super::{ByteRange, FieldId, FlowId, RecordIdentity, SchemaVersion, TraceId};
+
+/// An owned diagnostic representation, independent of decoding or input I/O.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DiagnosticValue {
+    pub display: String,
+    pub raw_hex: Option<String>,
+}
+
+/// Analyst-facing positions are one-based and inclusive, never runtime offsets.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct FieldDiagnostic {
+    pub id: FieldId,
+    pub name: Arc<str>,
+    pub start_one_based: usize,
+    pub end_one_based_inclusive: usize,
+}
+
+impl FieldDiagnostic {
+    /// The single runtime-to-diagnostic position conversion boundary.
+    pub fn from_range(id: FieldId, name: Arc<str>, range: ByteRange) -> Self {
+        // A checked, nonempty ByteRange guarantees start < end <= usize::MAX.
+        Self {
+            id,
+            name,
+            start_one_based: range.start() + 1,
+            end_one_based_inclusive: range.end_exclusive(),
+        }
+    }
+
+    pub fn validate(&self) -> Result<(), InvalidDiagnostic> {
+        if self.id.0.is_empty() {
+            return Err(InvalidDiagnostic::EmptyFieldId);
+        }
+        if self.name.is_empty() {
+            return Err(InvalidDiagnostic::EmptyFieldName);
+        }
+        if self.start_one_based == 0 || self.end_one_based_inclusive < self.start_one_based {
+            return Err(InvalidDiagnostic::InvalidFieldPositions);
+        }
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DiagnosticContextItem {
+    pub trace_id: TraceId,
+    pub field_id: FieldId,
+    pub value: DiagnosticValue,
+}
+
+/// A normative violation. Technical execution failures use separate error types.
+/// Public payloads follow DET §52; call `validate` before emitting manual values.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ValidationError {
+    pub code: ValidationCode,
+    pub flow_id: FlowId,
+    pub schema_version: SchemaVersion,
+    pub trace_id: TraceId,
+    pub line_number: u64,
+    pub record_identity: RecordIdentity,
+    pub field: Option<FieldDiagnostic>,
+    pub actual: Option<DiagnosticValue>,
+    pub expected: Option<String>,
+    pub context: Vec<DiagnosticContextItem>,
+    pub message: String,
+}
+
+/// Malformed diagnostic metadata, not a normative ValidationCode.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum InvalidDiagnostic {
+    InvalidCode(InvalidValidationCode),
+    EmptyFlowId,
+    EmptySchemaVersion,
+    EmptyTraceId,
+    ZeroLineNumber,
+    EmptyFieldId,
+    EmptyFieldName,
+    InvalidFieldPositions,
+    EmptyContextTraceId,
+    EmptyContextFieldId,
+}
+impl fmt::Display for InvalidDiagnostic {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(match self {
+            Self::InvalidCode(_) => "invalid diagnostic validation code",
+            Self::EmptyFlowId => "diagnostic flow ID is empty",
+            Self::EmptySchemaVersion => "diagnostic schema version is empty",
+            Self::EmptyTraceId => "diagnostic trace ID is empty",
+            Self::ZeroLineNumber => "diagnostic line number must be one-based",
+            Self::EmptyFieldId => "diagnostic field ID is empty",
+            Self::EmptyFieldName => "diagnostic field name is empty",
+            Self::InvalidFieldPositions => {
+                "diagnostic field positions must be one-based and inclusive"
+            }
+            Self::EmptyContextTraceId => "diagnostic context trace ID is empty",
+            Self::EmptyContextFieldId => "diagnostic context field ID is empty",
+        })
+    }
+}
+impl Error for InvalidDiagnostic {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match self {
+            Self::InvalidCode(source) => Some(source),
+            _ => None,
+        }
+    }
+}
+impl ValidationError {
+    /// Checks DET §164 metadata without guessing rule scope from a code or text.
+    /// A field-level producer supplies `Some(FieldDiagnostic)` as a complete unit.
+    pub fn validate(&self) -> Result<(), InvalidDiagnostic> {
+        self.code
+            .as_symbol()
+            .map_err(InvalidDiagnostic::InvalidCode)?;
+        if self.flow_id.0.is_empty() {
+            return Err(InvalidDiagnostic::EmptyFlowId);
+        }
+        if self.schema_version.0.is_empty() {
+            return Err(InvalidDiagnostic::EmptySchemaVersion);
+        }
+        if self.trace_id.0.is_empty() {
+            return Err(InvalidDiagnostic::EmptyTraceId);
+        }
+        if self.line_number == 0 {
+            return Err(InvalidDiagnostic::ZeroLineNumber);
+        }
+        if let Some(field) = &self.field {
+            field.validate()?;
+        }
+        for item in &self.context {
+            if item.trace_id.0.is_empty() {
+                return Err(InvalidDiagnostic::EmptyContextTraceId);
+            }
+            if item.field_id.0.is_empty() {
+                return Err(InvalidDiagnostic::EmptyContextFieldId);
+            }
+        }
+        Ok(())
+    }
+}
+
 /// The symbol is malformed or aliases a reserved core code.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct InvalidValidationCode;

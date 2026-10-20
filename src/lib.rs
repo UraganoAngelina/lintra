@@ -84,7 +84,10 @@ pub use domain::{
     TraceId,
 };
 
-pub use domain::{InvalidValidationCode, ValidationCode};
+pub use domain::{
+    DiagnosticContextItem, FieldDiagnostic, InvalidDiagnostic, InvalidValidationCode,
+    ValidationCode, ValidationError,
+};
 
 pub use domain::{
     RecordIdentity, RunMetadata, RunStatus, SchemaKey, ScopeSummary, ValidationRunOutcome,

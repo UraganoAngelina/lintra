@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 locale verificata e CI pendente; T-P4-05 locale verificata (118 test), CI congiunta con T-P6-01 da avviare.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 locale verificata (123 test), CI da avviare.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -91,7 +91,7 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS per la frontiera implementata | fmt, build release, check, clippy, 2 integration test + 3 doctest, cross-check GNU |
-| QG-2 — CI Linux/Windows | PASS per 7168a05 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064), entrambi i runner verdi; T-P6-01 e T-P4-05 richiedono nuova CI |
+| QG-2 — CI Linux/Windows | PASS per 46ab648 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120), entrambi i runner verdi; T-P5-01 richiede nuova CI |
 | QG-3 — architettura | PASS per dominio/raw/compiled | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
 | QG-8 — documenti | PASS per lo scaffold | Copie identiche, nessun contratto modificato |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
@@ -172,12 +172,19 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P4-02 | DONE | 2026-10-20 | CI comune [39282115064](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064) verde Linux/Windows su 7168a05; dettagli nel report |
 | T-P4-03 | DONE | 2026-10-20 | CI comune [39282115064](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064) verde Linux/Windows su 7168a05; dettagli nel report |
 | T-P4-04 | DONE | 2026-10-20 | CI comune [39282115064](https://github.com/UraganoAngelina/lintra/actions/runs/39282115064) verde Linux/Windows su 7168a05; dettagli nel report |
-| T-P4-05 | DONE_UNVERIFIED | 2026-10-20 | Matrice memoria/file e 1 MiB; RecordRead con riga/causa; 118 test locali, CI pendente |
-| T-P6-01 | DONE_UNVERIFIED | 2026-10-19 | is_missing pura, enum compiled riusata, quattro integration; 113 test locali; CI pendente |
+| T-P4-05 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
+| T-P5-01 | DONE_UNVERIFIED | 2026-10-20 | Diagnostica DET §52–53, conversione posizioni e validazione metadati; 123 test locali, CI pendente |
+| T-P6-01 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — 2026-10-20, Linux locale
+
+T-P5-01: fmt/check/clippy/test/release/diff-check PASS, 123 test
+(29 unit, 84 integration, 10 doctest). [Report](docs/verification/T-P5-01.md).
+T-P4-05/T-P6-01: CI 39389225120 completed/success Linux/Windows
+su 46ab648. I pending seguenti sono cronologia superata.
+
 
 T-P4-05: fmt/check/clippy/test/release/diff-check PASS.
 29 unit + 79 integration + 10 doctest = 118, cinque integration nuovi.
@@ -377,6 +384,13 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Decisioni della sessione corrente
 
+- **T-P5-01 / DET §5/§34/§52/§147:** DiagnosticValue come valore neutro
+  nel dominio e re-export input invariato: preserva confini e API pubblica,
+  nessun rendering nel dominio. FieldDiagnostic::from_range centralizza
+  la conversione; validate verifica metadati pubblici prima dell’emissione.
+  Non inferisce scope dal codice/testo; ErrorFactory futura nel motore.
+
+
 - **T-P4-05 / DET §117, task:** InputError esteso con RecordRead e checkpoint
   last_completed_line, causa io::Error intatta, getter per riga one-based.
   Preflight senza riga; overflow esplicito senza saturazione. Nessun cambio
@@ -549,6 +563,18 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-20 — T-P5-01 locale verificata
+
+- **Consegna:** diagnostica completa e conversione coordinate; enum codici
+  esistente riusata, DiagnosticValue neutro senza dipendenza domain->input.
+- **File:** domain/errors.rs, domain/mod.rs, input/encoding.rs, lib.rs,
+  tests/validation_diagnostics.rs, report/stato; report CI T-P4-05/T-P6-01.
+- **Verifiche:** 123 test, fmt/check/clippy/release/diff-check verdi locali.
+- **Gate:** T-P4-05/T-P6-01 DONE in CI 39389225120; CI T-P5-01 pendente.
+- **Next:** CI, quindi T-P5-02 autonomamente; T-P2-03/M1 ancora aperte.
+- **Git:** piano storico modificato dall’autore escluso dal commit.
+
 
 HANDOFF — 2026-10-20 — T-P4-05 locale verificata
 
