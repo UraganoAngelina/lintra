@@ -6,6 +6,7 @@ use std::{error::Error, fmt, io};
 #[non_exhaustive]
 pub enum ReportError {
     Write(io::Error),
+    Serialize(serde_json::Error),
     InvalidDiagnostic(InvalidDiagnostic),
     PreviousFailure,
 }
@@ -13,6 +14,7 @@ impl fmt::Display for ReportError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(match self {
             Self::Write(_) => "cannot write validation report",
+            Self::Serialize(_) => "cannot serialize validation report",
             Self::InvalidDiagnostic(_) => "cannot emit malformed validation diagnostic",
             Self::PreviousFailure => "report sink cannot resume after a previous failure",
         })
@@ -22,6 +24,7 @@ impl Error for ReportError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
             Self::Write(source) => Some(source),
+            Self::Serialize(source) => Some(source),
             Self::InvalidDiagnostic(source) => Some(source),
             Self::PreviousFailure => None,
         }

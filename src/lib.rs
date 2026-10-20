@@ -127,6 +127,8 @@ pub use report::{
     sink::{ReportError, ValidationSink, VecSink},
 };
 
+pub use report::jsonl::JsonlSink;
+
 pub use input::{
     error::{BomKind, InputError},
     reader::{NewlinePolicy, RecordReader},
