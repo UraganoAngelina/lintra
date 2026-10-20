@@ -1435,20 +1435,42 @@ Il `ValidationError` completo viene costruito da `ErrorFactory`.
 
 ---
 
-# 44. Alignment validator contract
+# 44. Logical extraction contract — formato 1
+
+Revisione autorizzata dall'autore per T-P6-03 / CNF-ALIGNMENT-01.
+Il controllo fisico del padding è fuori ambito per il formato 1 e non
+costituisce un residuo aperto. Non è previsto validate_alignment che produca
+FieldViolation o E_ALIGNMENT. Lo stage alignment di §40 indica qui soltanto
+l'estrazione del logical; gli errori sui valori emergono dagli stage successivi.
 
 ```rust
-pub fn validate_alignment(
+pub fn logical_value<'a>(
     rule: &AlignmentRule,
-    value: FieldSlice<'_>,
-) -> Result<(), FieldViolation>;
+    value: FieldSlice<'a>,
+) -> Result<FieldSlice<'a>, LogicalValueError>;
 ```
 
-Non deve:
+Contratto:
 
-- convertire il campo in numero;
-- validare il dominio;
-- conoscere SIOC.
+- zero-copy: il risultato prende in prestito esclusivamente i byte dell'input;
+- RightPad + StripTrailingFill: rimuovere soltanto il fill contiguo finale;
+- LeftPad + StripLeadingFill: rimuovere soltanto il fill contiguo iniziale;
+- PreserveWidth ed Exact: conservare l'intero slice, anche se tutto fill;
+- sotto una policy di stripping, all-fill produce uno slice vuoto, senza
+  inventare zero o riclassificare la presenza già valutata sul raw;
+- non rimuovere fill interni o dal lato opposto, non usare trim globale;
+- non convertire in numero, verificare dominio, decodificare o conoscere SIOC;
+- una combinazione lato/stripping incompatibile costruita direttamente è
+  LogicalValueError tecnico, non una violazione normativa del record;
+- il compiler continua a produrre soltanto combinazioni coerenti. Builtin
+  resta un confine non esprimibile nel formato 1, senza executor anticipato.
+
+Per esempio, spazio a destra: ` ROSSI ` diventa ` ROSSI`, non `ROSSI`.
+Numeric e date vicini, chiavi e larghezza record sono controlli separati:
+non si promette che qualsiasi spostamento del record sia sempre rilevabile.
+
+CNF-ALIGNMENT-01 è archiviata come possibile estensione fisica futura non
+implementata; nessun nuovo parametro opposite_edge_fill nel formato corrente.
 
 ---
 

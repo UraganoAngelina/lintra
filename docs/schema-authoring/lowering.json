@@ -71,11 +71,11 @@
     },
     "structure_only": {
       "canonical_kind": null,
-      "lowering": "physical/padding checks only; metadata preserved, no semantic no-op executor"
+      "lowering": "record structure/presence and declared logical extraction; physical padding out of format-1 scope by author decision T-P6-03; metadata preserved, no semantic no-op executor"
     },
     "structure_only_if_present": {
       "canonical_kind": null,
-      "lowering": "physical/padding checks when applicable; metadata preserved"
+      "lowering": "same structure-only boundary after presence; physical padding out of format-1 scope by author decision T-P6-03; metadata preserved"
     }
   },
   "source_assertions": {

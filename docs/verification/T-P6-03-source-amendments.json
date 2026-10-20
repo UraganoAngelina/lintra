@@ -1,0 +1,21 @@
+{
+  "authorization": "Author: logical extraction only, DET 44 and task prompt amendment; physical padding out of format-1 scope, no residual",
+  "changes": [
+    {
+      "path": "docs/DETAILED_DESIGN.md",
+      "sha256_before": "f626c3b0f3f321cca70476c41eefeb7c37b49db0bbfc8215d6ff7c81394987dc",
+      "sha256_after": "41d56353b13b5cc50f185e9d9177bd228ab169b1d75021c4533cad57bc4e9806"
+    },
+    {
+      "path": "../LINTRA_STARTER_KIT_FINAL_20261016/SOURCE_DOCUMENTS/DETAILED_DESIGN.md",
+      "sha256_before": "f626c3b0f3f321cca70476c41eefeb7c37b49db0bbfc8215d6ff7c81394987dc",
+      "sha256_after": "41d56353b13b5cc50f185e9d9177bd228ab169b1d75021c4533cad57bc4e9806"
+    },
+    {
+      "path": "../LINTRA_STARTER_KIT_FINAL_20261016/TASK_PROMPTS/T-P6-03.md",
+      "sha256_before": "23632d02cfd321125877785322cb60defdc4239b0f84b4b56ec8c2371f04a3a0",
+      "sha256_after": "a57216cf476b5f1c065ddcb220210622cb6a23aca440c274d0d41ba10309f5f0"
+    }
+  ],
+  "kit_manifest": "Original KIT_MANIFEST.json retained unchanged; two indexed source files intentionally differ after authorized revision"
+}

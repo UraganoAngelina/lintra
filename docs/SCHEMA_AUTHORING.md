@@ -154,7 +154,12 @@ non autorizza un case-folding scelto dal motore.
 ## Raw, logical, padding e assenza
 
 Raw è lo slice esatto. Il logical si ricava soltanto dall’allineamento
-esplicito e dopo controllo della rappresentazione fisica:
+esplicito. Decisione successiva dell'autore per T-P6-03 / DET §44: il controllo
+fisico del padding è fuori ambito per il formato 1, senza residuo aperto e
+senza E_ALIGNMENT; gli errori sui valori emergono dagli stage successivi.
+Larghezza record, presenza e chiavi rimangono controlli distinti. Uno spazio
+iniziale nel testo libero resta contenuto lecito, non padding implicito.
+Le policy di estrazione sono:
 
 - right_pad: fill_byte e content_policy strip_trailing_fill o preserve_width;
 - left_pad: fill_byte e content_policy strip_leading_fill o preserve_width;

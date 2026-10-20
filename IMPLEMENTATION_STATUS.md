@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 DONE, CNF-AUDIT-01 risolta; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) Linux/Windows verde su 85f1ac7, 155 test locali; stop rispettato e successivamente revocato per avviare T-P5-06. **T-P5-06 DONE**: output atomico e spiegazioni dettagliate del codice; 170 test locali, 171 Windows; [CI 39405353679](https://github.com/UraganoAngelina/lintra/actions/runs/39405353679) Linux/Windows verde su 0c48768. **T-P5-07 DONE**: harness golden generico e sei scenari sintetici; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) Linux/Windows verde su b0e5ce7. **T-P6-02 DONE**: presenza Required/Optional e boundary Unknown; 186 test locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) Linux/Windows verde su c34649b. **T-P6-03 BLOCKED** nel preflight: CNF-ALIGNMENT-01, scelta B dell’autore: definire prima il contratto fisico. Proposta completa DRAFT da approvare; consegna parziale A non autorizzata.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 DONE, CNF-AUDIT-01 risolta; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) Linux/Windows verde su 85f1ac7, 155 test locali; stop rispettato e successivamente revocato per avviare T-P5-06. **T-P5-06 DONE**: output atomico e spiegazioni dettagliate del codice; 170 test locali, 171 Windows; [CI 39405353679](https://github.com/UraganoAngelina/lintra/actions/runs/39405353679) Linux/Windows verde su 0c48768. **T-P5-07 DONE**: harness golden generico e sei scenari sintetici; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) Linux/Windows verde su b0e5ce7. **T-P6-02 DONE**: presenza Required/Optional e boundary Unknown; 186 test locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) Linux/Windows verde su c34649b. **T-P6-03 DONE_UNVERIFIED**: mandato finale ratificato, sola estrazione logical, nessun controllo fisico/residuo formato 1; CNF-ALIGNMENT-01 archiviata. 193 test locali, CI da eseguire; poi T-P6-04.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -35,6 +35,15 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   non presente in questo scaffold e non considerato MVP.
 - `CNF-01..11`, `CNF-LINTRA-SOURCE-01`, `CNF-PERSIST-01` risolti
   documentalmente; ADR-PERSIST-001 approvata; `PCR-CAD-001` superata.
+
+## Decisione finale T-P6-03 — sostituisce A parziale e B fisica
+
+L'autore ha ratificato sola estrazione logical dal lato dichiarato e autorizzato
+la revisione del prompt e DET §44. Niente validate_alignment/FieldViolation/
+E_ALIGNMENT. Controllo fisico padding fuori ambito formato 1 **senza residuo**.
+CNF-ALIGNMENT-01 archiviata come possibile estensione futura non implementata;
+nessun parametro opposite_edge_fill. Dopo verifica procedere a T-P6-04.
+Mandato completo tracciato in AGENTS.md e report T-P6-03, con fonti revisionate.
 
 ## Mandato corrente — ripresa autonoma dopo T-P5-07
 
@@ -114,10 +123,10 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 |---|---|---|
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
-| QG-1 — controlli locali | PASS per T-P6-02 | fmt/check/clippy/release, 34 unit + 141 integration + 11 doctest = 186 |
+| QG-1 — controlli locali | PASS per T-P6-03 | fmt/check/clippy/release/GNU, 34 unit + 148 integration + 11 doctest = 193 |
 | QG-2 — CI Linux/Windows | PASS per c34649b | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154), Linux GNU 118614279561 e Windows MSVC 118614279377 completed/success; 186 test locali, 187 Windows |
 | QG-3 — architettura | PASS per dominio/raw/compiled | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
-| QG-8 — documenti | PASS per la frontiera consegnata | Sorgenti ARCH/DET/Piano invariati; integrazioni e adattamenti tracciati nei report; CNF-AUDIT-01 applicata previa approvazione |
+| QG-8 — documenti | PASS con revisione autorizzata T-P6-03 | DET §44 e prompt kit aggiornati per mandato esplicito; hash prima/dopo registrati; ARCH/Piano invariati; nessun residuo fisico formato 1 |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
 | G-SIOC-HIST | OPEN_POLICY | DEC-SIOC-HIST-01, non blocca scaffold |
 | G-CAD-RUNTIME | NOT_STARTED | Richiede compiler, cross-record e persistenza |
@@ -206,11 +215,19 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P5-07 | DONE | 2026-10-20 | Sei scenari sintetici, confronto byte esatto e opt-in aggiornamenti; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) verde su b0e5ce7; [spiegazione](docs/verification/T-P5-07.md) |
 | T-P6-01 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
 | T-P6-02 | DONE | 2026-10-20 | Presenza base, Unknown per condizioni non valutate; 186 locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) verde su c34649b; [spiegazione](docs/verification/T-P6-02.md) |
-| T-P6-03 | BLOCKED | 2026-10-20 | CNF-ALIGNMENT-01: scelta B ricevuta, niente consegna parziale; [contratto fisico proposto](docs/proposals/alignment-physical-contract.md) DRAFT da approvare, nessun Rust scritto |
+| T-P6-03 | DONE_UNVERIFIED | 2026-10-20 | Mandato finale: logical zero-copy senza verifica fisica/residuo; 193 test locali, CI da eseguire; [evidenze](docs/verification/T-P6-03.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — 2026-10-20, Linux locale
+
+T-P6-03: fmt/clippy/test/release/GNU-all-targets PASS, 193 test locali;
+sette nuovi integration su zero-copy e policy. Check/diff-check alla chiusura.
+Audit delle revisioni autorizzate PASS: prima=manifest originale, dopo=file
+corrente, copie byte identiche, nessun cambiamento DET fuori §44. Due file kit
+ora intenzionalmente diversi dal manifest; manifest invariato, nessun PASS
+inventato per integrità del kit originario. Nuova CI PENDING.
+[Contratto, spiegazioni ed evidenze](docs/verification/T-P6-03.md).
 
 T-P6-02: fmt/check/clippy/test/release/GNU-all-targets/diff-check PASS;
 186 test locali (34 unit + 141 integration + 11 doctest), cinque integration
@@ -474,7 +491,17 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Decisioni della sessione corrente
 
-- **CNF-ALIGNMENT-01 / scelta B dell’autore:** «B: definiamo prima il
+- **CNF-ALIGNMENT-01 — ARCHIVIATA per mandato finale:** solo logical per
+  formato 1, nessuna verifica fisica e nessun residuo. Autorizzati prompt e
+  DET §44; aggiornati anche i richiami authoring/lowering per coerenza con
+  la decisione espressa. Nessun nuovo schema/parametro/default. La proposta
+  fisica non è implementata; riconsiderazione futura richiede nuova decisione.
+- **Audit fonti T-P6-03:** modificati DET §44 nella copia repository e nel kit,
+  più prompt T-P6-03 kit; copia prompt e SHA-256 prima/dopo versionati. Manifest
+  originale non modificato, hash iniziali riscontrati. ARCH e Master Plan intatti.
+
+
+- **CNF-ALIGNMENT-01 / scelta B storica, superata dal mandato finale:** «B: definiamo prima il
   contratto fisico». Non approvata A; nessun helper parziale o avanzamento
   con residuo. Proposta completa redatta in
   docs/proposals/alignment-physical-contract.md: controllo esplicito
@@ -484,7 +511,7 @@ I doctest verificano importabilità e divieto di importare `engine` e
   DRAFT, non ratificati dalla sola scelta B. ARCH/DET/Piano/schemi/Rust invariati.
 
 
-- **CNF-ALIGNMENT-01 / T-P6-03 — APERTA:** Rule + raw non distinguono sempre
+- **CNF-ALIGNMENT-01 / T-P6-03 — origine storica, ora archiviata:** Rule + raw non distinguono sempre
   fill di contenuto e padding. Esempio: LeftPad zero, raw 1000 può essere
   valore 1000 senza padding, non necessariamente valore 1 padded a destra.
   SCHEMA_AUTHORING definisce estrazione logical ma non un divieto universale
@@ -749,6 +776,24 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-20 — T-P6-03 logical / locale verificato / CI da eseguire
+
+- **Stato:** DONE_UNVERIFIED fino alla CI nativa. Nessun residuo fisico:
+  controllo fuori ambito formato 1 per decisione espressa dell'autore.
+- **File codice:** validators/alignment.rs, validators/mod.rs, lib.rs,
+  tests/logical_value.rs. Spiegazioni dettagliate nel codice e report tecnico.
+- **Documenti:** AGENTS, DET §44 repo/kit, prompt kit e copia versionata,
+  authoring/lowering, preflight risolto/proposta fisica archiviata, audit hash,
+  report T-P6-03 e stato. Nessuna baseline normativa modificata.
+- **Evidenze:** 193 test locali, fmt/clippy/release/GNU PASS, sette test nuovi;
+  audit fonti prima/dopo e confronto byte copie PASS. CI da eseguire.
+- **Decisioni:** input prestato senza allocazione; strip soltanto lato
+  dichiarato, preserve/exact identici, all-fill vuoto sotto stripping.
+  Errori di configurazione tecnici distinti; nessun FieldViolation/E_ALIGNMENT.
+- **Git:** work/p1-foundations; cancellazione preesistente del piano storico
+  esclusa. Fonte kit fuori Git coperta da copia prompt e hash autorizzati.
+- **Next:** verificare CI, poi T-P6-04 come autorizzato; nessun residuo fisico.
 
 HANDOFF — 2026-10-20 — T-P6-03 / scelta B registrata / contratto DRAFT
 

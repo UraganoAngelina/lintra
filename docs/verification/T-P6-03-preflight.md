@@ -1,6 +1,16 @@
 # T-P6-03 — Preflight / CNF-ALIGNMENT-01
 
-2026-10-20. **BLOCKED — decisione contrattuale richiesta, nessun codice alignment scritto.**
+2026-10-20. **RISOLTA — mandato finale dell’autore: sola estrazione logical, nessun residuo fisico formato 1.**
+
+## Decisione finale — prevale sulla cronologia sottostante
+
+L'autore ha scelto A con precisazioni vincolanti: sola estrazione del logical,
+nessun validate_alignment/FieldViolation/E_ALIGNMENT, controllo fisico fuori
+ambito per formato 1 e **nessun residuo**. Autorizzate revisioni del prompt e
+DET §44; poi T-P6-04. CNF-ALIGNMENT-01 archiviata come possibile estensione
+futura non implementata. Non introdurre opposite_edge_fill o il suo default.
+La proposta parziale A e la proposta fisica B sottostanti sono storiche;
+il contratto vigente e le evidenze sono in [T-P6-03.md](T-P6-03.md).
 
 ## Decisione successiva dell'autore
 

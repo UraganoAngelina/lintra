@@ -1,8 +1,13 @@
 # CNF-ALIGNMENT-01 — Proposta di contratto fisico completo
 
-2026-10-20. **DRAFT — da approvare prima dell'implementazione.**
+2026-10-20. **ARCHIVIATA — possibile estensione futura NON implementata né approvata.**
 
-L'autore ha scelto «B: definiamo prima il contratto fisico» nel dossier
+Decisione finale successiva dell'autore: formato 1 richiede solo estrazione
+logical. Nessun residuo fisico; nessun opposite_edge_fill o nuovo default.
+Questo documento conserva una proposta storica che richiederebbe una futura
+approvazione separata: non è il contratto vigente e non blocca T-P6-03/04.
+
+Nella fase precedente l'autore aveva scelto «B: definiamo prima il contratto fisico» nel dossier
 T-P6-03 del commit 73b94cb. La proposta A di consegna parziale non è approvata.
 Questo documento propone un contratto verificabile per completare T-P6-03;
 non modifica ancora le fonti approvate, gli schemi regionali o il codice.

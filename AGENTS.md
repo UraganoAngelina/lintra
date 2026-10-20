@@ -44,3 +44,13 @@ Decisione successiva — CNF-ALIGNMENT-01, scelta B:
 - Non attuare la proposta A di consegna parziale/prosecuzione con residuo.
 - Definire e sottoporre il contratto fisico completo prima di implementare
   T-P6-03; la scelta B non approva automaticamente i dettagli proposti.
+
+Decisione finale dell'autore — supera la precedente scelta B:
+- T-P6-03 consegna solo estrazione logical zero-copy dal lato dichiarato;
+  preserve_width/exact invariati, all-fill vuoto solo sotto stripping.
+- Autorizzata revisione del prompt T-P6-03 e di DET §44. Nessun validator
+  fisico, E_ALIGNMENT o nuovo parametro opposite_edge_fill nel formato 1.
+- Nessun residuo fisico aperto: CNF-ALIGNMENT-01 archiviata come estensione
+  futura non implementata. Dopo verifica procedere a T-P6-04.
+- Lo spazio iniziale in testo libero resta lecito; altri stage verificano
+  valori, larghezza, chiavi e date senza garanzia assoluta sugli shift di colonne.
