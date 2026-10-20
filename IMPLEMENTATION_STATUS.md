@@ -23,7 +23,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 locale verificata (127 test), CI pendente.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 locale verificata, CI 39390492669 in corso; T-P5-03 locale verificata (132 test), CI successiva pendente.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -175,11 +175,17 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P4-05 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
 | T-P5-01 | DONE | 2026-10-20 | [CI 39389657166](https://github.com/UraganoAngelina/lintra/actions/runs/39389657166) verde Linux/Windows su a679f40; 123 test |
 | T-P5-02 | DONE_UNVERIFIED | 2026-10-20 | ErrorFactory/template e FieldViolation; 127 test, snapshot codici; CI pendente |
+| T-P5-03 | DONE_UNVERIFIED | 2026-10-20 | ValidationSink/VecSink/CompositeSink, ReportError con cause, fail-fast; 132 test locali, CI pendente |
 | T-P6-01 | DONE | 2026-10-20 | [CI 39389225120](https://github.com/UraganoAngelina/lintra/actions/runs/39389225120) verde Linux/Windows su 46ab648; 118 test |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — 2026-10-20, Linux locale
+
+T-P5-03: fmt/check/clippy/test/release/diff-check PASS; 132 test
+(29 unit, 93 integration, 10 doctest), cinque nuovi integration.
+[Report](docs/verification/T-P5-03.md); CI da eseguire dopo factory.
+
 
 T-P5-02: fmt/check/clippy/test/release/diff-check PASS;
 29 unit + 88 integration + 10 doctest = 127.
@@ -391,6 +397,12 @@ I doctest verificano importabilità e divieto di importare `engine` e
 
 ## Decisioni della sessione corrente
 
+- **T-P5-03 / DET §54/§118/§156:** ReportError reale nel report, con cause
+  tecniche; nessun anticipo di ValidationRunError applicativo. Composite
+  ordinato e terminale dopo il primo Err, nessun rollback o atomicità
+  implicita. VecSink esplicitamente test/piccoli casi, non default engine.
+
+
 - **T-P5-02 / DET §43/§50:** FieldViolation è solo il payload già richiesto
   da field_error; proprietà validators, nessun validatore anticipato.
   Template nel solo engine/error_factory, dati machine-readable preservati.
@@ -577,6 +589,18 @@ Contratti pubblici Rust consegnati e relativi confini documentati nei report del
   operativo locale organizza la frontiera realmente eseguibile.
 
 ## Handoff
+
+HANDOFF — 2026-10-20 — T-P5-03 locale verificata
+
+- **File:** report/sink.rs, report/composite.rs, report/mod.rs, lib.rs,
+  tests/validation_sinks.rs, report/stato.
+- **Evidenza:** 132 test, fmt/check/clippy/release/diff-check verdi locali.
+- **Gate:** CI T-P5-03 da avviare dopo run factory 39390492669.
+- **Residui:** il service mapperà ReportError reale a Err(Report),
+  T-P2-03/M1 aperte; nessuna transazione di output anticipata.
+- **Next:** chiudere CI, T-P5-04 con DEC-02 già risolta.
+- **Git:** preservato/escluso il piano storico preesistente dell’autore.
+
 
 HANDOFF — 2026-10-20 — T-P5-02 locale verificata
 

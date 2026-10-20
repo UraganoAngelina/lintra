@@ -122,6 +122,11 @@ pub use validators::presence::is_missing;
 pub use engine::error_factory::ErrorFactory;
 pub use validators::FieldViolation;
 
+pub use report::{
+    composite::CompositeSink,
+    sink::{ReportError, ValidationSink, VecSink},
+};
+
 pub use input::{
     error::{BomKind, InputError},
     reader::{NewlinePolicy, RecordReader},
