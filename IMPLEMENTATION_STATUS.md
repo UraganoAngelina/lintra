@@ -267,7 +267,8 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
-| T-P8-01 | DONE_UNVERIFIED | 2026-10-21 | Parser, exit code, resolver tre livelli; 297 test locali; CI in acquisizione; [report](docs/verification/T-P8-01.md) |
+| T-P8-01 | DONE | 2026-10-21 | 297 test, CI 39628560176 Linux/Windows success 98d952b; [report](docs/verification/T-P8-01.md) |
+| T-P8-02 | IN_PROGRESS | 2026-10-21 | HumanReadableSink dopo gate 8-01 verificato |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -2310,3 +2311,13 @@ HANDOFF — 2026-10-21 — T-P8-01 gate locali
 - Rinvii: esecuzione 8-03, embedded 15-03, reference P11, Full P13 e persistenza;
   T-P2-03/M1 aperte.
 - Git work/p1-foundations, codice da pubblicare per CI. Next T-P8-02 dopo gate.
+
+
+HANDOFF — 2026-10-21 — T-P8-01 DONE / avvio T-P8-02
+- Codice 98d952b, CI 39628560176 completed/success nativa Linux/Windows.
+- 297 test e tutti i gate locali passati; file e spiegazioni nel dossier 8-01.
+- Contratti nuovi solo adapter, DEC-12 approvata, nessuna modifica architetturale.
+- Nessun blocco 8-01; comando validate effettivo resta 8-03, embedded 15-03.
+- Git work/p1-foundations, sorgente pubblicato, chiusura documentale qui.
+- Next T-P8-02 avviata automaticamente; conformità testuale sempre nel modo
+  selezionato, nessuna promozione da locale a Full. Rinvii P11/P13/PERSIST aperti.
