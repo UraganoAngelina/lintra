@@ -171,4 +171,8 @@ pub use application::{
     service::{InvalidRequestError, PreflightPlan, preflight},
 };
 pub use engine::preflight::InputPlanError;
+pub use engine::trace_validator::{
+    TraceCompletion, TraceControl, TraceEvent, TraceValidationError, TraceValidator,
+    validate_reader,
+};
 pub use input::source::InputSource;
