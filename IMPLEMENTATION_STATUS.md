@@ -19,7 +19,7 @@ Started_at già nei metadata è conservato nel summary per il writer del run;
 nessun nuovo campo JSON per il timestamp, API precedente ancora compatibile.
 T-P2-03/M1, P11/P13 restano aperti. Mandato successivo: stop dopo T-P7-05.
 
-## Decision log — CNF-SERVICE-DI-01 APPROVATA / T-P7-05 DONE_UNVERIFIED
+## Decision log — CNF-SERVICE-DI-01 chiusa / T-P7-05 DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01
 
 Ratifica esplicita dell’autore, 2026-10-21: proposta A con precisazioni §§1–13.
 Factory `build_default_local_service(PathBuf, RawResolvedEncoding)` con reali
@@ -52,7 +52,7 @@ Ratifica indipendente dalla CI. Nessuna modifica ARCH/DET/Piano/spec persistente
   **T-P2-03 IN_PROGRESS**: CNF-DOMAIN-01/proposta A approvata integralmente
   dall’autore; parte autonoma verificata in locale e CI Linux/Windows 39235805213 su 70cdb5e.
   Residuo ValidationRunError applicativo aperto, T-P2-03/M1 non complete;
-  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 DONE, CNF-AUDIT-01 risolta; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) Linux/Windows verde su 85f1ac7, 155 test locali; stop rispettato e successivamente revocato per avviare T-P5-06. **T-P5-06 DONE**: output atomico e spiegazioni dettagliate del codice; 170 test locali, 171 Windows; [CI 39405353679](https://github.com/UraganoAngelina/lintra/actions/runs/39405353679) Linux/Windows verde su 0c48768. **T-P5-07 DONE**: harness golden generico e sei scenari sintetici; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) Linux/Windows verde su b0e5ce7. **T-P6-02 DONE**: presenza Required/Optional e boundary Unknown; 186 test locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) Linux/Windows verde su c34649b. **T-P6-03 DONE**: sola estrazione logical, nessun controllo fisico/residuo formato 1; CNF-ALIGNMENT-01 archiviata. 193 locali, 194 Windows; [CI 39425268285](https://github.com/UraganoAngelina/lintra/actions/runs/39425268285) verde su bd49791. **T-P6-04 DONE**: datatype Numeric/AN, encoding e ByteSet; 205 locali, [CI 39430943109](https://github.com/UraganoAngelina/lintra/actions/runs/39430943109) Linux/Windows verde su 24b0e02. **T-P6-05 DONE**: AllowedValues raw/logical e compiler, 215 locali; [CI 39435239667](https://github.com/UraganoAngelina/lintra/actions/runs/39435239667) Linux/Windows verde c3caa5e. **T-P6-06 DONE**: pipeline ordinata, 226 locali; [CI 39437225233](https://github.com/UraganoAngelina/lintra/actions/runs/39437225233) Linux/Windows verde 65f1eb3. **T-P6-07 DONE**: identità da binding, 233 locali, [CI 39439627879](https://github.com/UraganoAngelina/lintra/actions/runs/39439627879) Linux/Windows verde c51c019. **T-P6-08 DONE — LocalOnly scope approved by CNF-RECORD-01**: 245 locali, [CI 39449345726](https://github.com/UraganoAngelina/lintra/actions/runs/39449345726) Linux/Windows verde daa9f15; stop successivamente revocato, T-P7-01 DONE (251 locali, CI 39567896281 Linux/Windows verde 20f6835); T-P7-02 DONE, 254 locali, CI 39569282614 Linux/Windows verde bacedba; T-P7-03 DONE, 263 locali, CI 39571479598 Linux/Windows verde 5d2f371; T-P14-03 DONE (268 locali), CI 39574640180 Linux/Windows verde da80163; T-P7-04 DONE LocalOnly (280 locali), CI 39587379476 Linux/Windows verde dcb8c59; T-P7-05 DONE_UNVERIFIED: CNF-SERVICE-DI-01 approvata, consegna solo LocalOnly.
+  parte autonoma, T-P3-01 e T-P3-02 verificate; T-P3-03 verificata in locale e CI Linux/Windows; T-P3-04 verificata in locale e CI Linux/Windows; T-P3-05 verificata in locale e CI Linux/Windows; CNF-COMPILER-01/proposta A approvata; T-P3-06 verificata in locale e CI Linux/Windows; CNF-FORMAT-01 risolto con mappa approvata; T-P3-07 verificata in locale e CI Linux/Windows; T-P4-01 verificata in locale e CI Linux/Windows; T-P4-02..04 DONE: CI 39282115064 Linux/Windows verde su 7168a05; T-P6-01 e T-P4-05 DONE su CI 39389225120; T-P5-01 DONE, CI 39389657166 verde Linux/Windows su a679f40; T-P5-02 DONE, CI 39390492669 Linux/Windows verde su 39ed9b2; T-P5-03 DONE su CI 39390829911 Linux/Windows verde; T-P5-04 DONE su CI 39391897709 Linux/Windows verde (137 test); T-P5-05 DONE, CNF-AUDIT-01 risolta; [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949) Linux/Windows verde su 85f1ac7, 155 test locali; stop rispettato e successivamente revocato per avviare T-P5-06. **T-P5-06 DONE**: output atomico e spiegazioni dettagliate del codice; 170 test locali, 171 Windows; [CI 39405353679](https://github.com/UraganoAngelina/lintra/actions/runs/39405353679) Linux/Windows verde su 0c48768. **T-P5-07 DONE**: harness golden generico e sei scenari sintetici; 180 test locali, 181 Windows; [CI 39416549983](https://github.com/UraganoAngelina/lintra/actions/runs/39416549983) Linux/Windows verde su b0e5ce7. **T-P6-02 DONE**: presenza Required/Optional e boundary Unknown; 186 test locali, 187 Windows; [CI 39418788154](https://github.com/UraganoAngelina/lintra/actions/runs/39418788154) Linux/Windows verde su c34649b. **T-P6-03 DONE**: sola estrazione logical, nessun controllo fisico/residuo formato 1; CNF-ALIGNMENT-01 archiviata. 193 locali, 194 Windows; [CI 39425268285](https://github.com/UraganoAngelina/lintra/actions/runs/39425268285) verde su bd49791. **T-P6-04 DONE**: datatype Numeric/AN, encoding e ByteSet; 205 locali, [CI 39430943109](https://github.com/UraganoAngelina/lintra/actions/runs/39430943109) Linux/Windows verde su 24b0e02. **T-P6-05 DONE**: AllowedValues raw/logical e compiler, 215 locali; [CI 39435239667](https://github.com/UraganoAngelina/lintra/actions/runs/39435239667) Linux/Windows verde c3caa5e. **T-P6-06 DONE**: pipeline ordinata, 226 locali; [CI 39437225233](https://github.com/UraganoAngelina/lintra/actions/runs/39437225233) Linux/Windows verde 65f1eb3. **T-P6-07 DONE**: identità da binding, 233 locali, [CI 39439627879](https://github.com/UraganoAngelina/lintra/actions/runs/39439627879) Linux/Windows verde c51c019. **T-P6-08 DONE — LocalOnly scope approved by CNF-RECORD-01**: 245 locali, [CI 39449345726](https://github.com/UraganoAngelina/lintra/actions/runs/39449345726) Linux/Windows verde daa9f15; stop successivamente revocato, T-P7-01 DONE (251 locali, CI 39567896281 Linux/Windows verde 20f6835); T-P7-02 DONE, 254 locali, CI 39569282614 Linux/Windows verde bacedba; T-P7-03 DONE, 263 locali, CI 39571479598 Linux/Windows verde 5d2f371; T-P14-03 DONE (268 locali), CI 39574640180 Linux/Windows verde da80163; T-P7-04 DONE LocalOnly (280 locali), CI 39587379476 Linux/Windows verde dcb8c59; T-P7-05 DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01, 285 test locali e CI 39601419396 Linux/Windows verde su 074bbfe.
 - A-02/DEC-01: avvio P1 prima di G0 autorizzato nel kit e dalla richiesta
   dell'autore; DEC-03: nome `lintra` confermato.
 - Repository locale `lintra/`, accanto allo starter kit; `origin` configurato
@@ -265,7 +265,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P7-03 | DONE | 2026-10-21 | Loop streaming, audit/cancellazione, 263 locali; CI 39571479598 Linux/Windows verde 5d2f371; [report](docs/verification/T-P7-03.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
-| T-P7-05 | DONE_UNVERIFIED | 2026-10-21 | CNF-SERVICE-DI-01 APPROVATA: factory e DI LocalOnly; 285 test locali passati, CI in acquisizione |
+| T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); STOP |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -2235,3 +2235,32 @@ HANDOFF — 2026-10-21 — T-P7-05 gate locali
 - **Git:** work/p1-foundations, modifiche di task da committare e pubblicare.
 - **Next:** dopo gate T-P7-06 raccomandata (T-P5-07 DONE), ma STOP obbligatorio
   e nuova autorizzazione per ogni ulteriore task. Nessun avvio automatico.
+
+
+HANDOFF — 2026-10-21 — T-P7-05 conclusa / STOP
+- **Fase/task:** P7 / T-P7-05.
+- **Stato:** DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01.
+- **Fatto/file:** factory esplicita in src/application/service.rs, export in
+  src/lib.rs; cinque test esterni in tests/local_service_factory.rs e observer
+  tests/support/progress.rs; ratifica in AGENTS.md, preflight aggiornato,
+  spiegazioni del codice/audit export/ledger in docs/verification/T-P7-05.md.
+- **Evidenze:** 285 test locali (39 unit, 235 integration, 11 doctest); fmt,
+  check all-targets, Clippy -D warnings, build release, Windows GNU check e
+  diff --check superati. CI 39601419396 su 074bbfeda74bc1db197f6d4a250961c646f0ad70:
+  Linux job 119226605960 e Windows MSVC job 119226606315 success, confermati
+  dall’API GitHub dopo errori transitori di gh run view.
+- **Test non eseguiti:** nessuna esecuzione Windows locale; test nativi
+  Windows eseguiti realmente in CI. Nessun test Full/capacità future dichiarato.
+- **Contratto:** build_default_local_service(PathBuf, RawResolvedEncoding)
+  -> Result<ValidationService, SchemaLoadError>, nessun nuovo payload generico.
+  Root/encoding espliciti, caricamento lazy, new/with_clock invariati.
+- **Decisioni:** CNF-SERVICE-DI-01 approvata; compiled read-only e non-forgiabili.
+  Nessuna modifica delle fonti architetturali o delle baseline normative.
+- **Problemi/blocchi:** nessuno per T-P7-05 LocalOnly. Nessun Full disponibile.
+- **Rinvii:** P11/T-P11-01..03; T-PERSIST-02/03; P13; factory completa;
+  T-P2-03/M1 restano aperte, persistenza core obbligatoria finale.
+- **Git:** branch work/p1-foundations, codice 074bbfe pubblicato; questa
+  chiusura documentale in commit successivo, senza ulteriori modifiche Rust.
+- **Next:** T-P7-06 (T-P7-05 e T-P5-07 DONE), T-P8-01 (DEC-03 già approvata),
+  T-P11-01 sbloccate dalle dipendenze locali secondo la ratifica; nessuna iniziata.
+  STOP vincolante: attendere nuova autorizzazione anche per CLI o altre task.
