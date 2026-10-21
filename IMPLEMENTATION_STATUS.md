@@ -266,7 +266,8 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
-| T-P7-06 | DONE_UNVERIFIED | 2026-10-21 | Quattro test end-to-end locali, 289 test globali passati; CI in acquisizione; [report](docs/verification/T-P7-06.md) |
+| T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
+| T-P8-01 | IN_PROGRESS | 2026-10-21 | DEC-12 A approvata; prerequisiti 7-05/7-06 e DEC-03 soddisfatti |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -2281,3 +2282,15 @@ HANDOFF — 2026-10-21 — T-P7-06 gate locali
 - Git: work/p1-foundations, implementazione da pubblicare per CI nativa.
 - Next: T-P8-01 dopo CI e verifica DEC-12/contratti di risoluzione bundle.
   Workflow autonomo ripristinato dal mandato più recente.
+
+
+HANDOFF — 2026-10-21 — T-P7-06 DONE LocalOnly / avvio T-P8-01
+- Task T-P7-06 DONE: 289 test locali e CI 39621523482 su b402fdf completa success.
+  Linux job 119295973306, Windows MSVC 119295973105: fmt/Clippy/test/release.
+- File e comportamento nel report T-P7-06; contratti produzione invariati.
+- Nessun blocco della consegna locale; P11/P13/PERSIST/T-P2-03/M1 restano aperti.
+- Git work/p1-foundations, codice b402fdf pubblicato, chiusura documentale qui.
+- Decision log DEC-12: autore approva A del preflight T-P8-01; righe vuote
+  zero byte, nessun record finale inventato, BOM Reject, nessun --bom strip.
+  Nessuna revisione delle fonti ARCH/DET/Piano; scelta registrata come ratifica.
+- Next T-P8-01, avvio autonomo dopo gate verificati; DEC-03 già risolta.

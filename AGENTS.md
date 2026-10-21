@@ -96,3 +96,8 @@ Mandato successivo — ripresa dopo T-P7-05, 2026-10-21:
   automaticamente una task alla volta con dipendenze/gate soddisfatti.
 - Fermarsi solo sulle attività con ambiguità o blocchi reali; restano
   esclusi Superpowers/subagenti e obbligatori spiegazioni e recap dei file.
+
+DEC-12 — prima CLI, scelta A ratificata dall’autore:
+- Riga vuota = record zero byte; terminatore finale non inventa una riga extra.
+- BOM Reject, errore tecnico; nessun --bom strip nella prima CLI.
+- Nessuna modifica della request/pipeline per simulare stripping non selezionabile.
