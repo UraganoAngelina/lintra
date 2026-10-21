@@ -160,6 +160,10 @@ pub use engine::record_validator::{
 };
 
 pub use application::{
+    cancellation::CancellationToken,
+    progress::{ProgressEvent, ProgressObserver, ValidationPhase},
+};
+pub use application::{
     request::{
         FlowValidationInput, RecordLengthPolicy, TraceValidationInput, ValidationMode,
         ValidationOptions, ValidationRequest, ValidationScope,
