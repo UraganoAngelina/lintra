@@ -271,7 +271,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 fmt/check/clippy/test/release/GNU-all-targets/diff PASS; mode approvata,
 otto JSON con sola aggiunta validation_mode verificati byte per byte.
 CI 39587379476 dcb8c59: Linux 119179544895 / Windows MSVC 119179544684
-completed/success. Clock fisso realmente iniettato, sampled una sola volta;
+completed/success. Clock fisso realmente iniettato, acquisito una sola volta;
 errori/cancellazioni/audit EOF e serializzazione locale esercitati dal servizio.
 
 
@@ -925,8 +925,9 @@ HANDOFF — 2026-10-21 — T-P7-04 DONE LocalOnly / T-P7-05 BLOCKED
   PERSIST repository e storage; nessun placeholder o aggiornamento persistente.
 - **Blocco:** CNF-SERVICE-DI-01, costruttori 7-05 richiedono porte future in ciclo;
   proposta API LocalOnly con rinvii espliciti sottoposta all'autore. Factory non scritta.
-- **Git:** work/p1-foundations; dcb8c59 pubblicato, dossier cff635b e consuntivo
-  in commit separati. Rete intermittente; ultimi push documentali da ritentare.
+- **Git:** work/p1-foundations; dcb8c59, dossier cff635b e consuntivo afa177d
+  pubblicati. Timeout documentali risolti usando il trasporto Git standard;
+  chiusura dello stato Git registrata in commit documentale separato.
 - **Next:** ratifica sul contratto 7-05; poi workflow autonomo con gate invariati.
 
 HANDOFF — 2026-10-21 — T-P7-04 locale verificata / CI da eseguire
