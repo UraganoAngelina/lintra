@@ -13,6 +13,7 @@ name = "lintra"
 path = "src/main.rs"
 
 [dependencies]
+clap = { version = "=4.6.7", default-features = false, features = ["std", "help", "usage", "error-context"] }
 sha2 = { version = "=0.11.1", default-features = false }
 chrono = { version = "=0.4.45", default-features = false, features = ["std"] }
 regex = "1.13.1"

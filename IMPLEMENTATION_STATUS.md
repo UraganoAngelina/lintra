@@ -267,7 +267,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
-| T-P8-01 | IN_PROGRESS | 2026-10-21 | DEC-12 A approvata; prerequisiti 7-05/7-06 e DEC-03 soddisfatti |
+| T-P8-01 | DONE_UNVERIFIED | 2026-10-21 | Parser, exit code, resolver tre livelli; 297 test locali; CI in acquisizione; [report](docs/verification/T-P8-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -2294,3 +2294,19 @@ HANDOFF — 2026-10-21 — T-P7-06 DONE LocalOnly / avvio T-P8-01
   zero byte, nessun record finale inventato, BOM Reject, nessun --bom strip.
   Nessuna revisione delle fonti ARCH/DET/Piano; scelta registrata come ratifica.
 - Next T-P8-01, avvio autonomo dopo gate verificati; DEC-03 già risolta.
+
+
+HANDOFF — 2026-10-21 — T-P8-01 gate locali
+- DONE_UNVERIFIED fino a CI nativa. DEC-12 A ratificata, nessun nuovo conflitto.
+- File: src/cli/{mod,args,exit_code,paths,tests}.rs e src/main.rs; Cargo.toml/lock,
+  README.md, docs/DEPENDENCIES.md, docs/verification/T-P8-01.md, questo registro.
+- Scheletro reale con help/parsing, request LocalOnly, root esplicite per coppie
+  complete, errori tipizzati e mapping 0/1/2/130. Validate non esegue ancora
+  alcuna analisi: rifiuto tecnico esplicito fino a T-P8-03, nessun output fittizio.
+- Verifiche: 297 test, fmt/check/Clippy/release/Windows GNU check/diff passati;
+  processo release help 0, nessuna opzione e --bom strip 1.
+- Dipendenze: clap 4.6.7 features minime, licenza/MSRV/tree registrati, nessun
+  import nel core. Nessuna baseline/fonti o API libreria modificate.
+- Rinvii: esecuzione 8-03, embedded 15-03, reference P11, Full P13 e persistenza;
+  T-P2-03/M1 aperte.
+- Git work/p1-foundations, codice da pubblicare per CI. Next T-P8-02 dopo gate.

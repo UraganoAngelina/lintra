@@ -3,11 +3,16 @@
 Motore generico e versionato per validare flussi sanitari fixed-width.
 **Il motore conosce come validare; gli schemi conoscono cosa è valido.**
 
-Il repository contiene le fondamenta Rust: una libreria, un entrypoint CLI
-vuoto, i confini dei moduli e la configurazione di sviluppo. Il binario
-termina senza elaborare input o produrre output. Il consuntivo delle task
-e dei gate realmente verificati è in
-[IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md).
+La libreria espone `ValidationService` e una factory filesystem LocalOnly,
+con compiler incrementale, validazione strutturale e controlli locali supportati,
+report JSONL/summary, audit degli input, progress e cancellazione. Full,
+reference data e persistenza completa rimangono consegne future esplicite.
+Il consuntivo verificato è in [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md).
+
+La CLI è attualmente uno scheletro: `--help` e il parsing di `validate` sono
+disponibili; l’esecuzione del comando verrà collegata nella task T-P8-03.
+Una richiesta preparata non esegue validazioni e termina con errore tecnico
+esplicito. Non vengono creati report o dichiarati risultati conformi.
 
 ## Sviluppo locale
 
@@ -20,10 +25,11 @@ cargo fmt --all -- --check
 cargo check --all-targets --locked
 cargo clippy --all-targets --locked -- -D warnings
 cargo test --locked
-cargo run --locked
+cargo run --locked -- --help
 ```
 
-Il package non ha dipendenze esterne. Rust è fissato alla versione **1.99.1**;
+Le dipendenze sono registrate in Cargo.toml/Cargo.lock e nel registro
+[DEC-15](docs/DEPENDENCIES.md). Rust è fissato alla versione **1.99.1**;
 rustup installa/seleziona il pin dichiarato e `Cargo.lock` è versionato.
 La [guida di sviluppo](docs/DEVELOPMENT.md) descrive preparazione su Arch,
 cross-check Windows GNU e conservazione dei byte delle fixture.
@@ -37,8 +43,8 @@ non attestano il superamento del gate multipiattaforma.
 - `src/main.rs` e `src/cli/`: adapter CLI separato dalla libreria.
 - `schemas/`, `reference-data/`: directory riservate ai bundle versionati;
   nessuno schema o dataset importato nello scaffold.
-- `tests/{integration,golden,fixtures,support}/`: directory riservate ai test
-  futuri. I doctest verificano il confine pubblico della libreria;
+- `tests/{integration,golden,fixtures,support}/`: test sintetici e harness
+  golden. I doctest verificano il confine pubblico della libreria;
   i test di piattaforma verificano I/O sintetico su percorsi con spazi.
 - `docs/`: copie inalterate delle specifiche approvate.
 - [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md): consuntivo,
@@ -46,7 +52,7 @@ non attestano il superamento del gate multipiattaforma.
 
 `context` ospiterà il contesto effimero della validazione a due passate;
 `persistence` è il confine distinto della persistenza core generica.
-Tutti i `mod.rs` sono vuoti; backend e contratti non sono ancora implementati.
+La persistenza fisica resta da implementare nelle task PERSIST.
 
 ## Documentazione e ripresa del lavoro
 
@@ -82,3 +88,26 @@ I `.txt` sintetici in `tests/fixtures/` e i JSONL attesi sotto test sono
 ammessi; i nomi degli export `A.txt`, `B1.txt`, `B2.txt`, `C.txt`, `D.txt`
 restano esclusi ovunque. Questa protezione non sostituisce la revisione
 dei file prima di aggiungerli a Git.
+
+## Contratto CLI iniziale — T-P8-01
+
+Exit code: **0** analisi locale valida; **1** errore tecnico o di sintassi;
+**2** analisi completata con violazioni; **130** cancellazione controllata.
+`--help` termina con 0; lo scheletro non produce ancora esiti di validazione.
+
+Il parser richiede flow, schema-version, trace, input, errors (alias output),
+summary ed encoding esplicito (`utf8`, unico profilo attualmente supportato).
+Nessuna selezione implicita dell’ultima versione o di Full.
+
+Risoluzione di bundle esterno per coppie complete, in ordine: opzioni
+`--schema-dir`/`--reference-data-dir`; variabili `LINTRA_SCHEMA_DIR`/
+`LINTRA_REFERENCE_DATA_DIR`; directory `schemas/`/`reference-data/` accanto
+all’eseguibile. Una coppia incompleta o una directory scelta non valida produce
+errore, senza ripiego su livelli inferiori. Nessuna ricerca in cwd/home.
+Lo snapshot incorporato sarà introdotto in P15: senza bundle esterno il build
+corrente fallisce esplicitamente. La risoluzione dei path non fornisce ancora
+un provider reference data; i relativi controlli restano P11.
+
+DEC-12 approvata: righe vuote conservate come record di zero byte, nessun
+record extra dopo l’ultimo terminatore, BOM rifiutato. `--bom strip` non è
+un’opzione della prima CLI. Sono conservati gli spazi del record.

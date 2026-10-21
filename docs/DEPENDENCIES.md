@@ -29,3 +29,21 @@ Tutti compatibili con la toolchain 1.99.1; esito native CI nel report T-P5-05.
 Compatibilità nativa effettivamente verificata dalla [CI 39399359949](https://github.com/UraganoAngelina/lintra/actions/runs/39399359949)
 su 85f1ac7: Linux x86_64 GNU e Windows x86_64 MSVC entrambi success,
 con test/build release; oltre al check locale Windows GNU all-targets.
+
+## T-P8-01 — clap, dipendenza nominata dal piano
+
+clap =4.6.7, MIT OR Apache-2.0, MSRV 1.85: compatibile con pin 1.99.1.
+Fonti primarie: https://docs.rs/clap/4.6.7/clap/ e Cargo.toml locale della
+versione scaricata con cargo info clap@4.6.7 (licenza/MSRV/feature verificati).
+Solo std/help/usage/error-context, default disabilitati: niente derive, color,
+env o suggestions. EnvProvider rimane una porta esplicita testabile.
+Nessun import clap nel core: è usato esclusivamente dal target binario CLI.
+Lock e dipendenze transitive/target verificati nei gate T-P8-01. Nessun nuovo
+crate di test. clap è già nominato da ARCH §4/Piano T-P8-01, nessuna nuova
+scelta di framework o deroga DEC-15 richiesta.
+
+Lock T-P8-01: clap_builder 4.6.7 (MIT OR Apache-2.0, MSRV 1.85),
+clap_lex 1.1.1 (MIT OR Apache-2.0, MSRV 1.85), anstyle 1.0.14
+(MIT OR Apache-2.0, MSRV 1.66). Metadati verificati dai Cargo.toml scaricati.
+Cargo tree --locked su Linux GNU e Windows MSVC: stesso ramo clap →
+clap_builder → anstyle/clap_lex, nessuna nuova dipendenza nativa o build script.
