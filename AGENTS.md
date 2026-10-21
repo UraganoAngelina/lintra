@@ -66,3 +66,9 @@ Ratifica CNF-RECORD-01 — T-P6-08 LocalOnly:
   residuo T-P2-03/M1 restano aperti; fonti architetturali invariate.
 - STOP obbligatorio dopo T-P6-08 e handoff: non implementare P7 o altre task
   senza nuova autorizzazione. Il riordino P7 è approvato solo come piano.
+
+Mandato 2026-10-21 — ripresa autonoma dopo T-P6-08:
+- Autorizzata la continuazione da T-P7-01 e l'avanzamento automatico dopo ogni
+  task verificata, quando prerequisiti/output non presentano ambiguità.
+- Superato lo stop storico dopo T-P6-08. Restano gate e blocchi reali,
+  esclusione Superpowers/subagenti e spiegazioni dettagliate del codice.

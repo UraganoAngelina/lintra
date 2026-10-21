@@ -74,3 +74,9 @@ pub fn preflight_bom<R: Read>(
         detected,
     })
 }
+
+/// DET §27 path input: the path is used as supplied, never silently decoded.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum InputSource {
+    Path(std::path::PathBuf),
+}

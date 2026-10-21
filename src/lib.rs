@@ -158,3 +158,13 @@ pub use input::encoding::{DiagnosticValue, render_diagnostic_value};
 pub use engine::record_validator::{
     LocalRecordValidationArtifacts, RecordValidationError, RecordValidator, UnsupportedLocalFeature,
 };
+
+pub use application::{
+    request::{
+        FlowValidationInput, RecordLengthPolicy, TraceValidationInput, ValidationMode,
+        ValidationOptions, ValidationRequest, ValidationScope,
+    },
+    service::{InvalidRequestError, PreflightPlan, preflight},
+};
+pub use engine::preflight::InputPlanError;
+pub use input::source::InputSource;
