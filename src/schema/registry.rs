@@ -14,12 +14,14 @@ use std::{error::Error, fmt, sync::Arc};
 pub enum SchemaResolutionError {
     Load(SchemaLoadError),
     Compilation(SchemaCompilationError),
+    Canonical(crate::CanonicalSchemaError),
 }
 impl fmt::Display for SchemaResolutionError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Load(error) => write!(f, "schema loading failed: {error}"),
             Self::Compilation(error) => write!(f, "schema compilation failed: {error}"),
+            Self::Canonical(_) => f.write_str("schema fingerprint failed"),
         }
     }
 }
@@ -28,6 +30,7 @@ impl Error for SchemaResolutionError {
         Some(match self {
             Self::Load(error) => error,
             Self::Compilation(error) => error,
+            Self::Canonical(error) => error,
         })
     }
 }
@@ -69,6 +72,15 @@ impl SchemaRegistry {
         &self,
         key: &SchemaKey,
     ) -> Result<Arc<CompiledFlowSchema>, SchemaResolutionError> {
+        Ok(self.resolve_with_hash(key)?.schema)
+    }
+
+    /// Bind the actual compiled product to its canonical normative fingerprint.
+    /// Both originate from one repository load, never a second file read.
+    pub fn resolve_with_hash(
+        &self,
+        key: &SchemaKey,
+    ) -> Result<ResolvedSchema, SchemaResolutionError> {
         let mut raw = self.repository.load_raw(key)?;
         // Also enforce selection integrity for custom repository implementations.
         let found = SchemaKey {
@@ -82,7 +94,26 @@ impl SchemaRegistry {
             }
             .into());
         }
+        let schema_hash =
+            crate::schema_fingerprint(&raw).map_err(SchemaResolutionError::Canonical)?;
         raw.encoding.resolved = Some(self.encoding.clone());
-        Ok(Arc::new(self.compiler.compile(raw)?))
+        Ok(ResolvedSchema {
+            schema: Arc::new(self.compiler.compile(raw)?),
+            schema_hash,
+        })
+    }
+}
+
+/// Immutable pairing: callers cannot replace the compiled schema or its hash.
+pub struct ResolvedSchema {
+    schema: Arc<CompiledFlowSchema>,
+    schema_hash: crate::Sha256Digest,
+}
+impl ResolvedSchema {
+    pub fn schema(&self) -> &Arc<CompiledFlowSchema> {
+        &self.schema
+    }
+    pub fn schema_hash(&self) -> &crate::Sha256Digest {
+        &self.schema_hash
     }
 }

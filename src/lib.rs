@@ -176,3 +176,5 @@ pub use engine::trace_validator::{
     validate_reader,
 };
 pub use input::source::InputSource;
+pub use schema::canonical::{CanonicalSchemaError, canonical_schema_bytes, schema_fingerprint};
+pub use schema::registry::ResolvedSchema;
