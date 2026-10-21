@@ -90,3 +90,9 @@ Ratifica CNF-SERVICE-DI-01 — 2026-10-21:
 - La ratifica non sostituisce la CI precedente: verificare i gate Linux/Windows.
 - STOP dopo T-P7-05 e handoff; attendere autorizzazione prima di T-P7-06, CLI
   o qualunque altra task. Questo mandato supera la progressione autonoma generale.
+
+Mandato successivo — ripresa dopo T-P7-05, 2026-10-21:
+- L’autore revoca lo stop dopo T-P7-05: continuare da T-P7-06 e poi
+  automaticamente una task alla volta con dipendenze/gate soddisfatti.
+- Fermarsi solo sulle attività con ambiguità o blocchi reali; restano
+  esclusi Superpowers/subagenti e obbligatori spiegazioni e recap dei file.

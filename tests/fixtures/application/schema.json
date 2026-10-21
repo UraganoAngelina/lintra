@@ -1,0 +1,115 @@
+{
+  "schema_format_version": 1,
+  "flow_id": "SYNTHETIC",
+  "schema_version": "v1",
+  "regulatory_version": "synthetic",
+  "source": {},
+  "encoding": {
+    "mode": "runtime_required",
+    "position_unit": "byte"
+  },
+  "required_capabilities": [
+    "local.v1"
+  ],
+  "parameters": [],
+  "reference_data": [],
+  "persistence_policy": null,
+  "traces": [
+    {
+      "id": "T1",
+      "name": "Synthetic length only",
+      "record_length": 6,
+      "fields": [
+        {
+          "id": "F1",
+          "name": "Synthetic numeric code",
+          "physical": {
+            "type": "numeric",
+            "start": 1,
+            "length": 3,
+            "alignment": {
+              "kind": "left_pad",
+              "fill_byte": 48,
+              "content_policy": "strip_leading_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "target": "logical",
+              "values": [
+                "1"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F2",
+          "name": "Synthetic text code",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 4,
+            "length": 3,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "target": "logical",
+              "values": [
+                "A",
+                "\u00c9"
+              ]
+            }
+          ]
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "F1"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [],
+      "identity": [
+        {
+          "target": "technical",
+          "technical_name": "synthetic",
+          "field": "F2"
+        }
+      ],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [],
+      "documented_non_executable_rules": []
+    }
+  ]
+}

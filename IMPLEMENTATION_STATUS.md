@@ -5,8 +5,8 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
 ## Mandato corrente — 2026-10-21
 
-Autore ratifica CNF-SERVICE-DI-01 e autorizza **solo T-P7-05 LocalOnly**.
-STOP dopo la consegna e i gate: nessuna task successiva senza autorizzazione.
+L’autore revoca lo stop dopo T-P7-05 e autorizza la ripresa da T-P7-06,
+con avanzamento automatico task per task dopo gate e in assenza di ambiguità.
 Restano esclusi Superpowers/subagenti, fonti invariate e spiegazioni del codice.
 
 ## CNF-RUN-SCOPE-01 chiusa — T-P7-04 LocalOnly completata
@@ -17,7 +17,7 @@ Il servizio LocalOnly e gli aggiornamenti tecnici sono implementati, 280 test
 locali superati; CI 39587379476 Linux/Windows verde su dcb8c59. Fonti e baseline normative invariate.
 Started_at già nei metadata è conservato nel summary per il writer del run;
 nessun nuovo campo JSON per il timestamp, API precedente ancora compatibile.
-T-P2-03/M1, P11/P13 restano aperti. Mandato successivo: stop dopo T-P7-05.
+T-P2-03/M1, P11/P13 restano aperti. Mandato successivo: ripresa autonoma da T-P7-06.
 
 ## Decision log — CNF-SERVICE-DI-01 chiusa / T-P7-05 DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01
 
@@ -265,7 +265,8 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P7-03 | DONE | 2026-10-21 | Loop streaming, audit/cancellazione, 263 locali; CI 39571479598 Linux/Windows verde 5d2f371; [report](docs/verification/T-P7-03.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
-| T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); STOP |
+| T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
+| T-P7-06 | DONE_UNVERIFIED | 2026-10-21 | Quattro test end-to-end locali, 289 test globali passati; CI in acquisizione; [report](docs/verification/T-P7-06.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -2264,3 +2265,19 @@ HANDOFF — 2026-10-21 — T-P7-05 conclusa / STOP
 - **Next:** T-P7-06 (T-P7-05 e T-P5-07 DONE), T-P8-01 (DEC-03 già approvata),
   T-P11-01 sbloccate dalle dipendenze locali secondo la ratifica; nessuna iniziata.
   STOP vincolante: attendere nuova autorizzazione anche per CLI o altre task.
+
+
+HANDOFF — 2026-10-21 — T-P7-06 gate locali
+- Stato DONE_UNVERIFIED, prerequisiti 7-05/5-07 verificati.
+- File: tests/integration.rs, tests/integration/synthetic_service.rs,
+  tests/fixtures/application/schema.json; AGENTS.md, questo registro e dossier
+  docs/verification/T-P7-06.md. Nessuna modifica Rust di produzione.
+- Copertura: campi/padding/presence/tipi/domains attraverso servizio e JSONL;
+  contatori/ordine deterministico, schema invalido da filesystem, 10.000 righe
+  senza raccolta globale, guasto sorgente a metà run senza summary.
+- Regressioni: 289 test, fmt/check/Clippy/release/Windows GNU check/diff passati;
+  I/O/sink/cancellazione/golden preesistenti riusati e rieseguiti.
+- Contratti invariati; Full/P11/P13/PERSIST/T-P2-03/M1 rimangono aperti.
+- Git: work/p1-foundations, implementazione da pubblicare per CI nativa.
+- Next: T-P8-01 dopo CI e verifica DEC-12/contratti di risoluzione bundle.
+  Workflow autonomo ripristinato dal mandato più recente.
