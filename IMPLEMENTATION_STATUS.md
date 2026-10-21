@@ -268,7 +268,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
 | T-P8-01 | DONE | 2026-10-21 | 297 test, CI 39628560176 Linux/Windows success 98d952b; [report](docs/verification/T-P8-01.md) |
-| T-P8-02 | IN_PROGRESS | 2026-10-21 | HumanReadableSink dopo gate 8-01 verificato |
+| T-P8-02 | DONE_UNVERIFIED | 2026-10-21 | HumanReadableSink, sette test snapshot/boundary, 304 globali; CI in acquisizione; [report](docs/verification/T-P8-02.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -2321,3 +2321,16 @@ HANDOFF — 2026-10-21 — T-P8-01 DONE / avvio T-P8-02
 - Git work/p1-foundations, sorgente pubblicato, chiusura documentale qui.
 - Next T-P8-02 avviata automaticamente; conformità testuale sempre nel modo
   selezionato, nessuna promozione da locale a Full. Rinvii P11/P13/PERSIST aperti.
+
+
+HANDOFF — 2026-10-21 — T-P8-02 gate locali
+- DONE_UNVERIFIED fino a CI; prerequisito 8-01 CI completed/success verificato.
+- File src/report/human.rs, report/mod.rs, lib.rs, tests/human_readable_sink.rs,
+  docs/verification/T-P8-02.md, questo registro. Unico nuovo export HumanReadableSink.
+- Summary-only: Mode esplicito, nessun dato record stampato/trattenuto, conteggi
+  E_* ordinati, scope/input/counter/elapsed, interruzioni indicate senza conformità.
+- Sette test nuovi, 304 globali, fmt/check/Clippy/release/Windows GNU check/diff
+  passati; errore mut superfluo corretto senza cambiare i contratti.
+- Nessuna dipendenza nuova, fonti/baseline invariate.
+- Git work/p1-foundations, codice da pubblicare per CI. Next T-P8-03 dopo gate,
+  payload reali/LocalOnly invariati; P11/P13/PERSIST/T-P2-03/M1 restano aperti.

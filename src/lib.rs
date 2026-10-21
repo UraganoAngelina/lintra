@@ -184,3 +184,6 @@ pub use application::service::{
     ValidationRunError, ValidationService, build_default_local_service,
 };
 pub use report::summary::write_run_summary;
+
+// Text summary adapter for CLI/UI consumers; report internals stay private.
+pub use report::human::HumanReadableSink;

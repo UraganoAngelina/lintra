@@ -1,5 +1,6 @@
 pub(crate) mod atomic;
 pub(crate) mod composite;
+pub(crate) mod human;
 pub(crate) mod jsonl;
 pub(crate) mod sink;
 pub(crate) mod summary;
