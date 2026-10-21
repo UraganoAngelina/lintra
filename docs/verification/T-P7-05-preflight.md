@@ -1,6 +1,11 @@
 # T-P7-05 — Preflight / CNF-SERVICE-DI-01
 
-2026-10-21. **Decisione richiesta** sui costruttori e sulla consegna per fasi.
+2026-10-21. **Proposta A APPROVATA** dall’autore con le precisazioni vincolanti
+CNF-SERVICE-DI-01. Decisione registrata in IMPLEMENTATION_STATUS.md e
+[report di consegna](T-P7-05.md). Stop obbligatorio dopo T-P7-05, nessuna
+autorizzazione esecutiva alle task successive.
+
+Il testo seguente conserva il preflight storico, precedente all’implementazione.
 Nessun codice T-P7-05 scritto. T-P7-04: servizio locale e clock reale disponibili,
 280 test locali passati; CI 39587379476 Linux/Windows success su dcb8c59.
 Il gate runtime è soddisfatto e distinto da questa decisione.
@@ -82,7 +87,7 @@ Mantenere il blocco e definire prima il contratto completo delle dipendenze e
 un ordine alternativo compatibile, con eventuale anticipazione espressamente
 ratificata dei soli trait/payload reali. Nessun fake vuoto o backend automatico.
 
-## Handoff
+## Handoff storico prima della ratifica
 
 T-P7-04 e la sua CI sono completate con successo. Nessuna factory, namespace,
 provider o repository di T-P7-05 implementato. Dopo il gate del servizio,

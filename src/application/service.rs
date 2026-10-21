@@ -192,6 +192,30 @@ pub struct ValidationService {
     schema_registry: std::sync::Arc<crate::SchemaRegistry>,
     clock: std::sync::Arc<dyn crate::Clock>,
 }
+
+/// Build the currently supported LocalOnly service from an explicit schema root.
+///
+/// The repository rejects an empty root; no working-directory/home discovery or
+/// fallback is performed. Schema files are loaded lazily from
+/// `schema_root/<flow>/<version>/flow.json` when `validate` resolves the request.
+/// Loading/compilation failures, including unsupported encoding, are therefore
+/// returned by `validate` as typed `ValidationRunError`s, not hidden here.
+/// The encoding binding is passed unchanged to the registry. The existing `new`
+/// constructor supplies SystemClock, keeping a single standard wiring path.
+/// Full/reference-data/persistence wiring remains a future, separate factory.
+pub fn build_default_local_service(
+    schema_root: std::path::PathBuf,
+    encoding: crate::RawResolvedEncoding,
+) -> Result<ValidationService, crate::SchemaLoadError> {
+    let repository = crate::FileSystemSchemaRepository::new(schema_root)?;
+    let registry = crate::SchemaRegistry::new(
+        std::sync::Arc::new(repository),
+        crate::SchemaCompiler,
+        encoding,
+    );
+    Ok(ValidationService::new(std::sync::Arc::new(registry)))
+}
+
 impl ValidationService {
     pub fn new(schema_registry: std::sync::Arc<crate::SchemaRegistry>) -> Self {
         Self::with_clock(schema_registry, std::sync::Arc::new(crate::SystemClock))

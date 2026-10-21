@@ -80,3 +80,13 @@ Ratifica CNF-RUN-SCOPE-01 — 2026-10-21:
 - LocalOnly serializzato local_only, Full full ma resta non eseguibile fino P13.
 - Autorizzati aggiornamenti dei soli golden tecnici; RunStatus/Cancelled/truncated,
   input audit e baseline normative invariati. Procedere con T-P7-04 e verifiche.
+
+Ratifica CNF-SERVICE-DI-01 — 2026-10-21:
+- T-P7-05 autorizzata solo come API LocalOnly: factory esplicita schema_root/encoding,
+  repository/registry/SystemClock reali e DI new/with_clock preservata.
+- Nessun fallback, provider/repository fittizio o parametro ignorato; Full rifiutato.
+- Handle compiled pubblici di sola lettura ratificati, non-forgiabilità obbligatoria.
+- P11, P13, PERSIST e T-P2-03/M1 restano aperte secondo il ledger di task.
+- La ratifica non sostituisce la CI precedente: verificare i gate Linux/Windows.
+- STOP dopo T-P7-05 e handoff; attendere autorizzazione prima di T-P7-06, CLI
+  o qualunque altra task. Questo mandato supera la progressione autonoma generale.

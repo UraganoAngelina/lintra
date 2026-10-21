@@ -180,5 +180,7 @@ pub use schema::canonical::{CanonicalSchemaError, canonical_schema_bytes, schema
 pub use schema::registry::ResolvedSchema;
 
 pub use application::clock::{Clock, SystemClock};
-pub use application::service::{ValidationRunError, ValidationService};
+pub use application::service::{
+    ValidationRunError, ValidationService, build_default_local_service,
+};
 pub use report::summary::write_run_summary;
