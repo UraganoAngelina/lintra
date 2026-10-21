@@ -20,9 +20,10 @@ Non contiene record sanitari, identificativi paziente o percorsi assoluti.
    sessione e congela tutti i reader senza drain o letture supplementari.
    Richiede metadata.inputs vuoto, poi lo popola dallo stato autorevole.
    I reader ancora posseduti dal chiamante non possono più acquisire byte.
-6. Conservare il Copy metadata.started_at per il writer; il builder consuma
-   RunMetadata e muove inputs in ValidationSummary senza ricostruire una
-   lista indipendente. Nessuno stato runtime mutabile rimane nei metadata.
+6. Il builder consuma RunMetadata e trasferisce inputs, validation_mode e
+   started_at in ValidationSummary dalla stessa fonte. write_run_summary usa
+   il timestamp del risultato; write_summary mantiene anche l'API precedente
+   con timestamp esplicito. Nessuno stato runtime mutabile rimane nei metadata.
 
 Il mutex protegge solo lo stato in memoria e comprende il read in corso:
 finish non può congelare metadati a metà acquisizione. Non è un lock del
@@ -43,7 +44,7 @@ errore tecnico e impedisce finish dei metadata. I guasti I/O conservano
 la causa originale e il kind attraverso InputError: nessun summary definitivo.
 Anche ignorando il primo errore, la sessione non permette la finalizzazione.
 
-La cancellazione è orchestrata dal futuro service: smettere di chiamare
+La cancellazione è orchestrata dal service LocalOnly (T-P7-04): smettere di chiamare
 read, congelare la sessione e marcare il builder Cancelled. Non vi sono
 letture in Drop o finish per completare il digest. Cancelled/truncated
 possono avere audit completo o incompleto secondo l’effettivo EOF.
@@ -70,7 +71,7 @@ il flag indipendente, non simula una cancellazione e non attiva limiti
 operativi dell’engine ancora da implementare. Classificazioni e contatori
 sono verificati al finish; elapsed usa il tempo monotono di vita del builder.
 Schema/version/reference versions sono metadata espliciti del chiamante:
-il calcolo del canonical schema_hash resta nella task dedicata, non è
+il canonical schema_hash è fornito dal registry attraverso T-P14-03, mai
 sostituito dal digest di un input.
 
 ## Documento errors.summary.json
@@ -81,7 +82,13 @@ dell’host. Prima del primo byte verifica summary e rappresentabilità del
 timestamp. Il writer resta del chiamante: pubblicazione atomica .part e
 rollback sono T-P5-06, non implementati qui. Un Err non è un report completo.
 
-Ordine dei campi: result (VALID/INVALID/CANCELLED), flow, schema_version,
+CNF-RUN-SCOPE-01 approvata: validation_mode è obbligatorio (local_only/full).
+È distinto da scope Trace/Flow e da result: VALID significa superamento dei
+controlli nella modalità indicata. L'applicazione attuale rifiuta Full;
+serializzare l'enum non abilita la capacità futura. Il builder non deduce
+la modalità né imposta un default indipendente dalla request verificata.
+
+Ordine dei campi: result (VALID/INVALID/CANCELLED), validation_mode, flow, schema_version,
 scope, records_processed, valid_records, invalid_records, total_errors,
 errors_by_code, skipped_rules, truncated, validator_version, schema_hash,
 reference_data_versions, started_at, elapsed, inputs.

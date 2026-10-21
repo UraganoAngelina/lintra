@@ -1,6 +1,9 @@
 # T-P7-04 — Preflight / CNF-RUN-SCOPE-01
 
-2026-10-21. Decisione richiesta, nessun codice T-P7-04 scritto.
+2026-10-21. **APPROVATA** dall'autore: «Approvo A: modalità esplicita nei report».
+CNF-RUN-SCOPE-01 risolta; autorizzata implementazione della proposta A.
+Le evidenze del blocco e l'handoff sottostanti sono storici, non uno stop attivo.
+Nessuna modifica alle fonti ARCH/DET/Piano o alle baseline normative.
 
 ## Evidenza e impatto
 

@@ -223,6 +223,8 @@ impl ValidationSummaryBuilder {
             RunStatus::CompletedValid
         };
         let summary = ValidationSummary {
+            started_at: metadata.started_at,
+            validation_mode: metadata.validation_mode,
             run_status,
             schema_key: self.key,
             scope_summary: self.scope,

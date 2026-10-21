@@ -77,6 +77,7 @@ pub fn produce(
     // Closing the reader now also closes the input handle on Windows.
     drop(reader);
     let metadata = audits.finish(RunMetadata {
+        validation_mode: lintra::ValidationMode::LocalOnly,
         validator_version: "golden-test".into(),
         schema_hash: schema_hash.into(),
         reference_data_versions: BTreeMap::new(),

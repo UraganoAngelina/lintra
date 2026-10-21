@@ -20,5 +20,6 @@ pub use input_audit::{InputAudit, InputAuditCompletion, InvalidInputAudit, Sha25
 
 pub use identity::RecordIdentity;
 pub use summary::{
-    RunMetadata, RunStatus, SchemaKey, ScopeSummary, ValidationRunOutcome, ValidationSummary,
+    RunMetadata, RunStatus, SchemaKey, ScopeSummary, ValidationMode, ValidationRunOutcome,
+    ValidationSummary,
 };

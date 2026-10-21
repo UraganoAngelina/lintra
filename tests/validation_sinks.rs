@@ -22,6 +22,8 @@ fn error() -> ValidationError {
 }
 fn summary() -> ValidationSummary {
     ValidationSummary {
+        started_at: std::time::UNIX_EPOCH,
+        validation_mode: lintra::ValidationMode::LocalOnly,
         run_status: RunStatus::CompletedInvalid,
         schema_key: SchemaKey {
             flow_id: FlowId("SYNTHETIC".into()),

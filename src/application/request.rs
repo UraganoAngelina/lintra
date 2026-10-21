@@ -16,11 +16,7 @@ pub enum ValidationScope {
     Trace(TraceValidationInput),
     Flow(FlowValidationInput),
 }
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum ValidationMode {
-    LocalOnly,
-    Full,
-}
+pub use crate::domain::ValidationMode;
 /// The sole supported length policy stops malformed records before slicing.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum RecordLengthPolicy {

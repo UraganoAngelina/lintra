@@ -178,3 +178,6 @@ pub use engine::trace_validator::{
 pub use input::source::InputSource;
 pub use schema::canonical::{CanonicalSchemaError, canonical_schema_bytes, schema_fingerprint};
 pub use schema::registry::ResolvedSchema;
+
+pub use application::service::{ValidationRunError, ValidationService};
+pub use report::summary::write_run_summary;

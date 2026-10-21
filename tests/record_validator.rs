@@ -57,6 +57,7 @@ fn builder(schema: &CompiledFlowSchema) -> ValidationSummaryBuilder {
 }
 fn metadata() -> RunMetadata {
     RunMetadata {
+        validation_mode: lintra::ValidationMode::LocalOnly,
         validator_version: "synthetic".into(),
         schema_hash: "synthetic".into(),
         reference_data_versions: BTreeMap::new(),

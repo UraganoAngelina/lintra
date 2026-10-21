@@ -58,6 +58,7 @@ impl Drop for TempDir {
 }
 fn metadata() -> RunMetadata {
     RunMetadata {
+        validation_mode: lintra::ValidationMode::LocalOnly,
         validator_version: "synthetic-build".into(),
         schema_hash: "1".repeat(64),
         reference_data_versions: BTreeMap::from([

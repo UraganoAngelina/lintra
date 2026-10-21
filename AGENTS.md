@@ -72,3 +72,11 @@ Mandato 2026-10-21 — ripresa autonoma dopo T-P6-08:
   task verificata, quando prerequisiti/output non presentano ambiguità.
 - Superato lo stop storico dopo T-P6-08. Restano gate e blocchi reali,
   esclusione Superpowers/subagenti e spiegazioni dettagliate del codice.
+
+Ratifica CNF-RUN-SCOPE-01 — 2026-10-21:
+- Proposta A approvata: ValidationMode neutro nel dominio, re-export compatibili;
+  validation_mode esplicita in RunMetadata/ValidationSummary/summary JSON.
+- Fonte autorevole metadata dalla request verificata, nessun default indipendente.
+- LocalOnly serializzato local_only, Full full ma resta non eseguibile fino P13.
+- Autorizzati aggiornamenti dei soli golden tecnici; RunStatus/Cancelled/truncated,
+  input audit e baseline normative invariati. Procedere con T-P7-04 e verifiche.

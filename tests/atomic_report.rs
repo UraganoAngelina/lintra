@@ -80,6 +80,8 @@ fn diagnostic() -> ValidationError {
 /// make the summary bytes deterministic for direct-versus-atomic comparison.
 fn summary() -> ValidationSummary {
     ValidationSummary {
+        started_at: std::time::UNIX_EPOCH,
+        validation_mode: lintra::ValidationMode::LocalOnly,
         run_status: RunStatus::CompletedValid,
         schema_key: SchemaKey {
             flow_id: FlowId("SYNTHETIC".into()),

@@ -22,6 +22,15 @@ pub enum ScopeSummary {
     Flow { trace_ids: Vec<TraceId> },
 }
 
+/// Neutral execution mode. Serialization is explicit; this value describes a
+/// run but does not enable Full execution in the current application.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ValidationMode {
+    LocalOnly,
+    Full,
+}
+
 /// A completed validation or a controlled cancellation, never a technical error.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum RunStatus {
@@ -33,6 +42,7 @@ pub enum RunStatus {
 /// Audit metadata supplied by the application; no implicit clock or hash.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RunMetadata {
+    pub validation_mode: ValidationMode,
     pub validator_version: String,
     pub schema_hash: String,
     pub reference_data_versions: BTreeMap<DatasetId, DatasetVersion>,
@@ -43,6 +53,9 @@ pub struct RunMetadata {
 /// Counters and metadata for the actual extent of a validation run.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ValidationSummary {
+    /// Preserve the authoritative run timestamp for consumers of the outcome.
+    pub started_at: SystemTime,
+    pub validation_mode: ValidationMode,
     pub run_status: RunStatus,
     pub schema_key: SchemaKey,
     pub scope_summary: ScopeSummary,
@@ -94,6 +107,7 @@ mod tests {
     #[test]
     fn summary_preserves_scope_order_and_orders_dataset_and_error_maps() {
         let metadata = RunMetadata {
+            validation_mode: crate::ValidationMode::LocalOnly,
             validator_version: "synthetic-build".into(),
             schema_hash: "synthetic-hash-not-computed-by-this-test".into(),
             reference_data_versions: BTreeMap::from([
@@ -104,6 +118,8 @@ mod tests {
             inputs: Vec::new(),
         };
         let summary = ValidationSummary {
+            started_at: std::time::UNIX_EPOCH,
+            validation_mode: crate::ValidationMode::LocalOnly,
             run_status: RunStatus::Cancelled,
             schema_key: SchemaKey {
                 flow_id: FlowId("EXAMPLE".into()),

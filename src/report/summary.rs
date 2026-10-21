@@ -1,5 +1,7 @@
 use super::sink::ReportError;
-use crate::domain::{InputAuditCompletion, RunStatus, ScopeSummary, ValidationSummary};
+use crate::domain::{
+    InputAuditCompletion, RunStatus, ScopeSummary, ValidationMode, ValidationSummary,
+};
 use chrono::{DateTime, Datelike, SecondsFormat, Utc};
 use serde::Serialize;
 use std::{
@@ -11,6 +13,7 @@ use std::{
 #[derive(Serialize)]
 struct SummaryDocument<'a> {
     result: &'static str,
+    validation_mode: ValidationMode,
     flow: &'a str,
     schema_version: &'a str,
     scope: ScopeDocument<'a>,
@@ -116,6 +119,7 @@ pub fn write_summary<W: Write>(
             RunStatus::CompletedInvalid => "INVALID",
             RunStatus::Cancelled => "CANCELLED",
         },
+        validation_mode: summary.validation_mode,
         flow: &summary.schema_key.flow_id.0,
         schema_version: &summary.schema_key.version.0,
         scope,
@@ -159,4 +163,13 @@ pub fn write_summary<W: Write>(
     writer.write_all(b"\n").map_err(ReportError::Write)?;
     writer.flush().map_err(ReportError::Write)?;
     Ok(writer)
+}
+
+/// Serialize a service outcome using the timestamp retained from RunMetadata.
+/// Unlike the legacy explicit-timestamp helper, no second clock is required.
+pub fn write_run_summary<W: Write>(
+    writer: W,
+    summary: &ValidationSummary,
+) -> Result<W, ReportError> {
+    write_summary(writer, summary, summary.started_at)
 }
