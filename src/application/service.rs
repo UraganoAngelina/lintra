@@ -190,10 +190,22 @@ impl From<crate::TraceValidationError> for ValidationRunError {
 /// reference provider or context store stands in for the future P11/P13 ports.
 pub struct ValidationService {
     schema_registry: std::sync::Arc<crate::SchemaRegistry>,
+    clock: std::sync::Arc<dyn crate::Clock>,
 }
 impl ValidationService {
     pub fn new(schema_registry: std::sync::Arc<crate::SchemaRegistry>) -> Self {
-        Self { schema_registry }
+        Self::with_clock(schema_registry, std::sync::Arc::new(crate::SystemClock))
+    }
+    /// Explicit clock injection for deterministic runs/adapters (DET §166).
+    /// The registry-only constructor remains the system-clock convenience.
+    pub fn with_clock(
+        schema_registry: std::sync::Arc<crate::SchemaRegistry>,
+        clock: std::sync::Arc<dyn crate::Clock>,
+    ) -> Self {
+        Self {
+            schema_registry,
+            clock,
+        }
     }
     /// Normative invalidity is Ok(CompletedInvalid); cooperative cancellation is
     /// Ok(Cancelled). On Err, no completed outcome is returned; the caller must
@@ -207,7 +219,7 @@ impl ValidationService {
         cancellation: &crate::CancellationToken,
     ) -> Result<crate::ValidationRunOutcome, ValidationRunError> {
         use crate::{ProgressEvent as Event, ValidationPhase as Phase};
-        let started_at = std::time::SystemTime::now();
+        let started_at = self.clock.now();
         let resolved = self
             .schema_registry
             .resolve_with_hash(&request.schema_key)?;

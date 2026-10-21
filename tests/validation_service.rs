@@ -446,3 +446,42 @@ fn source_size_change_is_a_technical_input_failure_without_summary() {
     assert!(error.source().is_some());
     assert!(capture.sink.summaries().is_empty() && capture.sink.errors().is_empty());
 }
+
+/// The fixed clock is an actual injected dependency, not a timestamp rewritten
+/// after the run. Its call counter proves the service samples a single source.
+struct FixedClock(std::sync::atomic::AtomicU64);
+impl Clock for FixedClock {
+    fn now(&self) -> SystemTime {
+        self.0.fetch_add(1, Ordering::Relaxed);
+        UNIX_EPOCH + std::time::Duration::from_secs(123)
+    }
+}
+#[test]
+fn injected_clock_drives_the_actual_summary_and_utc_wire_timestamp() {
+    let file = Fixture::new(b"ABCDEF\n");
+    let mut repo = InMemorySchemaRepository::new();
+    repo.insert(raw()).unwrap();
+    let registry = Arc::new(SchemaRegistry::new(
+        Arc::new(repo),
+        SchemaCompiler,
+        RawResolvedEncoding::Utf8,
+    ));
+    let clock = Arc::new(FixedClock(AtomicU64::new(0)));
+    let service = ValidationService::with_clock(registry, clock.clone());
+    let mut sink = Capture::default();
+    let result = service
+        .validate(
+            request(&file.input),
+            &mut sink,
+            &mut |_| {},
+            &CancellationToken::default(),
+        )
+        .unwrap();
+    assert_eq!(
+        result.summary.started_at,
+        UNIX_EPOCH + std::time::Duration::from_secs(123)
+    );
+    assert_eq!(clock.0.load(Ordering::Relaxed), 1);
+    let value: serde_json::Value = serde_json::from_slice(&sink.json).unwrap();
+    assert_eq!(value["started_at"], "1970-01-01T00:02:03Z");
+}

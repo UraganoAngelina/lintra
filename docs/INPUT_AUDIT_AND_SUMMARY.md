@@ -20,7 +20,8 @@ Non contiene record sanitari, identificativi paziente o percorsi assoluti.
    sessione e congela tutti i reader senza drain o letture supplementari.
    Richiede metadata.inputs vuoto, poi lo popola dallo stato autorevole.
    I reader ancora posseduti dal chiamante non possono più acquisire byte.
-6. Il builder consuma RunMetadata e trasferisce inputs, validation_mode e
+6. Il service acquisisce started_at una sola volta dal Clock iniettato.
+   Il builder consuma RunMetadata e trasferisce inputs, validation_mode e
    started_at in ValidationSummary dalla stessa fonte. write_run_summary usa
    il timestamp del risultato; write_summary mantiene anche l'API precedente
    con timestamp esplicito. Nessuno stato runtime mutabile rimane nei metadata.
