@@ -65,3 +65,11 @@ CNF-DOMAIN-01 e i confini dei moduli. Nessuna modifica implicita dei contratti.
 T-P14-03 e la sua CI proseguono indipendentemente. Nessun codice, campo JSON
 o golden modificato per T-P7-04. T-P7-04 e dipendenti attendono ratifica;
 non aggirare il blocco pubblicando un report di validità senza modalità.
+
+
+## Esito implementativo successivo
+
+T-P7-04 DONE LocalOnly: dcb8c59, CI 39587379476 Linux/Windows success,
+280 test locali. Mode esplicita e timestamp metadata preservato nel summary;
+clock realmente iniettato e testato. Dettagli in [T-P7-04](T-P7-04.md).
+CNF-RUN-SCOPE-01 chiusa; il successivo preflight API ha un dossier distinto.

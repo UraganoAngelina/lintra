@@ -2,7 +2,8 @@
 
 2026-10-21. **Decisione richiesta** sui costruttori e sulla consegna per fasi.
 Nessun codice T-P7-05 scritto. T-P7-04: servizio locale e clock reale disponibili,
-280 test locali passati; CI nativa in acquisizione, gate distinto dalla decisione.
+280 test locali passati; CI 39587379476 Linux/Windows success su dcb8c59.
+Il gate runtime è soddisfatto e distinto da questa decisione.
 
 ## Evidenze del ciclo
 
@@ -83,6 +84,6 @@ ratificata dei soli trait/payload reali. Nessun fake vuoto o backend automatico.
 
 ## Handoff
 
-T-P7-04 e la sua CI proseguono indipendentemente. Nessuna factory, namespace,
+T-P7-04 e la sua CI sono completate con successo. Nessuna factory, namespace,
 provider o repository di T-P7-05 implementato. Dopo il gate del servizio,
 T-P7-05 e le task dipendenti attendono la decisione dell'autore.
