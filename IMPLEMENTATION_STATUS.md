@@ -13,13 +13,14 @@ T-P11-01 conclude i gate in corso (dipende da 7-05), poi si completa il residuo
 P10 nelle task esistenti 10-01/03/04/05/06, preservando codice e prove valide.
 Non serve nuova ratifica; 10-02 DONE, M4/M5 ancora aperte. Nessun nuovo task ID.
 
-## Frontiera corrente — T-P11-01 gate locali — 2026-10-22
+## Frontiera corrente — T-P11-01 DONE / ripresa residuo P10 — 2026-10-22
 
 Contratti/preparazione reference data consegnati, 419 test/52 suite; fmt/check/
-Clippy/test/release/Windows GNU check/diff passati. CI nativa pendente.
+Clippy/test/release/Windows GNU check/diff passati; CI 39788642608 completed/success
+Linux GNU e Windows MSVC su 89b4baf69e2431c2b91064c591f98e6482ebaec1.
 [Dossier e spiegazioni](docs/verification/T-P11-01.md).
 
-HANDOFF — T-P11-01 DONE_UNVERIFIED
+HANDOFF — T-P11-01 DONE
 - DatasetKey riusato; LookupSet/ReferenceDataProvider Send+Sync e factory reale
   prepare_reference_data, tutti gli handle o errore senza contesto parziale.
 - Deduplica chiavi identiche, versioni distinte, key mismatch e cause reali;
@@ -28,8 +29,8 @@ HANDOFF — T-P11-01 DONE_UNVERIFIED
   ancora aperta; filesystem e dati normativi non inventati.
 - File reference_data/dataset/provider/mod, lib, test reference_preparation;
   dossier/stato. Nessun Cargo/lock, baseline o source modificati; 64 protetti identici.
-- Git work/p1-foundations, task da pubblicare; gate Linux/Windows necessario.
-- Prerequisito 7-05 verificato, next 11-02 dopo gate, automaticamente.
+- Git work/p1-foundations, 89b4baf pubblicato; gate Linux/Windows verificato.
+- Prerequisito 7-05 verificato; next residuo P10 già ratificato, poi 11-02.
 - M4/M5/P13/PERSIST/T-P2-03/M1 e Full restano aperti.
 
 ## Registro storico — P10 conclusa
@@ -841,7 +842,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P10-04 | IN_PROGRESS | 2026-10-22 | presenza condizionale, 393 test; CI 39782079369 Linux/Windows verde su fdeea9b; [report](docs/verification/T-P10-04.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
 | T-P10-05 | IN_PROGRESS | 2026-10-22 | regole locali, 407 test; CI 39785432851 Linux/Windows verde su 9d5b1a3; [report](docs/verification/T-P10-05.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
 | T-P10-06 | IN_PROGRESS | 2026-10-22 | suite DSL/golden, 413 test; job CI 39787215311 Linux/Windows success su b7dc480, workflow globale in_progress all’ultima lettura; [report](docs/verification/T-P10-06.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
-| T-P11-01 | DONE_UNVERIFIED | 2026-10-22 | reference ports/preparazione, 419 test; CI pendente; [report](docs/verification/T-P11-01.md) |
+| T-P11-01 | DONE | 2026-10-22 | reference ports/preparazione, 419 test; CI 39788642608 Linux/Windows verde su 89b4baf; [report](docs/verification/T-P11-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
