@@ -3,6 +3,22 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P10-02 gate locali — 2026-10-22
+
+TruthValue/UnknownReason e tavole complete verificate, 376 test/47 suite.
+fmt/check/Clippy/test/release/Windows GNU check/diff passati, CI nativa pendente.
+[Dossier e spiegazioni](docs/verification/T-P10-02.md).
+
+HANDOFF — T-P10-02 DONE_UNVERIFIED
+- AND/OR/NOT a tre valori, nessuna conversione bool o Unknown promosso a pass.
+- Quattro motivi del design, tie Unknown sinistro per ordine diagnostico stabile.
+- File engine/expression_evaluator/mod, export lib, test tavole e dossier/stato.
+- Git work/p1-foundations; task da pubblicare e gate nativo da verificare.
+- Prerequisito 10-01 chiuso; next 10-03 dopo gate, avanzamento automatico.
+- P11/P13/PERSIST/T-P2-03/M1 aperti; solo LocalOnly eseguibile.
+
+## Registro storico — T-P10-01 conclusa
+
 ## Frontiera corrente — T-P10-01 DONE / avvio T-P10-02 — 2026-10-22
 
 Modello espressioni locali risolto, 374 test locali/46 suite; fmt/check/Clippy/
@@ -696,6 +712,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P9-05 | DONE | 2026-10-22 | compatibilità, 366 test locali; CI 39761531728 Linux/Windows verde su 2f3b36f; [report](docs/verification/T-P9-05.md) |
 | T-P9-06 | DONE | 2026-10-22 | golden semantici, 367 test; CI 39762338659 Linux/Windows verde su 3fafc4b; [report](docs/verification/T-P9-06.md) |
 | T-P10-01 | DONE | 2026-10-22 | lowering Expr, 374 test; CI 39763287298 Linux/Windows verde su b8e1e80; [report](docs/verification/T-P10-01.md) |
+| T-P10-02 | DONE_UNVERIFIED | 2026-10-22 | TruthValue, 376 test; CI pendente; [report](docs/verification/T-P10-02.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
