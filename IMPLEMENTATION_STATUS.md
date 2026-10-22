@@ -3,6 +3,19 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Chiusura T-P8-05 — 2026-10-22
+
+T-P8-05 **DONE**, CI 39746072212 completed/success su
+6417c408f98951b6f60601d07f169e55ccc3e827, Linux GNU/Windows MSVC success.
+
+HANDOFF — 2026-10-22 — T-P8-05 DONE / avvio T-P8-06
+- 321 test locali e gate nativi confermati; file/spiegazioni nel dossier 8-05.
+- Windows ha eseguito test callback/token/atomicità; nessun segnale console
+  Windows reale dichiarato. SIGINT reale verificato su Linux.
+- Branch work/p1-foundations, codice 6417c40 pubblicato; chiusura documentale qui.
+- Next T-P8-06, prerequisiti 8-03/04/05 tutti verificati e consegnati; nessun
+  nuovo conflitto; rinvii core e baseline inalterati.
+
 ## Frontiera corrente — T-P8-05 / 2026-10-22
 
 T-P8-05 **DONE_UNVERIFIED**: Ctrl+C nel binario imposta token condiviso,
@@ -421,7 +434,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P8-02 | DONE | 2026-10-22 | HumanReadableSink, 304 test locali, CI 39741868369 Linux/Windows completed/success su 81cee36; [report](docs/verification/T-P8-02.md) |
 | T-P8-03 | DONE | 2026-10-22 | validate reale LocalOnly, 313 test locali, CI 39743161012 Linux/Windows verde su 10932f9; [report](docs/verification/T-P8-03.md) |
 | T-P8-04 | DONE | 2026-10-22 | schema lint, 318 test locali, CI 39744299145 Linux/Windows verde su 4f7115f; [report](docs/verification/T-P8-04.md) |
-| T-P8-05 | DONE_UNVERIFIED | 2026-10-22 | Ctrl+C cooperativo, 321 test locali, CI pendente; [report](docs/verification/T-P8-05.md) |
+| T-P8-05 | DONE | 2026-10-22 | Ctrl+C cooperativo, 321 test locali, CI 39746072212 Linux/Windows verde su 6417c40; [report](docs/verification/T-P8-05.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
