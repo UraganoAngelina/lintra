@@ -38,6 +38,7 @@ pub enum SchemaIssueCode {
     InvalidSchemaValue,
     InvalidRegex,
     ConstraintTypeMismatch,
+    SelfReferentialRule,
     InvalidRecordKey,
     MissingFieldReference,
     InvalidDiagnosticCode,

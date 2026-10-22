@@ -470,3 +470,19 @@ fn format_range_is_enforced_by_the_compiler_without_a_fallback() {
         assert!(message.contains("development baseline; verified compiler b658e05"));
     }
 }
+
+#[test]
+fn local_expression_model_errors_are_typed_while_execution_stays_blocked() {
+    let mut value = sample();
+    value["traces"][0]["fields"][0]["presence"]["required_if"] = json!([
+        {"eq":{"ref":{"field":"ABSENT"},"value":"1"}}
+    ]);
+    let result = error(value);
+    assert!(has(&result, Code::MissingFieldReference));
+    assert!(has(&result, Code::UnsupportedConstruct));
+    let mut value = sample();
+    value["traces"][0]["named_conditions"] = json!({"loop":{"condition":"loop"}});
+    let result = error(value);
+    assert!(has(&result, Code::SelfReferentialRule));
+    assert!(has(&result, Code::UnsupportedConstruct));
+}

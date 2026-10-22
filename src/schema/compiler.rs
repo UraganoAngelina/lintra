@@ -85,6 +85,16 @@ impl Checks<'_> {
         ] {
             self.unsupported(present, trace, None, name);
         }
+        // P10-01 validates/lowers the model, but conditional execution remains
+        // blocked below until its executor is delivered. No tree is discarded
+        // from a successfully compiled schema: such schemas still fail closed.
+        for expression in record.named_conditions.values() {
+            if let Err((code, message)) =
+                crate::schema::expression::compile_local_expr(expression, record)
+            {
+                self.error(code, trace, None, message);
+            }
+        }
         // Resolve identity like other local references. A destination can hold
         // only one value: reject collisions instead of silently overwriting.
         let mut identity_targets = HashSet::new();
@@ -182,6 +192,18 @@ impl Checks<'_> {
                 id,
                 "conditional presence",
             );
+            for expression in field
+                .presence
+                .required_if
+                .iter()
+                .chain(&field.presence.forbidden_if)
+            {
+                if let Err((code, message)) =
+                    crate::schema::expression::compile_local_expr(expression, record)
+                {
+                    self.error(code, trace, id, message);
+                }
+            }
             let length = match &field.physical {
                 RawPhysical::Date { length, .. } | RawPhysical::Decimal { length, .. } => *length,
                 RawPhysical::Numeric {

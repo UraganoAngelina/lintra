@@ -12,3 +12,5 @@ pub(crate) mod compatibility;
 
 pub(crate) mod canonical;
 pub(crate) mod registry;
+
+pub(crate) mod expression;
