@@ -3,6 +3,18 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Chiusura T-P9-01 — 2026-10-22
+
+T-P9-01 **DONE**, CI 39748653454 completed/success su
+dc4b6ec79660de65700c19c2a9db9916531d16c8, Linux GNU/Windows MSVC success.
+
+HANDOFF — 2026-10-22 — T-P9-01 DONE / avvio T-P9-02
+- 333 test locali e gate nativi confermati; file/spiegazioni nel dossier 9-01.
+- Codice dc4b6ec pubblicato, branch work/p1-foundations; chiusura documentale qui.
+- Next T-P9-02, prerequisiti 6-06 e G0 verificati. Contratto DDMMYYYY,
+  ASCII 8 byte e anni 0001–9999 già approvato; nessuna estensione di formato.
+- Decimal resta rinvio contrattuale G0, non autorizzato come nuovo tipo formato 1.
+
 ## Frontiera corrente — T-P9-01 / 2026-10-22
 
 T-P9-01 **DONE_UNVERIFIED**, range intero inclusivo esatto con payload compiled
@@ -490,7 +502,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P8-04 | DONE | 2026-10-22 | schema lint, 318 test locali, CI 39744299145 Linux/Windows verde su 4f7115f; [report](docs/verification/T-P8-04.md) |
 | T-P8-05 | DONE | 2026-10-22 | Ctrl+C cooperativo, 321 test locali, CI 39746072212 Linux/Windows verde su 6417c40; [report](docs/verification/T-P8-05.md) |
 | T-P8-06 | DONE | 2026-10-22 | 325 locali, CI 39747270986 Linux/Windows verde su 90528c4, test console Windows passato; [report](docs/verification/T-P8-06.md) |
-| T-P9-01 | DONE_UNVERIFIED | 2026-10-22 | range inclusivo esatto, 333 test locali, CI pendente; [report](docs/verification/T-P9-01.md) |
+| T-P9-01 | DONE | 2026-10-22 | range inclusivo esatto, 333 locali, CI 39748653454 Linux/Windows verde su dc4b6ec; [report](docs/verification/T-P9-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
