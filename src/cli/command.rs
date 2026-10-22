@@ -161,3 +161,55 @@ pub fn validate(args: ValidateArgs) -> Result<RunStatus, Failure> {
     summary.complete(completion)?;
     Ok(outcome.status)
 }
+
+/// Lint follows the same repository/registry/compiler path as validate. Loading
+/// or canonicalization failures remain technical (1); compiler issues return 2.
+/// The issue sequence is retained verbatim; the CLI does not infer new rules.
+pub fn schema_lint(args: super::args::LintArgs) -> Result<u8, Failure> {
+    use std::sync::Arc;
+    let registry = SchemaRegistry::new(
+        Arc::new(FileSystemSchemaRepository::new(args.schema_root)?),
+        SchemaCompiler,
+        args.encoding,
+    );
+    let stdout = io::stdout();
+    let mut output = stdout.lock();
+    let code = match registry.resolve_with_hash(&args.key) {
+        Ok(_) => {
+            writeln!(
+                output,
+                "{}",
+                serde_json::json!({"result": "VALID", "scope": "compiler_supported_subset"})
+            )?;
+            0
+        }
+        Err(SchemaResolutionError::Compilation(error)) => {
+            for issue in &error.issues {
+                // JSON escaping prevents metadata/newlines from creating fake
+                // diagnostics. Serialization changes presentation, never severity.
+                writeln!(
+                    output,
+                    "{}",
+                    serde_json::json!({
+                        "severity": match issue.severity { SchemaIssueSeverity::Error => "error", SchemaIssueSeverity::Warning => "warning" },
+                        "code": format!("{:?}", issue.code),
+                        "flow_id": issue.flow_id.as_ref().map(|id| &id.0),
+                        "trace_id": issue.trace_id.as_ref().map(|id| &id.0),
+                        "field_id": issue.field_id.as_ref().map(|id| &id.0),
+                        "message": issue.message,
+                        "source_note": issue.source_note,
+                    })
+                )?;
+            }
+            writeln!(
+                output,
+                "{}",
+                serde_json::json!({"result": "INVALID", "issues": error.issues.len()})
+            )?;
+            2
+        }
+        Err(error) => return Err(error.into()),
+    };
+    output.flush()?;
+    Ok(code)
+}

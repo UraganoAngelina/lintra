@@ -17,10 +17,14 @@ pub fn run() -> u8 {
             return code;
         }
     };
-    match command::validate(args) {
-        Ok(status) => exit_code::from_status(status),
+    let result = match args {
+        args::CliCommand::Validate(args) => command::validate(*args).map(exit_code::from_status),
+        args::CliCommand::SchemaLint(args) => command::schema_lint(args),
+    };
+    match result {
+        Ok(code) => code,
         Err(error) => {
-            eprintln!("validate failed: {error}");
+            eprintln!("command failed: {error}");
             exit_code::TECHNICAL
         }
     }

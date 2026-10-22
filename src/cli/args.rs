@@ -13,7 +13,19 @@ pub struct ValidateArgs {
     pub errors: PathBuf,
     pub summary: PathBuf,
 }
-/// Define the current Trace/LocalOnly command; later tasks add schema commands. Required encoding prevents locale-based assumptions.
+/// Binary commands carry only the configuration needed by their operation.
+pub enum CliCommand {
+    Validate(Box<ValidateArgs>),
+    SchemaLint(LintArgs),
+}
+/// Lint checks an explicitly selected version using the production registry.
+/// A schema-only operation does not require a reference-data bundle or input.
+pub struct LintArgs {
+    pub schema_root: PathBuf,
+    pub key: SchemaKey,
+    pub encoding: RawResolvedEncoding,
+}
+/// Required encoding prevents locale-based assumptions for both commands.
 pub fn command() -> Command {
     let text = |name: &'static str| {
         Arg::new(name)
@@ -36,6 +48,25 @@ pub fn command() -> Command {
         ))
         .subcommand_required(true)
         .arg_required_else_help(true)
+        .subcommand(
+            Command::new("schema")
+                .about("Strumenti per gli schemi versionati")
+                .subcommand_required(true)
+                .arg_required_else_help(true)
+                .subcommand(
+                    Command::new("lint")
+                        .about("Verifica lo schema con il compiler attualmente supportato")
+                        .arg(text("flow"))
+                        .arg(text("schema-version"))
+                        .arg(path("schema-dir").required(true))
+                        .arg(
+                            Arg::new("encoding")
+                                .long("encoding")
+                                .required(true)
+                                .value_parser(["utf8"]),
+                        ),
+                ),
+        )
         .subcommand(
             Command::new("validate")
                 .about(
@@ -67,16 +98,25 @@ fn required<T: Clone + Send + Sync + 'static>(matches: &ArgMatches, name: &str) 
 }
 /// Accept native argument sequences for deterministic tests and production argv.
 /// No file is read, schema compiled, sink opened or validity inferred here.
-pub fn parse<I, T>(arguments: I) -> Result<ValidateArgs, clap::Error>
+pub fn parse<I, T>(arguments: I) -> Result<CliCommand, clap::Error>
 where
     I: IntoIterator<Item = T>,
     T: Into<OsString> + Clone,
 {
     let matches = command().try_get_matches_from(arguments)?;
-    let (_, args) = matches
-        .subcommand()
-        .expect("clap requires validate subcommand");
-    Ok(ValidateArgs {
+    let (name, args) = matches.subcommand().expect("clap requires a subcommand");
+    if name == "schema" {
+        let (_, lint) = args.subcommand().expect("clap requires schema lint");
+        return Ok(CliCommand::SchemaLint(LintArgs {
+            schema_root: required(lint, "schema-dir"),
+            key: SchemaKey {
+                flow_id: FlowId(required(lint, "flow")),
+                version: SchemaVersion(required(lint, "schema-version")),
+            },
+            encoding: RawResolvedEncoding::Utf8,
+        }));
+    }
+    Ok(CliCommand::Validate(Box::new(ValidateArgs {
         dirs: CliDirs {
             schema_dir: args.get_one::<PathBuf>("schema-dir").cloned(),
             reference_data_dir: args.get_one::<PathBuf>("reference-data-dir").cloned(),
@@ -101,5 +141,5 @@ where
         encoding: RawResolvedEncoding::Utf8,
         errors: required(args, "errors"),
         summary: required(args, "summary"),
-    })
+    })))
 }

@@ -156,7 +156,7 @@ fn bom_and_schema_failures_preserve_existing_reports_and_clean_parts() {
         let out = file.run();
         assert_eq!(out.status.code(), Some(1));
         assert!(out.stdout.is_empty());
-        assert!(text(&out.stderr).contains("validate failed:"));
+        assert!(text(&out.stderr).contains("command failed:"));
         file.assert_old();
     }
 }

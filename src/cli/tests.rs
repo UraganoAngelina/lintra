@@ -111,7 +111,7 @@ fn environment(dirs: &CliDirs) -> FakeEnv {
 }
 #[test]
 fn parsed_arguments_map_exactly_to_local_request_and_native_outputs() {
-    let parsed = args::parse(argv()).unwrap();
+    let parsed = parse_validate(argv()).unwrap();
     assert_eq!(parsed.request.mode, ValidationMode::LocalOnly);
     assert_eq!(
         parsed.request.schema_key.flow_id,
@@ -146,27 +146,27 @@ fn parsed_arguments_map_exactly_to_local_request_and_native_outputs() {
 #[test]
 fn syntax_errors_are_technical_and_help_is_successful() {
     assert_eq!(
-        exit_code::from_parse_error(&args::parse(["lintra", "--help"]).err().unwrap()),
+        exit_code::from_parse_error(&parse_validate(["lintra", "--help"]).err().unwrap()),
         0
     );
     assert_eq!(
-        exit_code::from_parse_error(&args::parse(["lintra"]).err().unwrap()),
+        exit_code::from_parse_error(&parse_validate(["lintra"]).err().unwrap()),
         1
     );
     for extra in [["--bom", "strip"], ["--mode", "full"]] {
         let mut arguments = argv();
         arguments.extend(extra.map(OsString::from));
         assert_eq!(
-            exit_code::from_parse_error(&args::parse(arguments).err().unwrap()),
+            exit_code::from_parse_error(&parse_validate(arguments).err().unwrap()),
             1
         );
     }
     let mut unsupported = argv();
     *unsupported.last_mut().unwrap() = "windows1252".into();
-    assert!(args::parse(unsupported).is_err());
+    assert!(parse_validate(unsupported).is_err());
     let mut missing = argv();
     missing.truncate(missing.len() - 2);
-    assert!(args::parse(missing).is_err());
+    assert!(parse_validate(missing).is_err());
 }
 #[test]
 fn output_alias_and_explicit_directory_paths_preserve_spaces() {
@@ -182,7 +182,7 @@ fn output_alias_and_explicit_directory_paths_preserve_spaces() {
         ]
         .map(OsString::from),
     );
-    let parsed = args::parse(arguments).unwrap();
+    let parsed = parse_validate(arguments).unwrap();
     assert_eq!(parsed.errors, PathBuf::from("errors.jsonl"));
     assert_eq!(parsed.dirs.schema_dir, Some("a bundle/schemas".into()));
     assert_eq!(
@@ -304,4 +304,17 @@ fn no_bundle_and_invalid_executable_do_not_discover_cwd_or_home() {
         ),
         Err(BundleResolveError::InvalidExecutablePath)
     ));
+}
+
+/// Existing validate mapping assertions continue to inspect the exact request;
+/// the parser now dispatches multiple operations without changing that request.
+fn parse_validate<I, T>(arguments: I) -> Result<args::ValidateArgs, clap::Error>
+where
+    I: IntoIterator<Item = T>,
+    T: Into<OsString> + Clone,
+{
+    match args::parse(arguments)? {
+        args::CliCommand::Validate(args) => Ok(*args),
+        args::CliCommand::SchemaLint(_) => panic!("test expected validate"),
+    }
 }

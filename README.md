@@ -11,8 +11,9 @@ Il consuntivo verificato è in [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.
 
 La CLI esegue `validate` nel perimetro Trace/LocalOnly: produce errori JSONL,
 summary JSON e riepilogo testuale, mantenendo distinti gli errori tecnici dalle
-violazioni locali. `--version` mostra versione e commit di build. Full,
-`schema lint` e Ctrl+C saranno introdotti nelle rispettive task.
+violazioni locali. `--version` mostra versione e commit di build. Full resta futuro.
+`schema lint` verifica gli schemi con il compiler corrente; Ctrl+C sarà
+introdotto nella task dedicata.
 
 ## Sviluppo locale
 
@@ -138,3 +139,19 @@ Il commit è acquisito al build tramite Git, senza dipendenza Git a runtime;
 `LINTRA_BUILD_COMMIT` può fornire un hash completo per build da archivio.
 Senza provenienza disponibile viene dichiarato `commit unavailable`.
 Le build locali restano strumenti di sviluppo, non artefatti di release.
+
+## Verifica degli schemi
+
+```sh
+lintra schema lint --schema-dir ./bundle/schemas \
+  --flow SYNTHETIC --schema-version v1 --encoding utf8
+```
+
+La selezione è esplicita e usa lo stesso repository/registry/compiler della
+validazione. Il comando non richiede input o directory reference data e non
+attiva provider mancanti. L'esito valido riguarda il sottoinsieme supportato dal
+compiler attuale; non certifica completezza normativa. Gli exit code sono 0
+schema compilabile, 2 issue del compiler, 1 errore tecnico (inclusi caricamento,
+JSON malformato/duplicato, identità diversa o sintassi CLI).
+Le diagnostiche schema sono oggetti JSON su stdout, una per riga nell'ordine
+del compiler, seguite dall'esito; gli errori tecnici vanno su stderr.

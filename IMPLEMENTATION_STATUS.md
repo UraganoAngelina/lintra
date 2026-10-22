@@ -3,6 +3,23 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P8-04 / 2026-10-22
+
+T-P8-04 **DONE_UNVERIFIED**: schema lint attraverso registry/compiler reali,
+nessun controllo duplicato; 318 test locali e tutti i gate locali passati.
+CI nativa da acquisire. Dettagli in [T-P8-04](docs/verification/T-P8-04.md).
+
+HANDOFF — 2026-10-22 — T-P8-04 gate locali
+- Prerequisiti 3-04/8-01 verificati, 8-03 chiusa su CI 39743161012 Linux/Windows.
+- File: src/cli/{args,command,mod,tests}.rs, tests/{cli_schema_lint,cli_validate}.rs,
+  README.md, docs/verification/T-P8-04.md e questo registro.
+- Cinque nuovi test processo: valido, strutturale/semantico, unsupported,
+  errori tecnici del loader rigoroso, help/sintassi; 318 globali passati.
+- fmt/check/Clippy/test/release/Windows GNU check/diff passati; CI nativa pendente.
+- Contratti core/dependency/fonti/baseline invariati; P11/P13/PERSIST/M1 aperti.
+- Git work/p1-foundations, ultimo commit 9248fe0; task da committare/pubblicare.
+- Next T-P8-05 dopo gate, nessun blocco contrattuale rilevato.
+
 ## Chiusura T-P8-03 — 2026-10-22
 
 T-P8-03 **DONE**, [CI 39743161012](https://github.com/UraganoAngelina/lintra/actions/runs/39743161012)
@@ -372,6 +389,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P8-01 | DONE | 2026-10-21 | 297 test, CI 39628560176 Linux/Windows success 98d952b; [report](docs/verification/T-P8-01.md) |
 | T-P8-02 | DONE | 2026-10-22 | HumanReadableSink, 304 test locali, CI 39741868369 Linux/Windows completed/success su 81cee36; [report](docs/verification/T-P8-02.md) |
 | T-P8-03 | DONE | 2026-10-22 | validate reale LocalOnly, 313 test locali, CI 39743161012 Linux/Windows verde su 10932f9; [report](docs/verification/T-P8-03.md) |
+| T-P8-04 | DONE_UNVERIFIED | 2026-10-22 | schema lint attraverso registry/compiler, cinque test processo e 318 globali, CI pendente; [report](docs/verification/T-P8-04.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
