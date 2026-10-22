@@ -89,7 +89,9 @@ Il commit effettivo e la CI nativa sono registrati in
 [docs/verification/T-P9-03.md](../verification/T-P9-03.md) dopo verifica.
 Non si associa al formato 2 il vecchio compiler b658e05: quello resta evidenza
 esclusivamente del formato 1. Nessuna release/tag o compatibilità futura inventata.
-Al momento dell'introduzione le verifiche sono in corso, senza DONE anticipato.
+Consegna verificata: commit 5866d1dc80f18f8c447ffd70161c592a30d99e3b,
+CI 39759270541 completed/success Linux GNU e Windows MSVC, 354 test locali.
+La presente è evidenza di sviluppo, non una release pubblicata.
 
 I vecchi test di formato non definito usano ora 3 invece di 2: le stesse
 asserzioni di errore rimangono, con la distinzione approvata che 2 è definito.

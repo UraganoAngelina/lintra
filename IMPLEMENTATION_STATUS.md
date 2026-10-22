@@ -3,7 +3,24 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P9-03 DONE_UNVERIFIED — 2026-10-22
+## Frontiera corrente — T-P9-03 DONE / avvio T-P9-04 — 2026-10-22
+
+Decimal consegnata su **5866d1dc80f18f8c447ffd70161c592a30d99e3b**,
+[CI 39759270541](https://github.com/UraganoAngelina/lintra/actions/runs/39759270541)
+completed/success Linux GNU e Windows MSVC, 354 test locali. Formato 1 e 54
+file baseline protetti invariati; nessuna conversione di codici/range monetari.
+Mappa formato 2 collega la baseline sviluppo 0.1.0 a questo commit verificato.
+
+HANDOFF — 2026-10-22 — T-P9-03 DONE / T-P9-04 autorizzata
+- Nuovo Decimal esplicito formato 2 verificato via compiler, pipeline e CLI;
+  schema v1 e codici/range preesistenti invariati, zero ammesso, unsigned/dot/2.
+- File/spiegazioni in dossier 9-03; autorità nella proposta ratificata e prompt.
+- Tutti gate locali e CI nativa superati, confronto baseline SHA-256 positivo.
+- Git work/p1-foundations, codice 5866d1d pubblicato, chiusura documentale qui.
+- Next 9-04, prerequisito 6-06 già verificato; nessun blocco contrattuale.
+- P11/P13/PERSIST/T-P2-03/M1 ancora aperti; nessun supporto globale dichiarato.
+
+## Registro storico — gate locali T-P9-03
 
 Ratifica dell'autore ricevuta: «approvo questa estensione, procedi pure».
 Formato 2 implementato con Decimal per importi espliciti, formato 1 invariato.
@@ -599,7 +616,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P8-06 | DONE | 2026-10-22 | 325 locali, CI 39747270986 Linux/Windows verde su 90528c4, test console Windows passato; [report](docs/verification/T-P8-06.md) |
 | T-P9-01 | DONE | 2026-10-22 | range inclusivo esatto, 333 locali, CI 39748653454 Linux/Windows verde su dc4b6ec; [report](docs/verification/T-P9-01.md) |
 | T-P9-02 | DONE | 2026-10-22 | date DDMMYYYY, 340 locali, CI 39749927727 Linux/Windows verde su fa54743; [report](docs/verification/T-P9-02.md) |
-| T-P9-03 | DONE_UNVERIFIED | 2026-10-22 | formato 2 Decimal ratificato, 354 test e check authoring, 54 file baseline invariati, CI pendente; [preflight](docs/verification/T-P9-03-preflight.md) |
+| T-P9-03 | DONE | 2026-10-22 | formato 2 Decimal, 354 test, CI 39759270541 Linux/Windows verde su 5866d1d; [preflight](docs/verification/T-P9-03-preflight.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
