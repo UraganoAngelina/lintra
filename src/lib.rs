@@ -214,3 +214,8 @@ pub use schema::compiled::{
 };
 
 pub use engine::rule_diagnostics::RuleDiagnosticError;
+
+pub use reference_data::{
+    dataset::{DatasetKey, LookupSet, PreparedReferenceData, prepare_reference_data},
+    provider::{ReferenceDataError, ReferenceDataProvider},
+};

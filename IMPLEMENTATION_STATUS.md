@@ -3,6 +3,27 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P11-01 gate locali — 2026-10-22
+
+Contratti/preparazione reference data consegnati, 419 test/52 suite; fmt/check/
+Clippy/test/release/Windows GNU check/diff passati. CI nativa pendente.
+[Dossier e spiegazioni](docs/verification/T-P11-01.md).
+
+HANDOFF — T-P11-01 DONE_UNVERIFIED
+- DatasetKey riusato; LookupSet/ReferenceDataProvider Send+Sync e factory reale
+  prepare_reference_data, tutti gli handle o errore senza contesto parziale.
+- Deduplica chiavi identiche, versioni distinte, key mismatch e cause reali;
+  PreparedReferenceData non conserva provider, mille lookup senza nuove load.
+- Nessuna modifica a CLI/service/compiler ReferenceData: integrazione 11-05/06
+  ancora aperta; filesystem e dati normativi non inventati.
+- File reference_data/dataset/provider/mod, lib, test reference_preparation;
+  dossier/stato. Nessun Cargo/lock, baseline o source modificati; 64 protetti identici.
+- Git work/p1-foundations, task da pubblicare; gate Linux/Windows necessario.
+- Prerequisito 7-05 verificato, next 11-02 dopo gate, automaticamente.
+- M4/M5/P13/PERSIST/T-P2-03/M1 e Full restano aperti.
+
+## Registro storico — P10 conclusa
+
 ## Frontiera corrente — P10 DONE / avvio T-P11-01 — 2026-10-22
 
 Suite DSL/golden e conflitti statici consegnati, 413 test/51 suite, 10 scenari.
@@ -810,6 +831,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P10-04 | DONE | 2026-10-22 | presenza condizionale, 393 test; CI 39782079369 Linux/Windows verde su fdeea9b; [report](docs/verification/T-P10-04.md) |
 | T-P10-05 | DONE | 2026-10-22 | regole locali, 407 test; CI 39785432851 Linux/Windows verde su 9d5b1a3; [report](docs/verification/T-P10-05.md) |
 | T-P10-06 | DONE | 2026-10-22 | suite DSL/golden, 413 test; job CI 39787215311 Linux/Windows success su b7dc480, workflow globale in_progress all’ultima lettura; [report](docs/verification/T-P10-06.md) |
+| T-P11-01 | DONE_UNVERIFIED | 2026-10-22 | reference ports/preparazione, 419 test; CI pendente; [report](docs/verification/T-P11-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
