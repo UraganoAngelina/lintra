@@ -16,6 +16,7 @@ EXPORT_CAD/
 *.txt
 !tests/fixtures/**/*.txt
 !tests/golden/synthetic/**/input.txt
+!tests/golden/semantic/**/input.txt
 A.txt
 B1.txt
 B2.txt
