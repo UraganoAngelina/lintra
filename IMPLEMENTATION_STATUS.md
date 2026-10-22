@@ -3,6 +3,17 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Chiusura T-P8-04 — 2026-10-22
+
+T-P8-04 **DONE**: 318 test locali e CI 39744299145 completed/success su
+4f7115fcf784c02511dc78b3217fda399f53703d, Linux GNU/Windows MSVC success.
+
+HANDOFF — 2026-10-22 — T-P8-04 DONE / avvio T-P8-05
+- File/spiegazioni nel dossier T-P8-04, nessuna modifica compiler o API core.
+- Codice 4f7115f pubblicato, branch work/p1-foundations, chiusura documentale qui.
+- Next T-P8-05 autorizzata, prerequisito 8-03 CI 39743161012 soddisfatto;
+  registry/compiler e report atomici preservati. Rinvii core invariati.
+
 ## Frontiera corrente — T-P8-04 / 2026-10-22
 
 T-P8-04 **DONE_UNVERIFIED**: schema lint attraverso registry/compiler reali,
@@ -389,7 +400,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P8-01 | DONE | 2026-10-21 | 297 test, CI 39628560176 Linux/Windows success 98d952b; [report](docs/verification/T-P8-01.md) |
 | T-P8-02 | DONE | 2026-10-22 | HumanReadableSink, 304 test locali, CI 39741868369 Linux/Windows completed/success su 81cee36; [report](docs/verification/T-P8-02.md) |
 | T-P8-03 | DONE | 2026-10-22 | validate reale LocalOnly, 313 test locali, CI 39743161012 Linux/Windows verde su 10932f9; [report](docs/verification/T-P8-03.md) |
-| T-P8-04 | DONE_UNVERIFIED | 2026-10-22 | schema lint attraverso registry/compiler, cinque test processo e 318 globali, CI pendente; [report](docs/verification/T-P8-04.md) |
+| T-P8-04 | DONE | 2026-10-22 | schema lint, 318 test locali, CI 39744299145 Linux/Windows verde su 4f7115f; [report](docs/verification/T-P8-04.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
