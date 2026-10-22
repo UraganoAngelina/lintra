@@ -1,8 +1,10 @@
 # Decimal per importi — chiarimento dell'autore e proposta contrattuale
 
-2026-10-22. Semantica degli importi confermata dall'autore; estensione del
-contratto dati ancora da ratificare. Nessun codice Decimal implementato,
-nessuna baseline o specifica sorgente modificata da questa proposta.
+2026-10-22. **APPROVATA dall'autore:** «approvo questa estensione, procedi pure».
+La ratifica comprende l'estensione dati/versionamento e gli aggiornamenti
+contrattuali qui elencati. Il testo originario seguente conserva la proposta
+approvata; stato implementativo e verifiche sono nel dossier T-P9-03.
+Nessuna migrazione di baseline normative autorizzata.
 
 ## Decisioni ricevute dall'autore
 

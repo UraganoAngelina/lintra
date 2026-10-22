@@ -452,7 +452,7 @@ fn successful_compilation_preserves_trace_order_and_local_key_scopes() {
 fn format_range_is_enforced_by_the_compiler_without_a_fallback() {
     let compiled = SchemaCompiler.compile(bound(sample())).unwrap();
     assert_eq!(compiled.schema_format_version(), 1);
-    for version in [0, 2, u32::MAX] {
+    for version in [0, 3, u32::MAX] {
         let mut value = sample();
         value["schema_format_version"] = json!(version);
         let failure = error(value);
@@ -461,7 +461,7 @@ fn format_range_is_enforced_by_the_compiler_without_a_fallback() {
         let message = &failure.issues[0].message;
         assert!(message.contains(&format!("schema_format_version {version}")));
         assert!(message.contains(&format!("engine version {}", env!("CARGO_PKG_VERSION"))));
-        assert!(message.contains("supported schema formats 1..=1"));
+        assert!(message.contains("supported schema formats 1..=2"));
         assert!(message.contains("no compatible executable is declared"));
         assert!(message.contains(
             "minimum required executable version: not applicable to an undefined format"

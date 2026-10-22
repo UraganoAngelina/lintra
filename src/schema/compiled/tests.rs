@@ -514,3 +514,38 @@ fn local_record_rejects_every_unimplemented_local_plan_before_processing() {
         );
     }
 }
+
+/// Invalid scalar metadata never becomes a DecimalSpec; the public compiled
+/// type exposes no setters. This tests structural safety beyond the v2 profile.
+#[test]
+fn decimal_spec_rejects_impossible_width_scale_and_separator_metadata() {
+    for (width, scale, separator) in [
+        (0, 2, b'.'),
+        (3, 2, b'.'),
+        (7, 0, b'.'),
+        (7, usize::MAX, b'.'),
+        (7, 2, b'0'),
+        (7, 2, b'+'),
+        (7, 2, b'-'),
+        (7, 2, b' '),
+        (7, 2, 0xff),
+    ] {
+        assert!(DecimalSpec::new(width, scale, separator, SignPolicy::Unsigned).is_none());
+    }
+}
+
+/// The engine obeys verified metadata rather than hardcoding the monetary
+/// profile. These private plans are not additional formats accepted by authoring.
+#[test]
+fn decimal_validator_uses_the_plan_scale_separator_and_physical_width() {
+    let spec = DecimalSpec::new(7, 3, b',', SignPolicy::Unsigned).unwrap();
+    assert!(
+        crate::validators::decimal::validate_decimal(&spec, crate::FieldSlice { raw: b"012,345" })
+            .is_ok()
+    );
+    for raw in [b"0012,34".as_slice(), b"012.345", b"012,34", b"012,3450"] {
+        assert!(
+            crate::validators::decimal::validate_decimal(&spec, crate::FieldSlice { raw }).is_err()
+        );
+    }
+}

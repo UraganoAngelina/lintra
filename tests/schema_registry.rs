@@ -92,7 +92,7 @@ fn missing_version_is_a_load_failure_without_latest_or_fallback() {
 #[test]
 fn compiler_failure_preserves_aggregated_issues_and_technical_source() {
     let mut invalid = raw("v1");
-    invalid.schema_format_version = 2;
+    invalid.schema_format_version = 3;
     invalid.traces[0].fields[0].name.clear();
     let mut repository = InMemorySchemaRepository::new();
     repository.insert(invalid).unwrap();
@@ -178,7 +178,7 @@ fn each_resolution_reloads_and_recompiles_including_changes_and_later_failures()
     let second = registry.resolve(&key("v1")).unwrap();
     assert_eq!(first.traces()[0].name(), "Synthetic trace");
     assert_eq!(second.traces()[0].name(), "Updated synthetic trace");
-    repository.value.lock().unwrap().schema_format_version = 2;
+    repository.value.lock().unwrap().schema_format_version = 3;
     assert!(matches!(
         registry.resolve(&key("v1")),
         Err(SchemaResolutionError::Compilation(_))

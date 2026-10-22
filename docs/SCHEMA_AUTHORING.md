@@ -134,6 +134,47 @@ dai campi ricevuti: non sono ammessi da questo formato e non si inventano
 separatore decimale, segno, scala o repertorio alfabetico. La loro introduzione
 richiederà evidenza, aggiornamento del contratto ed esempi dedicati.
 
+### Formato 2 — Decimal per importi, ratifica 2026-10-22
+
+L'autore ha approvato l'estensione [Decimal importi](proposals/decimal-amount-contract.md).
+Il [meta-schema formato 2](schema-authoring/flow-v2.schema.json) aggiunge soltanto
+il physical Decimal; [quello formato 1](schema-authoring/flow.schema.json) resta
+invariato. Numeric/AN/Date e i loro vincoli conservano la semantica precedente.
+La selezione del formato resta obbligatoria e non abilita capability assenti.
+
+Il nuovo nodo è esplicito, senza default:
+
+```json
+{"type":"decimal","start":1,"length":7,"scale":2,"decimal_separator":".","sign_policy":"unsigned","alignment":{"kind":"exact"}}
+```
+
+Il profilo importi richiede almeno quattro byte: una o più cifre ASCII intere,
+punto al terzultimo byte, esattamente due cifre ASCII frazionarie. Segni +/-,
+separatori delle migliaia, esponenti, spazi interni e cifre Unicode non ammessi.
+Zero ammesso; 0.00 non è automaticamente assenza. Presenza/MissingValuePolicy
+restano esplicite e precedono il datatype. Exact mantiene la larghezza fisica:
+nessuna estrazione logical può spostare il punto o eliminare cifre frazionarie.
+
+Per sette byte: 0012.34 e 0000.00 validi; 0012,34, 0012.3 seguito da spazio,
+012.340, -012.34 e 1,23.45 invalidi. Il formato 1 rifiuta Decimal anche se
+l'AST raw superset è deserializzabile: linter/compiler impediscono di renderlo
+eseguibile fuori dal formato ratificato.
+
+Decimal si dichiara soltanto per importi monetari diretti. Nomi come
+compartecipazione o quota non determinano il tipo: i codici/categorie con range
+o domini ricevuti restano Numeric/AN con tutti i vincoli precedenti, senza
+migrazioni automatiche delle baseline. L'esempio
+[amount-flow.json](schema-authoring/examples/format2/amount-flow.json) è solo
+sintetico: mostra importo Decimal e codice Numeric con range 1–4 indipendenti.
+Non fa parte del vecchio manifest dimostrativo formato 1, che resta invariato.
+
+Il motore riceve DecimalSpec verificata e legge i parametri dello schema; nessuna
+condizione SIOC/CAD o riconoscimento di ID/nome. Nessun floating point, rounding,
+troncamento o conversione implicita di NumericRange in centesimi/parte intera:
+NumericRange resta ammesso su Numeric e viene rifiutato su Decimal.
+La mappa [compatibilità](schema-authoring/FORMAT_COMPATIBILITY.md) distingue
+le consegne di sviluppo con lo stesso package version tramite commit verificati.
+
 `encoding.mode = runtime_required`, posizione byte. Nessuna code page di
 sistema. Prima di compile, il servizio lega il profilo di encoding esplicito
 fornito dall’adapter al RawEncodingSpec in memoria, conservando configurazione

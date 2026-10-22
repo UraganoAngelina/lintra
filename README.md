@@ -5,7 +5,8 @@ Motore generico e versionato per validare flussi sanitari fixed-width.
 
 La libreria espone `ValidationService` e una factory filesystem LocalOnly,
 con compiler incrementale, validazione strutturale e controlli locali supportati
-(presenza base, Numeric/AN, date DDMMYYYY, AllowedValues e range interi inclusivi),
+(presenza base, Numeric/AN, date DDMMYYYY, AllowedValues e range interi inclusivi;
+Decimal per importi espliciti nel formato 2),
 report JSONL/summary, audit degli input, progress e cancellazione. Full,
 reference data e persistenza completa rimangono consegne future esplicite.
 Il consuntivo verificato è in [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md).
@@ -164,3 +165,13 @@ e il riepilogo stdout indica CANCELLED e incompletezza. Il JSONL/summary del run
 annullato non sostituisce i definitivi. Un guasto tecnico durante la finalizzazione
 resta exit 1. Dopo il checkpoint RunCompleted un segnale non riscrive l'esito già
 fissato dal servizio. L'handler Ctrl+C non interrompe `schema lint`.
+
+## Importi Decimal — formato 2
+
+Il formato 1 resta invariato. Il formato 2 aggiunge campi dichiarati
+esplicitamente `decimal`: punto al terzultimo byte, due cifre decimali,
+nessun segno o separatore delle migliaia, zero ammesso. Il tipo conserva tutta
+la larghezza fisica e non converte i dati con floating point.
+Codici/range di compartecipazione restano Numeric/AN con gli stessi controlli:
+nessuna classificazione per nome né migrazione degli schemi esistenti.
+Esempio sintetico e contratto in [authoring](docs/SCHEMA_AUTHORING.md).

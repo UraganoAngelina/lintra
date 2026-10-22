@@ -101,3 +101,14 @@ DEC-12 — prima CLI, scelta A ratificata dall’autore:
 - Riga vuota = record zero byte; terminatore finale non inventa una riga extra.
 - BOM Reject, errore tecnico; nessun --bom strip nella prima CLI.
 - Nessuna modifica della request/pipeline per simulare stripping non selezionabile.
+
+Ratifica dell'autore — 2026-10-22 — Decimal importi / formato 2:
+- Approvata docs/proposals/decimal-amount-contract.md: procedere T-P9-03,
+  inclusi aggiornamenti authoring/meta-schema/lowering/DET §137/mappa/prompt.
+- Formato 2 aggiunge Decimal; formato 1 invariato, nessuna migrazione automatica.
+- Solo importi monetari diretti: dot al terzultimo byte, due cifre frazionarie,
+  unsigned, non negativi con zero ammesso, niente separatori delle migliaia.
+- Codici/range di compartecipazione e qualunque campo esistente restano invariati.
+  Niente classificazione per nome o ID hardcoded, niente baseline riscritte.
+- Exact/preserve width per il nuovo Decimal; CNF-ALIGNMENT-01 invariata per v1.
+- Nessun floating point; gate locali/native CI e spiegazioni dettagliate richiesti.

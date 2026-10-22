@@ -67,6 +67,13 @@
 //! }
 //! ```
 
+//! Decimal metadata is read-only outside compilation:
+//!
+//! ```compile_fail,E0624
+//! use lintra::{DecimalSpec, SignPolicy};
+//! let spec = DecimalSpec::new(7, 2, b'.', SignPolicy::Unsigned);
+//! ```
+
 mod application;
 mod context;
 mod domain;
@@ -101,7 +108,8 @@ pub use schema::raw::{
 
 pub use schema::compiled::{
     AlignmentRule, BasePresence, CompiledFieldSpec, CompiledFlowSchema, CompiledRecordSchema,
-    ContentBoundaryPolicy, EncodingSpec, FieldType, LexicalPlan, MissingValuePolicy,
+    ContentBoundaryPolicy, DecimalSpec, EncodingSpec, FieldType, LexicalPlan, MissingValuePolicy,
+    SignPolicy,
 };
 
 pub use schema::repository::{

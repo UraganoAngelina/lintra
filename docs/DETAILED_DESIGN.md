@@ -3569,16 +3569,38 @@ Non assumere `YYYYMMDD` per tutti i flussi senza evidenza.
 
 # 137. Decimal handling
 
+Ratifica dell'autore 2026-10-22: approvata l'estensione
+[Decimal importi](proposals/decimal-amount-contract.md), implementata da T-P9-03.
+Formato 2 aggiunge un physical Decimal esplicito; formato 1 invariato.
+
 ```rust
 pub struct DecimalSpec {
-    pub total_length: usize,
-    pub scale: usize,
-    pub decimal_separator: u8,
-    pub sign_policy: SignPolicy,
+    total_length: usize,
+    scale: usize,
+    decimal_separator: u8,
+    sign_policy: SignPolicy,
 }
 ```
 
-La definizione concreta dipenderà dai tracciati.
+DecimalSpec è costruibile soltanto dal compiler e leggibile tramite getter;
+FieldType::Decimal(DecimalSpec) non rende forgiabile CompiledFieldSpec.
+Il nodo raw fornisce width, scale, separator e sign_policy; nessun default o
+inferenza di locale, flow o nome campo. Il profilo monetario approvato dichiara
+scala 2, punto ASCII e unsigned, con alignment exact e larghezza almeno quattro.
+Il punto è al terzultimo byte fisico; tutte le altre posizioni sono cifre ASCII.
+Nessun segno, separatore delle migliaia o esponente. Zero ammesso, non negativi.
+
+Il validator opera sui byte a larghezza preservata dopo presenza: verifica
+lunghezza esatta e posizione del separatore dai parametri compiled. Nessun
+floating point, arrotondamento o parse in interi di taglia limitata. Produce
+FieldViolation InvalidType sul formato errato e una sola causa primaria prima
+delle constraint semantiche. I valori assenti seguono MissingValuePolicy e
+presence già dichiarate, senza trattare 0.00 come assenza globale.
+
+NumericRange non viene applicato a Decimal in unità inventate: il compiler
+rifiuta la combinazione. Codici/range di compartecipazione e qualunque schema
+esistente restano invariati. Solo un nodo dichiarato esplicitamente come importo
+monetario diretto usa Decimal. CNF-ALIGNMENT-01 per Numeric/AN non cambia.
 
 ---
 

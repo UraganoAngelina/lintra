@@ -72,7 +72,7 @@ fn invalid_identifiers_are_reported_without_trimming_or_case_folding() {
 #[test]
 fn unsupported_format_and_empty_flow_are_errors() {
     let mut value = sample();
-    value["schema_format_version"] = json!(2);
+    value["schema_format_version"] = json!(3);
     value["traces"] = json!([]);
     assert_eq!(
         codes(value),

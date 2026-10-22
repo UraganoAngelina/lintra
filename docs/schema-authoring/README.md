@@ -1,4 +1,4 @@
-# Artefatti di authoring — formato 1 approvato
+# Artefatti di authoring — formati 1 e 2 approvati
 
 Stato: **APPROVATO**, T-P0-07, risposta «Approvo il contratto T-P0-07»
 sul commit 72f9f5e. Il contratto è in
@@ -33,3 +33,14 @@ vivono in `/tmp`; nessun pacchetto viene aggiunto al progetto o alla CI.
 **[EXT]**: check_schema valida i meta-schemi; validate/is_valid controllano
 le istanze. Questa verifica non compila la DSL, non verifica record o esiti
 normativi e non sostituisce il linter/SchemaCompiler Rust futuro.
+
+## Estensione Decimal, 2026-10-22
+
+[flow-v2.schema.json](flow-v2.schema.json) aggiunge il solo physical Decimal
+esplicito al contratto 1, preservato byte per byte in flow.schema.json.
+[amount-flow.json](examples/format2/amount-flow.json) è un esempio separato
+sintetico di importo e codice Numeric con range invariato, non una migrazione
+di un flow normativo o del manifest v1. Contratto e implementazione sono
+tracciati in T-P9-03. Il check_authoring verifica entrambi i meta-schemi e
+l'esatta relazione di estensione, senza dichiarare che il JSON Schema esegua
+il motore Rust o certifichi normative sanitarie.

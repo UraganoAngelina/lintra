@@ -142,6 +142,26 @@ impl Diagnostics<'_> {
                     }
                     (*start, *length)
                 }
+                RawPhysical::Decimal {
+                    start,
+                    length,
+                    scale,
+                    ..
+                } => {
+                    if self.raw.schema_format_version != 2 {
+                        issues.push((
+                            SchemaIssueCode::UnsupportedConstruct,
+                            "Decimal requires schema_format_version 2".to_owned(),
+                        ));
+                    }
+                    if *length < 4 || *scale != 2 {
+                        issues.push((
+                            SchemaIssueCode::InvalidTypeParameters,
+                            "monetary Decimal requires width >= 4 and explicit scale 2".to_owned(),
+                        ));
+                    }
+                    (*start, *length)
+                }
                 RawPhysical::Date { start, length, .. } => {
                     if *length != 8 {
                         issues.push((
@@ -236,7 +256,7 @@ fn checked_source_end(start: usize, length: usize) -> Result<usize, SchemaIssueC
         .ok_or(SchemaIssueCode::RangeOverflow)
 }
 
-/// Checks format identity, physical layout and parameters of the format-1 types.
+/// Checks format identity, physical layout and parameters of the format-1/2 types.
 ///
 /// Order: flow issues, then traces in declaration order; trace identity before
 /// fields, fields in declaration order, record-length issue last. No hash-map

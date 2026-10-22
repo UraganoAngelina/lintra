@@ -158,3 +158,31 @@ for path in (ROOT / "docs/SCHEMA_AUTHORING.md", ROOT / "docs/schema-authoring/RE
         if not link.startswith("https://"):
             assert (path.parent / link.split("#")[0]).exists(), (path, link)
 print("PASS: link locali del contratto e indice artefatti")
+
+# The original v1 grammar stays byte-identical. v2 adds exactly the approved
+# explicit Decimal node; old normative examples are not converted or rewritten.
+flow_two = read(DOC / "flow-v2.schema.json")
+Draft202012Validator.check_schema(flow_two)
+two_validator = Draft202012Validator(flow_two)
+normalized = deepcopy(flow_two)
+normalized["$id"] = flow_schema["$id"]
+normalized["title"] = flow_schema["title"]
+normalized["properties"]["schema_format_version"]["const"] = 1
+added = normalized["$defs"]["physical"]["oneOf"].pop()
+assert added["properties"]["type"]["const"] == "decimal"
+assert normalized == flow_schema
+amount = read(DOC / "examples/format2/amount-flow.json")
+two_validator.validate(amount)
+assert not flow_validator.is_valid(amount)
+v1_amount = deepcopy(amount)
+v1_amount["schema_format_version"] = 1
+assert not flow_validator.is_valid(v1_amount)
+for prop in ("scale", "decimal_separator", "sign_policy", "alignment"):
+    bad = deepcopy(amount)
+    bad["traces"][0]["fields"][0]["physical"].pop(prop)
+    assert not two_validator.is_valid(bad), prop
+for prop, value in (("scale",3),("length",3),("decimal_separator",","),("sign_policy","signed"),("alignment",{"kind":"right_pad","fill_byte":32,"content_policy":"strip_trailing_fill"}),("extra",True)):
+    bad = deepcopy(amount)
+    bad["traces"][0]["fields"][0]["physical"][prop] = value
+    assert not two_validator.is_valid(bad), prop
+print("PASS: format 2 explicit unsigned Decimal, v1 unchanged, negative profile cases rejected")

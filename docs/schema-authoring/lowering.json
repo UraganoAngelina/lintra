@@ -169,5 +169,22 @@
   },
   "new_expressions": {
     "derived_compare": "Typed derived-to-literal comparison needed for legacy year guards and CAD age thresholds; no new derivation operation"
+  },
+  "format_extensions": {
+    "2": {
+      "status": "APPROVED_BY_AUTHOR_2026-10-22",
+      "physical_decimal": {
+        "lowering": "explicit width/scale/separator/unsigned policy into read-only DecimalSpec; exact physical bytes; no floating point or inferred field conversion",
+        "monetary_profile": {
+          "scale": 2,
+          "decimal_separator": ".",
+          "sign_policy": "unsigned",
+          "zero_allowed": true,
+          "alignment": "exact"
+        },
+        "legacy_numeric_ranges": "unchanged; numeric_range on Decimal is rejected; no implicit conversion to minor units"
+      },
+      "format_1": "unchanged, Decimal rejected"
+    }
   }
 }

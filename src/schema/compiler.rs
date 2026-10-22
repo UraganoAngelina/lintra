@@ -175,7 +175,7 @@ impl Checks<'_> {
                 "conditional presence",
             );
             let length = match &field.physical {
-                RawPhysical::Date { length, .. } => *length,
+                RawPhysical::Date { length, .. } | RawPhysical::Decimal { length, .. } => *length,
                 RawPhysical::Numeric {
                     length, alignment, ..
                 }
@@ -241,7 +241,7 @@ impl Checks<'_> {
         let alignment = match &field.physical {
             RawPhysical::Numeric { alignment, .. }
             | RawPhysical::Alphanumeric { alignment, .. } => alignment,
-            RawPhysical::Date { .. } => &RawAlignment::Exact {},
+            RawPhysical::Date { .. } | RawPhysical::Decimal { .. } => &RawAlignment::Exact {},
         };
         for constraint in &field.constraints {
             if let RawConstraint::Date { calendar_valid, .. } = constraint {
@@ -611,6 +611,32 @@ fn compile_field(raw: &RawFieldSpec) -> Result<CompiledFieldSpec, Code> {
             FieldType::Alphanumeric,
             alignment,
             Some(lexical),
+        ),
+        RawPhysical::Decimal {
+            start,
+            length,
+            scale,
+            decimal_separator,
+            sign_policy,
+            ..
+        } => (
+            *start,
+            *length,
+            FieldType::Decimal(
+                DecimalSpec::new(
+                    usize::try_from(*length).map_err(|_| Code::RangeOverflow)?,
+                    usize::try_from(*scale).map_err(|_| Code::RangeOverflow)?,
+                    match decimal_separator {
+                        RawPhysicalDecimalDecimalSeparator::Dot => b'.',
+                    },
+                    match sign_policy {
+                        RawPhysicalDecimalSignPolicy::Unsigned => SignPolicy::Unsigned,
+                    },
+                )
+                .ok_or(Code::InvalidTypeParameters)?,
+            ),
+            &RawAlignment::Exact {},
+            None,
         ),
         RawPhysical::Date {
             start,

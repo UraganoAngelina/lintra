@@ -7,6 +7,9 @@ pub struct SchemaFormatVersion(pub u32);
 // Official development baseline ratified by the author in CNF-FORMAT-01.
 // This is not inferred from the current package version or a future format number.
 const FORMAT_ONE_MINIMUM_ENGINE_VERSION: &str = "0.1.0";
+// Format 2 was explicitly ratified in T-P9-03; the delivery ledger records
+// its verified commit and CI, independently of the historic format-1 baseline.
+const FORMAT_TWO_MINIMUM_ENGINE_VERSION: &str = "0.1.0";
 const FORMAT_ONE_BASELINE_COMPILER: &str = "b658e05";
 
 impl SchemaFormatVersion {
@@ -14,6 +17,7 @@ impl SchemaFormatVersion {
     pub fn minimum_engine_version(self) -> Option<&'static str> {
         match self.0 {
             1 => Some(FORMAT_ONE_MINIMUM_ENGINE_VERSION),
+            2 => Some(FORMAT_TWO_MINIMUM_ENGINE_VERSION),
             _ => None,
         }
     }
@@ -36,7 +40,7 @@ pub struct EngineCapabilities {
 impl EngineCapabilities {
     pub fn current() -> Self {
         Self {
-            supported_schema_formats: SchemaFormatVersion(1)..=SchemaFormatVersion(1),
+            supported_schema_formats: SchemaFormatVersion(1)..=SchemaFormatVersion(2),
             engine_version: env!("CARGO_PKG_VERSION").to_owned(),
         }
     }
@@ -48,9 +52,16 @@ impl EngineCapabilities {
             return None;
         }
         let requirement = match requested.minimum_engine_version() {
-            Some(minimum) => format!(
-                "minimum required executable version: {minimum} (development baseline; verified compiler {FORMAT_ONE_BASELINE_COMPILER})"
-            ),
+            Some(minimum) => {
+                let delivery = if requested.0 == 1 {
+                    format!("verified compiler {FORMAT_ONE_BASELINE_COMPILER}")
+                } else {
+                    "compiler delivery T-P9-03; see format compatibility ledger".to_owned()
+                };
+                format!(
+                    "minimum required executable version: {minimum} (development baseline; {delivery})"
+                )
+            }
             None => format!(
                 "format is undefined; no compatible executable is declared; minimum required executable version: not applicable to an undefined format; defined format 1 minimum engine version: {FORMAT_ONE_MINIMUM_ENGINE_VERSION} (development baseline; verified compiler {FORMAT_ONE_BASELINE_COMPILER})"
             ),

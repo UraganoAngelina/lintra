@@ -1,0 +1,102 @@
+{
+  "schema_format_version": 2,
+  "flow_id": "SYNTHETIC-AMOUNTS",
+  "schema_version": "v2",
+  "regulatory_version": "synthetic Decimal contract",
+  "source": {},
+  "encoding": {
+    "mode": "runtime_required",
+    "position_unit": "byte"
+  },
+  "required_capabilities": [
+    "local.v1"
+  ],
+  "parameters": [],
+  "reference_data": [],
+  "persistence_policy": null,
+  "traces": [
+    {
+      "id": "T1",
+      "name": "Synthetic amount and categorical participation",
+      "record_length": 10,
+      "fields": [
+        {
+          "id": "AMOUNT",
+          "name": "Direct synthetic monetary amount",
+          "physical": {
+            "type": "decimal",
+            "start": 1,
+            "length": 7,
+            "scale": 2,
+            "decimal_separator": ".",
+            "sign_policy": "unsigned",
+            "alignment": {
+              "kind": "exact"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "PARTICIPATION_CODE",
+          "name": "Categorical participation code",
+          "physical": {
+            "type": "numeric",
+            "start": 8,
+            "length": 3,
+            "alignment": {
+              "kind": "left_pad",
+              "fill_byte": 48,
+              "content_policy": "strip_leading_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "numeric_range",
+              "min": 1,
+              "max": 4
+            }
+          ]
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "PARTICIPATION_CODE"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [],
+      "identity": [
+        {
+          "target": "technical",
+          "technical_name": "synthetic",
+          "field": "PARTICIPATION_CODE"
+        }
+      ],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [],
+      "documented_non_executable_rules": []
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-# T-P9-03 — Preflight Decimal / BLOCKED
+# T-P9-03 — Preflight Decimal / ratifica ricevuta
 
 2026-10-22. Nessun codice Decimal scritto. T-P9-02 conclusa: CI 39749927727
 completed/success su fa547431e702e37f2cf53203a3286d1f11ae9a32,
@@ -7,7 +7,17 @@ Letti prompt T-P9-03, DET §137, Piano P9/§4/14, SCHEMA_AUTHORING tabella tipi,
 G0/T-P0-07 e compatibilità formato approvata. Non è un nuovo CNF né riapertura
 di ratifiche: il rinvio Decimal esiste già ed è vincolante.
 
-## Chiarimenti successivi dell'autore — 2026-10-22
+## Ratifica finale — 2026-10-22
+
+Autore: «approvo questa estensione, procedi pure». Approvata integralmente
+la proposta docs/proposals/decimal-amount-contract.md, inclusi formato 2 e
+aggiornamenti authoring/meta-schema/lowering/DET/mappa/prompt. Blocco contrattuale
+rimosso; T-P9-03 IN_PROGRESS, DONE subordinato a implementazione e gate reali.
+Il [prompt ratificato](T-P9-03-prompt.md) e il [dossier](T-P9-03.md)
+tracciano lo scope. Baseline e codici/range di compartecipazione invariati.
+
+## Chiarimenti storici — prima della ratifica
+
 
 La semantica precedentemente mancante è stata fornita: importi monetari diretti,
 punto al terzultimo byte, due cifre frazionarie, nessun raggruppamento,

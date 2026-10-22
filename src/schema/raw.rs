@@ -1,4 +1,5 @@
-//! Raw format-1 DTOs, generated from the approved flow.schema.json.
+//! Raw format-1/2 DTO superset, generated from the approved flow-v2.schema.json.
+//! Format-specific acceptance belongs to lint/compiler; raw data is not executable.
 //! Not executable schemas: bounds, references and compatibility require lint/compile.
 //! Regenerate using docs/verification/generate_raw_model.py --write.
 
@@ -69,7 +70,7 @@ fn unique_map<'de, D: Deserializer<'de>, T: Deserialize<'de>>(
     d.deserialize_map(Unique(PhantomData))
 }
 
-// Grammar SHA-256: 341f3757c576b1e4cea92719bfb2d126599296d0e5121481033d5283db7bab89
+// Grammar SHA-256: c1a01f9533bc6679b29f789776181544f94a6a7d570b66bb590bd2a0d7017f92
 
 pub type RawByte = u8;
 
@@ -288,6 +289,24 @@ pub struct RawPhysicalDateAlignment {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum RawPhysicalDecimalDecimalSeparator {
+    #[serde(rename = ".")]
+    Dot,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum RawPhysicalDecimalSignPolicy {
+    #[serde(rename = "unsigned")]
+    Unsigned,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RawPhysicalDecimalAlignment {
+    pub kind: RawPhysicalDateAlignmentKind,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "type", deny_unknown_fields)]
 pub enum RawPhysical {
     #[serde(rename = "numeric")]
@@ -310,6 +329,15 @@ pub enum RawPhysical {
         length: u32,
         format: RawPhysicalDateFormat,
         alignment: RawPhysicalDateAlignment,
+    },
+    #[serde(rename = "decimal")]
+    Decimal {
+        start: u32,
+        length: u32,
+        scale: u32,
+        decimal_separator: RawPhysicalDecimalDecimalSeparator,
+        sign_policy: RawPhysicalDecimalSignPolicy,
+        alignment: RawPhysicalDecimalAlignment,
     },
 }
 

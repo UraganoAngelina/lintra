@@ -3,7 +3,32 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P9-02 DONE / T-P9-03 BLOCKED — 2026-10-22
+## Frontiera corrente — T-P9-03 DONE_UNVERIFIED — 2026-10-22
+
+Ratifica dell'autore ricevuta: «approvo questa estensione, procedi pure».
+Formato 2 implementato con Decimal per importi espliciti, formato 1 invariato.
+354 test locali passati e tutti i gate locali verdi; CI nativa pendente.
+Il confronto SHA-256 conferma identici 54 file protetti (normative, schemas,
+golden preesistenti e meta-schema v1). Nessun campo codice/range convertito.
+Spiegazioni e fonti: [dossier T-P9-03](docs/verification/T-P9-03.md),
+[prompt ratificato](docs/verification/T-P9-03-prompt.md).
+
+HANDOFF — 2026-10-22 — T-P9-03 gate locali
+- Prerequisiti 6-06/G0 e ratifica Decimal soddisfatti; blocco contrattuale rimosso.
+- Nuovi DecimalSpec/SignPolicy read-only, raw Decimal esplicito, format 2 gate,
+  validazione fisica parametrica senza float; processo reale CLI verificato.
+- Source autorizzate aggiornate: authoring, DET §137, lowering, mappa/prompt;
+  schema v1 e baseline/codici/range restano invariati.
+- 354 test, log /tmp/lintra-t-p9-03-test.log; fmt/check/Clippy/test/release/
+  Windows GNU check/diff, riproducibilità raw e authoring v1/v2 passati.
+- ABI Rust pubblico ampliato con FieldType::Decimal e metadata read-only;
+  nessuna apertura costruttori compiled, variante richiede match consumer aggiornati.
+- Nessuna dependency nuova/Cargo.lock cambiato. P11/P13/PERSIST/M1 aperti.
+- Git work/p1-foundations, ultimo commit 92013f9, task da pubblicare per CI.
+- Next T-P9-04 dopo gate Linux/Windows. Versione minima formato 2: baseline
+  sviluppo 0.1.0 della consegna T-P9-03, nessuna release o vecchio supporto inventato.
+
+## Registro storico — prima della ratifica Decimal
 
 Ultimo codice **fa547431e702e37f2cf53203a3286d1f11ae9a32**: T-P9-02 DONE,
 [CI 39749927727](https://github.com/UraganoAngelina/lintra/actions/runs/39749927727)
@@ -574,7 +599,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P8-06 | DONE | 2026-10-22 | 325 locali, CI 39747270986 Linux/Windows verde su 90528c4, test console Windows passato; [report](docs/verification/T-P8-06.md) |
 | T-P9-01 | DONE | 2026-10-22 | range inclusivo esatto, 333 locali, CI 39748653454 Linux/Windows verde su dc4b6ec; [report](docs/verification/T-P9-01.md) |
 | T-P9-02 | DONE | 2026-10-22 | date DDMMYYYY, 340 locali, CI 39749927727 Linux/Windows verde su fa54743; [report](docs/verification/T-P9-02.md) |
-| T-P9-03 | BLOCKED — ratifica estensione dati | 2026-10-22 | semantica importi chiarita dall’autore (dot/2/unsigned/zero ammesso), proposta AST/versionamento da ratificare; [preflight](docs/verification/T-P9-03-preflight.md) |
+| T-P9-03 | DONE_UNVERIFIED | 2026-10-22 | formato 2 Decimal ratificato, 354 test e check authoring, 54 file baseline invariati, CI pendente; [preflight](docs/verification/T-P9-03-preflight.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

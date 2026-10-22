@@ -9,3 +9,5 @@ pub(crate) mod domain;
 pub(crate) mod range;
 
 pub(crate) mod date;
+
+pub(crate) mod decimal;

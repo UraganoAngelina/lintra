@@ -89,11 +89,64 @@ pub enum DateFormat {
     DdMmYyyy,
 }
 
+/// Sign syntax explicitly selected by a compiled Decimal plan.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SignPolicy {
+    Unsigned,
+}
+
+/// Verified fixed-width decimal representation. Read-only outside compilation;
+/// no host locale, inferred scale, floating-point representation or field name.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct DecimalSpec {
+    total_length: usize,
+    scale: usize,
+    decimal_separator: u8,
+    sign_policy: SignPolicy,
+}
+impl DecimalSpec {
+    /// Structural safety only; the authoring profile supplies the actual scale
+    /// and separator. At least one integral digit and one fractional digit fit.
+    pub(super) fn new(
+        total_length: usize,
+        scale: usize,
+        decimal_separator: u8,
+        sign_policy: SignPolicy,
+    ) -> Option<Self> {
+        if scale == 0
+            || scale.checked_add(2)? > total_length
+            || !decimal_separator.is_ascii_punctuation()
+            || matches!(decimal_separator, b'+' | b'-')
+        {
+            return None;
+        }
+        Some(Self {
+            total_length,
+            scale,
+            decimal_separator,
+            sign_policy,
+        })
+    }
+    pub fn total_length(self) -> usize {
+        self.total_length
+    }
+    pub fn scale(self) -> usize {
+        self.scale
+    }
+    pub fn decimal_separator(self) -> u8 {
+        self.decimal_separator
+    }
+    pub fn sign_policy(self) -> SignPolicy {
+        self.sign_policy
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum FieldType {
     Numeric,
     Alphanumeric,
     Date(DateFormat),
+    Decimal(DecimalSpec),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

@@ -38,7 +38,7 @@ impl fmt::Display for DatatypeError {
 // Metadata inconsistency is the cause itself, with no nested I/O exception.
 impl Error for DatatypeError {}
 
-/// Validate Numeric/Alphanumeric/Date against the explicit encoding and field plan.
+/// Validate Numeric/Alphanumeric/Date/Decimal against the explicit encoding and field plan.
 /// DET §147 refinement of §45: lexical class and encoding are indispensable
 /// metadata, and outer Err contains only technical errors, never violations.
 /// Call only after presence and logical extraction; this function never trims
@@ -49,6 +49,17 @@ pub fn validate_datatype(
     encoding: &EncodingSpec,
 ) -> Result<DatatypeValidationResult, DatatypeError> {
     let kind = field.field_type();
+    if let FieldType::Decimal(spec) = kind {
+        // Exact alignment preserves every physical byte, including separator
+        // position. The plan comes only from a checked explicit Decimal node.
+        if is_valid_encoded_text(logical.as_bytes(), encoding).is_none() {
+            return Err(DatatypeError::UnsupportedEncoding(encoding.clone()));
+        }
+        return Ok(match super::decimal::validate_decimal(&spec, logical) {
+            Ok(()) => DatatypeValidationResult::Valid,
+            Err(violation) => DatatypeValidationResult::Invalid(violation),
+        });
+    }
     if let FieldType::Date(format) = kind {
         // Dates have an explicit ASCII representation instead of an authoring
         // lexical class. Reject unknown encoding plans without assuming a profile;

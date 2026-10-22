@@ -11,7 +11,7 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
-PATH = ROOT / 'docs/schema-authoring/flow.schema.json'
+PATH = ROOT / 'docs/schema-authoring/flow-v2.schema.json'
 GRAMMAR = json.loads(PATH.read_text())
 NAMES = {key: 'Raw' + ''.join(s.title() for s in key.split('_')) for key in GRAMMAR['$defs']}
 NAMES.update(trace='RawRecordSchema', field='RawFieldSpec', rule='RawRule',
@@ -23,7 +23,7 @@ DERIVE = '#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]\n'
 
 
 def pascal(s):
-    operators = {'==': 'Eq', '!=': 'Ne', '<': 'Lt', '<=': 'Le', '>': 'Gt', '>=': 'Ge'}
+    operators = {'==': 'Eq', '!=': 'Ne', '<': 'Lt', '<=': 'Le', '>': 'Gt', '>=': 'Ge', '.': 'Dot'}
     return operators.get(s) or ''.join(x.title() for x in re.split(r'[^a-zA-Z0-9]+', s))
 
 
@@ -144,7 +144,8 @@ def rust_type(node, name, inline=False, in_array=False):
     raise ValueError((name, node))
 
 
-HEADER = '''//! Raw format-1 DTOs, generated from the approved flow.schema.json.
+HEADER = '''//! Raw format-1/2 DTO superset, generated from the approved flow-v2.schema.json.
+//! Format-specific acceptance belongs to lint/compiler; raw data is not executable.
 //! Not executable schemas: bounds, references and compatibility require lint/compile.
 //! Regenerate using docs/verification/generate_raw_model.py --write.
 
@@ -222,7 +223,7 @@ def main():
     else:
         assert sys.argv[1:] == ['--check']
         assert output.read_text() == formatted, 'raw.rs differs from approved grammar generation'
-    print('PASS: typed raw DTO generation; executable grammar version unchanged')
+    print('PASS: reproducible format-1/2 DTO superset; format acceptance remains in lint/compiler')
 
 
 if __name__ == '__main__':
