@@ -282,3 +282,54 @@ fn symlink_alias_of_input_is_rejected_without_modifying_source() {
     );
     assert!(!file.root.join("alias.jsonl.part").exists());
 }
+
+/// Wait for an actual service event before signalling a long-running real CLI.
+/// The retained stderr reader prevents a closed pipe from masking cancellation.
+#[cfg(target_os = "linux")]
+#[test]
+fn sigint_returns_130_and_preserves_old_reports() {
+    use std::{
+        io::{BufRead, BufReader, Read, Write},
+        process::Stdio,
+    };
+    let file = Fixture::new(b"");
+    let mut input = fs::File::create(file.root.join("input data.txt")).unwrap();
+    let block = b"001A  \n".repeat(8192);
+    for _ in 0..128 {
+        input.write_all(&block).unwrap();
+    }
+    drop(input);
+    file.old_reports();
+    let mut child = file
+        .command()
+        .arg("--errors")
+        .arg(file.root.join("errors.jsonl"))
+        .arg("--summary")
+        .arg(file.root.join("summary.json"))
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .unwrap();
+    let mut stderr = BufReader::new(child.stderr.take().unwrap());
+    let mut first = String::new();
+    stderr.read_line(&mut first).unwrap();
+    assert_eq!(first, "{\"event\":\"run_started\"}\n");
+    let signal = Command::new("kill")
+        .args(["-INT", &child.id().to_string()])
+        .status()
+        .unwrap();
+    if !signal.success() {
+        let _ = child.kill();
+        let _ = child.wait();
+        panic!("failed to send SIGINT to CLI process");
+    }
+    let out = child.wait_with_output().unwrap();
+    assert_eq!(out.status.code(), Some(130));
+    assert!(text(&out.stdout).starts_with("Result: CANCELLED\n"));
+    assert!(text(&out.stdout).contains("results are incomplete"));
+    assert!(!text(&out.stdout).contains("No validation errors found"));
+    let mut events = String::new();
+    stderr.read_to_string(&mut events).unwrap();
+    assert!(events.contains("run_completed"));
+    file.assert_old();
+}

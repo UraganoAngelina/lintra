@@ -97,6 +97,15 @@ fn check_outputs(args: &ValidateArgs, schema: &Path, reference: &Path) -> Result
 /// The real service is composed with streaming JSONL and a separate summary.
 /// Publication is atomic per file, as in T-P5-06; this is not a two-file transaction.
 pub fn validate(args: ValidateArgs) -> Result<RunStatus, Failure> {
+    let cancellation = super::signal::install()?;
+    validate_with_token(args, &cancellation)
+}
+/// Keep signal registration outside execution so tests can exercise the exact
+/// filesystem/service path with a controlled cooperative token on either OS.
+fn validate_with_token(
+    args: ValidateArgs,
+    cancellation: &CancellationToken,
+) -> Result<RunStatus, Failure> {
     let exe = std::env::current_exe()?;
     let BundleSource::External {
         schema_root,
@@ -130,12 +139,7 @@ pub fn validate(args: ValidateArgs) -> Result<RunStatus, Failure> {
                 log_result = writeln!(log, "{{\"event\":\"{event}\"}}");
             }
         };
-        let outcome = service.validate(
-            args.request,
-            &mut sink,
-            &mut progress,
-            &CancellationToken::default(),
-        )?;
+        let outcome = service.validate(args.request, &mut sink, &mut progress, cancellation)?;
         sink.finish()?;
         log_result?;
         log.flush()?;
@@ -212,4 +216,67 @@ pub fn schema_lint(args: super::args::LintArgs) -> Result<u8, Failure> {
     };
     output.flush()?;
     Ok(code)
+}
+
+#[cfg(test)]
+mod cancellation_tests {
+    use super::*;
+    use std::time::{SystemTime, UNIX_EPOCH};
+    /// Exercise the same adapter with an already-cancelled token. No OS signal
+    /// is needed on Windows to verify status 130 and atomic output preservation.
+    #[test]
+    fn controlled_cancellation_never_publishes_complete_reports() {
+        let root = std::env::temp_dir().join(format!(
+            "lintra cancelled {} {}",
+            std::process::id(),
+            SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        fs::create_dir_all(root.join("schemas/SYNTHETIC/v1")).unwrap();
+        fs::create_dir(root.join("reference-data")).unwrap();
+        fs::write(
+            root.join("schemas/SYNTHETIC/v1/flow.json"),
+            include_bytes!("../../tests/fixtures/application/schema.json"),
+        )
+        .unwrap();
+        fs::write(root.join("input.txt"), b"001A  \n").unwrap();
+        fs::write(root.join("errors.jsonl"), b"old errors").unwrap();
+        fs::write(root.join("summary.json"), b"old summary").unwrap();
+        let args = ValidateArgs {
+            dirs: paths::CliDirs {
+                schema_dir: Some(root.join("schemas")),
+                reference_data_dir: Some(root.join("reference-data")),
+            },
+            request: ValidationRequest {
+                schema_key: SchemaKey {
+                    flow_id: FlowId("SYNTHETIC".into()),
+                    version: SchemaVersion("v1".into()),
+                },
+                scope: ValidationScope::Trace(TraceValidationInput {
+                    trace_id: TraceId("T1".into()),
+                    source: InputSource::Path(root.join("input.txt")),
+                }),
+                mode: ValidationMode::LocalOnly,
+                options: ValidationOptions {
+                    record_length_policy: RecordLengthPolicy::StrictSkipRecord,
+                    newline_policy: NewlinePolicy::AutoLfOrCrlf,
+                    max_errors: None,
+                },
+            },
+            encoding: RawResolvedEncoding::Utf8,
+            errors: root.join("errors.jsonl"),
+            summary: root.join("summary.json"),
+        };
+        let cancellation = CancellationToken::default();
+        cancellation.cancel();
+        let status = validate_with_token(args, &cancellation).unwrap();
+        assert_eq!(super::super::exit_code::from_status(status), 130);
+        assert_eq!(fs::read(root.join("errors.jsonl")).unwrap(), b"old errors");
+        assert_eq!(fs::read(root.join("summary.json")).unwrap(), b"old summary");
+        assert!(!root.join("errors.jsonl.part").exists());
+        assert!(!root.join("summary.json.part").exists());
+        fs::remove_dir_all(root).unwrap();
+    }
 }

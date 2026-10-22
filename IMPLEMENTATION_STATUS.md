@@ -3,6 +3,26 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P8-05 / 2026-10-22
+
+T-P8-05 **DONE_UNVERIFIED**: Ctrl+C nel binario imposta token condiviso,
+321 test locali passati inclusi SIGINT Linux reale, callback e adapter cancel
+portabili. Tutti i gate locali passati, CI nativa pendente. Registrazione DEC-15
+ctrlc =3.5.2 prima di Cargo.toml, licenze/tree verificati nel registro dipendenze.
+
+HANDOFF — 2026-10-22 — T-P8-05 gate locali
+- Prerequisito 8-03 verificato su CI 39743161012 Linux/Windows verde.
+- File: Cargo.toml/lock, src/cli/{signal,command,mod}.rs, tests/cli_validate.rs,
+  README.md, docs/DEPENDENCIES.md, dossier T-P8-05 e questo registro.
+- Test 321 passati, log /tmp/lintra-t-p8-05-test.log; fmt/check/Clippy/release/
+  Windows GNU check/diff passati. SIGINT processo reale Linux: 130 e report
+  precedenti preservati; Windows segnale console reale non eseguito, test
+  callback e token precancellato portabili inclusi per CI nativa.
+- Nessuna API core, fonte o baseline modificata; semantiche EOF/audit/late
+  cancellation invariate. Rinvii P11/P13/PERSIST e T-P2-03/M1 invariati.
+- Git work/p1-foundations, ultimo commit 5f3915d; task da pubblicare per CI.
+- Next T-P8-06 dopo gate; nessun blocco contrattuale nuovo.
+
 ## Chiusura T-P8-04 — 2026-10-22
 
 T-P8-04 **DONE**: 318 test locali e CI 39744299145 completed/success su
@@ -401,6 +421,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P8-02 | DONE | 2026-10-22 | HumanReadableSink, 304 test locali, CI 39741868369 Linux/Windows completed/success su 81cee36; [report](docs/verification/T-P8-02.md) |
 | T-P8-03 | DONE | 2026-10-22 | validate reale LocalOnly, 313 test locali, CI 39743161012 Linux/Windows verde su 10932f9; [report](docs/verification/T-P8-03.md) |
 | T-P8-04 | DONE | 2026-10-22 | schema lint, 318 test locali, CI 39744299145 Linux/Windows verde su 4f7115f; [report](docs/verification/T-P8-04.md) |
+| T-P8-05 | DONE_UNVERIFIED | 2026-10-22 | Ctrl+C cooperativo, 321 test locali, CI pendente; [report](docs/verification/T-P8-05.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

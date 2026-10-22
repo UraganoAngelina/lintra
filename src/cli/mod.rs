@@ -2,6 +2,7 @@
 mod args;
 mod exit_code;
 mod paths;
+mod signal;
 
 mod command;
 

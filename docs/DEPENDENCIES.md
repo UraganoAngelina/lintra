@@ -47,3 +47,30 @@ clap_lex 1.1.1 (MIT OR Apache-2.0, MSRV 1.85), anstyle 1.0.14
 (MIT OR Apache-2.0, MSRV 1.66). Metadati verificati dai Cargo.toml scaricati.
 Cargo tree --locked su Linux GNU e Windows MSVC: stesso ramo clap →
 clap_builder → anstyle/clap_lex, nessuna nuova dipendenza nativa o build script.
+
+## T-P8-05 — ctrlc, registrazione prima dell'aggiunta
+
+ctrlc =3.5.2, MIT OR Apache-2.0, MSRV 1.69.0, nessuna feature termination.
+Scopo: handler Ctrl+C del solo binario, che imposta CancellationToken;
+nessuna dipendenza del codice engine da segnali o runtime GUI/async.
+Fonte primaria verificata: [manifest ctrlc 3.5.2](https://docs.rs/crate/ctrlc/3.5.2/source/Cargo.toml),
+[API](https://docs.rs/ctrlc/3.5.2/ctrlc/). Registrazione DEC-15 prima di Cargo.toml.
+Implementazione Rust senza compilazione C/C++: usa API OS attraverso nix
+(signal, default-features=false) su Unix e windows-sys su Windows; queste
+chiamate di sistema sono quelle necessarie all'handler prescritto da DET §119.
+Nessuna libreria esterna da installare, OpenSSL, GUI o framework aggiunti.
+Su Apple il crate dichiara dispatch2, non attivo sui due target supportati.
+Licenze/transitive effettive e tree saranno verificati dopo il download.
+Il crate avvia un thread per consegnare le notifiche: è parte dell'eseguibile
+previsto dal contratto Ctrl+C, non un processo agente in background.
+
+Verifiche effettive T-P8-05: tree Linux ctrlc → nix 0.31.3 → bitflags 2.13.2,
+cfg-if 1.0.5, libc 0.2.191; build cfg_aliases 0.2.2. Tree Windows MSVC ctrlc →
+windows-sys 0.61.2 → windows-link 0.2.1. Manifest locali: nix MIT/MSRV 1.69,
+libc MIT OR Apache-2.0/MSRV 1.65, bitflags MIT OR Apache-2.0/MSRV 1.56,
+cfg_aliases MIT (nessun MSRV dichiarato), windows-sys e windows-link
+MIT OR Apache-2.0/MSRV 1.71. Tutti compilati con il pin del progetto nel check
+Linux/Windows GNU; gate Windows MSVC da CI. I build script nix/libc sono Rust,
+nessun cc/cmake/OpenSSL nell'albero Linux né dipendenza Apple attiva sui target
+supportati; i pacchetti Apple nel lock non significano dipendenza runtime Linux.
+Download iniziali bloccati da DNS sandbox, ripetuti con accesso esterno riuscito.

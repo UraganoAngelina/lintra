@@ -12,8 +12,9 @@ Il consuntivo verificato è in [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.
 La CLI esegue `validate` nel perimetro Trace/LocalOnly: produce errori JSONL,
 summary JSON e riepilogo testuale, mantenendo distinti gli errori tecnici dalle
 violazioni locali. `--version` mostra versione e commit di build. Full resta futuro.
-`schema lint` verifica gli schemi con il compiler corrente; Ctrl+C sarà
-introdotto nella task dedicata.
+`schema lint` verifica gli schemi con il compiler corrente. Ctrl+C richiede
+la cancellazione cooperativa e restituisce 130, conservando i report definitivi
+precedenti e rimuovendo le parti create dal run interrotto.
 
 ## Sviluppo locale
 
@@ -155,3 +156,10 @@ schema compilabile, 2 issue del compiler, 1 errore tecnico (inclusi caricamento,
 JSON malformato/duplicato, identità diversa o sintassi CLI).
 Le diagnostiche schema sono oggetti JSON su stdout, una per riga nell'ordine
 del compiler, seguite dall'esito; gli errori tecnici vanno su stderr.
+
+Ctrl+C viene intercettato soltanto durante `validate`, prima di elaborare input
+e report. L'handler imposta il token: il servizio si ferma ai propri checkpoint
+e il riepilogo stdout indica CANCELLED e incompletezza. Il JSONL/summary del run
+annullato non sostituisce i definitivi. Un guasto tecnico durante la finalizzazione
+resta exit 1. Dopo il checkpoint RunCompleted un segnale non riscrive l'esito già
+fissato dal servizio. L'handler Ctrl+C non interrompe `schema lint`.
