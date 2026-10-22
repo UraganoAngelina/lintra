@@ -11,6 +11,7 @@ use crate::{
         datatype::{DatatypeError, DatatypeValidationResult, validate_datatype},
         domain::validate_allowed_values,
         presence::{PresenceValidationResult, validate_presence},
+        range::validate_numeric_range,
     },
 };
 use std::{error::Error, fmt};
@@ -152,6 +153,11 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
                         ValueTarget::Logical => logical,
                     };
                     if let Err(violation) = validate_allowed_values(values, value) {
+                        return self.emit(field, raw, line_number, identity, violation);
+                    }
+                }
+                CompiledConstraint::Range { min, max } => {
+                    if let Err(violation) = validate_numeric_range(min, max, logical) {
                         return self.emit(field, raw, line_number, identity, violation);
                     }
                 }

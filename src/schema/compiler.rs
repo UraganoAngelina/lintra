@@ -203,7 +203,7 @@ impl Checks<'_> {
                     *length
                 }
             };
-            self.allowed_values(field, length, trace);
+            self.constraints(field, length, trace);
             let values = match &field.missing_value {
                 RawMissing::Exact { raw } => vec![raw],
                 RawMissing::AnyOf { raw_values } => {
@@ -235,11 +235,11 @@ impl Checks<'_> {
             }
         }
     }
-    /// Expand only the newly delivered byte-domain subset. Unsupported nodes
+    /// Check only the delivered byte-domain and inclusive integer-range subset. Unsupported nodes
     /// remain blocking issues, even when another constraint is supported.
     /// Literal checks use the explicit UTF-8 binding currently accepted by the
     /// compiler; there is no implicit encoding selection for other profiles.
-    fn allowed_values(&mut self, field: &RawFieldSpec, width: u32, trace: Option<&str>) {
+    fn constraints(&mut self, field: &RawFieldSpec, width: u32, trace: Option<&str>) {
         let id = Some(field.id.as_str());
         let alignment = match &field.physical {
             RawPhysical::Numeric { alignment, .. }
@@ -247,6 +247,28 @@ impl Checks<'_> {
             RawPhysical::Date { .. } => return, // Already a blocking unsupported field.
         };
         for constraint in &field.constraints {
+            if let RawConstraint::NumericRange { min, max } = constraint {
+                if !matches!(field.physical, RawPhysical::Numeric { .. }) {
+                    self.error(
+                        Code::InvalidTypeParameters,
+                        trace,
+                        id,
+                        "numeric_range requires a numeric field",
+                    );
+                }
+                let min = min.0.to_string().parse::<IntegerLiteral>();
+                let max = max.0.to_string().parse::<IntegerLiteral>();
+                match (min, max) {
+                    (Ok(min), Ok(max)) if min <= max => (),
+                    _ => self.error(
+                        Code::InvalidSchemaValue,
+                        trace,
+                        id,
+                        "numeric_range requires integer min <= max",
+                    ),
+                }
+                continue;
+            }
             let RawConstraint::AllowedValues { values, target } = constraint else {
                 self.unsupported(true, trace, id, "constraint kind");
                 continue;
@@ -607,6 +629,18 @@ fn compile_field(raw: &RawFieldSpec) -> Result<CompiledFieldSpec, Code> {
                         },
                     })
                 }
+                RawConstraint::NumericRange { min, max } => Ok(CompiledConstraint::Range {
+                    min: min
+                        .0
+                        .to_string()
+                        .parse()
+                        .map_err(|_| Code::InvalidSchemaValue)?,
+                    max: max
+                        .0
+                        .to_string()
+                        .parse()
+                        .map_err(|_| Code::InvalidSchemaValue)?,
+                }),
                 _ => Err(Code::UnsupportedConstruct),
             })
             .collect::<Result<Vec<_>, _>>()?,

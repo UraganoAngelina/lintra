@@ -112,7 +112,7 @@ fn unsupported_construct_is_not_silently_skipped_by_lint() {
     let file = Fixture::new();
     file.mutate(|raw| {
         raw["traces"][0]["fields"][0]["constraints"] =
-            serde_json::json!([{"kind":"numeric_range","min":0,"max":5}]);
+            serde_json::json!([{"kind":"regex","pattern":"^[0-9]+$","match":"required","target":"logical"}]);
     });
     let out = file.run();
     assert_eq!(out.status.code(), Some(2), "{:?}", out.stderr);

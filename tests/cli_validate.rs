@@ -447,3 +447,25 @@ fn copied_executable_resolves_adjacent_bundle_but_never_falls_back_from_selected
     assert!(selected.stdout.is_empty());
     file.assert_old();
 }
+
+/// A compiler-supported range must also pass the record capability preflight
+/// and reach the normative pipeline when invoked through the executable.
+#[test]
+fn numeric_range_runs_through_service_and_returns_normative_invalidity() {
+    let file = Fixture::new(b"002A  \n");
+    let path = file.root.join("schemas/SYNTHETIC/v1/flow.json");
+    let mut schema: serde_json::Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    schema["traces"][0]["fields"][0]["constraints"] =
+        serde_json::json!([{"kind":"numeric_range","min":1,"max":1}]);
+    fs::write(path, serde_json::to_vec(&schema).unwrap()).unwrap();
+    let out = file.run();
+    assert_eq!(out.status.code(), Some(2), "{}", text(&out.stderr));
+    let bytes = fs::read(file.root.join("errors.jsonl")).unwrap();
+    let errors: Vec<serde_json::Value> = text(&bytes)
+        .lines()
+        .map(|line| serde_json::from_str(line).unwrap())
+        .collect();
+    assert_eq!(errors.len(), 1);
+    assert_eq!(errors[0]["code"], "E_OUT_OF_RANGE");
+    file.assert_no_parts();
+}

@@ -5,3 +5,5 @@ pub use violation::FieldViolation;
 pub(crate) mod alignment;
 pub(crate) mod datatype;
 pub(crate) mod domain;
+
+pub(crate) mod range;

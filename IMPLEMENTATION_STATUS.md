@@ -3,6 +3,26 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P9-01 / 2026-10-22
+
+T-P9-01 **DONE_UNVERIFIED**, range intero inclusivo esatto con payload compiled
+esistente, compiler/type check, pipeline e preflight record integrati. 333 test
+locali passati, tutti i gate locali verdi. CI nativa da acquisire.
+
+HANDOFF — 2026-10-22 — T-P9-01 gate locali
+- Prerequisito 6-06 verificato; P8/M3 locale chiusi su CI 39747270986.
+- File: src/validators/{mod,range}.rs, src/schema/compiler.rs,
+  src/schema/compiled/tests.rs, src/engine/{field_pipeline,record_validator}.rs,
+  tests/{numeric_range,allowed_values,cli_validate,cli_schema_lint}.rs,
+  dossier 9-01 e registro. Nessun crate/API modello/formato/baseline nuovo.
+- Un test unitario, sei integration e uno processo nuovi; 333 globali passati,
+  log /tmp/lintra-t-p9-01-test.log. fmt/check/Clippy/test/release/Windows GNU
+  check/diff passati. Vecchie fixture unsupported ora usano nodi ancora assenti.
+- Range solo dopo datatype; niente float o bound di macchina, input raw immutato.
+- Git work/p1-foundations, ultimo commit 0fc698a; task da pubblicare per CI.
+- Next T-P9-02 dopo gate. Decimal 9-03 resta rinviato dal contratto G0,
+  non si amplia formato 1 senza ratifica; altri rinvii core invariati.
+
 ## Chiusura P8 / M3 locale — 2026-10-22
 
 T-P8-06 **DONE**, CI 39747270986 completed/success su
@@ -470,6 +490,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P8-04 | DONE | 2026-10-22 | schema lint, 318 test locali, CI 39744299145 Linux/Windows verde su 4f7115f; [report](docs/verification/T-P8-04.md) |
 | T-P8-05 | DONE | 2026-10-22 | Ctrl+C cooperativo, 321 test locali, CI 39746072212 Linux/Windows verde su 6417c40; [report](docs/verification/T-P8-05.md) |
 | T-P8-06 | DONE | 2026-10-22 | 325 locali, CI 39747270986 Linux/Windows verde su 90528c4, test console Windows passato; [report](docs/verification/T-P8-06.md) |
+| T-P9-01 | DONE_UNVERIFIED | 2026-10-22 | range inclusivo esatto, 333 test locali, CI pendente; [report](docs/verification/T-P9-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

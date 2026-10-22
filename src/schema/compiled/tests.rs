@@ -67,10 +67,8 @@ fn pipeline_unknown_and_unsupported_plan_boundaries_are_explicit() {
         Err(Failure::Datatype(crate::DatatypeError::UnsupportedType(_)))
     ));
     spec.field_type = FieldType::Alphanumeric;
-    spec.constraints.push(CompiledConstraint::Range {
-        min: "1".parse().unwrap(),
-        max: "2".parse().unwrap(),
-    });
+    spec.constraints
+        .push(CompiledConstraint::LogicalLength { equals: 3 });
     assert!(
         matches!(run_private_pipeline_fixture(&spec), Err(Failure::UnsupportedConstraint { field_id, constraint_index: 0 }) if field_id.0 == "F")
     );
@@ -502,10 +500,9 @@ fn local_record_rejects_every_unimplemented_local_plan_before_processing() {
                 .presence_policy
                 .forbidden_if
                 .push(CompiledExpr::Const(false)),
-            Feature::Constraint => trace.fields[0].constraints.push(CompiledConstraint::Range {
-                min: "0".parse().unwrap(),
-                max: "1".parse().unwrap(),
-            }),
+            Feature::Constraint => trace.fields[0]
+                .constraints
+                .push(CompiledConstraint::LogicalLength { equals: 3 }),
         }
         assert!(
             matches!(run_private_record(&schema,b"     "),Err(Failure::UnsupportedLocalPlan{feature:found,..}) if found==feature)

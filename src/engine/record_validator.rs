@@ -246,11 +246,12 @@ fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidatio
         let policy = field.presence_policy();
         let feature = if !policy.required_if.is_empty() || !policy.forbidden_if.is_empty() {
             Some(UnsupportedLocalFeature::ConditionalPresence)
-        } else if field
-            .constraints()
-            .iter()
-            .any(|constraint| !matches!(constraint, CompiledConstraint::AllowedValues { .. }))
-        {
+        } else if field.constraints().iter().any(|constraint| {
+            !matches!(
+                constraint,
+                CompiledConstraint::AllowedValues { .. } | CompiledConstraint::Range { .. }
+            )
+        }) {
             Some(UnsupportedLocalFeature::Constraint)
         } else {
             None

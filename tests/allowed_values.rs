@@ -183,7 +183,7 @@ fn logical_literals_are_canonical_without_implicit_rewriting() {
 }
 
 /// Supported domains must not accidentally open other AST nodes or erase them.
-/// Adding a range to an otherwise valid schema keeps a blocking typed issue.
+/// Adding logical_length to an otherwise valid schema keeps a blocking typed issue.
 #[test]
 fn unsupported_constraints_are_still_explicitly_rejected() {
     let mut raw = raw(json!({"kind":"exact"}), "raw", &["AB  "]);
@@ -191,7 +191,7 @@ fn unsupported_constraints_are_still_explicitly_rejected() {
     value["traces"][0]["fields"][0]["constraints"]
         .as_array_mut()
         .unwrap()
-        .push(json!({"kind":"numeric_range","min":1,"max":9}));
+        .push(json!({"kind":"logical_length","equals":4}));
     raw = serde_json::from_value(value).unwrap();
     raw.encoding.resolved = Some(RawResolvedEncoding::Utf8);
     assert!(
