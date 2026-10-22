@@ -1,6 +1,6 @@
 # T-P10-01 — completamento del modello derivati ratificato
 
-2026-10-22, gate locali passati, CI nativa pendente.
+2026-10-22, DONE, gate locali e workflow CI finale success.
 Ripresa secondo [rettifica P10](P10-derived-recovery.md), non nuova decisione.
 Autorità: T-P0-07 completo 72f9f5e, CNF-LINTRA-DSL-01, authoring §valori derivati
 ed adeguamenti P10, lowering compiled_contracts; prompt 10-01/DET §17–18.
@@ -86,3 +86,11 @@ un altro schema ora incontrava ref/nomi derived assenti prima del ramo futuro.
 Sostituita quella sola fixture con RecordExists esplicito ancora non eseguibile:
 verifica UnsupportedConstruct senza dipendere da ID estranei o da un nodo
 appena riconosciuto. ReferenceData resta un negativo indipendente identico.
+
+CI [39791606233](https://github.com/UraganoAngelina/lintra/actions/runs/39791606233)
+su 24b6204b6d099d6fdfb2979a4ce4a1199cfd4516: workflow completed/success.
+Nella stessa risposta Linux job success e Windows job ancora in_progress;
+conservata la discrepanza, senza inventare completed del singolo job. Il
+workflow verificato contiene soltanto i due job obbligatori senza continue-on-error;
+il gate deriva dall’esito finale success del workflow. Tre chiamate totali,
+intervalli >45s, nessuna quarta lettura. T-P10-01 modello esteso DONE; next10-03.
