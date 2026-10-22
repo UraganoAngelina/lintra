@@ -199,3 +199,19 @@ fn invalid_regex_is_a_contextual_lint_issue() {
                 && issue["field_id"] == "F1")
     );
 }
+
+#[test]
+fn provable_presence_conflict_is_rejected_before_any_input_is_required() {
+    let file = Fixture::new();
+    file.mutate(|raw| {
+        raw["traces"][0]["fields"][0]["presence"]["forbidden_if"] =
+            serde_json::json!([{"const":true}])
+    });
+    let output = file.run();
+    assert_eq!(output.status.code(), Some(2));
+    assert!(
+        documents(&output)
+            .iter()
+            .any(|issue| issue["code"] == "PresenceConflict" && issue["field_id"] == "F1")
+    );
+}

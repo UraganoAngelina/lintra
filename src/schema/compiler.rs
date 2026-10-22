@@ -197,6 +197,11 @@ impl Checks<'_> {
                     self.error(code, trace, id, message);
                 }
             }
+            if let Err((Code::PresenceConflict, message)) =
+                crate::schema::presence::compile_presence(&field.presence, record)
+            {
+                self.error(Code::PresenceConflict, trace, id, message);
+            }
             let length = match &field.physical {
                 RawPhysical::Date { length, .. } | RawPhysical::Decimal { length, .. } => *length,
                 RawPhysical::Numeric {

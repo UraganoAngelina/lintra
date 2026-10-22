@@ -90,3 +90,25 @@ rifiuta profili sconosciuti, senza inferire schema dal contenuto dei record.
 attesi nuovi da una tabella di casi esplicita e dal contratto JSON; usa hashlib
 indipendente e non legge output Rust. Nessuna modalità update usata per definire
 l'oracolo. Il test di ripetizione confronta due esecuzioni indipendenti complete.
+
+## Profilo DSL T-P10-06
+
+`dsl/v1/schema.json` è un nuovo profilo sintetico di cinque byte: DETAIL AN
+width 3 con stripping dichiarato, ORIGIN Numeric Exact width 2. Presence base
+optional; regola REQUIRED-DETAIL con ORIGIN not_in 01/02 e FieldPresent DETAIL,
+regola FORBID-X con guard esplicito IsPresent DETAIL AND Eq X e assertion
+ConditionTrue ORIGIN=01. Il guard esplicito conserva la semantica missing→Unknown
+senza trasformare automaticamente un confronto su dato mancante in false.
+
+valid: 3 record validi. invalid: 4 record, 2 validi/2 invalidi, un
+E_CONDITIONAL_REQUIRED e un E_CROSS_FIELD nell'ordine dichiarato. Il primo ha
+target/actual fisico e context del controller; il secondo è una rule generica
+senza target univoco, con entrambi i valori nel context. Summary e audit EOF
+sono interamente confrontati; skipped_rules zero perché tutti i guard sono
+decidibili in questi scenari. Unknown/abort sono verificati nei test di processo.
+
+L'oracolo separato `docs/verification/generate_dsl_goldens.py` contiene gli esiti
+espliciti, usa hashlib sugli originali e non legge output Rust. Nessun vecchio
+atteso è riscritto. Il runner registra il terzo profilo, ora 10 scenari, e una
+seconda esecuzione indipendente del caso invalid deve riprodurre ogni byte.
+Solo `tests/golden/dsl/**/input.txt` è aggiunto alle eccezioni per testo sintetico.

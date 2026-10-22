@@ -3,6 +3,27 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P10-06 gate locali — 2026-10-22
+
+Suite DSL/golden e conflitti statici consegnati, 413 test/51 suite, 10 scenari.
+fmt/check/Clippy/test/release/Windows GNU check/diff passati, CI nativa pendente.
+[Dossier e spiegazioni](docs/verification/T-P10-06.md).
+
+HANDOFF — T-P10-06 DONE_UNVERIFIED
+- Ogni operatore raw compilato/eseguito, equivalente disposizione fisica dei
+  campi con identici esiti/context/messaggi, coordinate corrette per ogni layout.
+- PresenceConflict soltanto se required+forbidden certamente incondizionati;
+  conflitti dinamici e Unknown restano runtime, nessun solver/regola inventata.
+- Nuovo profilo golden DSL con oracolo indipendente, ripetizione byte esatta;
+  57 file baseline identici, vecchi attesi e fonti invariati.
+- File schema/presence/compiler/linter, dsl suite/conditional/CLI lint/golden,
+  nuovo profilo/input/attesi/oracolo/README/.gitignore, dossier/stato.
+- Git work/p1-foundations, task da pubblicare; gate Linux/Windows necessario.
+- Prerequisiti soddisfatti; next T-P11-01 dopo gate P10, automaticamente.
+- M4/M5 non raggiunte: mancano P11/P12 e release. P13/PERSIST/T-P2-03/M1 aperti.
+
+## Registro storico — T-P10-05 conclusa
+
 ## Frontiera corrente — T-P10-05 DONE / avvio T-P10-06 — 2026-10-22
 
 Regole locali/diagnostica/template consegnate, 407 test/50 suite; fmt/check/
@@ -785,6 +806,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P10-03 | DONE | 2026-10-22 | evaluator, 384 test; CI 39780196256 Linux/Windows verde su a6c7138; [report](docs/verification/T-P10-03.md) |
 | T-P10-04 | DONE | 2026-10-22 | presenza condizionale, 393 test; CI 39782079369 Linux/Windows verde su fdeea9b; [report](docs/verification/T-P10-04.md) |
 | T-P10-05 | DONE | 2026-10-22 | regole locali, 407 test; CI 39785432851 Linux/Windows verde su 9d5b1a3; [report](docs/verification/T-P10-05.md) |
+| T-P10-06 | DONE_UNVERIFIED | 2026-10-22 | suite DSL/golden, 413 test; CI pendente; [report](docs/verification/T-P10-06.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

@@ -80,7 +80,11 @@ fn presence_state_matrix_covers_base_and_every_required_forbidden_truth_combinat
         [Required, Conflict, unknown],
         [unknown, unknown, unknown],
     ];
-    let conditions = [json!({"const":false}), json!({"const":true}), controller()];
+    let conditions = [
+        json!({"const":false}),
+        json!({"is_missing":{"ref":{"field":"F2"}}}),
+        controller(),
+    ];
     for base in ["optional", "required"] {
         for (row, required) in conditions.iter().enumerate() {
             for (column, forbidden) in conditions.iter().enumerate() {

@@ -14,7 +14,7 @@ use support::{
 fn committed_scenarios_match_byte_for_byte() -> HarnessResult<()> {
     let mode = GoldenMode::from_value(std::env::var_os(UPDATE_VARIABLE).as_deref())?;
     let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/golden");
-    let profiles = ["synthetic/v1", "semantic/v1"];
+    let profiles = ["synthetic/v1", "semantic/v1", "dsl/v1"];
     let schemas = profiles
         .iter()
         .map(|profile| {
@@ -50,6 +50,17 @@ fn committed_scenarios_match_byte_for_byte() -> HarnessResult<()> {
 #[test]
 fn semantic_reports_are_identical_across_independent_runs() -> HarnessResult<()> {
     let profile = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/golden/semantic/v1");
+    let (schema, hash) = synthetic::load_schema(&profile.join("schema.json"))?;
+    let first = synthetic::produce(&profile.join("invalid"), &schema, &hash)?;
+    let second = synthetic::produce(&profile.join("invalid"), &schema, &hash)?;
+    assert_eq!(first.errors, second.errors);
+    assert_eq!(first.summary, second.summary);
+    Ok(())
+}
+
+#[test]
+fn dsl_reports_are_identical_across_independent_runs() -> HarnessResult<()> {
+    let profile = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/golden/dsl/v1");
     let (schema, hash) = synthetic::load_schema(&profile.join("schema.json"))?;
     let first = synthetic::produce(&profile.join("invalid"), &schema, &hash)?;
     let second = synthetic::produce(&profile.join("invalid"), &schema, &hash)?;
