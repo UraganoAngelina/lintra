@@ -175,10 +175,7 @@ impl Checks<'_> {
                 "conditional presence",
             );
             let length = match &field.physical {
-                RawPhysical::Date { length, .. } => {
-                    self.unsupported(true, trace, id, "date fields");
-                    *length
-                }
+                RawPhysical::Date { length, .. } => *length,
                 RawPhysical::Numeric {
                     length, alignment, ..
                 }
@@ -235,7 +232,7 @@ impl Checks<'_> {
             }
         }
     }
-    /// Check only the delivered byte-domain and inclusive integer-range subset. Unsupported nodes
+    /// Check the delivered byte-domain, integer-range and calendar subset. Unsupported nodes
     /// remain blocking issues, even when another constraint is supported.
     /// Literal checks use the explicit UTF-8 binding currently accepted by the
     /// compiler; there is no implicit encoding selection for other profiles.
@@ -244,9 +241,28 @@ impl Checks<'_> {
         let alignment = match &field.physical {
             RawPhysical::Numeric { alignment, .. }
             | RawPhysical::Alphanumeric { alignment, .. } => alignment,
-            RawPhysical::Date { .. } => return, // Already a blocking unsupported field.
+            RawPhysical::Date { .. } => &RawAlignment::Exact {},
         };
         for constraint in &field.constraints {
+            if let RawConstraint::Date { calendar_valid, .. } = constraint {
+                if !matches!(field.physical, RawPhysical::Date { .. }) {
+                    self.error(
+                        Code::InvalidTypeParameters,
+                        trace,
+                        id,
+                        "date constraint requires a date field",
+                    );
+                }
+                if !calendar_valid {
+                    self.error(
+                        Code::InvalidSchemaValue,
+                        trace,
+                        id,
+                        "date calendar validation cannot be disabled",
+                    );
+                }
+                continue;
+            }
             if let RawConstraint::NumericRange { min, max } = constraint {
                 if !matches!(field.physical, RawPhysical::Numeric { .. }) {
                     self.error(
@@ -577,14 +593,39 @@ fn compile_field(raw: &RawFieldSpec) -> Result<CompiledFieldSpec, Code> {
             length,
             alignment,
             lexical,
-        } => (*start, *length, FieldType::Numeric, alignment, lexical),
+        } => (
+            *start,
+            *length,
+            FieldType::Numeric,
+            alignment,
+            Some(lexical),
+        ),
         RawPhysical::Alphanumeric {
             start,
             length,
             alignment,
             lexical,
-        } => (*start, *length, FieldType::Alphanumeric, alignment, lexical),
-        RawPhysical::Date { .. } => return Err(Code::UnsupportedConstruct),
+        } => (
+            *start,
+            *length,
+            FieldType::Alphanumeric,
+            alignment,
+            Some(lexical),
+        ),
+        RawPhysical::Date {
+            start,
+            length,
+            format,
+            ..
+        } => (
+            *start,
+            *length,
+            FieldType::Date(match format {
+                RawPhysicalDateFormat::Ddmmyyyy => DateFormat::DdMmYyyy,
+            }),
+            &RawAlignment::Exact {},
+            None,
+        ),
     };
     let missing_value_policy = match &raw.missing_value {
         RawMissing::Spaces {} => MissingValuePolicy::Spaces,
@@ -609,7 +650,7 @@ fn compile_field(raw: &RawFieldSpec) -> Result<CompiledFieldSpec, Code> {
             forbidden_if: vec![],
         },
         alignment: alignment(raw_alignment),
-        lexical: Some(lexical(raw_lexical)),
+        lexical: raw_lexical.map(lexical),
         // Preflight checked shape/encoding/width; lower each literal once,
         // preserving bytes, target and declared order. Keep a typed refusal
         // here as well instead of silently dropping a future unsupported node.
@@ -640,6 +681,11 @@ fn compile_field(raw: &RawFieldSpec) -> Result<CompiledFieldSpec, Code> {
                         .to_string()
                         .parse()
                         .map_err(|_| Code::InvalidSchemaValue)?,
+                }),
+                RawConstraint::Date { format, .. } => Ok(CompiledConstraint::Date {
+                    format: match format {
+                        RawPhysicalDateFormat::Ddmmyyyy => DateFormat::DdMmYyyy,
+                    },
                 }),
                 _ => Err(Code::UnsupportedConstruct),
             })

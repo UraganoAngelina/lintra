@@ -290,7 +290,9 @@ fn every_excluded_ast_collection_is_a_blocking_boundary() {
     assert!(has(&error(value), Code::UnsupportedConstruct));
     let mut value = sample();
     value["traces"][0]["fields"][0]["physical"] = json!({"type":"date","start":1,"length":8,"format":"DDMMYYYY","alignment":{"kind":"exact"}});
-    assert!(has(&error(value), Code::UnsupportedConstruct));
+    // Date is implemented now; expanding only one field still breaks layout.
+    let result = error(value);
+    assert!(has(&result, Code::Overlap) || has(&result, Code::RecordLengthMismatch));
     let mut value = sample();
     value["traces"][0]["fields"][0]["presence"]["forbidden_if"] = json!([{"const":true}]);
     assert!(has(&error(value), Code::UnsupportedConstruct));

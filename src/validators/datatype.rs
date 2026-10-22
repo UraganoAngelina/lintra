@@ -1,4 +1,4 @@
-//! Lexical validation of an already extracted logical value, not a domain test.
+//! Base datatype validation of an extracted logical value, not a normative domain test.
 use super::FieldViolation;
 use crate::{
     domain::ValidationCode,
@@ -15,8 +15,8 @@ pub enum DatatypeValidationResult {
     Invalid(FieldViolation),
 }
 
-/// Only unsupported/inconsistent plans are technical failures. Date calendar
-/// handling belongs to its later task; Alphabetic is absent from format 1.
+/// Only unsupported/inconsistent plans are technical failures. Alphabetic and
+/// Decimal remain absent from format 1.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum DatatypeError {
     UnsupportedType(FieldType),
@@ -38,7 +38,7 @@ impl fmt::Display for DatatypeError {
 // Metadata inconsistency is the cause itself, with no nested I/O exception.
 impl Error for DatatypeError {}
 
-/// Validate Numeric/Alphanumeric against the explicit encoding and field plan.
+/// Validate Numeric/Alphanumeric/Date against the explicit encoding and field plan.
 /// DET §147 refinement of §45: lexical class and encoding are indispensable
 /// metadata, and outer Err contains only technical errors, never violations.
 /// Call only after presence and logical extraction; this function never trims
@@ -49,10 +49,17 @@ pub fn validate_datatype(
     encoding: &EncodingSpec,
 ) -> Result<DatatypeValidationResult, DatatypeError> {
     let kind = field.field_type();
-    // Reject unsupported plans before looking at data: a valid-looking date
-    // cannot make an unimplemented calendar validator appear implemented.
-    if matches!(kind, FieldType::Date(_)) {
-        return Err(DatatypeError::UnsupportedType(kind));
+    if let FieldType::Date(format) = kind {
+        // Dates have an explicit ASCII representation instead of an authoring
+        // lexical class. Reject unknown encoding plans without assuming a profile;
+        // the date validator itself then checks every byte and calendar component.
+        if is_valid_encoded_text(logical.as_bytes(), encoding).is_none() {
+            return Err(DatatypeError::UnsupportedEncoding(encoding.clone()));
+        }
+        return Ok(match super::date::validate_date(format, logical) {
+            Ok(()) => DatatypeValidationResult::Valid,
+            Err(violation) => DatatypeValidationResult::Invalid(violation),
+        });
     }
     let lexical = field
         .lexical()

@@ -469,3 +469,33 @@ fn numeric_range_runs_through_service_and_returns_normative_invalidity() {
     assert_eq!(errors[0]["code"], "E_OUT_OF_RANGE");
     file.assert_no_parts();
 }
+
+#[test]
+fn calendar_dates_reach_real_record_validation_with_valid_and_invalid_outcomes() {
+    for (date, expected) in [(b"29022000A  \n", 0), (b"29021900A  \n", 2)] {
+        let file = Fixture::new(date);
+        let path = file.root.join("schemas/SYNTHETIC/v1/flow.json");
+        let mut schema: serde_json::Value =
+            serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+        schema["traces"][0]["record_length"] = 11.into();
+        schema["traces"][0]["fields"][0]["physical"] = serde_json::json!({"type":"date","start":1,"length":8,"format":"DDMMYYYY","alignment":{"kind":"exact"}});
+        schema["traces"][0]["fields"][0]["constraints"] =
+            serde_json::json!([{"kind":"date","format":"DDMMYYYY","calendar_valid":true}]);
+        schema["traces"][0]["fields"][1]["physical"]["start"] = 9.into();
+        fs::write(path, serde_json::to_vec(&schema).unwrap()).unwrap();
+        let out = file.run();
+        assert_eq!(out.status.code(), Some(expected), "{}", text(&out.stderr));
+        let bytes = fs::read(file.root.join("errors.jsonl")).unwrap();
+        if expected == 0 {
+            assert!(bytes.is_empty());
+        } else {
+            let errors: Vec<serde_json::Value> = text(&bytes)
+                .lines()
+                .map(|line| serde_json::from_str(line).unwrap())
+                .collect();
+            assert_eq!(errors.len(), 1);
+            assert_eq!(errors[0]["code"], "E_INVALID_DATE");
+        }
+        file.assert_no_parts();
+    }
+}

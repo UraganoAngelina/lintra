@@ -7,3 +7,5 @@ pub(crate) mod datatype;
 pub(crate) mod domain;
 
 pub(crate) mod range;
+
+pub(crate) mod date;

@@ -9,6 +9,7 @@ use crate::{
         FieldViolation,
         alignment::{LogicalValueError, logical_value},
         datatype::{DatatypeError, DatatypeValidationResult, validate_datatype},
+        date::validate_date,
         domain::validate_allowed_values,
         presence::{PresenceValidationResult, validate_presence},
         range::validate_numeric_range,
@@ -153,6 +154,11 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
                         ValueTarget::Logical => logical,
                     };
                     if let Err(violation) = validate_allowed_values(values, value) {
+                        return self.emit(field, raw, line_number, identity, violation);
+                    }
+                }
+                CompiledConstraint::Date { format } => {
+                    if let Err(violation) = validate_date(*format, logical) {
                         return self.emit(field, raw, line_number, identity, violation);
                     }
                 }

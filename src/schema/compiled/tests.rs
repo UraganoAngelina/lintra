@@ -62,10 +62,10 @@ fn pipeline_unknown_and_unsupported_plan_boundaries_are_explicit() {
     ));
     spec.alignment = AlignmentRule::Exact;
     spec.field_type = FieldType::Date(DateFormat::DdMmYyyy);
-    assert!(matches!(
-        run_private_pipeline_fixture(&spec),
-        Err(Failure::Datatype(crate::DatatypeError::UnsupportedType(_)))
-    ));
+    assert_eq!(
+        run_private_pipeline_fixture(&spec).unwrap(),
+        Outcome::Invalid
+    );
     spec.field_type = FieldType::Alphanumeric;
     spec.constraints
         .push(CompiledConstraint::LogicalLength { equals: 3 });
@@ -74,11 +74,10 @@ fn pipeline_unknown_and_unsupported_plan_boundaries_are_explicit() {
     );
 }
 
-/// Private models cover unsupported plans without opening compiler constructors
-/// or pretending the current compiler accepts Date. No record violation may
-/// hide a missing lexical plan or an unimplemented datatype.
+/// Numeric/AN require a lexical plan; Date has its own explicit ASCII format.
+/// Unknown encoding still fails technically before interpreting record bytes.
 #[test]
-fn datatype_plan_boundaries_are_technical_errors() {
+fn datatype_plan_invariants_and_date_representation_are_explicit() {
     use crate::{DatatypeError, FieldSlice, validate_datatype};
     let mut spec = field("F", 0, 3);
     spec.lexical = None;
@@ -89,10 +88,16 @@ fn datatype_plan_boundaries_are_technical_errors() {
     spec.field_type = FieldType::Date(DateFormat::DdMmYyyy);
     assert_eq!(
         validate_datatype(&spec, FieldSlice { raw: b"01012026" }, &EncodingSpec::Utf8),
-        Err(DatatypeError::UnsupportedType(FieldType::Date(
-            DateFormat::DdMmYyyy
-        )))
+        Ok(crate::DatatypeValidationResult::Valid)
     );
+    assert!(matches!(
+        validate_datatype(
+            &spec,
+            FieldSlice { raw: b"01012026" },
+            &EncodingSpec::Other("unsupported".into())
+        ),
+        Err(DatatypeError::UnsupportedEncoding(_))
+    ));
 }
 
 /// Private fixture access can construct future conditional plans without

@@ -3,6 +3,25 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P9-02 / 2026-10-22
+
+T-P9-02 **DONE_UNVERIFIED**: Date DDMMYYYY/0001–9999 calendariale con formato
+compiled esistente, compiler/pipeline/record/CLI integrati. 340 test locali e
+check/fmt/Clippy/release/Windows GNU check/diff passati; CI nativa pendente.
+
+HANDOFF — 2026-10-22 — T-P9-02 gate locali
+- Prerequisiti 6-06/G0 verificati, 9-01 CI 39748653454 Linux/Windows verde.
+- File: src/validators/{date,datatype,mod}.rs, src/schema/compiler.rs,
+  src/schema/compiled/tests.rs, src/engine/{field_pipeline,record_validator}.rs,
+  tests/{calendar_date,cli_validate,schema_compiler}.rs, dossier 9-02 e registro.
+- Sette nuovi test, 340 globali passati; log /tmp/lintra-t-p9-02-test.log.
+  Gate locali passati, test Windows nativi ancora da CI.
+- Date base calendariale con chrono già presente, nessun crate/API/formato nuovo;
+  una sola causa primaria, presenza prima di calendario/domains. Fonti invariate.
+- Git work/p1-foundations, ultimo commit 885c25d; task da pubblicare per CI.
+- Next T-P9-03 dopo gate: rinvio G0 Decimal da risolvere prima di implementare,
+  senza ampliare silenziosamente enum/raw/grammar. P11/P13/PERSIST/M1 aperti.
+
 ## Chiusura T-P9-01 — 2026-10-22
 
 T-P9-01 **DONE**, CI 39748653454 completed/success su
@@ -503,6 +522,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P8-05 | DONE | 2026-10-22 | Ctrl+C cooperativo, 321 test locali, CI 39746072212 Linux/Windows verde su 6417c40; [report](docs/verification/T-P8-05.md) |
 | T-P8-06 | DONE | 2026-10-22 | 325 locali, CI 39747270986 Linux/Windows verde su 90528c4, test console Windows passato; [report](docs/verification/T-P8-06.md) |
 | T-P9-01 | DONE | 2026-10-22 | range inclusivo esatto, 333 locali, CI 39748653454 Linux/Windows verde su dc4b6ec; [report](docs/verification/T-P9-01.md) |
+| T-P9-02 | DONE_UNVERIFIED | 2026-10-22 | date DDMMYYYY calendariali, 340 test locali, CI pendente; [report](docs/verification/T-P9-02.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

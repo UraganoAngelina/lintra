@@ -249,7 +249,9 @@ fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidatio
         } else if field.constraints().iter().any(|constraint| {
             !matches!(
                 constraint,
-                CompiledConstraint::AllowedValues { .. } | CompiledConstraint::Range { .. }
+                CompiledConstraint::AllowedValues { .. }
+                    | CompiledConstraint::Range { .. }
+                    | CompiledConstraint::Date { .. }
             )
         }) {
             Some(UnsupportedLocalFeature::Constraint)
