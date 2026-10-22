@@ -9,10 +9,10 @@ report JSONL/summary, audit degli input, progress e cancellazione. Full,
 reference data e persistenza completa rimangono consegne future esplicite.
 Il consuntivo verificato è in [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md).
 
-La CLI è attualmente uno scheletro: `--help` e il parsing di `validate` sono
-disponibili; l’esecuzione del comando verrà collegata nella task T-P8-03.
-Una richiesta preparata non esegue validazioni e termina con errore tecnico
-esplicito. Non vengono creati report o dichiarati risultati conformi.
+La CLI esegue `validate` nel perimetro Trace/LocalOnly: produce errori JSONL,
+summary JSON e riepilogo testuale, mantenendo distinti gli errori tecnici dalle
+violazioni locali. `--version` mostra versione e commit di build. Full,
+`schema lint` e Ctrl+C saranno introdotti nelle rispettive task.
 
 ## Sviluppo locale
 
@@ -89,11 +89,12 @@ ammessi; i nomi degli export `A.txt`, `B1.txt`, `B2.txt`, `C.txt`, `D.txt`
 restano esclusi ovunque. Questa protezione non sostituisce la revisione
 dei file prima di aggiungerli a Git.
 
-## Contratto CLI iniziale — T-P8-01
+## Contratto CLI — T-P8-03
 
 Exit code: **0** analisi locale valida; **1** errore tecnico o di sintassi;
 **2** analisi completata con violazioni; **130** cancellazione controllata.
-`--help` termina con 0; lo scheletro non produce ancora esiti di validazione.
+`--help` e `--version` terminano con 0. Il risultato valido riguarda soltanto
+i controlli LocalOnly supportati, senza dichiarare conformità globale.
 
 Il parser richiede flow, schema-version, trace, input, errors (alias output),
 summary ed encoding esplicito (`utf8`, unico profilo attualmente supportato).
@@ -111,3 +112,29 @@ un provider reference data; i relativi controlli restano P11.
 DEC-12 approvata: righe vuote conservate come record di zero byte, nessun
 record extra dopo l’ultimo terminatore, BOM rifiutato. `--bom strip` non è
 un’opzione della prima CLI. Sono conservati gli spazi del record.
+
+Esempio con bundle esterno e percorsi espliciti:
+
+```sh
+lintra validate --flow SYNTHETIC --schema-version v1 --trace T1 \
+  --input "input data.txt" --encoding utf8 \
+  --schema-dir ./bundle/schemas --reference-data-dir ./bundle/reference-data \
+  --output ./errors.jsonl --summary ./summary.json
+```
+
+Lo schema selezionato si trova in `schemas/<flow>/<version>/flow.json`.
+Preferire `--output` (alias `--errors`) per il JSONL: il reindirizzamento `>`
+di PowerShell 5.1 può produrre UTF-16. JSONL e summary sono UTF-8 senza BOM;
+il riepilogo testuale va su stdout, gli eventi applicativi strutturati su stderr.
+I report passano da file `.part` esclusivi e sono pubblicati solo dopo un run
+completo: gli esiti invalidi sono completi e vengono pubblicati; guasti tecnici
+prima della pubblicazione eliminano i file provvisori creati dalla CLI.
+File `.part` preesistenti restano intatti e causano errore.
+L'atomicità è per singolo file: un errore di rename del secondo report può
+lasciare il primo già pubblicato; l'exit code resta 1. I percorsi di output
+non possono coincidere fra loro, con input, bundle o file provvisori del run.
+
+Il commit è acquisito al build tramite Git, senza dipendenza Git a runtime;
+`LINTRA_BUILD_COMMIT` può fornire un hash completo per build da archivio.
+Senza provenienza disponibile viene dichiarato `commit unavailable`.
+Le build locali restano strumenti di sviluppo, non artefatti di release.

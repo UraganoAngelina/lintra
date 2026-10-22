@@ -3,6 +3,31 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P8-03 / 2026-10-22
+
+T-P8-03 **DONE_UNVERIFIED**: comando validate LocalOnly reale, report atomici
+per file, riepilogo human/stdout, eventi applicativi stderr, --version con
+provenienza build. Nessun nuovo contratto core o dipendenza. Nove test processo
+nuovi Linux/Unix, sette portabili Windows; **313 test locali passati**.
+fmt/check/Clippy -D warnings/test/release/Windows GNU check/diff tutti exit 0.
+CI nativa da acquisire prima di avviare T-P8-04. Spiegazioni dettagliate:
+[report T-P8-03](docs/verification/T-P8-03.md).
+
+HANDOFF — 2026-10-22 — T-P8-03 gate locali
+- Prerequisiti 8-01/8-02/5-06 verificati; 8-02 CI 39741868369 Linux/Windows verde.
+- File: build.rs, src/cli/{args,mod,command}.rs, tests/cli_validate.rs,
+  README.md, dossier T-P8-03 e questo registro.
+- Test: 313 passati, nove nuovi processo; log /tmp/lintra-t-p8-03-test.log.
+  Tutti i gate locali passati, Windows GNU solo compilazione; CI nativa pendente.
+- Errori tecnici abortiscono output provvisori; collisioni con input/bundle o
+  output rifiutate. Atomicità per file invariata; secondo rename può fallire
+  dopo prima pubblicazione, con exit 1. Nessuna transazione di coppia promessa.
+- Contratti pubblici: invariati. Nessuna nuova dipendenza o baseline alterata.
+- Rinvii P11/P13/PERSIST/T-P2-03/M1, Ctrl+C 8-05, schema lint 8-04 invariati.
+- Git: work/p1-foundations, ultimo commit b4819c2; file di questa task da
+  committare/pubblicare per CI. Nessun blocco contrattuale.
+- Next T-P8-04 dopo conferma QG-2; avanzamento già autorizzato.
+
 ## Frontiera corrente — 2026-10-22
 
 T-P8-02 **DONE**: 304 test locali e [CI 39741868369](https://github.com/UraganoAngelina/lintra/actions/runs/39741868369)
@@ -333,6 +358,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
 | T-P8-01 | DONE | 2026-10-21 | 297 test, CI 39628560176 Linux/Windows success 98d952b; [report](docs/verification/T-P8-01.md) |
 | T-P8-02 | DONE | 2026-10-22 | HumanReadableSink, 304 test locali, CI 39741868369 Linux/Windows completed/success su 81cee36; [report](docs/verification/T-P8-02.md) |
+| T-P8-03 | DONE_UNVERIFIED | 2026-10-22 | validate reale LocalOnly, 313 test locali, CI pendente; [report](docs/verification/T-P8-03.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

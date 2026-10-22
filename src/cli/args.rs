@@ -13,8 +13,7 @@ pub struct ValidateArgs {
     pub errors: PathBuf,
     pub summary: PathBuf,
 }
-/// Define only the current Trace/LocalOnly command; later tasks add execution
-/// and schema commands. Required encoding prevents locale-based assumptions.
+/// Define the current Trace/LocalOnly command; later tasks add schema commands. Required encoding prevents locale-based assumptions.
 pub fn command() -> Command {
     let text = |name: &'static str| {
         Arg::new(name)
@@ -29,19 +28,34 @@ pub fn command() -> Command {
     };
     Command::new("lintra")
         .about("Validazione fixed-width: perimetro LocalOnly")
+        .version(concat!(
+            env!("CARGO_PKG_VERSION"),
+            " (commit ",
+            env!("LINTRA_BUILD_COMMIT"),
+            ")"
+        ))
         .subcommand_required(true)
         .arg_required_else_help(true)
-        .subcommand(Command::new("validate")
-            .about("Prepara una validazione Trace/LocalOnly; esecuzione disponibile nella task CLI dedicata")
-            .arg(text("flow"))
-            .arg(text("schema-version"))
-            .arg(text("trace"))
-            .arg(path("input").required(true))
-            .arg(path("errors").visible_alias("output").required(true))
-            .arg(path("summary").required(true))
-            .arg(Arg::new("encoding").long("encoding").required(true).value_parser(["utf8"]))
-            .arg(path("schema-dir"))
-            .arg(path("reference-data-dir")))
+        .subcommand(
+            Command::new("validate")
+                .about(
+                    "Valida un tracciato nel perimetro LocalOnly e pubblica report JSONL/summary",
+                )
+                .arg(text("flow"))
+                .arg(text("schema-version"))
+                .arg(text("trace"))
+                .arg(path("input").required(true))
+                .arg(path("errors").visible_alias("output").required(true))
+                .arg(path("summary").required(true))
+                .arg(
+                    Arg::new("encoding")
+                        .long("encoding")
+                        .required(true)
+                        .value_parser(["utf8"]),
+                )
+                .arg(path("schema-dir"))
+                .arg(path("reference-data-dir")),
+        )
 }
 /// Clap's required, typed parsers guarantee the values exist on this path.
 /// All file paths stay native PathBuf, including spaces/non-UTF-8 where supported.

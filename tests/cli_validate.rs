@@ -1,0 +1,284 @@
+//! Real binary processes with synthetic data, native paths and isolated bundles.
+use std::{
+    fs,
+    path::PathBuf,
+    process::{Command, Output},
+    sync::atomic::{AtomicU64, Ordering},
+    time::{SystemTime, UNIX_EPOCH},
+};
+static NEXT: AtomicU64 = AtomicU64::new(0);
+struct Fixture {
+    root: PathBuf,
+}
+impl Fixture {
+    fn new(input: &[u8]) -> Self {
+        let root = std::env::temp_dir().join(format!(
+            "lintra validate à {} {} {}",
+            std::process::id(),
+            SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap()
+                .as_nanos(),
+            NEXT.fetch_add(1, Ordering::Relaxed)
+        ));
+        fs::create_dir_all(root.join("schemas/SYNTHETIC/v1")).unwrap();
+        fs::create_dir(root.join("reference-data")).unwrap();
+        fs::create_dir(root.join("unrelated cwd")).unwrap();
+        fs::write(
+            root.join("schemas/SYNTHETIC/v1/flow.json"),
+            include_bytes!("fixtures/application/schema.json"),
+        )
+        .unwrap();
+        fs::write(root.join("input data.txt"), input).unwrap();
+        Self { root }
+    }
+    fn command(&self) -> Command {
+        let mut command = Command::new(env!("CARGO_BIN_EXE_lintra"));
+        command
+            .current_dir(self.root.join("unrelated cwd"))
+            .env_remove("LINTRA_SCHEMA_DIR")
+            .env_remove("LINTRA_REFERENCE_DATA_DIR")
+            .args([
+                "validate",
+                "--flow",
+                "SYNTHETIC",
+                "--schema-version",
+                "v1",
+                "--trace",
+                "T1",
+                "--encoding",
+                "utf8",
+            ])
+            .arg("--input")
+            .arg(self.root.join("input data.txt"))
+            .arg("--schema-dir")
+            .arg(self.root.join("schemas"))
+            .arg("--reference-data-dir")
+            .arg(self.root.join("reference-data"));
+        command
+    }
+    fn run(&self) -> Output {
+        self.with_outputs("errors.jsonl", "summary.json")
+    }
+    fn with_outputs(&self, errors: &str, summary: &str) -> Output {
+        self.command()
+            .arg("--output")
+            .arg(self.root.join(errors))
+            .arg("--summary")
+            .arg(self.root.join(summary))
+            .output()
+            .unwrap()
+    }
+    fn assert_no_parts(&self) {
+        assert!(!self.root.join("errors.jsonl.part").exists());
+        assert!(!self.root.join("summary.json.part").exists());
+    }
+    fn old_reports(&self) {
+        fs::write(self.root.join("errors.jsonl"), b"old errors").unwrap();
+        fs::write(self.root.join("summary.json"), b"old summary").unwrap();
+    }
+    fn assert_old(&self) {
+        assert_eq!(
+            fs::read(self.root.join("errors.jsonl")).unwrap(),
+            b"old errors"
+        );
+        assert_eq!(
+            fs::read(self.root.join("summary.json")).unwrap(),
+            b"old summary"
+        );
+        self.assert_no_parts();
+    }
+}
+impl Drop for Fixture {
+    fn drop(&mut self) {
+        fs::remove_dir_all(&self.root).unwrap();
+    }
+}
+fn text(bytes: &[u8]) -> &str {
+    std::str::from_utf8(bytes).unwrap()
+}
+#[test]
+fn valid_process_publishes_empty_jsonl_and_audited_local_summary() {
+    let file = Fixture::new(b"001A  \r\n");
+    file.old_reports();
+    let out = file.run();
+    assert_eq!(out.status.code(), Some(0), "{}", text(&out.stderr));
+    assert!(text(&out.stdout).starts_with("Result: VALID\nMode: LocalOnly"));
+    assert!(text(&out.stdout).contains("No validation errors found in the selected mode."));
+    assert!(fs::read(file.root.join("errors.jsonl")).unwrap().is_empty());
+    let bytes = fs::read(file.root.join("summary.json")).unwrap();
+    assert!(!bytes.starts_with(&[239, 187, 191]));
+    assert!(!bytes.contains(&b'\r'));
+    let summary: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+    assert_eq!(summary["result"], "VALID");
+    assert_eq!(summary["validation_mode"], "local_only");
+    assert_eq!(summary["records_processed"], 1);
+    assert_eq!(summary["inputs"][0]["bytes_read"], 8);
+    assert_eq!(summary["inputs"][0]["completion"]["kind"], "complete");
+    assert_eq!(summary["inputs"][0]["file_name"], "input data.txt");
+    for line in text(&out.stderr).lines() {
+        let event: serde_json::Value = serde_json::from_str(line).unwrap();
+        assert!(event["event"].is_string());
+        assert!(!line.contains("001A"));
+    }
+    assert!(text(&out.stderr).contains("run_completed"));
+    file.assert_no_parts();
+}
+#[test]
+fn normative_invalidity_returns_two_with_real_streamed_diagnostics() {
+    let file = Fixture::new(b"002A  \n\n");
+    let out = file.run();
+    assert_eq!(out.status.code(), Some(2), "{}", text(&out.stderr));
+    assert!(text(&out.stdout).starts_with("Result: INVALID\n"));
+    let bytes = fs::read(file.root.join("errors.jsonl")).unwrap();
+    let errors: Vec<serde_json::Value> = text(&bytes)
+        .lines()
+        .map(|s| serde_json::from_str(s).unwrap())
+        .collect();
+    assert_eq!(errors.len(), 2);
+    assert_eq!(errors[0]["code"], "E_INVALID_DOMAIN");
+    assert_eq!(errors[1]["code"], "E_RECORD_LENGTH");
+    assert!(!bytes.contains(&b'\r'));
+    let summary: serde_json::Value =
+        serde_json::from_slice(&fs::read(file.root.join("summary.json")).unwrap()).unwrap();
+    assert_eq!(summary["records_processed"], 2);
+    assert_eq!(summary["invalid_records"], 2);
+    file.assert_no_parts();
+}
+#[test]
+fn bom_and_schema_failures_preserve_existing_reports_and_clean_parts() {
+    for schema_error in [false, true] {
+        let file = Fixture::new(b"\xef\xbb\xbf001A  \n");
+        file.old_reports();
+        if schema_error {
+            fs::write(file.root.join("schemas/SYNTHETIC/v1/flow.json"), b"{}").unwrap();
+        }
+        let out = file.run();
+        assert_eq!(out.status.code(), Some(1));
+        assert!(out.stdout.is_empty());
+        assert!(text(&out.stderr).contains("validate failed:"));
+        file.assert_old();
+    }
+}
+#[test]
+fn missing_input_and_missing_selected_schema_are_technical_without_fallback() {
+    for missing_input in [false, true] {
+        let file = Fixture::new(b"001A  \n");
+        file.old_reports();
+        if missing_input {
+            fs::remove_file(file.root.join("input data.txt")).unwrap();
+        } else {
+            fs::remove_file(file.root.join("schemas/SYNTHETIC/v1/flow.json")).unwrap();
+        }
+        assert_eq!(file.run().status.code(), Some(1));
+        file.assert_old();
+    }
+}
+#[test]
+fn output_collisions_cannot_replace_input_bundle_or_each_other() {
+    let file = Fixture::new(b"001A  \n");
+    for (errors, summary) in [
+        ("input data.txt", "summary.json"),
+        ("errors.jsonl", "errors.jsonl"),
+        ("errors.jsonl", "errors.jsonl.part"),
+        ("schemas/SYNTHETIC/v1/flow.json", "summary.json"),
+        ("reference-data/new.json", "summary.json"),
+    ] {
+        assert_eq!(file.with_outputs(errors, summary).status.code(), Some(1));
+        assert_eq!(
+            fs::read(file.root.join("input data.txt")).unwrap(),
+            b"001A  \n"
+        );
+        assert_eq!(
+            fs::read(file.root.join("schemas/SYNTHETIC/v1/flow.json")).unwrap(),
+            include_bytes!("fixtures/application/schema.json")
+        );
+        file.assert_no_parts();
+    }
+}
+#[test]
+fn second_output_creation_failure_aborts_first_and_preserves_foreign_part() {
+    let file = Fixture::new(b"001A  \n");
+    file.old_reports();
+    fs::write(
+        file.root.join("summary.json.part"),
+        b"foreign pending output",
+    )
+    .unwrap();
+    assert_eq!(file.run().status.code(), Some(1));
+    assert!(!file.root.join("errors.jsonl.part").exists());
+    assert_eq!(
+        fs::read(file.root.join("summary.json.part")).unwrap(),
+        b"foreign pending output"
+    );
+    assert_eq!(
+        fs::read(file.root.join("errors.jsonl")).unwrap(),
+        b"old errors"
+    );
+}
+#[test]
+fn version_is_a_real_process_success_with_version_and_provenance() {
+    let out = Command::new(env!("CARGO_BIN_EXE_lintra"))
+        .arg("--version")
+        .output()
+        .unwrap();
+    assert_eq!(out.status.code(), Some(0));
+    assert_eq!(
+        text(&out.stdout),
+        concat!(
+            "lintra ",
+            env!("CARGO_PKG_VERSION"),
+            " (commit ",
+            env!("LINTRA_BUILD_COMMIT"),
+            ")\n"
+        )
+    );
+    assert!(out.stderr.is_empty());
+}
+
+/// A real failed stdout write must abort both pending report files. /dev/full is
+/// a Linux device, so native Windows coverage uses the portable sink tests.
+#[cfg(target_os = "linux")]
+#[test]
+fn human_output_failure_aborts_reports_before_publication() {
+    let file = Fixture::new(b"001A  \n");
+    file.old_reports();
+    let out = file
+        .command()
+        .arg("--errors")
+        .arg(file.root.join("errors.jsonl"))
+        .arg("--summary")
+        .arg(file.root.join("summary.json"))
+        .stdout(
+            fs::OpenOptions::new()
+                .write(true)
+                .open("/dev/full")
+                .unwrap(),
+        )
+        .output()
+        .unwrap();
+    assert_eq!(out.status.code(), Some(1));
+    file.assert_old();
+}
+
+#[cfg(unix)]
+#[test]
+fn symlink_alias_of_input_is_rejected_without_modifying_source() {
+    let file = Fixture::new(b"001A  \n");
+    std::os::unix::fs::symlink(
+        file.root.join("input data.txt"),
+        file.root.join("alias.jsonl"),
+    )
+    .unwrap();
+    assert_eq!(
+        file.with_outputs("alias.jsonl", "summary.json")
+            .status
+            .code(),
+        Some(1)
+    );
+    assert_eq!(
+        fs::read(file.root.join("input data.txt")).unwrap(),
+        b"001A  \n"
+    );
+    assert!(!file.root.join("alias.jsonl.part").exists());
+}
