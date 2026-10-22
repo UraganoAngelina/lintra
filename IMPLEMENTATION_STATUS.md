@@ -1,7 +1,71 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-10-21**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
+
+## Frontiera corrente — 2026-10-22
+
+T-P8-02 **DONE**: 304 test locali e [CI 39741868369](https://github.com/UraganoAngelina/lintra/actions/runs/39741868369)
+completed/success su 81cee3686eded6dce53c2a5ba1f97f602e4434bb, Linux GNU e
+Windows MSVC entrambi completed/success verificati con gh run view.
+Mandato successivo: chiamate GitHub autonome e avanzamento task per task dopo
+esito chiaro; restano gate e blocchi contrattuali reali. Nessun Superpowers/subagente.
+
+HANDOFF — 2026-10-22 — T-P8-02 DONE / avvio T-P8-03
+- Codice 81cee36, gate locali e CI nativa Linux/Windows confermati.
+- File di chiusura: questo registro e docs/verification/T-P8-02.md.
+- Nessun nuovo codice, API, dipendenza o modifica alle baseline/fonti.
+- Prossima task T-P8-03 autorizzata, prerequisiti 8-01/8-02/5-06 soddisfatti.
+- Rinvii P11/P13/PERSIST/T-P2-03/M1 invariati.
+- Branch work/p1-foundations; working tree con soli documenti di questa sessione.
+
+## Recupero sessione — 2026-10-22 / T-P8-02
+
+**Aggiornamento successivo:** accesso GitHub consentito e ripristinato.
+Avviata [CI 39741868369](https://github.com/UraganoAngelina/lintra/actions/runs/39741868369)
+su `81cee3686eded6dce53c2a5ba1f97f602e4434bb`. Ultima risposta verificata:
+Linux GNU completed/success, Windows MSVC in_progress, run in_progress.
+Tre chiamate Actions eseguite (list/dispatch/view), distanziate oltre 45 s;
+raggiunto il limite autorizzato, nessuna quarta chiamata. Nessun esito Windows
+presunto. T-P8-03 resta autorizzata dopo gate ma non iniziata.
+
+Ultimo codice `81cee3686eded6dce53c2a5ba1f97f602e4434bb`, branch
+`work/p1-foundations`, working tree inizialmente pulito. T-P8-01 ultima task
+chiusa documentalmente; T-P8-02 implementata, resta **DONE_UNVERIFIED** per CI.
+Rieseguiti fmt/check/Clippy -D warnings/test/release/Windows GNU check: tutti
+exit 0, **304 test passati**, zero falliti. Dettagli nel dossier T-P8-02.
+Accesso GitHub dal sandbox fallito; escalation rifiutata dall'utente.
+CI nativa Linux/Windows non verificata in questa sessione, nessuna run avviata.
+Autorizzata dall'autore la task successiva dopo conclusione senza ambiguità
+della precedente; T-P8-03 non iniziata perché QG-2 ancora da verificare.
+Confermato divieto di Superpowers/subagenti. Nessuna modifica di produzione.
+
+HANDOFF — 2026-10-22 — recupero T-P8-02
+- Fase/task attiva: P8 / T-P8-02; stato DONE_UNVERIFIED.
+- File modificati: questo registro e docs/verification/T-P8-02.md, soltanto
+  evidenze di recupero; nessun codice o test aggiunto, nessuna baseline alterata.
+- Evidenze: fmt, check all-targets, Clippy all-targets -D warnings,
+  test --locked (304 passati), build release e check Windows GNU tutti exit 0.
+- Non eseguiti: test Windows nativi locali; CI remota non consultabile dopo
+  errore connessione sandbox e rifiuto dell'accesso esterno. Nessuna run avviata.
+- Contratti/decisioni: invariati; ratifiche già approvate preservate.
+- Documenti da aggiornare: esito CI in questi due documenti quando verificabile.
+- Blocco operativo: evidenza QG-2 mancante; nessun conflitto architetturale nuovo.
+- Rinvii: P11/P13/PERSIST e residuo T-P2-03/M1 invariati.
+- Git: work/p1-foundations, HEAD 81cee36; due file documentali modificati
+  in questa sessione, non committati.
+- Next: verificare CI su 81cee36; se Linux/Windows positivi, chiudere T-P8-02
+  e procedere a T-P8-03 con l'autorizzazione già ricevuta.
+
+HANDOFF — 2026-10-22 — successiva autorizzazione / CI T-P8-02 avviata
+- Stato: DONE_UNVERIFIED, manca esito finale Windows; Linux verde verificato.
+- Evidenza: run 39741868369 su 81cee36, stato in_progress all'ultima lettura.
+- File: solo IMPLEMENTATION_STATUS.md e docs/verification/T-P8-02.md aggiornati;
+  nessun codice/test nuovo, contratti invariati; 304 test locali già confermati.
+- Vincolo operativo: consumate tre chiamate Actions distanziate oltre 45 s.
+- Git: work/p1-foundations, HEAD 81cee36, due file documentali non committati.
+- Next: acquisire esito finale della run quando consentito; dopo QG-2 positivo
+  chiudere T-P8-02 e implementare T-P8-03 già autorizzata.
 
 ## Mandato corrente — 2026-10-21
 
@@ -268,7 +332,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
 | T-P8-01 | DONE | 2026-10-21 | 297 test, CI 39628560176 Linux/Windows success 98d952b; [report](docs/verification/T-P8-01.md) |
-| T-P8-02 | DONE_UNVERIFIED | 2026-10-21 | HumanReadableSink, sette test snapshot/boundary, 304 globali; CI in acquisizione; [report](docs/verification/T-P8-02.md) |
+| T-P8-02 | DONE | 2026-10-22 | HumanReadableSink, 304 test locali, CI 39741868369 Linux/Windows completed/success su 81cee36; [report](docs/verification/T-P8-02.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
