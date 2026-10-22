@@ -4,7 +4,8 @@ Motore generico e versionato per validare flussi sanitari fixed-width.
 **Il motore conosce come validare; gli schemi conoscono cosa è valido.**
 
 La libreria espone `ValidationService` e una factory filesystem LocalOnly,
-con compiler incrementale, validazione strutturale e controlli locali supportati,
+con compiler incrementale, validazione strutturale e controlli locali supportati
+(presenza base, Numeric/AN, date DDMMYYYY, AllowedValues e range interi inclusivi),
 report JSONL/summary, audit degli input, progress e cancellazione. Full,
 reference data e persistenza completa rimangono consegne future esplicite.
 Il consuntivo verificato è in [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md).

@@ -3,6 +3,41 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P9-02 DONE / T-P9-03 BLOCKED — 2026-10-22
+
+Ultimo codice **fa547431e702e37f2cf53203a3286d1f11ae9a32**: T-P9-02 DONE,
+[CI 39749927727](https://github.com/UraganoAngelina/lintra/actions/runs/39749927727)
+completed/success, Linux GNU e Windows MSVC success verificati. 340 test locali,
+fmt/check/Clippy/test/release/Windows GNU check/diff passati. P8/M3 locale già
+chiusi; range e date eseguibili dalla CLI. Nessuna baseline o fonte alterata.
+
+**T-P9-03 BLOCKED sul rinvio Decimal G0**, non un nuovo conflitto da riaprire:
+formato 1 approvato esclude Decimal, separatore/scala/segno non specificati.
+Dettagli e alternative: [preflight 9-03](docs/verification/T-P9-03-preflight.md).
+Nessun codice Decimal o nuova dipendenza introdotti. Proposta circoscritta:
+mantenere rinvio e proseguire T-P9-04, oppure ratificare prima il contratto
+Decimal completo con evidenze, AST ed esempi/versioning. Decisione dell'autore.
+T-P9-05 resta dipendente anche da 9-03; non dichiarare P9/M4 completa.
+
+HANDOFF — 2026-10-22 — T-P9-02 DONE / arresto contrattuale T-P9-03
+- Sessione: recuperata/chiusa 8-02, completate 8-03..06 e 9-01..02 con CI nativa
+  positiva per ciascun codice. M3 locale DET §151 raggiunta, Full non disponibile.
+- Ultimi file Rust: validator date/datatype, compiler, pipeline e gate record;
+  unit/integration/process test, spiegazioni nel dossier 9-02. Nessuna API
+  modello, dipendenza o baseline nuova in 9-02; chrono già presente riusato.
+- Ultime evidenze: 340 test locali, tutti gate passati, CI 39749927727 nativa
+  success su fa54743. Test console Windows reale introdotto in 8-06 e passato.
+- File chiusura: questo registro, docs/verification/T-P9-02.md,
+  docs/verification/T-P9-03-preflight.md e README.md; nessun codice aggiuntivo.
+- Blocco: contratto Decimal escluso da formato 1, G0 lo rinvia esplicitamente;
+  manca ratifica di un'estensione, vietato inventare parametri o fingere supporto.
+- Next: decisione sul rinvio/riordino a T-P9-04 oppure contratto Decimal approvato.
+  Prerequisito 9-04 T-P6-06 soddisfatto; nessuna implementazione 9-04 avviata.
+- Rinvii P11/P13/PERSIST e T-P2-03/M1 invariati; CNF-AUDIT/RECORD/SERVICE-DI/
+  RUN-SCOPE e DEC-12 preservate. Nessun Superpowers/subagente usato dopo mandato.
+- Git work/p1-foundations, codice fa54743 pubblicato; chiusura documentale
+  separata in questa sessione. Nessuna modifica preesistente sovrascritta.
+
 ## Frontiera corrente — T-P9-02 / 2026-10-22
 
 T-P9-02 **DONE_UNVERIFIED**: Date DDMMYYYY/0001–9999 calendariale con formato
@@ -522,7 +557,8 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P8-05 | DONE | 2026-10-22 | Ctrl+C cooperativo, 321 test locali, CI 39746072212 Linux/Windows verde su 6417c40; [report](docs/verification/T-P8-05.md) |
 | T-P8-06 | DONE | 2026-10-22 | 325 locali, CI 39747270986 Linux/Windows verde su 90528c4, test console Windows passato; [report](docs/verification/T-P8-06.md) |
 | T-P9-01 | DONE | 2026-10-22 | range inclusivo esatto, 333 locali, CI 39748653454 Linux/Windows verde su dc4b6ec; [report](docs/verification/T-P9-01.md) |
-| T-P9-02 | DONE_UNVERIFIED | 2026-10-22 | date DDMMYYYY calendariali, 340 test locali, CI pendente; [report](docs/verification/T-P9-02.md) |
+| T-P9-02 | DONE | 2026-10-22 | date DDMMYYYY, 340 locali, CI 39749927727 Linux/Windows verde su fa54743; [report](docs/verification/T-P9-02.md) |
+| T-P9-03 | BLOCKED | 2026-10-22 | rinvio G0 Decimal: formato 1 lo esclude, contratto separatore/scala/segno non approvato; [preflight](docs/verification/T-P9-03-preflight.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
