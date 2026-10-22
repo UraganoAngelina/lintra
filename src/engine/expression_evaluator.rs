@@ -1,4 +1,5 @@
 //! Pure three-valued expression evaluation over resolved byte values.
+use super::derived_evaluator::{DerivedValue, DerivedValueEvaluator, compare_derived};
 use std::ops::Not;
 
 /// Unavailability is diagnostic information, never a false value or a pass.
@@ -77,6 +78,10 @@ pub trait FieldValueResolver {
     fn resolve_raw_field(&self, _reference: &ResolvedFieldRef) -> ResolvedFieldValue<'_> {
         ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan)
     }
+    /// Contexts without a derived plan explicitly refuse that operation.
+    fn resolve_derived(&self, _index: usize) -> DerivedValue<'_> {
+        DerivedValue::Unknown(UnknownReason::UnsupportedPlan)
+    }
 }
 
 /// The evaluator depends on the resolver abstraction, not on an I/O provider.
@@ -142,6 +147,12 @@ impl FieldValueResolver for LocalEvaluationContext<'_> {
     }
     fn resolve_raw_field(&self, reference: &ResolvedFieldRef) -> ResolvedFieldValue<'_> {
         self.resolve_value(reference, true)
+    }
+    fn resolve_derived(&self, index: usize) -> DerivedValue<'_> {
+        match self.schema.derived_values().get(index) {
+            Some(plan) => DerivedValueEvaluator.evaluate(plan, &EvaluationContext { fields: self }),
+            None => DerivedValue::Unknown(UnknownReason::FieldUnavailable),
+        }
     }
 }
 
@@ -223,9 +234,43 @@ impl ExpressionEvaluator {
                         work.push(EvalStep::Not);
                         work.push(EvalStep::Expr(child));
                     }
-                    CompiledExpr::DerivedEq { .. } | CompiledExpr::DerivedCompare { .. } => {
-                        values.push(unsupported())
+                    CompiledExpr::DerivedEq {
+                        field,
+                        derived_index,
+                    } => {
+                        let value = match ctx.fields.resolve_field(field) {
+                            ResolvedFieldValue::Missing => {
+                                TruthValue::Unknown(UnknownReason::FieldUnavailable)
+                            }
+                            ResolvedFieldValue::Unavailable(reason) => TruthValue::Unknown(reason),
+                            ResolvedFieldValue::Present(bytes) => {
+                                match ctx.fields.resolve_derived(*derived_index) {
+                                    DerivedValue::Bytes(value) => truth(bytes == value),
+                                    DerivedValue::Unknown(reason) => TruthValue::Unknown(reason),
+                                    DerivedValue::Integer(value) => {
+                                        if bytes.is_empty() || !bytes.iter().all(u8::is_ascii_digit)
+                                        {
+                                            TruthValue::Unknown(UnknownReason::InvalidFieldValue)
+                                        } else {
+                                            match std::str::from_utf8(bytes).ok().and_then(|text|text.parse::<crate::schema::compiled::IntegerLiteral>().ok()) {
+                                            Some(field)=>truth(field==value),None=>TruthValue::Unknown(UnknownReason::InvalidFieldValue),
+                                        }
+                                        }
+                                    }
+                                }
+                            }
+                        };
+                        values.push(value);
                     }
+                    CompiledExpr::DerivedCompare {
+                        derived_index,
+                        operator,
+                        value,
+                    } => values.push(compare_derived(
+                        ctx.fields.resolve_derived(*derived_index),
+                        *operator,
+                        value,
+                    )),
                 },
                 EvalStep::Group { and, count } => {
                     let Some(start) = values.len().checked_sub(count) else {

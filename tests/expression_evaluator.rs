@@ -156,10 +156,6 @@ fn invalid_indices_ids_widths_and_unsupported_plans_are_explicit() {
     };
     for expression in [
         CompiledExpr::IsPresent(external),
-        CompiledExpr::DerivedEq {
-            field: reference(0),
-            derived_index: 0,
-        },
         CompiledExpr::And(vec![]),
         CompiledExpr::Or(vec![]),
         CompiledExpr::In(reference(0), vec![]),
@@ -169,6 +165,17 @@ fn invalid_indices_ids_widths_and_unsupported_plans_are_explicit() {
             U(UnknownReason::UnsupportedPlan)
         );
     }
+    assert_eq!(
+        evaluate(
+            &schema,
+            b"001A  ",
+            &CompiledExpr::DerivedEq {
+                field: reference(0),
+                derived_index: 0
+            }
+        ),
+        U(UnknownReason::FieldUnavailable)
+    );
     let record = RecordView::new(b"001A  ");
     let local = LocalEvaluationContext {
         record: &record,

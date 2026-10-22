@@ -219,3 +219,7 @@ pub use reference_data::{
     dataset::{DatasetKey, LookupSet, PreparedReferenceData, prepare_reference_data},
     provider::{ReferenceDataError, ReferenceDataProvider},
 };
+
+pub use engine::derived_evaluator::{DerivedValue, DerivedValueEvaluator};
+pub use schema::compiled::{DateFormat, DerivedValuePlan, LeapDayAnniversary};
+pub use schema::compiled::{IntegerLiteral, InvalidIntegerLiteral};

@@ -3,6 +3,18 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P10-03 executor esteso / gate in corso
+
+Executor Substring/AgeInCompletedYears/CalendarYearDelta ed Expr derivati
+implementati. 432 test/53 suite passati, zero falliti; fmt/check/Clippy/test/release/Windows
+GNU check/diff exit 0, CI nativa ancora da eseguire. [Dossier](docs/verification/T-P10-03-derived.md).
+Calcolo firmato anche per età negative come da authoring ratificato; nessuna
+constraint normativa implicita. LocalEvaluationContext legge i piani reali.
+Compiler pubblico e gate presenza/regole ancora chiusi per i derivati: residui
+10-04/05/06 aperti. Prossima azione: completare gate e poi integrazione presence.
+
+## Registro storico — T-P10-01 modello esteso concluso
+
 ## Frontiera corrente — T-P10-01 modello esteso DONE / residuo T-P10-03
 
 Modello dei tre derivati e lowering Expr completati, 424 test/52 suite;

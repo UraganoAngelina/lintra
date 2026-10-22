@@ -557,3 +557,36 @@ fn decimal_validator_uses_the_plan_scale_separator_and_physical_width() {
         );
     }
 }
+
+/// Positive wiring check of the real local resolver, without opening a public
+/// constructor or bypassing the still-closed production derived-schema gate.
+#[test]
+fn local_context_uses_the_stored_derived_plan_and_real_record_bytes() {
+    use crate::{DerivedValue, FieldValueResolver, LocalEvaluationContext, RecordView};
+    let mut raw: crate::RawFlowSchema = serde_json::from_slice(include_bytes!(
+        "../../../tests/golden/synthetic/v1/schema.json"
+    ))
+    .unwrap();
+    raw.encoding.resolved = Some(crate::RawResolvedEncoding::Utf8);
+    let mut schema = crate::SchemaCompiler.compile(raw).unwrap();
+    schema.traces[0]
+        .derived_values
+        .push(DerivedValuePlan::Substring {
+            source: ResolvedFieldRef::Local {
+                field_index: 0,
+                field_id: FieldId("F1".into()),
+            },
+            target: ValueTarget::Raw,
+            range: ByteRange::new(1, 3).unwrap(),
+        });
+    let view = RecordView::new(b"ABCDEF");
+    let local = LocalEvaluationContext {
+        record: &view,
+        schema: &schema.traces[0],
+    };
+    assert_eq!(local.resolve_derived(0), DerivedValue::Bytes(b"BCD"));
+    assert_eq!(
+        local.resolve_derived(1),
+        DerivedValue::Unknown(crate::UnknownReason::FieldUnavailable)
+    );
+}
