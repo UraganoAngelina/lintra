@@ -197,3 +197,10 @@ pub use report::summary::write_run_summary;
 pub use report::human::HumanReadableSink;
 
 pub use engine::expression_evaluator::{TruthValue, UnknownReason};
+
+pub use engine::expression_evaluator::{
+    EvaluationContext, ExpressionEvaluator, FieldValueResolver, LocalEvaluationContext,
+    ResolvedFieldValue,
+};
+
+pub use schema::compiled::{CompiledExpr, ResolvedFieldRef};

@@ -10,6 +10,7 @@ fn complete_and_or_not_tables_cover_all_unknown_reasons() {
         RelatedRecordMissing,
         TraceInputUnavailable,
         AmbiguousJoin,
+        UnsupportedPlan,
     ] {
         let unknown = U(reason);
         let values = [F, T, unknown];
@@ -34,6 +35,7 @@ fn distinct_unknown_reasons_use_declared_left_order() {
         RelatedRecordMissing,
         TraceInputUnavailable,
         AmbiguousJoin,
+        UnsupportedPlan,
     ];
     for left in reasons {
         for right in reasons {

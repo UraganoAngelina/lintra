@@ -3,6 +3,25 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P10-03 gate locali — 2026-10-22
+
+ExpressionEvaluator e contesto reale locale consegnati, 384 test/48 suite.
+fmt/check/Clippy/test/release/Windows GNU check/diff passati; CI nativa pendente.
+[Dossier e spiegazioni](docs/verification/T-P10-03.md).
+
+HANDOFF — T-P10-03 DONE_UNVERIFIED
+- Eq/Ne/In/NotIn/IsPresent/IsMissing/AND/OR/NOT/Const eseguiti su byte;
+  Missing distinto da Present vuoto, width/ref invalidi Unknown esplicito.
+- Porta FieldValueResolver realmente consumata e LocalEvaluationContext reale;
+  nessun parametro projected/related fittizio, nessun backend futuro simulato.
+- Derived/esterne nel contesto locale danno UnsupportedPlan nelle chiamate
+  dirette; compiler continua a rifiutarle e a bloccare conditional execution.
+- File evaluator/lib, test evaluator/tavole, dossier/stato. Git work/p1-foundations.
+- Task da pubblicare, native CI necessaria; next 10-04 dopo gate e lettura contratti.
+- P11/P13/PERSIST/T-P2-03/M1 aperti; solo LocalOnly eseguibile.
+
+## Registro storico — T-P10-02 conclusa
+
 ## Frontiera corrente — T-P10-02 DONE / avvio T-P10-03 — 2026-10-22
 
 TruthValue/UnknownReason e tavole complete verificate, 376 test/47 suite.
@@ -714,6 +733,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P9-06 | DONE | 2026-10-22 | golden semantici, 367 test; CI 39762338659 Linux/Windows verde su 3fafc4b; [report](docs/verification/T-P9-06.md) |
 | T-P10-01 | DONE | 2026-10-22 | lowering Expr, 374 test; CI 39763287298 Linux/Windows verde su b8e1e80; [report](docs/verification/T-P10-01.md) |
 | T-P10-02 | DONE | 2026-10-22 | TruthValue, 376 test; CI 39764219198 Linux/Windows verde su e17c33a; [report](docs/verification/T-P10-02.md) |
+| T-P10-03 | DONE_UNVERIFIED | 2026-10-22 | evaluator, 384 test; CI pendente; [report](docs/verification/T-P10-03.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
