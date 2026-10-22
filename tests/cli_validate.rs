@@ -333,3 +333,117 @@ fn sigint_returns_130_and_preserves_old_reports() {
     assert!(events.contains("run_completed"));
     file.assert_old();
 }
+
+/// No command is a syntax error, while explicit help/version remain successful.
+#[test]
+fn process_without_options_is_technical_and_help_is_successful() {
+    for args in [vec![], vec!["--help"], vec!["validate", "--help"]] {
+        let out = Command::new(env!("CARGO_BIN_EXE_lintra"))
+            .args(&args)
+            .output()
+            .unwrap();
+        assert_eq!(out.status.code(), Some(if args.is_empty() { 1 } else { 0 }));
+        if args.is_empty() {
+            assert!(!out.stderr.is_empty());
+        } else {
+            assert!(!out.stdout.is_empty());
+        }
+    }
+}
+
+/// A request builder with no root flags lets production resolution exercise the
+/// actual child environment and executable location, independent of test cwd.
+fn request(file: &Fixture, executable: impl AsRef<std::ffi::OsStr>) -> Command {
+    let mut cmd = Command::new(executable);
+    cmd.current_dir(file.root.join("unrelated cwd"))
+        .env_remove("LINTRA_SCHEMA_DIR")
+        .env_remove("LINTRA_REFERENCE_DATA_DIR")
+        .args([
+            "validate",
+            "--flow",
+            "SYNTHETIC",
+            "--schema-version",
+            "v1",
+            "--trace",
+            "T1",
+            "--encoding",
+            "utf8",
+        ])
+        .arg("--input")
+        .arg(file.root.join("input data.txt"))
+        .arg("--errors")
+        .arg(file.root.join("errors.jsonl"))
+        .arg("--summary")
+        .arg(file.root.join("summary.json"));
+    cmd
+}
+#[test]
+fn complete_cli_pair_overrides_broken_environment_in_a_real_process() {
+    let file = Fixture::new(b"001A  \n");
+    let out = file
+        .command()
+        .env("LINTRA_SCHEMA_DIR", file.root.join("missing schemas"))
+        .env(
+            "LINTRA_REFERENCE_DATA_DIR",
+            file.root.join("missing reference"),
+        )
+        .arg("--errors")
+        .arg(file.root.join("errors.jsonl"))
+        .arg("--summary")
+        .arg(file.root.join("summary.json"))
+        .output()
+        .unwrap();
+    assert_eq!(out.status.code(), Some(0), "{}", text(&out.stderr));
+    file.assert_no_parts();
+}
+#[test]
+fn actual_environment_pair_resolves_and_partial_pair_fails_without_fallback() {
+    let file = Fixture::new(b"001A  \n");
+    let out = request(&file, env!("CARGO_BIN_EXE_lintra"))
+        .env("LINTRA_SCHEMA_DIR", file.root.join("schemas"))
+        .env(
+            "LINTRA_REFERENCE_DATA_DIR",
+            file.root.join("reference-data"),
+        )
+        .output()
+        .unwrap();
+    assert_eq!(out.status.code(), Some(0), "{}", text(&out.stderr));
+    file.old_reports();
+    let partial = request(&file, env!("CARGO_BIN_EXE_lintra"))
+        .env("LINTRA_SCHEMA_DIR", file.root.join("schemas"))
+        .output()
+        .unwrap();
+    assert_eq!(partial.status.code(), Some(1));
+    assert!(text(&partial.stderr).contains("incomplete external bundle"));
+    file.assert_old();
+}
+#[test]
+fn copied_executable_resolves_adjacent_bundle_but_never_falls_back_from_selected_env() {
+    let file = Fixture::new(b"001A  \n");
+    let portable = file.root.join("portable binary");
+    fs::create_dir(&portable).unwrap();
+    let executable = portable.join(format!("lintra{}", std::env::consts::EXE_SUFFIX));
+    fs::copy(env!("CARGO_BIN_EXE_lintra"), &executable).unwrap();
+    fs::rename(file.root.join("schemas"), portable.join("schemas")).unwrap();
+    fs::rename(
+        file.root.join("reference-data"),
+        portable.join("reference-data"),
+    )
+    .unwrap();
+    let out = request(&file, &executable).output().unwrap();
+    assert_eq!(out.status.code(), Some(0), "{}", text(&out.stderr));
+    file.old_reports();
+    fs::create_dir(file.root.join("empty schemas")).unwrap();
+    fs::create_dir(file.root.join("empty reference")).unwrap();
+    let selected = request(&file, &executable)
+        .env("LINTRA_SCHEMA_DIR", file.root.join("empty schemas"))
+        .env(
+            "LINTRA_REFERENCE_DATA_DIR",
+            file.root.join("empty reference"),
+        )
+        .output()
+        .unwrap();
+    assert_eq!(selected.status.code(), Some(1));
+    assert!(selected.stdout.is_empty());
+    file.assert_old();
+}

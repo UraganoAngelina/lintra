@@ -3,6 +3,24 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P8-06 / 2026-10-22
+
+T-P8-06 **DONE_UNVERIFIED**, 325 test Linux e gate locali passati; test Windows
+console-event nuovo compilato/lintato GNU ma non ancora eseguito nativamente.
+Quattro nuove prove portabili: no opzioni/help, CLI sopra env, coppia env,
+eseguibile copiato/bundle adiacente/no fallback. Nessun codice produzione nuovo.
+
+HANDOFF — 2026-10-22 — T-P8-06 gate locali
+- Prerequisiti 8-03/04/05 CI nativa verificata e positiva.
+- File: tests/cli_validate.rs, tests/cli_windows_signal.rs, dossier 8-06 e registro.
+- 325 test locali, fmt/check/Clippy/test/release/Windows GNU check/diff passati;
+  anche Clippy Windows GNU all-targets passato. CI nativa da acquisire.
+- Windows test console dedicato: Kernel32 ABI test-only, gruppo figlio nonzero
+  e CTRL_BREAK_EVENT; non broadcast al runner, nessun crate aggiunto.
+- M3 locale DET §151 da confermare dopo CI; non chiude M1/T-P2-03 o capacità future.
+- Git work/p1-foundations, ultimo commit 120ba7e, task da pubblicare per CI.
+- Next T-P9-01 dopo gate; rinvii e contratti preservati, nessun blocco nuovo.
+
 ## Chiusura T-P8-05 — 2026-10-22
 
 T-P8-05 **DONE**, CI 39746072212 completed/success su
@@ -435,6 +453,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P8-03 | DONE | 2026-10-22 | validate reale LocalOnly, 313 test locali, CI 39743161012 Linux/Windows verde su 10932f9; [report](docs/verification/T-P8-03.md) |
 | T-P8-04 | DONE | 2026-10-22 | schema lint, 318 test locali, CI 39744299145 Linux/Windows verde su 4f7115f; [report](docs/verification/T-P8-04.md) |
 | T-P8-05 | DONE | 2026-10-22 | Ctrl+C cooperativo, 321 test locali, CI 39746072212 Linux/Windows verde su 6417c40; [report](docs/verification/T-P8-05.md) |
+| T-P8-06 | DONE_UNVERIFIED | 2026-10-22 | process coverage CLI, 325 locali, test console Windows da CI; [report](docs/verification/T-P8-06.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
