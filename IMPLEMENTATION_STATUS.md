@@ -38,7 +38,7 @@ HANDOFF — 2026-10-22 — T-P9-02 DONE / arresto contrattuale T-P9-03
 - Git work/p1-foundations, codice fa54743 pubblicato; chiusura documentale
   separata in questa sessione. Nessuna modifica preesistente sovrascritta.
 
-## Frontiera corrente — T-P9-02 / 2026-10-22
+## Registro storico — T-P9-02 / 2026-10-22
 
 T-P9-02 **DONE_UNVERIFIED**: Date DDMMYYYY/0001–9999 calendariale con formato
 compiled esistente, compiler/pipeline/record/CLI integrati. 340 test locali e
@@ -69,7 +69,7 @@ HANDOFF — 2026-10-22 — T-P9-01 DONE / avvio T-P9-02
   ASCII 8 byte e anni 0001–9999 già approvato; nessuna estensione di formato.
 - Decimal resta rinvio contrattuale G0, non autorizzato come nuovo tipo formato 1.
 
-## Frontiera corrente — T-P9-01 / 2026-10-22
+## Registro storico — T-P9-01 / 2026-10-22
 
 T-P9-01 **DONE_UNVERIFIED**, range intero inclusivo esatto con payload compiled
 esistente, compiler/type check, pipeline e preflight record integrati. 333 test
@@ -105,7 +105,7 @@ HANDOFF — 2026-10-22 — T-P8-06 DONE / avvio T-P9-01
 - NumericRange contratto già definito: limiti interi inclusivi min≤max, logical
   dopo datatype. Decimal rimane fuori formato 1 in attesa di ampliamento approvato.
 
-## Frontiera corrente — T-P8-06 / 2026-10-22
+## Registro storico — T-P8-06 / 2026-10-22
 
 T-P8-06 **DONE_UNVERIFIED**, 325 test Linux e gate locali passati; test Windows
 console-event nuovo compilato/lintato GNU ma non ancora eseguito nativamente.
@@ -136,7 +136,7 @@ HANDOFF — 2026-10-22 — T-P8-05 DONE / avvio T-P8-06
 - Next T-P8-06, prerequisiti 8-03/04/05 tutti verificati e consegnati; nessun
   nuovo conflitto; rinvii core e baseline inalterati.
 
-## Frontiera corrente — T-P8-05 / 2026-10-22
+## Registro storico — T-P8-05 / 2026-10-22
 
 T-P8-05 **DONE_UNVERIFIED**: Ctrl+C nel binario imposta token condiviso,
 321 test locali passati inclusi SIGINT Linux reale, callback e adapter cancel
@@ -167,7 +167,7 @@ HANDOFF — 2026-10-22 — T-P8-04 DONE / avvio T-P8-05
 - Next T-P8-05 autorizzata, prerequisito 8-03 CI 39743161012 soddisfatto;
   registry/compiler e report atomici preservati. Rinvii core invariati.
 
-## Frontiera corrente — T-P8-04 / 2026-10-22
+## Registro storico — T-P8-04 / 2026-10-22
 
 T-P8-04 **DONE_UNVERIFIED**: schema lint attraverso registry/compiler reali,
 nessun controllo duplicato; 318 test locali e tutti i gate locali passati.
@@ -197,7 +197,7 @@ HANDOFF — 2026-10-22 — T-P8-03 DONE / avvio T-P8-04
   (CI 39628560176) verificati documentalmente, regressioni locali rieseguite.
 - Nessun nuovo conflitto; P11/P13/PERSIST e residuo T-P2-03/M1 invariati.
 
-## Frontiera corrente — T-P8-03 / 2026-10-22
+## Registro storico — T-P8-03 / 2026-10-22
 
 T-P8-03 **DONE_UNVERIFIED**: comando validate LocalOnly reale, report atomici
 per file, riepilogo human/stdout, eventi applicativi stderr, --version con
@@ -222,7 +222,7 @@ HANDOFF — 2026-10-22 — T-P8-03 gate locali
   committare/pubblicare per CI. Nessun blocco contrattuale.
 - Next T-P8-04 dopo conferma QG-2; avanzamento già autorizzato.
 
-## Frontiera corrente — 2026-10-22
+## Registro storico — 2026-10-22
 
 T-P8-02 **DONE**: 304 test locali e [CI 39741868369](https://github.com/UraganoAngelina/lintra/actions/runs/39741868369)
 completed/success su 81cee3686eded6dce53c2a5ba1f97f602e4434bb, Linux GNU e
