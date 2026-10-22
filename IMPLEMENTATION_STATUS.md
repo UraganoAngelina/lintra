@@ -3,6 +3,24 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P9-06 gate locali — 2026-10-22
+
+Golden semantici dedicati consegnati: 367 test locali, 46 suite, 8 scenari golden.
+fmt/check/Clippy/test/release/Windows GNU check/diff passati; CI nativa pendente.
+[Dossier e spiegazioni](docs/verification/T-P9-06.md).
+
+HANDOFF — T-P9-06 DONE_UNVERIFIED
+- Nuovo profilo sintetico 14 byte: range/date/dominio; attesi indipendenti con
+  7 errori ordinati, datatype primary senza cascata, summary/audit completi.
+- Golden producer ora usa RecordValidator reale; vecchi attesi invariati.
+- File runner/support, schema/input/attesi nuovi, README, generatore oracle/stato/report.
+- ErrorFactory già corretta, nessun codice produzione o dipendenza modificati.
+- 49 file protetti identici; CI da verificare, git work/p1-foundations.
+- Prerequisiti 9-05/5-07 soddisfatti; next 10-01 dopo chiusura P9.
+- P11/P13/PERSIST/T-P2-03/M1 aperti; nessun supporto Full dichiarato.
+
+## Registro storico — T-P9-05 conclusa
+
 ## Frontiera corrente — T-P9-05 DONE / avvio T-P9-06 — 2026-10-22
 
 Compatibilità vincolo/tipo verificata, 366 test locali in 46 suite; gate locali
@@ -655,6 +673,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P9-03 | DONE | 2026-10-22 | formato 2 Decimal, 354 test, CI 39759270541 Linux/Windows verde su 5866d1d; [preflight](docs/verification/T-P9-03-preflight.md) |
 | T-P9-04 | DONE | 2026-10-22 | regex bytes, 363 test locali; CI 39760756884 Linux/Windows verde su c6b85cd; [report](docs/verification/T-P9-04.md) |
 | T-P9-05 | DONE | 2026-10-22 | compatibilità, 366 test locali; CI 39761531728 Linux/Windows verde su 2f3b36f; [report](docs/verification/T-P9-05.md) |
+| T-P9-06 | DONE_UNVERIFIED | 2026-10-22 | golden semantici, 367 test; CI pendente; [report](docs/verification/T-P9-06.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

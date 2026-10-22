@@ -41,7 +41,7 @@ ASCII qui adottati. I path degli scenari sono metadati di test.
 
 `synthetic/v1/schema.json` definisce un unico trace T1, un campo di sei byte,
 UTF-8 fornito esplicitamente dall'adattatore e nessun vincolo semantico.
-L'adattatore di test controlla **solo la lunghezza**; usa reader, audit,
+Da T-P9-06 l’adattatore esegue il RecordValidator LocalOnly reale; usa reader, audit,
 ErrorFactory, JsonlSink, summary builder e serializer reali. Un nuovo profilo
 richiede un produttore registrato: non eredita automaticamente questo controllo.
 
@@ -69,3 +69,24 @@ Non si mascherano o modificano byte dei report dopo la produzione.
 CRLF, LF, spazi e assenza del terminatore. La CI esegue la stessa suite su Linux
 e Windows MSVC. Per spiegazioni di strutture, funzioni e condizioni vedere
 [il report T-P5-07](../../docs/verification/T-P5-07.md).
+
+
+## Profilo semantico T-P9-06
+
+`semantic/v1/schema.json` è un nuovo schema sintetico separato, con tre campi:
+Numeric width 3/range inclusivo 1..4, Date DDMMYYYY width 8, AN width 3 con
+dominio logico A e stripping degli spazi finali. Nessun campo reale o migrazione.
+`valid` contiene 2 record validi ai limiti del range, bisestile e anno 0001.
+`invalid` contiene 5 record, 1 valido e 4 invalidi, 7 errori: 2 OutOfRange,
+2 InvalidDate, 2 InvalidDomain, 1 InvalidType. L'ultimo record dimostra lo stop
+primario del tipo prima del range; errori di campi indipendenti restano presenti.
+Actual del dominio mantiene gli spazi fisici; l'ordine è riga poi campo.
+
+Il produttore comune ora chiama `RecordValidator::validate_local` e non simula
+più la validazione della sola lunghezza. I sei scenari precedenti mantengono
+identici tutti i byte attesi. Il runner registra esplicitamente i due profili e
+rifiuta profili sconosciuti, senza inferire schema dal contenuto dei record.
+`generate_semantic_goldens.py` in docs/verification costruisce soltanto gli
+attesi nuovi da una tabella di casi esplicita e dal contratto JSON; usa hashlib
+indipendente e non legge output Rust. Nessuna modalità update usata per definire
+l'oracolo. Il test di ripetizione confronta due esecuzioni indipendenti complete.

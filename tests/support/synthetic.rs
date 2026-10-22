@@ -1,10 +1,10 @@
-//! Minimal test producer, not a production RecordValidator/ValidationService.
-//! Only the synthetic schema's record length is checked; no normative rules.
+//! Synthetic adapter using production LocalOnly validation and report components.
+//! Profiles are explicit test fixtures, never normative acceptance.
 use super::golden::{GoldenOutput, HarnessResult};
 use lintra::{
-    CompiledFlowSchema, ErrorFactory, InputAuditSession, JsonlSink, NewlinePolicy, RawFlowSchema,
-    RawResolvedEncoding, RecordReader, RunMetadata, SchemaCompiler, ScopeSummary, Sha256Digest,
-    ValidationSink, ValidationSummaryBuilder, write_summary,
+    CompiledFlowSchema, InputAuditSession, JsonlSink, NewlinePolicy, RawFlowSchema,
+    RawResolvedEncoding, RecordReader, RecordValidator, RunMetadata, SchemaCompiler, ScopeSummary,
+    Sha256Digest, ValidationSink, ValidationSummaryBuilder, write_summary,
 };
 use sha2::{Digest, Sha256};
 use std::{
@@ -38,12 +38,7 @@ pub fn produce(
 ) -> HarnessResult<GoldenOutput> {
     let trace = &schema.traces()[0];
     let key = schema.key();
-    let factory = ErrorFactory {
-        flow_id: &key.flow_id,
-        schema_version: &key.version,
-        trace_id: trace.id(),
-        encoding: schema.encoding(),
-    };
+    let mut validator = RecordValidator::new(schema, trace.id())?;
     let audits = InputAuditSession::new();
     let source = audits.open(trace.id().clone(), &directory.join("input.txt"))?;
     let mut reader = RecordReader::new(BufReader::new(source), NewlinePolicy::AutoLfOrCrlf);
@@ -56,22 +51,7 @@ pub fn produce(
     let mut sink = JsonlSink::new(Vec::new());
     let mut buffer = Vec::new();
     while let Some(record) = reader.read_next(&mut buffer)? {
-        builder.record_processed()?;
-        if record.bytes.len() == trace.record_length() {
-            builder.record_valid()?;
-        } else {
-            // This test oracle checks only length; it does not slice short
-            // records or implement the future record/field validation pipeline.
-            let error = factory.record_length_error(
-                record.line_number,
-                None,
-                trace.record_length(),
-                record.bytes.len(),
-            );
-            sink.on_error(&error)?;
-            builder.error_emitted(&error.code)?;
-            builder.record_invalid()?;
-        }
+        validator.validate_local(record, &mut sink, &mut builder)?;
     }
     // The loop must observe real EOF before freezing the authoritative audits.
     // Closing the reader now also closes the input handle on Windows.

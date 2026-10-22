@@ -1,0 +1,126 @@
+{
+  "schema_format_version": 1,
+  "flow_id": "SYNTHETIC-SEMANTIC",
+  "schema_version": "v1",
+  "regulatory_version": "synthetic",
+  "source": {},
+  "encoding": {
+    "mode": "runtime_required",
+    "position_unit": "byte"
+  },
+  "required_capabilities": [
+    "local.v1"
+  ],
+  "parameters": [],
+  "reference_data": [],
+  "persistence_policy": null,
+  "traces": [
+    {
+      "id": "T1",
+      "name": "Synthetic semantic constraints",
+      "record_length": 14,
+      "fields": [
+        {
+          "id": "NUMBER",
+          "name": "Synthetic integer",
+          "physical": {
+            "type": "numeric",
+            "start": 1,
+            "length": 3,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "never_missing"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "numeric_range",
+              "min": 1,
+              "max": 4
+            }
+          ]
+        },
+        {
+          "id": "DATE",
+          "name": "Synthetic date",
+          "physical": {
+            "type": "date",
+            "start": 4,
+            "length": 8,
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "never_missing"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": []
+        },
+        {
+          "id": "CODE",
+          "name": "Synthetic domain",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 12,
+            "length": 3,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "never_missing"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "target": "logical",
+              "values": [
+                "A"
+              ]
+            }
+          ]
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "NUMBER"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [],
+      "identity": [],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [],
+      "documented_non_executable_rules": []
+    }
+  ]
+}
