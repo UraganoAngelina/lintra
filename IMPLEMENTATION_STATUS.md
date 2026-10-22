@@ -3,17 +3,18 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P9-05 gate locali — 2026-10-22
+## Frontiera corrente — T-P9-05 DONE / avvio T-P9-06 — 2026-10-22
 
 Compatibilità vincolo/tipo verificata, 366 test locali in 46 suite; gate locali
-fmt/check/Clippy/test/release/Windows GNU check/diff passati. CI nativa pendente.
+fmt/check/Clippy/test/release/Windows GNU check/diff passati. CI nativa
+39761531728 completed/success Linux/Windows su 2f3b36fbab11a7bfe755442675876cc7626df7b2.
 [Dossier e spiegazioni](docs/verification/T-P9-05.md).
 
-HANDOFF — T-P9-05 DONE_UNVERIFIED
+HANDOFF — T-P9-05 DONE
 - ConstraintTypeMismatch per Date/Range su tipo errato; domini/range coerenti
   già verificati mantengono i diagnostici di parametri, nessuna coercizione Decimal.
 - File compiler/linter, test matrice e regressioni date/range/Decimal; dossier/stato.
-- Git work/p1-foundations, task da pubblicare; CI Linux/Windows ancora necessaria.
+- Git work/p1-foundations, 2f3b36f pubblicato; CI Linux/Windows verificata.
 - Prerequisiti 9-01..04 verificati, next 9-06 dopo gate; nessun blocco nuovo.
 - P11/P13/PERSIST/T-P2-03/M1 restano aperti, LocalOnly esplicito.
 
@@ -653,7 +654,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P9-02 | DONE | 2026-10-22 | date DDMMYYYY, 340 locali, CI 39749927727 Linux/Windows verde su fa54743; [report](docs/verification/T-P9-02.md) |
 | T-P9-03 | DONE | 2026-10-22 | formato 2 Decimal, 354 test, CI 39759270541 Linux/Windows verde su 5866d1d; [preflight](docs/verification/T-P9-03-preflight.md) |
 | T-P9-04 | DONE | 2026-10-22 | regex bytes, 363 test locali; CI 39760756884 Linux/Windows verde su c6b85cd; [report](docs/verification/T-P9-04.md) |
-| T-P9-05 | DONE_UNVERIFIED | 2026-10-22 | compatibilità, 366 test locali; CI pendente; [report](docs/verification/T-P9-05.md) |
+| T-P9-05 | DONE | 2026-10-22 | compatibilità, 366 test locali; CI 39761531728 Linux/Windows verde su 2f3b36f; [report](docs/verification/T-P9-05.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
