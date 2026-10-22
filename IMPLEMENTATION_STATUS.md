@@ -3,13 +3,15 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P10-06 gate locali — 2026-10-22
+## Frontiera corrente — P10 DONE / avvio T-P11-01 — 2026-10-22
 
 Suite DSL/golden e conflitti statici consegnati, 413 test/51 suite, 10 scenari.
-fmt/check/Clippy/test/release/Windows GNU check/diff passati, CI nativa pendente.
+fmt/check/Clippy/test/release/Windows GNU check/diff passati; CI 39787215311
+Linux GNU e Windows MSVC entrambi completed/success su b7dc4802ebee2d8732d414dd5b4da237c7a6fa7b.
+Ultima lettura: stato globale workflow ancora in_progress, non dichiarato completato.
 [Dossier e spiegazioni](docs/verification/T-P10-06.md).
 
-HANDOFF — T-P10-06 DONE_UNVERIFIED
+HANDOFF — T-P10-06 DONE / P10 chiusa
 - Ogni operatore raw compilato/eseguito, equivalente disposizione fisica dei
   campi con identici esiti/context/messaggi, coordinate corrette per ogni layout.
 - PresenceConflict soltanto se required+forbidden certamente incondizionati;
@@ -18,7 +20,8 @@ HANDOFF — T-P10-06 DONE_UNVERIFIED
   57 file baseline identici, vecchi attesi e fonti invariati.
 - File schema/presence/compiler/linter, dsl suite/conditional/CLI lint/golden,
   nuovo profilo/input/attesi/oracolo/README/.gitignore, dossier/stato.
-- Git work/p1-foundations, task da pubblicare; gate Linux/Windows necessario.
+- Git work/p1-foundations, b7dc480 pubblicato; gate nativo soddisfatto da entrambi
+  i job completed/success. Workflow globale in_progress all’ultima lettura.
 - Prerequisiti soddisfatti; next T-P11-01 dopo gate P10, automaticamente.
 - M4/M5 non raggiunte: mancano P11/P12 e release. P13/PERSIST/T-P2-03/M1 aperti.
 
@@ -684,8 +687,8 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 |---|---|---|
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
-| QG-1 — controlli locali | PASS per T-P7-04 LocalOnly | fmt/check/clippy/release/GNU, 39 unit + 230 integration + 11 doctest = 280 |
-| QG-2 — CI Linux/Windows | PASS per dcb8c59 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39587379476), Linux 119179544895 e Windows 119179544684 completed/success |
+| QG-1 — controlli locali | PASS per T-P10-06 | fmt/check/clippy/test/release/GNU, 413 test in 51 suite |
+| QG-2 — CI Linux/Windows | PASS matrice nativa su b7dc480 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39787215311), entrambi i job completed/success; stato globale workflow ancora in_progress all’ultima lettura, non equiparato a completed |
 | QG-3 — architettura | PASS nel perimetro LocalOnly ratificato | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
 | QG-8 — documenti | PASS con revisione autorizzata T-P6-03 | DET §44 e prompt kit aggiornati per mandato esplicito; hash prima/dopo registrati; ARCH/Piano invariati; nessun residuo fisico formato 1 |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
@@ -806,7 +809,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P10-03 | DONE | 2026-10-22 | evaluator, 384 test; CI 39780196256 Linux/Windows verde su a6c7138; [report](docs/verification/T-P10-03.md) |
 | T-P10-04 | DONE | 2026-10-22 | presenza condizionale, 393 test; CI 39782079369 Linux/Windows verde su fdeea9b; [report](docs/verification/T-P10-04.md) |
 | T-P10-05 | DONE | 2026-10-22 | regole locali, 407 test; CI 39785432851 Linux/Windows verde su 9d5b1a3; [report](docs/verification/T-P10-05.md) |
-| T-P10-06 | DONE_UNVERIFIED | 2026-10-22 | suite DSL/golden, 413 test; CI pendente; [report](docs/verification/T-P10-06.md) |
+| T-P10-06 | DONE | 2026-10-22 | suite DSL/golden, 413 test; job CI 39787215311 Linux/Windows success su b7dc480, workflow globale in_progress all’ultima lettura; [report](docs/verification/T-P10-06.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
