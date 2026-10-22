@@ -3,6 +3,19 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Chiusura T-P8-03 — 2026-10-22
+
+T-P8-03 **DONE**, [CI 39743161012](https://github.com/UraganoAngelina/lintra/actions/runs/39743161012)
+completed/success su 10932f9c0345ec60009624940596bad23fed6b77; Linux GNU e
+Windows MSVC entrambi success verificati. 313 test locali, gate locali passati.
+
+HANDOFF — 2026-10-22 — T-P8-03 DONE / avvio T-P8-04
+- File e spiegazioni nel dossier T-P8-03; API core e baseline/fonti invariate.
+- Branch work/p1-foundations, codice 10932f9 pubblicato, chiusura documentale qui.
+- Next T-P8-04 autorizzata; prerequisiti T-P3-04 (CI 39257768950) e T-P8-01
+  (CI 39628560176) verificati documentalmente, regressioni locali rieseguite.
+- Nessun nuovo conflitto; P11/P13/PERSIST e residuo T-P2-03/M1 invariati.
+
 ## Frontiera corrente — T-P8-03 / 2026-10-22
 
 T-P8-03 **DONE_UNVERIFIED**: comando validate LocalOnly reale, report atomici
@@ -358,7 +371,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
 | T-P8-01 | DONE | 2026-10-21 | 297 test, CI 39628560176 Linux/Windows success 98d952b; [report](docs/verification/T-P8-01.md) |
 | T-P8-02 | DONE | 2026-10-22 | HumanReadableSink, 304 test locali, CI 39741868369 Linux/Windows completed/success su 81cee36; [report](docs/verification/T-P8-02.md) |
-| T-P8-03 | DONE_UNVERIFIED | 2026-10-22 | validate reale LocalOnly, 313 test locali, CI pendente; [report](docs/verification/T-P8-03.md) |
+| T-P8-03 | DONE | 2026-10-22 | validate reale LocalOnly, 313 test locali, CI 39743161012 Linux/Windows verde su 10932f9; [report](docs/verification/T-P8-03.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
