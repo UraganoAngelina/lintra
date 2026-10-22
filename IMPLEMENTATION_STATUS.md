@@ -3,6 +3,16 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Rettifica di scope — P10 estesa IN_PROGRESS — 2026-10-22
+
+Il contratto T-P0-07 già ratificato assegna a P10 Substring, AgeInCompletedYears,
+CalendarYearDelta e Expr/Assertion derivate: il nucleo è verificato, ma questi
+executor sono ancora esclusi. La precedente chiusura dell'intera P10 era troppo
+ampia. [Evidenza e ripresa](docs/verification/P10-derived-recovery.md).
+T-P11-01 conclude i gate in corso (dipende da 7-05), poi si completa il residuo
+P10 nelle task esistenti 10-01/03/04/05/06, preservando codice e prove valide.
+Non serve nuova ratifica; 10-02 DONE, M4/M5 ancora aperte. Nessun nuovo task ID.
+
 ## Frontiera corrente — T-P11-01 gate locali — 2026-10-22
 
 Contratti/preparazione reference data consegnati, 419 test/52 suite; fmt/check/
@@ -825,12 +835,12 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P9-04 | DONE | 2026-10-22 | regex bytes, 363 test locali; CI 39760756884 Linux/Windows verde su c6b85cd; [report](docs/verification/T-P9-04.md) |
 | T-P9-05 | DONE | 2026-10-22 | compatibilità, 366 test locali; CI 39761531728 Linux/Windows verde su 2f3b36f; [report](docs/verification/T-P9-05.md) |
 | T-P9-06 | DONE | 2026-10-22 | golden semantici, 367 test; CI 39762338659 Linux/Windows verde su 3fafc4b; [report](docs/verification/T-P9-06.md) |
-| T-P10-01 | DONE | 2026-10-22 | lowering Expr, 374 test; CI 39763287298 Linux/Windows verde su b8e1e80; [report](docs/verification/T-P10-01.md) |
+| T-P10-01 | IN_PROGRESS | 2026-10-22 | lowering Expr, 374 test; CI 39763287298 Linux/Windows verde su b8e1e80; [report](docs/verification/T-P10-01.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
 | T-P10-02 | DONE | 2026-10-22 | TruthValue, 376 test; CI 39764219198 Linux/Windows verde su e17c33a; [report](docs/verification/T-P10-02.md) |
-| T-P10-03 | DONE | 2026-10-22 | evaluator, 384 test; CI 39780196256 Linux/Windows verde su a6c7138; [report](docs/verification/T-P10-03.md) |
-| T-P10-04 | DONE | 2026-10-22 | presenza condizionale, 393 test; CI 39782079369 Linux/Windows verde su fdeea9b; [report](docs/verification/T-P10-04.md) |
-| T-P10-05 | DONE | 2026-10-22 | regole locali, 407 test; CI 39785432851 Linux/Windows verde su 9d5b1a3; [report](docs/verification/T-P10-05.md) |
-| T-P10-06 | DONE | 2026-10-22 | suite DSL/golden, 413 test; job CI 39787215311 Linux/Windows success su b7dc480, workflow globale in_progress all’ultima lettura; [report](docs/verification/T-P10-06.md) |
+| T-P10-03 | IN_PROGRESS | 2026-10-22 | evaluator, 384 test; CI 39780196256 Linux/Windows verde su a6c7138; [report](docs/verification/T-P10-03.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
+| T-P10-04 | IN_PROGRESS | 2026-10-22 | presenza condizionale, 393 test; CI 39782079369 Linux/Windows verde su fdeea9b; [report](docs/verification/T-P10-04.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
+| T-P10-05 | IN_PROGRESS | 2026-10-22 | regole locali, 407 test; CI 39785432851 Linux/Windows verde su 9d5b1a3; [report](docs/verification/T-P10-05.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
+| T-P10-06 | IN_PROGRESS | 2026-10-22 | suite DSL/golden, 413 test; job CI 39787215311 Linux/Windows success su b7dc480, workflow globale in_progress all’ultima lettura; [report](docs/verification/T-P10-06.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
 | T-P11-01 | DONE_UNVERIFIED | 2026-10-22 | reference ports/preparazione, 419 test; CI pendente; [report](docs/verification/T-P11-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
