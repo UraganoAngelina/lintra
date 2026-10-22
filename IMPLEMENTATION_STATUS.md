@@ -11,13 +11,29 @@ completed/success, Linux GNU e Windows MSVC success verificati. 340 test locali,
 fmt/check/Clippy/test/release/Windows GNU check/diff passati. P8/M3 locale già
 chiusi; range e date eseguibili dalla CLI. Nessuna baseline o fonte alterata.
 
-**T-P9-03 BLOCKED sul rinvio Decimal G0**, non un nuovo conflitto da riaprire:
-formato 1 approvato esclude Decimal, separatore/scala/segno non specificati.
-Dettagli e alternative: [preflight 9-03](docs/verification/T-P9-03-preflight.md).
-Nessun codice Decimal o nuova dipendenza introdotti. Proposta circoscritta:
-mantenere rinvio e proseguire T-P9-04, oppure ratificare prima il contratto
-Decimal completo con evidenze, AST ed esempi/versioning. Decisione dell'autore.
-T-P9-05 resta dipendente anche da 9-03; non dichiarare P9/M4 completa.
+**T-P9-03 BLOCKED soltanto sulla ratifica dell'estensione dati/versionamento.**
+L'autore ha ora definito il profilo importi: punto al terzultimo byte, due cifre
+decimali, nessun raggruppamento o segno, valori non negativi, zero ammesso.
+Decimal solo per importi monetari diretti; campi di compartecipazione con
+codici/range conservano integralmente tipo/vincoli. Nessuna classificazione
+basata sul nome, nessuna conversione di baseline autorizzata o effettuata.
+
+Proposta reviewabile: [contratto Decimal importi](docs/proposals/decimal-amount-contract.md).
+Propone nodo esplicito e formato 2 con formato 1 invariato; numero/versionamento
+e aggiornamento dei documenti sorgente restano da ratificare. Nessun codice
+Decimal scritto, nessuna funzionalità o gate aggiuntivo dichiarati superati.
+Il [preflight](docs/verification/T-P9-03-preflight.md) distingue chiarimenti
+attuali e origine storica del blocco. T-P9-05/P9 completa restano aperte.
+
+HANDOFF — 2026-10-22 — chiarimento Decimal, proposta dati da ratificare
+- Conferme autore: importi diretti soltanto; punto fisico terzultimo, scala due,
+  unsigned, zero valido. Codici/range di compartecipazione rigorosamente invariati.
+- File modificati: questo registro, preflight 9-03 e nuova proposta Decimal.
+- Nessun Rust/schema/source/baseline modificato; soli documenti di avanzamento.
+- Nessun test runtime rieseguito per questa modifica documentale. Ultime evidenze
+  invariate: 340 test e CI 39749927727 positiva sul codice fa54743.
+- Next: ratifica della proposta dati/versionamento; poi implementazione T-P9-03
+  già autorizzata nel workflow, senza riaprire le decisioni normative ricevute.
 
 HANDOFF — 2026-10-22 — T-P9-02 DONE / arresto contrattuale T-P9-03
 - Sessione: recuperata/chiusa 8-02, completate 8-03..06 e 9-01..02 con CI nativa
@@ -558,7 +574,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P8-06 | DONE | 2026-10-22 | 325 locali, CI 39747270986 Linux/Windows verde su 90528c4, test console Windows passato; [report](docs/verification/T-P8-06.md) |
 | T-P9-01 | DONE | 2026-10-22 | range inclusivo esatto, 333 locali, CI 39748653454 Linux/Windows verde su dc4b6ec; [report](docs/verification/T-P9-01.md) |
 | T-P9-02 | DONE | 2026-10-22 | date DDMMYYYY, 340 locali, CI 39749927727 Linux/Windows verde su fa54743; [report](docs/verification/T-P9-02.md) |
-| T-P9-03 | BLOCKED | 2026-10-22 | rinvio G0 Decimal: formato 1 lo esclude, contratto separatore/scala/segno non approvato; [preflight](docs/verification/T-P9-03-preflight.md) |
+| T-P9-03 | BLOCKED — ratifica estensione dati | 2026-10-22 | semantica importi chiarita dall’autore (dot/2/unsigned/zero ammesso), proposta AST/versionamento da ratificare; [preflight](docs/verification/T-P9-03-preflight.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

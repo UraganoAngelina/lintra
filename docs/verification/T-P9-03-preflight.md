@@ -7,7 +7,22 @@ Letti prompt T-P9-03, DET §137, Piano P9/§4/14, SCHEMA_AUTHORING tabella tipi,
 G0/T-P0-07 e compatibilità formato approvata. Non è un nuovo CNF né riapertura
 di ratifiche: il rinvio Decimal esiste già ed è vincolante.
 
-## BLOCCO — contratto Decimal non approvato
+## Chiarimenti successivi dell'autore — 2026-10-22
+
+La semantica precedentemente mancante è stata fornita: importi monetari diretti,
+punto al terzultimo byte, due cifre frazionarie, nessun raggruppamento,
+assenza di segno, negativi vietati, **zero ammesso**. Campi di compartecipazione
+con codici/range mantengono integralmente tipo e vincoli: nessuna conversione
+automatica. Questo supera le lacune normative descritte nello storico seguente.
+
+Resta da ratificare l'estensione del contratto dati che oggi esclude Decimal.
+[Proposta concreta](../proposals/decimal-amount-contract.md): nodo fisico,
+esempi, protezione campi esistenti e proposta di formato 2 con formato 1 invariato.
+Nessun codice o aggiornamento sorgente/baseline effettuato. Stato ancora BLOCKED
+per ratifica del contratto dati/versionamento, non per separatore/segno/scala.
+
+## Origine storica del blocco — prima dei chiarimenti
+
 
 **Descrizione.** La task chiede DecimalSpec/validator, con separatore, scala e
 segno secondo schema. Il formato 1 approvato esclude Decimal; nessun tracciato
