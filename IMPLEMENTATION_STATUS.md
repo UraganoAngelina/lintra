@@ -3,20 +3,21 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P10-01 gate locali — 2026-10-22
+## Frontiera corrente — T-P10-01 DONE / avvio T-P10-02 — 2026-10-22
 
 Modello espressioni locali risolto, 374 test locali/46 suite; fmt/check/Clippy/
-test/release/Windows GNU check/diff passati. CI nativa pendente.
+test/release/Windows GNU check/diff passati. CI nativa 39763287298
+completed/success Linux GNU/Windows MSVC su b8e1e80ea8595ea3a579af3dd2d1ecb4f093f50d.
 [Dossier e spiegazioni](docs/verification/T-P10-01.md).
 
-HANDOFF — T-P10-01 DONE_UNVERIFIED
+HANDOFF — T-P10-01 DONE
 - Raw/compiled esistenti riusati; lowering locale di foglie/booleani/Const e
   definizioni nominate, ref mancanti/cicli espliciti; niente eval.
 - Stack esplicito testato con catena di 4096 nomi; byte/ordine preservati.
 - Schemi condizionali restano UnsupportedConstruct fino agli executor P10;
   esterne e derived rifiutati, nessun piano ignorato in uno schema accettato.
 - File expression/mod/compiler/linter, unit/integration, dossier/stato.
-- Git work/p1-foundations, task da pubblicare; gate Linux/Windows necessario.
+- Git work/p1-foundations, b8e1e80 pubblicato; gate Linux/Windows verificato.
 - Prerequisiti compiler/G0 soddisfatti, next 10-02 dopo gate.
 - P11/P13/PERSIST/T-P2-03/M1 aperti; solo LocalOnly eseguibile.
 
@@ -694,7 +695,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P9-04 | DONE | 2026-10-22 | regex bytes, 363 test locali; CI 39760756884 Linux/Windows verde su c6b85cd; [report](docs/verification/T-P9-04.md) |
 | T-P9-05 | DONE | 2026-10-22 | compatibilità, 366 test locali; CI 39761531728 Linux/Windows verde su 2f3b36f; [report](docs/verification/T-P9-05.md) |
 | T-P9-06 | DONE | 2026-10-22 | golden semantici, 367 test; CI 39762338659 Linux/Windows verde su 3fafc4b; [report](docs/verification/T-P9-06.md) |
-| T-P10-01 | DONE_UNVERIFIED | 2026-10-22 | lowering Expr, 374 test; CI pendente; [report](docs/verification/T-P10-01.md) |
+| T-P10-01 | DONE | 2026-10-22 | lowering Expr, 374 test; CI 39763287298 Linux/Windows verde su b8e1e80; [report](docs/verification/T-P10-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

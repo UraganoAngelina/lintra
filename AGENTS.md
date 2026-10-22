@@ -112,3 +112,9 @@ Ratifica dell'autore — 2026-10-22 — Decimal importi / formato 2:
   Niente classificazione per nome o ID hardcoded, niente baseline riscritte.
 - Exact/preserve width per il nuovo Decimal; CNF-ALIGNMENT-01 invariata per v1.
 - Nessun floating point; gate locali/native CI e spiegazioni dettagliate richiesti.
+
+Ribadito dall'autore — 2026-10-22:
+- Iniziare automaticamente la task successiva dopo esito e gate non ambigui.
+- Un handoff o la fine di una task non sono motivi per chiudere il turno.
+- Nessuna conferma ordinaria ulteriore; fermarsi per criticità contrattuali reali
+  o nuove istruzioni esplicite dell'autore, preservando tutti i Quality Gate.
