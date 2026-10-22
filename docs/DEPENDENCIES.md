@@ -74,3 +74,17 @@ Linux/Windows GNU; gate Windows MSVC da CI. I build script nix/libc sono Rust,
 nessun cc/cmake/OpenSSL nell'albero Linux né dipendenza Apple attiva sui target
 supportati; i pacchetti Apple nel lock non significano dipendenza runtime Linux.
 Download iniziali bloccati da DNS sandbox, ripetuti con accesso esterno riuscito.
+
+## T-P9-04 — regex, dipendenza già presente
+
+regex 1.13.1 (MIT OR Apache-2.0, MSRV 1.65), già in Cargo.toml/lock:
+nessuna aggiunta o cambio feature. API regex::bytes::Regex nel compiler/piano.
+Verificati manifest delle copie locali e cargo tree --locked -p regex per
+Linux GNU e Windows MSVC: identico ramo pure Rust, nessun build script o FFI.
+regex-automata 0.4.18 / regex-syntax 0.8.11: MIT OR Apache-2.0, MSRV 1.65;
+aho-corasick 1.1.5: Unlicense OR MIT, MSRV 1.60;
+memchr 2.8.3: Unlicense OR MIT, MSRV 1.61. build=false per tutti.
+Toolchain 1.99.1 compatibile. Nessuna dipendenza PCRE/OpenSSL/host.
+La libreria rifiuta backreference/lookaround anziché ignorarli; i limiti di
+compilazione standard del crate restano attivi e producono InvalidRegex.
+Gate nativo e spiegazione completa nel dossier T-P9-04.

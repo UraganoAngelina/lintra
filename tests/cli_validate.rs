@@ -499,3 +499,36 @@ fn calendar_dates_reach_real_record_validation_with_valid_and_invalid_outcomes()
         file.assert_no_parts();
     }
 }
+
+/// A compiled regex is usable through the real service and atomic reports;
+/// invalid programs fail schema compilation before any report is published.
+#[test]
+fn regex_constraints_reach_cli_and_invalid_patterns_fail_before_reporting() {
+    for (pattern, exit) in [("^A$", 0), ("^B$", 2), ("[", 1)] {
+        let file = Fixture::new(b"001A  \n");
+        let path = file.root.join("schemas/SYNTHETIC/v1/flow.json");
+        let mut schema: serde_json::Value =
+            serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+        schema["traces"][0]["fields"][1]["constraints"] = serde_json::json!([
+            {"kind":"regex","pattern":pattern,"match":"required","target":"logical"}
+        ]);
+        fs::write(path, serde_json::to_vec(&schema).unwrap()).unwrap();
+        let output = file.run();
+        assert_eq!(output.status.code(), Some(exit), "{}", text(&output.stderr));
+        if exit == 1 {
+            assert!(!file.root.join("errors.jsonl").exists());
+            assert!(!file.root.join("summary.json").exists());
+            assert!(!output.stderr.is_empty());
+        } else {
+            let errors = fs::read(file.root.join("errors.jsonl")).unwrap();
+            if exit == 2 {
+                let error: serde_json::Value = serde_json::from_slice(&errors).unwrap();
+                assert_eq!(error["code"], "E_INVALID_DOMAIN");
+                assert_eq!(error["field"]["id"], "F2");
+            } else {
+                assert!(errors.is_empty());
+            }
+        }
+        file.assert_no_parts();
+    }
+}

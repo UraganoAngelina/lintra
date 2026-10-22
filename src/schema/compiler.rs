@@ -5,7 +5,14 @@ use crate::schema::{
     linter::{SchemaIssue, SchemaIssueCode as Code, SchemaIssueSeverity, lint_raw_schema},
     raw::*,
 };
-use std::{collections::HashSet, error::Error, fmt};
+use std::{
+    collections::{BTreeMap, HashSet},
+    error::Error,
+    fmt,
+};
+
+/// Per-compilation cache only: immutable regex programs (or their parse errors).
+type RegexPlans = BTreeMap<String, Result<regex::bytes::Regex, String>>;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SchemaCompilationError {
@@ -29,6 +36,7 @@ pub struct SchemaCompiler;
 struct Checks<'a> {
     raw: &'a RawFlowSchema,
     issues: Vec<SchemaIssue>,
+    regexes: RegexPlans,
 }
 impl Checks<'_> {
     fn error(
@@ -244,6 +252,25 @@ impl Checks<'_> {
             RawPhysical::Date { .. } | RawPhysical::Decimal { .. } => &RawAlignment::Exact {},
         };
         for constraint in &field.constraints {
+            if let RawConstraint::Regex { pattern, .. } = constraint {
+                // Compile each distinct pattern once per schema, including
+                // failures. Programs are cloned cheaply into frozen field plans.
+                let result = self
+                    .regexes
+                    .entry(pattern.clone())
+                    .or_insert_with(|| {
+                        if pattern.is_empty() {
+                            Err("regex pattern must be nonempty".to_owned())
+                        } else {
+                            regex::bytes::Regex::new(pattern).map_err(|error| error.to_string())
+                        }
+                    })
+                    .clone();
+                if let Err(message) = result {
+                    self.error(Code::InvalidRegex, trace, id, message);
+                }
+                continue;
+            }
             if let RawConstraint::Date { calendar_valid, .. } = constraint {
                 if !matches!(field.physical, RawPhysical::Date { .. }) {
                     self.error(
@@ -366,7 +393,7 @@ impl Checks<'_> {
             );
         }
     }
-    fn finish(mut self) -> Vec<SchemaIssue> {
+    fn finish(mut self) -> (Vec<SchemaIssue>, RegexPlans) {
         // Stable merge of structural and compiler diagnostics. Field IDs are lookup
         // labels, never lexical sort keys. Invalid duplicate IDs keep insertion ties.
         self.issues.sort_by_key(|issue| {
@@ -386,7 +413,7 @@ impl Checks<'_> {
             };
             (trace_order, field_order)
         });
-        self.issues
+        (self.issues, self.regexes)
     }
 }
 
@@ -398,6 +425,7 @@ impl SchemaCompiler {
         let mut checks = Checks {
             raw: &raw,
             issues: lint_raw_schema(&raw),
+            regexes: RegexPlans::new(),
         };
         if raw.regulatory_version.is_empty()
             || raw.regulatory_version.trim() != raw.regulatory_version
@@ -463,7 +491,7 @@ impl SchemaCompiler {
         for record in &raw.traces {
             checks.record(record);
         }
-        let issues = checks.finish();
+        let (issues, regexes) = checks.finish();
         if issues
             .iter()
             .any(|issue| issue.severity == SchemaIssueSeverity::Error)
@@ -486,7 +514,7 @@ impl SchemaCompiler {
         let mut traces = Vec::with_capacity(raw.traces.len());
         for record in &raw.traces {
             traces.push(
-                compile_record(record)
+                compile_record(record, &regexes)
                     .map_err(|(code, message)| fail(Some(&record.id), None, code, message))?,
             );
         }
@@ -586,7 +614,7 @@ fn lexical(raw: &RawLexical) -> LexicalPlan {
         }
     }
 }
-fn compile_field(raw: &RawFieldSpec) -> Result<CompiledFieldSpec, Code> {
+fn compile_field(raw: &RawFieldSpec, regexes: &RegexPlans) -> Result<CompiledFieldSpec, Code> {
     let (start, length, field_type, raw_alignment, raw_lexical) = match &raw.physical {
         RawPhysical::Numeric {
             start,
@@ -708,6 +736,25 @@ fn compile_field(raw: &RawFieldSpec) -> Result<CompiledFieldSpec, Code> {
                         .parse()
                         .map_err(|_| Code::InvalidSchemaValue)?,
                 }),
+                RawConstraint::Regex {
+                    pattern,
+                    r#match,
+                    target,
+                } => Ok(CompiledConstraint::Regex {
+                    regex: regexes
+                        .get(pattern)
+                        .and_then(|result| result.as_ref().ok())
+                        .cloned()
+                        .ok_or(Code::InternalCompilerInvariant)?,
+                    mode: match r#match {
+                        RawConstraintRegexMatch::Required => RegexMatch::Required,
+                        RawConstraintRegexMatch::Forbidden => RegexMatch::Forbidden,
+                    },
+                    target: match target {
+                        RawConstraintAllowedValuesTarget::Raw => ValueTarget::Raw,
+                        RawConstraintAllowedValuesTarget::Logical => ValueTarget::Logical,
+                    },
+                }),
                 RawConstraint::Date { format, .. } => Ok(CompiledConstraint::Date {
                     format: match format {
                         RawPhysicalDateFormat::Ddmmyyyy => DateFormat::DdMmYyyy,
@@ -746,11 +793,14 @@ fn identity_target(raw: &RawIdentitySpec) -> Result<IdentityTarget, (Code, Strin
         )),
     }
 }
-fn compile_record(raw: &RawRecordSchema) -> Result<CompiledRecordSchema, (Code, String)> {
+fn compile_record(
+    raw: &RawRecordSchema,
+    regexes: &RegexPlans,
+) -> Result<CompiledRecordSchema, (Code, String)> {
     let fields = raw
         .fields
         .iter()
-        .map(compile_field)
+        .map(|field| compile_field(field, regexes))
         .collect::<Result<Vec<_>, _>>()
         .map_err(|code| (code, "field construction failed after preflight".to_owned()))?;
     let key = raw
@@ -855,7 +905,7 @@ mod tests {
         record.record_key.fields = vec![record.fields[0].id.clone()];
         record.documented_non_executable_rules.clear();
         record.record_length = 1;
-        let (code, message) = compile_record(record).unwrap_err();
+        let (code, message) = compile_record(record, &RegexPlans::new()).unwrap_err();
         assert_eq!(code, Code::InternalCompilerInvariant);
         assert!(message.contains("FieldOutsideRecord"));
     }

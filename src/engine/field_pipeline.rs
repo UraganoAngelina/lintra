@@ -13,6 +13,7 @@ use crate::{
         domain::validate_allowed_values,
         presence::{PresenceValidationResult, validate_presence},
         range::validate_numeric_range,
+        regex::validate_regex,
     },
 };
 use std::{error::Error, fmt};
@@ -154,6 +155,19 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
                         ValueTarget::Logical => logical,
                     };
                     if let Err(violation) = validate_allowed_values(values, value) {
+                        return self.emit(field, raw, line_number, identity, violation);
+                    }
+                }
+                CompiledConstraint::Regex {
+                    regex,
+                    mode,
+                    target,
+                } => {
+                    let value = match target {
+                        ValueTarget::Raw => raw,
+                        ValueTarget::Logical => logical,
+                    };
+                    if let Err(violation) = validate_regex(regex, *mode, value) {
                         return self.emit(field, raw, line_number, identity, violation);
                     }
                 }

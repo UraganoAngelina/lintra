@@ -3,6 +3,24 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P9-04 gate locali — 2026-10-22
+
+Regex compiled su byte implementata, 363 test locali passati (45 suite).
+fmt/check/Clippy/test/release/Windows GNU check/diff passati; CI nativa pendente.
+Nessuna baseline o grammatica modificata. [Dossier](docs/verification/T-P9-04.md).
+
+HANDOFF — T-P9-04 DONE_UNVERIFIED
+- Cache privata per compilazione, InvalidRegex contestualizzato, raw/logical e
+  required/forbidden espliciti, E_INVALID_DOMAIN senza codici nuovi.
+- File: compiler/linter, validator Regex/mod, pipeline/record capability;
+  test regex/CLI/lint, registro dipendenze, dossier e stato.
+- DEC-15 ramo regex pure Rust confermato su Linux GNU/Windows MSVC; Cargo invariato.
+- Git work/p1-foundations, task da pubblicare; native CI ancora necessaria.
+- Next T-P9-05 dopo gate; nessun blocco contrattuale nuovo.
+- P11/P13/PERSIST/T-P2-03/M1 restano aperti, solo LocalOnly eseguibile.
+
+## Registro storico — T-P9-03 conclusa
+
 ## Frontiera corrente — T-P9-03 DONE / avvio T-P9-04 — 2026-10-22
 
 Decimal consegnata su **5866d1dc80f18f8c447ffd70161c592a30d99e3b**,
@@ -617,6 +635,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P9-01 | DONE | 2026-10-22 | range inclusivo esatto, 333 locali, CI 39748653454 Linux/Windows verde su dc4b6ec; [report](docs/verification/T-P9-01.md) |
 | T-P9-02 | DONE | 2026-10-22 | date DDMMYYYY, 340 locali, CI 39749927727 Linux/Windows verde su fa54743; [report](docs/verification/T-P9-02.md) |
 | T-P9-03 | DONE | 2026-10-22 | formato 2 Decimal, 354 test, CI 39759270541 Linux/Windows verde su 5866d1d; [preflight](docs/verification/T-P9-03-preflight.md) |
+| T-P9-04 | DONE_UNVERIFIED | 2026-10-22 | regex bytes, 363 test locali; native CI pendente; [report](docs/verification/T-P9-04.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

@@ -112,7 +112,7 @@ fn unsupported_construct_is_not_silently_skipped_by_lint() {
     let file = Fixture::new();
     file.mutate(|raw| {
         raw["traces"][0]["fields"][0]["constraints"] =
-            serde_json::json!([{"kind":"regex","pattern":"^[0-9]+$","match":"required","target":"logical"}]);
+            serde_json::json!([{"kind":"logical_length","equals":3}]);
     });
     let out = file.run();
     assert_eq!(out.status.code(), Some(2), "{:?}", out.stderr);
@@ -178,5 +178,24 @@ fn syntax_and_help_remain_distinct_from_schema_invalidity() {
             .status
             .code(),
         Some(1)
+    );
+}
+
+#[test]
+fn invalid_regex_is_a_contextual_lint_issue() {
+    let file = Fixture::new();
+    file.mutate(|raw| {
+        raw["traces"][0]["fields"][0]["constraints"] = serde_json::json!([
+            {"kind":"regex","pattern":"[","match":"required","target":"logical"}
+        ]);
+    });
+    let output = file.run();
+    assert_eq!(output.status.code(), Some(2));
+    assert!(
+        documents(&output)
+            .iter()
+            .any(|issue| issue["code"] == "InvalidRegex"
+                && issue["trace_id"] == "T1"
+                && issue["field_id"] == "F1")
     );
 }

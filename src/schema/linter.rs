@@ -36,6 +36,7 @@ pub enum SchemaIssueCode {
     UnsupportedCapability,
     UnsupportedConstruct,
     InvalidSchemaValue,
+    InvalidRegex,
     InvalidRecordKey,
     MissingFieldReference,
     InvalidDiagnosticCode,

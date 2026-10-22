@@ -252,6 +252,7 @@ fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidatio
                 CompiledConstraint::AllowedValues { .. }
                     | CompiledConstraint::Range { .. }
                     | CompiledConstraint::Date { .. }
+                    | CompiledConstraint::Regex { .. }
             )
         }) {
             Some(UnsupportedLocalFeature::Constraint)
