@@ -7,7 +7,7 @@ use crate::{
 
 /// Presence is separate from lexical/semantic validity. MissingOptional stops
 /// the field pipeline successfully; Unknown cannot be treated as Present.
-/// The latter is the explicit boundary for conditions not evaluated in P6.
+/// Conditional decisions require the context-aware engine pipeline.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PresenceValidationResult {
     Present,
@@ -18,9 +18,9 @@ pub enum PresenceValidationResult {
 /// Validate unconditional Required/Optional against unmodified source bytes.
 ///
 /// DET §42's evaluation context is omitted for this base-only stage (DET §147):
-/// no expression evaluation exists here. Nonempty condition plans return
-/// Unknown, never silently falling back to the base policy. Full conditional
-/// presence/forbidden evaluation remains P10's responsibility.
+/// expression evaluation belongs to engine. Without that context, nonempty
+/// condition plans return Unknown, never silently falling back to the base
+/// policy. FieldPipeline::run_with_context executes conditional presence.
 ///
 /// Field width must already have been checked by the record pipeline. Neither
 /// presence nor is_missing trims, decodes, validates padding or checks datatype.
@@ -29,25 +29,64 @@ pub fn validate_presence(
     value: FieldSlice<'_>,
 ) -> Result<PresenceValidationResult, FieldViolation> {
     let policy = field.presence_policy();
-    // Even a seemingly constant condition belongs to the future evaluator.
+    // Even a constant condition needs the context-aware executor path.
     // Refusing to decide prevents a false success or missing-required error.
     if !policy.required_if.is_empty() || !policy.forbidden_if.is_empty() {
         return Ok(PresenceValidationResult::Unknown);
     }
-    if !is_missing(field.missing_value_policy(), value.as_bytes()) {
-        return Ok(PresenceValidationResult::Present);
-    }
-    // Only the missing+Required branch allocates a lightweight diagnostic.
-    // ErrorFactory later adds record identity, positions and the stable message.
-    match policy.base {
-        BasePresence::Required => Err(FieldViolation {
-            code: ValidationCode::RequiredField,
-            expected: Some("valore presente".into()),
+    let state = match policy.base {
+        BasePresence::Required => DecidedPresence::Required,
+        BasePresence::Optional => DecidedPresence::Optional,
+    };
+    validate_decided_presence(field, value, state)
+}
+
+/// An immutable decision passed down from engine, with no evaluator dependency.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum DecidedPresence {
+    Required,
+    Optional,
+    Forbidden,
+    Conflict,
+}
+
+pub(crate) fn validate_decided_presence(
+    field: &CompiledFieldSpec,
+    value: FieldSlice<'_>,
+    state: DecidedPresence,
+) -> Result<PresenceValidationResult, FieldViolation> {
+    let missing = is_missing(field.missing_value_policy(), value.as_bytes());
+    let failure = match state {
+        DecidedPresence::Conflict => Some((
+            ValidationCode::RuleConflict,
+            "regole di presenza non in conflitto",
+        )),
+        DecidedPresence::Forbidden if !missing => {
+            Some((ValidationCode::ForbiddenField, "valore assente"))
+        }
+        DecidedPresence::Required if missing => Some((
+            if field.presence_policy().base == BasePresence::Required {
+                ValidationCode::RequiredField
+            } else {
+                ValidationCode::ConditionalRequired
+            },
+            "valore presente",
+        )),
+        _ => None,
+    };
+    if let Some((code, expected)) = failure {
+        return Err(FieldViolation {
+            code,
+            expected: Some(expected.into()),
             reason: String::new(),
             diagnostic_context: vec![],
-        }),
-        BasePresence::Optional => Ok(PresenceValidationResult::MissingOptional),
+        });
     }
+    Ok(if missing {
+        PresenceValidationResult::MissingOptional
+    } else {
+        PresenceValidationResult::Present
+    })
 }
 
 /// Tests the unmodified bytes against the schema's explicit missing policy.

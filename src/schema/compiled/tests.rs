@@ -501,10 +501,18 @@ fn local_record_rejects_every_unimplemented_local_plan_before_processing() {
                 unique_non_missing: false,
                 unused_slot_value: None,
             }),
-            Feature::ConditionalPresence => trace.fields[0]
-                .presence_policy
-                .forbidden_if
-                .push(CompiledExpr::Const(false)),
+            Feature::ConditionalPresence => {
+                trace.fields[0]
+                    .presence_policy
+                    .forbidden_if
+                    .push(CompiledExpr::DerivedEq {
+                        field: ResolvedFieldRef::Local {
+                            field_index: 0,
+                            field_id: FieldId("Z".into()),
+                        },
+                        derived_index: 0,
+                    })
+            }
             Feature::Constraint => trace.fields[0]
                 .constraints
                 .push(CompiledConstraint::LogicalLength { equals: 3 }),

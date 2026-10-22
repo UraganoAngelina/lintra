@@ -532,3 +532,37 @@ fn regex_constraints_reach_cli_and_invalid_patterns_fail_before_reporting() {
         file.assert_no_parts();
     }
 }
+
+/// Conditional presence is real end-to-end; an undecidable obligation cannot
+/// overwrite old reports with an apparently VALID or normative INVALID run.
+#[test]
+fn conditional_presence_reports_real_violations_and_aborts_undecidable_runs() {
+    for (input, exit) in [
+        (b"   A  \n".as_slice(), 2),
+        (b"001A  \n", 0),
+        (b"001   \n", 1),
+    ] {
+        let file = Fixture::new(input);
+        let path = file.root.join("schemas/SYNTHETIC/v1/flow.json");
+        let mut value: serde_json::Value =
+            serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+        value["required_capabilities"] = serde_json::json!(["local.v1", "expressions.v1"]);
+        value["traces"][0]["fields"][0]["presence"] = serde_json::json!({"base":"optional","required_if":[{"eq":{"ref":{"field":"F2"},"value":"A"}}],"forbidden_if":[]});
+        value["traces"][0]["fields"][1]["presence"]["base"] = serde_json::json!("optional");
+        fs::write(path, serde_json::to_vec(&value).unwrap()).unwrap();
+        if exit == 1 {
+            file.old_reports();
+        }
+        let output = file.run();
+        assert_eq!(output.status.code(), Some(exit), "{}", text(&output.stderr));
+        if exit == 1 {
+            file.assert_old();
+        } else if exit == 2 {
+            let error: serde_json::Value =
+                serde_json::from_slice(&fs::read(file.root.join("errors.jsonl")).unwrap()).unwrap();
+            assert_eq!(error["code"], "E_CONDITIONAL_REQUIRED");
+            assert_eq!(error["field"]["id"], "F1");
+        }
+        file.assert_no_parts();
+    }
+}

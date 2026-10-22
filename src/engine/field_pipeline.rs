@@ -1,5 +1,9 @@
 //! Ordered local field stages. No normative flags are mutated on other fields.
-use super::error_factory::ErrorFactory;
+use super::{
+    error_factory::ErrorFactory,
+    expression_evaluator::EvaluationContext,
+    presence::{PresenceState, resolve_presence, validate_presence_state},
+};
 use crate::{
     domain::{FieldId, RecordIdentity, SummaryBuildError, ValidationSummaryBuilder},
     input::record::FieldSlice,
@@ -96,6 +100,7 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
     /// Run one already sliced, full-width field. Input metadata (line/identity)
     /// is supplied by the record stage. Stop on the first primary violation;
     /// a normative Invalid does not stop other fields, a technical Err does.
+    /// This compatible API is base-only; use run_with_context for conditions.
     pub fn run(
         &mut self,
         field: &CompiledFieldSpec,
@@ -114,9 +119,46 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
         result
     }
 
+    /// Evaluate against the immutable record context, then execute the common
+    /// primary-error pipeline. The base-only run API remains compatible.
+    pub fn run_with_context(
+        &mut self,
+        field: &CompiledFieldSpec,
+        raw: FieldSlice<'_>,
+        line_number: u64,
+        identity: &RecordIdentity,
+        ctx: &EvaluationContext<'_>,
+    ) -> Result<FieldPipelineResult, FieldPipelineError> {
+        if self.failed {
+            return Err(FieldPipelineError::PreviousFailure);
+        }
+        let state = resolve_presence(field.presence_policy(), ctx);
+        self.run_with_presence(field, raw, line_number, identity, state)
+    }
+
+    /// RecordValidator shares this exact decision to retain Unknown's reason.
+    pub(crate) fn run_with_presence(
+        &mut self,
+        field: &CompiledFieldSpec,
+        raw: FieldSlice<'_>,
+        line_number: u64,
+        identity: &RecordIdentity,
+        state: PresenceState,
+    ) -> Result<FieldPipelineResult, FieldPipelineError> {
+        if self.failed {
+            return Err(FieldPipelineError::PreviousFailure);
+        }
+        let presence = validate_presence_state(state, field, raw);
+        let result = self.after_presence(presence, field, raw, line_number, identity);
+        if result.is_err() {
+            self.failed = true;
+        }
+        result
+    }
+
     /// All presence violations use the same stop path, including future
-    /// precomputed conditional/forbidden violations. This does not evaluate P10
-    /// expressions: current runtime presence remains the base-only validator.
+    /// resolved conditional/forbidden violations. Context evaluation precedes
+    /// this method; no later semantic stage runs for unknown presence.
     fn after_presence(
         &mut self,
         presence: Result<PresenceValidationResult, FieldViolation>,
@@ -131,6 +173,9 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
                 return Ok(FieldPipelineResult::MissingOptional);
             }
             Ok(PresenceValidationResult::Unknown) => {
+                self.summary
+                    .rule_skipped()
+                    .map_err(FieldPipelineError::Summary)?;
                 return Ok(FieldPipelineResult::SkippedDueToUnknownPresence);
             }
             Ok(PresenceValidationResult::Present) => {}

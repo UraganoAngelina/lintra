@@ -3,6 +3,29 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P10-04 gate locali — 2026-10-22
+
+Presenza condizionale eseguibile, 393 test/49 suite; fmt/check/Clippy/test/release/
+Windows GNU check/diff passati. CI nativa pendente.
+[Dossier e spiegazioni](docs/verification/T-P10-04.md).
+
+HANDOFF — T-P10-04 DONE_UNVERIFIED
+- Policy frozen conserva condizioni; named/local expressions eseguibili,
+  Required/Optional/Forbidden/Conflict/Unknown e codici primari verificati.
+- Unknown conta skipped_rules ma non diventa né pass né violazione inventata:
+  RecordValidationError::UndeterminedPresence con field/reason termina la run,
+  preservando gli esiti già ratificati e abort atomico dei report su Err.
+- Layering: schema normalizza, engine valuta, validator controlla decisione;
+  nessun import engine nei livelli inferiori. RequiredUnless via Not(E), CNF-10.
+- File schema/presence/compiler/mod; engine/presence/pipeline/record/mod;
+  validators/presence/lib e test compiler/compiled/conditional/CLI, dossier/stato.
+- 57 file protetti identici via SHA-256 contro HEAD; nessuna fonte/baseline toccata.
+- Git work/p1-foundations, task da pubblicare; native CI necessaria.
+- Prerequisiti soddisfatti, next T-P10-05 dopo gate, avanzamento automatico.
+- P11/P13/PERSIST/T-P2-03/M1 aperti; solo LocalOnly eseguibile.
+
+## Registro storico — T-P10-03 conclusa
+
 ## Frontiera corrente — T-P10-03 DONE / avvio T-P10-04 — 2026-10-22
 
 ExpressionEvaluator e contesto reale locale consegnati, 384 test/48 suite.
@@ -735,6 +758,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P10-01 | DONE | 2026-10-22 | lowering Expr, 374 test; CI 39763287298 Linux/Windows verde su b8e1e80; [report](docs/verification/T-P10-01.md) |
 | T-P10-02 | DONE | 2026-10-22 | TruthValue, 376 test; CI 39764219198 Linux/Windows verde su e17c33a; [report](docs/verification/T-P10-02.md) |
 | T-P10-03 | DONE | 2026-10-22 | evaluator, 384 test; CI 39780196256 Linux/Windows verde su a6c7138; [report](docs/verification/T-P10-03.md) |
+| T-P10-04 | DONE_UNVERIFIED | 2026-10-22 | presenza condizionale, 393 test; CI pendente; [report](docs/verification/T-P10-04.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

@@ -204,3 +204,5 @@ pub use engine::expression_evaluator::{
 };
 
 pub use schema::compiled::{CompiledExpr, ResolvedFieldRef};
+
+pub use engine::presence::{PresenceState, resolve_presence};

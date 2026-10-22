@@ -178,12 +178,7 @@ fn local_capability_is_required_and_other_capabilities_are_never_silently_accept
     let mut value = sample();
     value["required_capabilities"] = json!([]);
     assert!(has(&error(value), Code::MissingCapability));
-    for capability in [
-        "expressions.v1",
-        "joins.v1",
-        "persistence.audit.v1",
-        "temporal.intervals.v1",
-    ] {
+    for capability in ["joins.v1", "persistence.audit.v1", "temporal.intervals.v1"] {
         let mut value = sample();
         value["required_capabilities"] = json!(["local.v1", capability]);
         assert!(has(&error(value), Code::UnsupportedCapability));
@@ -197,7 +192,9 @@ fn local_capability_is_required_and_other_capabilities_are_never_silently_accept
 fn lint_errors_and_unsupported_constructs_are_aggregated_with_context() {
     let mut value = sample();
     value["traces"][0]["fields"][0]["physical"]["start"] = json!(0);
-    value["traces"][0]["fields"][1]["presence"]["required_if"] = json!([{"const":true}]);
+    value["traces"][0]["fields"][1]["presence"]["required_if"] = json!([
+        {"derived_compare":{"derived_value":"future","operator":"==","value":1}}
+    ]);
     let mut second = value["traces"][0].clone();
     second["id"] = json!("A");
     value["traces"][0]["id"] = json!("Z");
@@ -238,13 +235,7 @@ fn every_excluded_ast_collection_is_a_blocking_boundary() {
         "../docs/schema-authoring/examples/schemas/history-flow.json"
     ))
     .unwrap();
-    for name in [
-        "joins",
-        "named_conditions",
-        "derived_values",
-        "repeated_groups",
-        "rules",
-    ] {
+    for name in ["joins", "derived_values", "repeated_groups", "rules"] {
         let payload = [&local, &history]
             .into_iter()
             .flat_map(|v| v["traces"].as_array().unwrap())
@@ -294,7 +285,9 @@ fn every_excluded_ast_collection_is_a_blocking_boundary() {
     let result = error(value);
     assert!(has(&result, Code::Overlap) || has(&result, Code::RecordLengthMismatch));
     let mut value = sample();
-    value["traces"][0]["fields"][0]["presence"]["forbidden_if"] = json!([{"const":true}]);
+    value["traces"][0]["fields"][0]["presence"]["forbidden_if"] = json!([
+        {"derived_compare":{"derived_value":"future","operator":"==","value":1}}
+    ]);
     assert!(has(&error(value), Code::UnsupportedConstruct));
 }
 
@@ -472,17 +465,15 @@ fn format_range_is_enforced_by_the_compiler_without_a_fallback() {
 }
 
 #[test]
-fn local_expression_model_errors_are_typed_while_execution_stays_blocked() {
+fn local_expression_model_errors_remain_typed_with_presence_execution_available() {
     let mut value = sample();
     value["traces"][0]["fields"][0]["presence"]["required_if"] = json!([
         {"eq":{"ref":{"field":"ABSENT"},"value":"1"}}
     ]);
     let result = error(value);
     assert!(has(&result, Code::MissingFieldReference));
-    assert!(has(&result, Code::UnsupportedConstruct));
     let mut value = sample();
     value["traces"][0]["named_conditions"] = json!({"loop":{"condition":"loop"}});
     let result = error(value);
     assert!(has(&result, Code::SelfReferentialRule));
-    assert!(has(&result, Code::UnsupportedConstruct));
 }

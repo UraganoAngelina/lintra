@@ -1,8 +1,10 @@
 //! Explicit LocalOnly record validation, ratified by CNF-RECORD-01.
 use super::{
     error_factory::ErrorFactory,
+    expression_evaluator::{EvaluationContext, LocalEvaluationContext, UnknownReason},
     field_pipeline::{FieldPipeline, FieldPipelineError, FieldPipelineResult},
     identity_extractor::{IdentityExtractionError, IdentityExtractor},
+    presence::{PresenceState, resolve_presence},
 };
 use crate::{
     domain::{FieldId, RecordIdentity, SummaryBuildError, TraceId, ValidationSummaryBuilder},
@@ -41,6 +43,12 @@ pub enum RecordValidationError {
         field_id: Option<FieldId>,
     },
     InvalidLineNumber,
+    /// Local presence cannot be determined from available values. Abort the run
+    /// rather than publish either a normative violation or a false valid report.
+    UndeterminedPresence {
+        field_id: FieldId,
+        reason: UnknownReason,
+    },
     FieldOutOfBounds {
         field_id: FieldId,
     },
@@ -57,6 +65,9 @@ impl fmt::Display for RecordValidationError {
         f.write_str(match self {
             Self::TraceNotFound(_) => "local validation trace does not exist",
             Self::UnsupportedLocalPlan { .. } => "required local plan is not supported",
+            Self::UndeterminedPresence { .. } => {
+                "local presence cannot be determined from available values"
+            }
             Self::InvalidLineNumber => "record line number must be one-based",
             Self::FieldOutOfBounds { .. } => "record field range is outside source bytes",
             Self::Identity(_) => "record identity extraction failed",
@@ -180,6 +191,11 @@ impl<'schema> RecordValidator<'schema> {
             trace_id: self.factory.trace_id,
             encoding: self.factory.encoding,
         };
+        let local = LocalEvaluationContext {
+            record: &view,
+            schema: self.schema,
+        };
+        let ctx = EvaluationContext { fields: &local };
         let mut pipeline = FieldPipeline::new(factory, sink, summary);
         let mut valid = true;
         for field in self.schema.fields() {
@@ -188,10 +204,17 @@ impl<'schema> RecordValidator<'schema> {
                     .ok_or_else(|| RecordValidationError::FieldOutOfBounds {
                         field_id: field.id().clone(),
                     })?;
-            match pipeline
-                .run(field, value, record.line_number, &identity)
-                .map_err(RecordValidationError::Pipeline)?
-            {
+            let state = resolve_presence(field.presence_policy(), &ctx);
+            let result = pipeline
+                .run_with_presence(field, value, record.line_number, &identity, state)
+                .map_err(RecordValidationError::Pipeline)?;
+            if let PresenceState::Unknown(reason) = state {
+                return Err(RecordValidationError::UndeterminedPresence {
+                    field_id: field.id().clone(),
+                    reason,
+                });
+            }
+            match result {
                 FieldPipelineResult::Valid | FieldPipelineResult::MissingOptional => {}
                 FieldPipelineResult::Invalid => valid = false,
                 FieldPipelineResult::SkippedDueToUnknownPresence => {
@@ -244,7 +267,12 @@ fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidatio
     }
     for field in schema.fields() {
         let policy = field.presence_policy();
-        let feature = if !policy.required_if.is_empty() || !policy.forbidden_if.is_empty() {
+        let feature = if policy
+            .required_if
+            .iter()
+            .chain(&policy.forbidden_if)
+            .any(|expr| !local_expression_supported(expr))
+        {
             Some(UnsupportedLocalFeature::ConditionalPresence)
         } else if field.constraints().iter().any(|constraint| {
             !matches!(
@@ -267,4 +295,38 @@ fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidatio
         }
     }
     Ok(())
+}
+
+/// Runtime boundary for directly assembled private plans as well as future
+/// compiler extensions. Derived/external expressions need their actual executor.
+fn local_expression_supported(expression: &crate::schema::compiled::CompiledExpr) -> bool {
+    use crate::schema::compiled::{CompiledExpr, ResolvedFieldRef};
+    let mut work = vec![expression];
+    while let Some(expr) = work.pop() {
+        match expr {
+            CompiledExpr::Const(_) => {}
+            CompiledExpr::In(_, domain) | CompiledExpr::NotIn(_, domain) if domain.is_empty() => {
+                return false;
+            }
+            CompiledExpr::Eq(reference, _)
+            | CompiledExpr::Ne(reference, _)
+            | CompiledExpr::In(reference, _)
+            | CompiledExpr::NotIn(reference, _)
+            | CompiledExpr::IsMissing(reference)
+            | CompiledExpr::IsPresent(reference) => {
+                if !matches!(reference, ResolvedFieldRef::Local { .. }) {
+                    return false;
+                }
+            }
+            CompiledExpr::And(children) | CompiledExpr::Or(children) => {
+                if children.is_empty() {
+                    return false;
+                }
+                work.extend(children);
+            }
+            CompiledExpr::Not(child) => work.push(child),
+            CompiledExpr::DerivedEq { .. } | CompiledExpr::DerivedCompare { .. } => return false,
+        }
+    }
+    true
 }

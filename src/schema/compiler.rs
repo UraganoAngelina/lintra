@@ -78,16 +78,15 @@ impl Checks<'_> {
         }
         for (present, name) in [
             (!record.joins.is_empty(), "joins"),
-            (!record.named_conditions.is_empty(), "named_conditions"),
             (!record.derived_values.is_empty(), "derived_values"),
             (!record.repeated_groups.is_empty(), "repeated_groups"),
             (!record.rules.is_empty(), "rules"),
         ] {
             self.unsupported(present, trace, None, name);
         }
-        // P10-01 validates/lowers the model, but conditional execution remains
-        // blocked below until its executor is delivered. No tree is discarded
-        // from a successfully compiled schema: such schemas still fail closed.
+        // Validate every declared definition, including unused ones. Presence
+        // policies below retain their fully lowered conditions; unsupported
+        // expression nodes still prevent a successful compiled schema.
         for expression in record.named_conditions.values() {
             if let Err((code, message)) =
                 crate::schema::expression::compile_local_expr(expression, record)
@@ -186,12 +185,6 @@ impl Checks<'_> {
                     "field name must be nonempty",
                 );
             }
-            self.unsupported(
-                !field.presence.required_if.is_empty() || !field.presence.forbidden_if.is_empty(),
-                trace,
-                id,
-                "conditional presence",
-            );
             for expression in field
                 .presence
                 .required_if
@@ -497,7 +490,11 @@ impl SchemaCompiler {
                     "duplicate required capability",
                 );
             }
-            if !matches!(capability, RawFlowSchemaRequiredCapabilitiesItem::LocalV1) {
+            if !matches!(
+                capability,
+                RawFlowSchemaRequiredCapabilitiesItem::LocalV1
+                    | RawFlowSchemaRequiredCapabilitiesItem::ExpressionsV1
+            ) {
                 checks.error(
                     Code::UnsupportedCapability,
                     None,
@@ -639,7 +636,11 @@ fn lexical(raw: &RawLexical) -> LexicalPlan {
         }
     }
 }
-fn compile_field(raw: &RawFieldSpec, regexes: &RegexPlans) -> Result<CompiledFieldSpec, Code> {
+fn compile_field(
+    raw: &RawFieldSpec,
+    regexes: &RegexPlans,
+    record: &RawRecordSchema,
+) -> Result<CompiledFieldSpec, Code> {
     let (start, length, field_type, raw_alignment, raw_lexical) = match &raw.physical {
         RawPhysical::Numeric {
             start,
@@ -720,14 +721,8 @@ fn compile_field(raw: &RawFieldSpec, regexes: &RegexPlans) -> Result<CompiledFie
         range: source_range(start, length)?,
         field_type,
         missing_value_policy,
-        presence_policy: CompiledPresencePolicy {
-            base: match raw.presence.base {
-                RawPresenceBase::Required => BasePresence::Required,
-                RawPresenceBase::Optional => BasePresence::Optional,
-            },
-            required_if: vec![],
-            forbidden_if: vec![],
-        },
+        presence_policy: crate::schema::presence::compile_presence(&raw.presence, record)
+            .map_err(|(code, _)| code)?,
         alignment: alignment(raw_alignment),
         lexical: raw_lexical.map(lexical),
         // Preflight checked shape/encoding/width; lower each literal once,
@@ -825,7 +820,7 @@ fn compile_record(
     let fields = raw
         .fields
         .iter()
-        .map(|field| compile_field(field, regexes))
+        .map(|field| compile_field(field, regexes, raw))
         .collect::<Result<Vec<_>, _>>()
         .map_err(|code| (code, "field construction failed after preflight".to_owned()))?;
     let key = raw
