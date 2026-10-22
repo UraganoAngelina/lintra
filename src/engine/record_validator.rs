@@ -1,10 +1,14 @@
 //! Explicit LocalOnly record validation, ratified by CNF-RECORD-01.
 use super::{
     error_factory::ErrorFactory,
-    expression_evaluator::{EvaluationContext, LocalEvaluationContext, UnknownReason},
+    expression_evaluator::{
+        EvaluationContext, LocalEvaluationContext, UnknownReason, local_expression_supported,
+    },
     field_pipeline::{FieldPipeline, FieldPipelineError, FieldPipelineResult},
     identity_extractor::{IdentityExtractionError, IdentityExtractor},
     presence::{PresenceState, resolve_presence},
+    rule_diagnostics::{RuleDiagnosticError, RuleDiagnosticInput},
+    rule_validator::{RuleValidationResult, evaluate_local_rule, local_rule_supported},
 };
 use crate::{
     domain::{FieldId, RecordIdentity, SummaryBuildError, TraceId, ValidationSummaryBuilder},
@@ -56,6 +60,11 @@ pub enum RecordValidationError {
     Pipeline(FieldPipelineError),
     Report(ReportError),
     Summary(SummaryBuildError),
+    UndeterminedRule {
+        rule_id: std::sync::Arc<str>,
+        reason: UnknownReason,
+    },
+    RuleDiagnostic(RuleDiagnosticError),
     PreviousFailure,
 }
 impl fmt::Display for RecordValidationError {
@@ -74,6 +83,10 @@ impl fmt::Display for RecordValidationError {
             Self::Pipeline(_) => "record field pipeline failed",
             Self::Report(_) => "record diagnostic emission failed",
             Self::Summary(_) => "record counter update failed",
+            Self::UndeterminedRule { .. } => {
+                "local rule cannot be determined from available values"
+            }
+            Self::RuleDiagnostic(_) => "local rule diagnostic construction failed",
             Self::PreviousFailure => "record validator cannot resume after a technical failure",
         })
     }
@@ -83,6 +96,7 @@ impl Error for RecordValidationError {
     /// parsing human text. Context-only variants have no nested source.
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
+            Self::RuleDiagnostic(error) => Some(error),
             Self::Identity(error) => Some(error),
             Self::Pipeline(error) => Some(error),
             Self::Report(error) => Some(error),
@@ -227,6 +241,49 @@ impl<'schema> RecordValidator<'schema> {
                 }
             }
         }
+        for rule in self.schema.local_rules() {
+            let artifacts = evaluate_local_rule(rule, &ctx);
+            match artifacts.result {
+                RuleValidationResult::Satisfied => {}
+                RuleValidationResult::Unknown(reason) => {
+                    summary
+                        .rule_skipped()
+                        .map_err(RecordValidationError::Summary)?;
+                    return Err(RecordValidationError::UndeterminedRule {
+                        rule_id: rule.id.clone(),
+                        reason,
+                    });
+                }
+                RuleValidationResult::Violated(violation) => {
+                    let assertion_index =
+                        artifacts
+                            .failed_assertion
+                            .ok_or(RecordValidationError::RuleDiagnostic(
+                                RuleDiagnosticError::InvalidPlan,
+                            ))?;
+                    let error = self
+                        .factory
+                        .local_rule_error(
+                            record.line_number,
+                            &identity,
+                            RuleDiagnosticInput {
+                                rule,
+                                assertion_index,
+                                record: &view,
+                                schema: self.schema,
+                            },
+                            violation,
+                        )
+                        .map_err(RecordValidationError::RuleDiagnostic)?;
+                    sink.on_error(&error)
+                        .map_err(RecordValidationError::Report)?;
+                    summary
+                        .error_emitted(&error.code)
+                        .map_err(RecordValidationError::Summary)?;
+                    valid = false;
+                }
+            }
+        }
         if valid {
             summary.record_valid()
         } else {
@@ -246,7 +303,10 @@ impl<'schema> RecordValidator<'schema> {
 fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidationError> {
     for (present, feature) in [
         (
-            !schema.local_rules().is_empty(),
+            schema
+                .local_rules()
+                .iter()
+                .any(|rule| !local_rule_supported(rule)),
             UnsupportedLocalFeature::Rules,
         ),
         (
@@ -295,38 +355,4 @@ fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidatio
         }
     }
     Ok(())
-}
-
-/// Runtime boundary for directly assembled private plans as well as future
-/// compiler extensions. Derived/external expressions need their actual executor.
-fn local_expression_supported(expression: &crate::schema::compiled::CompiledExpr) -> bool {
-    use crate::schema::compiled::{CompiledExpr, ResolvedFieldRef};
-    let mut work = vec![expression];
-    while let Some(expr) = work.pop() {
-        match expr {
-            CompiledExpr::Const(_) => {}
-            CompiledExpr::In(_, domain) | CompiledExpr::NotIn(_, domain) if domain.is_empty() => {
-                return false;
-            }
-            CompiledExpr::Eq(reference, _)
-            | CompiledExpr::Ne(reference, _)
-            | CompiledExpr::In(reference, _)
-            | CompiledExpr::NotIn(reference, _)
-            | CompiledExpr::IsMissing(reference)
-            | CompiledExpr::IsPresent(reference) => {
-                if !matches!(reference, ResolvedFieldRef::Local { .. }) {
-                    return false;
-                }
-            }
-            CompiledExpr::And(children) | CompiledExpr::Or(children) => {
-                if children.is_empty() {
-                    return false;
-                }
-                work.extend(children);
-            }
-            CompiledExpr::Not(child) => work.push(child),
-            CompiledExpr::DerivedEq { .. } | CompiledExpr::DerivedCompare { .. } => return false,
-        }
-    }
-    true
 }

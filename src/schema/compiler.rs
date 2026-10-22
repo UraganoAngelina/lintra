@@ -80,7 +80,6 @@ impl Checks<'_> {
             (!record.joins.is_empty(), "joins"),
             (!record.derived_values.is_empty(), "derived_values"),
             (!record.repeated_groups.is_empty(), "repeated_groups"),
-            (!record.rules.is_empty(), "rules"),
         ] {
             self.unsupported(present, trace, None, name);
         }
@@ -94,6 +93,7 @@ impl Checks<'_> {
                 self.error(code, trace, None, message);
             }
         }
+        self.rules(record);
         // Resolve identity like other local references. A destination can hold
         // only one value: reject collisions instead of silently overwriting.
         let mut identity_targets = HashSet::new();
@@ -731,61 +731,67 @@ fn compile_field(
         constraints: raw
             .constraints
             .iter()
-            .map(|constraint| match constraint {
-                RawConstraint::AllowedValues { values, target } => {
-                    Ok(CompiledConstraint::AllowedValues {
-                        values: values
-                            .iter()
-                            .map(|value| value.as_bytes().to_vec())
-                            .collect(),
-                        target: match target {
-                            RawConstraintAllowedValuesTarget::Raw => ValueTarget::Raw,
-                            RawConstraintAllowedValuesTarget::Logical => ValueTarget::Logical,
-                        },
-                    })
-                }
-                RawConstraint::NumericRange { min, max } => Ok(CompiledConstraint::Range {
-                    min: min
-                        .0
-                        .to_string()
-                        .parse()
-                        .map_err(|_| Code::InvalidSchemaValue)?,
-                    max: max
-                        .0
-                        .to_string()
-                        .parse()
-                        .map_err(|_| Code::InvalidSchemaValue)?,
-                }),
-                RawConstraint::Regex {
-                    pattern,
-                    r#match,
-                    target,
-                } => Ok(CompiledConstraint::Regex {
-                    regex: regexes
-                        .get(pattern)
-                        .and_then(|result| result.as_ref().ok())
-                        .cloned()
-                        .ok_or(Code::InternalCompilerInvariant)?,
-                    mode: match r#match {
-                        RawConstraintRegexMatch::Required => RegexMatch::Required,
-                        RawConstraintRegexMatch::Forbidden => RegexMatch::Forbidden,
-                    },
-                    target: match target {
-                        RawConstraintAllowedValuesTarget::Raw => ValueTarget::Raw,
-                        RawConstraintAllowedValuesTarget::Logical => ValueTarget::Logical,
-                    },
-                }),
-                RawConstraint::Date { format, .. } => Ok(CompiledConstraint::Date {
-                    format: match format {
-                        RawPhysicalDateFormat::Ddmmyyyy => DateFormat::DdMmYyyy,
-                    },
-                }),
-                _ => Err(Code::UnsupportedConstruct),
-            })
-            .collect::<Result<Vec<_>, _>>()?,
+            .map(|constraint| compile_constraint(constraint, regexes))
+            .collect::<Result<_, _>>()?,
         regulatory_metadata: raw.regulatory_metadata.clone(),
     })
 }
+fn compile_constraint(
+    constraint: &RawConstraint,
+    regexes: &RegexPlans,
+) -> Result<CompiledConstraint, Code> {
+    match constraint {
+        RawConstraint::AllowedValues { values, target } => Ok(CompiledConstraint::AllowedValues {
+            values: values
+                .iter()
+                .map(|value| value.as_bytes().to_vec())
+                .collect(),
+            target: match target {
+                RawConstraintAllowedValuesTarget::Raw => ValueTarget::Raw,
+                RawConstraintAllowedValuesTarget::Logical => ValueTarget::Logical,
+            },
+        }),
+        RawConstraint::NumericRange { min, max } => Ok(CompiledConstraint::Range {
+            min: min
+                .0
+                .to_string()
+                .parse()
+                .map_err(|_| Code::InvalidSchemaValue)?,
+            max: max
+                .0
+                .to_string()
+                .parse()
+                .map_err(|_| Code::InvalidSchemaValue)?,
+        }),
+        RawConstraint::Regex {
+            pattern,
+            r#match,
+            target,
+        } => Ok(CompiledConstraint::Regex {
+            regex: regexes
+                .get(pattern)
+                .ok_or(Code::InternalCompilerInvariant)?
+                .as_ref()
+                .map_err(|_| Code::InvalidRegex)?
+                .clone(),
+            mode: match r#match {
+                RawConstraintRegexMatch::Required => RegexMatch::Required,
+                RawConstraintRegexMatch::Forbidden => RegexMatch::Forbidden,
+            },
+            target: match target {
+                RawConstraintAllowedValuesTarget::Raw => ValueTarget::Raw,
+                RawConstraintAllowedValuesTarget::Logical => ValueTarget::Logical,
+            },
+        }),
+        RawConstraint::Date { format, .. } => Ok(CompiledConstraint::Date {
+            format: match format {
+                RawPhysicalDateFormat::Ddmmyyyy => DateFormat::DdMmYyyy,
+            },
+        }),
+        _ => Err(Code::UnsupportedConstruct),
+    }
+}
+
 fn index(record: &RawRecordSchema, id: &str) -> Result<usize, (Code, String)> {
     record
         .fields
@@ -867,7 +873,7 @@ fn compile_record(
             )
         })?,
         fields,
-        local_rules: vec![],
+        local_rules: rules::compile_rules(raw, regexes)?,
         derived_values: vec![],
         identity_plan: IdentityExtractionPlan {
             // Preflight checked targets and references; retain typed defensive
@@ -924,9 +930,13 @@ mod tests {
         record.fields.truncate(1);
         record.record_key.fields = vec![record.fields[0].id.clone()];
         record.documented_non_executable_rules.clear();
+        record.rules.clear();
         record.record_length = 1;
         let (code, message) = compile_record(record, &RegexPlans::new()).unwrap_err();
         assert_eq!(code, Code::InternalCompilerInvariant);
         assert!(message.contains("FieldOutsideRecord"));
     }
 }
+
+#[path = "rules.rs"]
+mod rules;

@@ -16,3 +16,5 @@ pub(crate) mod registry;
 pub(crate) mod expression;
 
 pub(crate) mod presence;
+
+pub(crate) mod rule_template;

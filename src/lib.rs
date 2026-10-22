@@ -206,3 +206,11 @@ pub use engine::expression_evaluator::{
 pub use schema::compiled::{CompiledExpr, ResolvedFieldRef};
 
 pub use engine::presence::{PresenceState, resolve_presence};
+
+pub use engine::rule_validator::{RuleValidationResult, validate_local_rule};
+pub use schema::compiled::{
+    ComparisonOperator, CompiledAssertion, CompiledOperand, CompiledRule, CompiledValue,
+    DateLiteral, ValueType,
+};
+
+pub use engine::rule_diagnostics::RuleDiagnosticError;

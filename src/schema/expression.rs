@@ -33,27 +33,27 @@ pub(crate) fn compile_local_expr(
         match step {
             Step::Expr(expression) => match expression {
                 RawExpr::Eq(node) => values.push(CompiledExpr::Eq(
-                    resolve(&node.r#ref, record)?,
+                    resolve_local_ref(&node.r#ref, record)?,
                     node.value.as_bytes().to_vec(),
                 )),
                 RawExpr::Ne(node) => values.push(CompiledExpr::Ne(
-                    resolve(&node.r#ref, record)?,
+                    resolve_local_ref(&node.r#ref, record)?,
                     node.value.as_bytes().to_vec(),
                 )),
                 RawExpr::In(node) => values.push(CompiledExpr::In(
-                    resolve(&node.r#ref, record)?,
+                    resolve_local_ref(&node.r#ref, record)?,
                     literals(&node.values)?,
                 )),
                 RawExpr::NotIn(node) => values.push(CompiledExpr::NotIn(
-                    resolve(&node.r#ref, record)?,
+                    resolve_local_ref(&node.r#ref, record)?,
                     literals(&node.values)?,
                 )),
-                RawExpr::IsPresent(node) => {
-                    values.push(CompiledExpr::IsPresent(resolve(&node.r#ref, record)?))
-                }
-                RawExpr::IsMissing(node) => {
-                    values.push(CompiledExpr::IsMissing(resolve(&node.r#ref, record)?))
-                }
+                RawExpr::IsPresent(node) => values.push(CompiledExpr::IsPresent(
+                    resolve_local_ref(&node.r#ref, record)?,
+                )),
+                RawExpr::IsMissing(node) => values.push(CompiledExpr::IsMissing(
+                    resolve_local_ref(&node.r#ref, record)?,
+                )),
                 RawExpr::Const(value) => values.push(CompiledExpr::Const(*value)),
                 RawExpr::And(children) | RawExpr::Or(children) => {
                     if children.is_empty() {
@@ -135,7 +135,10 @@ fn literals(values: &[String]) -> Result<Vec<Vec<u8>>, Issue> {
         .map(|value| value.as_bytes().to_vec())
         .collect())
 }
-fn resolve(reference: &RawRef, record: &RawRecordSchema) -> Result<ResolvedFieldRef, Issue> {
+pub(crate) fn resolve_local_ref(
+    reference: &RawRef,
+    record: &RawRecordSchema,
+) -> Result<ResolvedFieldRef, Issue> {
     let RawRef::Local(reference) = reference else {
         return Err((
             Code::UnsupportedConstruct,

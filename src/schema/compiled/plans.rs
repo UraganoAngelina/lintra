@@ -240,11 +240,38 @@ pub enum ValueType {
 }
 
 /// Parsed literal date; calendar validity is established by the compiler.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct DateLiteral {
     pub year: u16,
     pub month: u8,
     pub day: u8,
+}
+
+impl DateLiteral {
+    /// Shared explicit DDMMYYYY value parsing for schema literals and runtime
+    /// comparisons. Fixed width/ASCII precede all indexing and calendar checks.
+    pub(crate) fn from_ddmmyyyy(bytes: &[u8]) -> Option<Self> {
+        if bytes.len() != 8 || !bytes.iter().all(u8::is_ascii_digit) {
+            return None;
+        }
+        let number = |digits: &[u8]| {
+            digits
+                .iter()
+                .fold(0_u32, |value, digit| value * 10 + u32::from(digit - b'0'))
+        };
+        let day = number(&bytes[..2]);
+        let month = number(&bytes[2..4]);
+        let year = number(&bytes[4..]);
+        if year == 0 {
+            return None;
+        }
+        chrono::NaiveDate::from_ymd_opt(i32::try_from(year).ok()?, month, day)?;
+        Some(Self {
+            year: u16::try_from(year).ok()?,
+            month: u8::try_from(month).ok()?,
+            day: u8::try_from(day).ok()?,
+        })
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -469,6 +496,26 @@ pub enum CompiledAssertion {
         format: DateFormat,
         year_digits: YearDigits,
     },
+}
+
+impl CompiledAssertion {
+    /// A diagnostic target exists only for assertions with a natural operand.
+    pub(crate) fn primary_ref(&self) -> Option<&ResolvedFieldRef> {
+        match self {
+            Self::FieldPresent(field)
+            | Self::Constraint { field, .. }
+            | Self::EqualsConcat { field, .. } => Some(field),
+            Self::FieldCompare {
+                left: CompiledOperand::Field(field),
+                ..
+            }
+            | Self::FieldCompare {
+                right: CompiledOperand::Field(field),
+                ..
+            } => Some(field),
+            _ => None,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

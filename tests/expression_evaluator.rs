@@ -194,6 +194,7 @@ fn abstract_context_preserves_every_unavailability_reason() {
         UnknownReason::TraceInputUnavailable,
         UnknownReason::AmbiguousJoin,
         UnknownReason::UnsupportedPlan,
+        UnknownReason::InvalidFieldValue,
     ] {
         let resolver = Fixed(ResolvedFieldValue::Unavailable(reason));
         let ctx = EvaluationContext { fields: &resolver };

@@ -1,6 +1,10 @@
 //! Calendar validation of the explicit format-1 DDMMYYYY byte representation.
 use super::FieldViolation;
-use crate::{domain::ValidationCode, input::record::FieldSlice, schema::compiled::DateFormat};
+use crate::{
+    domain::ValidationCode,
+    input::record::FieldSlice,
+    schema::compiled::{DateFormat, DateLiteral},
+};
 
 /// No decoding, trimming, timezone or host clock. Syntax checks precede every
 /// fixed byte index; chrono checks the Gregorian calendar without panicking.
@@ -10,23 +14,7 @@ pub(crate) fn validate_date(
 ) -> Result<(), FieldViolation> {
     let bytes = value.as_bytes();
     let valid = match format {
-        DateFormat::DdMmYyyy => {
-            if bytes.len() != 8 || !bytes.iter().all(u8::is_ascii_digit) {
-                false
-            } else {
-                let number = |digits: &[u8]| {
-                    digits
-                        .iter()
-                        .fold(0_u32, |value, digit| value * 10 + u32::from(digit - b'0'))
-                };
-                let day = number(&bytes[..2]);
-                let month = number(&bytes[2..4]);
-                let year = number(&bytes[4..]);
-                // Four digits bound conversion to i32; year zero is explicitly
-                // excluded even though chrono supports proleptic year zero.
-                year >= 1 && chrono::NaiveDate::from_ymd_opt(year as i32, month, day).is_some()
-            }
-        }
+        DateFormat::DdMmYyyy => DateLiteral::from_ddmmyyyy(bytes).is_some(),
     };
     if valid {
         Ok(())

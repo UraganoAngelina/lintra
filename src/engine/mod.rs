@@ -8,3 +8,7 @@ pub(crate) mod trace_validator;
 pub(crate) mod expression_evaluator;
 
 pub(crate) mod presence;
+
+pub(crate) mod rule_validator;
+
+pub(crate) mod rule_diagnostics;

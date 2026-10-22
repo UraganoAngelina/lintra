@@ -10,6 +10,8 @@ pub enum UnknownReason {
     AmbiguousJoin,
     /// A directly supplied plan has no executor; never a simulated decision.
     UnsupportedPlan,
+    /// Present bytes cannot be interpreted as the explicitly requested type.
+    InvalidFieldValue,
 }
 
 /// A determinate truth value or an explicitly unavailable decision.
@@ -70,6 +72,11 @@ pub enum ResolvedFieldValue<'a> {
 /// this port without coupling expression evaluation to storage or application.
 pub trait FieldValueResolver {
     fn resolve_field(&self, reference: &ResolvedFieldRef) -> ResolvedFieldValue<'_>;
+    /// A resolver without physical access must report it explicitly; logical
+    /// bytes are never substituted for a requested raw target.
+    fn resolve_raw_field(&self, _reference: &ResolvedFieldRef) -> ResolvedFieldValue<'_> {
+        ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan)
+    }
 }
 
 /// The evaluator depends on the resolver abstraction, not on an I/O provider.
@@ -93,8 +100,12 @@ impl<'a> LocalEvaluationContext<'a> {
         self.record.field(field).map(|value| value.raw)
     }
 }
-impl FieldValueResolver for LocalEvaluationContext<'_> {
-    fn resolve_field(&self, reference: &ResolvedFieldRef) -> ResolvedFieldValue<'_> {
+impl LocalEvaluationContext<'_> {
+    fn resolve_value(
+        &self,
+        reference: &ResolvedFieldRef,
+        raw_target: bool,
+    ) -> ResolvedFieldValue<'_> {
         let ResolvedFieldRef::Local {
             field_index,
             field_id,
@@ -116,10 +127,21 @@ impl FieldValueResolver for LocalEvaluationContext<'_> {
         if is_missing(field.missing_value_policy(), raw) {
             return ResolvedFieldValue::Missing;
         }
+        if raw_target {
+            return ResolvedFieldValue::Present(raw);
+        }
         match logical_value(&field.alignment(), FieldSlice { raw }) {
             Ok(value) => ResolvedFieldValue::Present(value.raw),
             Err(_) => ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan),
         }
+    }
+}
+impl FieldValueResolver for LocalEvaluationContext<'_> {
+    fn resolve_field(&self, reference: &ResolvedFieldRef) -> ResolvedFieldValue<'_> {
+        self.resolve_value(reference, false)
+    }
+    fn resolve_raw_field(&self, reference: &ResolvedFieldRef) -> ResolvedFieldValue<'_> {
+        self.resolve_value(reference, true)
     }
 }
 
@@ -242,4 +264,40 @@ fn truth(value: bool) -> TruthValue {
 }
 fn unsupported() -> TruthValue {
     TruthValue::Unknown(UnknownReason::UnsupportedPlan)
+}
+
+/// Runtime boundary for directly assembled private plans as well as future
+/// compiler extensions. Derived/external expressions need their actual executor.
+pub(crate) fn local_expression_supported(
+    expression: &crate::schema::compiled::CompiledExpr,
+) -> bool {
+    use crate::schema::compiled::{CompiledExpr, ResolvedFieldRef};
+    let mut work = vec![expression];
+    while let Some(expr) = work.pop() {
+        match expr {
+            CompiledExpr::Const(_) => {}
+            CompiledExpr::In(_, domain) | CompiledExpr::NotIn(_, domain) if domain.is_empty() => {
+                return false;
+            }
+            CompiledExpr::Eq(reference, _)
+            | CompiledExpr::Ne(reference, _)
+            | CompiledExpr::In(reference, _)
+            | CompiledExpr::NotIn(reference, _)
+            | CompiledExpr::IsMissing(reference)
+            | CompiledExpr::IsPresent(reference) => {
+                if !matches!(reference, ResolvedFieldRef::Local { .. }) {
+                    return false;
+                }
+            }
+            CompiledExpr::And(children) | CompiledExpr::Or(children) => {
+                if children.is_empty() {
+                    return false;
+                }
+                work.extend(children);
+            }
+            CompiledExpr::Not(child) => work.push(child),
+            CompiledExpr::DerivedEq { .. } | CompiledExpr::DerivedCompare { .. } => return false,
+        }
+    }
+    true
 }

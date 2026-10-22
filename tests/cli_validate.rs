@@ -417,6 +417,24 @@ fn actual_environment_pair_resolves_and_partial_pair_fails_without_fallback() {
     assert!(text(&partial.stderr).contains("incomplete external bundle"));
     file.assert_old();
 }
+// Concurrent process spawning can transiently hold the just-copied executable
+// open on Linux (observed ETXTBSY). Retry only that spawn error, at most 100ms;
+// exit status/report assertions stay exact and every other error fails at once.
+fn copied_output(command: &mut Command) -> Output {
+    let mut retries = 0;
+    loop {
+        match command.output() {
+            Ok(output) => return output,
+            Err(error)
+                if error.kind() == std::io::ErrorKind::ExecutableFileBusy && retries < 20 =>
+            {
+                retries += 1;
+                std::thread::sleep(std::time::Duration::from_millis(5));
+            }
+            Err(error) => panic!("copied executable spawn failed: {error}"),
+        }
+    }
+}
 #[test]
 fn copied_executable_resolves_adjacent_bundle_but_never_falls_back_from_selected_env() {
     let file = Fixture::new(b"001A  \n");
@@ -430,19 +448,19 @@ fn copied_executable_resolves_adjacent_bundle_but_never_falls_back_from_selected
         portable.join("reference-data"),
     )
     .unwrap();
-    let out = request(&file, &executable).output().unwrap();
+    let out = copied_output(&mut request(&file, &executable));
     assert_eq!(out.status.code(), Some(0), "{}", text(&out.stderr));
     file.old_reports();
     fs::create_dir(file.root.join("empty schemas")).unwrap();
     fs::create_dir(file.root.join("empty reference")).unwrap();
-    let selected = request(&file, &executable)
-        .env("LINTRA_SCHEMA_DIR", file.root.join("empty schemas"))
-        .env(
-            "LINTRA_REFERENCE_DATA_DIR",
-            file.root.join("empty reference"),
-        )
-        .output()
-        .unwrap();
+    let selected = copied_output(
+        request(&file, &executable)
+            .env("LINTRA_SCHEMA_DIR", file.root.join("empty schemas"))
+            .env(
+                "LINTRA_REFERENCE_DATA_DIR",
+                file.root.join("empty reference"),
+            ),
+    );
     assert_eq!(selected.status.code(), Some(1));
     assert!(selected.stdout.is_empty());
     file.assert_old();
@@ -562,6 +580,41 @@ fn conditional_presence_reports_real_violations_and_aborts_undecidable_runs() {
                 serde_json::from_slice(&fs::read(file.root.join("errors.jsonl")).unwrap()).unwrap();
             assert_eq!(error["code"], "E_CONDITIONAL_REQUIRED");
             assert_eq!(error["field"]["id"], "F1");
+        }
+        file.assert_no_parts();
+    }
+}
+
+#[test]
+fn local_rules_reach_real_cli_with_context_and_undecidable_run_abort() {
+    for (input, exit) in [
+        (b"001   \n".as_slice(), 2),
+        (b"001A  \n", 0),
+        (b"   A  \n", 1),
+    ] {
+        let file = Fixture::new(input);
+        let path = file.root.join("schemas/SYNTHETIC/v1/flow.json");
+        let mut value: serde_json::Value =
+            serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+        value["required_capabilities"] = serde_json::json!(["local.v1", "expressions.v1"]);
+        for field in value["traces"][0]["fields"].as_array_mut().unwrap() {
+            field["presence"]["base"] = serde_json::json!("optional");
+        }
+        value["traces"][0]["rules"] = serde_json::json!([{"id":"LOCAL-CHECK","when":{"eq":{"ref":{"field":"F1"},"value":"1"}},"assertions":[{"kind":"field_present","field":{"field":"F2"}}],"error_code":"E_CROSS_FIELD","message_template":"Regola {rule_id}: {field_id}, {condition}"}]);
+        fs::write(path, serde_json::to_vec(&value).unwrap()).unwrap();
+        if exit == 1 {
+            file.old_reports();
+        }
+        let output = file.run();
+        assert_eq!(output.status.code(), Some(exit), "{}", text(&output.stderr));
+        if exit == 1 {
+            file.assert_old();
+        } else if exit == 2 {
+            let error: serde_json::Value =
+                serde_json::from_slice(&fs::read(file.root.join("errors.jsonl")).unwrap()).unwrap();
+            assert_eq!(error["code"], "E_CROSS_FIELD");
+            assert_eq!(error["field"]["id"], "F2");
+            assert_eq!(error["context"][0]["field_id"], "F1");
         }
         file.assert_no_parts();
     }
