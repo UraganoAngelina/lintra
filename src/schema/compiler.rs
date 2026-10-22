@@ -244,6 +244,9 @@ impl Checks<'_> {
     /// remain blocking issues, even when another constraint is supported.
     /// Literal checks use the explicit UTF-8 binding currently accepted by the
     /// compiler; there is no implicit encoding selection for other profiles.
+    /// Type mismatches are distinct from malformed parameters: Date requires
+    /// Date, integer Range requires Numeric (never Decimal). Byte-domain and
+    /// Regex predicates apply to any implemented type, on their declared target.
     fn constraints(&mut self, field: &RawFieldSpec, width: u32, trace: Option<&str>) {
         let id = Some(field.id.as_str());
         let alignment = match &field.physical {
@@ -274,7 +277,7 @@ impl Checks<'_> {
             if let RawConstraint::Date { calendar_valid, .. } = constraint {
                 if !matches!(field.physical, RawPhysical::Date { .. }) {
                     self.error(
-                        Code::InvalidTypeParameters,
+                        Code::ConstraintTypeMismatch,
                         trace,
                         id,
                         "date constraint requires a date field",
@@ -293,7 +296,7 @@ impl Checks<'_> {
             if let RawConstraint::NumericRange { min, max } = constraint {
                 if !matches!(field.physical, RawPhysical::Numeric { .. }) {
                     self.error(
-                        Code::InvalidTypeParameters,
+                        Code::ConstraintTypeMismatch,
                         trace,
                         id,
                         "numeric_range requires a numeric field",

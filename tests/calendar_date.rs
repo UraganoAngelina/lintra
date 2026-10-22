@@ -144,6 +144,6 @@ fn invalid_date_width_and_constraint_type_are_compiler_errors() {
         error
             .issues
             .iter()
-            .any(|i| i.code == SchemaIssueCode::InvalidTypeParameters)
+            .any(|i| i.code == SchemaIssueCode::ConstraintTypeMismatch)
     );
 }

@@ -140,7 +140,7 @@ fn compiler_rejects_reversed_bounds_and_incompatible_fields() {
         wrong_type
             .issues
             .iter()
-            .any(|issue| issue.code == SchemaIssueCode::InvalidTypeParameters)
+            .any(|issue| issue.code == SchemaIssueCode::ConstraintTypeMismatch)
     );
 }
 #[test]

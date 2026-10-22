@@ -164,11 +164,12 @@ fn compiler_rejects_v1_decimal_bad_scale_width_and_numeric_range_on_amounts() {
                 .issues
                 .iter()
                 .any(|i| i.field_id == Some(FieldId("AMOUNT".into()))
-                    && matches!(
-                        i.code,
-                        SchemaIssueCode::UnsupportedConstruct
-                            | SchemaIssueCode::InvalidTypeParameters
-                    ))
+                    && i.code
+                        == match case {
+                            0 => SchemaIssueCode::UnsupportedConstruct,
+                            3 => SchemaIssueCode::ConstraintTypeMismatch,
+                            _ => SchemaIssueCode::InvalidTypeParameters,
+                        })
         );
     }
 }
