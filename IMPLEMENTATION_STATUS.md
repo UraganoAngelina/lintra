@@ -3,19 +3,20 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P9-06 gate locali — 2026-10-22
+## Frontiera corrente — P9 DONE / avvio T-P10-01 — 2026-10-22
 
 Golden semantici dedicati consegnati: 367 test locali, 46 suite, 8 scenari golden.
-fmt/check/Clippy/test/release/Windows GNU check/diff passati; CI nativa pendente.
+fmt/check/Clippy/test/release/Windows GNU check/diff passati; CI 39762338659
+completed/success Linux GNU/Windows MSVC su 3fafc4b41740e1fea8f2055b4fb4ec2dce4d3522.
 [Dossier e spiegazioni](docs/verification/T-P9-06.md).
 
-HANDOFF — T-P9-06 DONE_UNVERIFIED
+HANDOFF — T-P9-06 DONE / P9 chiusa
 - Nuovo profilo sintetico 14 byte: range/date/dominio; attesi indipendenti con
   7 errori ordinati, datatype primary senza cascata, summary/audit completi.
 - Golden producer ora usa RecordValidator reale; vecchi attesi invariati.
 - File runner/support, schema/input/attesi nuovi, README, generatore oracle/stato/report.
 - ErrorFactory già corretta, nessun codice produzione o dipendenza modificati.
-- 49 file protetti identici; CI da verificare, git work/p1-foundations.
+- 49 file protetti identici; CI nativa verificata, git work/p1-foundations.
 - Prerequisiti 9-05/5-07 soddisfatti; next 10-01 dopo chiusura P9.
 - P11/P13/PERSIST/T-P2-03/M1 aperti; nessun supporto Full dichiarato.
 
@@ -577,7 +578,7 @@ espliciti sotto; non dichiara implementate le capability o ricevuti i dataset.
 | Voce DET §106 | Esito proposto, evidenza e rinvio | Task/accettazioni bloccate dal rinvio |
 |---|---|---|
 | Forma JSON canonica | CHIUSA per formato 1: SCHEMA_AUTHORING e meta-schema approvati; flow SIOC minimale e cinque trace validi. CAD canonico operativo rinviato alle task CAD: candidato ricevuto non promosso | Esecuzione/certificazione profilo CAD completo, non tipi raw generici |
-| FieldType | CHIUSO sottoinsieme numeric/alphanumeric/date con lessico esplicito. Alphabetic/Decimal RINVIATI: assenza di repertorio e specifica separatore/segno/scala | T-P6-04 ramo Alphabetic e T-P9-03 Decimal non accettabili come supportati senza ampliamento approvato; nessun no-op |
+| FieldType | Numeric/AN/Date formato 1 preservati; Decimal formato 2 ratificata e verificata T-P9-03 (5866d1d/CI 39759270541). Alphabetic ancora RINVIATO per repertorio assente | Nessun blocco Decimal residuo; ramo Alphabetic resta escluso, nessun no-op |
 | AlignmentRule | CHIUSA: exact/right_pad/left_pad, fill_byte e content_policy per campo; preserve_width per codici significativi. Nessun trim globale | Nessun blocco normativo aggiuntivo per il sottoinsieme corrente |
 | Sintassi DSL | CHIUSA: AST tipizzato, operatori/capability chiusi, lowering esaustivo. Deroga limitata substring/età compiuta/delta anni già approvata; implementazione futura | Capability non implementate bloccano esecuzione profili che le richiedono; non la definizione dei contratti |
 | Mapping OBB/FAC/NBB | CHIUSO: basi/condizioni approvate e fonte conservata per 218 campi, check_presence positivo; NBB non diventa optional incondizionato | Nessun blocco aggiuntivo; nuove ambiguità normative richiedono decisione |
@@ -673,7 +674,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P9-03 | DONE | 2026-10-22 | formato 2 Decimal, 354 test, CI 39759270541 Linux/Windows verde su 5866d1d; [preflight](docs/verification/T-P9-03-preflight.md) |
 | T-P9-04 | DONE | 2026-10-22 | regex bytes, 363 test locali; CI 39760756884 Linux/Windows verde su c6b85cd; [report](docs/verification/T-P9-04.md) |
 | T-P9-05 | DONE | 2026-10-22 | compatibilità, 366 test locali; CI 39761531728 Linux/Windows verde su 2f3b36f; [report](docs/verification/T-P9-05.md) |
-| T-P9-06 | DONE_UNVERIFIED | 2026-10-22 | golden semantici, 367 test; CI pendente; [report](docs/verification/T-P9-06.md) |
+| T-P9-06 | DONE | 2026-10-22 | golden semantici, 367 test; CI 39762338659 Linux/Windows verde su 3fafc4b; [report](docs/verification/T-P9-06.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
