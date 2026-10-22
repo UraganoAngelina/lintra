@@ -1,8 +1,8 @@
 //! Local expression lowering only; execution belongs to the engine (P10-03).
 use super::{
-    compiled::{CompiledExpr, ResolvedFieldRef},
+    compiled::{ComparisonOperator, CompiledExpr, ResolvedFieldRef, ValueType},
     linter::SchemaIssueCode as Code,
-    raw::{RawExpr, RawRecordSchema, RawRef},
+    raw::{RawExpr, RawOperator, RawPhysical, RawRecordSchema, RawRef},
 };
 use crate::FieldId;
 use std::collections::HashSet;
@@ -89,11 +89,40 @@ pub(crate) fn compile_local_expr(
                     work.push(Step::LeaveName(name));
                     work.push(Step::Expr(definition));
                 }
-                RawExpr::DerivedEq(_) | RawExpr::DerivedCompare(_) => {
-                    return Err((
-                        Code::UnsupportedConstruct,
-                        "derived expressions require a compiled derived-value plan".into(),
-                    ));
+                RawExpr::DerivedEq(node) => {
+                    let field = resolve_local_ref(&node.r#ref, record)?;
+                    let (derived_index, kind) =
+                        super::derived::binding(record, &node.derived_value)?;
+                    if kind == ValueType::Integer {
+                        let ResolvedFieldRef::Local { field_index, .. } = &field else {
+                            return Err((
+                                Code::UnsupportedConstruct,
+                                "derived_eq requires local field".into(),
+                            ));
+                        };
+                        if !matches!(
+                            record.fields[*field_index].physical,
+                            RawPhysical::Numeric { .. }
+                        ) {
+                            return Err((
+                                Code::ConstraintTypeMismatch,
+                                "integer derived_eq requires a numeric field".into(),
+                            ));
+                        }
+                    }
+                    values.push(CompiledExpr::DerivedEq {
+                        field,
+                        derived_index,
+                    });
+                }
+                RawExpr::DerivedCompare(node) => {
+                    let (derived_index, kind) =
+                        super::derived::binding(record, &node.derived_value)?;
+                    values.push(CompiledExpr::DerivedCompare {
+                        derived_index,
+                        operator: operator_plan(&node.operator),
+                        value: super::derived::literal(&node.value, kind)?,
+                    });
                 }
             },
             Step::Group { and, count } => {
@@ -170,3 +199,14 @@ fn invariant() -> Issue {
 #[cfg(test)]
 #[path = "expression_tests.rs"]
 mod tests;
+
+pub(crate) fn operator_plan(raw: &RawOperator) -> ComparisonOperator {
+    match raw {
+        RawOperator::Eq => ComparisonOperator::Eq,
+        RawOperator::Ne => ComparisonOperator::Ne,
+        RawOperator::Lt => ComparisonOperator::Lt,
+        RawOperator::Le => ComparisonOperator::Le,
+        RawOperator::Gt => ComparisonOperator::Gt,
+        RawOperator::Ge => ComparisonOperator::Ge,
+    }
+}

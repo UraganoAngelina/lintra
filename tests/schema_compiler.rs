@@ -193,7 +193,7 @@ fn lint_errors_and_unsupported_constructs_are_aggregated_with_context() {
     let mut value = sample();
     value["traces"][0]["fields"][0]["physical"]["start"] = json!(0);
     value["traces"][0]["fields"][1]["presence"]["required_if"] = json!([
-        {"derived_compare":{"derived_value":"future","operator":"==","value":1}}
+        {"eq":{"ref":{"trace":"FUTURE","field":"F","join":"J"},"value":"1"}}
     ]);
     let mut second = value["traces"][0].clone();
     second["id"] = json!("A");
@@ -286,7 +286,7 @@ fn every_excluded_ast_collection_is_a_blocking_boundary() {
     assert!(has(&result, Code::Overlap) || has(&result, Code::RecordLengthMismatch));
     let mut value = sample();
     value["traces"][0]["fields"][0]["presence"]["forbidden_if"] = json!([
-        {"derived_compare":{"derived_value":"future","operator":"==","value":1}}
+        {"eq":{"ref":{"trace":"FUTURE","field":"F","join":"J"},"value":"1"}}
     ]);
     assert!(has(&error(value), Code::UnsupportedConstruct));
 }

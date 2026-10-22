@@ -18,3 +18,6 @@ pub(crate) mod expression;
 pub(crate) mod presence;
 
 pub(crate) mod rule_template;
+
+pub(crate) mod coordinates;
+pub(crate) mod derived;

@@ -1,7 +1,7 @@
 //! Local rule lowering inside compiler: refs/literals/templates are frozen first.
 use super::*;
 use crate::schema::{
-    expression::{compile_local_expr, resolve_local_ref},
+    expression::{compile_local_expr, operator_plan, resolve_local_ref},
     rule_template::{self, Part, Token},
 };
 
@@ -205,14 +205,4 @@ fn operand(
             _ => return Err(mismatch()),
         }),
     })
-}
-fn operator_plan(raw: &RawOperator) -> ComparisonOperator {
-    match raw {
-        RawOperator::Eq => ComparisonOperator::Eq,
-        RawOperator::Ne => ComparisonOperator::Ne,
-        RawOperator::Lt => ComparisonOperator::Lt,
-        RawOperator::Le => ComparisonOperator::Le,
-        RawOperator::Gt => ComparisonOperator::Gt,
-        RawOperator::Ge => ComparisonOperator::Ge,
-    }
 }

@@ -1,6 +1,7 @@
 //! Incremental compiler. CNF-COMPILER-01 permits only the verified local subset.
 use super::*;
 use crate::domain::{FlowId, SchemaVersion, ValidationCode};
+use crate::schema::coordinates::source_range;
 use crate::schema::{
     linter::{SchemaIssue, SchemaIssueCode as Code, SchemaIssueSeverity, lint_raw_schema},
     raw::*,
@@ -82,6 +83,9 @@ impl Checks<'_> {
             (!record.repeated_groups.is_empty(), "repeated_groups"),
         ] {
             self.unsupported(present, trace, None, name);
+        }
+        if let Err((code, message)) = crate::schema::derived::compile_derived_values(record) {
+            self.error(code, trace, None, message);
         }
         // Validate every declared definition, including unused ones. Presence
         // policies below retain their fully lowered conditions; unsupported
@@ -574,17 +578,6 @@ impl SchemaCompiler {
             )
         })
     }
-}
-
-/// The only source one-based -> runtime zero-based conversion.
-fn source_range(start: u32, length: u32) -> Result<ByteRange, Code> {
-    let start = start.checked_sub(1).ok_or(Code::InvalidPosition)?;
-    let start = usize::try_from(start).map_err(|_| Code::RangeOverflow)?;
-    let length = usize::try_from(length).map_err(|_| Code::RangeOverflow)?;
-    ByteRange::new(start, length).map_err(|error| match error {
-        crate::domain::ByteRangeError::ZeroLength => Code::ZeroLength,
-        crate::domain::ByteRangeError::EndOverflow => Code::RangeOverflow,
-    })
 }
 
 fn alignment(raw: &RawAlignment) -> AlignmentRule {

@@ -3,6 +3,24 @@
 Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — residuo T-P10-01 modello derivati, gate locali
+
+Modello dei tre derivati e lowering Expr completati, 424 test/52 suite;
+fmt/check/Clippy/test/release/Windows GNU check/diff passati. CI nativa pendente.
+[Dossier](docs/verification/T-P10-01-derived.md). P10 estesa ancora aperta.
+
+HANDOFF — T-P10-01 DONE_UNVERIFIED per modello esteso
+- Raw/compiled esistenti riusati, tre piani locali/range/leap policy espliciti;
+  DerivedEq/Compare con indici e literal coerenti, nessuna coercizione Decimal.
+- Conversione coordinate condivisa; definizioni/ref/tipi verificati in preflight.
+- Executor non ancora consegnati: gate derived_values/capability ancora chiuso;
+  nessuno schema con funzionalità non eseguibile è dichiarato valido.
+- File schema/derived/derived_tests/coordinates/expression/compiler/rules/linter/mod,
+  regressioni schema/record, dossier/stato. 64 baseline protette identiche.
+- Git work/p1-foundations, task da pubblicare; matrice nativa necessaria.
+- Next residuo 10-03 dopo gate, poi integrazione presence/rules/test estesi;
+  11-02 dopo chiusura corretta P10. Nessuna nuova ratifica necessaria.
+
 ## Rettifica di scope — P10 estesa IN_PROGRESS — 2026-10-22
 
 Il contratto T-P0-07 già ratificato assegna a P10 Substring, AgeInCompletedYears,
@@ -836,7 +854,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P9-04 | DONE | 2026-10-22 | regex bytes, 363 test locali; CI 39760756884 Linux/Windows verde su c6b85cd; [report](docs/verification/T-P9-04.md) |
 | T-P9-05 | DONE | 2026-10-22 | compatibilità, 366 test locali; CI 39761531728 Linux/Windows verde su 2f3b36f; [report](docs/verification/T-P9-05.md) |
 | T-P9-06 | DONE | 2026-10-22 | golden semantici, 367 test; CI 39762338659 Linux/Windows verde su 3fafc4b; [report](docs/verification/T-P9-06.md) |
-| T-P10-01 | IN_PROGRESS | 2026-10-22 | lowering Expr, 374 test; CI 39763287298 Linux/Windows verde su b8e1e80; [report](docs/verification/T-P10-01.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
+| T-P10-01 | DONE_UNVERIFIED | 2026-10-22 | nucleo precedente verificato; modello derivati ratificati/lowering completato, 424 test locali e CI pendente; [residuo](docs/verification/T-P10-01-derived.md) |
 | T-P10-02 | DONE | 2026-10-22 | TruthValue, 376 test; CI 39764219198 Linux/Windows verde su e17c33a; [report](docs/verification/T-P10-02.md) |
 | T-P10-03 | IN_PROGRESS | 2026-10-22 | evaluator, 384 test; CI 39780196256 Linux/Windows verde su a6c7138; [report](docs/verification/T-P10-03.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
 | T-P10-04 | IN_PROGRESS | 2026-10-22 | presenza condizionale, 393 test; CI 39782079369 Linux/Windows verde su fdeea9b; [report](docs/verification/T-P10-04.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |

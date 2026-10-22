@@ -437,22 +437,11 @@ fn invalid_trace_and_zero_line_are_explicit_technical_errors() {
 /// Unsupported schema constructs still fail before runtime. No provider or
 /// synthetic production dataset is invented to make ReferenceData executable.
 #[test]
-fn compiler_rejects_unsupported_local_rules_and_reference_data() {
-    let example: Value = serde_json::from_str(include_str!(
-        "../docs/schema-authoring/examples/schemas/local-flow.json"
-    ))
-    .unwrap();
+fn compiler_rejects_unsupported_rule_assertions_and_reference_data() {
     for (name, payload) in [
         (
             "rules",
-            example["traces"]
-                .as_array()
-                .unwrap()
-                .iter()
-                .map(|trace| &trace["rules"])
-                .find(|rules| !rules.as_array().unwrap().is_empty())
-                .unwrap()
-                .clone(),
+            json!([{"id":"FUTURE","when":{"const":true},"assertions":[{"kind":"record_exists","join":"J"}],"error_code":"E_CROSS_FIELD","message_template":"Future {rule_id}"}]),
         ),
         (
             "constraints",
