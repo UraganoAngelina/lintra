@@ -73,3 +73,11 @@ api.github.com hanno verificato IP alternativi dello stesso hostname; il
 helper sceglie un indirizzo raggiungibile prima della singola richiesta API.
 I probe TLS non inviano token, HTTP o richieste Actions. Endpoint, SNI e verifica
 certificato invariati; nessun retry API nascosto o configurazione di sistema.
+
+## Checkpoint T-P12-03 — timeout del controllo automatico
+
+Push ee3036b richiesto e non eseguito: revisione automatica scaduta prima
+della creazione del processo. Unico retry consentito eseguito, stesso timeout.
+Non è una diagnosi di rischio o un guasto CI. Nessun tentativo di aggiramento,
+nessun terzo retry e nessun dispatch di 12-03. Remoto resta 4cb1a65; codice
+locale verificato. Workflow fermo per l'allineamento chiesto dall'autore.

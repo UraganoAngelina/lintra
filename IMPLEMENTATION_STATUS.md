@@ -3,6 +3,25 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Checkpoint autore — workflow fermo per allineamento
+
+Richiesta più recente: fermarsi al prossimo completamento e produrre resoconto
+completo con percentuale. Nessuna nuova task iniziata dopo 12-03.
+**74/140 task DONE = 52,9%; altre 2 locali non verificate nativamente = 54,3%
+se incluse, 1 parziale e 63 non iniziate.** Scope ratificati e rinvii preservati.
+[Resoconto completo](docs/verification/PROJECT_PROGRESS_2026-10-23.md),
+[snapshot ID/stati](docs/verification/PROJECT_PROGRESS_2026-10-23.json).
+
+Codice locale ee3036b, remoto 4cb1a65: T-P12-03 non pubblicata. Controllo
+automatico push scaduto due volte prima dell'esecuzione, anche nell'unico retry.
+Nessun rischio dichiarato dal controllo, nessun aggiramento o dispatch 12-03.
+11-06: dispatch accettato alla terza chiamata, esito non letto; nessuna quarta
+richiesta. Entrambe DONE_UNVERIFIED, pur con 524 test/61 suite e gate locali
+passati nel discendente. Ultima CI verificata 39959838976 su 8fc31f5.
+Alla ripresa: pubblicazione/gate cumulativo; dopo successo candidata 12-04.
+
+## Registro storico — consegna locale writer XLSX
+
 ## Frontiera corrente — T-P12-03 implementata / gate cumulativo da avviare
 
 524 test/61 suite passati, un probe esplicito misurato separatamente a 10k/100k
@@ -1200,11 +1219,14 @@ contratti approvati e rinvii secondo la procedura di T-P0-09.
 | Milestone | Stato | Evidenza |
 |---|---|---|
 | M0 | REACHED | G0 approvato dall’autore con rinvii espliciti, 2026-10-19 |
-| M1 | IN_PROGRESS | P1 e T-P2-01/02 complete; T-P2-03 parte autonoma in verifica, residuo applicativo aperto secondo proposta A approvata |
-| M2–M9 | NOT_REACHED | Nessuna implementazione anticipata |
+| M1 | IN_PROGRESS — residuo approvato | P1 e T-P2-01/02 verificate; T-P2-03 resta parziale per payload applicativi completi futuri |
+| M2 | LOCAL_SCOPE_VERIFIED | P3–P6 verificate nello scope corrente; non chiude il residuo M1 |
+| M3 | REACHED — LocalOnly | Chiusura nativa T-P8-06, CI 39747270986 su 90528c4; perimetro DET §151 ratificato |
+| M4–M9 | NOT_REACHED | Restano report completi/gate reference, release, Full, tooling, UI e hardening |
 
-`DONE` riguarda i criteri della singola task. Non dichiara completati P1,
-M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
+`DONE` riguarda i criteri e lo scope ratificato della singola task; non
+chiude automaticamente milestone o capacità future. G0 è approvato con rinvii.
+Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 
 ## Task
 

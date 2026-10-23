@@ -136,3 +136,13 @@ Mandato successivo — ripresa automatizzata, 2026-10-23:
   se non emergono ambiguità/conflitti; superato lo stop dopo T-P11-03.
 - Chiamate GitHub automatiche, massimo tre chiamate Actions per gate con almeno
   45 secondi di intervallo. Restano gate, spiegazioni e divieti precedenti.
+
+Mandato successivo — checkpoint di avanzamento, 2026-10-23:
+- L'autore chiede: «appena finisci la prossima task fermati un attimo e fammi
+  un resoconto completo [...] voglio capire a che percentuale di progresso siamo».
+- Workflow fermo al checkpoint T-P12-03 locale verificata/gate nativo pendente;
+  nessuna nuova task dopo il resoconto prima della ripresa dell'autore.
+- Consultare IMPLEMENTATION_STATUS e PROJECT_PROGRESS_2026-10-23 nel dossier:
+  nessun DONE fittizio, push bloccato dal timeout del controllo automatico.
+- Restano valide autonomia commit/GitHub sul repository/branch concordati e
+  le regole del workflow alla ripresa; non richiedere nuovamente conferme ordinarie.
