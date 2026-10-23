@@ -1,13 +1,35 @@
 //! Prepared immutable lookup handles; the byte-key policy belongs to the schema.
 use super::provider::{ReferenceDataError, ReferenceDataProvider, validate_key};
 pub use crate::schema::compiled::DatasetKey;
-use std::{collections::HashMap, sync::Arc};
+use std::{
+    collections::{HashMap, HashSet},
+    sync::Arc,
+};
 
 /// Versioned membership over exact bytes. Implementations must not silently
 /// trim, fold case or strip zeros; ordinary lookup requires no file opening.
 pub trait LookupSet: Send + Sync {
     fn contains(&self, value: &[u8]) -> bool;
     fn key(&self) -> &DatasetKey;
+}
+
+/// Shared immutable storage, not a trust decision. Only preparation exposes it.
+pub(super) struct ByteLookupSet {
+    key: DatasetKey,
+    values: HashSet<Vec<u8>>,
+}
+impl ByteLookupSet {
+    pub(super) fn new(key: DatasetKey, values: HashSet<Vec<u8>>) -> Self {
+        Self { key, values }
+    }
+}
+impl LookupSet for ByteLookupSet {
+    fn contains(&self, value: &[u8]) -> bool {
+        self.values.contains(value)
+    }
+    fn key(&self) -> &DatasetKey {
+        &self.key
+    }
 }
 
 /// Built only by successful preparation. It retains lookup sets, not a provider,

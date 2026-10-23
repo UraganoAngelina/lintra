@@ -217,9 +217,20 @@ pub use engine::rule_diagnostics::RuleDiagnosticError;
 
 pub use reference_data::{
     dataset::{DatasetKey, LookupSet, PreparedReferenceData, prepare_reference_data},
+    evidence::{
+        DatasetAnomaly, DatasetAvailability, DatasetEvidence, DatasetFileTypeIssue,
+        DatasetIoOperation, DatasetObservation, DatasetPreparationPolicy, MembershipFormatIssue,
+        MembershipProperty, PreparedReferenceEvidence,
+    },
+    filesystem::{
+        FileSystemReferenceDataProvider, FilesystemBoundaryViolation, FilesystemReferenceError,
+        ReferenceBindingIssue,
+    },
     in_memory::InMemoryReferenceDataProvider,
     provider::{ReferenceDataError, ReferenceDataProvider},
 };
+
+pub use schema::compiled::ReferenceDependency;
 
 pub use engine::derived_evaluator::{DerivedValue, DerivedValueEvaluator};
 pub use schema::compiled::{DateFormat, DerivedValuePlan, LeapDayAnniversary};

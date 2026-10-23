@@ -1,6 +1,10 @@
 # CNF-REFERENCE-FORMAT-01 — Formato del provider filesystem
 
-2026-10-23 — **PROPOSTA NON RATIFICATA, non implementata.**
+2026-10-23 — **PROPOSTA STORICA, RATIFICATA CON MODIFICHE VINCOLANTI.**
+Prevale la [ratifica aggiornata](../verification/CNF-REFERENCE-FORMAT-01-ratification.md)
+dell'autore: hash mismatch con contenuto conforme/identità affidabile è Degraded;
+il rifiuto indiscriminato descritto sotto è superato. Il testo originario resta
+per tracciabilità; non determina la gestione attuale delle dipendenze degradate.
 
 ## Problema verificato
 

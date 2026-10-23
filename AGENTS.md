@@ -118,3 +118,15 @@ Ribadito dall'autore — 2026-10-22:
 - Un handoff o la fine di una task non sono motivi per chiudere il turno.
 - Nessuna conferma ordinaria ulteriore; fermarsi per criticità contrattuali reali
   o nuove istruzioni esplicite dell'autore, preservando tutti i Quality Gate.
+
+Ratifica successiva — CNF-REFERENCE-FORMAT-01 aggiornata, 2026-10-23:
+- Membership v1 approvata con Verified/Degraded/Unavailable ed evidenze distinte.
+- Hash mismatch non equivale a JSON malformato: file conforme e identità affidabile
+  resta consultabile soltanto come degradato con entrambi i digest conservati.
+- ContinueWithAvailableEvidence esplicita; Strict compatibile, sicurezza filesystem
+  mai rilassata. Nessun recupero permissivo inventato per JSON malformato.
+- T-P11-03 consegna provider/preparazione/stati/evidenze e test, non summary/DSL/UI
+  o Union completi: mantenere ledger futuro, proporre API minime e additive.
+- Baseline CAD/SIOC, flow grammar e fonti architetturali non modificabili qui.
+- STOP obbligatorio dopo T-P11-03, gate/handoff; non iniziare task successive
+  senza autorizzazione. Questo mandato supera la progressione autonoma generale.

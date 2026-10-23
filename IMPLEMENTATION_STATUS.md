@@ -3,6 +3,38 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P11-03 implementata / gate nativo pendente
+
+Ratifica aggiornata CNF-REFERENCE-FORMAT-01 applicata: membership v1, provider
+filesystem reale, Strict/Continue esplicite e Verified/Degraded/Unavailable.
+471 test/56 suite; fmt/check/Clippy/test/release/Windows GNU check/diff passati.
+23 payload con SHA-256 Python indipendenti, 71 artefatti protetti invariati.
+[Dossier tecnico](docs/verification/T-P11-03.md),
+[ledger futuro](docs/verification/REFERENCE_EVIDENCE_LEDGER.md).
+API legacy invariate e rigorose; nuovo snapshot mantiene trust/identità/due hash/
+anomalie e osservazioni opzionali. Malformati senza recupero → Unavailable,
+hash mismatch interpretabile/identità corretta → Degraded. Nessun false per assenti.
+Sicurezza path/symlink inderogabile; tipi di file inutilizzabili → Unavailable
+senza lettura, non confusi con escape. Controlli per albero stabile, non TOCTOU.
+Summary/DSL/unione/app/UI restano NON implementati; compiler reference invariato.
+STOP dopo CI/handoff imposto dall'ultimo mandato, nessuna task successiva.
+
+## Registro — autorizzazione e preflight T-P11-03
+
+## Frontiera corrente — T-P11-03 autorizzata e in implementazione
+
+Ratifica aggiornata CNF-REFERENCE-FORMAT-01 ricevuta: formato approvato con
+Verified/Degraded/Unavailable e separazione integrità/malformazione/identità.
+[Registro](docs/verification/CNF-REFERENCE-FORMAT-01-ratification.md),
+[preflight API additivo](docs/verification/T-P11-03-preflight.md).
+Il blocco originario è superato. Prerequisiti 11-01 e 0-06 verificati.
+API legacy strict preservate; nuovo percorso policy/evidenze esplicito.
+Summary/DSL/unione/UI e recupero selettivo restano consegne future tracciate.
+Nuovo mandato §19: STOP obbligatorio dopo 11-03 e gate/handoff, nessuna task
+successiva automatica. Nessuna modifica a fonti architetturali o baseline.
+
+## Registro storico — chiusura P10 e precedente attesa formato
+
 ## Frontiera corrente — P10 estesa DONE; T-P11-03 BLOCKED sul formato
 
 458 test/55 suite e gate locali passati. CI [39920597392](https://github.com/UraganoAngelina/lintra/actions/runs/39920597392)
@@ -1018,7 +1050,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P10-06 | DONE | 2026-10-23 | suite derivati, 458 test/55 suite e 12 scenari; CI 39920597392 Linux/Windows completed/success su c2e0d1d; [dossier](docs/verification/T-P10-06-derived.md) |
 | T-P11-01 | DONE | 2026-10-22 | reference ports/preparazione, 419 test; CI 39788642608 Linux/Windows verde su 89b4baf; [report](docs/verification/T-P11-01.md) |
 | T-P11-02 | DONE | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali e CI 39917228132 Linux/Windows completed/success su cb0a044; [dossier](docs/verification/T-P11-02.md) |
-| T-P11-03 | BLOCKED | 2026-10-23 | formato filesystem non ratificato, proposta CNF-REFERENCE-FORMAT-01 pendente; [preflight](docs/verification/T-P11-03-preflight.md) |
+| T-P11-03 | IN_PROGRESS | 2026-10-23 | ratifica aggiornata ricevuta; provider/stati/evidenze autorizzati, preflight API additivo; [preflight](docs/verification/T-P11-03-preflight.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

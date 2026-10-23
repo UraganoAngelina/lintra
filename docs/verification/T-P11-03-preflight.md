@@ -1,7 +1,43 @@
 # T-P11-03 — Preflight contrattuale
 
-2026-10-23. Stato: **BLOCKED soltanto sul formato filesystem**, decisione
-CNF-REFERENCE-FORMAT-01 richiesta all'autore. Nessun codice della task scritto.
+2026-10-23. Stato corrente: **SBLOCCATA dalla ratifica aggiornata**
+[CNF-REFERENCE-FORMAT-01](CNF-REFERENCE-FORMAT-01-ratification.md).
+La domanda storica sotto ha risposta; non è più pendente.
+
+## Preflight API minimo prima dell'implementazione autorizzata
+
+Estensione additiva proposta e attuata nel perimetro §17–18: nuovi tipi
+DatasetAvailability/PreparationPolicy/Evidence e PreparedReferenceEvidence,
+più FileSystemReferenceDataProvider::prepare(policy) per tutte le dipendenze.
+Lo snapshot conserva mappe di lookup Arc e informazioni ordinate di provenienza;
+observe restituisce una misura opzionale accompagnata dall'evidenza tipizzata:
+Unavailable non offre un false di membership, Degraded non offre una misura
+spacciata per verificata. Nessun metodo restituisce il suo raw LookupSet degradato.
+
+Le firme LookupSet::contains, ReferenceDataProvider::load, prepare_reference_data
+e PreparedReferenceData esistenti restano compatibili. Il filesystem implementa
+load soltanto in Strict: restituisce un set solo dopo verifica completa. Questo
+impedisce che un consumer legacy interpreti un set degradato come affidabile.
+Il nuovo percorso Continue richiede policy esplicita e conserva tutte le dipendenze,
+anche indisponibili. Errori di sicurezza/configurazione o primitive non supportate
+restano fatali e non diventano fallback degradati. Nessuna modifica Summary/
+RunStatus/RunMetadata/service; rispettive evoluzioni nel ledger futuro.
+
+File rigorosamente conforme ma hash diverso → Degraded. BOM/JSON ambiguo/
+proprietà ignote o duplicate/hex invalido/entry duplicate → Unavailable;
+nessun recupero selettivo o parser permissivo. È il confine iniziale esplicito,
+non una dichiarazione che ogni forma di recupero futuro sia impossibile.
+Hash originale conservato anche per file che poi risultano malformati o estranei.
+
+Sicurezza: controlli lessicali portabili, componenti symlink rifiutati e path
+canonico confinato alla root canonica, file regolare. Questi controlli proteggono
+configurazioni stabili, NON risoluzione atomica contro modifiche ostili concorrenti
+(TOCTOU). Root/albero vanno mantenuti sotto controllo del processo di deployment;
+non si dichiara una garanzia che std::fs non fornisce. Nessuna lettura nella membership.
+
+## Registro storico del blocco originario
+
+Stato al rilevamento: **BLOCKED soltanto sul formato filesystem**.
 Prerequisiti 11-01 e 0-06 completati; il problema è distinto dalla fornitura
 ancora mancante delle tabelle ufficiali e non riapre le regole dei tracciati.
 

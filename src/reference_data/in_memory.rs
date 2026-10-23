@@ -1,11 +1,11 @@
 //! Explicit synthetic datasets for tests and callers providing their own bytes.
 //! No built-in normative entries, normalization or implicit latest version.
 use super::{
-    dataset::{DatasetKey, LookupSet},
+    dataset::{ByteLookupSet, DatasetKey, LookupSet},
     provider::{ReferenceDataError, ReferenceDataProvider, validate_key},
 };
 use std::{
-    collections::{HashMap, HashSet, hash_map::Entry},
+    collections::{HashMap, hash_map::Entry},
     sync::Arc,
 };
 
@@ -30,10 +30,10 @@ impl InMemoryReferenceDataProvider {
         match self.sets.entry(key.clone()) {
             Entry::Occupied(_) => Err(ReferenceDataError::DuplicateKey { key }),
             Entry::Vacant(entry) => {
-                entry.insert(Arc::new(ByteLookupSet {
+                entry.insert(Arc::new(ByteLookupSet::new(
                     key,
-                    values: values.into_iter().collect(),
-                }));
+                    values.into_iter().collect(),
+                )));
                 Ok(())
             }
         }
@@ -46,20 +46,5 @@ impl ReferenceDataProvider for InMemoryReferenceDataProvider {
             .get(key)
             .cloned()
             .ok_or_else(|| ReferenceDataError::Unavailable { key: key.clone() })
-    }
-}
-
-/// Private, immutable byte set; contains borrows the queried slice without
-/// allocating. Duplicate entries coalesce because this is membership only.
-struct ByteLookupSet {
-    key: DatasetKey,
-    values: HashSet<Vec<u8>>,
-}
-impl LookupSet for ByteLookupSet {
-    fn contains(&self, value: &[u8]) -> bool {
-        self.values.contains(value)
-    }
-    fn key(&self) -> &DatasetKey {
-        &self.key
     }
 }
