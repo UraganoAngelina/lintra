@@ -3,6 +3,19 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P10-05 estesa / gate nativo pendente
+
+453 test/55 suite; fmt/check/Clippy/test/release/Windows GNU check/diff passati.
+[Dossier dettagliato](docs/verification/T-P10-05-derived.md). Compiler ora
+memorizza i veri derivati, capability ammesse/conservate; assertion DerivedCompare
+più confronto locale substring/anno, ref/tipi/range verificati. Diagnostica con
+vere fonti raw ordinate e descrizioni leggibili, niente indici AST nei report.
+CLI reale copre valid/invalid/Unknown con report atomici preservati su Err.
+64 baseline protette identiche, nessuna fonte normativa o Cargo/lock cambiata.
+Next residuo 10-06 dopo gate; P10 ancora IN_PROGRESS. 11-03 attende decisione.
+
+## Registro storico — T-P10-04/T-P11-02 concluse
+
 ## Frontiera corrente — T-P10-04 / T-P11-02 DONE; ripresa T-P10-05
 
 CI 39917228132 su cb0a0445e1d13af550a0957794a6795855c7a72f: workflow e job

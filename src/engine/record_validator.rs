@@ -3,7 +3,7 @@ use super::{
     error_factory::ErrorFactory,
     expression_evaluator::{
         EvaluationContext, LocalEvaluationContext, UnknownReason,
-        local_presence_expression_supported,
+        local_expression_supported_in_schema,
     },
     field_pipeline::{FieldPipeline, FieldPipelineError, FieldPipelineResult},
     identity_extractor::{IdentityExtractionError, IdentityExtractor},
@@ -307,7 +307,7 @@ fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidatio
             schema
                 .local_rules()
                 .iter()
-                .any(|rule| !local_rule_supported(rule)),
+                .any(|rule| !local_rule_supported(rule, Some(schema))),
             UnsupportedLocalFeature::Rules,
         ),
         (
@@ -335,7 +335,7 @@ fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidatio
             .required_if
             .iter()
             .chain(&policy.forbidden_if)
-            .any(|expr| !local_presence_expression_supported(expr, schema))
+            .any(|expr| !local_expression_supported_in_schema(expr, schema))
         {
             Some(UnsupportedLocalFeature::ConditionalPresence)
         } else if field.constraints().iter().any(|constraint| {

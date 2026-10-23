@@ -146,6 +146,74 @@ fn compile_assertion(
                 value_type,
             }
         }
+        RawAssertion::DerivedCompare {
+            derived_value,
+            operator,
+            value,
+        } => {
+            let (derived_index, kind) = crate::schema::derived::binding(record, derived_value)?;
+            CompiledAssertion::DerivedCompare {
+                derived_index,
+                operator: operator_plan(operator),
+                value: crate::schema::derived::literal(value, kind)?,
+            }
+        }
+        RawAssertion::SubstringEqualsDerivedYear {
+            field,
+            start,
+            length,
+            source_ref,
+            source_format,
+            year_digits,
+        } => {
+            let field = resolve_local_ref(field, record)?;
+            let range = source_range(*start, *length)
+                .map_err(|code| (code, "invalid year assertion substring range".into()))?;
+            let year_digits = match year_digits {
+                2 => YearDigits::Two,
+                4 => YearDigits::Four,
+                _ => {
+                    return Err((
+                        Code::InvalidTypeParameters,
+                        "year_digits must be 2 or 4".into(),
+                    ));
+                }
+            };
+            let ResolvedFieldRef::Local { field_index, .. } = &field else {
+                return Err((
+                    Code::UnsupportedConstruct,
+                    "year assertion requires a local target".into(),
+                ));
+            };
+            let width = match record.fields[*field_index].physical {
+                RawPhysical::Numeric { length, .. }
+                | RawPhysical::Alphanumeric { length, .. }
+                | RawPhysical::Date { length, .. }
+                | RawPhysical::Decimal { length, .. } => length,
+            };
+            let digits = match year_digits {
+                YearDigits::Two => 2,
+                YearDigits::Four => 4,
+            };
+            if range.len() != digits
+                || range.end_exclusive()
+                    > usize::try_from(width).map_err(|_| {
+                        (Code::RangeOverflow, "year assertion width overflow".into())
+                    })?
+            {
+                return Err((
+                    Code::InvalidTypeParameters,
+                    "year assertion range must fit target and year_digits".into(),
+                ));
+            }
+            CompiledAssertion::SubstringEqualsDerivedYear {
+                field,
+                range,
+                source: crate::schema::derived::date_ref(source_ref, record)?,
+                format: crate::schema::derived::date_format_plan(source_format),
+                year_digits,
+            }
+        }
         _ => {
             return Err((
                 Code::UnsupportedConstruct,

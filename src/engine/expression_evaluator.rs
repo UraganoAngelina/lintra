@@ -312,17 +312,17 @@ fn unsupported() -> TruthValue {
 }
 
 /// Runtime boundary for directly assembled private plans as well as future
-/// compiler extensions. Rule diagnostics are integrated separately; this entry
-/// point retains the previously supported rule subset until that delivery.
+/// compiler extensions. Pure contexts can resolve derived values without owning
+/// a compiled record; metadata validation belongs to the record boundary.
 pub(crate) fn local_expression_supported(
     expression: &crate::schema::compiled::CompiledExpr,
 ) -> bool {
     expression_supported(expression, None)
 }
 
-/// Presence has the real local context and does not require rule templates.
+/// A record has the real schema: validate indices and types before execution.
 /// Check every branch, even a branch dominated by a constant at runtime.
-pub(crate) fn local_presence_expression_supported(
+pub(crate) fn local_expression_supported_in_schema(
     expression: &CompiledExpr,
     schema: &CompiledRecordSchema,
 ) -> bool {
@@ -330,7 +330,7 @@ pub(crate) fn local_presence_expression_supported(
 }
 
 fn expression_supported(expression: &CompiledExpr, schema: Option<&CompiledRecordSchema>) -> bool {
-    use crate::schema::compiled::{CompiledValue, FieldType, ValueType};
+    use crate::schema::compiled::{FieldType, ValueType};
     let derived_type = |index: usize| {
         let schema = schema?;
         super::derived_evaluator::local_derived_type(schema.derived_values().get(index)?, schema)
@@ -364,6 +364,9 @@ fn expression_supported(expression: &CompiledExpr, schema: Option<&CompiledRecor
                 derived_index,
             } => {
                 let Some(schema) = schema else {
+                    if matches!(field, ResolvedFieldRef::Local { .. }) {
+                        continue;
+                    }
                     return false;
                 };
                 let ResolvedFieldRef::Local {
@@ -391,15 +394,31 @@ fn expression_supported(expression: &CompiledExpr, schema: Option<&CompiledRecor
                 value,
                 ..
             } => {
-                if !matches!(
-                    (derived_type(*derived_index), value),
-                    (Some(ValueType::Bytes), CompiledValue::Bytes(_))
-                        | (Some(ValueType::Integer), CompiledValue::Integer(_))
-                ) {
+                if !derived_comparison_supported(*derived_index, value, schema) {
                     return false;
                 }
             }
         }
     }
     true
+}
+
+pub(crate) fn derived_comparison_supported(
+    index: usize,
+    value: &crate::schema::compiled::CompiledValue,
+    schema: Option<&CompiledRecordSchema>,
+) -> bool {
+    use crate::schema::compiled::{CompiledValue, ValueType};
+    let Some(schema) = schema else {
+        return matches!(value, CompiledValue::Bytes(_) | CompiledValue::Integer(_));
+    };
+    let kind = schema
+        .derived_values()
+        .get(index)
+        .and_then(|plan| super::derived_evaluator::local_derived_type(plan, schema));
+    matches!(
+        (kind, value),
+        (Some(ValueType::Bytes), CompiledValue::Bytes(_))
+            | (Some(ValueType::Integer), CompiledValue::Integer(_))
+    )
 }

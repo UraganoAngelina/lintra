@@ -107,9 +107,9 @@ pub use schema::raw::{
 };
 
 pub use schema::compiled::{
-    AlignmentRule, BasePresence, CompiledFieldSpec, CompiledFlowSchema, CompiledRecordSchema,
-    ContentBoundaryPolicy, DecimalSpec, EncodingSpec, FieldType, LexicalPlan, MissingValuePolicy,
-    SignPolicy,
+    AlignmentRule, BasePresence, Capability, CompiledFieldSpec, CompiledFlowSchema,
+    CompiledRecordSchema, ContentBoundaryPolicy, DecimalSpec, EncodingSpec, FieldType, LexicalPlan,
+    MissingValuePolicy, SignPolicy,
 };
 
 pub use schema::repository::{

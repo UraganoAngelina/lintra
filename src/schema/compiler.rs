@@ -79,7 +79,6 @@ impl Checks<'_> {
         }
         for (present, name) in [
             (!record.joins.is_empty(), "joins"),
-            (!record.derived_values.is_empty(), "derived_values"),
             (!record.repeated_groups.is_empty(), "repeated_groups"),
         ] {
             self.unsupported(present, trace, None, name);
@@ -503,6 +502,9 @@ impl SchemaCompiler {
                 capability,
                 RawFlowSchemaRequiredCapabilitiesItem::LocalV1
                     | RawFlowSchemaRequiredCapabilitiesItem::ExpressionsV1
+                    | RawFlowSchemaRequiredCapabilitiesItem::DerivedSubstringV1
+                    | RawFlowSchemaRequiredCapabilitiesItem::DerivedAgeInCompletedYearsV1
+                    | RawFlowSchemaRequiredCapabilitiesItem::DerivedCalendarYearDeltaV1
             ) {
                 checks.error(
                     Code::UnsupportedCapability,
@@ -566,7 +568,35 @@ impl SchemaCompiler {
                 required_traces: vec![],
             },
             parameters: vec![],
-            required_capabilities: vec![Capability::LocalV1],
+            required_capabilities: raw
+                .required_capabilities
+                .iter()
+                .map(|capability| {
+                    Ok(match capability {
+                        RawFlowSchemaRequiredCapabilitiesItem::LocalV1 => Capability::LocalV1,
+                        RawFlowSchemaRequiredCapabilitiesItem::ExpressionsV1 => {
+                            Capability::ExpressionsV1
+                        }
+                        RawFlowSchemaRequiredCapabilitiesItem::DerivedSubstringV1 => {
+                            Capability::DerivedSubstringV1
+                        }
+                        RawFlowSchemaRequiredCapabilitiesItem::DerivedAgeInCompletedYearsV1 => {
+                            Capability::DerivedAgeInCompletedYearsV1
+                        }
+                        RawFlowSchemaRequiredCapabilitiesItem::DerivedCalendarYearDeltaV1 => {
+                            Capability::DerivedCalendarYearDeltaV1
+                        }
+                        _ => {
+                            return Err(fail(
+                                None,
+                                None,
+                                Code::UnsupportedCapability,
+                                "unsupported capability reached lowering".into(),
+                            ));
+                        }
+                    })
+                })
+                .collect::<Result<Vec<_>, SchemaCompilationError>>()?,
             persistence_policy: None,
         })
         .map_err(|error| {
@@ -872,7 +902,7 @@ fn compile_record(
         })?,
         fields,
         local_rules: rules::compile_rules(raw, regexes)?,
-        derived_values: vec![],
+        derived_values: crate::schema::derived::compile_derived_values(raw)?,
         identity_plan: IdentityExtractionPlan {
             // Preflight checked targets and references; retain typed defensive
             // failures here rather than dropping an unresolved binding.

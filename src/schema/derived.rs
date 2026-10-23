@@ -91,7 +91,7 @@ fn compile_plan(raw: &RawDerived, record: &RawRecordSchema) -> Result<DerivedVal
         },
     })
 }
-fn date_ref(raw: &RawRef, record: &RawRecordSchema) -> Result<ResolvedFieldRef, Issue> {
+pub(crate) fn date_ref(raw: &RawRef, record: &RawRecordSchema) -> Result<ResolvedFieldRef, Issue> {
     let field = resolve_local_ref(raw, record)?;
     let ResolvedFieldRef::Local { field_index, .. } = &field else {
         return Err((
@@ -110,7 +110,7 @@ fn date_ref(raw: &RawRef, record: &RawRecordSchema) -> Result<ResolvedFieldRef, 
     }
     Ok(field)
 }
-fn date_format_plan(raw: &RawPhysicalDateFormat) -> DateFormat {
+pub(crate) fn date_format_plan(raw: &RawPhysicalDateFormat) -> DateFormat {
     match raw {
         RawPhysicalDateFormat::Ddmmyyyy => DateFormat::DdMmYyyy,
     }

@@ -33,7 +33,7 @@ pub(crate) fn evaluate_local_rule(
     rule: &CompiledRule,
     ctx: &EvaluationContext<'_>,
 ) -> LocalRuleArtifacts {
-    if !local_rule_supported(rule) {
+    if !local_rule_supported(rule, None) {
         return artifacts(RuleValidationResult::Unknown(
             UnknownReason::UnsupportedPlan,
         ));
@@ -196,6 +196,50 @@ fn validate_assertion(
             };
             result.map_err(AssertionFailure::Violated)
         }
+        CompiledAssertion::DerivedCompare {
+            derived_index,
+            operator,
+            value,
+        } => {
+            match super::derived_evaluator::compare_derived(
+                ctx.fields.resolve_derived(*derived_index),
+                *operator,
+                value,
+            ) {
+                TruthValue::True => Ok(()),
+                TruthValue::False => Err(mismatch(
+                    "confronto del valore derivato con il limite dichiarato",
+                )),
+                TruthValue::Unknown(reason) => Err(reason.into()),
+            }
+        }
+        CompiledAssertion::SubstringEqualsDerivedYear {
+            field,
+            range,
+            source,
+            format,
+            year_digits,
+        } => {
+            let bytes = present(ctx.fields.resolve_field(field))?;
+            let part = range.slice(bytes).ok_or(UnknownReason::FieldUnavailable)?;
+            let date = present(ctx.fields.resolve_field(source))?;
+            let date = match format {
+                DateFormat::DdMmYyyy => DateLiteral::from_ddmmyyyy(date),
+            }
+            .ok_or(UnknownReason::InvalidFieldValue)?;
+            let year = format!("{:04}", date.year);
+            let expected = match year_digits {
+                YearDigits::Two => &year.as_bytes()[2..],
+                YearDigits::Four => year.as_bytes(),
+            };
+            if part == expected {
+                Ok(())
+            } else {
+                Err(mismatch(
+                    "sottostringa uguale alle cifre dichiarate dell'anno sorgente",
+                ))
+            }
+        }
         _ => Err(UnknownReason::UnsupportedPlan.into()),
     }
 }
@@ -242,13 +286,24 @@ fn typed_value<'a>(
 
 /// Verify all nodes before execution, including branches whose predicate would
 /// otherwise be false. A future executor cannot be silently hidden by a guard.
-pub(crate) fn local_rule_supported(rule: &CompiledRule) -> bool {
-    use super::expression_evaluator::local_expression_supported;
+pub(crate) fn local_rule_supported(
+    rule: &CompiledRule,
+    schema: Option<&CompiledRecordSchema>,
+) -> bool {
+    use super::expression_evaluator::{
+        local_expression_supported, local_expression_supported_in_schema,
+    };
     use crate::schema::rule_template::{self, Part, Token};
+    let expression = |expr: &CompiledExpr| {
+        schema.map_or_else(
+            || local_expression_supported(expr),
+            |schema| local_expression_supported_in_schema(expr, schema),
+        )
+    };
     if rule.id.is_empty()
         || rule.id.trim() != rule.id.as_ref()
         || rule.assertions.is_empty()
-        || !local_expression_supported(&rule.when)
+        || !expression(&rule.when)
         || rule.error_code.as_symbol().is_err()
     {
         return false;
@@ -266,10 +321,57 @@ pub(crate) fn local_rule_supported(rule: &CompiledRule) -> bool {
     {
         return false;
     }
-    let local = |field: &ResolvedFieldRef| matches!(field, ResolvedFieldRef::Local { .. });
+    let local = |field: &ResolvedFieldRef| match field {
+        ResolvedFieldRef::Local {
+            field_index,
+            field_id,
+        } => schema.is_none_or(|schema| {
+            schema
+                .fields()
+                .get(*field_index)
+                .is_some_and(|spec| spec.id() == field_id)
+        }),
+        _ => false,
+    };
     rule.assertions.iter().all(|assertion| match assertion {
         CompiledAssertion::FieldPresent(field) => local(field),
-        CompiledAssertion::ConditionTrue(expr) => local_expression_supported(expr),
+        CompiledAssertion::ConditionTrue(expr) => expression(expr),
+        CompiledAssertion::DerivedCompare {
+            derived_index,
+            value,
+            ..
+        } => {
+            super::expression_evaluator::derived_comparison_supported(*derived_index, value, schema)
+        }
+        CompiledAssertion::SubstringEqualsDerivedYear {
+            field,
+            range,
+            source,
+            format,
+            year_digits,
+        } => {
+            let digits = match year_digits {
+                YearDigits::Two => 2,
+                YearDigits::Four => 4,
+            };
+            local(field)
+                && local(source)
+                && range.len() == digits
+                && schema.is_none_or(|schema| {
+                    let (
+                        ResolvedFieldRef::Local { field_index, .. },
+                        ResolvedFieldRef::Local {
+                            field_index: source_index,
+                            ..
+                        },
+                    ) = (field, source)
+                    else {
+                        return false;
+                    };
+                    range.end_exclusive() <= schema.fields()[*field_index].range().len()
+                        && schema.fields()[*source_index].field_type() == FieldType::Date(*format)
+                })
+        }
         CompiledAssertion::EqualsConcat { field, parts } => {
             local(field) && !parts.is_empty() && parts.iter().all(local)
         }

@@ -504,6 +504,7 @@ impl CompiledAssertion {
         match self {
             Self::FieldPresent(field)
             | Self::Constraint { field, .. }
+            | Self::SubstringEqualsDerivedYear { field, .. }
             | Self::EqualsConcat { field, .. } => Some(field),
             Self::FieldCompare {
                 left: CompiledOperand::Field(field),

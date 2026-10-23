@@ -619,3 +619,45 @@ fn local_rules_reach_real_cli_with_context_and_undecidable_run_abort() {
         file.assert_no_parts();
     }
 }
+
+#[test]
+fn derived_rules_reach_cli_and_unknown_keeps_existing_reports() {
+    for (input, exit) in [
+        (b"001A  \n".as_slice(), 2),
+        (b"001B  \n", 0),
+        (b"001   \n", 1),
+    ] {
+        let file = Fixture::new(input);
+        let path = file.root.join("schemas/SYNTHETIC/v1/flow.json");
+        let mut value: serde_json::Value =
+            serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+        value["required_capabilities"] =
+            serde_json::json!(["local.v1", "expressions.v1", "derived.substring.v1"]);
+        value["traces"][0]["fields"][1]["presence"]["base"] = serde_json::json!("optional");
+        value["traces"][0]["fields"][1]["constraints"] = serde_json::json!([]);
+        value["traces"][0]["derived_values"] = serde_json::json!({"FIRST":{"kind":"substring","source_ref":{"field":"F2"},"target":"logical","start":1,"length":1}});
+        value["traces"][0]["rules"] = serde_json::json!([{"id":"DERIVED-CHECK","when":{"derived_compare":{"derived_value":"FIRST","operator":"==","value":"A"}},"assertions":[{"kind":"derived_compare","derived_value":"FIRST","operator":"==","value":"B"}],"error_code":"E_CROSS_FIELD","message_template":"Regola {rule_id}: {condition}"}]);
+        fs::write(path, serde_json::to_vec(&value).unwrap()).unwrap();
+        if exit == 1 {
+            file.old_reports();
+        }
+        let output = file.run();
+        assert_eq!(output.status.code(), Some(exit), "{}", text(&output.stderr));
+        if exit == 1 {
+            file.assert_old();
+        } else if exit == 2 {
+            let error: serde_json::Value =
+                serde_json::from_slice(&fs::read(file.root.join("errors.jsonl")).unwrap()).unwrap();
+            assert_eq!(error["code"], "E_CROSS_FIELD");
+            assert!(error["field"].is_null());
+            assert_eq!(error["context"].as_array().unwrap().len(), 1);
+            assert_eq!(error["context"][0]["field_id"], "F2");
+            assert_eq!(error["context"][0]["value"]["display"], "A  ");
+            assert_eq!(
+                error["message"],
+                "Regola DERIVED-CHECK: sottostringa logical di F2 [start 1, length 1] = \"A\""
+            );
+        }
+        file.assert_no_parts();
+    }
+}

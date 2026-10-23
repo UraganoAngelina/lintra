@@ -235,7 +235,7 @@ fn every_excluded_ast_collection_is_a_blocking_boundary() {
         "../docs/schema-authoring/examples/schemas/history-flow.json"
     ))
     .unwrap();
-    for name in ["joins", "derived_values", "repeated_groups"] {
+    for name in ["joins", "repeated_groups"] {
         let payload = [&local, &history]
             .into_iter()
             .flat_map(|v| v["traces"].as_array().unwrap())
