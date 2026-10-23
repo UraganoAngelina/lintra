@@ -123,3 +123,12 @@ File engine/derived_evaluator/expression_evaluator/mod, export,
 test derived/expression e wiring unit compiled; dossier/stato. Nessuna baseline,
 source o Cargo/lock modificati. Next residuo T-P10-04 dopo gate nativo, poi 10-05
 per assertion/diagnostica e 10-06 golden estesi; P10 ancora aperta, 11-02 attende.
+
+## Chiusura gate nativo — 2026-10-23
+
+CI [39794989247](https://github.com/UraganoAngelina/lintra/actions/runs/39794989247)
+su 878b033fa8e785f68c673da33cbf1838bf0e001b ora completed/success;
+entrambi i job Linux GNU e Windows MSVC completed/success, verificati con gh.
+Le tre letture/dispatch del 22 ottobre avevano esiti ancora pendenti; nessuna
+chiusura allora presunta. La ripresa autorizzata del 23 ottobre recupera il
+risultato definitivo. T-P10-03 estesa DONE; next residuo T-P10-04.

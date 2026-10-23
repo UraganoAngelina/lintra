@@ -1,17 +1,26 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-10-22**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P10-03 executor esteso / gate in corso
+## Frontiera corrente — T-P10-03 estesa DONE / ripresa T-P10-04
 
-Executor Substring/AgeInCompletedYears/CalendarYearDelta ed Expr derivati
-implementati. 432 test/53 suite passati, zero falliti; fmt/check/Clippy/test/release/Windows
-GNU check/diff exit 0, CI nativa ancora da eseguire. [Dossier](docs/verification/T-P10-03-derived.md).
-Calcolo firmato anche per età negative come da authoring ratificato; nessuna
-constraint normativa implicita. LocalEvaluationContext legge i piani reali.
-Compiler pubblico e gate presenza/regole ancora chiusi per i derivati: residui
-10-04/05/06 aperti. Prossima azione: completare gate e poi integrazione presence.
+432 test/53 suite; fmt/check/Clippy/test/release/Windows GNU check/diff exit 0.
+CI 39794989247 su 878b033fa8e785f68c673da33cbf1838bf0e001b verificata il
+2026-10-23: workflow e job Linux GNU/Windows MSVC completed/success.
+[Dossier e spiegazioni](docs/verification/T-P10-03-derived.md).
+
+HANDOFF — T-P10-03 estesa DONE
+- Executor read-only dei tre piani e confronto Expr bytes/interi esatti;
+  età/delta firmati, leap policy esplicita, input mancanti/invalidi Unknown.
+- LocalEvaluationContext risolve i piani veri; nessun placeholder o data host.
+- File engine/derived_evaluator/expression_evaluator/mod, lib, test derived/
+  expression/compiled, dossier/stato; 64 file protetti identici.
+- Compiler e integrazione presenza/regole ancora chiusi per i derivati.
+- Nessun blocco contrattuale. Residui 10-04/05/06 aperti; P10 IN_PROGRESS.
+- T-P11-02 annunciata durante attesa CI ma nessuna modifica avviata: si riprende
+  l'ordine già documentato, residuo 10-04 e poi 10-05/06 prima di 11-02.
+- Prerequisiti 10-03 e 6-06 verificati; nuova autorizzazione non necessaria.
 
 ## Registro storico — T-P10-01 modello esteso concluso
 
@@ -872,7 +881,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P9-06 | DONE | 2026-10-22 | golden semantici, 367 test; CI 39762338659 Linux/Windows verde su 3fafc4b; [report](docs/verification/T-P9-06.md) |
 | T-P10-01 | DONE | 2026-10-22 | modello derivati/lowering, 424 test; workflow 39791606233 completed/success su 24b6204, dettaglio Windows in_progress nella stessa risposta; [residuo](docs/verification/T-P10-01-derived.md) |
 | T-P10-02 | DONE | 2026-10-22 | TruthValue, 376 test; CI 39764219198 Linux/Windows verde su e17c33a; [report](docs/verification/T-P10-02.md) |
-| T-P10-03 | IN_PROGRESS | 2026-10-22 | evaluator, 384 test; CI 39780196256 Linux/Windows verde su a6c7138; [report](docs/verification/T-P10-03.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
+| T-P10-03 | DONE | 2026-10-23 | executor esteso, 432 test; CI 39794989247 Linux/Windows completed/success su 878b033; [dossier](docs/verification/T-P10-03-derived.md) |
 | T-P10-04 | IN_PROGRESS | 2026-10-22 | presenza condizionale, 393 test; CI 39782079369 Linux/Windows verde su fdeea9b; [report](docs/verification/T-P10-04.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
 | T-P10-05 | IN_PROGRESS | 2026-10-22 | regole locali, 407 test; CI 39785432851 Linux/Windows verde su 9d5b1a3; [report](docs/verification/T-P10-05.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
 | T-P10-06 | IN_PROGRESS | 2026-10-22 | suite DSL/golden, 413 test; job CI 39787215311 Linux/Windows success su b7dc480, workflow globale in_progress all’ultima lettura; [report](docs/verification/T-P10-06.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
