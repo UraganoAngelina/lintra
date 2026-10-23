@@ -30,3 +30,6 @@ tempfile = { version = "=3.27.0", default-features = false }
 [dev-dependencies]
 # Read the actual XLSX ZIP/XML in the backend probe; same pure-Rust backend.
 zip = { version = "=9.0.5", default-features = false, features = ["deflate"] }
+
+# Independent XLSX reader for content/type round trips (T-P12-05), test-only.
+calamine = { version = "=0.36.1", default-features = false }
