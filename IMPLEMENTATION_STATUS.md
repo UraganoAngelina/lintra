@@ -3,15 +3,33 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P13-01 locale verificata / push bloccato dalla revisione automatica
+## Frontiera corrente — gate cumulativo chiuso; avvio T-P11-06
 
+CI [39959838976](https://github.com/UraganoAngelina/lintra/actions/runs/39959838976) sul commit
+8fc31f5788a810de7d0309f1eab54adc9646dfa4: Linux 120434767242 e Windows MSVC
+120434767095 entrambi completed/success, letti direttamente via check-runs.
+Due chiamate totali (dispatch + lettura), intervallo superiore a cinque minuti.
+504 test/59 suite e gate locali passati. T-P11-05, T-P12-02 e T-P13-01 DONE
+sul discendente cumulativo; nessuna attribuzione di successo alle run precedenti
+non lette. Codice reference e backend XLSX conservati, compiler e regressioni
+verificati insieme ai piani join nuovi.
 
-Commit locale **051ed37**. Push respinto due volte dalla revisione automatica:
-richiesta autorizzazione esplicita al codice sul remoto
-https://github.com/UraganoAngelina/lintra.git, branch work/p1-foundations.
-Origin/tracking/ultimo commit pubblicato df3858d verificati, senza superare
-il secondo rifiuto. Conferma specifica sottoposta all'autore, risposta attesa.
-Nessun push o dispatch eseguito per questo gate; nessun esito CI inventato.
+Avvio autorizzato T-P11-06: prerequisiti 11-05 e 7-04 verificati; proposta minima
+già registrata in docs/verification/T-P11-06-preflight.md. Policy Continue
+supera il vecchio fail-fast generale; Strict resta esplicita, confini filesystem
+sempre fatali. Nessun Full/history/UI o normativa anticipati.
+
+## Registro storico — pubblicazione e attesa CI T-P13-01
+
+## Frontiera corrente — T-P13-01 pubblicata / CI cumulativa in attesa
+
+L'autore ha confermato il workflow autonomo in risposta alla richiesta
+specifica di pubblicazione. Revisione automatica successiva accettata:
+push df3858d..8fc31f5 riuscito su origin/work/p1-foundations.
+Commit codice 051ed37, dossier e preflight 8fc31f5. Dispatch CI accettato
+il 2026-10-23 alle 13:16 UTC: prima chiamata del nuovo gate, nessuna
+lettura ancora eseguita. Nessun esito nativo positivo anticipato.
+Il blocco storico della revisione è superato, senza aggiramenti.
 [Registro](docs/verification/GITHUB_DNS_RECOVERY.md).
 
 Task indipendente autorizzata dal workflow: prerequisiti 10-01/P10/P7 verificati,
@@ -1219,10 +1237,11 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P11-02 | DONE | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali e CI 39917228132 Linux/Windows completed/success su cb0a044; [dossier](docs/verification/T-P11-02.md) |
 | T-P11-03 | DONE | 2026-10-23 | provider filesystem/stati/evidenze, 471 test/56 suite; CI 39930225299 Linux/Windows completed/success su 1b40c0e; [dossier](docs/verification/T-P11-03.md); STOP §19 |
 | T-P11-04 | DONE | 2026-10-23 | 373c44c, 477 test/57 suite; CI cumulativa 39936894049 su 66c3d61 Linux/Windows success; [dossier](docs/verification/T-P11-04.md) |
-| T-P11-05 | DONE_UNVERIFIED | 2026-10-23 | 493 test/58 suite; CI 39939546620 Linux success, Windows ultima lettura in_progress; [dossier](docs/verification/T-P11-05.md) |
+| T-P11-05 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P11-05.md) |
 | T-P12-01 | DONE | 2026-10-23 | CSV/colonne condivise, 485 test/58 suite; CI 39936894049 su 66c3d61 Linux/Windows success; [dossier](docs/verification/T-P12-01.md) |
-| T-P12-02 | DONE_UNVERIFIED | 2026-10-23 | backend XLSX qualificato localmente, 497 test/58 suite; CI cumulativa da avviare; [dossier](docs/verification/T-P12-02.md) |
-| T-P13-01 | DONE_UNVERIFIED | 2026-10-23 | JoinKey/piani metadata, 504 test/59 suite e gate locali passati; CI nativa pendente; [dossier](docs/verification/T-P13-01.md) |
+| T-P12-02 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P12-02.md) |
+| T-P11-06 | IN_PROGRESS | 2026-10-23 | Preflight approvato semanticamente dalla ratifica; integrazione service/summary in corso, prerequisiti verificati |
+| T-P13-01 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P13-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

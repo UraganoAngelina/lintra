@@ -77,3 +77,9 @@ dai test provider 11-03 che consultano i singoli snapshot.
 
 Nessuna task successiva è avviata da questo ledger. Il prossimo avvio richiede
 l'autorizzazione esplicita imposta dall'ultimo mandato dell'autore.
+
+## Aggiornamento gate 2026-10-23
+
+T-P11-05 DONE: CI cumulativa [39959838976](https://github.com/UraganoAngelina/lintra/actions/runs/39959838976),
+8fc31f5, Linux e Windows MSVC completed/success. Le boundary future del ledger
+rimangono tali; avviata 11-06 per policy applicativa, completezza e audit.

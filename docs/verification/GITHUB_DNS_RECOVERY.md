@@ -54,3 +54,12 @@ Helper temporaneo ora interroga due resolver DoH ufficiali (Cloudflare/Google),
 valida gli IPv4 e passa la lista risultante a curl per la singola connessione.
 Nessun retry API o POST implicito, nessuna credenziale nei parametri o file,
 nessuna modifica a TLS/host di destinazione o configurazione persistente.
+
+## Ripresa dopo la risposta dell'autore
+
+L'autore ha risposto alla richiesta specifica confermando autonomia per commit,
+attivazione CI/CD e task successive con gate/prerequisiti verificati. Nuova
+richiesta di push, con questa evidenza, accettata dalla revisione automatica.
+Push df3858d..8fc31f5 sullo stesso origin/work/p1-foundations riuscito.
+Dispatch accettato alle 13:16 UTC del 2026-10-23, prima chiamata del nuovo gate.
+Il precedente rifiuto resta nella cronologia; nessun aggiramento utilizzato.
