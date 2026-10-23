@@ -3,6 +3,20 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P12-01 implementata / GitHub non raggiungibile
+
+T-P11-04 commit locale 373c44c: 477 test/57 suite e gate locali passati.
+Due push senza risposta (secondo timeout 45s); lettura API GitHub fallita:
+`error connecting to api.github.com`. Nessun dispatch Actions eseguito,
+nessuna CI dichiarata verde. Nessun errore di approvazione automatica ricevuto.
+T-P11-04 DONE_UNVERIFIED sul gate nativo; dipendenza di T-P11-05 ancora aperta.
+Attività indipendente T-P12-01 autorizzata dal workflow: prerequisito T-P5-04
+DONE, nessuna dipendenza P11. CSV RFC 4180 e 14 colonne condivise implementati,
+8 test mirati e tutti i gate locali passati: 485 test in 58 suite. [Dossier](docs/verification/T-P12-01.md).
+Fonti/grammar/baseline/JSONL esistente invariati; nessuna nuova dipendenza.
+
+## Registro storico — esecuzione T-P11-04
+
 ## Frontiera corrente — T-P11-04 implementata / verifiche in corso
 
 Mandato 2026-10-23: ripresa automatizzata autorizzata, superato stop dopo
@@ -1101,7 +1115,8 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P11-01 | DONE | 2026-10-22 | reference ports/preparazione, 419 test; CI 39788642608 Linux/Windows verde su 89b4baf; [report](docs/verification/T-P11-01.md) |
 | T-P11-02 | DONE | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali e CI 39917228132 Linux/Windows completed/success su cb0a044; [dossier](docs/verification/T-P11-02.md) |
 | T-P11-03 | DONE | 2026-10-23 | provider filesystem/stati/evidenze, 471 test/56 suite; CI 39930225299 Linux/Windows completed/success su 1b40c0e; [dossier](docs/verification/T-P11-03.md); STOP §19 |
-| T-P11-04 | IN_PROGRESS | 2026-10-23 | policy tecnica esplicita, 477 test/57 suite e gate locali passati; CI pendente; [dossier](docs/verification/T-P11-04.md) |
+| T-P11-04 | DONE_UNVERIFIED | 2026-10-23 | policy tecnica esplicita, 477 test/57 suite e gate locali passati; CI pendente; [dossier](docs/verification/T-P11-04.md) |
+| T-P12-01 | DONE_UNVERIFIED | 2026-10-23 | CSV/colonne condivise, 485 test/58 suite e gate locali passati; CI pendente; [dossier](docs/verification/T-P12-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

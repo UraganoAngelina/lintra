@@ -145,6 +145,8 @@ pub use report::atomic::{
     AtomicOutputOutcome, AtomicReportFile, OutputOperation, PartialOutputPolicy, ReportCompletion,
     write_atomic_report,
 };
+pub use report::columns::{ERROR_COLUMNS, ErrorColumn};
+pub use report::csv::CsvSink;
 pub use report::jsonl::JsonlSink;
 
 pub use domain::{
