@@ -1,7 +1,7 @@
 ## Mandato successivo — 2026-10-23
 
 L'autore autorizza nuovamente task successive automatiche e chiamate GitHub.
-Lo stop dopo 11-03 sotto riportato è storico e superato. T-P11-04 in verifica:
+Lo stop dopo 11-03 sotto riportato è storico e superato. T-P11-04 DONE, CI cumulativa 39936894049 Linux/Windows success:
 policy tecnica Exact/AsciiUppercase, nessuna proprietà authoring aggiunta.
 
 # Ledger — Evidenze reference data, CNF-REFERENCE-FORMAT-01 aggiornata
@@ -21,7 +21,7 @@ già implementate le loro integrazioni. STOP dopo T-P11-03.
 | Formato membership v1/hash originali/identità/versione | T-P11-03; 11-01 + 0-06 | Implementata; 23 payload sintetici con digest Python indipendenti, gate nel dossier 11-03 |
 | Provider/preparazione Strict o Continue, stati e anomalie tipizzate | T-P11-03 | Implementata; snapshot con dipendenze assenti e degradate, mai set vuoto sostitutivo, load legacy solo Strict |
 | Osservazioni di membership con provenienza | T-P11-03 | Implementate come misura opzionale + evidenza read-only. NON un risultato normativo di regola o completezza del run |
-| Normalizzazione esplicita | T-P11-04; 11-03 | Implementata API tecnica Exact/AsciiUppercase; gate in corso. Query trasformata solo su scelta esplicita, dataset/evidenze invariati. Authoring attuale resta esatto; nuova proprietà JSON richiederebbe estensione approvata |
+| Normalizzazione esplicita | T-P11-04; 11-03 | Implementata API tecnica Exact/AsciiUppercase; CI 39936894049 Linux/Windows success. Query trasformata solo su scelta esplicita, dataset/evidenze invariati. Authoring attuale resta esatto; nuova proprietà JSON richiederebbe estensione approvata |
 | VerifiedPresent/VerifiedAbsent/ProvisionalPresent/Inconclusive | T-P11-05; 11-04 + 9-05 | NON IMPLEMENTATI come esiti engine. Interpretare la nuova osservazione preservando attendibilità; nessun errore normativo da sole informazioni degradate o negative incomplete |
 | Union lookup con provenienza | T-P11-05; stessi prerequisiti | NON IMPLEMENTATA. Composizione di lookup preparati senza copie/Union-Find: un match Verified è sufficiente; match solo Degraded provvisorio; negativo definitivo soltanto con tutte le dipendenze Verified |
 | Constraint ReferenceData compilata/eseguita | T-P11-05 | NON IMPLEMENTATA. Compiler continua a rifiutarla, nessun validatore fittizio nel loop. Test valore presente/assente, ref non dichiarata, source set parziale |

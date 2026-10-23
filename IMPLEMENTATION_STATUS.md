@@ -3,6 +3,33 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P11-04 e T-P12-01 DONE; avvio T-P11-05
+
+CI cumulativa [39936894049](https://github.com/UraganoAngelina/lintra/actions/runs/39936894049)
+su 66c3d61b45affe64897aeef786b67cdb2decc967: job Linux 120358531363 e Windows
+MSVC 120358530977 completed/success, verificati direttamente con check-runs.
+485 test locali in 58 suite, zero falliti, gate locali tutti passati; 90 file
+protetti identici a 6e4b411. Tre chiamate per gate con intervalli >45s.
+
+HANDOFF — 2026-10-23 — ripresa automatica
+- 11-04: Exact/AsciiUppercase tecnico esplicito, nessuna nuova proprietà JSON;
+  lookup/evidenze originali invariati. Codice 373c44c verificato nel discendente.
+- 12-01: CSV RFC 4180 e 14 colonne condivise DET A.2, 8 test nuovi, streaming
+  e guasti terminali; codice 66c3d61. CLI/XLSX non anticipati.
+- File src/reference_data/normalization/evidence/mod/lib e test; report/csv/
+  columns/mod/lib e test; dossier/stato/ledger/mandato. Fonti/grammar/baseline
+  invariate, nessun nuovo crate.
+- DNS locale guasto risolto per singola chiamata con DNS-over-HTTPS/curl resolve,
+  TLS invariato; nessuna configurazione di sistema modificata. [Evidenze](docs/verification/GITHUB_DNS_RECOVERY.md).
+- Mandato corrente autorizza task e GitHub automatici: nessun ulteriore consenso
+  ordinario richiesto. T-P11-05 prerequisiti 11-04 e 9-05 verificati.
+- [Preflight](docs/verification/T-P11-05-preflight.md): compiler/reference
+  constraint, quattro esiti, Union, artefatti locali espliciti; summary/app in 11-06.
+- Git work/p1-foundations, codice pubblicato fino 66c3d61; chiusura documentale
+  successiva. Nessun blocco contrattuale individuato; avvio 11-05 autorizzato.
+
+## Registro storico — verifica locale e problema DNS superato
+
 ## Frontiera corrente — T-P12-01 implementata / GitHub non raggiungibile
 
 T-P11-04 commit locale 373c44c: 477 test/57 suite e gate locali passati.
@@ -1115,8 +1142,9 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P11-01 | DONE | 2026-10-22 | reference ports/preparazione, 419 test; CI 39788642608 Linux/Windows verde su 89b4baf; [report](docs/verification/T-P11-01.md) |
 | T-P11-02 | DONE | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali e CI 39917228132 Linux/Windows completed/success su cb0a044; [dossier](docs/verification/T-P11-02.md) |
 | T-P11-03 | DONE | 2026-10-23 | provider filesystem/stati/evidenze, 471 test/56 suite; CI 39930225299 Linux/Windows completed/success su 1b40c0e; [dossier](docs/verification/T-P11-03.md); STOP §19 |
-| T-P11-04 | DONE_UNVERIFIED | 2026-10-23 | policy tecnica esplicita, 477 test/57 suite e gate locali passati; CI pendente; [dossier](docs/verification/T-P11-04.md) |
-| T-P12-01 | DONE_UNVERIFIED | 2026-10-23 | CSV/colonne condivise, 485 test/58 suite e gate locali passati; CI pendente; [dossier](docs/verification/T-P12-01.md) |
+| T-P11-04 | DONE | 2026-10-23 | 373c44c, 477 test/57 suite; CI cumulativa 39936894049 su 66c3d61 Linux/Windows success; [dossier](docs/verification/T-P11-04.md) |
+| T-P11-05 | IN_PROGRESS | 2026-10-23 | prerequisiti verificati; preflight dei contratti disponibile |
+| T-P12-01 | DONE | 2026-10-23 | CSV/colonne condivise, 485 test/58 suite; CI 39936894049 su 66c3d61 Linux/Windows success; [dossier](docs/verification/T-P12-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
