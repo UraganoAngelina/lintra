@@ -1,5 +1,5 @@
 //! Prepared immutable lookup handles; the byte-key policy belongs to the schema.
-use super::provider::{ReferenceDataError, ReferenceDataProvider};
+use super::provider::{ReferenceDataError, ReferenceDataProvider, validate_key};
 pub use crate::schema::compiled::DatasetKey;
 use std::{collections::HashMap, sync::Arc};
 
@@ -42,13 +42,7 @@ pub fn prepare_reference_data(
     // Reject malformed identities before the first provider side effect; this
     // validates spelling and never normalizes dataset IDs or membership bytes.
     for key in dependencies {
-        if key.id.0.is_empty()
-            || key.id.0.trim() != key.id.0
-            || key.version.0.is_empty()
-            || key.version.0.trim() != key.version.0
-        {
-            return Err(ReferenceDataError::InvalidKey { key: key.clone() });
-        }
+        validate_key(key)?;
     }
     let mut sets = HashMap::with_capacity(dependencies.len());
     let mut keys = Vec::new();

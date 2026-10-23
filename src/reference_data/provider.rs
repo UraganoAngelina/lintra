@@ -15,6 +15,9 @@ pub enum ReferenceDataError {
     InvalidKey {
         key: DatasetKey,
     },
+    DuplicateKey {
+        key: DatasetKey,
+    },
     Unavailable {
         key: DatasetKey,
     },
@@ -31,12 +34,27 @@ impl fmt::Display for ReferenceDataError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(match self {
             Self::InvalidKey { .. } => "reference dataset identity is invalid",
+            Self::DuplicateKey { .. } => "reference dataset version is already registered",
             Self::Unavailable { .. } => "required reference dataset is unavailable",
             Self::KeyMismatch { .. } => {
                 "loaded reference dataset identity differs from the requested key"
             }
             Self::Provider { .. } => "reference dataset preparation failed",
         })
+    }
+}
+
+/// Identity spelling is checked consistently at preparation and direct adapter
+/// entry points. This does not normalize membership bytes or dataset names.
+pub(crate) fn validate_key(key: &DatasetKey) -> Result<(), ReferenceDataError> {
+    if key.id.0.is_empty()
+        || key.id.0.trim() != key.id.0
+        || key.version.0.is_empty()
+        || key.version.0.trim() != key.version.0
+    {
+        Err(ReferenceDataError::InvalidKey { key: key.clone() })
+    } else {
+        Ok(())
     }
 }
 impl Error for ReferenceDataError {

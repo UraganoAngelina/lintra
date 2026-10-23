@@ -3,6 +3,20 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P11-02 implementata / gate nativi pendenti
+
+444 test/54 suite; fmt/check/Clippy/test/release/Windows GNU check/diff passati.
+Provider in memoria esatto/immutabile per versione, nessun fallback o caricamento
+per lookup. [Dossier dettagliato](docs/verification/T-P11-02.md).
+Prerequisito unico 11-01 verificato: attività indipendente durante coda CI 10-04
+(CNF-02). L'ordine temporaneo non dichiara completata P10 né scavalca un gate.
+T-P10-04 CI 39916675139 ultima lettura: Linux queued, Windows in_progress,
+workflow queued; tre chiamate totali, >45s tra chiamate. Gate NON verificato.
+Il prossimo gate nativo del discendente verificherà anche il codice 10-04.
+10-05/06 restano aperte. Nessuna modifica alle 64 baseline protette.
+
+## Registro — T-P10-04 implementata, CI pendente
+
 ## Frontiera corrente — T-P10-04 estesa / gate nativo pendente
 
 Integrazione runtime dei derivati nella presenza completata; 438 test/53 suite,
