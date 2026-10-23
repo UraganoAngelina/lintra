@@ -178,7 +178,11 @@ fn local_capability_is_required_and_other_capabilities_are_never_silently_accept
     let mut value = sample();
     value["required_capabilities"] = json!([]);
     assert!(has(&error(value), Code::MissingCapability));
-    for capability in ["joins.v1", "persistence.audit.v1", "temporal.intervals.v1"] {
+    for capability in [
+        "reference_metadata.v1",
+        "persistence.audit.v1",
+        "temporal.intervals.v1",
+    ] {
         let mut value = sample();
         value["required_capabilities"] = json!(["local.v1", capability]);
         assert!(has(&error(value), Code::UnsupportedCapability));
@@ -235,7 +239,8 @@ fn every_excluded_ast_collection_is_a_blocking_boundary() {
         "../docs/schema-authoring/examples/schemas/history-flow.json"
     ))
     .unwrap();
-    for name in ["joins", "repeated_groups"] {
+    {
+        let name = "repeated_groups";
         let payload = [&local, &history]
             .into_iter()
             .flat_map(|v| v["traces"].as_array().unwrap())
@@ -256,7 +261,7 @@ fn every_excluded_ast_collection_is_a_blocking_boundary() {
             "{name}"
         );
     }
-    for name in ["parameters", "reference_data", "persistence_policy"] {
+    for name in ["reference_data", "persistence_policy"] {
         let mut value = sample();
         value[name] = history[name].clone();
         assert!(!value[name].is_null());

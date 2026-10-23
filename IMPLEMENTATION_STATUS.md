@@ -3,6 +3,24 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P13-01 implementata / gate nativo da avviare
+
+Task indipendente autorizzata dal workflow: prerequisiti 10-01/P10/P7 verificati,
+G0 APPROVED_WITH_DEFERRALS, nessuna dipendenza P11/P12. Tuple byte collision-safe
+u64 BE, key da logical dichiarato, piani current_submission con cardinalità/
+policy/namespace definitions/consensus conservati; Full e history non eseguiti.
+504 test/59 suite passati, fmt/check/Clippy/test/release/Windows GNU e diff check
+passati. 90 artefatti protetti invariati. Gate nativo cumulativo da avviare.
+[Dossier](docs/verification/T-P13-01.md). Runtime namespace/projection/store/
+related evaluator restano task dedicate, senza simulazioni.
+CI 39952391617 su df3858d: Linux 120409783190 success, Windows 120409783484
+ultima risposta in_progress; terza e ultima lettura timeout connessione.
+11-05/12-02 ancora DONE_UNVERIFIED sul nativo Windows. Nessuna quarta chiamata.
+11-06 preflight pronto, implementazione non iniziata. Nessun conflitto contrattuale
+emerso; l'iterazione cumulativa successiva potrà verificare tutti i rami consegnati.
+
+## Registro storico — qualifica XLSX prima della CI cumulativa
+
 ## Frontiera corrente — T-P12-02 implementata / gate cumulativo da avviare
 
 497 test/58 suite e tutti i gate locali passati con --offline --locked e
@@ -1195,6 +1213,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P11-05 | DONE_UNVERIFIED | 2026-10-23 | 493 test/58 suite; CI 39939546620 Linux success, Windows ultima lettura in_progress; [dossier](docs/verification/T-P11-05.md) |
 | T-P12-01 | DONE | 2026-10-23 | CSV/colonne condivise, 485 test/58 suite; CI 39936894049 su 66c3d61 Linux/Windows success; [dossier](docs/verification/T-P12-01.md) |
 | T-P12-02 | DONE_UNVERIFIED | 2026-10-23 | backend XLSX qualificato localmente, 497 test/58 suite; CI cumulativa da avviare; [dossier](docs/verification/T-P12-02.md) |
+| T-P13-01 | DONE_UNVERIFIED | 2026-10-23 | JoinKey/piani metadata, 504 test/59 suite e gate locali passati; CI nativa pendente; [dossier](docs/verification/T-P13-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

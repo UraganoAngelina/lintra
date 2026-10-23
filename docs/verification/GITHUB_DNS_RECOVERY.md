@@ -24,3 +24,15 @@ Commit 373c44c (11-04) e discendente 66c3d61 (12-01) mantengono invariato il
 codice/test reference di 11-04; una CI cumulativa su 66c3d61 può verificarli
 entrambi. Gli esiti reali vengono registrati nei dossier, senza attribuire una
 run separata inesistente a 373c44c.
+
+## Aggiornamento dopo il primo gate
+
+Il record DNS di api.github.com può cambiare fra le chiamate: un successivo
+POST su un indirizzo precedente è terminato per connection timeout. Ora la
+risposta DoH viene aggiornata prima di ogni richiesta; nessun retry POST nascosto.
+Ogni tentativo Actions, anche fallito, viene contato nel massimo di tre.
+Per 11-05: primo dispatch fallito, secondo riuscito, una lettura ha mostrato
+Linux success e Windows in_progress. Nessuna quarta lettura della stessa run.
+Per la qualifica XLSX: dipendenze recuperate nella sola cache Cargo isolata,
+checksum verificati; nessuna modifica alla risoluzione DNS o ai source Cargo
+registrati nel repository. La CI successiva usa registro/host standard.

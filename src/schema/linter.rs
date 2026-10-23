@@ -42,6 +42,8 @@ pub enum SchemaIssueCode {
     PresenceConflict,
     InvalidRecordKey,
     MissingFieldReference,
+    MissingTraceReference,
+    MissingParameterReference,
     MissingDerivedValueReference,
     MissingReferenceDatasetDeclaration,
     InvalidDiagnosticCode,

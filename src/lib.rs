@@ -249,3 +249,9 @@ pub use engine::record_validator::{ReferenceRecordValidationArtifacts, Reference
 pub use engine::reference_execution::{
     ReferenceConclusion, ReferenceControl, ReferenceEvaluationObserver, ReferenceExecutionError,
 };
+
+pub use context::join_key::{JoinKey, JoinKeyError, build_join_key};
+pub use schema::compiled::{
+    CompiledJoinSpec, JoinCardinality, JoinScope, RelatedDiagnostic, RelatedPolicy,
+};
+pub use schema::compiled::{ConsensusPlan, ParameterDefinition};

@@ -76,3 +76,65 @@ Le sorgenti Unavailable restano richieste e in audit, ma non sono HashSet consul
 Completezza Partial deriva da valutazioni provvisorie/inconcludenti o esecuzione
 interrotta, non dalla sola presenza di un dataset mancante quando la membership
 è già dimostrata da un'altra sorgente verificata.
+
+## Firme e proprietà dei tipi previste
+
+- `ReferenceDataPreparer::prepare(&self, &[ReferenceDependency], policy)` restituisce
+  uno snapshot con evidenze oppure un errore tecnico concreto. Non cambia load
+  legacy e non promuove un HashSet in-memory senza digest a file Verified.
+- Adapter `FileSystemReferenceDataPreparer`: root esplicita, binding del flow
+  compilato ricevuti a ogni preparazione, nessun provider vuoto fittizio nel loop.
+- `ValidationService::with_reference_data(preparer, policy)` additiva ai
+  costruttori attuali; nuova factory con entrambe le root, selezionata dall'adapter.
+  La policy è configurazione esplicita del service e audit della preparazione,
+  non un secondo default indipendente o una nuova flag normativa nel record.
+- `ValidationSummary.reference_validation: Option<ReferenceValidationSummary>`:
+  nuovo campo pubblico e aggiornamento necessario dei literal dei consumer Rust;
+  nessuna modifica alle altre firme. Il JSON omette l'envelope quando non è
+  applicata alcuna preparazione reference, preservando i golden senza dipendenze.
+- `ValidationSummary::completeness()` restituisce il tipo Complete/Partial:
+  tiene conto di cancellazione/troncamento/controlli saltati ed evidenze non
+  definitive. Nessuna sostituzione di RunStatus o nuovo esito tecnico/normativo.
+- `ValidationSummaryBuilder::finish_with_reference_data(metadata, audit)`:
+  percorso esplicito, validazione di conteggi/disponibilità/digest/proiezione
+  legacy e completezza. Il vecchio finish mantiene la guardia di 11-05.
+
+DatasetKey e gli enum puri di disponibilità/policy/formato possono essere
+spostati nel dominio neutro conservando gli attuali re-export pubblici. Questo
+evita domain→schema/provider o duplicati incompatibili di DatasetKey. Restano
+nel provider le cause IO/JSON reali: il dominio riceve soltanto motivazioni
+trasportabili tipizzate, nessuna std::io::Error o path host nel summary finale.
+Envelope conserva ID/versione richiesti e letti, digest atteso e reale distinti,
+path relativo dichiarato, stati/anomalie, policy e contatori per controllo.
+
+La proiezione legacy versioni non è una nuova regola normativa: ID con una sola
+versione Verified entra nella map, ID ambiguo o solo degradato non riceve una
+versione falsamente verificata. Tutte le versioni, anche assenti/degradate,
+rimangono nel nuovo audit autorevole con il loro vero stato.
+
+Consumer console/CLI: nessuna dichiarazione di piena conformità su Partial;
+JSONL invariato con soli ValidationError. Exit code segue l'esito di esecuzione
+normativa già approvato (0 nessuna violazione rilevata, 2 violazioni, 1 errore
+tecnico, 130 cancellazione); la completezza esplicita è una dimensione distinta
+nel summary. Nessun successo pienamente conforme dedotto dal solo exit code.
+
+## Invarianti della finalizzazione da verificare
+
+- Verified richiede digest effettivo uguale all'atteso, identità dichiarata
+  coerente e assenza di anomalie; Degraded non può essere serializzato Verified.
+- Snapshot restituito dal preparatore deve corrispondere alle dipendenze e alla
+  policy richieste; nessuna sostituzione con versioni/latest o altri digest.
+- Contatori per controllo: somma checked; una valutazione ha un solo esito
+  finale. E_REFERENCE_DATA è emesso soltanto da assenza verificata; numero di
+  violazioni di predicato e numero di ValidationError sono metriche distinte.
+- App e builder verificano la coerenza fra marker non definitivo osservato,
+  contatori aggregati e completezza. La nuova finalizzazione non può cancellare
+  la guardia di 11-05 limitandosi ad allegare un envelope vuoto.
+- Un match Verified in Union parziale resta conclusivo: indisponibilità delle
+  altre dipendenze in audit e diagnostica, senza falso Partial sulla sola causa.
+- Policy Strict: errore prima dell'apertura dell'input; Continue: input e regole
+  indipendenti proseguono. Symlink/escape rimangono errori fatali in entrambi.
+- Cancellazione e limite operativo conservano l'audit EOF effettivo e rimangono
+  distinti da esecuzione completata con Complete oppure Partial.
+- La cardinalità della diagnostica aggregata dipende dal piano e dai dataset,
+  non dal numero di record o dai valori trovati/non trovati. Nessun PHI in key.

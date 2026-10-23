@@ -6,6 +6,8 @@ use crate::schema::{
     linter::{SchemaIssue, SchemaIssueCode as Code, SchemaIssueSeverity, lint_raw_schema},
     raw::*,
 };
+#[path = "joins.rs"]
+mod joins;
 #[path = "reference.rs"]
 mod reference;
 
@@ -80,12 +82,12 @@ impl Checks<'_> {
                 "trace name must be nonempty",
             );
         }
-        for (present, name) in [
-            (!record.joins.is_empty(), "joins"),
-            (!record.repeated_groups.is_empty(), "repeated_groups"),
-        ] {
-            self.unsupported(present, trace, None, name);
-        }
+        self.unsupported(
+            !record.repeated_groups.is_empty(),
+            trace,
+            None,
+            "repeated_groups",
+        );
         if let Err((code, message)) = crate::schema::derived::compile_derived_values(record) {
             self.error(code, trace, None, message);
         }
@@ -522,6 +524,9 @@ impl SchemaCompiler {
                 capability,
                 RawFlowSchemaRequiredCapabilitiesItem::LocalV1
                     | RawFlowSchemaRequiredCapabilitiesItem::ExpressionsV1
+                    | RawFlowSchemaRequiredCapabilitiesItem::JoinsV1
+                    | RawFlowSchemaRequiredCapabilitiesItem::JoinsSetsV1
+                    | RawFlowSchemaRequiredCapabilitiesItem::JoinsConsensusV1
                     | RawFlowSchemaRequiredCapabilitiesItem::DerivedSubstringV1
                     | RawFlowSchemaRequiredCapabilitiesItem::DerivedAgeInCompletedYearsV1
                     | RawFlowSchemaRequiredCapabilitiesItem::DerivedCalendarYearDeltaV1
@@ -534,14 +539,28 @@ impl SchemaCompiler {
                 );
             }
         }
-        for (present, name) in [
-            (!raw.parameters.is_empty(), "parameters"),
-            (raw.persistence_policy.is_some(), "persistence_policy"),
-        ] {
-            checks.unsupported(present, None, None, name);
-        }
+        checks.unsupported(
+            raw.persistence_policy.is_some(),
+            None,
+            None,
+            "persistence_policy",
+        );
         let dependencies = match reference::compile_dependencies(&raw.reference_data) {
             Ok(dependencies) => dependencies,
+            Err((code, message)) => {
+                checks.error(code, None, None, message);
+                vec![]
+            }
+        };
+        let parameters = match joins::compile_parameters(&raw.parameters) {
+            Ok(parameters) => parameters,
+            Err((code, message)) => {
+                checks.error(code, None, None, message);
+                vec![]
+            }
+        };
+        let joins = match joins::compile_joins(&raw) {
+            Ok(joins) => joins,
             Err((code, message)) => {
                 checks.error(code, None, None, message);
                 vec![]
@@ -589,17 +608,30 @@ impl SchemaCompiler {
             traces,
             required_reference_data: dependencies,
             cross_record_plan: CrossRecordValidationPlan {
-                joins: vec![],
+                required_traces: (0..raw.traces.len())
+                    .filter(|index| {
+                        joins
+                            .iter()
+                            .any(|join| join.source_trace == *index || join.target_trace == *index)
+                    })
+                    .collect(),
+                joins,
                 rules: vec![],
-                required_traces: vec![],
             },
-            parameters: vec![],
+            parameters,
             required_capabilities: raw
                 .required_capabilities
                 .iter()
                 .map(|capability| {
                     Ok(match capability {
                         RawFlowSchemaRequiredCapabilitiesItem::LocalV1 => Capability::LocalV1,
+                        RawFlowSchemaRequiredCapabilitiesItem::JoinsConsensusV1 => {
+                            Capability::JoinConsensusV1
+                        }
+                        RawFlowSchemaRequiredCapabilitiesItem::JoinsV1 => Capability::JoinsV1,
+                        RawFlowSchemaRequiredCapabilitiesItem::JoinsSetsV1 => {
+                            Capability::JoinSetsV1
+                        }
                         RawFlowSchemaRequiredCapabilitiesItem::ExpressionsV1 => {
                             Capability::ExpressionsV1
                         }
