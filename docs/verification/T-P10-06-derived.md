@@ -1,5 +1,13 @@
 # T-P10-06 — Suite DSL e golden del contratto derivati esteso
 
+**Stato finale 2026-10-23: DONE, P10 estesa verificata.**
+458 test/55 suite, 12 scenari golden; gate locali e CI [39920597392](https://github.com/UraganoAngelina/lintra/actions/runs/39920597392)
+su c2e0d1dca19d986cf21755661f8a65b917daf07d: workflow e job Linux/Windows MSVC completed/success.
+Tre chiamate totali, intervalli >45s. Le annotazioni di gate in corso nel
+registro seguente descrivono il momento precedente alla verifica finale.
+
+## Registro implementazione e verifiche locali
+
 2026-10-23. Prerequisiti 10-05 estesa 213ccb4/CI 39919164236, workflow e
 job Linux/Windows completed/success; 5-07 già verificata b0e5ce7/CI 39416549983.
 Prompt/Piano §4/§14, ARCH §34.2, DET §110, QG-3/4 e authoring ratificato
@@ -99,3 +107,13 @@ oracolo Python e dossier/stato; nessun codice produttivo o Cargo/lock cambiato.
 P10 estesa sarà DONE solo dopo gate nativo di questa consegna. M4/M5, Full,
 P13/PERSIST e T-P2-03/M1 restano aperti. 11-02 già verificata; prossima 11-03
 attende decisione reale CNF-REFERENCE-FORMAT-01, separata dal contratto P10.
+
+## Handoff finale
+
+T-P10-01..06 DONE nel perimetro esteso ratificato: tutti e tre i derivati,
+Expr/Assertion/presence/report reali e suite pubblica/native verificati.
+Non equivale a local.v1 completa, Full, P13/PERSIST o milestone M4/M5.
+La rettifica originaria è chiusa senza cancellarne la tracciabilità.
+T-P11-02 è già DONE; prossima T-P11-03 con prerequisiti soddisfatti ma solo
+il formato filesystem bloccato da CNF-REFERENCE-FORMAT-01. Proposta concreta
+già sottoposta, nessun codice filesystem da simulare o baseline da adattare.

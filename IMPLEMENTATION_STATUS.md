@@ -3,6 +3,36 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — P10 estesa DONE; T-P11-03 BLOCKED sul formato
+
+458 test/55 suite e gate locali passati. CI [39920597392](https://github.com/UraganoAngelina/lintra/actions/runs/39920597392)
+su c2e0d1dca19d986cf21755661f8a65b917daf07d: workflow e job Linux GNU/Windows MSVC tutti
+completed/success. [Dossier finale](docs/verification/T-P10-06-derived.md).
+
+HANDOFF — P10 estesa DONE / prossima task T-P11-03
+- Residui ratificati 10-01/03/04/05/06 completati e verificati, 10-02 preservata;
+  tre derivati, presence/Expr/Assertion, diagnostica e CLI reali, zero placeholder.
+- Ultima task 10-06: quattro test di composizione/layout/confini più nuovo
+  golden indipendente; 12 scenari su quattro profili, riproducibilità byte esatta.
+- File .gitignore, tests/derived_rules/golden, nuovo profilo derived, README,
+  oracolo e dossier; solo documentazione storica sincronizzata dopo la CI.
+- 64 artefatti protetti precedenti identici SHA-256 a 213ccb4; sette nuovi file
+  schema/input/attesi, nessun golden precedente o baseline normativa riscritto.
+- Branch work/p1-foundations, codice c2e0d1d pubblicato; commit documentale di
+  chiusura conserva gli esiti reali, nessuna verifica dichiarata sul futuro.
+- T-P11-01/02 DONE. T-P11-03 prerequisiti 11-01 e 0-06 verificati, ma formato
+  provider ancora riservato dall'authoring ratificato: CNF-REFERENCE-FORMAT-01.
+  [Preflight](docs/verification/T-P11-03-preflight.md) e
+  [proposta concreta](docs/proposals/reference-filesystem-format.md) sottoposti;
+  risposta dell'autore pendente. Nessun codice filesystem implementato.
+- Decisione necessaria: ratificare il profilo tecnico membership proposto o
+  fornire una specifica runtime alternativa. Non è una conferma ordinaria fra task.
+- Blocco limitato al ramo 11-03/04/05/06; nessuna riapertura delle CNF derivati,
+  Decimal, audit, alignment o Service DI. Dopo decisione riprendere automaticamente.
+- M4/M5, Full/P13/PERSIST/T-P2-03/M1 restano aperti; nessuna release o merge.
+
+## Registro storico — T-P10-06 implementata, gate successivamente chiuso
+
 ## Frontiera corrente — T-P10-06 estesa / gate nativo pendente
 
 458 test/55 suite; fmt/check/Clippy/test/release/Windows GNU check/diff passati.
@@ -863,9 +893,9 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS per T-P10-06 estesa | fmt/check/clippy/test/release/GNU, 458 test in 55 suite |
-| QG-2 — CI Linux/Windows | PASS T-P10-05; 10-06 estesa pendente | CI 39919164236 su 213ccb4, workflow/job Linux e Windows MSVC completed/success; nessun esito 10-06 ancora presunto |
+| QG-2 — CI Linux/Windows | PASS T-P10-06 estesa | CI 39920597392 su c2e0d1d, workflow/job Linux GNU e Windows MSVC completed/success |
 | QG-3 — architettura | PASS nel perimetro LocalOnly ratificato | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
-| QG-4 — golden | PASS locale, CI estesa pendente | 12 scenari/quattro profili, oracolo derivati indipendente e ripetizione byte-identica; vecchi attesi invariati |
+| QG-4 — golden | PASS locale e CI estesa | 12 scenari/quattro profili, oracolo derivati indipendente, ripetizione byte-identica; CI 39920597392 Linux/Windows success, vecchi attesi invariati |
 | QG-8 — documenti | PASS con revisione autorizzata T-P6-03 | DET §44 e prompt kit aggiornati per mandato esplicito; hash prima/dopo registrati; ARCH/Piano invariati; nessun residuo fisico formato 1 |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
 | G-SIOC-HIST | OPEN_POLICY | DEC-SIOC-HIST-01, non blocca scaffold |
@@ -985,7 +1015,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P10-03 | DONE | 2026-10-23 | executor esteso, 432 test; CI 39794989247 Linux/Windows completed/success su 878b033; [dossier](docs/verification/T-P10-03-derived.md) |
 | T-P10-04 | DONE | 2026-10-23 | presenza derivata 48acdf5; 444 test e CI cumulativa 39917228132 su cb0a044 Linux/Windows completed/success; [dossier](docs/verification/T-P10-04-derived.md) |
 | T-P10-05 | DONE | 2026-10-23 | regole/diagnostica derivate, 453 test; CI 39919164236 Linux/Windows completed/success su 213ccb4; [dossier](docs/verification/T-P10-05-derived.md) |
-| T-P10-06 | IN_PROGRESS | 2026-10-22 | suite DSL/golden, 413 test; job CI 39787215311 Linux/Windows success su b7dc480, workflow globale in_progress all’ultima lettura; [report](docs/verification/T-P10-06.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
+| T-P10-06 | DONE | 2026-10-23 | suite derivati, 458 test/55 suite e 12 scenari; CI 39920597392 Linux/Windows completed/success su c2e0d1d; [dossier](docs/verification/T-P10-06-derived.md) |
 | T-P11-01 | DONE | 2026-10-22 | reference ports/preparazione, 419 test; CI 39788642608 Linux/Windows verde su 89b4baf; [report](docs/verification/T-P11-01.md) |
 | T-P11-02 | DONE | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali e CI 39917228132 Linux/Windows completed/success su cb0a044; [dossier](docs/verification/T-P11-02.md) |
 | T-P11-03 | BLOCKED | 2026-10-23 | formato filesystem non ratificato, proposta CNF-REFERENCE-FORMAT-01 pendente; [preflight](docs/verification/T-P11-03-preflight.md) |

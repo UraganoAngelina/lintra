@@ -1,5 +1,13 @@
 # T-P10-05 — Regole derivate e diagnostica delle sorgenti reali
 
+**Stato corrente 2026-10-23: DONE.** CI 39919164236, workflow e job
+Linux/Windows MSVC completed/success (gate cumulativo per 10-04, spiegato sotto).
+P10 estesa ora chiusa con 458 test e CI finale 39920597392. I gate temporaneamente
+chiusi o pendenti nel registro seguente descrivono questa specifica consegna;
+compiler/presenza/regole pubblici sono stati integrati nelle task successive.
+
+## Registro della consegna e delle verifiche
+
 2026-10-23. Residuo P10 già ratificato T-P0-07/lowering.json; nessuna nuova
 norma o formato flow. Prerequisiti 10-04 e 5-02 verificati: 10-04 nel gate
 cumulativo 39917228132 su cb0a044, entrambi i job Linux/Windows success;

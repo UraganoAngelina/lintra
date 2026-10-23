@@ -1,5 +1,13 @@
 # T-P10-03 — Executor dei tre derivati ratificati
 
+**Stato corrente 2026-10-23: DONE.** CI 39794989247, workflow e job
+Linux/Windows MSVC completed/success (gate cumulativo per 10-04, spiegato sotto).
+P10 estesa ora chiusa con 458 test e CI finale 39920597392. I gate temporaneamente
+chiusi o pendenti nel registro seguente descrivono questa specifica consegna;
+compiler/presenza/regole pubblici sono stati integrati nelle task successive.
+
+## Registro della consegna e delle verifiche
+
 2026-10-22, gate locali passati; CI nativa pendente.
 Prerequisito modello esteso 24b6204/CI 39791606233 workflow completed/success;
 dettaglio Windows non allineato in quella risposta conservato nel dossier 10-01,

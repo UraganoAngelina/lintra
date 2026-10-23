@@ -1,5 +1,13 @@
 # T-P10-04 — Presenza condizionale con derivati ratificati
 
+**Stato corrente 2026-10-23: DONE.** CI 39917228132, workflow e job
+Linux/Windows MSVC completed/success (gate cumulativo per 10-04, spiegato sotto).
+P10 estesa ora chiusa con 458 test e CI finale 39920597392. I gate temporaneamente
+chiusi o pendenti nel registro seguente descrivono questa specifica consegna;
+compiler/presenza/regole pubblici sono stati integrati nelle task successive.
+
+## Registro della consegna e delle verifiche
+
 2026-10-23. Prerequisiti: T-P10-03 estesa 878b033 con CI 39794989247,
 workflow e job Linux/Windows completed/success, verificati alla ripresa;
 T-P6-06 già consegnata. Prompt atomico, Piano §4/§14, DET §21–22/39–42,

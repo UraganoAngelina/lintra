@@ -1,5 +1,15 @@
 # Rettifica dello stato P10 — contratto esteso già ratificato
 
+**Aggiornamento 2026-10-23:** residui 10-01/03/04/05 DONE con gate nativi;
+10-06 DONE, CI 39920597392 su c2e0d1d workflow/job Linux e Windows
+completed/success. P10 estesa chiusa dopo verifica, 458 test/55 suite.
+T-P11-02 completata e verificata durante l'attesa indipendente dei gate P10
+(CNF-02); 11-03 richiede la decisione separata sul formato filesystem.
+Nessuna nuova decisione sul contratto dei derivati. Il testo seguente conserva
+la rilevazione originaria, senza presentarla come stato implementativo attuale.
+
+## Registro storico — rilevazione e piano di recupero
+
 2026-10-22. Nessuna decisione nuova richiesta o riaperta.
 
 La revisione dell'authoring per l'avvio P11 ha rilevato una consegna P10
