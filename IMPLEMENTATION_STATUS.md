@@ -3,7 +3,16 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P13-01 implementata / gate nativo da avviare
+## Frontiera corrente — T-P13-01 locale verificata / push bloccato dalla revisione automatica
+
+
+Commit locale **051ed37**. Push respinto due volte dalla revisione automatica:
+richiesta autorizzazione esplicita al codice sul remoto
+https://github.com/UraganoAngelina/lintra.git, branch work/p1-foundations.
+Origin/tracking/ultimo commit pubblicato df3858d verificati, senza superare
+il secondo rifiuto. Conferma specifica sottoposta all'autore, risposta attesa.
+Nessun push o dispatch eseguito per questo gate; nessun esito CI inventato.
+[Registro](docs/verification/GITHUB_DNS_RECOVERY.md).
 
 Task indipendente autorizzata dal workflow: prerequisiti 10-01/P10/P7 verificati,
 G0 APPROVED_WITH_DEFERRALS, nessuna dipendenza P11/P12. Tuple byte collision-safe
