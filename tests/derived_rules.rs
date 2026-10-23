@@ -392,3 +392,163 @@ fn invalid_derivation_bindings_types_ranges_and_templates_fail_before_records() 
             .any(|issue| issue.code == SchemaIssueCode::ConstraintTypeMismatch)
     );
 }
+
+#[test]
+fn derived_rules_resolve_by_id_across_reversed_physical_layouts() {
+    let when = json!({"and":[
+        {"derived_eq":{"ref":{"field":"AGE"},"derived_value":"AGE"}},
+        {"derived_compare":{"derived_value":"PREFIX","operator":"==","value":"AB"}},
+        {"derived_compare":{"derived_value":"YEAR","operator":">=","value":18}}
+    ]});
+    let mut raw = value(json!([rule(
+        json!({"condition":"GUARD"}),
+        json!([{"kind":"field_present","field":{"field":"DETAIL"}}])
+    )]));
+    raw["traces"][0]["named_conditions"] = json!({"GUARD":when});
+    let first = compile(raw.clone()).unwrap();
+    let original_fields = raw["traces"][0]["fields"].as_array().unwrap().clone();
+    let fields = raw["traces"][0]["fields"].as_array_mut().unwrap();
+    fields.reverse();
+    let mut start = 1;
+    for field in fields.iter_mut() {
+        field["physical"]["start"] = json!(start);
+        start += field["physical"]["length"].as_u64().unwrap();
+    }
+    let reversed_ids = fields
+        .iter()
+        .map(|field| field["id"].as_str().unwrap().to_owned())
+        .collect::<Vec<_>>();
+    let second = compile(raw).unwrap();
+    for input in [
+        bytes("    ", "01012000", "01012021", "021"),
+        bytes("ABCD", "01012000", "01012021", "021"),
+        bytes("    ", "01012010", "01012021", "011"),
+        bytes("    ", "        ", "01012021", "021"),
+    ] {
+        let parts = original_fields
+            .iter()
+            .map(|field| {
+                let start =
+                    usize::try_from(field["physical"]["start"].as_u64().unwrap() - 1).unwrap();
+                let length =
+                    usize::try_from(field["physical"]["length"].as_u64().unwrap()).unwrap();
+                (field["id"].as_str().unwrap(), &input[start..start + length])
+            })
+            .collect::<std::collections::BTreeMap<_, _>>();
+        let reordered = reversed_ids
+            .iter()
+            .flat_map(|id| parts[id.as_str()].iter().copied())
+            .collect::<Vec<_>>();
+        match (observe(&first, &input), observe(&second, &reordered)) {
+            (Ok((left, a)), Ok((right, b))) => {
+                assert_eq!(left, right);
+                assert_eq!(a.len(), b.len());
+                for (a, b) in a.iter().zip(&b) {
+                    assert_eq!(a.code, b.code);
+                    assert_eq!(a.context, b.context);
+                    assert_eq!(a.actual, b.actual);
+                    assert_eq!(a.expected, b.expected);
+                    assert_eq!(a.message, b.message);
+                    assert_eq!(a.field.as_ref().unwrap().start_one_based, 1);
+                    assert_eq!(b.field.as_ref().unwrap().start_one_based, 25);
+                }
+            }
+            (
+                Err(RecordValidationError::UndeterminedRule { reason: a, .. }),
+                Err(RecordValidationError::UndeterminedRule { reason: b, .. }),
+            ) => assert_eq!(a, b),
+            pair => panic!("layout changed the outcome: {pair:?}"),
+        }
+    }
+}
+
+#[test]
+fn known_failed_assertion_dominates_an_earlier_unknown_derived_obligation() {
+    let schema = compile(value(json!([rule(
+        json!({"const":true}),
+        json!([
+            compare("AGE",">",json!(0)), {"kind":"field_present","field":{"field":"DETAIL"}}
+        ])
+    )])))
+    .unwrap();
+    let input = bytes("    ", "        ", "01012021", "021");
+    assert!(matches!(
+        evaluate(&schema, &input),
+        RuleValidationResult::Violated(_)
+    ));
+    let (result, errors) = observe(&schema, &input).unwrap();
+    assert!(!result.valid);
+    assert_eq!(errors.len(), 1);
+    assert_eq!(errors[0].field.as_ref().unwrap().id.0, "DETAIL");
+    assert_eq!(
+        errors[0]
+            .context
+            .iter()
+            .map(|item| item.field_id.0.as_str())
+            .collect::<Vec<_>>(),
+        ["DETAIL"]
+    );
+}
+
+#[test]
+fn static_conflicts_are_proved_without_guessing_the_truth_of_a_derived_condition() {
+    let mut raw = value(json!([]));
+    let condition = json!({"derived_compare":{"derived_value":"AGE","operator":">=","value":18}});
+    raw["traces"][0]["fields"][0]["presence"]["required_if"] = json!([condition]);
+    raw["traces"][0]["fields"][0]["presence"]["forbidden_if"] = json!([condition]);
+    let schema = compile(raw.clone()).unwrap();
+    assert_eq!(
+        observe(&schema, &bytes("ABCD", "01012000", "01012021", "021"))
+            .unwrap()
+            .1[0]
+            .code,
+        ValidationCode::RuleConflict
+    );
+    assert!(
+        observe(&schema, &bytes("    ", "01012010", "01012021", "011"))
+            .unwrap()
+            .0
+            .valid
+    );
+    raw["traces"][0]["fields"][0]["presence"]["required_if"] = json!([{"const":true}]);
+    raw["traces"][0]["fields"][0]["presence"]["forbidden_if"] = json!([{"const":true}]);
+    assert!(
+        compile(raw)
+            .unwrap_err()
+            .issues
+            .iter()
+            .any(|issue| issue.code == SchemaIssueCode::PresenceConflict)
+    );
+}
+
+#[test]
+fn derived_profile_roundtrips_and_unreachable_bad_definitions_are_rejected() {
+    let profile: Value =
+        serde_json::from_slice(include_bytes!("golden/derived/v1/schema.json")).unwrap();
+    let raw: RawFlowSchema = serde_json::from_value(profile.clone()).unwrap();
+    assert_eq!(serde_json::to_value(raw).unwrap(), profile);
+    assert_eq!(
+        compile(profile).unwrap().traces()[0].derived_values().len(),
+        3
+    );
+    let mut raw = value(json!([]));
+    raw["traces"][0]["named_conditions"] =
+        json!({"A":{"condition":"B"},"B":{"and":[{"condition":"A"},{"const":true}]}});
+    assert!(
+        compile(raw)
+            .unwrap_err()
+            .issues
+            .iter()
+            .any(|issue| issue.code == SchemaIssueCode::SelfReferentialRule)
+    );
+    let mut raw = value(json!([]));
+    raw["traces"][0]["named_conditions"] =
+        json!({"UNUSED":{"derived_compare":{"derived_value":"ABSENT","operator":"==","value":1}}});
+    assert!(
+        compile(raw)
+            .unwrap_err()
+            .issues
+            .iter()
+            .any(|issue| issue.code == SchemaIssueCode::MissingDerivedValueReference)
+    );
+}

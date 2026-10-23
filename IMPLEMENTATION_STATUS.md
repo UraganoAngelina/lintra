@@ -3,6 +3,20 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P10-06 estesa / gate nativo pendente
+
+458 test/55 suite; fmt/check/Clippy/test/release/Windows GNU check/diff passati.
+[Dossier completo](docs/verification/T-P10-06-derived.md). Nuovo profilo derived
+con oracolo indipendente, 12 scenari totali su quattro profili; ripetizione byte
+esatta, layout invertiti con stessi esiti/context/message e coordinate corrette.
+Conflitti costanti provati staticamente, derivati dinamici lasciati al runtime;
+Unknown e definizioni inutilizzate non nascondono obblighi malformati.
+64 artefatti protetti precedenti identici; sette nuovi schema/input/attesi.
+P10 estesa ancora IN_PROGRESS fino a CI nativa. Next11-03 attende ratifica
+CNF-REFERENCE-FORMAT-01 già sottoposta; 11-02 DONE, nessun provider filesystem.
+
+## Registro storico — T-P10-05 estesa conclusa
+
 ## Frontiera corrente — T-P10-05 estesa DONE / ripresa T-P10-06
 
 453 test/55 suite e gate locali passati; CI 39919164236 su
@@ -848,9 +862,10 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 |---|---|---|
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
-| QG-1 — controlli locali | PASS per T-P10-06 | fmt/check/clippy/test/release/GNU, 413 test in 51 suite |
-| QG-2 — CI Linux/Windows | PASS matrice nativa su b7dc480 | [Run reale](https://github.com/UraganoAngelina/lintra/actions/runs/39787215311), entrambi i job completed/success; stato globale workflow ancora in_progress all’ultima lettura, non equiparato a completed |
+| QG-1 — controlli locali | PASS per T-P10-06 estesa | fmt/check/clippy/test/release/GNU, 458 test in 55 suite |
+| QG-2 — CI Linux/Windows | PASS T-P10-05; 10-06 estesa pendente | CI 39919164236 su 213ccb4, workflow/job Linux e Windows MSVC completed/success; nessun esito 10-06 ancora presunto |
 | QG-3 — architettura | PASS nel perimetro LocalOnly ratificato | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
+| QG-4 — golden | PASS locale, CI estesa pendente | 12 scenari/quattro profili, oracolo derivati indipendente e ripetizione byte-identica; vecchi attesi invariati |
 | QG-8 — documenti | PASS con revisione autorizzata T-P6-03 | DET §44 e prompt kit aggiornati per mandato esplicito; hash prima/dopo registrati; ARCH/Piano invariati; nessun residuo fisico formato 1 |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
 | G-SIOC-HIST | OPEN_POLICY | DEC-SIOC-HIST-01, non blocca scaffold |

@@ -112,3 +112,27 @@ espliciti, usa hashlib sugli originali e non legge output Rust. Nessun vecchio
 atteso è riscritto. Il runner registra il terzo profilo, ora 10 scenari, e una
 seconda esecuzione indipendente del caso invalid deve riprodurre ogni byte.
 Solo `tests/golden/dsl/**/input.txt` è aggiunto alle eccezioni per testo sintetico.
+
+## Profilo derivati T-P10-06 estesa
+
+`derived/v1/schema.json` è separato dai profili precedenti: DETAIL AN 3 byte,
+BIRTH/REF Date DDMMYYYY 8 byte, AGE Numeric Exact 3 byte. Definisce i tre piani
+ratificati: età compiuta con policy mar01, sottostringa raw dell'anno REF e
+delta degli anni. Le regole richiedono DETAIL per adulti con riferimento 2021,
+confrontano AGE presente con l'età vera e limitano il delta anni a 25 (soglia
+soltanto sintetica del profilo, nessuna regola di flusso reale).
+
+valid: cinque record, inclusi 28/02 con nascita 29/02 e policy mar01, anno 0001,
+zero e riferimento precedente alla nascita con età/delta firmati. AGE mancante
+è esclusa da un guard IsPresent esplicito. invalid: quattro record, uno valido
+e tre invalidi, nell'ordine E_CONDITIONAL_REQUIRED, E_CROSS_FIELD per età
+non coincidente, E_CROSS_FIELD per delta oltre soglia. Context contiene i byte
+raw delle vere fonti; il target esiste solo per FieldPresent DETAIL.
+
+`generate_derived_goldens.py` costruisce questi tre errori da casi espliciti e
+gli hash da hashlib, senza leggere output Rust o aggiornare vecchi attesi.
+Il produttore resta quello reale comune, con clock/elapsed fissati solo nel
+dominio di test prima della serializzazione; audit originali completi dopo EOF.
+La suite ora registra quattro profili e dodici scenari; due esecuzioni nuove
+del profilo invalid devono produrre ogni byte identico. L'eccezione input.txt
+aggiunta è limitata a `tests/golden/derived/**/input.txt`.
