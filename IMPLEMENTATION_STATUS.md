@@ -3,6 +3,15 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Decisione pendente — T-P11-03 / CNF-REFERENCE-FORMAT-01
+
+Preflight rileva formato del provider ancora esplicitamente riservato nell'authoring
+ratificato; esempi SIOC/authoring non sono wire format runtime approvato.
+[Fonti, impatto e verifica](docs/verification/T-P11-03-preflight.md),
+[proposta concreta membership](docs/proposals/reference-filesystem-format.md).
+Domanda all'autore pendente; nessuna implementazione filesystem o baseline mutata.
+Blocco limitato a 11-03; P10 e provider in memoria proseguono con i propri gate.
+
 ## Frontiera corrente — T-P11-02 implementata / gate nativi pendenti
 
 444 test/54 suite; fmt/check/Clippy/test/release/Windows GNU check/diff passati.
@@ -912,6 +921,8 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P10-05 | IN_PROGRESS | 2026-10-22 | regole locali, 407 test; CI 39785432851 Linux/Windows verde su 9d5b1a3; [report](docs/verification/T-P10-05.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
 | T-P10-06 | IN_PROGRESS | 2026-10-22 | suite DSL/golden, 413 test; job CI 39787215311 Linux/Windows success su b7dc480, workflow globale in_progress all’ultima lettura; [report](docs/verification/T-P10-06.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
 | T-P11-01 | DONE | 2026-10-22 | reference ports/preparazione, 419 test; CI 39788642608 Linux/Windows verde su 89b4baf; [report](docs/verification/T-P11-01.md) |
+| T-P11-02 | IN_PROGRESS | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali passati, CI 39917228132 pendente su cb0a044; [dossier](docs/verification/T-P11-02.md) |
+| T-P11-03 | BLOCKED | 2026-10-23 | formato filesystem non ratificato, proposta CNF-REFERENCE-FORMAT-01 pendente; [preflight](docs/verification/T-P11-03-preflight.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
