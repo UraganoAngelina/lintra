@@ -1,8 +1,9 @@
 # T-P13-02 — Preflight documentale della projection
 
-2026-10-23. Nessun codice della task iniziato: prerequisito T-P13-01 locale
-verificato (504 test), gate nativo sospeso prima del push. Workflow autonomo
-autorizza la ripresa soltanto dopo evidenze Linux/Windows disponibili.
+2026-10-23. Nessun codice della task iniziato. Prerequisito T-P13-01 verificato
+nativamente nella CI 39959838976 su 8fc31f5 (Linux/MSVC success).
+T-P12-05 pubblicata 8ce60e6, dispatch accettato alle 15:15 UTC; gate in attesa.
+Avvio implementativo 13-02 solo dopo il gate corrente, come dichiarato.
 
 ## Contratti recuperati
 
@@ -43,3 +44,29 @@ della riga, nessuna copia integrale per comodità; byte/NUL/zeri preservati;
 record corto/indice invalido/missing tipizzati. Regressioni LocalOnly e piani
 immutabili, gate locali e CI Linux/Windows. Nessun test della task eseguito
 o dichiarato prima dell'implementazione. Fonti/grammar/baseline invariate.
+
+## Precisazioni sulle API e sui casi realmente supportati
+
+RecordView reale contiene solo byte, non la riga: project_record deve ricevere
+line_number esplicito (>0), oltre a view/schema/identity, anziché inventare zero.
+Errore di proiezione posseduto dal layer context, senza import application;
+nessuna costruzione di ValidationRunError o esecuzione Full in questa task.
+
+La projection deve contenere binding locali risolti con JoinId, indice globale,
+lato source/target e campi ordinati. Una self-join può avere campi source/target
+differenti nello stesso trace: conservarli distinti evita sovrascritture su
+una sola chiave JoinId. La rappresentazione owned dovrà preservare il lato.
+Le chiavi mancanti secondo MissingValuePolicy devono restare uno stato tipizzato,
+non chiavi vuote sintetiche né violazioni normative emesse dal projector.
+Le failure tecniche di schema/range/logical/allocation restano Result separati.
+
+Le attuali regole cross con RelatedRef/RecordExists/SetExists non raggiungono il
+compiled flow: il compiler le rifiuta esplicitamente. Non anticipare il loro
+lowering/evaluator per rendere nominalmente completo il piano. L’invariante
+si applica a tutte le dipendenze effettivamente compilabili: PK/identity,
+entrambe le join key e tuple/predicati consensus; nessuna copia dei campi locali
+irrilevanti. I predicati consensus richiedono visita esaustiva CompiledExpr,
+comprese dipendenze field/derived (e relativi input). Una nuova variante senza
+visita deve essere errore di compilazione Rust, non cadere in un catch-all.
+Il riuso dei byte raw nei values e logical esplicito nelle key deve restare
+separato; test con fill/NUL/zeri e rilascio del buffer originario.

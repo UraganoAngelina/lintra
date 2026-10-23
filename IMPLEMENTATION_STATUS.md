@@ -3,6 +3,24 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P12-05 verificata; avvio T-P13-02
+
+CI [39976689575](https://github.com/UraganoAngelina/lintra/actions/runs/39976689575)
+su 8ce60e62dbc0e6f4d23339d1807fb3513641d903: Linux 120493017008 e Windows
+MSVC 120493017045 entrambi completed/success, letti direttamente. Due chiamate
+Actions, intervallo oltre quattro minuti. 539 test/63 suite e gate locali
+passati. **78/140 task verificate = 55,7%**. M4 LOCAL_SCOPE_VERIFIED: P9–P12
+chiuse nello scope ratificato; rinvii G0/metadata/tempo/operatori non supportati
+restano espliciti e non costituiscono conformità normativa completa CAD/SIOC.
+M5/release, Full/P13, PERSIST e UI restano aperte.
+
+Avvio 13-02 autorizzato: 13-01 verificata CI 39959838976, preflight aggiornato.
+Projection minimale owned, binding source/target distinti anche nelle self-join,
+nessuna esecuzione Full o ContextStore anticipata. Nessuna nuova dipendenza.
+Modifica esterna di newline alla proposta reference sempre preservata.
+
+## Registro storico — consegna locale 12-05
+
 ## Frontiera corrente — T-P12-05 locale verificata; CI nativa da avviare
 
 539 test/63 suite, zero falliti, un probe memoria esplicito già documentato
@@ -1294,7 +1312,8 @@ contratti approvati e rinvii secondo la procedura di T-P0-09.
 | M1 | IN_PROGRESS — residuo approvato | P1 e T-P2-01/02 verificate; T-P2-03 resta parziale per payload applicativi completi futuri |
 | M2 | LOCAL_SCOPE_VERIFIED | P3–P6 verificate nello scope corrente; non chiude il residuo M1 |
 | M3 | REACHED — LocalOnly | Chiusura nativa T-P8-06, CI 39747270986 su 90528c4; perimetro DET §151 ratificato |
-| M4–M9 | NOT_REACHED | Restano report completi/gate reference, release, Full, tooling, UI e hardening |
+| M4 | LOCAL_SCOPE_VERIFIED | P9–P12 verificate, ultima CI 39976689575 Linux/MSVC success; rinvii G0 e capacità non supportate espliciti, nessuna certificazione normativa completa |
+| M5–M9 | NOT_REACHED | Restano release, Full, tooling, UI e hardening |
 
 `DONE` riguarda i criteri e lo scope ratificato della singola task; non
 chiude automaticamente milestone o capacità future. G0 è approvato con rinvii.
@@ -1381,7 +1400,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P11-06 | DONE | 2026-10-23 | CI cumulativa 39967822377 su 2b979f2: Linux/Windows MSVC completed/success; 524 test/61 suite; [dossier](docs/verification/T-P11-06.md) |
 | T-P12-03 | DONE | 2026-10-23 | CI cumulativa 39967822377 su 2b979f2: Linux/Windows MSVC completed/success; 524 test/61 suite; [dossier](docs/verification/T-P12-03.md) |
 | T-P12-04 | DONE | 2026-10-23 | CLI XLSX/temp spool/guard reali, 534 test/62 suite e gate locali passati; CI 39974616511 Linux/MSVC success; [dossier](docs/verification/T-P12-04.md) |
-| T-P12-05 | DONE_UNVERIFIED | 2026-10-23 | Parser XLSX indipendente, 539 test/63 suite e gate locali passati; CI nativa pendente; [dossier](docs/verification/T-P12-05.md) |
+| T-P12-05 | DONE | 2026-10-23 | Parser XLSX indipendente, 539 test/63 suite e gate locali passati; CI 39976689575 Linux/MSVC success; [dossier](docs/verification/T-P12-05.md) |
 | T-P13-01 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P13-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
