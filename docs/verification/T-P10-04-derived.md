@@ -104,3 +104,12 @@ engine/derived_evaluator/expression_evaluator/record_validator, wiring/test
 compiled/derived_presence_tests e negativi precedenti, dossier/stato.
 Nessun Cargo/lock, baseline normativa, golden o formato raw modificato.
 Next T-P10-05 residuo dopo gate; poi 10-06 e ripresa 11-02 autorizzata.
+
+CI [39917228132](https://github.com/UraganoAngelina/lintra/actions/runs/39917228132)
+su cb0a0445e1d13af550a0957794a6795855c7a72f: workflow e job Linux GNU/Windows
+MSVC tutti completed/success, verificati con tre chiamate (dispatch e due letture)
+a intervalli >45s. Il commit comprende 48acdf5 (T-P10-04); engine e test presenza
+non modificati fra i due commit. Gate cumulativo effettivo, non un risultato
+retroattivo inventato per la run precedente ancora pendente all'ultima lettura.
+
+T-P10-04 estesa DONE; next 10-05 dopo gate, come autorizzato.

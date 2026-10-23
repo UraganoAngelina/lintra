@@ -3,6 +3,25 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P10-04 / T-P11-02 DONE; ripresa T-P10-05
+
+CI 39917228132 su cb0a0445e1d13af550a0957794a6795855c7a72f: workflow e job
+Linux GNU/Windows MSVC completed/success. 444 test/54 suite e gate locali passati.
+Il gate sul discendente copre anche 48acdf5/T-P10-04, senza modifiche successive
+al suo engine/test. Nessuna presunzione sull'esito della precedente run 39916675139.
+
+HANDOFF — T-P10-04 estesa DONE / T-P11-02 DONE
+- Presenza integrata ai tre derivati con controllo metadata prima del record;
+  conflitto/Unknown/errori primari e terminalità preservati, sei test nuovi.
+- Provider in memoria reale, versioni immutabili/byte esatti/Arc condivisi;
+  nessuna normalizzazione implicita o default service fittizio, sei test nuovi.
+- File engine/derived_evaluator/expression_evaluator/record_validator, test compiled;
+  reference_data/in_memory/dataset/provider/mod, lib, test reference_in_memory.
+- Dossier dettagliati 10-04-derived/11-02 e stato aggiornati; 64 baseline identiche.
+- Next residuo T-P10-05, prerequisiti 10-04/5-02 verificati; poi 10-06.
+- T-P11-03 decisione filesystem pendente, blocco separato dalle attività P10.
+- P10/M4/M5/P13/PERSIST/T-P2-03/M1 e Full ancora aperti.
+
 ## Decisione pendente — T-P11-03 / CNF-REFERENCE-FORMAT-01
 
 Preflight rileva formato del provider ancora esplicitamente riservato nell'authoring
@@ -917,11 +936,11 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P10-01 | DONE | 2026-10-22 | modello derivati/lowering, 424 test; workflow 39791606233 completed/success su 24b6204, dettaglio Windows in_progress nella stessa risposta; [residuo](docs/verification/T-P10-01-derived.md) |
 | T-P10-02 | DONE | 2026-10-22 | TruthValue, 376 test; CI 39764219198 Linux/Windows verde su e17c33a; [report](docs/verification/T-P10-02.md) |
 | T-P10-03 | DONE | 2026-10-23 | executor esteso, 432 test; CI 39794989247 Linux/Windows completed/success su 878b033; [dossier](docs/verification/T-P10-03-derived.md) |
-| T-P10-04 | IN_PROGRESS | 2026-10-22 | presenza condizionale, 393 test; CI 39782079369 Linux/Windows verde su fdeea9b; [report](docs/verification/T-P10-04.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
+| T-P10-04 | DONE | 2026-10-23 | presenza derivata 48acdf5; 444 test e CI cumulativa 39917228132 su cb0a044 Linux/Windows completed/success; [dossier](docs/verification/T-P10-04-derived.md) |
 | T-P10-05 | IN_PROGRESS | 2026-10-22 | regole locali, 407 test; CI 39785432851 Linux/Windows verde su 9d5b1a3; [report](docs/verification/T-P10-05.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
 | T-P10-06 | IN_PROGRESS | 2026-10-22 | suite DSL/golden, 413 test; job CI 39787215311 Linux/Windows success su b7dc480, workflow globale in_progress all’ultima lettura; [report](docs/verification/T-P10-06.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
 | T-P11-01 | DONE | 2026-10-22 | reference ports/preparazione, 419 test; CI 39788642608 Linux/Windows verde su 89b4baf; [report](docs/verification/T-P11-01.md) |
-| T-P11-02 | IN_PROGRESS | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali passati, CI 39917228132 pendente su cb0a044; [dossier](docs/verification/T-P11-02.md) |
+| T-P11-02 | DONE | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali e CI 39917228132 Linux/Windows completed/success su cb0a044; [dossier](docs/verification/T-P11-02.md) |
 | T-P11-03 | BLOCKED | 2026-10-23 | formato filesystem non ratificato, proposta CNF-REFERENCE-FORMAT-01 pendente; [preflight](docs/verification/T-P11-03-preflight.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
