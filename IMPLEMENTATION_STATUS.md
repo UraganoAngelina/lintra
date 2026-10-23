@@ -3,6 +3,39 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P12-02 implementata / gate cumulativo da avviare
+
+497 test/58 suite e tutti i gate locali passati con --offline --locked e
+cache isolata. rust_xlsxwriter =0.100.0, constant_memory sì/zlib no; zip =9.0.5
+solo dev per leggere il vero workbook. MSRV/licenze/changelog/tag verificati,
+subtree Cargo Linux e Windows senza backend C; 21 nuovi pacchetti e tutte le
+versioni/checksum preesistenti invariati. [Dossier](docs/verification/T-P12-02.md).
+90 artefatti protetti identici. Nessun report writer anticipato o fittizio.
+11-05: codice 2efc9c2 invariato, 493 test passati; CI 39939546620 Linux success,
+Windows ultima lettura in_progress. Nessuna quarta chiamata. Il nuovo gate
+cumulativo potrà verificare 11-05 e 12-02 insieme, senza attribuire esiti
+non letti al precedente run. Preflight 11-06 pronto, implementazione non iniziata.
+
+## Registro storico — spike XLSX e gate P11 pendente
+
+## Frontiera corrente — T-P12-02 spike; gate Windows T-P11-05 non ancora verificato
+
+T-P11-05 pubblicata 2efc9c2, 493 test/58 suite e gate locali passati.
+CI 39939546620: Linux 120367320921 completed/success; ultima lettura Windows
+120367320674 in_progress. Tre chiamate esaurite (primo dispatch timeout DNS,
+secondo riuscito, una lettura). Nessuna quarta richiesta né successo presunto.
+T-P11-06 solo preflight documentale; nessuna implementazione avviata.
+Task indipendente T-P12-02 autorizzata, prerequisito T-P12-01 verificato.
+DEC-06/DEC-15 candidato prima dell'aggiunta: rust_xlsxwriter =0.100.0,
+MIT OR Apache-2.0, MSRV 1.88, default-features=false, constant_memory=true,
+zlib=false. Cargo upstream/tag e changelog riletti il 2026-10-23; subtree
+pure-Rust da confermare con cargo tree e workbook minimo Linux/Windows.
+Nessun aggiornamento automatico futuro del crate pre-1.0 senza changelog.
+Resolver guasto: cache Cargo isolata /tmp da endpoint HTTPS ufficiali con
+resolve puntuale e checksum ufficiali, nessuna modifica del Cargo home utente.
+
+## Registro storico — consegna locale T-P11-05
+
 ## Frontiera corrente — T-P11-05 implementata / gate nativo pendente
 
 493 test in 58 suite e tutti i gate locali passati, quattro digest Python
@@ -1159,8 +1192,9 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P11-02 | DONE | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali e CI 39917228132 Linux/Windows completed/success su cb0a044; [dossier](docs/verification/T-P11-02.md) |
 | T-P11-03 | DONE | 2026-10-23 | provider filesystem/stati/evidenze, 471 test/56 suite; CI 39930225299 Linux/Windows completed/success su 1b40c0e; [dossier](docs/verification/T-P11-03.md); STOP §19 |
 | T-P11-04 | DONE | 2026-10-23 | 373c44c, 477 test/57 suite; CI cumulativa 39936894049 su 66c3d61 Linux/Windows success; [dossier](docs/verification/T-P11-04.md) |
-| T-P11-05 | IN_PROGRESS | 2026-10-23 | 493 test/58 suite e gate locali passati; CI pendente; [dossier](docs/verification/T-P11-05.md) |
+| T-P11-05 | DONE_UNVERIFIED | 2026-10-23 | 493 test/58 suite; CI 39939546620 Linux success, Windows ultima lettura in_progress; [dossier](docs/verification/T-P11-05.md) |
 | T-P12-01 | DONE | 2026-10-23 | CSV/colonne condivise, 485 test/58 suite; CI 39936894049 su 66c3d61 Linux/Windows success; [dossier](docs/verification/T-P12-01.md) |
+| T-P12-02 | DONE_UNVERIFIED | 2026-10-23 | backend XLSX qualificato localmente, 497 test/58 suite; CI cumulativa da avviare; [dossier](docs/verification/T-P12-02.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

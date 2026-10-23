@@ -20,3 +20,9 @@ chrono = { version = "=0.4.45", default-features = false, features = ["std"] }
 regex = "1.13.1"
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = { version = "1.0.151", features = ["arbitrary_precision"] }
+
+rust_xlsxwriter = { version = "=0.100.0", default-features = false, features = ["constant_memory"] }
+
+[dev-dependencies]
+# Read the actual XLSX ZIP/XML in the backend probe; same pure-Rust backend.
+zip = { version = "=9.0.5", default-features = false, features = ["deflate"] }

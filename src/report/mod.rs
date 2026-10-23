@@ -6,3 +6,4 @@ pub(crate) mod human;
 pub(crate) mod jsonl;
 pub(crate) mod sink;
 pub(crate) mod summary;
+pub(crate) mod xlsx;

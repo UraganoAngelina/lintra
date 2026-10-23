@@ -8,7 +8,8 @@ policy tecnica Exact/AsciiUppercase, nessuna proprietà authoring aggiunta.
 
 **T-P11-03 DONE:** CI 39930225299 su 1b40c0e, workflow/job Linux e Windows
 completed/success, 471 test locali. Le righe future NON IMPLEMENTATE rimangono
-aperte; nessuna task successiva avviata, STOP §19 rispettato.
+aperte. Stop §19 rispettato alla chiusura originaria, poi revocato dall’autore: task
+11-04 DONE e 11-05 implementata con gate Windows ancora non verificato.
 
 2026-10-23. Autorità: ratifica aggiornata dell'autore, §§1–19, registrata in
 [CNF-REFERENCE-FORMAT-01-ratification.md](CNF-REFERENCE-FORMAT-01-ratification.md).
@@ -25,7 +26,7 @@ già implementate le loro integrazioni. STOP dopo T-P11-03.
 | VerifiedPresent/VerifiedAbsent/ProvisionalPresent/Inconclusive | T-P11-05; 11-04 + 9-05 | Implementati nel percorso engine esplicito, gate nativo pendente; nessun errore normativo da sole informazioni degradate o negative incomplete |
 | Union lookup con provenienza | T-P11-05; stessi prerequisiti | Implementata, gate nativo pendente. Composizione di lookup preparati senza copie/Union-Find: un match Verified è sufficiente; match solo Degraded provvisorio; negativo definitivo soltanto con tutte le dipendenze Verified |
 | Constraint ReferenceData compilata/eseguita | T-P11-05 | Implementata con dichiarazioni/indici verificati e ultimo stage; percorso legacy senza preparazione rifiutato, percorso reference esplicito con evidenze. Test presenza/assenza/ref non dichiarata e source set parziale, CI pendente |
-| Propagazione DSL dei risultati reference non conclusivi | T-P11-05 locale, T-P13-04/05 per estensioni esterne; 11-05 e prerequisiti P13 | NON IMPLEMENTATA. Provisional/Inconclusive non diventano False o successo definitivo. L'orchestrazione deve proseguire sugli altri controlli; non convertire genericamente ogni UnsupportedPlan/Unknown in un warning tollerabile |
+| Propagazione DSL dei risultati reference non conclusivi | T-P11-05 locale, T-P13-04/05 per estensioni esterne; 11-05 e prerequisiti P13 | Locale implementata nel percorso ReferenceRecordValidator/rule: Unknown reference non diventa False o successo definitivo; controlli indipendenti continuano e Unknown tecnico resta fatale. CI 39939546620 Linux success, Windows ultima lettura in_progress. Service 11-06 e DSL esterna P13 future |
 | Policy applicativa ContinueWithAvailableEvidence | T-P11-06; 11-05 + 7-04 | NON IMPLEMENTATA nel service. Collegare esplicitamente provider/preparazione prima degli input, conservare Strict selezionabile e sicurezza fatale. La parte «dataset mancante = Err» del prompt storico 11-06 è deliberatamente superata dalla nuova ratifica per Continue |
 | Completezza Complete/Partial e stato di esecuzione distinto | T-P11-06 | NON IMPLEMENTATA. Proporre l'estensione minima prima di modificare RunStatus/Summary/Metadata. No sostituzione anticipata del contratto: esecuzione completata con zero violazioni e Partial non significa piena conformità |
 | Contatori e warning aggregati | T-P11-05 produce esiti, T-P11-06 aggrega/persistenza artefatti | NON IMPLEMENTATI. Mai ValidationError per warning, mai incremento total_errors/errors_by_code per Provisional/Inconclusive. Partizione di valutazioni documentata sotto, niente emissione illimitata per record |
