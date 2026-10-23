@@ -146,3 +146,8 @@ lib export, test derived_rules/cli_validate/schema_compiler, dossier/stato.
 Nessuna dependency/Cargo/lock nuova. Next residuo T-P10-06 dopo gate nativo:
 suite/golden dei derivati e compatibilità completa dello scope ratificato.
 P10 resta aperta finché quei test/gate non sono consegnati.
+
+CI [39919164236](https://github.com/UraganoAngelina/lintra/actions/runs/39919164236)
+su 213ccb485ab9c8b57bedf820c3e891f858c96385: workflow e job Linux GNU/Windows
+MSVC completed/success. Tre chiamate totali, intervalli >45s; nessuna verifica
+nativa presunta dal check GNU. T-P10-05 estesa DONE; next residuo 10-06.

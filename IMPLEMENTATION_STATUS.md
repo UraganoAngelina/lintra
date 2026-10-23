@@ -3,6 +3,25 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P10-05 estesa DONE / ripresa T-P10-06
+
+453 test/55 suite e gate locali passati; CI 39919164236 su
+213ccb485ab9c8b57bedf820c3e891f858c96385: workflow e job Linux/Windows MSVC
+completed/success. [Dossier](docs/verification/T-P10-05-derived.md).
+
+HANDOFF — T-P10-05 estesa DONE
+- Tre derivati realmente compilati/memorizzati, Expr/Assertion eseguite;
+  capability richieste conservate, nessun payload ignorato o schema parziale.
+- DerivedCompare e substring/anno locali con ref/tipi/range verificati;
+  diagnostica da fonti raw vere, messaggi controllati senza indici AST.
+- File compiler/derived/rules/compiled plans, engine expression/record/rules/
+  diagnostics, lib e test derived_rules/CLI/schema, dossier/stato.
+- 64 baseline protette identiche; nessuna fonte normativa o Cargo/lock mutata.
+- Prerequisiti 10-05/5-07 verificati; next10-06 suite/golden estesi, già autorizzata.
+- P10 ancora aperta finché residuo10-06 non verificato. 11-03 decisione pendente.
+
+## Registro storico — T-P10-05 implementata, gate successivamente chiuso
+
 ## Frontiera corrente — T-P10-05 estesa / gate nativo pendente
 
 453 test/55 suite; fmt/check/Clippy/test/release/Windows GNU check/diff passati.
@@ -950,12 +969,12 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P10-02 | DONE | 2026-10-22 | TruthValue, 376 test; CI 39764219198 Linux/Windows verde su e17c33a; [report](docs/verification/T-P10-02.md) |
 | T-P10-03 | DONE | 2026-10-23 | executor esteso, 432 test; CI 39794989247 Linux/Windows completed/success su 878b033; [dossier](docs/verification/T-P10-03-derived.md) |
 | T-P10-04 | DONE | 2026-10-23 | presenza derivata 48acdf5; 444 test e CI cumulativa 39917228132 su cb0a044 Linux/Windows completed/success; [dossier](docs/verification/T-P10-04-derived.md) |
-| T-P10-05 | IN_PROGRESS | 2026-10-22 | regole locali, 407 test; CI 39785432851 Linux/Windows verde su 9d5b1a3; [report](docs/verification/T-P10-05.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
+| T-P10-05 | DONE | 2026-10-23 | regole/diagnostica derivate, 453 test; CI 39919164236 Linux/Windows completed/success su 213ccb4; [dossier](docs/verification/T-P10-05-derived.md) |
 | T-P10-06 | IN_PROGRESS | 2026-10-22 | suite DSL/golden, 413 test; job CI 39787215311 Linux/Windows success su b7dc480, workflow globale in_progress all’ultima lettura; [report](docs/verification/T-P10-06.md)  residuo derivati ratificati aperto, vedi [rettifica](docs/verification/P10-derived-recovery.md) |
 | T-P11-01 | DONE | 2026-10-22 | reference ports/preparazione, 419 test; CI 39788642608 Linux/Windows verde su 89b4baf; [report](docs/verification/T-P11-01.md) |
 | T-P11-02 | DONE | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali e CI 39917228132 Linux/Windows completed/success su cb0a044; [dossier](docs/verification/T-P11-02.md) |
 | T-P11-03 | BLOCKED | 2026-10-23 | formato filesystem non ratificato, proposta CNF-REFERENCE-FORMAT-01 pendente; [preflight](docs/verification/T-P11-03-preflight.md) |
-| T-PERSIST-01..12 | NOT_STARTED | — | Nessun contratto o backend |
+| T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — Linux locale
