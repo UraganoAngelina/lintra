@@ -312,11 +312,29 @@ fn unsupported() -> TruthValue {
 }
 
 /// Runtime boundary for directly assembled private plans as well as future
-/// compiler extensions. Derived/external expressions need their actual executor.
+/// compiler extensions. Rule diagnostics are integrated separately; this entry
+/// point retains the previously supported rule subset until that delivery.
 pub(crate) fn local_expression_supported(
     expression: &crate::schema::compiled::CompiledExpr,
 ) -> bool {
-    use crate::schema::compiled::{CompiledExpr, ResolvedFieldRef};
+    expression_supported(expression, None)
+}
+
+/// Presence has the real local context and does not require rule templates.
+/// Check every branch, even a branch dominated by a constant at runtime.
+pub(crate) fn local_presence_expression_supported(
+    expression: &CompiledExpr,
+    schema: &CompiledRecordSchema,
+) -> bool {
+    expression_supported(expression, Some(schema))
+}
+
+fn expression_supported(expression: &CompiledExpr, schema: Option<&CompiledRecordSchema>) -> bool {
+    use crate::schema::compiled::{CompiledValue, FieldType, ValueType};
+    let derived_type = |index: usize| {
+        let schema = schema?;
+        super::derived_evaluator::local_derived_type(schema.derived_values().get(index)?, schema)
+    };
     let mut work = vec![expression];
     while let Some(expr) = work.pop() {
         match expr {
@@ -341,7 +359,46 @@ pub(crate) fn local_expression_supported(
                 work.extend(children);
             }
             CompiledExpr::Not(child) => work.push(child),
-            CompiledExpr::DerivedEq { .. } | CompiledExpr::DerivedCompare { .. } => return false,
+            CompiledExpr::DerivedEq {
+                field,
+                derived_index,
+            } => {
+                let Some(schema) = schema else {
+                    return false;
+                };
+                let ResolvedFieldRef::Local {
+                    field_index,
+                    field_id,
+                } = field
+                else {
+                    return false;
+                };
+                let Some(spec) = schema
+                    .fields()
+                    .get(*field_index)
+                    .filter(|spec| spec.id() == field_id)
+                else {
+                    return false;
+                };
+                match derived_type(*derived_index) {
+                    Some(ValueType::Bytes) => {}
+                    Some(ValueType::Integer) if spec.field_type() == FieldType::Numeric => {}
+                    _ => return false,
+                }
+            }
+            CompiledExpr::DerivedCompare {
+                derived_index,
+                value,
+                ..
+            } => {
+                if !matches!(
+                    (derived_type(*derived_index), value),
+                    (Some(ValueType::Bytes), CompiledValue::Bytes(_))
+                        | (Some(ValueType::Integer), CompiledValue::Integer(_))
+                ) {
+                    return false;
+                }
+            }
         }
     }
     true

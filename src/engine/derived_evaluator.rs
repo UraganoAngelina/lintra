@@ -108,6 +108,45 @@ fn integer<'a>(value: i32) -> Result<DerivedValue<'a>, UnknownReason> {
         .map(DerivedValue::Integer)
         .map_err(|_| UnknownReason::UnsupportedPlan)
 }
+
+/// Validate metadata, never record values. This boundary also protects private
+/// and future compiled plans before any input is counted or reported.
+pub(crate) fn local_derived_type(
+    plan: &DerivedValuePlan,
+    schema: &CompiledRecordSchema,
+) -> Option<ValueType> {
+    let field = |reference: &ResolvedFieldRef| {
+        let ResolvedFieldRef::Local {
+            field_index,
+            field_id,
+        } = reference
+        else {
+            return None;
+        };
+        schema
+            .fields()
+            .get(*field_index)
+            .filter(|field| field.id() == field_id)
+    };
+    match plan {
+        DerivedValuePlan::Substring { source, range, .. } => {
+            (range.end_exclusive() <= field(source)?.range().len()).then_some(ValueType::Bytes)
+        }
+        DerivedValuePlan::AgeInCompletedYears {
+            birth,
+            reference,
+            format,
+            ..
+        }
+        | DerivedValuePlan::CalendarYearDelta {
+            birth,
+            reference,
+            format,
+        } => (field(birth)?.field_type() == FieldType::Date(*format)
+            && field(reference)?.field_type() == FieldType::Date(*format))
+        .then_some(ValueType::Integer),
+    }
+}
 pub(crate) fn compare_derived(
     value: DerivedValue<'_>,
     operator: ComparisonOperator,

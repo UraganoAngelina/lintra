@@ -1,6 +1,9 @@
 use super::*;
 use crate::domain::{FlowId, SchemaVersion, ValidationCode};
 
+#[path = "derived_presence_tests.rs"]
+mod derived_presence_tests;
+
 /// A private synthetic field lets the runtime boundaries be tested without
 /// admitting unimplemented plans through the real production compiler.
 fn run_private_pipeline_fixture(
@@ -490,7 +493,9 @@ fn local_record_rejects_every_unimplemented_local_plan_before_processing() {
                     field_id: FieldId("Z".into()),
                 },
                 target: ValueTarget::Raw,
-                range: ByteRange::new(0, 1).unwrap(),
+                // An actual invalid plan remains rejected after the executor
+                // is delivered; a valid substring is now supported.
+                range: ByteRange::new(0, 4).unwrap(),
             }),
             Feature::RepeatedGroups => trace.repeated_groups.push(RepeatedGroupPlan {
                 id: "synthetic".into(),

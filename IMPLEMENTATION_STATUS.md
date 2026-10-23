@@ -3,6 +3,18 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P10-04 estesa / gate nativo pendente
+
+Integrazione runtime dei derivati nella presenza completata; 438 test/53 suite,
+fmt/check/Clippy/test/release/Windows GNU check/diff exit 0. CI nativa da eseguire.
+[Dossier e spiegazione di funzioni/rami](docs/verification/T-P10-04-derived.md).
+Piani/riferimenti/range/tipi verificati prima del record; esiti presenza reali,
+Unknown una sola skip e run tecnica terminale, nessun obbligo eliminato.
+64 baseline protette identiche. Compiler pubblico derived e diagnostica regole
+ancora chiusi; residui 10-05/06 aperti. Next 10-05 dopo gate nativo.
+
+## Registro storico — T-P10-03 estesa conclusa
+
 ## Frontiera corrente — T-P10-03 estesa DONE / ripresa T-P10-04
 
 432 test/53 suite; fmt/check/Clippy/test/release/Windows GNU check/diff exit 0.
