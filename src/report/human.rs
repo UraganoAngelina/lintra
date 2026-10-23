@@ -81,6 +81,26 @@ fn render(writer: &mut dyn Write, summary: &ValidationSummary) -> Result<(), Rep
     let write = || -> std::io::Result<()> {
         writeln!(writer, "Result: {result}")?;
         writeln!(writer, "Mode: {mode}")?;
+        if summary.reference_validation.is_some() {
+            writeln!(writer, "Completeness: {:?}", summary.completeness())?;
+            if summary.completeness() == crate::ValidationCompleteness::Partial {
+                writeln!(
+                    writer,
+                    "Partial validation: absence of violations does not establish full conformance."
+                )?;
+            }
+            if let Some(audit) = &summary.reference_validation {
+                for control in &audit.controls {
+                    for (kind, count) in control.warnings() {
+                        writeln!(
+                            writer,
+                            "Reference warning: {kind:?}; field {}; evaluations {count}",
+                            control.field_id.0
+                        )?;
+                    }
+                }
+            }
+        }
         writeln!(writer, "Flow: {}", summary.schema_key.flow_id.0)?;
         match &summary.scope_summary {
             ScopeSummary::Trace { trace_id } => writeln!(writer, "Trace: {}", trace_id.0)?,

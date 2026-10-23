@@ -125,6 +125,7 @@ fn factory_matches_memory_di_and_streams_real_progress_and_audits() {
         let ValidationSummary {
             started_at: _,
             elapsed: _,
+            reference_validation: _,
             validation_mode,
             run_status,
             schema_key,

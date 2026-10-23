@@ -58,10 +58,17 @@ impl Error for TraceValidationError {
 /// One compiled trace, one reusable record buffer per invocation. Errors are
 /// streamed; RecordValidator alone owns processed/valid/invalid record counts.
 pub struct TraceValidator<'schema> {
-    record: RecordValidator<'schema>,
+    record: TraceRecordExecution<'schema>,
     trace_id: TraceId,
     newline: NewlinePolicy,
     failed: bool,
+}
+enum TraceRecordExecution<'a> {
+    Local(RecordValidator<'a>),
+    Reference {
+        validator: crate::ReferenceRecordValidator<'a, 'a>,
+        observer: &'a mut dyn crate::ReferenceEvaluationObserver,
+    },
 }
 impl<'schema> TraceValidator<'schema> {
     pub fn new(
@@ -70,7 +77,29 @@ impl<'schema> TraceValidator<'schema> {
         newline: NewlinePolicy,
     ) -> Result<Self, TraceValidationError> {
         Ok(Self {
-            record: RecordValidator::new(flow, trace).map_err(TraceValidationError::Record)?,
+            record: TraceRecordExecution::Local(
+                RecordValidator::new(flow, trace).map_err(TraceValidationError::Record)?,
+            ),
+            trace_id: trace.clone(),
+            newline,
+            failed: false,
+        })
+    }
+    /// Same framing/audit/cancellation path; evidence is immutable and prepared
+    /// before opening the input. Observer aggregates once per compiled control.
+    pub fn with_reference_data(
+        flow: &'schema CompiledFlowSchema,
+        trace: &TraceId,
+        newline: NewlinePolicy,
+        prepared: &'schema crate::PreparedReferenceEvidence,
+        observer: &'schema mut dyn crate::ReferenceEvaluationObserver,
+    ) -> Result<Self, TraceValidationError> {
+        Ok(Self {
+            record: TraceRecordExecution::Reference {
+                validator: crate::ReferenceRecordValidator::new(flow, trace, prepared)
+                    .map_err(TraceValidationError::Record)?,
+                observer,
+            },
             trace_id: trace.clone(),
             newline,
             failed: false,
@@ -156,9 +185,18 @@ impl<'schema> TraceValidator<'schema> {
                 });
                 return Ok(TraceCompletion::Completed { count });
             };
-            self.record
-                .validate_local(record, sink, summary)
-                .map_err(TraceValidationError::Record)?;
+            match &mut self.record {
+                TraceRecordExecution::Local(validator) => {
+                    validator.validate_local(record, sink, summary).map(|_| ())
+                }
+                TraceRecordExecution::Reference {
+                    validator,
+                    observer,
+                } => validator
+                    .validate_local(record, sink, summary, *observer)
+                    .map(|_| ()),
+            }
+            .map_err(TraceValidationError::Record)?;
             // RecordReader already checks line-counter overflow; no unchecked
             // second processed counter or summary increment is needed here.
             count = record.line_number;

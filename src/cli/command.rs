@@ -112,7 +112,12 @@ fn validate_with_token(
         reference_data_root,
     } = paths::resolve_bundle_source(&args.dirs, &paths::SystemEnv, &exe)?;
     check_outputs(&args, &schema_root, &reference_data_root)?;
-    let service = build_default_local_service(schema_root, args.encoding)?;
+    let service = build_local_service_with_reference_data(
+        schema_root,
+        reference_data_root,
+        args.encoding,
+        args.reference_policy,
+    )?;
     let mut errors = AtomicReportFile::create_replacing(&args.errors, PartialOutputPolicy::Delete)?;
     let mut summary =
         match AtomicReportFile::create_replacing(&args.summary, PartialOutputPolicy::Delete) {
@@ -245,6 +250,7 @@ mod cancellation_tests {
         fs::write(root.join("errors.jsonl"), b"old errors").unwrap();
         fs::write(root.join("summary.json"), b"old summary").unwrap();
         let args = ValidateArgs {
+            reference_policy: DatasetPreparationPolicy::ContinueWithAvailableEvidence,
             dirs: paths::CliDirs {
                 schema_dir: Some(root.join("schemas")),
                 reference_data_dir: Some(root.join("reference-data")),

@@ -3,19 +3,19 @@
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct FlowId(pub String);
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, serde::Serialize)]
 pub struct TraceId(pub String);
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, serde::Serialize)]
 pub struct FieldId(pub String);
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct SchemaVersion(pub String);
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, serde::Serialize)]
 pub struct DatasetId(pub String);
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, serde::Serialize)]
 pub struct DatasetVersion(pub String);
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

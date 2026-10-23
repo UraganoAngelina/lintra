@@ -10,6 +10,7 @@ pub struct ValidateArgs {
     pub dirs: CliDirs,
     pub request: ValidationRequest,
     pub encoding: RawResolvedEncoding,
+    pub reference_policy: DatasetPreparationPolicy,
     pub errors: PathBuf,
     pub summary: PathBuf,
 }
@@ -85,7 +86,13 @@ pub fn command() -> Command {
                         .value_parser(["utf8"]),
                 )
                 .arg(path("schema-dir"))
-                .arg(path("reference-data-dir")),
+                .arg(path("reference-data-dir"))
+                .arg(
+                    Arg::new("reference-policy")
+                        .long("reference-policy")
+                        .value_parser(["continue", "strict"])
+                        .default_value("continue"),
+                ),
         )
 }
 /// Clap's required, typed parsers guarantee the values exist on this path.
@@ -139,6 +146,10 @@ where
         },
         // The parser accepts only utf8; never infer or replace another profile.
         encoding: RawResolvedEncoding::Utf8,
+        reference_policy: match required::<String>(args, "reference-policy").as_str() {
+            "strict" => DatasetPreparationPolicy::Strict,
+            _ => DatasetPreparationPolicy::ContinueWithAvailableEvidence,
+        },
         errors: required(args, "errors"),
         summary: required(args, "summary"),
     })))

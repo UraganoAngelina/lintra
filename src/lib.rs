@@ -255,3 +255,15 @@ pub use schema::compiled::{
     CompiledJoinSpec, JoinCardinality, JoinScope, RelatedDiagnostic, RelatedPolicy,
 };
 pub use schema::compiled::{ConsensusPlan, ParameterDefinition};
+
+pub use domain::{
+    ReferenceControlSummary, ReferenceDatasetAudit, ReferenceDatasetDiagnostic,
+    ReferenceEvaluationCounts, ReferenceIoKind, ReferenceSourceUsage, ReferenceValidationSummary,
+    ReferenceWarningKind, ValidationCompleteness,
+};
+
+pub use reference_data::preparer::{
+    FileSystemReferenceDataPreparer, ReferenceDataPreparer, ReferencePreparationError,
+};
+
+pub use application::service::build_local_service_with_reference_data;

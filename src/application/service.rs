@@ -110,8 +110,8 @@ pub fn preflight<'schema, 'input>(
     }
 }
 
-/// Technical run failures with concrete module payloads. ReferenceData/Context
-/// variants remain P11/P13, as ratified; no normative ValidationError is wrapped.
+/// Technical run failures with concrete module payloads. ReferenceData retains
+/// real preparation causes; no normative ValidationError is wrapped.
 #[derive(Debug)]
 #[non_exhaustive]
 pub enum ValidationRunError {
@@ -124,6 +124,7 @@ pub enum ValidationRunError {
     Trace(crate::TraceValidationError),
     Summary(crate::SummaryBuildError),
     Report(crate::ReportError),
+    ReferenceData(crate::ReferencePreparationError),
 }
 impl fmt::Display for ValidationRunError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -137,6 +138,7 @@ impl fmt::Display for ValidationRunError {
             Self::Trace(_) => "run trace processing failed",
             Self::Summary(_) => "run summary construction failed",
             Self::Report(_) => "run report failed",
+            Self::ReferenceData(_) => "run reference preparation failed",
         })
     }
 }
@@ -152,6 +154,7 @@ impl Error for ValidationRunError {
             Self::Trace(e) => e,
             Self::Summary(e) => e,
             Self::Report(e) => e,
+            Self::ReferenceData(e) => e,
         })
     }
 }
@@ -186,11 +189,15 @@ impl From<crate::TraceValidationError> for ValidationRunError {
     }
 }
 
-/// LocalOnly application orchestrator. The real registry is injected; no fake
-/// reference provider or context store stands in for the future P11/P13 ports.
+/// LocalOnly application orchestrator with explicit schema/reference DI.
+/// Context/Full execution remains a later capability, never a simulated port.
 pub struct ValidationService {
     schema_registry: std::sync::Arc<crate::SchemaRegistry>,
     clock: std::sync::Arc<dyn crate::Clock>,
+    reference_data: Option<(
+        std::sync::Arc<dyn crate::ReferenceDataPreparer>,
+        crate::DatasetPreparationPolicy,
+    )>,
 }
 
 /// Build the currently supported LocalOnly service from an explicit schema root.
@@ -202,7 +209,8 @@ pub struct ValidationService {
 /// returned by `validate` as typed `ValidationRunError`s, not hidden here.
 /// The encoding binding is passed unchanged to the registry. The existing `new`
 /// constructor supplies SystemClock, keeping a single standard wiring path.
-/// Full/reference-data/persistence wiring remains a future, separate factory.
+/// Reference wiring uses build_local_service_with_reference_data; Full and
+/// persistence orchestration remain future capabilities.
 pub fn build_default_local_service(
     schema_root: std::path::PathBuf,
     encoding: crate::RawResolvedEncoding,
@@ -229,7 +237,18 @@ impl ValidationService {
         Self {
             schema_registry,
             clock,
+            reference_data: None,
         }
+    }
+    /// Explicit preparation/policy DI; old constructors retain their behavior
+    /// for flows without references and fail clearly when preparation is absent.
+    pub fn with_reference_data(
+        mut self,
+        preparer: std::sync::Arc<dyn crate::ReferenceDataPreparer>,
+        policy: crate::DatasetPreparationPolicy,
+    ) -> Self {
+        self.reference_data = Some((preparer, policy));
+        self
     }
     /// Normative invalidity is Ok(CompletedInvalid); cooperative cancellation is
     /// Ok(Cancelled). On Err, no completed outcome is returned; the caller must
@@ -255,8 +274,38 @@ impl ValidationService {
                 trace_id: plan.trace().id().clone(),
             },
         );
-        // Unsupported reference constraints already fail compilation. There is
-        // no dataset preparation/no-op provider to misrepresent as successful.
+        let prepared = if schema.required_reference_data().is_empty() {
+            None
+        } else {
+            let (preparer, policy) =
+                self.reference_data
+                    .as_ref()
+                    .ok_or(ValidationRunError::ReferenceData(
+                        crate::ReferencePreparationError::NotConfigured,
+                    ))?;
+            Some(
+                preparer
+                    .prepare(schema.required_reference_data(), *policy)
+                    .map_err(ValidationRunError::ReferenceData)?,
+            )
+        };
+        let mut reference_audit = match &prepared {
+            Some(prepared) => Some(
+                super::reference_audit::ReferenceAuditCollector::new(
+                    schema,
+                    plan.trace(),
+                    prepared,
+                    self.reference_data
+                        .as_ref()
+                        .ok_or(ValidationRunError::ReferenceData(
+                            crate::ReferencePreparationError::NotConfigured,
+                        ))?
+                        .1,
+                )
+                .map_err(ValidationRunError::ReferenceData)?,
+            ),
+            None => None,
+        };
         let audits = crate::InputAuditSession::new();
         progress.on_event(Event::RunStarted);
         progress.on_event(Event::PhaseStarted(Phase::LocalValidation));
@@ -276,26 +325,51 @@ impl ValidationService {
                 is_cancelled: &|| cancellation.is_cancelled(),
                 on_event: &mut notify,
             };
-            crate::TraceValidator::new(schema, plan.trace().id(), plan.options().newline_policy)?
-                .validate_path(plan.path(), sink, &mut summary, &mut control, &audits)?;
+            let mut validator = match (&prepared, &mut reference_audit) {
+                (Some(prepared), Some(observer)) => crate::TraceValidator::with_reference_data(
+                    schema,
+                    plan.trace().id(),
+                    plan.options().newline_policy,
+                    prepared,
+                    observer,
+                )?,
+                (None, None) => crate::TraceValidator::new(
+                    schema,
+                    plan.trace().id(),
+                    plan.options().newline_policy,
+                )?,
+                _ => {
+                    return Err(ValidationRunError::ReferenceData(
+                        crate::ReferencePreparationError::InconsistentEvidence,
+                    ));
+                }
+            };
+            validator.validate_path(plan.path(), sink, &mut summary, &mut control, &audits)?;
         }
         progress.on_event(Event::PhaseStarted(Phase::FinalizingReport));
         if cancellation.is_cancelled() {
             summary.cancel();
         }
+        let reference_audit = reference_audit.map(|collector| collector.into_audit());
+        let reference_versions = reference_audit
+            .as_ref()
+            .map(|audit| audit.verified_versions())
+            .unwrap_or_default();
         let metadata = audits
             .finish(crate::RunMetadata {
                 validation_mode: request.mode,
                 validator_version: env!("CARGO_PKG_VERSION").into(),
                 schema_hash: resolved.schema_hash().to_string(),
-                reference_data_versions: std::collections::BTreeMap::new(),
+                reference_data_versions: reference_versions,
                 started_at,
                 inputs: vec![],
             })
             .map_err(|e| ValidationRunError::Input(crate::InputError::Audit(e)))?;
-        let summary = summary
-            .finish(metadata)
-            .map_err(ValidationRunError::Summary)?;
+        let summary = match reference_audit {
+            Some(audit) => summary.finish_with_reference_data(metadata, audit),
+            None => summary.finish(metadata),
+        }
+        .map_err(ValidationRunError::Summary)?;
         sink.on_summary(&summary)
             .map_err(ValidationRunError::Report)?;
         progress.on_event(Event::RunCompleted);
@@ -304,4 +378,22 @@ impl ValidationService {
             summary,
         })
     }
+}
+
+/// Explicit two-root LocalOnly filesystem wiring, with no fallback or discovery.
+pub fn build_local_service_with_reference_data(
+    schema_root: std::path::PathBuf,
+    reference_root: std::path::PathBuf,
+    encoding: crate::RawResolvedEncoding,
+    policy: crate::DatasetPreparationPolicy,
+) -> Result<ValidationService, ValidationRunError> {
+    let service = build_default_local_service(schema_root, encoding)
+        .map_err(ValidationRunError::SchemaLoad)?;
+    let preparer =
+        crate::FileSystemReferenceDataPreparer::new(reference_root).map_err(|source| {
+            ValidationRunError::ReferenceData(crate::ReferencePreparationError::Provider(Box::new(
+                source,
+            )))
+        })?;
+    Ok(service.with_reference_data(std::sync::Arc::new(preparer), policy))
 }

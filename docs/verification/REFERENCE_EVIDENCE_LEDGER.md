@@ -27,12 +27,12 @@ già implementate le loro integrazioni. STOP dopo T-P11-03.
 | Union lookup con provenienza | T-P11-05; stessi prerequisiti | Implementata, gate nativo pendente. Composizione di lookup preparati senza copie/Union-Find: un match Verified è sufficiente; match solo Degraded provvisorio; negativo definitivo soltanto con tutte le dipendenze Verified |
 | Constraint ReferenceData compilata/eseguita | T-P11-05 | Implementata con dichiarazioni/indici verificati e ultimo stage; percorso legacy senza preparazione rifiutato, percorso reference esplicito con evidenze. Test presenza/assenza/ref non dichiarata e source set parziale, CI pendente |
 | Propagazione DSL dei risultati reference non conclusivi | T-P11-05 locale, T-P13-04/05 per estensioni esterne; 11-05 e prerequisiti P13 | Locale implementata nel percorso ReferenceRecordValidator/rule: Unknown reference non diventa False o successo definitivo; controlli indipendenti continuano e Unknown tecnico resta fatale. CI 39939546620 Linux success, Windows ultima lettura in_progress. Service 11-06 e DSL esterna P13 future |
-| Policy applicativa ContinueWithAvailableEvidence | T-P11-06; 11-05 + 7-04 | NON IMPLEMENTATA nel service. Collegare esplicitamente provider/preparazione prima degli input, conservare Strict selezionabile e sicurezza fatale. La parte «dataset mancante = Err» del prompt storico 11-06 è deliberatamente superata dalla nuova ratifica per Continue |
-| Completezza Complete/Partial e stato di esecuzione distinto | T-P11-06 | NON IMPLEMENTATA. Proporre l'estensione minima prima di modificare RunStatus/Summary/Metadata. No sostituzione anticipata del contratto: esecuzione completata con zero violazioni e Partial non significa piena conformità |
-| Contatori e warning aggregati | T-P11-05 produce esiti, T-P11-06 aggrega/persistenza artefatti | NON IMPLEMENTATI. Mai ValidationError per warning, mai incremento total_errors/errors_by_code per Provisional/Inconclusive. Partizione di valutazioni documentata sotto, niente emissione illimitata per record |
-| Audit/summary finali delle evidenze | T-P11-06; stessi prerequisiti | NON IMPLEMENTATI. Copiare i veri expected/actual digest, versioni richieste/dichiarate, disponibilità/policy/anomalie; non serializzare direttamente cause OS o path assoluti. Nessuna dipendenza inversa domain → adapter |
-| Pubblicazione atomica di run parziali regolarmente completate | T-P11-06; report atomico 5-06 | NON IMPLEMENTATA per reference. Completezza esplicita nei report definitivi; fatalità tecniche/cancellazione restano distinte, audit input EOF invariato |
-| Adattamento consumer console/export ai risultati parziali | T-P11-06 + task P12 pertinenti; contratti 11-06 verificati | NON IMPLEMENTATO. Aggiornare DTO/consumer dopo proposta compatibile; non aggiungere warning al JSONL canonico degli errori fingendo che siano ValidationError |
+| Policy applicativa ContinueWithAvailableEvidence | T-P11-06; 11-05 + 7-04 | Implementato il percorso Trace/LocalOnly in T-P11-06, 519 test/60 suite e gate locali passati; CI nativa pendente. UI/storico/export XLSX restano task future pertinenti. [Dossier](T-P11-06.md) |
+| Completezza Complete/Partial e stato di esecuzione distinto | T-P11-06 | Implementato il percorso Trace/LocalOnly in T-P11-06, 519 test/60 suite e gate locali passati; CI nativa pendente. UI/storico/export XLSX restano task future pertinenti. [Dossier](T-P11-06.md) |
+| Contatori e warning aggregati | T-P11-05 produce esiti, T-P11-06 aggrega/persistenza artefatti | Implementato il percorso Trace/LocalOnly in T-P11-06, 519 test/60 suite e gate locali passati; CI nativa pendente. UI/storico/export XLSX restano task future pertinenti. [Dossier](T-P11-06.md) |
+| Audit/summary finali delle evidenze | T-P11-06; stessi prerequisiti | Implementato il percorso Trace/LocalOnly in T-P11-06, 519 test/60 suite e gate locali passati; CI nativa pendente. UI/storico/export XLSX restano task future pertinenti. [Dossier](T-P11-06.md) |
+| Pubblicazione atomica di run parziali regolarmente completate | T-P11-06; report atomico 5-06 | Implementato il percorso Trace/LocalOnly in T-P11-06, 519 test/60 suite e gate locali passati; CI nativa pendente. UI/storico/export XLSX restano task future pertinenti. [Dossier](T-P11-06.md) |
+| Adattamento consumer console/export ai risultati parziali | T-P11-06 + task P12 pertinenti; contratti 11-06 verificati | Implementato il percorso Trace/LocalOnly in T-P11-06, 519 test/60 suite e gate locali passati; CI nativa pendente. UI/storico/export XLSX restano task future pertinenti. [Dossier](T-P11-06.md) |
 | UI Slint «Controlli saltati» e attendibilità | T-P16-04/05; relativi prerequisiti + contratti 11-06 | NON IMPLEMENTATA. Distinguere non eseguiti/inconcludenti/provvisori, filtri/sezioni, assente/degradato, necessità di ripetere; usare contratti applicativi tipizzati, nessuna reinterpretazione nella UI |
 | Recupero selettivo di documenti malformati | Prima proposta separata circoscritta e ratifica; poi task assegnata esplicitamente | NON AUTORIZZATO come algoritmo in 11-03. Oggi il documento ambiguo/non conforme è Unavailable, nessuna voce recuperata o parser permissivo |
 | Attributi/sesso/età/tempo/lookup per data | Consegne future da specificare prima di accettare il relativo AST; non incluse nella ratifica | NON IMPLEMENTATI. Metadata binding non vuoto è errore di configurazione, non dataset assente da tollerare; nessun appiattimento a membership |
@@ -83,3 +83,15 @@ l'autorizzazione esplicita imposta dall'ultimo mandato dell'autore.
 T-P11-05 DONE: CI cumulativa [39959838976](https://github.com/UraganoAngelina/lintra/actions/runs/39959838976),
 8fc31f5, Linux e Windows MSVC completed/success. Le boundary future del ledger
 rimangono tali; avviata 11-06 per policy applicativa, completezza e audit.
+
+## Consegna locale T-P11-06 — gate nativo pendente
+
+Policy applicativa, audit/summary delle evidenze, modello Complete/Partial,
+contatori/warning aggregati e consumer console/JSON implementati nel service
+Trace/LocalOnly. 519 test/60 suite e tutti i gate locali passati; 15 nuovi E2E.
+Le righe pertinenti del ledger sono aggiornate al percorso consegnato;
+consultare dossier 11-06 e gate nativo prima di dichiararlo verificato.
+RunStatus/RunMetadata preservati; envelope opzionale, vecchi golden invariati.
+UI P16, ricchi metadata/date/DSL esterna P13, storico PERSIST e recupero selettivo
+malformati restano future consegne esplicite, non simulate. Export XLSX P12 deve
+consumare l'envelope per non pubblicare conformità falsa su Partial.

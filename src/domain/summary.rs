@@ -60,6 +60,7 @@ pub struct ValidationSummary {
     pub schema_key: SchemaKey,
     pub scope_summary: ScopeSummary,
     pub records_processed: u64,
+    /// Records without normative violations; reference completeness is separate.
     pub valid_records: u64,
     pub invalid_records: u64,
     pub total_errors: u64,
@@ -70,6 +71,7 @@ pub struct ValidationSummary {
     pub validator_version: String,
     pub schema_hash: String,
     pub reference_data_versions: BTreeMap<DatasetId, DatasetVersion>,
+    pub reference_validation: Option<super::ReferenceValidationSummary>,
     pub elapsed: Duration,
     pub inputs: Vec<InputAudit>,
 }
@@ -79,6 +81,23 @@ pub struct ValidationSummary {
 pub struct ValidationRunOutcome {
     pub status: RunStatus,
     pub summary: ValidationSummary,
+}
+
+impl ValidationSummary {
+    pub fn completeness(&self) -> super::ValidationCompleteness {
+        if self.run_status == RunStatus::Cancelled
+            || self.truncated
+            || self.skipped_rules > 0
+            || self
+                .reference_validation
+                .as_ref()
+                .is_some_and(|audit| audit.has_non_definitive_evaluations())
+        {
+            super::ValidationCompleteness::Partial
+        } else {
+            super::ValidationCompleteness::Complete
+        }
+    }
 }
 
 #[cfg(test)]
@@ -141,6 +160,7 @@ mod tests {
             validator_version: metadata.validator_version.clone(),
             schema_hash: metadata.schema_hash.clone(),
             reference_data_versions: metadata.reference_data_versions.clone(),
+            reference_validation: None,
             elapsed: Duration::from_millis(12),
             inputs: metadata.inputs.clone(),
         };

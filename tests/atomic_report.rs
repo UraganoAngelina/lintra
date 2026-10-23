@@ -80,6 +80,7 @@ fn diagnostic() -> ValidationError {
 /// make the summary bytes deterministic for direct-versus-atomic comparison.
 fn summary() -> ValidationSummary {
     ValidationSummary {
+        reference_validation: None,
         started_at: std::time::UNIX_EPOCH,
         validation_mode: lintra::ValidationMode::LocalOnly,
         run_status: RunStatus::CompletedValid,

@@ -23,3 +23,6 @@ pub use summary::{
     RunMetadata, RunStatus, SchemaKey, ScopeSummary, ValidationMode, ValidationRunOutcome,
     ValidationSummary,
 };
+
+pub(crate) mod reference;
+pub use reference::*;

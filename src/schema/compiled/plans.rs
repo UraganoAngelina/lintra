@@ -1,8 +1,6 @@
 //! Closed, resolved plan payloads. These types do not execute rules or storage.
 
-use crate::domain::{
-    ByteRange, DatasetId, DatasetVersion, FieldId, JoinId, SchemaVersion, ValidationCode,
-};
+use crate::domain::{ByteRange, FieldId, JoinId, SchemaVersion, ValidationCode};
 use regex::bytes::Regex;
 use std::{cmp::Ordering, collections::BTreeMap, error::Error, fmt, str::FromStr, sync::Arc};
 
@@ -189,11 +187,7 @@ pub enum LexicalPlan {
     ByteSet(Box<ByteClass>),
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct DatasetKey {
-    pub id: DatasetId,
-    pub version: DatasetVersion,
-}
+pub use crate::domain::DatasetKey;
 
 #[derive(Debug, Clone)]
 pub struct ReferenceDependency {

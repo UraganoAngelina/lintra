@@ -3,6 +3,11 @@ use std::{error::Error, fmt};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Sha256Digest(pub [u8; 32]);
+impl serde::Serialize for Sha256Digest {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        serializer.serialize_str(&self.to_string())
+    }
+}
 impl fmt::Display for Sha256Digest {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for byte in self.0 {

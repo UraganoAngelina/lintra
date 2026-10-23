@@ -327,8 +327,8 @@ impl<'schema> RecordValidator<'schema> {
         if references.as_ref().is_some_and(|execution| {
             execution.conclusion != super::reference_execution::ReferenceConclusion::Definitive
         }) {
-            // Until T-P11-06 persists completeness, the legacy summary contract
-            // must fail explicitly rather than publish a false complete pass.
+            // Legacy finish must fail rather than omit non-definitive evidence;
+            // finish_with_reference_data requires matching aggregated counts.
             summary.mark_unreported_reference_evidence();
         }
         if valid {

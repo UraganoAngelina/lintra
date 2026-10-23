@@ -4,53 +4,10 @@ use super::normalization::LookupNormalization;
 use crate::Sha256Digest;
 use std::{collections::HashMap, error::Error, io, sync::Arc};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum DatasetAvailability {
-    Verified,
-    Degraded,
-    Unavailable,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum DatasetPreparationPolicy {
-    Strict,
-    ContinueWithAvailableEvidence,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum DatasetIoOperation {
-    ResolveRoot,
-    InspectPath,
-    ResolvePath,
-    ReadFile,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum DatasetFileTypeIssue {
-    NonDirectoryComponent,
-    NonRegularFile,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum MembershipProperty {
-    FormatVersion,
-    DatasetId,
-    Version,
-    KeysHex,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum MembershipFormatIssue {
-    Bom,
-    InvalidJson,
-    DuplicateProperty(String),
-    UnknownProperty(String),
-    MissingProperty(MembershipProperty),
-    InvalidProperty(MembershipProperty),
-    UnsupportedVersion(u32),
-    InvalidHex { entry: usize },
-    DuplicateEntry { entry: usize },
-}
+pub use crate::domain::{
+    DatasetAvailability, DatasetFileTypeIssue, DatasetIoOperation, DatasetPreparationPolicy,
+    MembershipFormatIssue, MembershipProperty,
+};
 
 #[derive(Debug, Clone)]
 pub enum DatasetAnomaly {

@@ -27,6 +27,8 @@ struct SummaryDocument<'a> {
     validator_version: &'a str,
     schema_hash: &'a str,
     reference_data_versions: BTreeMap<&'a str, &'a str>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    reference_validation: Option<&'a crate::ReferenceValidationSummary>,
     started_at: String,
     elapsed: Elapsed,
     inputs: Vec<InputDocument<'a>>,
@@ -137,6 +139,7 @@ pub fn write_summary<W: Write>(
             .iter()
             .map(|(id, version)| (id.0.as_str(), version.0.as_str()))
             .collect(),
+        reference_validation: summary.reference_validation.as_ref(),
         started_at,
         elapsed: Elapsed {
             seconds: summary.elapsed.as_secs(),

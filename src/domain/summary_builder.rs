@@ -17,6 +17,7 @@ pub enum SummaryCounter {
 pub enum SummaryBuildError {
     CounterOverflow(SummaryCounter),
     UnreportedReferenceEvidence,
+    InconsistentReferenceAudit,
     PreviousFailure,
     InconsistentRecordCounts,
     InconsistentErrorCounts,
@@ -31,6 +32,9 @@ pub enum SummaryBuildError {
 impl fmt::Display for SummaryBuildError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::InconsistentReferenceAudit => {
+                f.write_str("reference audit is inconsistent with the run")
+            }
             Self::UnreportedReferenceEvidence => {
                 f.write_str("reference completeness requires an explicit summary contract")
             }
@@ -115,6 +119,19 @@ impl ValidationSummary {
             if !interrupted && !matches!(audit.completion, InputAuditCompletion::Complete { .. }) {
                 return Err(SummaryBuildError::IncompleteInput);
             }
+        }
+        if let Some(audit) = &self.reference_validation
+            && (!audit.valid(interrupted || self.skipped_rules > 0)
+                || audit.verified_versions() != self.reference_data_versions
+                || audit
+                    .controls
+                    .iter()
+                    .any(|control| match &self.scope_summary {
+                        ScopeSummary::Trace { trace_id } => trace_id != &control.trace_id,
+                        ScopeSummary::Flow { trace_ids } => !trace_ids.contains(&control.trace_id),
+                    }))
+        {
+            return Err(SummaryBuildError::InconsistentReferenceAudit);
         }
         Ok(())
     }
@@ -221,10 +238,36 @@ impl ValidationSummaryBuilder {
     }
     /// Checked Result refines DET §58 to report counter/audit failures explicitly.
     pub fn finish(self, metadata: RunMetadata) -> Result<ValidationSummary, SummaryBuildError> {
+        self.finish_inner(metadata, None)
+    }
+    pub fn finish_with_reference_data(
+        self,
+        metadata: RunMetadata,
+        mut audit: super::ReferenceValidationSummary,
+    ) -> Result<ValidationSummary, SummaryBuildError> {
+        if self.unreported_reference_evidence != audit.has_non_definitive_evaluations() {
+            return Err(SummaryBuildError::InconsistentReferenceAudit);
+        }
+        audit.completeness = if self.cancelled
+            || self.truncated
+            || self.skipped > 0
+            || audit.has_non_definitive_evaluations()
+        {
+            super::ValidationCompleteness::Partial
+        } else {
+            super::ValidationCompleteness::Complete
+        };
+        self.finish_inner(metadata, Some(audit))
+    }
+    fn finish_inner(
+        self,
+        metadata: RunMetadata,
+        reference_validation: Option<super::ReferenceValidationSummary>,
+    ) -> Result<ValidationSummary, SummaryBuildError> {
         if self.failed {
             return Err(SummaryBuildError::PreviousFailure);
         }
-        if self.unreported_reference_evidence {
+        if self.unreported_reference_evidence && reference_validation.is_none() {
             return Err(SummaryBuildError::UnreportedReferenceEvidence);
         }
         let run_status = if self.cancelled {
@@ -250,6 +293,7 @@ impl ValidationSummaryBuilder {
             validator_version: metadata.validator_version,
             schema_hash: metadata.schema_hash,
             reference_data_versions: metadata.reference_data_versions,
+            reference_validation,
             elapsed: self.started.elapsed(),
             inputs: metadata.inputs,
         };
