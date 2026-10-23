@@ -1,6 +1,7 @@
 # T-P11-03 — Preflight contrattuale
 
-2026-10-23. Stato corrente: **SBLOCCATA dalla ratifica aggiornata**
+2026-10-23. Stato corrente: **T-P11-03 DONE, gate locali e CI verificati**.
+[Dossier finale](T-P11-03.md). Il blocco era stato superato dalla ratifica aggiornata
 [CNF-REFERENCE-FORMAT-01](CNF-REFERENCE-FORMAT-01-ratification.md).
 La domanda storica sotto ha risposta; non è più pendente.
 

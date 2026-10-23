@@ -3,6 +3,43 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P11-03 DONE / STOP richiesto dall'autore
+
+471 test locali in 56 suite, fmt/check/Clippy/test/release/Windows GNU check/diff
+passati. CI [39930225299](https://github.com/UraganoAngelina/lintra/actions/runs/39930225299)
+su 1b40c0e1dcaeac0a1c16b855407e0bca28e2c14a: workflow e job Linux GNU/Windows MSVC
+completed/success, inclusi test nativi symlink. Tre chiamate a intervalli >45s.
+[Dossier tecnico completo](docs/verification/T-P11-03.md).
+
+HANDOFF — T-P11-03 DONE, nessuna task successiva avviata
+- Ratifica aggiornata CNF-REFERENCE-FORMAT-01 applicata, precedente blocco risolto.
+- Provider reale membership v1, SHA originale/identità/versione, preparazione
+  Strict o Continue, Verified/Degraded/Unavailable con cause e due digest distinti.
+- Snapshot immutabile/lookup senza I/O o allocazioni di query; assente non è
+  set vuoto, Degraded non è Verified. API legacy preservate e rigorose.
+- JSON malformati/ambigui, BOM/hex/duplicati non recuperati → Unavailable;
+  hash mismatch interpretabile e identità affidabile → Degraded. Symlink/escape
+  fatali in entrambe le policy; sorgenti non regolari indisponibili senza lettura.
+- Sicurezza per configurazione stabile, esplicitamente nessuna garanzia TOCTOU.
+- File reference_data/evidence/filesystem/membership_format + storage comune e
+  wiring/in_memory/lib; 13 test provider, 23 payload/hash Python indipendenti;
+  ratifica/preflight/proposta storica/ledger/dossier/stato e mandato AGENTS.
+- 71 artefatti protetti precedenti identici; nessuna modifica a baseline, grammar
+  flow v1/v2 o fonti architetturali; Cargo/lock/application/summary invariati.
+- [Ledger](docs/verification/REFERENCE_EVIDENCE_LEDGER.md): semantica normativa/
+  unione/reference constraint e DSL locale in 11-05; policy service/completezza/
+  contatori/warning aggregati/summary/audit in 11-06; DSL esterna P13, UI P16.
+  Queste capacità NON IMPLEMENTATE non sono simulate né dichiarate coperte da E2E.
+- Nuove API additive esplicitate prima del codice; port/load/prepared legacy
+  restano compatibili. Nessun cambio a RunStatus o promessa CompletedValid=Complete.
+- Branch work/p1-foundations, codice 1b40c0e pubblicato; chiusura documentale
+  successiva con evidenze verificate. M4/M5, P11 completa, Full/P13/PERSIST e
+  T-P2-03/M1 ancora aperti.
+- **STOP §19 della ratifica aggiornata.** Prossima candidata T-P11-04, prerequisito
+  ora verificato; attendere autorizzazione esplicita, non iniziare automaticamente.
+
+## Registro storico — implementazione T-P11-03 prima del gate nativo
+
 ## Frontiera corrente — T-P11-03 implementata / gate nativo pendente
 
 Ratifica aggiornata CNF-REFERENCE-FORMAT-01 applicata: membership v1, provider
@@ -924,8 +961,8 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 |---|---|---|
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
-| QG-1 — controlli locali | PASS per T-P10-06 estesa | fmt/check/clippy/test/release/GNU, 458 test in 55 suite |
-| QG-2 — CI Linux/Windows | PASS T-P10-06 estesa | CI 39920597392 su c2e0d1d, workflow/job Linux GNU e Windows MSVC completed/success |
+| QG-1 — controlli locali | PASS per T-P11-03 | fmt/check/clippy/test/release/GNU, 471 test in 56 suite |
+| QG-2 — CI Linux/Windows | PASS T-P11-03 | CI 39930225299 su 1b40c0e, workflow/job Linux GNU e Windows MSVC completed/success |
 | QG-3 — architettura | PASS nel perimetro LocalOnly ratificato | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
 | QG-4 — golden | PASS locale e CI estesa | 12 scenari/quattro profili, oracolo derivati indipendente, ripetizione byte-identica; CI 39920597392 Linux/Windows success, vecchi attesi invariati |
 | QG-8 — documenti | PASS con revisione autorizzata T-P6-03 | DET §44 e prompt kit aggiornati per mandato esplicito; hash prima/dopo registrati; ARCH/Piano invariati; nessun residuo fisico formato 1 |
@@ -1050,7 +1087,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P10-06 | DONE | 2026-10-23 | suite derivati, 458 test/55 suite e 12 scenari; CI 39920597392 Linux/Windows completed/success su c2e0d1d; [dossier](docs/verification/T-P10-06-derived.md) |
 | T-P11-01 | DONE | 2026-10-22 | reference ports/preparazione, 419 test; CI 39788642608 Linux/Windows verde su 89b4baf; [report](docs/verification/T-P11-01.md) |
 | T-P11-02 | DONE | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali e CI 39917228132 Linux/Windows completed/success su cb0a044; [dossier](docs/verification/T-P11-02.md) |
-| T-P11-03 | IN_PROGRESS | 2026-10-23 | ratifica aggiornata ricevuta; provider/stati/evidenze autorizzati, preflight API additivo; [preflight](docs/verification/T-P11-03-preflight.md) |
+| T-P11-03 | DONE | 2026-10-23 | provider filesystem/stati/evidenze, 471 test/56 suite; CI 39930225299 Linux/Windows completed/success su 1b40c0e; [dossier](docs/verification/T-P11-03.md); STOP §19 |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

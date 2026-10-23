@@ -5,6 +5,8 @@ Prevale la [ratifica aggiornata](../verification/CNF-REFERENCE-FORMAT-01-ratific
 dell'autore: hash mismatch con contenuto conforme/identità affidabile è Degraded;
 il rifiuto indiscriminato descritto sotto è superato. Il testo originario resta
 per tracciabilità; non determina la gestione attuale delle dipendenze degradate.
+Provider/preparazione autorizzati ora consegnati in [T-P11-03](../verification/T-P11-03.md),
+con gate locali/nativi verificati; integrazioni future separate nel ledger.
 
 ## Problema verificato
 

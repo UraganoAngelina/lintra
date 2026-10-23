@@ -1,5 +1,9 @@
 # Ledger — Evidenze reference data, CNF-REFERENCE-FORMAT-01 aggiornata
 
+**T-P11-03 DONE:** CI 39930225299 su 1b40c0e, workflow/job Linux e Windows
+completed/success, 471 test locali. Le righe future NON IMPLEMENTATE rimangono
+aperte; nessuna task successiva avviata, STOP §19 rispettato.
+
 2026-10-23. Autorità: ratifica aggiornata dell'autore, §§1–19, registrata in
 [CNF-REFERENCE-FORMAT-01-ratification.md](CNF-REFERENCE-FORMAT-01-ratification.md).
 Assegnazioni dai prompt/Piano esistenti, senza nuovi task ID o modifica delle
