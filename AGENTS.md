@@ -146,3 +146,13 @@ Mandato successivo — checkpoint di avanzamento, 2026-10-23:
   nessun DONE fittizio, push bloccato dal timeout del controllo automatico.
 - Restano valide autonomia commit/GitHub sul repository/branch concordati e
   le regole del workflow alla ripresa; non richiedere nuovamente conferme ordinarie.
+
+Mandato successivo — ripresa dopo l'allineamento, 2026-10-23:
+- L'autore ordina: «prosegui con il workflow concordato sulle attività di
+  sviluppo a pieno ritmo». Revocata la pausa del checkpoint precedente.
+- Riprendere da pubblicazione/gate di 12-03 e 11-06 senza duplicare codice;
+  dopo evidenza positiva iniziare automaticamente 12-04 e le task successive
+  con prerequisiti verificati e senza conflitti sostanziali.
+- Commit, push su UraganoAngelina/lintra work/p1-foundations e CI autonomi
+  nel workflow già concordato; massimo tre chiamate Actions per gate, ≥45s.
+- Restano vietati Superpowers, subagenti e processi locali in background.

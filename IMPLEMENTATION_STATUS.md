@@ -3,6 +3,18 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — ripresa autorizzata dopo il checkpoint
+
+Mandato più recente dell'autore: proseguire il workflow concordato a pieno ritmo.
+Pausa revocata; nessuna conferma ordinaria ulteriore per commit/push/CI/task.
+Repository inizialmente pulito, HEAD e3a63ab; codice 12-03 ee3036b e 11-06
+4cb1a65 invariati rispetto ai 524 test/61 suite e gate locali passati.
+Ripresa da pubblicazione e gate cumulativo; non rileggere il gate 11-06
+esaurito e non assumere esiti positivi. Dopo CI nativa verificata candidata
+12-04; preflight già presente. Nessun nuovo conflitto contrattuale.
+
+## Registro storico — pausa e resoconto autore
+
 ## Checkpoint autore — workflow fermo per allineamento
 
 Richiesta più recente: fermarsi al prossimo completamento e produrre resoconto
