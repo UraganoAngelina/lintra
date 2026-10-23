@@ -63,3 +63,13 @@ richiesta di push, con questa evidenza, accettata dalla revisione automatica.
 Push df3858d..8fc31f5 sullo stesso origin/work/p1-foundations riuscito.
 Dispatch accettato alle 13:16 UTC del 2026-10-23, prima chiamata del nuovo gate.
 Il precedente rifiuto resta nella cronologia; nessun aggiramento utilizzato.
+
+## Gate T-P11-06 — cap rispettato
+
+Due dispatch terminati con connection timeout, il terzo accettato. Nessuna
+lettura successiva dello stesso gate, avendo esaurito il massimo di tre.
+Diagnosi senza HTTP a GitHub: DoH con EDNS pubblico e handshake TLS per
+api.github.com hanno verificato IP alternativi dello stesso hostname; il
+helper sceglie un indirizzo raggiungibile prima della singola richiesta API.
+I probe TLS non inviano token, HTTP o richieste Actions. Endpoint, SNI e verifica
+certificato invariati; nessun retry API nascosto o configurazione di sistema.

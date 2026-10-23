@@ -3,6 +3,37 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P12-03 implementata / gate cumulativo da avviare
+
+524 test/61 suite passati, un probe esplicito misurato separatamente a 10k/100k
+record: RSS 15.572/15.840 kB con JSONL circa 10x. Tutti i gate locali passati,
+90 artefatti protetti invariati. Writer XLSX reale post-analisi, lettura JSONL
+streaming, testo/larghezze/freeze/filtri/rollover, Riepilogo canonico completo
+con evidenze reference e rifiuto Cancelled/mismatch. Nessun nuovo crate.
+[Dossier](docs/verification/T-P12-03.md). CI nativa ancora da avviare; cumulativa
+anche su 11-06, il cui precedente gate non viene riletto oltre il massimo.
+Preflight 12-04 pronto, nessun codice iniziato prima del gate.
+
+## Registro storico — avvio indipendente 12-03
+
+## Frontiera corrente — T-P12-03; T-P11-06 locale verificata, CI non letta
+
+T-P11-06 commit 4cb1a65 pubblicato: 519 test/60 suite e gate locali passati.
+Tre chiamate Actions: due dispatch con connection timeout, terzo accettato
+alle 13:41 UTC circa. Nessuna quarta lettura: gate nativo DONE_UNVERIFIED.
+TLS-only probe senza HTTP/credenziali ha isolato indirizzi DNS non raggiungibili;
+helper seleziona un IP risolto pubblicamente e verificato TLS per la singola
+richiesta. Nessuna disabilitazione TLS o retry API nascosto.
+
+Avvio task indipendente T-P12-03: prerequisito 12-02 DONE via CI 39959838976.
+Writer post-analisi, non ValidationSink; JSONL streaming, celle testuali, fogli
+Errori/Riepilogo e rollover. Consuma il serializer summary pubblico esistente
+per conservare anche l'envelope reference senza alterarne i contratti. Nessuna
+integrazione CLI XLSX anticipata (12-04). Nuovo gate cumulativo potrà verificare
+entrambi i rami; nessun esito assegnato alla CI 11-06 non letta.
+
+## Registro storico — consegna locale 11-06
+
 ## Frontiera corrente — T-P11-06 implementata / gate nativo da avviare
 
 519 test/60 suite, 15 nuovi E2E e gate locali passati: fmt/check/Clippy/test/
@@ -1254,6 +1285,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P12-01 | DONE | 2026-10-23 | CSV/colonne condivise, 485 test/58 suite; CI 39936894049 su 66c3d61 Linux/Windows success; [dossier](docs/verification/T-P12-01.md) |
 | T-P12-02 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P12-02.md) |
 | T-P11-06 | DONE_UNVERIFIED | 2026-10-23 | 519 test/60 suite e gate locali passati; preflight/DI/audit/completezza reali, CI nativa pendente; [dossier](docs/verification/T-P11-06.md) |
+| T-P12-03 | DONE_UNVERIFIED | 2026-10-23 | Writer XLSX post-analisi, 524 test/61 suite; due probe memoria foreground passati; CI nativa pendente; [dossier](docs/verification/T-P12-03.md) |
 | T-P13-01 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P13-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |

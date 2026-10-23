@@ -267,3 +267,5 @@ pub use reference_data::preparer::{
 };
 
 pub use application::service::build_local_service_with_reference_data;
+
+pub use report::xlsx::{XLSX_SHEET_ROWS, XlsxReportError, XlsxReportWriter};
