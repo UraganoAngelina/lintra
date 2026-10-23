@@ -3,6 +3,26 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — gate cumulativo chiuso; avvio T-P12-04
+
+CI [39967822377](https://github.com/UraganoAngelina/lintra/actions/runs/39967822377) su
+2b979f21f1b379ca5c755747412b8ba91379ac11: Linux 120462241438 e Windows MSVC
+120462242170 entrambi completed/success, letti direttamente tramite check-runs.
+Dispatch con risposta persa poi confermato dal gate reale; due chiamate Actions
+totali, intervallo oltre sei minuti. Nessuna quarta lettura dei gate precedenti.
+11-06 e 12-03 DONE; 524 test/61 suite e gate locali verificati nel discendente.
+**76/140 task verificate = 54,3%**, uno scope parziale e 63 non iniziate prima
+dell'avvio 12-04. Lo snapshot precedente conserva il checkpoint storico.
+
+Avvio 12-04 autorizzato: prerequisiti 12-03 e 8-03 verificati, preflight pronto.
+API additive del guard per writer Send/rilettura; CLI XLSX post-analisi, JSONL
+temporaneo RAII se non richiesto, pubblicazione XLSX per ultima. Nessun nuovo
+contratto normativo o Full/history/UI anticipati. Modifica esterna sopraggiunta
+a docs/proposals/reference-filesystem-format.md: solo newline finale, preservata
+fuori dai commit della task.
+
+## Registro storico — ripresa della pubblicazione
+
 ## Frontiera corrente — ripresa autorizzata dopo il checkpoint
 
 Mandato più recente dell'autore: proseguire il workflow concordato a pieno ritmo.
@@ -1318,8 +1338,9 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P11-05 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P11-05.md) |
 | T-P12-01 | DONE | 2026-10-23 | CSV/colonne condivise, 485 test/58 suite; CI 39936894049 su 66c3d61 Linux/Windows success; [dossier](docs/verification/T-P12-01.md) |
 | T-P12-02 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P12-02.md) |
-| T-P11-06 | DONE_UNVERIFIED | 2026-10-23 | 519 test/60 suite e gate locali passati; preflight/DI/audit/completezza reali, CI nativa pendente; [dossier](docs/verification/T-P11-06.md) |
-| T-P12-03 | DONE_UNVERIFIED | 2026-10-23 | Writer XLSX post-analisi, 524 test/61 suite; due probe memoria foreground passati; CI nativa pendente; [dossier](docs/verification/T-P12-03.md) |
+| T-P11-06 | DONE | 2026-10-23 | CI cumulativa 39967822377 su 2b979f2: Linux/Windows MSVC completed/success; 524 test/61 suite; [dossier](docs/verification/T-P11-06.md) |
+| T-P12-03 | DONE | 2026-10-23 | CI cumulativa 39967822377 su 2b979f2: Linux/Windows MSVC completed/success; 524 test/61 suite; [dossier](docs/verification/T-P12-03.md) |
+| T-P12-04 | IN_PROGRESS | 2026-10-23 | Prerequisiti nativi verificati; integrazione CLI XLSX/JSONL temporaneo e guard atomici secondo preflight |
 | T-P13-01 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P13-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |

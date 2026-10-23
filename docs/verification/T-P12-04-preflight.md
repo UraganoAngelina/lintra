@@ -34,3 +34,22 @@ Test futuri: processo vero con XLSX solo/insieme a JSONL, fallback temporaneo e
 cleanup; output in errore, collisioni final/part e input/bundle, report precedenti
 preservati, Cancelled senza workbook nuovo, Partial dichiarato nel Riepilogo;
 regressioni CLI ed evidenza nativa Linux/Windows. Nessun esito già dichiarato.
+
+## Qualifica prima dell'aggiunta diretta — DEC-06/DEC-15
+
+Riletto Cargo.toml del pacchetto tempfile 3.27.0 già scaricato e verificato
+nel subtree 12-02: licenza MIT OR Apache-2.0, rust-version 1.63, compatibile
+con toolchain 1.99.1. Scelta prevista =3.27.0, default-features=false; backend
+XLSX già attiva le feature comuni necessarie. Nessuna nuova versione o crate
+prevista nel lock oltre all'arco diretto da lintra.
+Cargo tree --offline --locked -p tempfile -e normal verificato su Linux e
+target Windows MSVC: fastrand/getrandom/once_cell, rustix/linux-raw-sys oppure
+windows-sys/windows-link; nessun backend C o driver di database.
+NamedTempFile::reopen/close disponibili: lettore indipendente dopo finish del
+JSONL, cleanup esplicito prima della pubblicazione finale. Qualifica del
+pacchetto fissato dalla sua fonte primaria locale, non una scelta latest.
+
+Ordine di pubblicazione previsto: JSONL richiesto, summary, XLSX per ultimo.
+Tutte le generazioni e le chiusure fallibili, inclusa rimozione del temporaneo,
+devono precedere l'ultimo rename XLSX. Nessun Err successivo a un workbook
+nuovo già pubblicato. Ogni singolo file è atomico; non è una transazione fra file.

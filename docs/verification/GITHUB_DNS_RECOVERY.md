@@ -81,3 +81,13 @@ della creazione del processo. Unico retry consentito eseguito, stesso timeout.
 Non è una diagnosi di rischio o un guasto CI. Nessun tentativo di aggiramento,
 nessun terzo retry e nessun dispatch di 12-03. Remoto resta 4cb1a65; codice
 locale verificato. Workflow fermo per l'allineamento chiesto dall'autore.
+
+## Ripresa e gate 12-03 verificato
+
+Primo controllo push scaduto, unico retry accettato: pubblicato 4cb1a65..2b979f2.
+Il dispatch ha avuto timeout senza risposta: non ripetuto perché l'esito di
+accettazione era incerto. Seconda chiamata check-runs dopo oltre sei minuti
+ha verificato il run reale 39967822377 con entrambi i job completed/success.
+Totale due chiamate Actions; nessun retry POST duplicato, nessuna lettura extra
+dei gate precedenti. La diagnosi HEAD pubblica proposta non è stata eseguita
+per timeout del controllo automatico e non ha prodotto chiamate HTTP.
