@@ -3,6 +3,19 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P12-04 verificata; avvio T-P12-05
+
+CI [39974616511](https://github.com/UraganoAngelina/lintra/actions/runs/39974616511)
+su dc4dd477944115aaf7b5f132580433e302576c39: Linux 120485853931 e Windows
+MSVC 120485854256 entrambi completed/success, letti direttamente tramite
+check-runs. Due chiamate Actions totali, intervallo superiore a sei minuti.
+534 test/62 suite e gate locali passati; T-P12-04 DONE. **77/140 = 55,0%**
+task verificate. Avvio 12-05 autorizzato, prerequisito 12-03 verificato:
+rilettura con parser indipendente di celle, ordine JSONL, rollover e Riepilogo.
+Nessun nuovo conflitto. Modifica esterna di newline nella proposta preservata.
+
+## Registro storico — consegna locale 12-04
+
 ## Frontiera corrente — T-P12-04 implementata / gate nativo da avviare
 
 534 test/62 suite, zero falliti e un probe esplicito ignorato nella suite
@@ -1354,7 +1367,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P12-02 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P12-02.md) |
 | T-P11-06 | DONE | 2026-10-23 | CI cumulativa 39967822377 su 2b979f2: Linux/Windows MSVC completed/success; 524 test/61 suite; [dossier](docs/verification/T-P11-06.md) |
 | T-P12-03 | DONE | 2026-10-23 | CI cumulativa 39967822377 su 2b979f2: Linux/Windows MSVC completed/success; 524 test/61 suite; [dossier](docs/verification/T-P12-03.md) |
-| T-P12-04 | DONE_UNVERIFIED | 2026-10-23 | CLI XLSX/temp spool/guard reali, 534 test/62 suite e gate locali passati; CI nativa pendente; [dossier](docs/verification/T-P12-04.md) |
+| T-P12-04 | DONE | 2026-10-23 | CLI XLSX/temp spool/guard reali, 534 test/62 suite e gate locali passati; CI 39974616511 Linux/MSVC success; [dossier](docs/verification/T-P12-04.md) |
 | T-P13-01 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P13-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
@@ -3421,3 +3434,5 @@ HANDOFF — 2026-10-21 — T-P8-02 gate locali
 - Nessuna dipendenza nuova, fonti/baseline invariate.
 - Git work/p1-foundations, codice da pubblicare per CI. Next T-P8-03 dopo gate,
   payload reali/LocalOnly invariati; P11/P13/PERSIST/T-P2-03/M1 restano aperti.
+
+- **DEC-15 / T-P12-05 (prima dell’aggiunta):** calamine =0.36.1 solo dev, default-features=false, MIT, MSRV 1.88; parser XLSX indipendente. Qualificare subtree effettivo pure-Rust Linux/MSVC e preservare lock preesistente. [Preflight](docs/verification/T-P12-05-preflight.md).
