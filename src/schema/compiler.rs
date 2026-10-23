@@ -6,6 +6,9 @@ use crate::schema::{
     linter::{SchemaIssue, SchemaIssueCode as Code, SchemaIssueSeverity, lint_raw_schema},
     raw::*,
 };
+#[path = "reference.rs"]
+mod reference;
+
 use std::{
     collections::{BTreeMap, HashSet},
     error::Error,
@@ -278,6 +281,23 @@ impl Checks<'_> {
             RawPhysical::Date { .. } | RawPhysical::Decimal { .. } => &RawAlignment::Exact {},
         };
         for constraint in &field.constraints {
+            if let RawConstraint::ReferenceData {
+                datasets,
+                fallback_values,
+                metadata_bindings,
+            } = constraint
+            {
+                self.reference_constraint(datasets, metadata_bindings, trace, id);
+                if !fallback_values.is_empty() {
+                    let mut fallback = field.clone();
+                    fallback.constraints = vec![RawConstraint::AllowedValues {
+                        values: fallback_values.clone(),
+                        target: RawConstraintAllowedValuesTarget::Logical,
+                    }];
+                    self.constraints(&fallback, width, trace);
+                }
+                continue;
+            }
             if let RawConstraint::Regex { pattern, .. } = constraint {
                 // Compile each distinct pattern once per schema, including
                 // failures. Programs are cloned cheaply into frozen field plans.
@@ -516,11 +536,17 @@ impl SchemaCompiler {
         }
         for (present, name) in [
             (!raw.parameters.is_empty(), "parameters"),
-            (!raw.reference_data.is_empty(), "reference_data"),
             (raw.persistence_policy.is_some(), "persistence_policy"),
         ] {
             checks.unsupported(present, None, None, name);
         }
+        let dependencies = match reference::compile_dependencies(&raw.reference_data) {
+            Ok(dependencies) => dependencies,
+            Err((code, message)) => {
+                checks.error(code, None, None, message);
+                vec![]
+            }
+        };
         for record in &raw.traces {
             checks.record(record);
         }
@@ -547,7 +573,7 @@ impl SchemaCompiler {
         let mut traces = Vec::with_capacity(raw.traces.len());
         for record in &raw.traces {
             traces.push(
-                compile_record(record, &regexes)
+                compile_record(record, &regexes, &raw.reference_data)
                     .map_err(|(code, message)| fail(Some(&record.id), None, code, message))?,
             );
         }
@@ -561,7 +587,7 @@ impl SchemaCompiler {
             source: raw.source.clone(),
             encoding: EncodingSpec::Utf8, // Only reachable after validating the explicit binding.
             traces,
-            required_reference_data: vec![],
+            required_reference_data: dependencies,
             cross_record_plan: CrossRecordValidationPlan {
                 joins: vec![],
                 rules: vec![],
@@ -668,6 +694,7 @@ fn compile_field(
     raw: &RawFieldSpec,
     regexes: &RegexPlans,
     record: &RawRecordSchema,
+    dependencies: &[RawReferenceDataDependency],
 ) -> Result<CompiledFieldSpec, Code> {
     let (start, length, field_type, raw_alignment, raw_lexical) = match &raw.physical {
         RawPhysical::Numeric {
@@ -759,7 +786,13 @@ fn compile_field(
         constraints: raw
             .constraints
             .iter()
-            .map(|constraint| compile_constraint(constraint, regexes))
+            .filter(|constraint| !matches!(constraint, RawConstraint::ReferenceData { .. }))
+            .chain(
+                raw.constraints
+                    .iter()
+                    .filter(|constraint| matches!(constraint, RawConstraint::ReferenceData { .. })),
+            )
+            .map(|constraint| compile_constraint(constraint, regexes, dependencies))
             .collect::<Result<_, _>>()?,
         regulatory_metadata: raw.regulatory_metadata.clone(),
     })
@@ -767,8 +800,37 @@ fn compile_field(
 fn compile_constraint(
     constraint: &RawConstraint,
     regexes: &RegexPlans,
+    dependencies: &[RawReferenceDataDependency],
 ) -> Result<CompiledConstraint, Code> {
     match constraint {
+        RawConstraint::ReferenceData {
+            datasets,
+            fallback_values,
+            metadata_bindings,
+        } => {
+            if !metadata_bindings.is_empty() {
+                return Err(Code::UnsupportedConstruct);
+            }
+            if datasets.is_empty() {
+                return Err(Code::InvalidSchemaValue);
+            }
+            Ok(CompiledConstraint::ReferenceData {
+                dataset_indexes: datasets
+                    .iter()
+                    .map(|id| {
+                        dependencies
+                            .iter()
+                            .position(|d| d.id == *id)
+                            .ok_or(Code::MissingReferenceDatasetDeclaration)
+                    })
+                    .collect::<Result<_, _>>()?,
+                fallback_values: fallback_values
+                    .iter()
+                    .map(|value| value.as_bytes().to_vec())
+                    .collect(),
+                metadata_bindings: vec![],
+            })
+        }
         RawConstraint::AllowedValues { values, target } => Ok(CompiledConstraint::AllowedValues {
             values: values
                 .iter()
@@ -850,11 +912,12 @@ fn identity_target(raw: &RawIdentitySpec) -> Result<IdentityTarget, (Code, Strin
 fn compile_record(
     raw: &RawRecordSchema,
     regexes: &RegexPlans,
+    dependencies: &[RawReferenceDataDependency],
 ) -> Result<CompiledRecordSchema, (Code, String)> {
     let fields = raw
         .fields
         .iter()
-        .map(|field| compile_field(field, regexes, raw))
+        .map(|field| compile_field(field, regexes, raw, dependencies))
         .collect::<Result<Vec<_>, _>>()
         .map_err(|code| (code, "field construction failed after preflight".to_owned()))?;
     let key = raw
@@ -901,7 +964,7 @@ fn compile_record(
             )
         })?,
         fields,
-        local_rules: rules::compile_rules(raw, regexes)?,
+        local_rules: rules::compile_rules(raw, regexes, dependencies)?,
         derived_values: crate::schema::derived::compile_derived_values(raw)?,
         identity_plan: IdentityExtractionPlan {
             // Preflight checked targets and references; retain typed defensive
@@ -960,7 +1023,7 @@ mod tests {
         record.documented_non_executable_rules.clear();
         record.rules.clear();
         record.record_length = 1;
-        let (code, message) = compile_record(record, &RegexPlans::new()).unwrap_err();
+        let (code, message) = compile_record(record, &RegexPlans::new(), &[]).unwrap_err();
         assert_eq!(code, Code::InternalCompilerInvariant);
         assert!(message.contains("FieldOutsideRecord"));
     }

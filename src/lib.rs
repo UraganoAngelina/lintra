@@ -233,8 +233,19 @@ pub use reference_data::{
     provider::{ReferenceDataError, ReferenceDataProvider},
 };
 
+pub use reference_data::membership::{
+    MembershipEvaluation, MembershipPlanError, evaluate_membership,
+};
 pub use schema::compiled::ReferenceDependency;
+pub use validators::reference_data::{
+    ReferenceConstraintEvaluation, ReferenceEvaluationError, validate_reference_constraint,
+};
 
 pub use engine::derived_evaluator::{DerivedValue, DerivedValueEvaluator};
 pub use schema::compiled::{DateFormat, DerivedValuePlan, LeapDayAnniversary};
 pub use schema::compiled::{IntegerLiteral, InvalidIntegerLiteral};
+
+pub use engine::record_validator::{ReferenceRecordValidationArtifacts, ReferenceRecordValidator};
+pub use engine::reference_execution::{
+    ReferenceConclusion, ReferenceControl, ReferenceEvaluationObserver, ReferenceExecutionError,
+};

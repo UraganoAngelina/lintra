@@ -36,7 +36,9 @@ impl Checks<'_> {
                     self.constraints(&spec, width, Some(&record.id));
                 }
             }
-            if let Err((code, message)) = compile_rule(rule, record, &self.regexes) {
+            if let Err((code, message)) =
+                compile_rule(rule, record, &self.regexes, &self.raw.reference_data)
+            {
                 self.error(code, Some(&record.id), None, message);
             }
         }
@@ -45,17 +47,19 @@ impl Checks<'_> {
 pub(super) fn compile_rules(
     record: &RawRecordSchema,
     regexes: &RegexPlans,
+    dependencies: &[RawReferenceDataDependency],
 ) -> Result<Vec<CompiledRule>, Issue> {
     record
         .rules
         .iter()
-        .map(|rule| compile_rule(rule, record, regexes))
+        .map(|rule| compile_rule(rule, record, regexes, dependencies))
         .collect()
 }
 fn compile_rule(
     rule: &RawRule,
     record: &RawRecordSchema,
     regexes: &RegexPlans,
+    dependencies: &[RawReferenceDataDependency],
 ) -> Result<CompiledRule, Issue> {
     if rule.assertions.is_empty() {
         return Err((
@@ -67,7 +71,7 @@ fn compile_rule(
     let assertions = rule
         .assertions
         .iter()
-        .map(|assertion| compile_assertion(assertion, record, regexes))
+        .map(|assertion| compile_assertion(assertion, record, regexes, dependencies))
         .collect::<Result<Vec<_>, _>>()?;
     let parts = rule_template::parse(&rule.message_template)
         .map_err(|message| (Code::InvalidSchemaValue, message.into()))?;
@@ -100,6 +104,7 @@ fn compile_assertion(
     raw: &RawAssertion,
     record: &RawRecordSchema,
     regexes: &RegexPlans,
+    dependencies: &[RawReferenceDataDependency],
 ) -> Result<CompiledAssertion, Issue> {
     Ok(match raw {
         RawAssertion::FieldPresent { field } => {
@@ -110,7 +115,7 @@ fn compile_assertion(
         }
         RawAssertion::Constraint { field, constraint } => CompiledAssertion::Constraint {
             field: resolve_local_ref(field, record)?,
-            constraint: compile_constraint(constraint, regexes)
+            constraint: compile_constraint(constraint, regexes, dependencies)
                 .map_err(|code| (code, "rule constraint is not supported or valid".into()))?,
         },
         RawAssertion::EqualsConcat { field, parts } => {

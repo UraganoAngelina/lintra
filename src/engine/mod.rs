@@ -14,3 +14,5 @@ pub(crate) mod rule_validator;
 pub(crate) mod rule_diagnostics;
 
 pub(crate) mod derived_evaluator;
+
+pub(crate) mod reference_execution;

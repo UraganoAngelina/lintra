@@ -42,6 +42,7 @@ pub enum FieldPipelineError {
         field_id: FieldId,
         constraint_index: usize,
     },
+    Reference(super::reference_execution::ReferenceExecutionError),
     Report(ReportError),
     Summary(SummaryBuildError),
     PreviousFailure,
@@ -53,6 +54,7 @@ impl fmt::Display for FieldPipelineError {
             Self::Logical(_) => "field logical extraction failed",
             Self::Datatype(_) => "field datatype plan failed",
             Self::UnsupportedConstraint { .. } => "field constraint plan is not supported",
+            Self::Reference(_) => "field reference evidence failed",
             Self::Report(_) => "field diagnostic emission failed",
             Self::Summary(_) => "field error counter update failed",
             Self::PreviousFailure => "field pipeline cannot resume after a technical failure",
@@ -66,6 +68,7 @@ impl Error for FieldPipelineError {
         match self {
             Self::Logical(source) => Some(source),
             Self::Datatype(source) => Some(source),
+            Self::Reference(source) => Some(source),
             Self::Report(source) => Some(source),
             Self::Summary(source) => Some(source),
             Self::UnsupportedConstraint { .. } | Self::PreviousFailure => None,
@@ -112,7 +115,7 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
             return Err(FieldPipelineError::PreviousFailure);
         }
         let presence = validate_presence(field, raw);
-        let result = self.after_presence(presence, field, raw, line_number, identity);
+        let result = self.after_presence(presence, field, raw, line_number, identity, None);
         if result.is_err() {
             self.failed = true;
         }
@@ -149,7 +152,34 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
             return Err(FieldPipelineError::PreviousFailure);
         }
         let presence = validate_presence_state(state, field, raw);
-        let result = self.after_presence(presence, field, raw, line_number, identity);
+        let result = self.after_presence(presence, field, raw, line_number, identity, None);
+        if result.is_err() {
+            self.failed = true;
+        }
+        result
+    }
+
+    pub(crate) fn run_with_reference_presence(
+        &mut self,
+        field: &CompiledFieldSpec,
+        raw: FieldSlice<'_>,
+        line_number: u64,
+        identity: &RecordIdentity,
+        state: PresenceState,
+        references: &mut super::reference_execution::ReferenceExecution<'_>,
+    ) -> Result<FieldPipelineResult, FieldPipelineError> {
+        if self.failed {
+            return Err(FieldPipelineError::PreviousFailure);
+        }
+        let presence = validate_presence_state(state, field, raw);
+        let result = self.after_presence(
+            presence,
+            field,
+            raw,
+            line_number,
+            identity,
+            Some(references),
+        );
         if result.is_err() {
             self.failed = true;
         }
@@ -166,6 +196,7 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
         raw: FieldSlice<'_>,
         line_number: u64,
         identity: &RecordIdentity,
+        mut references: Option<&mut super::reference_execution::ReferenceExecution<'_>>,
     ) -> Result<FieldPipelineResult, FieldPipelineError> {
         match presence {
             Err(violation) => return self.emit(field, raw, line_number, identity, violation),
@@ -192,6 +223,25 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
         }
         for (constraint_index, constraint) in field.constraints().iter().enumerate() {
             match constraint {
+                CompiledConstraint::ReferenceData { .. } if references.is_some() => {
+                    let execution = references
+                        .as_deref_mut()
+                        .ok_or(FieldPipelineError::PreviousFailure)?;
+                    let evaluation = execution
+                        .evaluate(
+                            constraint,
+                            logical,
+                            super::reference_execution::ReferenceControl {
+                                field_id: field.id(),
+                                rule_id: None,
+                                index: constraint_index,
+                            },
+                        )
+                        .map_err(FieldPipelineError::Reference)?;
+                    if let Some(violation) = evaluation.violation() {
+                        return self.emit(field, raw, line_number, identity, violation);
+                    }
+                }
                 CompiledConstraint::AllowedValues { values, target } => {
                     // Target choice is explicit; diagnostics still receive the
                     // original physical bytes, even on a logical-domain error.
@@ -311,7 +361,8 @@ mod tests {
                         field,
                         FieldSlice { raw: b"ABCDEF" },
                         1,
-                        &RecordIdentity::default()
+                        &RecordIdentity::default(),
+                        None,
                     )
                     .unwrap(),
                 FieldPipelineResult::Invalid

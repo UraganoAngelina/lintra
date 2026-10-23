@@ -744,3 +744,613 @@ fn file_and_directory_symlink_escape_is_fatal_under_both_policies() {
         }
     }
 }
+
+fn union_cases() -> Vec<Case> {
+    serde_json::from_slice(include_bytes!(
+        "fixtures/reference_membership/union_cases.json"
+    ))
+    .unwrap()
+}
+fn union_fixture(
+    states: [DatasetAvailability; 3],
+) -> (Fixture, Vec<ReferenceDependency>, PreparedReferenceEvidence) {
+    let fixture = Fixture::new();
+    let dependencies = union_cases()
+        .iter()
+        .zip(states)
+        .map(|(case, state)| {
+            let id = key(&format!("union-{}", case.name), "1");
+            let path = format!("{}.json", case.name);
+            let mut dependency = if state == DatasetAvailability::Unavailable {
+                binding(id, &path, &case.sha256)
+            } else {
+                fixture.put(case, &path, id)
+            };
+            if state == DatasetAvailability::Degraded {
+                dependency.sha256 = [0; 32];
+            }
+            dependency
+        })
+        .collect::<Vec<_>>();
+    let prepared = fixture
+        .provider(dependencies.clone())
+        .prepare(DatasetPreparationPolicy::ContinueWithAvailableEvidence)
+        .unwrap();
+    (fixture, dependencies, prepared)
+}
+fn membership_name(evaluation: MembershipEvaluation<'_>) -> &'static str {
+    match evaluation {
+        MembershipEvaluation::VerifiedPresent(_) => "verified-present",
+        MembershipEvaluation::VerifiedAbsent => "verified-absent",
+        MembershipEvaluation::ProvisionalPresent(_) => "provisional-present",
+        MembershipEvaluation::Inconclusive => "inconclusive",
+    }
+}
+
+#[test]
+fn union_uses_verified_provisional_and_inconclusive_evidence_without_false_absence() {
+    use DatasetAvailability::{Degraded as D, Unavailable as U, Verified as V};
+    for (states, expected) in [
+        (
+            [V, V, V],
+            [
+                "verified-present",
+                "verified-present",
+                "verified-present",
+                "verified-absent",
+            ],
+        ),
+        (
+            [V, V, U],
+            [
+                "verified-present",
+                "verified-present",
+                "inconclusive",
+                "inconclusive",
+            ],
+        ),
+        (
+            [V, V, D],
+            [
+                "verified-present",
+                "verified-present",
+                "provisional-present",
+                "inconclusive",
+            ],
+        ),
+        (
+            [D, V, D],
+            [
+                "provisional-present",
+                "verified-present",
+                "provisional-present",
+                "inconclusive",
+            ],
+        ),
+        (
+            [D, D, U],
+            [
+                "provisional-present",
+                "provisional-present",
+                "inconclusive",
+                "inconclusive",
+            ],
+        ),
+        (
+            [U, U, U],
+            [
+                "inconclusive",
+                "inconclusive",
+                "inconclusive",
+                "inconclusive",
+            ],
+        ),
+    ] {
+        let (_fixture, dependencies, prepared) = union_fixture(states);
+        let keys: Vec<_> = dependencies.iter().map(|d| d.key.clone()).collect();
+        for (query, expected) in [b"AA", b"BB", b"CC", b"XX"].into_iter().zip(expected) {
+            let result = evaluate_membership(&keys, &prepared, query).unwrap();
+            assert_eq!(membership_name(result), expected, "{states:?} {query:?}");
+            match result {
+                MembershipEvaluation::VerifiedPresent(evidence) => {
+                    assert_eq!(evidence.availability(), V)
+                }
+                MembershipEvaluation::ProvisionalPresent(evidence) => {
+                    assert_eq!(evidence.availability(), D)
+                }
+                _ => {}
+            }
+        }
+        assert!(matches!(
+            evaluate_membership(&[], &prepared, b"AA"),
+            Err(MembershipPlanError::EmptyUnion)
+        ));
+        let mut invalid = keys;
+        invalid.push(key("unprepared", "1"));
+        assert!(matches!(
+            evaluate_membership(&invalid, &prepared, b"AA"),
+            Err(MembershipPlanError::UnpreparedDependency)
+        ));
+    }
+}
+fn reference_schema(dependencies: &[ReferenceDependency]) -> serde_json::Value {
+    use serde_json::json;
+    let constraint = json!({"kind":"reference_data","datasets":["A","B","C"],"fallback_values":["ZZ"],"metadata_bindings":[]});
+    let mut fields = vec![];
+    for (index, id) in ["CODE", "OTHER"].into_iter().enumerate() {
+        fields.push(json!({"id":id,"name":id,"physical":{"type":"alphanumeric","start":index*2+1,"length":2,"alignment":{"kind":"exact"},"lexical":{"kind":"encoded_text"}},"missing_value":{"kind":"never_missing"},"presence":{"base":"required","required_if":[],"forbidden_if":[]},"constraints":if index==0 {vec![constraint.clone()]}else{vec![json!({"kind":"allowed_values","target":"raw","values":["OK"]})]}}));
+    }
+    json!({"schema_format_version":1,"flow_id":"SYNTHETIC","schema_version":"v1","regulatory_version":"test","source":{},"encoding":{"mode":"runtime_required","position_unit":"byte"},"required_capabilities":["local.v1","expressions.v1"],"parameters":[],"reference_data":dependencies.iter().zip(["A","B","C"]).map(|(d,id)|json!({"id":id,"dataset_id":d.key.id.0,"version":d.key.version.0,"path":d.bundle_path.as_ref(),"sha256":Sha256Digest(d.sha256).to_string(),"metadata_attributes":[]})).collect::<Vec<_>>(),"persistence_policy":null,"traces":[{"id":"T","name":"test","record_length":4,"fields":fields,"record_key":{"fields":["CODE"],"uniqueness_scope":"trace","error_code":"E_DUPLICATE_RECORD_KEY"},"identity":[],"joins":[],"named_conditions":{},"derived_values":{},"repeated_groups":[],"rules":[],"documented_non_executable_rules":[]}]})
+}
+fn compile_reference_schema(
+    value: serde_json::Value,
+) -> Result<CompiledFlowSchema, SchemaCompilationError> {
+    let mut raw: RawFlowSchema = serde_json::from_value(value).unwrap();
+    raw.encoding.resolved = Some(RawResolvedEncoding::Utf8);
+    SchemaCompiler.compile(raw)
+}
+#[derive(Default)]
+struct EvidenceObserver {
+    observations: Vec<(String, Option<String>, usize, &'static str)>,
+}
+impl ReferenceEvaluationObserver for EvidenceObserver {
+    fn on_evaluation(
+        &mut self,
+        control: ReferenceControl<'_>,
+        evaluation: ReferenceConstraintEvaluation<'_>,
+    ) -> Result<(), Box<dyn Error + Send + Sync>> {
+        let result = match evaluation {
+            ReferenceConstraintEvaluation::DeclaredFallback => "fallback",
+            ReferenceConstraintEvaluation::Membership(value) => membership_name(value),
+        };
+        self.observations.push((
+            control.field_id.0.clone(),
+            control.rule_id.map(str::to_owned),
+            control.index,
+            result,
+        ));
+        Ok(())
+    }
+}
+fn reference_metadata(bytes: &[u8]) -> RunMetadata {
+    let audits = InputAuditSession::new();
+    let mut reader = audits
+        .wrap(
+            TraceId("T".into()),
+            "synthetic.txt".into(),
+            bytes.len() as u64,
+            std::io::Cursor::new(bytes),
+        )
+        .unwrap();
+    std::io::copy(&mut reader, &mut std::io::sink()).unwrap();
+    drop(reader);
+    audits
+        .finish(RunMetadata {
+            validation_mode: ValidationMode::LocalOnly,
+            started_at: std::time::UNIX_EPOCH,
+            validator_version: "test".into(),
+            schema_hash: "test".into(),
+            reference_data_versions: Default::default(),
+            inputs: vec![],
+        })
+        .unwrap()
+}
+#[test]
+fn reference_records_continue_independent_checks_and_keep_nondefinitive_results_out_of_errors() {
+    use DatasetAvailability::{Degraded as D, Unavailable as U, Verified as V};
+    for (states, bytes, conclusion, codes, observation) in [
+        (
+            [V, V, V],
+            b"AAOK",
+            ReferenceConclusion::Definitive,
+            vec![],
+            "verified-present",
+        ),
+        (
+            [V, V, V],
+            b"XXNO",
+            ReferenceConclusion::Definitive,
+            vec![ValidationCode::ReferenceData, ValidationCode::InvalidDomain],
+            "verified-absent",
+        ),
+        (
+            [V, V, U],
+            b"XXOK",
+            ReferenceConclusion::Inconclusive,
+            vec![],
+            "inconclusive",
+        ),
+        (
+            [V, V, U],
+            b"AANO",
+            ReferenceConclusion::Definitive,
+            vec![ValidationCode::InvalidDomain],
+            "verified-present",
+        ),
+        (
+            [V, V, D],
+            b"CCNO",
+            ReferenceConclusion::Provisional,
+            vec![ValidationCode::InvalidDomain],
+            "provisional-present",
+        ),
+        (
+            [V, V, D],
+            b"XXNO",
+            ReferenceConclusion::Inconclusive,
+            vec![ValidationCode::InvalidDomain],
+            "inconclusive",
+        ),
+        (
+            [U, U, U],
+            b"ZZOK",
+            ReferenceConclusion::Definitive,
+            vec![],
+            "fallback",
+        ),
+    ] {
+        let (_fixture, dependencies, prepared) = union_fixture(states);
+        let flow = compile_reference_schema(reference_schema(&dependencies)).unwrap();
+        assert_eq!(flow.required_reference_data().len(), 3);
+        assert!(RecordValidator::new(&flow, &TraceId("T".into())).is_err());
+        let mut validator =
+            ReferenceRecordValidator::new(&flow, &TraceId("T".into()), &prepared).unwrap();
+        let mut sink = VecSink::default();
+        let mut builder = ValidationSummaryBuilder::new(
+            flow.key().clone(),
+            ScopeSummary::Trace {
+                trace_id: TraceId("T".into()),
+            },
+        );
+        let mut observer = EvidenceObserver::default();
+        let result = validator
+            .validate_local(
+                RawRecord {
+                    bytes,
+                    line_number: 1,
+                },
+                &mut sink,
+                &mut builder,
+                &mut observer,
+            )
+            .unwrap();
+        assert_eq!(result.reference_conclusion, conclusion);
+        assert_eq!(result.normative_violations_detected, !codes.is_empty());
+        assert_eq!(
+            sink.errors()
+                .iter()
+                .map(|e| e.code.clone())
+                .collect::<Vec<_>>(),
+            codes
+        );
+        assert_eq!(
+            observer.observations,
+            vec![("CODE".into(), None, 0, observation)]
+        );
+        if conclusion == ReferenceConclusion::Definitive {
+            let summary = builder.finish(reference_metadata(bytes)).unwrap();
+            assert_eq!(summary.total_errors, codes.len() as u64);
+        } else {
+            assert!(matches!(
+                builder.finish(reference_metadata(bytes)),
+                Err(SummaryBuildError::UnreportedReferenceEvidence)
+            ));
+        }
+    }
+}
+
+#[test]
+fn compiler_checks_reference_bindings_resolution_fallback_and_last_stage() {
+    use serde_json::json;
+    let (_fixture, deps, _prepared) = union_fixture([DatasetAvailability::Verified; 3]);
+    let base = reference_schema(&deps);
+    for (mut value, code) in [
+        (
+            {
+                let mut v = base.clone();
+                v["traces"][0]["fields"][0]["constraints"][0]["datasets"] = json!(["ABSENT"]);
+                v
+            },
+            SchemaIssueCode::MissingReferenceDatasetDeclaration,
+        ),
+        (
+            {
+                let mut v = base.clone();
+                v["reference_data"][0]["sha256"] = json!("A".repeat(64));
+                v
+            },
+            SchemaIssueCode::InvalidSchemaValue,
+        ),
+        (
+            {
+                let mut v = base.clone();
+                v["reference_data"][0]["path"] = json!("../escape");
+                v
+            },
+            SchemaIssueCode::InvalidSchemaValue,
+        ),
+        (
+            {
+                let mut v = base.clone();
+                v["reference_data"][0]["metadata_attributes"] = json!(["age"]);
+                v
+            },
+            SchemaIssueCode::UnsupportedConstruct,
+        ),
+        (
+            {
+                let mut v = base.clone();
+                v["traces"][0]["fields"][0]["constraints"][0]["datasets"] = json!(["A", "A"]);
+                v
+            },
+            SchemaIssueCode::InvalidSchemaValue,
+        ),
+        (
+            {
+                let mut v = base.clone();
+                v["traces"][0]["fields"][0]["constraints"][0]["fallback_values"] =
+                    json!(["TOO LONG"]);
+                v
+            },
+            SchemaIssueCode::InvalidTypeParameters,
+        ),
+    ] {
+        let result = compile_reference_schema(value.take()).unwrap_err();
+        assert!(
+            result.issues.iter().any(|issue| issue.code == code),
+            "{result:?}"
+        );
+    }
+    let mut wrong_order = base;
+    wrong_order["traces"][0]["fields"][0]["constraints"]
+        .as_array_mut()
+        .unwrap()
+        .push(json!({"kind":"allowed_values","target":"raw","values":["AA"]}));
+    let compiled = compile_reference_schema(wrong_order).unwrap();
+    let constraints = compiled.trace(&TraceId("T".into())).unwrap().fields()[0].constraints();
+    assert!(matches!(
+        constraints[0],
+        CompiledConstraint::AllowedValues { .. }
+    ));
+    assert!(matches!(
+        constraints[1],
+        CompiledConstraint::ReferenceData { .. }
+    ));
+}
+
+#[test]
+fn verified_match_dominates_earlier_degraded_match_and_preserves_match_provenance() {
+    use DatasetAvailability::{Degraded as D, Unavailable as U, Verified as V};
+    let (fixture, mut deps, _old) = union_fixture([D, V, U]);
+    let overlap = union_cases()
+        .into_iter()
+        .find(|c| c.name == "overlap-B")
+        .unwrap();
+    deps[1] = fixture.put(&overlap, "B.json", key("union-B", "1"));
+    let prepared = fixture
+        .provider(deps.clone())
+        .prepare(DatasetPreparationPolicy::ContinueWithAvailableEvidence)
+        .unwrap();
+    let keys: Vec<_> = deps.iter().map(|d| d.key.clone()).collect();
+    match evaluate_membership(&keys, &prepared, b"AA").unwrap() {
+        MembershipEvaluation::VerifiedPresent(evidence) => assert_eq!(evidence.key(), &deps[1].key),
+        other => panic!("wrong union precedence: {other:?}"),
+    }
+    assert_eq!(prepared.datasets()[0].availability(), D);
+    assert_eq!(prepared.datasets()[2].availability(), U);
+}
+
+#[test]
+fn rule_reference_unknown_continues_and_a_real_assertion_violation_remains_normative() {
+    use DatasetAvailability::{Degraded as D, Verified as V};
+    use serde_json::json;
+    for (bytes, expected) in [(b"CCOK", "provisional-present"), (b"XXOK", "inconclusive")] {
+        let (_fixture, deps, prepared) = union_fixture([V, V, D]);
+        let mut schema = reference_schema(&deps);
+        let constraint = schema["traces"][0]["fields"][0]["constraints"][0].clone();
+        schema["traces"][0]["fields"][0]["constraints"] = json!([]);
+        schema["traces"][0]["rules"] = json!([
+            {"id":"MEMBERSHIP","when":{"const":true},"assertions":[{"kind":"constraint","field":{"field":"CODE"},"constraint":constraint}],"error_code":"E_CROSS_FIELD","message_template":"{rule_id}"},
+            {"id":"INDEPENDENT","when":{"const":true},"assertions":[{"kind":"condition_true","condition":{"const":false}}],"error_code":"E_CROSS_FIELD","message_template":"{rule_id}"}
+        ]);
+        let flow = compile_reference_schema(schema.clone()).unwrap();
+        let mut validator =
+            ReferenceRecordValidator::new(&flow, &TraceId("T".into()), &prepared).unwrap();
+        let mut sink = VecSink::default();
+        let mut summary = ValidationSummaryBuilder::new(
+            flow.key().clone(),
+            ScopeSummary::Trace {
+                trace_id: TraceId("T".into()),
+            },
+        );
+        let mut observer = EvidenceObserver::default();
+        let result = validator
+            .validate_local(
+                RawRecord {
+                    bytes,
+                    line_number: 1,
+                },
+                &mut sink,
+                &mut summary,
+                &mut observer,
+            )
+            .unwrap();
+        assert!(result.normative_violations_detected);
+        assert_eq!(sink.errors().len(), 1);
+        assert_eq!(sink.errors()[0].message, "INDEPENDENT");
+        assert_eq!(
+            observer.observations,
+            vec![("CODE".into(), Some("MEMBERSHIP".into()), 0, expected)]
+        );
+        // A known false assertion in the same composed rule must still win.
+        schema["traces"][0]["rules"][0]["assertions"]
+            .as_array_mut()
+            .unwrap()
+            .push(json!({"kind":"condition_true","condition":{"const":false}}));
+        schema["traces"][0]["rules"].as_array_mut().unwrap().pop();
+        let flow = compile_reference_schema(schema).unwrap();
+        let mut validator =
+            ReferenceRecordValidator::new(&flow, &TraceId("T".into()), &prepared).unwrap();
+        let mut sink = VecSink::default();
+        let mut summary = ValidationSummaryBuilder::new(
+            flow.key().clone(),
+            ScopeSummary::Trace {
+                trace_id: TraceId("T".into()),
+            },
+        );
+        validator
+            .validate_local(
+                RawRecord {
+                    bytes,
+                    line_number: 1,
+                },
+                &mut sink,
+                &mut summary,
+                &mut EvidenceObserver::default(),
+            )
+            .unwrap();
+        assert_eq!(sink.errors().len(), 1);
+        assert_eq!(sink.errors()[0].message, "MEMBERSHIP");
+    }
+}
+
+#[test]
+fn inconsistent_preparation_and_observer_failure_are_technical_and_terminal() {
+    let (_fixture, deps, prepared) = union_fixture([DatasetAvailability::Verified; 3]);
+    let mut schema = reference_schema(&deps);
+    schema["reference_data"][0]["sha256"] = serde_json::json!("0".repeat(64));
+    let wrong = compile_reference_schema(schema).unwrap();
+    assert!(matches!(
+        ReferenceRecordValidator::new(&wrong, &TraceId("T".into()), &prepared),
+        Err(RecordValidationError::Reference(
+            ReferenceExecutionError::InconsistentPreparation
+        ))
+    ));
+    struct FailedObserver;
+    impl ReferenceEvaluationObserver for FailedObserver {
+        fn on_evaluation(
+            &mut self,
+            _: ReferenceControl<'_>,
+            _: ReferenceConstraintEvaluation<'_>,
+        ) -> Result<(), Box<dyn Error + Send + Sync>> {
+            Err(Box::new(std::io::Error::new(
+                std::io::ErrorKind::StorageFull,
+                "synthetic observer",
+            )))
+        }
+    }
+    let flow = compile_reference_schema(reference_schema(&deps)).unwrap();
+    let mut validator =
+        ReferenceRecordValidator::new(&flow, &TraceId("T".into()), &prepared).unwrap();
+    let mut sink = VecSink::default();
+    let mut summary = ValidationSummaryBuilder::new(
+        flow.key().clone(),
+        ScopeSummary::Trace {
+            trace_id: TraceId("T".into()),
+        },
+    );
+    let error = validator
+        .validate_local(
+            RawRecord {
+                bytes: b"AAOK",
+                line_number: 1,
+            },
+            &mut sink,
+            &mut summary,
+            &mut FailedObserver,
+        )
+        .unwrap_err();
+    assert!(matches!(
+        error,
+        RecordValidationError::Pipeline(FieldPipelineError::Reference(
+            ReferenceExecutionError::Observer(_)
+        ))
+    ));
+    assert!(sink.errors().is_empty());
+    assert!(matches!(
+        validator.validate_local(
+            RawRecord {
+                bytes: b"AAOK",
+                line_number: 2
+            },
+            &mut sink,
+            &mut summary,
+            &mut EvidenceObserver::default()
+        ),
+        Err(RecordValidationError::PreviousFailure)
+    ));
+}
+
+#[test]
+fn reference_loop_uses_only_snapshot_and_preserves_independent_stage_priority() {
+    use serde_json::json;
+    let (fixture, deps, prepared) = union_fixture([DatasetAvailability::Verified; 3]);
+    let mut schema = reference_schema(&deps);
+    // The declared reference appears first, but the compiler schedules it last.
+    schema["traces"][0]["fields"][0]["constraints"]
+        .as_array_mut()
+        .unwrap()
+        .push(json!({"kind":"allowed_values","target":"raw","values":["AA"]}));
+    let flow = compile_reference_schema(schema).unwrap();
+    drop(fixture);
+    let mut validator =
+        ReferenceRecordValidator::new(&flow, &TraceId("T".into()), &prepared).unwrap();
+    let mut sink = VecSink::default();
+    let mut summary = ValidationSummaryBuilder::new(
+        flow.key().clone(),
+        ScopeSummary::Trace {
+            trace_id: TraceId("T".into()),
+        },
+    );
+    let mut observer = EvidenceObserver::default();
+    for line in 1..=1000 {
+        validator
+            .validate_local(
+                RawRecord {
+                    bytes: b"AAOK",
+                    line_number: line,
+                },
+                &mut sink,
+                &mut summary,
+                &mut observer,
+            )
+            .unwrap();
+    }
+    assert_eq!(observer.observations.len(), 1000);
+    observer.observations.clear();
+    validator
+        .validate_local(
+            RawRecord {
+                bytes: b"XXOK",
+                line_number: 1001,
+            },
+            &mut sink,
+            &mut summary,
+            &mut observer,
+        )
+        .unwrap();
+    assert!(observer.observations.is_empty());
+    assert_eq!(sink.errors().len(), 1);
+    assert_eq!(sink.errors()[0].code, ValidationCode::InvalidDomain);
+}
+
+#[test]
+fn bare_reference_constraint_rejects_invalid_plans_before_a_matching_fallback() {
+    let (_fixture, deps, prepared) = union_fixture([DatasetAvailability::Verified; 3]);
+    let field = FieldSlice { raw: b"ZZ" };
+    for indexes in [vec![], vec![usize::MAX]] {
+        let constraint = CompiledConstraint::ReferenceData {
+            dataset_indexes: indexes,
+            fallback_values: vec![b"ZZ".to_vec()],
+            metadata_bindings: vec![],
+        };
+        assert!(matches!(
+            validate_reference_constraint(&constraint, field, &deps, &prepared),
+            Err(ReferenceEvaluationError::InvalidPlan)
+        ));
+    }
+    assert!(matches!(
+        validate_reference_constraint(&CompiledConstraint::NonEmpty, field, &deps, &prepared),
+        Err(ReferenceEvaluationError::InvalidPlan)
+    ));
+}

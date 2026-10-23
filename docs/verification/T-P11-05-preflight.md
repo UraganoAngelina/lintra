@@ -33,3 +33,34 @@ Verifiche richieste: intera matrice Union della ratifica; fallback distinto;
 compiler ref/dipendenze/metadati/hash invalidi; record e regole continuano su
 sorgenti parziali senza falsi ValidationError; errori indipendenti conservati;
 API legacy non pubblica conformità fittizia; tutti i gate locali e nativi.
+
+## API concreta e guardia minima del summary
+
+Percorso additivo realizzato: evaluate_membership/MembershipEvaluation con
+provenienza borrowed; validate_reference_constraint/ReferenceConstraintEvaluation
+separa DeclaredFallback dalla membership; ReferenceRecordValidator restituisce
+ReferenceRecordValidationArtifacts con violazioni e ReferenceConclusion, senza
+un bool valid che possa rappresentare falsamente la completezza.
+ReferenceEvaluationObserver è un port fallibile engine-owned per l'aggregazione
+applicativa successiva, senza valori paziente nei metadati di controllo.
+
+Il builder attuale non può serializzare completezza. Modifica minima di
+sicurezza, esplicitata qui: flag privato e SummaryBuildError additivo
+UnreportedReferenceEvidence. Quando il nuovo percorso osserva una valutazione
+non definitiva, finish del builder legacy fallisce invece di produrre un
+CompletedValid privo di completezza. Non è un'implementazione del summary
+Partial: quella rimane T-P11-06. Non cambia RunStatus, la firma finish o i
+JSON/golden storici. L'estensione dell'enum pubblico richiede aggiornamento
+degli eventuali match esaustivi dei consumer; nessun consumer interno si basa
+su un elenco esaustivo incompatibile, verificato compilando tutti i target.
+
+Il percorso legacy senza preparazione rifiuta qualsiasi flow con dipendenze
+reference dichiarate, anche inutilizzate, prima dei record: non omette audit
+silenziosamente. L'application service resta su questo percorso fino a 11-06.
+Le nuove valutazioni locali continuano gli altri controlli; non si promette
+ancora un report finale Partial o la policy applicativa di prosecuzione.
+
+Vincolo di ultimo stage: il compiler effettua una partizione stabile delle
+constraint di campo, indipendenti prima e ReferenceData dopo. Non vieta un
+ordine ammesso dall'authoring né modifica i JSON. Ordine relativo interno a
+ciascun gruppo preservato, ordine delle assertion di rule invariato.

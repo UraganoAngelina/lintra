@@ -434,10 +434,10 @@ fn invalid_trace_and_zero_line_are_explicit_technical_errors() {
     assert_eq!(summary.finish(metadata()).unwrap().records_processed, 0);
 }
 
-/// Unsupported schema constructs still fail before runtime. No provider or
-/// synthetic production dataset is invented to make ReferenceData executable.
+/// Unsupported primitives and missing dataset declarations remain distinct
+/// compiler errors; neither is tolerated as degraded runtime data.
 #[test]
-fn compiler_rejects_unsupported_rule_assertions_and_reference_data() {
+fn compiler_rejects_unsupported_assertions_and_undeclared_reference_data() {
     for (name, payload) in [
         (
             "rules",
@@ -458,12 +458,12 @@ fn compiler_rejects_unsupported_rule_assertions_and_reference_data() {
         let mut raw: RawFlowSchema = serde_json::from_value(value).unwrap();
         raw.encoding.resolved = Some(RawResolvedEncoding::Utf8);
         let error = SchemaCompiler.compile(raw).unwrap_err();
-        assert!(
-            error
-                .issues
-                .iter()
-                .any(|issue| issue.code == SchemaIssueCode::UnsupportedConstruct)
-        );
+        assert!(error.issues.iter().any(|issue| issue.code
+            == if name == "rules" {
+                SchemaIssueCode::UnsupportedConstruct
+            } else {
+                SchemaIssueCode::MissingReferenceDatasetDeclaration
+            }));
     }
 }
 

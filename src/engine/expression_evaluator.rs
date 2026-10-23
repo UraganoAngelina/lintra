@@ -13,6 +13,8 @@ pub enum UnknownReason {
     UnsupportedPlan,
     /// Present bytes cannot be interpreted as the explicitly requested type.
     InvalidFieldValue,
+    ReferenceProvisional,
+    ReferenceInconclusive,
 }
 
 /// A determinate truth value or an explicitly unavailable decision.

@@ -38,28 +38,53 @@ pub(crate) fn evaluate_local_rule(
             UnknownReason::UnsupportedPlan,
         ));
     }
+    evaluate_rule_with_references(rule, ctx, None).unwrap_or_else(|_| {
+        artifacts(RuleValidationResult::Unknown(
+            UnknownReason::UnsupportedPlan,
+        ))
+    })
+}
+pub(crate) fn evaluate_rule_with_references(
+    rule: &CompiledRule,
+    ctx: &EvaluationContext<'_>,
+    mut references: Option<&mut super::reference_execution::ReferenceExecution<'_>>,
+) -> Result<LocalRuleArtifacts, super::reference_execution::ReferenceExecutionError> {
+    if !local_rule_supported_with_references(rule, None, references.is_some()) {
+        return Ok(artifacts(RuleValidationResult::Unknown(
+            UnknownReason::UnsupportedPlan,
+        )));
+    }
     let result = match ExpressionEvaluator.evaluate(&rule.when, ctx) {
         TruthValue::False => RuleValidationResult::Satisfied,
         TruthValue::Unknown(reason) => RuleValidationResult::Unknown(reason),
         TruthValue::True => {
             if rule.assertions.is_empty() {
-                return artifacts(RuleValidationResult::Unknown(
+                return Ok(artifacts(RuleValidationResult::Unknown(
                     UnknownReason::UnsupportedPlan,
-                ));
+                )));
             }
             let mut unknown = None;
             for (index, assertion) in rule.assertions.iter().enumerate() {
-                match validate_assertion(assertion, ctx) {
+                match validate_assertion(assertion, ctx, references.as_deref_mut(), rule, index) {
                     Ok(()) => {}
                     Err(AssertionFailure::Unknown(reason)) => {
-                        unknown.get_or_insert(reason);
+                        // Inconclusive dominates a merely provisional presence.
+                        let rank = |reason| match reason {
+                            UnknownReason::ReferenceProvisional => 0,
+                            UnknownReason::ReferenceInconclusive => 1,
+                            _ => 2,
+                        };
+                        if unknown.is_none_or(|previous| rank(reason) > rank(previous)) {
+                            unknown = Some(reason);
+                        }
                     }
+                    Err(AssertionFailure::Reference(error)) => return Err(error),
                     Err(AssertionFailure::Violated(mut violation)) => {
                         violation.code = rule.error_code.clone();
-                        return LocalRuleArtifacts {
+                        return Ok(LocalRuleArtifacts {
                             result: RuleValidationResult::Violated(violation),
                             failed_assertion: Some(index),
-                        };
+                        });
                     }
                 }
             }
@@ -69,7 +94,7 @@ pub(crate) fn evaluate_local_rule(
             )
         }
     };
-    artifacts(result)
+    Ok(artifacts(result))
 }
 fn artifacts(result: RuleValidationResult) -> LocalRuleArtifacts {
     LocalRuleArtifacts {
@@ -80,6 +105,7 @@ fn artifacts(result: RuleValidationResult) -> LocalRuleArtifacts {
 enum AssertionFailure {
     Violated(FieldViolation),
     Unknown(UnknownReason),
+    Reference(super::reference_execution::ReferenceExecutionError),
 }
 impl From<UnknownReason> for AssertionFailure {
     fn from(reason: UnknownReason) -> Self {
@@ -104,6 +130,9 @@ fn present(value: ResolvedFieldValue<'_>) -> Result<&[u8], UnknownReason> {
 fn validate_assertion(
     assertion: &CompiledAssertion,
     ctx: &EvaluationContext<'_>,
+    references: Option<&mut super::reference_execution::ReferenceExecution<'_>>,
+    rule: &CompiledRule,
+    assertion_index: usize,
 ) -> Result<(), AssertionFailure> {
     match assertion {
         CompiledAssertion::FieldPresent(field) => match ctx.fields.resolve_field(field) {
@@ -179,6 +208,36 @@ fn validate_assertion(
             })?;
             let value = FieldSlice { raw: bytes };
             let result = match constraint {
+                CompiledConstraint::ReferenceData { .. } => {
+                    let execution = references.ok_or(UnknownReason::UnsupportedPlan)?;
+                    let field_id = match field {
+                        ResolvedFieldRef::Local { field_id, .. } => field_id,
+                        _ => return Err(UnknownReason::UnsupportedPlan.into()),
+                    };
+                    let evaluation = execution
+                        .evaluate(
+                            constraint,
+                            value,
+                            super::reference_execution::ReferenceControl {
+                                field_id,
+                                rule_id: Some(&rule.id),
+                                index: assertion_index,
+                            },
+                        )
+                        .map_err(AssertionFailure::Reference)?;
+                    if let Some(violation) = evaluation.violation() {
+                        return Err(AssertionFailure::Violated(violation));
+                    }
+                    match evaluation {
+                        crate::ReferenceConstraintEvaluation::Membership(
+                            crate::MembershipEvaluation::ProvisionalPresent(_),
+                        ) => return Err(UnknownReason::ReferenceProvisional.into()),
+                        crate::ReferenceConstraintEvaluation::Membership(
+                            crate::MembershipEvaluation::Inconclusive,
+                        ) => return Err(UnknownReason::ReferenceInconclusive.into()),
+                        _ => Ok(()),
+                    }
+                }
                 CompiledConstraint::AllowedValues { values, .. } => {
                     validate_allowed_values(values, value)
                 }
@@ -290,6 +349,13 @@ pub(crate) fn local_rule_supported(
     rule: &CompiledRule,
     schema: Option<&CompiledRecordSchema>,
 ) -> bool {
+    local_rule_supported_with_references(rule, schema, false)
+}
+pub(crate) fn local_rule_supported_with_references(
+    rule: &CompiledRule,
+    schema: Option<&CompiledRecordSchema>,
+    references: bool,
+) -> bool {
     use super::expression_evaluator::{
         local_expression_supported, local_expression_supported_in_schema,
     };
@@ -378,6 +444,11 @@ pub(crate) fn local_rule_supported(
         CompiledAssertion::Constraint { field, constraint } => {
             local(field)
                 && match constraint {
+                    CompiledConstraint::ReferenceData {
+                        dataset_indexes,
+                        metadata_bindings,
+                        ..
+                    } => references && !dataset_indexes.is_empty() && metadata_bindings.is_empty(),
                     CompiledConstraint::AllowedValues { values, .. } => !values.is_empty(),
                     CompiledConstraint::Range { min, max } => min <= max,
                     CompiledConstraint::Regex { .. } | CompiledConstraint::Date { .. } => true,

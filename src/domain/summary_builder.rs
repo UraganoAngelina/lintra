@@ -16,6 +16,7 @@ pub enum SummaryCounter {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SummaryBuildError {
     CounterOverflow(SummaryCounter),
+    UnreportedReferenceEvidence,
     PreviousFailure,
     InconsistentRecordCounts,
     InconsistentErrorCounts,
@@ -30,6 +31,9 @@ pub enum SummaryBuildError {
 impl fmt::Display for SummaryBuildError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::UnreportedReferenceEvidence => {
+                f.write_str("reference completeness requires an explicit summary contract")
+            }
             Self::CounterOverflow(counter) => write!(f, "summary counter overflow: {counter:?}"),
             Self::PreviousFailure => f.write_str("summary builder cannot resume after failure"),
             Self::InconsistentRecordCounts => f.write_str("summary record counts are inconsistent"),
@@ -130,6 +134,7 @@ pub struct ValidationSummaryBuilder {
     cancelled: bool,
     truncated: bool,
     failed: bool,
+    unreported_reference_evidence: bool,
 }
 impl ValidationSummaryBuilder {
     pub fn new(key: SchemaKey, scope: ScopeSummary) -> Self {
@@ -146,6 +151,7 @@ impl ValidationSummaryBuilder {
             cancelled: false,
             truncated: false,
             failed: false,
+            unreported_reference_evidence: false,
         }
     }
     fn increment(&mut self, counter: SummaryCounter) -> Result<(), SummaryBuildError> {
@@ -210,10 +216,16 @@ impl ValidationSummaryBuilder {
     pub fn truncate(&mut self) {
         self.truncated = true;
     }
+    pub(crate) fn mark_unreported_reference_evidence(&mut self) {
+        self.unreported_reference_evidence = true;
+    }
     /// Checked Result refines DET §58 to report counter/audit failures explicitly.
     pub fn finish(self, metadata: RunMetadata) -> Result<ValidationSummary, SummaryBuildError> {
         if self.failed {
             return Err(SummaryBuildError::PreviousFailure);
+        }
+        if self.unreported_reference_evidence {
+            return Err(SummaryBuildError::UnreportedReferenceEvidence);
         }
         let run_status = if self.cancelled {
             RunStatus::Cancelled

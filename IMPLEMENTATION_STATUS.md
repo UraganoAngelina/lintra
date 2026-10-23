@@ -3,6 +3,22 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P11-05 implementata / gate nativo pendente
+
+493 test in 58 suite e tutti i gate locali passati, quattro digest Python
+indipendenti, 90 artefatti protetti invariati. [Dossier](docs/verification/T-P11-05.md),
+[API preflight](docs/verification/T-P11-05-preflight.md).
+Compiler risolve dichiarazioni/indici/hash e dispone ReferenceData nell'ultimo
+stage; Union distingue quattro esiti e fallback dichiarato separato. Nuovo
+ReferenceRecordValidator continua controlli indipendenti, conserva provenienza
+e Unknown reference senza errori normativi fittizi. Il percorso legacy rifiuta
+flow con dipendenze; il builder legacy non pubblica summary non definitivi
+senza contratto di completezza (UnreportedReferenceEvidence).
+Summary/audit/policy/service non ancora evoluti: integrazione T-P11-06.
+Nuova CI da avviare; nessun DONE prima del gate. Nessun blocco contrattuale.
+
+## Registro storico — chiusura gate e avvio T-P11-05
+
 ## Frontiera corrente — T-P11-04 e T-P12-01 DONE; avvio T-P11-05
 
 CI cumulativa [39936894049](https://github.com/UraganoAngelina/lintra/actions/runs/39936894049)
@@ -1143,7 +1159,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P11-02 | DONE | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali e CI 39917228132 Linux/Windows completed/success su cb0a044; [dossier](docs/verification/T-P11-02.md) |
 | T-P11-03 | DONE | 2026-10-23 | provider filesystem/stati/evidenze, 471 test/56 suite; CI 39930225299 Linux/Windows completed/success su 1b40c0e; [dossier](docs/verification/T-P11-03.md); STOP §19 |
 | T-P11-04 | DONE | 2026-10-23 | 373c44c, 477 test/57 suite; CI cumulativa 39936894049 su 66c3d61 Linux/Windows success; [dossier](docs/verification/T-P11-04.md) |
-| T-P11-05 | IN_PROGRESS | 2026-10-23 | prerequisiti verificati; preflight dei contratti disponibile |
+| T-P11-05 | IN_PROGRESS | 2026-10-23 | 493 test/58 suite e gate locali passati; CI pendente; [dossier](docs/verification/T-P11-05.md) |
 | T-P12-01 | DONE | 2026-10-23 | CSV/colonne condivise, 485 test/58 suite; CI 39936894049 su 66c3d61 Linux/Windows success; [dossier](docs/verification/T-P12-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |

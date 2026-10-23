@@ -12,4 +12,5 @@ pub(crate) mod date;
 
 pub(crate) mod decimal;
 
+pub(crate) mod reference_data;
 pub(crate) mod regex;

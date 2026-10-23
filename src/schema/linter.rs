@@ -43,6 +43,7 @@ pub enum SchemaIssueCode {
     InvalidRecordKey,
     MissingFieldReference,
     MissingDerivedValueReference,
+    MissingReferenceDatasetDeclaration,
     InvalidDiagnosticCode,
     InternalCompilerInvariant,
 }

@@ -9,7 +9,7 @@ use super::{
     identity_extractor::{IdentityExtractionError, IdentityExtractor},
     presence::{PresenceState, resolve_presence},
     rule_diagnostics::{RuleDiagnosticError, RuleDiagnosticInput},
-    rule_validator::{RuleValidationResult, evaluate_local_rule, local_rule_supported},
+    rule_validator::{RuleValidationResult, evaluate_local_rule},
 };
 use crate::{
     domain::{FieldId, RecordIdentity, SummaryBuildError, TraceId, ValidationSummaryBuilder},
@@ -66,6 +66,7 @@ pub enum RecordValidationError {
         reason: UnknownReason,
     },
     RuleDiagnostic(RuleDiagnosticError),
+    Reference(super::reference_execution::ReferenceExecutionError),
     PreviousFailure,
 }
 impl fmt::Display for RecordValidationError {
@@ -73,6 +74,7 @@ impl fmt::Display for RecordValidationError {
     /// schema context for the caller without inventing generic string errors.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(match self {
+            Self::Reference(_) => "reference record validation failed",
             Self::TraceNotFound(_) => "local validation trace does not exist",
             Self::UnsupportedLocalPlan { .. } => "required local plan is not supported",
             Self::UndeterminedPresence { .. } => {
@@ -97,6 +99,7 @@ impl Error for RecordValidationError {
     /// parsing human text. Context-only variants have no nested source.
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
+            Self::Reference(error) => Some(error),
             Self::RuleDiagnostic(error) => Some(error),
             Self::Identity(error) => Some(error),
             Self::Pipeline(error) => Some(error),
@@ -123,10 +126,23 @@ impl<'schema> RecordValidator<'schema> {
         flow: &'schema CompiledFlowSchema,
         trace_id: &TraceId,
     ) -> Result<Self, RecordValidationError> {
+        Self::build(flow, trace_id, false)
+    }
+    fn build(
+        flow: &'schema CompiledFlowSchema,
+        trace_id: &TraceId,
+        references: bool,
+    ) -> Result<Self, RecordValidationError> {
+        if !references && !flow.required_reference_data().is_empty() {
+            return Err(RecordValidationError::UnsupportedLocalPlan {
+                feature: UnsupportedLocalFeature::Constraint,
+                field_id: None,
+            });
+        }
         let schema = flow
             .trace(trace_id)
             .ok_or_else(|| RecordValidationError::TraceNotFound(trace_id.clone()))?;
-        check_local_plan(schema)?;
+        check_local_plan(schema, references)?;
         Ok(Self {
             schema,
             factory: ErrorFactory {
@@ -153,7 +169,7 @@ impl<'schema> RecordValidator<'schema> {
         if self.failed {
             return Err(RecordValidationError::PreviousFailure);
         }
-        let result = self.validate_record(record, sink, summary);
+        let result = self.validate_record(record, sink, summary, None);
         if result.is_err() {
             self.failed = true;
         }
@@ -167,6 +183,7 @@ impl<'schema> RecordValidator<'schema> {
         record: RawRecord<'_>,
         sink: &mut dyn ValidationSink,
         summary: &mut ValidationSummaryBuilder,
+        mut references: Option<&mut super::reference_execution::ReferenceExecution<'_>>,
     ) -> Result<LocalRecordValidationArtifacts, RecordValidationError> {
         if record.line_number == 0 {
             return Err(RecordValidationError::InvalidLineNumber);
@@ -220,9 +237,19 @@ impl<'schema> RecordValidator<'schema> {
                         field_id: field.id().clone(),
                     })?;
             let state = resolve_presence(field.presence_policy(), &ctx);
-            let result = pipeline
-                .run_with_presence(field, value, record.line_number, &identity, state)
-                .map_err(RecordValidationError::Pipeline)?;
+            let result = if let Some(execution) = references.as_deref_mut() {
+                pipeline.run_with_reference_presence(
+                    field,
+                    value,
+                    record.line_number,
+                    &identity,
+                    state,
+                    execution,
+                )
+            } else {
+                pipeline.run_with_presence(field, value, record.line_number, &identity, state)
+            }
+            .map_err(RecordValidationError::Pipeline)?;
             if let PresenceState::Unknown(reason) = state {
                 return Err(RecordValidationError::UndeterminedPresence {
                     field_id: field.id().clone(),
@@ -243,9 +270,21 @@ impl<'schema> RecordValidator<'schema> {
             }
         }
         for rule in self.schema.local_rules() {
-            let artifacts = evaluate_local_rule(rule, &ctx);
+            let artifacts = if references.is_some() {
+                super::rule_validator::evaluate_rule_with_references(
+                    rule,
+                    &ctx,
+                    references.as_deref_mut(),
+                )
+                .map_err(RecordValidationError::Reference)?
+            } else {
+                evaluate_local_rule(rule, &ctx)
+            };
             match artifacts.result {
                 RuleValidationResult::Satisfied => {}
+                RuleValidationResult::Unknown(
+                    UnknownReason::ReferenceProvisional | UnknownReason::ReferenceInconclusive,
+                ) if references.is_some() => {}
                 RuleValidationResult::Unknown(reason) => {
                     summary
                         .rule_skipped()
@@ -285,6 +324,13 @@ impl<'schema> RecordValidator<'schema> {
                 }
             }
         }
+        if references.as_ref().is_some_and(|execution| {
+            execution.conclusion != super::reference_execution::ReferenceConclusion::Definitive
+        }) {
+            // Until T-P11-06 persists completeness, the legacy summary contract
+            // must fail explicitly rather than publish a false complete pass.
+            summary.mark_unreported_reference_evidence();
+        }
         if valid {
             summary.record_valid()
         } else {
@@ -301,13 +347,19 @@ impl<'schema> RecordValidator<'schema> {
 /// Public compilation already rejects these features. Defend the runtime
 /// boundary as it evolves: a future compiled local obligation cannot disappear
 /// merely because the current executor does not know how to evaluate it.
-fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidationError> {
+fn check_local_plan(
+    schema: &CompiledRecordSchema,
+    references: bool,
+) -> Result<(), RecordValidationError> {
     for (present, feature) in [
         (
-            schema
-                .local_rules()
-                .iter()
-                .any(|rule| !local_rule_supported(rule, Some(schema))),
+            schema.local_rules().iter().any(|rule| {
+                !super::rule_validator::local_rule_supported_with_references(
+                    rule,
+                    Some(schema),
+                    references,
+                )
+            }),
             UnsupportedLocalFeature::Rules,
         ),
         (
@@ -339,6 +391,7 @@ fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidatio
         {
             Some(UnsupportedLocalFeature::ConditionalPresence)
         } else if field.constraints().iter().any(|constraint| {
+            if references && matches!(constraint, CompiledConstraint::ReferenceData { metadata_bindings, dataset_indexes, .. } if metadata_bindings.is_empty() && !dataset_indexes.is_empty()) { return false; }
             !matches!(
                 constraint,
                 CompiledConstraint::AllowedValues { .. }
@@ -359,4 +412,74 @@ fn check_local_plan(schema: &CompiledRecordSchema) -> Result<(), RecordValidatio
         }
     }
     Ok(())
+}
+
+/// Explicit reference-aware record artifacts; absence of normative violations
+/// does not make Provisional/Inconclusive evaluations definitive.
+#[derive(Debug)]
+pub struct ReferenceRecordValidationArtifacts {
+    pub identity: Option<RecordIdentity>,
+    pub normative_violations_detected: bool,
+    pub reference_conclusion: super::reference_execution::ReferenceConclusion,
+}
+
+pub struct ReferenceRecordValidator<'schema, 'references> {
+    inner: RecordValidator<'schema>,
+    dependencies: &'schema [crate::ReferenceDependency],
+    prepared: &'references crate::PreparedReferenceEvidence,
+}
+impl<'schema, 'references> ReferenceRecordValidator<'schema, 'references> {
+    pub fn new(
+        flow: &'schema CompiledFlowSchema,
+        trace_id: &TraceId,
+        prepared: &'references crate::PreparedReferenceEvidence,
+    ) -> Result<Self, RecordValidationError> {
+        // A snapshot with a different expected digest must never validate this
+        // schema's version merely because its DatasetKey has the same spelling.
+        for dependency in flow.required_reference_data() {
+            if !prepared.evidence(&dependency.key).is_some_and(|evidence| {
+                evidence.expected_sha256() == &crate::Sha256Digest(dependency.sha256)
+            }) {
+                return Err(RecordValidationError::Reference(
+                    super::reference_execution::ReferenceExecutionError::InconsistentPreparation,
+                ));
+            }
+        }
+        Ok(Self {
+            inner: RecordValidator::build(flow, trace_id, true)?,
+            dependencies: flow.required_reference_data(),
+            prepared,
+        })
+    }
+    pub fn validate_local(
+        &mut self,
+        record: RawRecord<'_>,
+        sink: &mut dyn ValidationSink,
+        summary: &mut ValidationSummaryBuilder,
+        observer: &mut dyn super::reference_execution::ReferenceEvaluationObserver,
+    ) -> Result<ReferenceRecordValidationArtifacts, RecordValidationError> {
+        if self.inner.failed {
+            return Err(RecordValidationError::PreviousFailure);
+        }
+        let mut execution = super::reference_execution::ReferenceExecution {
+            prepared: self.prepared,
+            dependencies: self.dependencies,
+            observer,
+            conclusion: super::reference_execution::ReferenceConclusion::Definitive,
+        };
+        let result = self
+            .inner
+            .validate_record(record, sink, summary, Some(&mut execution));
+        match result {
+            Ok(local) => Ok(ReferenceRecordValidationArtifacts {
+                identity: local.identity,
+                normative_violations_detected: !local.valid,
+                reference_conclusion: execution.conclusion,
+            }),
+            Err(error) => {
+                self.inner.failed = true;
+                Err(error)
+            }
+        }
+    }
 }
