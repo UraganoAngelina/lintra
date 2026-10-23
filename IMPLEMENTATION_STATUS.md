@@ -3,6 +3,19 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P11-04 implementata / verifiche in corso
+
+Mandato 2026-10-23: ripresa automatizzata autorizzata, superato stop dopo
+T-P11-03. Task successiva automatica se prerequisiti/gate/contratti sono chiari;
+GitHub automatico, massimo tre chiamate Actions per gate con intervalli ≥45s.
+11-03 verificata su 1b40c0e, CI 39930225299 Linux/Windows completed/success.
+11-04: API tecnica Exact/AsciiUppercase esplicita, snapshot conserva attendibilità;
+477 test/57 suite e gate locali passati. Nessuna modifica grammar o implicita trasformazione
+nei constraint: authoring attuale resta byte esatto. [Dossier](docs/verification/T-P11-04.md).
+CI nativa da verificare; nessun DONE anticipato.
+
+## Registro storico — chiusura T-P11-03 e precedente stop
+
 ## Frontiera corrente — T-P11-03 DONE / STOP richiesto dall'autore
 
 471 test locali in 56 suite, fmt/check/Clippy/test/release/Windows GNU check/diff
@@ -1088,6 +1101,7 @@ M1 o il gate multipiattaforma; G0 è approvato con i rinvii sopra.
 | T-P11-01 | DONE | 2026-10-22 | reference ports/preparazione, 419 test; CI 39788642608 Linux/Windows verde su 89b4baf; [report](docs/verification/T-P11-01.md) |
 | T-P11-02 | DONE | 2026-10-23 | provider memoria, 444 test/54 suite; gate locali e CI 39917228132 Linux/Windows completed/success su cb0a044; [dossier](docs/verification/T-P11-02.md) |
 | T-P11-03 | DONE | 2026-10-23 | provider filesystem/stati/evidenze, 471 test/56 suite; CI 39930225299 Linux/Windows completed/success su 1b40c0e; [dossier](docs/verification/T-P11-03.md); STOP §19 |
+| T-P11-04 | IN_PROGRESS | 2026-10-23 | policy tecnica esplicita, 477 test/57 suite e gate locali passati; CI pendente; [dossier](docs/verification/T-P11-04.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

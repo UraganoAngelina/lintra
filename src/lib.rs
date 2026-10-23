@@ -227,6 +227,7 @@ pub use reference_data::{
         ReferenceBindingIssue,
     },
     in_memory::InMemoryReferenceDataProvider,
+    normalization::LookupNormalization,
     provider::{ReferenceDataError, ReferenceDataProvider},
 };
 

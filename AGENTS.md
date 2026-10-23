@@ -130,3 +130,9 @@ Ratifica successiva — CNF-REFERENCE-FORMAT-01 aggiornata, 2026-10-23:
 - Baseline CAD/SIOC, flow grammar e fonti architetturali non modificabili qui.
 - STOP obbligatorio dopo T-P11-03, gate/handoff; non iniziare task successive
   senza autorizzazione. Questo mandato supera la progressione autonoma generale.
+
+Mandato successivo — ripresa automatizzata, 2026-10-23:
+- L'autore autorizza la ripresa delle task e l'avvio automatico della successiva
+  se non emergono ambiguità/conflitti; superato lo stop dopo T-P11-03.
+- Chiamate GitHub automatiche, massimo tre chiamate Actions per gate con almeno
+  45 secondi di intervallo. Restano gate, spiegazioni e divieti precedenti.

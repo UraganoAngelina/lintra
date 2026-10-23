@@ -89,6 +89,72 @@ fn format_issue(evidence: &DatasetEvidence) -> Option<&MembershipFormatIssue> {
 }
 
 #[test]
+fn explicit_normalization_preserves_verified_degraded_and_unavailable_evidence() {
+    let fixture = Fixture::new();
+    // Independent published SHA-256 of these exact bytes, checked with hashlib.
+    let bytes = br#"{"dataset_format_version":1,"dataset_id":"synthetic","version":"1","keys_hex":["4142"]}"#;
+    fs::write(fixture.root.join("data/codes.json"), bytes).unwrap();
+    let id = key("synthetic", "1");
+    let verified_binding = binding(
+        id.clone(),
+        "codes.json",
+        "98a052b12f38e5060f8d9eb965cbe178e2abeef5dc9316e0b7d9dcb50e4bb510",
+    );
+    for degraded in [false, true] {
+        let mut dependency = verified_binding.clone();
+        if degraded {
+            dependency.sha256 = [0; 32];
+        }
+        let prepared = fixture
+            .provider(vec![dependency])
+            .prepare(DatasetPreparationPolicy::ContinueWithAvailableEvidence)
+            .unwrap();
+        let original = prepared.evidence(&id).unwrap();
+        for (policy, expected) in [
+            (LookupNormalization::Exact, false),
+            (LookupNormalization::AsciiUppercase, true),
+        ] {
+            let observation = prepared
+                .observe_with_normalization(&id, b"ab", policy)
+                .unwrap();
+            assert_eq!(observation.observed_present(), Some(expected));
+            assert!(std::ptr::eq(observation.evidence(), original));
+            assert_eq!(
+                observation.availability(),
+                if degraded {
+                    DatasetAvailability::Degraded
+                } else {
+                    DatasetAvailability::Verified
+                }
+            );
+        }
+        assert_eq!(
+            prepared.observe(&id, b"ab").unwrap().observed_present(),
+            Some(false)
+        );
+    }
+    fs::remove_file(fixture.root.join("data/codes.json")).unwrap();
+    let unavailable = fixture
+        .provider(vec![verified_binding])
+        .prepare(DatasetPreparationPolicy::ContinueWithAvailableEvidence)
+        .unwrap();
+    let observation = unavailable
+        .observe_with_normalization(&id, b"ab", LookupNormalization::AsciiUppercase)
+        .unwrap();
+    assert_eq!(observation.availability(), DatasetAvailability::Unavailable);
+    assert_eq!(observation.observed_present(), None);
+    assert!(
+        unavailable
+            .observe_with_normalization(
+                &key("other", "1"),
+                b"ab",
+                LookupNormalization::AsciiUppercase
+            )
+            .is_none()
+    );
+}
+
+#[test]
 fn verified_dataset_preserves_bytes_empty_key_and_independently_known_digest() {
     let fixture = Fixture::new();
     let case = case("valid");

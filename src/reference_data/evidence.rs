@@ -1,5 +1,6 @@
 //! Provider evidence, not normative rule outcomes or a validation summary.
 use super::dataset::{DatasetKey, LookupSet};
+use super::normalization::LookupNormalization;
 use crate::Sha256Digest;
 use std::{collections::HashMap, error::Error, io, sync::Arc};
 
@@ -161,6 +162,25 @@ impl PreparedReferenceEvidence {
         Some(DatasetObservation {
             evidence: self.evidence(key)?,
             observed_present: self.sets.get(key).map(|set| set.contains(value)),
+        })
+    }
+
+    /// Explicit query-only normalization, retaining exactly the same evidence
+    /// as observe. Unknown/unavailable dependencies never become empty sets.
+    pub fn observe_with_normalization(
+        &self,
+        key: &DatasetKey,
+        value: &[u8],
+        normalization: LookupNormalization,
+    ) -> Option<DatasetObservation<'_>> {
+        let evidence = self.evidence(key)?;
+        let observed_present = self.sets.get(key).map(|set| {
+            let normalized = normalization.apply(value);
+            set.contains(normalized.as_ref())
+        });
+        Some(DatasetObservation {
+            evidence,
+            observed_present,
         })
     }
 }

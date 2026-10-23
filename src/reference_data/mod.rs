@@ -4,4 +4,5 @@ pub(crate) mod evidence;
 pub(crate) mod filesystem;
 pub(crate) mod in_memory;
 mod membership_format;
+pub(crate) mod normalization;
 pub(crate) mod provider;
