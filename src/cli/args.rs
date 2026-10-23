@@ -11,7 +11,8 @@ pub struct ValidateArgs {
     pub request: ValidationRequest,
     pub encoding: RawResolvedEncoding,
     pub reference_policy: DatasetPreparationPolicy,
-    pub errors: PathBuf,
+    pub errors: Option<PathBuf>,
+    pub xlsx: Option<PathBuf>,
     pub summary: PathBuf,
 }
 /// Binary commands carry only the configuration needed by their operation.
@@ -71,13 +72,14 @@ pub fn command() -> Command {
         .subcommand(
             Command::new("validate")
                 .about(
-                    "Valida un tracciato nel perimetro LocalOnly e pubblica report JSONL/summary",
+                    "Valida un tracciato nel perimetro LocalOnly e pubblica report JSONL/XLSX/summary",
                 )
                 .arg(text("flow"))
                 .arg(text("schema-version"))
                 .arg(text("trace"))
                 .arg(path("input").required(true))
-                .arg(path("errors").visible_alias("output").required(true))
+                .arg(path("errors").visible_alias("output").required_unless_present("xlsx"))
+                .arg(path("xlsx"))
                 .arg(path("summary").required(true))
                 .arg(
                     Arg::new("encoding")
@@ -150,7 +152,8 @@ where
             "strict" => DatasetPreparationPolicy::Strict,
             _ => DatasetPreparationPolicy::ContinueWithAvailableEvidence,
         },
-        errors: required(args, "errors"),
+        errors: args.get_one::<PathBuf>("errors").cloned(),
+        xlsx: args.get_one::<PathBuf>("xlsx").cloned(),
         summary: required(args, "summary"),
     })))
 }

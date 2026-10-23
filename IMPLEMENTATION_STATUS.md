@@ -3,6 +3,20 @@
 Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P12-04 implementata / gate nativo da avviare
+
+534 test/62 suite, zero falliti e un probe esplicito ignorato nella suite
+ordinaria. Tutti i gate locali fmt/check/Clippy/test/release/Windows GNU/diff
+passati. CLI --xlsx con/senza JSONL, temporaneo RAII nella temp di sistema,
+cleanup esplicito, workbook pubblicato per ultimo e nessun XLSX nuovo su
+Err/Cancelled; Partial conserva l'audit. [Dossier](docs/verification/T-P12-04.md).
+Tempfile =3.27.0 diretto qualificato, nessuna nuova versione/checksum/pacchetto
+nel lock. 90 artefatti protetti invariati. Modifica esterna di newline nella
+proposta reference preservata fuori dai commit. CI nativa ancora da avviare.
+Next candidata 12-05; nessuna task ulteriore iniziata prima del gate corrente.
+
+## Registro storico — chiusura cumulativa e avvio 12-04
+
 ## Frontiera corrente — gate cumulativo chiuso; avvio T-P12-04
 
 CI [39967822377](https://github.com/UraganoAngelina/lintra/actions/runs/39967822377) su
@@ -1340,7 +1354,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P12-02 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P12-02.md) |
 | T-P11-06 | DONE | 2026-10-23 | CI cumulativa 39967822377 su 2b979f2: Linux/Windows MSVC completed/success; 524 test/61 suite; [dossier](docs/verification/T-P11-06.md) |
 | T-P12-03 | DONE | 2026-10-23 | CI cumulativa 39967822377 su 2b979f2: Linux/Windows MSVC completed/success; 524 test/61 suite; [dossier](docs/verification/T-P12-03.md) |
-| T-P12-04 | IN_PROGRESS | 2026-10-23 | Prerequisiti nativi verificati; integrazione CLI XLSX/JSONL temporaneo e guard atomici secondo preflight |
+| T-P12-04 | DONE_UNVERIFIED | 2026-10-23 | CLI XLSX/temp spool/guard reali, 534 test/62 suite e gate locali passati; CI nativa pendente; [dossier](docs/verification/T-P12-04.md) |
 | T-P13-01 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P13-01.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |

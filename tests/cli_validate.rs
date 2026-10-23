@@ -300,12 +300,15 @@ fn sigint_returns_130_and_preserves_old_reports() {
     }
     drop(input);
     file.old_reports();
+    fs::write(file.root.join("report.xlsx"), b"old workbook").unwrap();
     let mut child = file
         .command()
         .arg("--errors")
         .arg(file.root.join("errors.jsonl"))
         .arg("--summary")
         .arg(file.root.join("summary.json"))
+        .arg("--xlsx")
+        .arg(file.root.join("report.xlsx"))
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
@@ -332,6 +335,11 @@ fn sigint_returns_130_and_preserves_old_reports() {
     stderr.read_to_string(&mut events).unwrap();
     assert!(events.contains("run_completed"));
     file.assert_old();
+    assert_eq!(
+        fs::read(file.root.join("report.xlsx")).unwrap(),
+        b"old workbook"
+    );
+    assert!(!file.root.join("report.xlsx.part").exists());
 }
 
 /// No command is a syntax error, while explicit help/version remain successful.

@@ -1,13 +1,14 @@
 //! Wire public application/report APIs. No normative rule belongs in this adapter.
 use super::{
     args::ValidateArgs,
+    error_spool::ErrorSpool,
     paths::{self, BundleSource},
 };
 use lintra::*;
 use std::{
     error::Error,
     fmt, fs,
-    io::{self, Write},
+    io::{self, BufReader, Write},
     path::{Path, PathBuf},
 };
 
@@ -36,11 +37,16 @@ impl Error for FailedRun {
 }
 /// Always attempt both aborts, even when the first fails. No old destination is
 /// removed and the original error never becomes a successful validation outcome.
-fn abort(outputs: Vec<AtomicReportFile>, primary: Failure) -> Failure {
-    let cleanup = outputs
+fn abort(errors: Option<ErrorSpool>, outputs: Vec<AtomicReportFile>, primary: Failure) -> Failure {
+    let mut cleanup: Vec<_> = outputs
         .into_iter()
         .filter_map(|output| output.abort().err())
         .collect();
+    if let Some(errors) = errors
+        && let Err(error) = errors.abort()
+    {
+        cleanup.push(error);
+    }
     Box::new(FailedRun { primary, cleanup })
 }
 fn invalid(message: &'static str) -> Failure {
@@ -75,7 +81,12 @@ fn check_outputs(args: &ValidateArgs, schema: &Path, reference: &Path) -> Result
     let schema = fs::canonicalize(schema)?;
     let reference = fs::canonicalize(reference)?;
     let mut seen = Vec::new();
-    for destination in [&args.errors, &args.summary] {
+    for destination in args
+        .errors
+        .iter()
+        .chain(std::iter::once(&args.summary))
+        .chain(args.xlsx.iter())
+    {
         let mut part = destination.as_os_str().to_os_string();
         part.push(".part");
         for path in [destination.clone(), PathBuf::from(part)] {
@@ -118,12 +129,19 @@ fn validate_with_token(
         args.encoding,
         args.reference_policy,
     )?;
-    let mut errors = AtomicReportFile::create_replacing(&args.errors, PartialOutputPolicy::Delete)?;
+    let mut errors = ErrorSpool::create(args.errors.as_deref())?;
     let mut summary =
         match AtomicReportFile::create_replacing(&args.summary, PartialOutputPolicy::Delete) {
             Ok(output) => output,
-            Err(error) => return Err(abort(vec![errors], error.into())),
+            Err(error) => return Err(abort(Some(errors), vec![], error.into())),
         };
+    let mut xlsx = match &args.xlsx {
+        Some(path) => match AtomicReportFile::create_replacing(path, PartialOutputPolicy::Delete) {
+            Ok(output) => Some(output),
+            Err(error) => return Err(abort(Some(errors), vec![summary], error.into())),
+        },
+        None => None,
+    };
     let result = (|| -> Result<ValidationRunOutcome, Failure> {
         let mut sink = JsonlSink::new(errors.writer());
         let stderr = io::stderr();
@@ -154,20 +172,39 @@ fn validate_with_token(
         let mut human = HumanReadableSink::new(io::stdout().lock());
         human.on_summary(&outcome.summary)?;
         drop(human.finish()?);
+        if outcome.status != RunStatus::Cancelled
+            && !outcome.summary.truncated
+            && let Some(workbook) = xlsx.as_mut()
+        {
+            let reader = BufReader::new(errors.reader()?);
+            XlsxReportWriter::new().write(reader, &outcome.summary, workbook.writer_send())?;
+        }
         Ok(outcome)
     })();
     let outcome = match result {
         Ok(outcome) => outcome,
-        Err(error) => return Err(abort(vec![errors, summary], error)),
+        Err(error) => {
+            let mut reports = vec![summary];
+            reports.extend(xlsx);
+            return Err(abort(Some(errors), reports, error));
+        }
     };
     let completion = ReportCompletion {
         run_status: outcome.status,
         truncated: outcome.summary.truncated,
     };
     if let Err(error) = errors.complete(completion) {
-        return Err(abort(vec![summary], error.into()));
+        let mut reports = vec![summary];
+        reports.extend(xlsx);
+        return Err(abort(None, reports, error.into()));
     }
-    summary.complete(completion)?;
+    if let Err(error) = summary.complete(completion) {
+        return Err(abort(None, xlsx.into_iter().collect(), error.into()));
+    }
+    // Last fallible action: Err/Cancelled cannot leave a new definitive XLSX.
+    if let Some(workbook) = xlsx {
+        workbook.complete(completion)?;
+    }
     Ok(outcome.status)
 }
 
@@ -231,58 +268,64 @@ mod cancellation_tests {
     /// is needed on Windows to verify status 130 and atomic output preservation.
     #[test]
     fn controlled_cancellation_never_publishes_complete_reports() {
-        let root = std::env::temp_dir().join(format!(
-            "lintra cancelled {} {}",
-            std::process::id(),
-            SystemTime::now()
-                .duration_since(UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
-        ));
-        fs::create_dir_all(root.join("schemas/SYNTHETIC/v1")).unwrap();
-        fs::create_dir(root.join("reference-data")).unwrap();
-        fs::write(
-            root.join("schemas/SYNTHETIC/v1/flow.json"),
-            include_bytes!("../../tests/fixtures/application/schema.json"),
-        )
-        .unwrap();
-        fs::write(root.join("input.txt"), b"001A  \n").unwrap();
-        fs::write(root.join("errors.jsonl"), b"old errors").unwrap();
-        fs::write(root.join("summary.json"), b"old summary").unwrap();
-        let args = ValidateArgs {
-            reference_policy: DatasetPreparationPolicy::ContinueWithAvailableEvidence,
-            dirs: paths::CliDirs {
-                schema_dir: Some(root.join("schemas")),
-                reference_data_dir: Some(root.join("reference-data")),
-            },
-            request: ValidationRequest {
-                schema_key: SchemaKey {
-                    flow_id: FlowId("SYNTHETIC".into()),
-                    version: SchemaVersion("v1".into()),
+        for persistent in [false, true] {
+            let root = std::env::temp_dir().join(format!(
+                "lintra cancelled {} {}",
+                std::process::id(),
+                SystemTime::now()
+                    .duration_since(UNIX_EPOCH)
+                    .unwrap()
+                    .as_nanos()
+            ));
+            fs::create_dir_all(root.join("schemas/SYNTHETIC/v1")).unwrap();
+            fs::create_dir(root.join("reference-data")).unwrap();
+            fs::write(
+                root.join("schemas/SYNTHETIC/v1/flow.json"),
+                include_bytes!("../../tests/fixtures/application/schema.json"),
+            )
+            .unwrap();
+            fs::write(root.join("input.txt"), b"001A  \n").unwrap();
+            fs::write(root.join("errors.jsonl"), b"old errors").unwrap();
+            fs::write(root.join("summary.json"), b"old summary").unwrap();
+            fs::write(root.join("report.xlsx"), b"old workbook").unwrap();
+            let args = ValidateArgs {
+                reference_policy: DatasetPreparationPolicy::ContinueWithAvailableEvidence,
+                dirs: paths::CliDirs {
+                    schema_dir: Some(root.join("schemas")),
+                    reference_data_dir: Some(root.join("reference-data")),
                 },
-                scope: ValidationScope::Trace(TraceValidationInput {
-                    trace_id: TraceId("T1".into()),
-                    source: InputSource::Path(root.join("input.txt")),
-                }),
-                mode: ValidationMode::LocalOnly,
-                options: ValidationOptions {
-                    record_length_policy: RecordLengthPolicy::StrictSkipRecord,
-                    newline_policy: NewlinePolicy::AutoLfOrCrlf,
-                    max_errors: None,
+                request: ValidationRequest {
+                    schema_key: SchemaKey {
+                        flow_id: FlowId("SYNTHETIC".into()),
+                        version: SchemaVersion("v1".into()),
+                    },
+                    scope: ValidationScope::Trace(TraceValidationInput {
+                        trace_id: TraceId("T1".into()),
+                        source: InputSource::Path(root.join("input.txt")),
+                    }),
+                    mode: ValidationMode::LocalOnly,
+                    options: ValidationOptions {
+                        record_length_policy: RecordLengthPolicy::StrictSkipRecord,
+                        newline_policy: NewlinePolicy::AutoLfOrCrlf,
+                        max_errors: None,
+                    },
                 },
-            },
-            encoding: RawResolvedEncoding::Utf8,
-            errors: root.join("errors.jsonl"),
-            summary: root.join("summary.json"),
-        };
-        let cancellation = CancellationToken::default();
-        cancellation.cancel();
-        let status = validate_with_token(args, &cancellation).unwrap();
-        assert_eq!(super::super::exit_code::from_status(status), 130);
-        assert_eq!(fs::read(root.join("errors.jsonl")).unwrap(), b"old errors");
-        assert_eq!(fs::read(root.join("summary.json")).unwrap(), b"old summary");
-        assert!(!root.join("errors.jsonl.part").exists());
-        assert!(!root.join("summary.json.part").exists());
-        fs::remove_dir_all(root).unwrap();
+                encoding: RawResolvedEncoding::Utf8,
+                errors: persistent.then(|| root.join("errors.jsonl")),
+                xlsx: Some(root.join("report.xlsx")),
+                summary: root.join("summary.json"),
+            };
+            let cancellation = CancellationToken::default();
+            cancellation.cancel();
+            let status = validate_with_token(args, &cancellation).unwrap();
+            assert_eq!(super::super::exit_code::from_status(status), 130);
+            assert_eq!(fs::read(root.join("errors.jsonl")).unwrap(), b"old errors");
+            assert_eq!(fs::read(root.join("summary.json")).unwrap(), b"old summary");
+            assert!(!root.join("errors.jsonl.part").exists());
+            assert!(!root.join("summary.json.part").exists());
+            assert_eq!(fs::read(root.join("report.xlsx")).unwrap(), b"old workbook");
+            assert!(!root.join("report.xlsx.part").exists());
+            fs::remove_dir_all(root).unwrap();
+        }
     }
 }

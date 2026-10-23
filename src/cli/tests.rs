@@ -130,7 +130,7 @@ fn parsed_arguments_map_exactly_to_local_request_and_native_outputs() {
         InputSource::Path("input with spaces.txt".into())
     );
     assert_eq!(parsed.encoding, RawResolvedEncoding::Utf8);
-    assert_eq!(parsed.errors, PathBuf::from("errors.jsonl"));
+    assert_eq!(parsed.errors, Some(PathBuf::from("errors.jsonl")));
     assert_eq!(parsed.summary, PathBuf::from("summary.json"));
     assert_eq!(
         parsed.request.options.newline_policy,
@@ -183,7 +183,7 @@ fn output_alias_and_explicit_directory_paths_preserve_spaces() {
         .map(OsString::from),
     );
     let parsed = parse_validate(arguments).unwrap();
-    assert_eq!(parsed.errors, PathBuf::from("errors.jsonl"));
+    assert_eq!(parsed.errors, Some(PathBuf::from("errors.jsonl")));
     assert_eq!(parsed.dirs.schema_dir, Some("a bundle/schemas".into()));
     assert_eq!(
         parsed.dirs.reference_data_dir,

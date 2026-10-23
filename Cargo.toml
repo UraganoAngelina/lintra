@@ -23,6 +23,10 @@ serde_json = { version = "1.0.151", features = ["arbitrary_precision"] }
 
 rust_xlsxwriter = { version = "=0.100.0", default-features = false, features = ["constant_memory"] }
 
+# Secure RAII spool for post-analysis XLSX when JSONL is not requested.
+# Same pinned package already qualified in the XLSX backend subtree.
+tempfile = { version = "=3.27.0", default-features = false }
+
 [dev-dependencies]
 # Read the actual XLSX ZIP/XML in the backend probe; same pure-Rust backend.
 zip = { version = "=9.0.5", default-features = false, features = ["deflate"] }

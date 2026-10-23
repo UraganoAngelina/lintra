@@ -5,6 +5,7 @@ mod paths;
 mod signal;
 
 mod command;
+mod error_spool;
 
 /// Parsing stays separate from execution; every technical failure maps to 1.
 pub fn run() -> u8 {

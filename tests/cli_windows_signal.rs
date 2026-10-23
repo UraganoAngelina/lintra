@@ -109,6 +109,7 @@ fn console_break_returns_130_and_never_publishes_cancelled_reports() {
     drop(input);
     fs::write(root.join("errors.jsonl"), b"old errors").unwrap();
     fs::write(root.join("summary.json"), b"old summary").unwrap();
+    fs::write(root.join("report.xlsx"), b"old workbook").unwrap();
     const CREATE_NEW_PROCESS_GROUP: u32 = 0x0000_0200;
     const CTRL_BREAK_EVENT: u32 = 1;
     let child = Command::new(env!("CARGO_BIN_EXE_lintra"))
@@ -137,6 +138,8 @@ fn console_break_returns_130_and_never_publishes_cancelled_reports() {
         .arg(root.join("errors.jsonl"))
         .arg("--summary")
         .arg(root.join("summary.json"))
+        .arg("--xlsx")
+        .arg(root.join("report.xlsx"))
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
@@ -165,4 +168,6 @@ fn console_break_returns_130_and_never_publishes_cancelled_reports() {
     assert_eq!(fs::read(root.join("summary.json")).unwrap(), b"old summary");
     assert!(!root.join("errors.jsonl.part").exists());
     assert!(!root.join("summary.json.part").exists());
+    assert_eq!(fs::read(root.join("report.xlsx")).unwrap(), b"old workbook");
+    assert!(!root.join("report.xlsx.part").exists());
 }

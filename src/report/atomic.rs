@@ -39,6 +39,7 @@ pub enum OutputOperation {
     Create,
     Flush,
     Sync,
+    Read,
     Publish,
 }
 
@@ -136,6 +137,30 @@ impl AtomicReportFile {
     /// use this streaming interface; errors must be propagated before complete.
     pub fn writer(&mut self) -> &mut dyn Write {
         self.file.as_mut().expect("owned open output")
+    }
+
+    /// The owned File is Send; preserve the legacy writer signature while
+    /// allowing the XLSX backend's Write+Send bound without unsafe or threads.
+    pub fn writer_send(&mut self) -> &mut (dyn Write + Send) {
+        self.file.as_mut().expect("owned open output")
+    }
+
+    /// Flush pending bytes and open an independent reader from byte zero.
+    /// The part remains owned/unpublished. The directory must remain caller
+    /// controlled, as for complete; no concurrent-mutation/TOCTOU claim is added.
+    pub fn open_reader(&mut self) -> Result<File, ReportError> {
+        self.file
+            .as_mut()
+            .expect("owned open output")
+            .flush()
+            .map_err(|source| ReportError::Output {
+                operation: OutputOperation::Flush,
+                source,
+            })?;
+        File::open(&self.part).map_err(|source| ReportError::Output {
+            operation: OutputOperation::Read,
+            source,
+        })
     }
 
     /// Consume the guard to prevent any writes after publication. Only complete,
