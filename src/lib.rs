@@ -276,3 +276,6 @@ pub use context::projected_record::{
 pub use schema::compiled::{
     ContextProjectionPlan, JoinProjectionKey, JoinProjectionPlan, JoinProjectionSide,
 };
+
+pub use context::in_memory::InMemoryContextStore;
+pub use context::store::{ContextError, ContextStore, RelatedRecordSet};
