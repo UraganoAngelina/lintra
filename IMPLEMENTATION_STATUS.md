@@ -3,6 +3,22 @@
 Consuntivo aggiornato al **2026-10-24**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P13-02 verificata; avvio T-P13-03
+
+CI [40083872023](https://github.com/UraganoAngelina/lintra/actions/runs/40083872023)
+su 1d210d1d0aa9c6128b09dd5d5e11e37c4ccd8f61: Linux 120842729425 e Windows
+MSVC 120842729531 entrambi completed/success, letti direttamente il 2026-10-24.
+Due chiamate Actions, intervallo oltre quattro minuti. 548 test/64 suite e gate
+locali passati; 13-02 DONE. **79/140 task verificate = 56,4%**.
+
+Avvio 13-03 autorizzato: prerequisite 13-02 verificata, preflight pronto.
+ContextStore effimero con tutti i match e ordine di riga, distinta persistenza
+storica. Nessun nuovo contratto normativo/dipendenza; input availability e
+cardinalità restano responsabilità dei consumer futuri. Modifica esterna alla
+proposta reference preservata fuori dai commit.
+
+## Registro storico — consegna locale 13-02
+
 ## Frontiera corrente — T-P13-02 locale verificata; CI nativa da avviare
 
 Ripresa 2026-10-24 dopo interruzione: nessun processo cargo precedente attivo,
@@ -1417,7 +1433,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P12-04 | DONE | 2026-10-23 | CLI XLSX/temp spool/guard reali, 534 test/62 suite e gate locali passati; CI 39974616511 Linux/MSVC success; [dossier](docs/verification/T-P12-04.md) |
 | T-P12-05 | DONE | 2026-10-23 | Parser XLSX indipendente, 539 test/63 suite e gate locali passati; CI 39976689575 Linux/MSVC success; [dossier](docs/verification/T-P12-05.md) |
 | T-P13-01 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P13-01.md) |
-| T-P13-02 | DONE_UNVERIFIED | 2026-10-24 | 548 test/64 suite e gate locali passati; CI nativa pendente; [dossier](docs/verification/T-P13-02.md) |
+| T-P13-02 | DONE | 2026-10-24 | 548 test/64 suite e gate locali passati; CI 40083872023 Linux/MSVC success; [dossier](docs/verification/T-P13-02.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
