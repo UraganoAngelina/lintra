@@ -279,3 +279,10 @@ pub use schema::compiled::{
 
 pub use context::in_memory::InMemoryContextStore;
 pub use context::store::{ContextError, ContextStore, RelatedRecordSet};
+
+pub use engine::projected_context::{
+    CrossRecordInputs, JoinParameterValue, ProjectedEvaluationContext, RelatedContextError,
+    RelatedLookup, RelatedResolution,
+};
+pub use schema::expression::{FieldReferenceError, resolve_field_reference};
+pub use schema::raw::{RawRef, RawRefExternal, RawRefLocal};

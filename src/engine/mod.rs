@@ -15,4 +15,5 @@ pub(crate) mod rule_diagnostics;
 
 pub(crate) mod derived_evaluator;
 
+pub(crate) mod projected_context;
 pub(crate) mod reference_execution;

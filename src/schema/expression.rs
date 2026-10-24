@@ -9,6 +9,91 @@ use std::collections::HashSet;
 
 type Issue = (Code, String);
 
+/// Checked reference binding over an already compiled flow. Public flow
+/// compilation still gates cross-rule AST until the pass-2 integration.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum FieldReferenceError {
+    SourceTraceMissing,
+    TargetTraceMissing,
+    FieldMissing,
+    JoinMissing,
+    JoinSourceMismatch,
+    JoinTargetMismatch,
+    ScalarRequiresSingleCardinality,
+    UnsupportedReduction,
+}
+impl std::fmt::Display for FieldReferenceError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("field reference cannot be resolved against the compiled flow")
+    }
+}
+impl std::error::Error for FieldReferenceError {}
+
+pub fn resolve_field_reference(
+    reference: &RawRef,
+    source_trace: &crate::TraceId,
+    flow: &crate::CompiledFlowSchema,
+) -> Result<ResolvedFieldRef, FieldReferenceError> {
+    let source_index = flow
+        .traces()
+        .iter()
+        .position(|trace| trace.id() == source_trace)
+        .ok_or(FieldReferenceError::SourceTraceMissing)?;
+    let source = &flow.traces()[source_index];
+    match reference {
+        RawRef::Local(reference) => {
+            let field_id = crate::FieldId(reference.field.clone());
+            let field_index = source
+                .field_index(&field_id)
+                .ok_or(FieldReferenceError::FieldMissing)?;
+            Ok(ResolvedFieldRef::Local {
+                field_index,
+                field_id,
+            })
+        }
+        RawRef::External(reference) => {
+            let (join_index, join) = flow
+                .cross_record_plan()
+                .joins
+                .iter()
+                .enumerate()
+                .find(|(_, join)| join.id.0 == reference.join)
+                .ok_or(FieldReferenceError::JoinMissing)?;
+            if join.source_trace != source_index {
+                return Err(FieldReferenceError::JoinSourceMismatch);
+            }
+            let trace_index = flow
+                .traces()
+                .iter()
+                .position(|trace| trace.id().0 == reference.trace)
+                .ok_or(FieldReferenceError::TargetTraceMissing)?;
+            if join.target_trace != trace_index {
+                return Err(FieldReferenceError::JoinTargetMismatch);
+            }
+            if join.consensus.is_some() {
+                return Err(FieldReferenceError::UnsupportedReduction);
+            }
+            if !matches!(
+                join.cardinality,
+                crate::JoinCardinality::ZeroOrOne | crate::JoinCardinality::ExactlyOne
+            ) {
+                return Err(FieldReferenceError::ScalarRequiresSingleCardinality);
+            }
+            let field_id = crate::FieldId(reference.field.clone());
+            let field_index = flow.traces()[trace_index]
+                .field_index(&field_id)
+                .ok_or(FieldReferenceError::FieldMissing)?;
+            Ok(ResolvedFieldRef::External {
+                trace_index,
+                field_index,
+                field_id,
+                join_index,
+                join_id: join.id.clone(),
+            })
+        }
+    }
+}
+
 // Explicit postorder work avoids call-stack growth for nested expressions and
 // named-condition chains. LeaveName keeps cycle detection local to the path,
 // allowing repeated uses of an acyclic definition in independent branches.

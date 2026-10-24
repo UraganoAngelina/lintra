@@ -3,6 +3,20 @@
 Consuntivo aggiornato al **2026-10-24**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P13-04 locale verificata; CI nativa da avviare
+
+560 test/66 suite, zero falliti, un probe memoria ignorato; fmt/check/Clippy/
+test/release/Windows GNU/diff passati. Binding External verificato e resolver
+projected/related reale, con trace input/namespace espliciti e Unknown distinti;
+nessun primo match arbitrario. [Dossier](docs/verification/T-P13-04.md).
+EvaluationContext/UnknownReason/local outcome invariati. Compiler cross/Full
+ancora chiusi fino alle task d'integrazione, consensus/set esplicitamente
+rifiutati dal contesto scalare e consegnati a 13-05, senza falso supporto.
+90 artefatti protetti invariati, nessun crate nuovo; modifica esterna preservata.
+CI Linux/MSVC pendente, 80/140 verificate (57,1%). Next candidata 13-05 dopo gate.
+
+## Registro storico — avvio 13-04
+
 ## Frontiera corrente — T-P13-03 verificata; avvio T-P13-04
 
 CI [40084567433](https://github.com/UraganoAngelina/lintra/actions/runs/40084567433)
@@ -1465,6 +1479,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-01 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P13-01.md) |
 | T-P13-02 | DONE | 2026-10-24 | 548 test/64 suite e gate locali passati; CI 40083872023 Linux/MSVC success; [dossier](docs/verification/T-P13-02.md) |
 | T-P13-03 | DONE | 2026-10-24 | 553 test/65 suite e gate locali passati; CI 40084567433 Linux/MSVC success; [dossier](docs/verification/T-P13-03.md) |
+| T-P13-04 | DONE_UNVERIFIED | 2026-10-24 | Binding/resolver esterno scalare reale, 560 test/66 suite e gate locali passati; CI nativa pendente; [dossier](docs/verification/T-P13-04.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
