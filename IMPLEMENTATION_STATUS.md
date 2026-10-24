@@ -3,6 +3,25 @@
 Consuntivo aggiornato al **2026-10-24**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P13-05 verificata; avvio T-P13-06
+
+CI [40089317003](https://github.com/UraganoAngelina/lintra/actions/runs/40089317003)
+su 37dff96c1516a60767af1d42508672c5310a92ad: Linux 120858566131 e Windows
+MSVC 120858566023 completed/success, letti direttamente 2026-10-24 circa
+11:27 UTC. Tre chiamate Actions, seconda lettura finale oltre sei minuti
+dopo Linux success/Windows in_progress. 575 test/67 suite locali e gate completi
+passati; 13-05 DONE. **82/140 task verificate = 58,6%**.
+
+Avvio 13-06 autorizzato; prerequisiti 13-05 e 7-02 verificati, preflight pronto.
+FlowValidator engine con loop comune e due passate, progress/cancellazione,
+contatori riconciliati senza doppi record. Copertura indice distinta da hash
+EOF: Partial non può provare un parent assente. Artifacts Full reali e guard
+contro finalizzazione legacy senza evidenze; service/envelope finale in 13-07.
+Nessuna baseline modificata o nuova decisione normativa; proposta reference
+con newline esterna preservata.
+
+## Registro storico — consegna locale 13-05
+
 ## Frontiera corrente — T-P13-05 locale verificata; CI nativa da avviare
 
 575 test/67 suite, zero falliti, un probe memoria ignorato. fmt/check/Clippy/
@@ -1511,7 +1530,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-02 | DONE | 2026-10-24 | 548 test/64 suite e gate locali passati; CI 40083872023 Linux/MSVC success; [dossier](docs/verification/T-P13-02.md) |
 | T-P13-03 | DONE | 2026-10-24 | 553 test/65 suite e gate locali passati; CI 40084567433 Linux/MSVC success; [dossier](docs/verification/T-P13-03.md) |
 | T-P13-04 | DONE | 2026-10-24 | Binding/resolver esterno scalare reale, 560 test/66 suite e gate locali passati; CI 40085732901 Linux/MSVC success; [dossier](docs/verification/T-P13-04.md) |
-| T-P13-05 | DONE_UNVERIFIED | 2026-10-24 | Compiler/projection/passata cross reali, 575 test/67 suite e gate locali passati; CI nativa pendente; [dossier](docs/verification/T-P13-05.md) |
+| T-P13-05 | DONE | 2026-10-24 | Compiler/projection/passata cross reali, 575 test/67 suite e gate locali passati; CI 40089317003 Linux/MSVC success; [dossier](docs/verification/T-P13-05.md) |
+| T-P13-06 | IN_PROGRESS | 2026-10-24 | Prerequisiti 13-05/7-02 verificati; [preflight](docs/verification/T-P13-06-preflight.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
