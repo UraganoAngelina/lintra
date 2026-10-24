@@ -3,6 +3,23 @@
 Consuntivo aggiornato al **2026-10-24**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P13-03 verificata; avvio T-P13-04
+
+CI [40084567433](https://github.com/UraganoAngelina/lintra/actions/runs/40084567433)
+su 61ee3822b55a36fca96bcec7bd2eac03ea4c3fe9: Linux 120844729907 e Windows
+MSVC 120844729706 entrambi completed/success, letti direttamente 2026-10-24.
+Tre chiamate Actions (dispatch, prima lettura Linux success/Windows in_progress,
+ultima lettura success), intervalli oltre tre minuti. 553 test/65 suite locali
+passati; 13-03 DONE. **80/140 task verificate = 57,1%**.
+
+Avvio 13-04 autorizzato, prerequisiti 13-03 e 10-03 verificati, preflight pronto.
+Resolver reale per projected/related senza duplicare EvaluationContext o
+UnknownReason; distinguere disponibilità trace e preservare policy/JoinId.
+NotApplicable resta esito distinto dalla soddisfazione/Unknown nella futura
+integrazione cross. Nessuna baseline riscritta o dipendenza da UI/application.
+
+## Registro storico — consegna locale 13-03
+
 ## Frontiera corrente — T-P13-03 locale verificata; CI nativa da avviare
 
 553 test/65 suite, zero falliti, un probe memoria ignorato. fmt/check/Clippy/
@@ -1447,7 +1464,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P12-05 | DONE | 2026-10-23 | Parser XLSX indipendente, 539 test/63 suite e gate locali passati; CI 39976689575 Linux/MSVC success; [dossier](docs/verification/T-P12-05.md) |
 | T-P13-01 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P13-01.md) |
 | T-P13-02 | DONE | 2026-10-24 | 548 test/64 suite e gate locali passati; CI 40083872023 Linux/MSVC success; [dossier](docs/verification/T-P13-02.md) |
-| T-P13-03 | DONE_UNVERIFIED | 2026-10-24 | 553 test/65 suite e gate locali passati; CI nativa pendente; [dossier](docs/verification/T-P13-03.md) |
+| T-P13-03 | DONE | 2026-10-24 | 553 test/65 suite e gate locali passati; CI 40084567433 Linux/MSVC success; [dossier](docs/verification/T-P13-03.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
