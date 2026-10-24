@@ -102,8 +102,8 @@ promessa di memoria costante per il contesto Full. Finito il run viene rilasciat
 `TraceContextCoverage` distingue Complete, Partial e Unavailable.
 `TraceCoverageEvidence` conserva TraceId, record processati e record non
 proiettabili. Complete viene assegnato soltanto dopo il completamento del loop e
-con zero righe non proiettabili. Un trace aperto e annullato resta Partial; un
-trace non aperto resta Unavailable. La copertura riguarda il contesto, non il
+con zero righe non proiettabili. Un trace che ha elaborato record e viene annullato resta Partial; un
+trace senza contesto elaborato resta Unavailable. La copertura riguarda il contesto, non il
 digest: l'audit può essere Complete con EOF e SHA corretto mentre l'indice è Partial.
 
 `CoveredCrossRecordInputs` aggiunge una mappa esplicita senza cambiare la firma
@@ -209,3 +209,12 @@ avanzamento. Nessuna verifica nativa dichiarata sulla sola base del cross-check 
 /tmp/lintra-cargo-home; nessun nuovo crate. git diff --check passato.
 Tutti i 90 file protetti confrontati byte per byte con 6e4b411 sono invariati.
 Il cross-check GNU non è il gate nativo MSVC, ancora da eseguire.
+
+### Gate nativo e chiusura
+
+Codice 134b593edcd02c055e0037fe3e65c6cd12152d1c pubblicato. CI 40091666797:
+Linux GNU job 120865434899 e Windows MSVC job 120865434680 completed/success,
+verificati direttamente circa 11:59 UTC del 2026-10-24. Tre chiamate Actions
+complessive, separate da almeno 45s. T-P13-06 DONE, nessuna capacità del servizio
+Full o dell'envelope persistente dichiarata prima di 13-07. Handoff e recap in
+IMPLEMENTATION_STATUS; prosecuzione automatica autorizzata verso 13-07.

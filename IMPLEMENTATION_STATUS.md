@@ -3,6 +3,23 @@
 Consuntivo aggiornato al **2026-10-24**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P13-06 verificata; avvio T-P13-07
+
+CI [40091666797](https://github.com/UraganoAngelina/lintra/actions/runs/40091666797)
+su 134b593edcd02c055e0037fe3e65c6cd12152d1c: Linux 120865434899 e Windows
+MSVC 120865434680 entrambi completed/success, lettura diretta 2026-10-24 circa
+11:59 UTC. Tre chiamate Actions: dispatch, prima lettura in_progress su entrambi,
+lettura finale dopo intervallo ampio. 589 test/68 suite locali e tutti i gate
+locali passati. **83/140 DONE = 59,3%**; 13-06 DONE.
+
+T-P13-07 avviata automaticamente secondo mandato. Prerequisiti 13-06 e 8-03
+(CI 39743161012) verificati. Consegna: servizio Full, validate-flow, envelope
+summary/audit con completezza reale e parametri runtime espliciti. Preflight
+minimo prima di evolvere le firme; niente baseline, storico o UI anticipati.
+Il servizio attuale rimane LocalOnly fino al completamento dell'integrazione.
+
+## Registro storico — consegna locale 13-06
+
 ## Frontiera corrente — T-P13-06 locale verificata; CI nativa da eseguire
 
 2026-10-24: FlowValidator core a due passate implementato e verificato localmente.
@@ -1551,7 +1568,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-03 | DONE | 2026-10-24 | 553 test/65 suite e gate locali passati; CI 40084567433 Linux/MSVC success; [dossier](docs/verification/T-P13-03.md) |
 | T-P13-04 | DONE | 2026-10-24 | Binding/resolver esterno scalare reale, 560 test/66 suite e gate locali passati; CI 40085732901 Linux/MSVC success; [dossier](docs/verification/T-P13-04.md) |
 | T-P13-05 | DONE | 2026-10-24 | Compiler/projection/passata cross reali, 575 test/67 suite e gate locali passati; CI 40089317003 Linux/MSVC success; [dossier](docs/verification/T-P13-05.md) |
-| T-P13-06 | IN_PROGRESS | 2026-10-24 | Core due passate locale verificato: 589/68 suite; gate Linux/MSVC da eseguire; [report](docs/verification/T-P13-06-flow-validator.md) |
+| T-P13-06 | DONE | 2026-10-24 | Core due passate: 589 test/68 suite, CI 40091666797 Linux/MSVC success su 134b593; [report](docs/verification/T-P13-06-flow-validator.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -3643,3 +3660,15 @@ HANDOFF — 2026-10-21 — T-P8-02 gate locali
   mandato. Quest'ultima deve serializzare evidenze Full/reference/copertura/PK,
   introdurre finalizzazione esplicita del builder e integrare il servizio.
   Non chiamare il servizio Full già implementato né confondere core e adapter.
+
+
+## HANDOFF §15.3 — chiusura T-P13-06 e avvio T-P13-07
+
+2026-10-24: codice 134b593 pubblicato su work/p1-foundations. CI 40091666797:
+Linux 120865434899 e MSVC 120865434680 success verificati; QG locale/nativo
+soddisfatto, 13-06 DONE. Nessun conflitto contrattuale, fonte/baseline90 immutate.
+File/evidenze nel dossier 13-06. Modifica esterna newline proposta reference
+ancora preservata ed esclusa dai commit. Non effettuare altre chiamate su questo
+gate: limite tre raggiunto. Avvio autorizzato 13-07, prerequisito 8-03 verificato.
+Next: leggere preflight 13-07; service Full e CLI processo reale, serializzare
+copertura/PK/esiti cross e reference, conservare LocalOnly e output atomici.
