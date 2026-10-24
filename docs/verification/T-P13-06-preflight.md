@@ -100,3 +100,11 @@ RunMetadata/ValidationSummary con evidenze Full persistenti e completezza;
 report atomici mantengono le regole su Err/Cancelled. Eventuale evoluzione
 pubblica deve essere esplicitata prima del codice, mantenendo API LocalOnly e
 golden tecnici precedenti. PERSIST e storico/sessioni restano obblighi distinti.
+
+## Evidenze successive al preflight
+
+Gate 13-05 risolto: lettura finale 2026-10-24 circa 11:27 UTC, entrambi i job
+Linux/MSVC success su 37dff96, chiusura f21f393. La porzione core 13-06 è ora
+implementata: vedi T-P13-06-flow-validator.md. Gate locali 589 test/68 suite,
+nessun fallimento, fmt/check/clippy/release/Windows GNU e baseline90 passati.
+Gate nativo 13-06 ancora da verificare; nessuna task successiva implementata.

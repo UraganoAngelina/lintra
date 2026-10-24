@@ -184,7 +184,7 @@ impl From<crate::TraceValidationError> for ValidationRunError {
                 Self::Summary(e)
             }
             Trace::Record(e) => Self::Record(e),
-            e @ Trace::PreviousFailure => Self::Trace(e),
+            e @ (Trace::PreviousFailure | Trace::Collection(_)) => Self::Trace(e),
         }
     }
 }

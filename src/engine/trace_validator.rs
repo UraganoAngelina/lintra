@@ -1,4 +1,4 @@
-//! Streaming LocalOnly trace execution; no application dependency or Full claim.
+//! Common streaming trace execution; Full pass-one collection is internal.
 use crate::{
     BomPolicy, CompiledFlowSchema, InputAuditSession, InputError, NewlinePolicy,
     RecordValidationError, RecordValidator, TraceId, ValidationSink, ValidationSummaryBuilder,
@@ -35,10 +35,12 @@ pub enum TraceValidationError {
     Input(InputError),
     Record(RecordValidationError),
     PreviousFailure,
+    Collection(Box<dyn Error + Send + Sync>),
 }
 impl fmt::Display for TraceValidationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(match self {
+            Self::Collection(_) => "flow projection collection failed",
             Self::Input(_) => "trace input failed",
             Self::Record(_) => "trace record processing failed",
             Self::PreviousFailure => "trace validator cannot resume after technical failure",
@@ -48,6 +50,7 @@ impl fmt::Display for TraceValidationError {
 impl Error for TraceValidationError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
+            Self::Collection(e) => Some(e.as_ref()),
             Self::Input(e) => Some(e),
             Self::Record(e) => Some(e),
             Self::PreviousFailure => None,
@@ -117,7 +120,7 @@ impl<'schema> TraceValidator<'schema> {
         if self.failed {
             return Err(TraceValidationError::PreviousFailure);
         }
-        let result = self.run(reader, sink, summary, control);
+        let result = self.run(reader, sink, summary, control, None);
         if result.is_err() {
             self.failed = true;
         }
@@ -146,6 +149,32 @@ impl<'schema> TraceValidator<'schema> {
         };
         self.validate_reader(BufReader::new(source), sink, summary, control)
     }
+    pub(crate) fn validate_full_path(
+        &mut self,
+        path: &Path,
+        ports: TracePassOnePorts<'_, '_>,
+    ) -> Result<TraceCompletion, TraceValidationError> {
+        if self.failed {
+            return Err(TraceValidationError::PreviousFailure);
+        }
+        let result = (|| {
+            let source = ports
+                .audits
+                .open(self.trace_id.clone(), path)
+                .map_err(|error| TraceValidationError::Input(InputError::Audit(error)))?;
+            self.run(
+                BufReader::new(source),
+                ports.sink,
+                ports.summary,
+                ports.control,
+                Some(ports.collector),
+            )
+        })();
+        if result.is_err() {
+            self.failed = true;
+        }
+        result
+    }
     /// Checkpoints precede every source preflight/record read. A record already
     /// acquired is processed atomically with respect to cooperative cancellation.
     fn run<R: BufRead>(
@@ -154,6 +183,7 @@ impl<'schema> TraceValidator<'schema> {
         sink: &mut dyn ValidationSink,
         summary: &mut ValidationSummaryBuilder,
         control: &mut TraceControl<'_>,
+        mut collector: Option<&mut dyn FullRecordCollector>,
     ) -> Result<TraceCompletion, TraceValidationError> {
         (control.on_event)(TraceEvent::Started {
             trace_id: self.trace_id.clone(),
@@ -185,18 +215,40 @@ impl<'schema> TraceValidator<'schema> {
                 });
                 return Ok(TraceCompletion::Completed { count });
             };
-            match &mut self.record {
+            let local = match &mut self.record {
                 TraceRecordExecution::Local(validator) => {
-                    validator.validate_local(record, sink, summary).map(|_| ())
+                    if collector.is_some() {
+                        validator.validate_full_pass_one(record, sink, summary)
+                    } else {
+                        validator.validate_local(record, sink, summary)
+                    }
                 }
                 TraceRecordExecution::Reference {
                     validator,
                     observer,
                 } => validator
-                    .validate_local(record, sink, summary, *observer)
-                    .map(|_| ()),
+                    .validate_phase(
+                        record,
+                        sink,
+                        summary,
+                        *observer,
+                        if collector.is_some() {
+                            super::record_validator::RecordPhase::FullPassOne
+                        } else {
+                            super::record_validator::RecordPhase::LocalOnly
+                        },
+                    )
+                    .map(|result| crate::LocalRecordValidationArtifacts {
+                        identity: result.identity,
+                        valid: !result.normative_violations_detected,
+                    }),
             }
             .map_err(TraceValidationError::Record)?;
+            if let Some(collector) = &mut collector {
+                collector
+                    .collect(record, local, sink, summary)
+                    .map_err(TraceValidationError::Collection)?;
+            }
             // RecordReader already checks line-counter overflow; no unchecked
             // second processed counter or summary increment is needed here.
             count = record.line_number;
@@ -228,4 +280,23 @@ pub fn validate_reader<R: BufRead>(
     control: &mut TraceControl<'_>,
 ) -> Result<TraceCompletion, TraceValidationError> {
     TraceValidator::new(flow, trace, newline)?.validate_reader(reader, sink, summary, control)
+}
+
+/// Synchronous hook sees borrowed original bytes only after local counters and
+/// errors have been acknowledged. Implementations retain selected projections.
+pub(crate) trait FullRecordCollector {
+    fn collect(
+        &mut self,
+        record: crate::RawRecord<'_>,
+        local: crate::LocalRecordValidationArtifacts,
+        sink: &mut dyn ValidationSink,
+        summary: &mut ValidationSummaryBuilder,
+    ) -> Result<(), Box<dyn Error + Send + Sync>>;
+}
+pub(crate) struct TracePassOnePorts<'a, 'control> {
+    pub sink: &'a mut dyn ValidationSink,
+    pub summary: &'a mut ValidationSummaryBuilder,
+    pub control: &'a mut TraceControl<'control>,
+    pub audits: &'a InputAuditSession,
+    pub collector: &'a mut dyn FullRecordCollector,
 }

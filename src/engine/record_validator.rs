@@ -180,7 +180,23 @@ impl<'schema> RecordValidator<'schema> {
         if self.failed {
             return Err(RecordValidationError::PreviousFailure);
         }
-        let result = self.validate_record(record, sink, summary, None);
+        let result = self.validate_record(record, sink, summary, None, RecordPhase::LocalOnly);
+        if result.is_err() {
+            self.failed = true;
+        }
+        result
+    }
+
+    pub(crate) fn validate_full_pass_one(
+        &mut self,
+        record: RawRecord<'_>,
+        sink: &mut dyn ValidationSink,
+        summary: &mut ValidationSummaryBuilder,
+    ) -> Result<LocalRecordValidationArtifacts, RecordValidationError> {
+        if self.failed {
+            return Err(RecordValidationError::PreviousFailure);
+        }
+        let result = self.validate_record(record, sink, summary, None, RecordPhase::FullPassOne);
         if result.is_err() {
             self.failed = true;
         }
@@ -195,6 +211,7 @@ impl<'schema> RecordValidator<'schema> {
         sink: &mut dyn ValidationSink,
         summary: &mut ValidationSummaryBuilder,
         mut references: Option<&mut super::reference_execution::ReferenceExecution<'_>>,
+        phase: RecordPhase,
     ) -> Result<LocalRecordValidationArtifacts, RecordValidationError> {
         if record.line_number == 0 {
             return Err(RecordValidationError::InvalidLineNumber);
@@ -202,9 +219,13 @@ impl<'schema> RecordValidator<'schema> {
         summary
             .record_processed()
             .map_err(RecordValidationError::Summary)?;
-        // This API is explicitly LocalOnly. Count omitted cross evaluations
-        // per processed physical record, never label them as performed/passed.
-        for _ in 0..self.skipped_cross_rules {
+        // Only LocalOnly omits cross rules permanently. Full pass one defers
+        // them; the flow collector accounts actual skips after pass two.
+        for _ in 0..if phase == RecordPhase::LocalOnly {
+            self.skipped_cross_rules
+        } else {
+            0
+        } {
             summary
                 .rule_skipped()
                 .map_err(RecordValidationError::Summary)?;
@@ -476,6 +497,16 @@ impl<'schema, 'references> ReferenceRecordValidator<'schema, 'references> {
         summary: &mut ValidationSummaryBuilder,
         observer: &mut dyn super::reference_execution::ReferenceEvaluationObserver,
     ) -> Result<ReferenceRecordValidationArtifacts, RecordValidationError> {
+        self.validate_phase(record, sink, summary, observer, RecordPhase::LocalOnly)
+    }
+    pub(crate) fn validate_phase(
+        &mut self,
+        record: RawRecord<'_>,
+        sink: &mut dyn ValidationSink,
+        summary: &mut ValidationSummaryBuilder,
+        observer: &mut dyn super::reference_execution::ReferenceEvaluationObserver,
+        phase: RecordPhase,
+    ) -> Result<ReferenceRecordValidationArtifacts, RecordValidationError> {
         if self.inner.failed {
             return Err(RecordValidationError::PreviousFailure);
         }
@@ -487,7 +518,7 @@ impl<'schema, 'references> ReferenceRecordValidator<'schema, 'references> {
         };
         let result = self
             .inner
-            .validate_record(record, sink, summary, Some(&mut execution));
+            .validate_record(record, sink, summary, Some(&mut execution), phase);
         match result {
             Ok(local) => Ok(ReferenceRecordValidationArtifacts {
                 identity: local.identity,
@@ -500,4 +531,10 @@ impl<'schema, 'references> ReferenceRecordValidator<'schema, 'references> {
             }
         }
     }
+}
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub(crate) enum RecordPhase {
+    LocalOnly,
+    FullPassOne,
 }

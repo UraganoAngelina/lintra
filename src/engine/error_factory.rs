@@ -47,6 +47,30 @@ impl ErrorFactory<'_> {
         }
     }
 
+    /// Duplicate is anchored to the later physical occurrence. The original
+    /// record remains available to joins; no first-record overwrite/dedup.
+    pub fn duplicate_record_key_error(
+        &self,
+        line_number: u64,
+        identity: &RecordIdentity,
+        code: &ValidationCode,
+        first_line: u64,
+    ) -> ValidationError {
+        ValidationError {
+            code: code.clone(),
+            flow_id: self.flow_id.clone(),
+            schema_version: self.schema_version.clone(),
+            trace_id: self.trace_id.clone(),
+            line_number,
+            record_identity: identity.clone(),
+            field: None,
+            actual: None,
+            expected: Some("chiave univoca nel tracciato dell’invio corrente".into()),
+            context: Vec::new(),
+            message: format!("Chiave record duplicata; prima occorrenza alla riga {first_line}."),
+        }
+    }
+
     pub fn record_length_error(
         &self,
         line_number: u64,

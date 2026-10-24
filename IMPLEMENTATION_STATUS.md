@@ -3,6 +3,26 @@
 Consuntivo aggiornato al **2026-10-24**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P13-06 locale verificata; CI nativa da eseguire
+
+2026-10-24: FlowValidator core a due passate implementato e verificato localmente.
+589 test passati / 68 suite, 0 fallimenti, 1 probe memoria ignorato esplicitamente;
+fmt/check/clippy warning negati/release e cross-check Windows GNU passati.
+Nessuna nuova dipendenza e tutti i 90 file protetti identici a 6e4b411.
+T-P13-06 resta IN_PROGRESS finché il gate Linux/MSVC non è verificato;
+**82/140 DONE = 58,6%**, nessun avanzamento percentuale presunto dalla sola build.
+
+[Report tecnico](docs/verification/T-P13-06-flow-validator.md): ordine schema,
+bundle/namespace preflight prima di I/O, loop trace/audit comune, projection e
+PK trace-local, passata cross cancellabile, contatori senza doppia invalidazione,
+copertura parziale senza falso missing, evidenze bounded e reference observer
+per trace. [Preflight](docs/verification/T-P13-06-preflight.md).
+Application resta LocalOnly: il servizio e l'envelope summary/audit Full sono
+13-07; il builder rifiuta finalizzazione legacy che perderebbe gli artifacts.
+La newline esterna della proposta reference resta esclusa dal commit.
+
+## Registro storico — chiusura gate 13-05 e avvio 13-06
+
 ## Frontiera corrente — T-P13-05 verificata; avvio T-P13-06
 
 CI [40089317003](https://github.com/UraganoAngelina/lintra/actions/runs/40089317003)
@@ -1531,7 +1551,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-03 | DONE | 2026-10-24 | 553 test/65 suite e gate locali passati; CI 40084567433 Linux/MSVC success; [dossier](docs/verification/T-P13-03.md) |
 | T-P13-04 | DONE | 2026-10-24 | Binding/resolver esterno scalare reale, 560 test/66 suite e gate locali passati; CI 40085732901 Linux/MSVC success; [dossier](docs/verification/T-P13-04.md) |
 | T-P13-05 | DONE | 2026-10-24 | Compiler/projection/passata cross reali, 575 test/67 suite e gate locali passati; CI 40089317003 Linux/MSVC success; [dossier](docs/verification/T-P13-05.md) |
-| T-P13-06 | IN_PROGRESS | 2026-10-24 | Prerequisiti 13-05/7-02 verificati; [preflight](docs/verification/T-P13-06-preflight.md) |
+| T-P13-06 | IN_PROGRESS | 2026-10-24 | Core due passate locale verificato: 589/68 suite; gate Linux/MSVC da eseguire; [report](docs/verification/T-P13-06-flow-validator.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -3601,3 +3621,25 @@ HANDOFF — 2026-10-21 — T-P8-02 gate locali
 - **DEC-15 / T-P12-05 (prima dell’aggiunta):** calamine =0.36.1 solo dev, default-features=false, MIT, MSRV 1.88; parser XLSX indipendente. Qualificare subtree effettivo pure-Rust Linux/MSVC e preservare lock preesistente. [Preflight](docs/verification/T-P12-05-preflight.md).
 
 - **DEC-15 / T-P12-05 qualificazione conclusa:** dieci package test pure-Rust; calamine/zip 8.6 MSRV massimo 1.88, feature Linux/MSVC verificate; vecchi checksum/versioni/source preservati, ZIP writer 9.0.5 invariato. Gate locali completi passati, 539 test. Dettagli licenze/API nel dossier.
+
+
+## HANDOFF §15.3 — T-P13-06, consegna locale 2026-10-24
+
+- TASK/STATUS: T-P13-06 IN_PROGRESS, implementazione e gate locali conclusi;
+  CI nativa da dispatch/read sul commit pubblicato, massimo tre chiamate ≥45s.
+- FILE: engine/flow_execution.rs nuovo; flow_validator/projected_context per
+  coverage e passata controllata, trace/record loop comune, ErrorFactory PK;
+  context/coverage.rs nuovo; SummaryBuilder/exports/consumer errore aggiornati;
+  tests/flow_validator.rs nuovo (14 test integrati), report tecnico e preflight.
+- EVIDENZE: 589 test/68 suite, 0 fail/1 ignored; fmt/check/all-targets clippy
+  -D warnings/release e Windows GNU check passati offline/locked; baseline90 intatta.
+- DECISIONI: ratifiche immutate. Estensioni tecniche additive esplicitate nel
+  preflight; EOF/hash non prova esaustività dell'indice. Nessun import inverso
+  engine→application, no normative hardcoded o parser di recupero.
+- BLOCCANTI: nessun conflitto contrattuale; manca soltanto gate nativo effettivo.
+- GIT: branch work/p1-foundations; modifica esterna proposta reference preservata
+  ed esclusa dallo staging; codice di questa task da committare/pubblicare.
+- NEXT: dopo CI positiva chiudere 13-06 e avviare automaticamente 13-07 secondo
+  mandato. Quest'ultima deve serializzare evidenze Full/reference/copertura/PK,
+  introdurre finalizzazione esplicita del builder e integrare il servizio.
+  Non chiamare il servizio Full già implementato né confondere core e adapter.

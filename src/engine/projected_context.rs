@@ -8,7 +8,7 @@ use crate::{
     TraceId, UnknownReason, is_missing, logical_value,
 };
 use std::{
-    collections::{BTreeMap, HashSet},
+    collections::{BTreeMap, HashMap, HashSet},
     error::Error,
     fmt,
 };
@@ -32,6 +32,10 @@ pub struct CrossRecordInputs<'a> {
     pub available_traces: &'a [TraceId],
     pub parameters: &'a BTreeMap<String, JoinParameterValue>,
 }
+pub struct CoveredCrossRecordInputs<'a> {
+    pub inputs: CrossRecordInputs<'a>,
+    pub coverage: &'a HashMap<TraceId, crate::TraceContextCoverage>,
+}
 
 #[derive(Debug)]
 pub enum RelatedContextError {
@@ -43,6 +47,7 @@ pub enum RelatedContextError {
     InvalidParameter,
     MissingNamespaceParameter,
     InvalidJoinBinding,
+    InconsistentCoverage,
     UnsupportedReduction,
     Store(ContextError),
 }
@@ -57,6 +62,9 @@ impl fmt::Display for RelatedContextError {
             Self::InvalidParameter => "runtime join parameter is unknown or invalid",
             Self::MissingNamespaceParameter => "required join namespace parameter is missing",
             Self::InvalidJoinBinding => "projected source join binding is inconsistent",
+            Self::InconsistentCoverage => {
+                "context coverage disagrees with explicit input availability"
+            }
             Self::UnsupportedReduction => "reduction is unsupported by the selected context",
             Self::Store(_) => "related context lookup failed",
         })
@@ -88,6 +96,7 @@ pub struct ProjectedEvaluationContext<'a> {
     source_index: usize,
     related: BTreeMap<usize, RelatedLookup<'a>>,
     scalar: BTreeMap<usize, ScalarResolution<'a>>,
+    coverage: BTreeMap<usize, crate::TraceContextCoverage>,
 }
 enum ScalarResolution<'a> {
     Record(&'a ProjectedRecord),
@@ -108,6 +117,23 @@ impl<'a> ProjectedEvaluationContext<'a> {
         store: &'a dyn ContextStore,
         inputs: CrossRecordInputs<'_>,
     ) -> Result<Self, RelatedContextError> {
+        Self::prepare(flow, projected, store, inputs, None)
+    }
+    pub fn with_coverage(
+        flow: &'a CompiledFlowSchema,
+        projected: &'a ProjectedRecord,
+        store: &'a dyn ContextStore,
+        inputs: CoveredCrossRecordInputs<'_>,
+    ) -> Result<Self, RelatedContextError> {
+        Self::prepare(flow, projected, store, inputs.inputs, Some(inputs.coverage))
+    }
+    fn prepare(
+        flow: &'a CompiledFlowSchema,
+        projected: &'a ProjectedRecord,
+        store: &'a dyn ContextStore,
+        inputs: CrossRecordInputs<'_>,
+        coverage: Option<&HashMap<TraceId, crate::TraceContextCoverage>>,
+    ) -> Result<Self, RelatedContextError> {
         let source_index = flow
             .traces()
             .iter()
@@ -117,6 +143,9 @@ impl<'a> ProjectedEvaluationContext<'a> {
             return Err(RelatedContextError::InvalidSourcePosition);
         }
         let available = validate_cross_inputs(flow, &inputs)?;
+        if let Some(coverage) = coverage {
+            validate_trace_coverage(flow, &inputs, coverage)?;
+        }
         if !available.contains(&projected.trace_id) {
             return Err(RelatedContextError::SourceInputUnavailable);
         }
@@ -183,12 +212,22 @@ impl<'a> ProjectedEvaluationContext<'a> {
             related.insert(index, RelatedLookup { join, resolution });
         }
         let mut scalar = BTreeMap::new();
+        let mut lookup_coverage = BTreeMap::new();
         for (&index, lookup) in &related {
             let target = flow
                 .traces()
                 .get(lookup.join.target_trace)
                 .ok_or(RelatedContextError::InvalidJoinBinding)?;
-            scalar.insert(index, scalar_resolution(lookup, target));
+            let status = if !available.contains(target.id()) {
+                crate::TraceContextCoverage::Unavailable
+            } else {
+                coverage
+                    .and_then(|coverage| coverage.get(target.id()))
+                    .copied()
+                    .unwrap_or(crate::TraceContextCoverage::Complete)
+            };
+            scalar.insert(index, scalar_resolution(lookup, target, status));
+            lookup_coverage.insert(index, status);
         }
         Ok(Self {
             flow,
@@ -196,10 +235,14 @@ impl<'a> ProjectedEvaluationContext<'a> {
             source_index,
             related,
             scalar,
+            coverage: lookup_coverage,
         })
     }
     pub fn related(&self, join_index: usize) -> Option<&RelatedLookup<'a>> {
         self.related.get(&join_index)
+    }
+    pub fn lookup_coverage(&self, join_index: usize) -> Option<crate::TraceContextCoverage> {
+        self.coverage.get(&join_index).copied()
     }
 
     fn resolve_value(
@@ -347,20 +390,33 @@ fn owned_value(value: ResolvedFieldValue<'_>) -> Result<Option<Vec<u8>>, Unknown
 fn scalar_resolution<'a>(
     lookup: &RelatedLookup<'a>,
     schema: &CompiledRecordSchema,
+    coverage: crate::TraceContextCoverage,
 ) -> ScalarResolution<'a> {
+    let single = matches!(
+        lookup.join.cardinality,
+        JoinCardinality::ZeroOrOne | JoinCardinality::ExactlyOne
+    );
+    if !single && lookup.join.consensus.is_none() {
+        return ScalarResolution::Unavailable(UnknownReason::UnsupportedPlan);
+    }
     let records = match &lookup.resolution {
         RelatedResolution::Unavailable(reason) => return ScalarResolution::Unavailable(*reason),
         RelatedResolution::Records(records) => records,
     };
     if records.is_empty() {
-        return ScalarResolution::Unavailable(UnknownReason::RelatedRecordMissing);
+        return ScalarResolution::Unavailable(
+            if coverage == crate::TraceContextCoverage::Partial {
+                UnknownReason::IncompleteRelatedContext
+            } else {
+                UnknownReason::RelatedRecordMissing
+            },
+        );
     }
-    let single = matches!(
-        lookup.join.cardinality,
-        JoinCardinality::ZeroOrOne | JoinCardinality::ExactlyOne
-    );
     if single && records.len() > 1 {
         return ScalarResolution::Unavailable(UnknownReason::AmbiguousJoin);
+    }
+    if coverage == crate::TraceContextCoverage::Partial {
+        return ScalarResolution::Unavailable(UnknownReason::IncompleteRelatedContext);
     }
     let Some(consensus) = &lookup.join.consensus else {
         if !single {
@@ -498,4 +554,29 @@ pub(crate) fn validate_cross_inputs<'a>(
         }
     }
     Ok(available)
+}
+
+/// Explicit maps are exhaustive: omission cannot silently claim Complete.
+pub(crate) fn validate_trace_coverage(
+    flow: &CompiledFlowSchema,
+    inputs: &CrossRecordInputs<'_>,
+    coverage: &HashMap<TraceId, crate::TraceContextCoverage>,
+) -> Result<(), RelatedContextError> {
+    if coverage.len() != flow.traces().len()
+        || flow
+            .traces()
+            .iter()
+            .any(|trace| match coverage.get(trace.id()) {
+                Some(
+                    crate::TraceContextCoverage::Complete | crate::TraceContextCoverage::Partial,
+                ) => !inputs.available_traces.contains(trace.id()),
+                Some(crate::TraceContextCoverage::Unavailable) => {
+                    inputs.available_traces.contains(trace.id())
+                }
+                None => true,
+            })
+    {
+        return Err(RelatedContextError::InconsistentCoverage);
+    }
+    Ok(())
 }

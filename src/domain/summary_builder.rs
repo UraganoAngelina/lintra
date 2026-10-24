@@ -17,6 +17,7 @@ pub enum SummaryCounter {
 pub enum SummaryBuildError {
     CounterOverflow(SummaryCounter),
     UnreportedReferenceEvidence,
+    UnreportedFullEvidence,
     InconsistentReferenceAudit,
     PreviousFailure,
     InconsistentRecordCounts,
@@ -32,6 +33,9 @@ pub enum SummaryBuildError {
 impl fmt::Display for SummaryBuildError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::UnreportedFullEvidence => {
+                f.write_str("Full execution requires an explicit evidence summary contract")
+            }
             Self::InconsistentReferenceAudit => {
                 f.write_str("reference audit is inconsistent with the run")
             }
@@ -152,6 +156,7 @@ pub struct ValidationSummaryBuilder {
     truncated: bool,
     failed: bool,
     unreported_reference_evidence: bool,
+    unreported_full_evidence: bool,
 }
 impl ValidationSummaryBuilder {
     pub fn new(key: SchemaKey, scope: ScopeSummary) -> Self {
@@ -169,6 +174,7 @@ impl ValidationSummaryBuilder {
             truncated: false,
             failed: false,
             unreported_reference_evidence: false,
+            unreported_full_evidence: false,
         }
     }
     fn increment(&mut self, counter: SummaryCounter) -> Result<(), SummaryBuildError> {
@@ -205,6 +211,25 @@ impl ValidationSummaryBuilder {
     pub fn rule_skipped(&mut self) -> Result<(), SummaryBuildError> {
         self.increment(SummaryCounter::SkippedRules)
     }
+    /// Batch known omitted physical record/rule evaluations without an O(n)
+    /// loop when cancellation leaves a large projected context unevaluated.
+    pub(crate) fn rules_skipped(&mut self, count: u64) -> Result<(), SummaryBuildError> {
+        if self.failed {
+            return Err(SummaryBuildError::PreviousFailure);
+        }
+        match self.skipped.checked_add(count) {
+            Some(next) => {
+                self.skipped = next;
+                Ok(())
+            }
+            None => {
+                self.failed = true;
+                Err(SummaryBuildError::CounterOverflow(
+                    SummaryCounter::SkippedRules,
+                ))
+            }
+        }
+    }
     pub fn error_emitted(&mut self, code: &ValidationCode) -> Result<(), SummaryBuildError> {
         if self.failed {
             return Err(SummaryBuildError::PreviousFailure);
@@ -236,6 +261,56 @@ impl ValidationSummaryBuilder {
     pub(crate) fn mark_unreported_reference_evidence(&mut self) {
         self.unreported_reference_evidence = true;
     }
+    pub(crate) fn begin_full(
+        &mut self,
+        key: &SchemaKey,
+        traces: &[crate::TraceId],
+    ) -> Result<(), SummaryBuildError> {
+        if self.failed
+            || self.unreported_full_evidence
+            || self.processed != 0
+            || self.errors != 0
+            || self.valid != 0
+            || self.invalid != 0
+            || self.skipped != 0
+            || self.cancelled
+            || self.truncated
+        {
+            return Err(SummaryBuildError::PreviousFailure);
+        }
+        if &self.key != key
+            || !matches!(&self.scope, ScopeSummary::Flow { trace_ids } if trace_ids == traces)
+        {
+            return Err(SummaryBuildError::InconsistentRecordCounts);
+        }
+        self.unreported_full_evidence = true;
+        Ok(())
+    }
+    pub(crate) fn invalidate_previously_valid_record(&mut self) -> Result<(), SummaryBuildError> {
+        if self.failed {
+            return Err(SummaryBuildError::PreviousFailure);
+        }
+        let Some(valid) = self.valid.checked_sub(1) else {
+            self.failed = true;
+            return Err(SummaryBuildError::InconsistentRecordCounts);
+        };
+        let Some(invalid) = self.invalid.checked_add(1) else {
+            self.failed = true;
+            return Err(SummaryBuildError::CounterOverflow(SummaryCounter::Invalid));
+        };
+        self.valid = valid;
+        self.invalid = invalid;
+        Ok(())
+    }
+    pub fn counters(&self) -> ValidationCounters {
+        ValidationCounters {
+            records_processed: self.processed,
+            valid_records: self.valid,
+            invalid_records: self.invalid,
+            total_errors: self.errors,
+            skipped_evaluations: self.skipped,
+        }
+    }
     /// Checked Result refines DET §58 to report counter/audit failures explicitly.
     pub fn finish(self, metadata: RunMetadata) -> Result<ValidationSummary, SummaryBuildError> {
         self.finish_inner(metadata, None)
@@ -266,6 +341,9 @@ impl ValidationSummaryBuilder {
     ) -> Result<ValidationSummary, SummaryBuildError> {
         if self.failed {
             return Err(SummaryBuildError::PreviousFailure);
+        }
+        if self.unreported_full_evidence {
+            return Err(SummaryBuildError::UnreportedFullEvidence);
         }
         if self.unreported_reference_evidence && reference_validation.is_none() {
             return Err(SummaryBuildError::UnreportedReferenceEvidence);
@@ -356,4 +434,14 @@ mod tests {
             );
         }
     }
+}
+
+/// Snapshot of the single authoritative builder; no independent Full counters.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct ValidationCounters {
+    pub records_processed: u64,
+    pub valid_records: u64,
+    pub invalid_records: u64,
+    pub total_errors: u64,
+    pub skipped_evaluations: u64,
 }

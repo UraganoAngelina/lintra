@@ -277,12 +277,13 @@ pub use schema::compiled::{
     ContextProjectionPlan, JoinProjectionKey, JoinProjectionPlan, JoinProjectionSide,
 };
 
+pub use context::coverage::{TraceContextCoverage, TraceCoverageEvidence};
 pub use context::in_memory::InMemoryContextStore;
 pub use context::store::{ContextError, ContextStore, RelatedRecordSet};
 
 pub use engine::projected_context::{
-    CrossRecordInputs, JoinParameterValue, ProjectedEvaluationContext, RelatedContextError,
-    RelatedLookup, RelatedResolution,
+    CoveredCrossRecordInputs, CrossRecordInputs, JoinParameterValue, ProjectedEvaluationContext,
+    RelatedContextError, RelatedLookup, RelatedResolution,
 };
 
 pub use engine::flow_validator::{
@@ -291,3 +292,11 @@ pub use engine::flow_validator::{
 };
 pub use schema::expression::{FieldReferenceError, resolve_field_reference};
 pub use schema::raw::{RawRef, RawRefExternal, RawRefLocal};
+
+pub use domain::ValidationCounters;
+
+pub use engine::flow_execution::{
+    CrossControlEvidence, CrossEvidenceCause, FlowCompletion, FlowControl, FlowEvent,
+    FlowExecutionPorts, FlowReferenceObservers, FlowTraceInput, FlowValidationArtifacts,
+    FlowValidationError, FlowValidator, NonDefinitiveCrossResult, RecordKeyEvidence,
+};

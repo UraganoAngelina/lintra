@@ -9,6 +9,8 @@ pub enum UnknownReason {
     RelatedRecordMissing,
     TraceInputUnavailable,
     AmbiguousJoin,
+    /// Some input records could not be represented in the context index.
+    IncompleteRelatedContext,
     /// A directly supplied plan has no executor; never a simulated decision.
     UnsupportedPlan,
     /// Present bytes cannot be interpreted as the explicitly requested type.
@@ -184,7 +186,8 @@ impl EvaluatedTruth {
                 TruthValue::Unknown(
                     UnknownReason::RelatedRecordMissing
                     | UnknownReason::TraceInputUnavailable
-                    | UnknownReason::AmbiguousJoin,
+                    | UnknownReason::AmbiguousJoin
+                    | UnknownReason::IncompleteRelatedContext,
                 ),
                 ResolvedFieldRef::External { join_index, .. },
             ) => Some(*join_index),

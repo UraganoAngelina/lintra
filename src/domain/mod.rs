@@ -14,7 +14,9 @@ mod identity;
 mod input_audit;
 mod summary;
 mod summary_builder;
-pub use summary_builder::{SummaryBuildError, SummaryCounter, ValidationSummaryBuilder};
+pub use summary_builder::{
+    SummaryBuildError, SummaryCounter, ValidationCounters, ValidationSummaryBuilder,
+};
 
 pub use input_audit::{InputAudit, InputAuditCompletion, InvalidInputAudit, Sha256Digest};
 

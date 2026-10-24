@@ -52,7 +52,10 @@ pub struct CrossRecordPassSummary {
     pub unknown: u64,
 }
 impl CrossRecordPassSummary {
-    fn after(self, outcome: &CrossRuleOutcome<'_>) -> Result<Self, CrossRecordValidationError> {
+    pub(crate) fn after(
+        self,
+        outcome: &CrossRuleOutcome<'_>,
+    ) -> Result<Self, CrossRecordValidationError> {
         let mut next = self;
         next.evaluations = next
             .evaluations
@@ -202,6 +205,7 @@ fn cause_for_assertion(
         UnknownReason::RelatedRecordMissing
             | UnknownReason::TraceInputUnavailable
             | UnknownReason::AmbiguousJoin
+            | UnknownReason::IncompleteRelatedContext
     ) {
         return Ok(None);
     }
@@ -257,7 +261,15 @@ fn existence<'a>(
         return indeterminate(
             flow,
             EvaluatedTruth {
-                truth: TruthValue::Unknown(UnknownReason::RelatedRecordMissing),
+                truth: TruthValue::Unknown(
+                    if context.lookup_coverage(join_index)
+                        == Some(crate::TraceContextCoverage::Partial)
+                    {
+                        UnknownReason::IncompleteRelatedContext
+                    } else {
+                        UnknownReason::RelatedRecordMissing
+                    },
+                ),
                 external_cause: Some(join_index),
             },
         );
@@ -305,6 +317,15 @@ fn existence<'a>(
             join_id: Some(&flow.cross_record_plan().joins[join_index].id),
             diagnostic: None,
         });
+    }
+    if context.lookup_coverage(join_index) == Some(crate::TraceContextCoverage::Partial) {
+        return indeterminate(
+            flow,
+            EvaluatedTruth {
+                truth: TruthValue::Unknown(UnknownReason::IncompleteRelatedContext),
+                external_cause: Some(join_index),
+            },
+        );
     }
     Ok(Decision::Failure {
         violation: FieldViolation {
@@ -482,8 +503,46 @@ pub fn validate_cross_record_rules(
     sink: &mut dyn ValidationSink,
     observer: &mut dyn CrossRecordEvaluationObserver,
 ) -> Result<CrossRecordPassSummary, CrossRecordValidationError> {
+    run_cross_record_rules(
+        flow,
+        store,
+        inputs,
+        sink,
+        observer,
+        CrossPassControl {
+            coverage: None,
+            is_cancelled: &|| false,
+            on_record: &mut |_| {},
+        },
+    )
+    .map(|(summary, _)| summary)
+}
+
+pub(super) struct CrossPassControl<'a> {
+    pub coverage: Option<&'a std::collections::HashMap<TraceId, crate::TraceContextCoverage>>,
+    pub is_cancelled: &'a dyn Fn() -> bool,
+    pub on_record: &'a mut dyn FnMut(u64),
+}
+pub(super) fn run_cross_record_rules(
+    flow: &CompiledFlowSchema,
+    store: &dyn ContextStore,
+    inputs: CrossRecordInputs<'_>,
+    sink: &mut dyn ValidationSink,
+    observer: &mut dyn CrossRecordEvaluationObserver,
+    control: CrossPassControl<'_>,
+) -> Result<(CrossRecordPassSummary, bool), CrossRecordValidationError> {
+    let CrossPassControl {
+        coverage,
+        is_cancelled,
+        on_record,
+    } = control;
     validate_cross_inputs(flow, &inputs).map_err(CrossRecordValidationError::Context)?;
+    if let Some(coverage) = coverage {
+        super::projected_context::validate_trace_coverage(flow, &inputs, coverage)
+            .map_err(CrossRecordValidationError::Context)?;
+    }
     let mut totals = CrossRecordPassSummary::default();
+    let mut processed = 0u64;
     // A missing source input cannot be mistaken for an available empty file.
     for plan in &flow.cross_record_plan().rules {
         let source = flow
@@ -529,18 +588,28 @@ pub fn validate_cross_record_rules(
             continue;
         }
         for record in store.iter_trace(trace.id()) {
+            if is_cancelled() {
+                return Ok((totals, true));
+            }
             if &record.trace_id != trace.id() {
                 return Err(CrossRecordValidationError::InvalidPlan);
             }
-            let context = ProjectedEvaluationContext::new(
-                flow,
-                record,
-                store,
-                CrossRecordInputs {
-                    available_traces: inputs.available_traces,
-                    parameters: inputs.parameters,
-                },
-            )
+            let input = CrossRecordInputs {
+                available_traces: inputs.available_traces,
+                parameters: inputs.parameters,
+            };
+            let context = match coverage {
+                Some(coverage) => ProjectedEvaluationContext::with_coverage(
+                    flow,
+                    record,
+                    store,
+                    crate::CoveredCrossRecordInputs {
+                        inputs: input,
+                        coverage,
+                    },
+                ),
+                None => ProjectedEvaluationContext::new(flow, record, store, input),
+            }
             .map_err(CrossRecordValidationError::Context)?;
             for plan in &rules {
                 let outcome = evaluate_rule(flow, record, &plan.rule, &context)?;
@@ -554,7 +623,11 @@ pub fn validate_cross_record_rules(
                     .map_err(CrossRecordValidationError::Observer)?;
                 totals = next;
             }
+            processed = processed
+                .checked_add(1)
+                .ok_or(CrossRecordValidationError::CounterOverflow)?;
+            on_record(processed);
         }
     }
-    Ok(totals)
+    Ok((totals, is_cancelled()))
 }
