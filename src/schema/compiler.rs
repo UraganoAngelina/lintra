@@ -8,6 +8,8 @@ use crate::schema::{
 };
 #[path = "joins.rs"]
 mod joins;
+#[path = "projection.rs"]
+mod projection;
 #[path = "reference.rs"]
 mod reference;
 
@@ -590,9 +592,9 @@ impl SchemaCompiler {
             }
         };
         let mut traces = Vec::with_capacity(raw.traces.len());
-        for record in &raw.traces {
+        for (trace_index, record) in raw.traces.iter().enumerate() {
             traces.push(
-                compile_record(record, &regexes, &raw.reference_data)
+                compile_record(record, &regexes, &raw.reference_data, trace_index, &joins)
                     .map_err(|(code, message)| fail(Some(&record.id), None, code, message))?,
             );
         }
@@ -945,6 +947,8 @@ fn compile_record(
     raw: &RawRecordSchema,
     regexes: &RegexPlans,
     dependencies: &[RawReferenceDataDependency],
+    trace_index: usize,
+    joins: &[CompiledJoinSpec],
 ) -> Result<CompiledRecordSchema, (Code, String)> {
     let fields = raw
         .fields
@@ -958,8 +962,8 @@ fn compile_record(
         .iter()
         .map(|id| index(raw, id))
         .collect::<Result<Vec<_>, _>>()?;
-    let mut projection = key.clone();
-    projection.sort_unstable();
+    let derived_values = crate::schema::derived::compile_derived_values(raw)?;
+    let projection_plan = projection::compile(raw, trace_index, joins, &derived_values, &key)?;
     let error_code = raw
         .record_key
         .error_code
@@ -997,7 +1001,7 @@ fn compile_record(
         })?,
         fields,
         local_rules: rules::compile_rules(raw, regexes, dependencies)?,
-        derived_values: crate::schema::derived::compile_derived_values(raw)?,
+        derived_values,
         identity_plan: IdentityExtractionPlan {
             // Preflight checked targets and references; retain typed defensive
             // failures here rather than dropping an unresolved binding.
@@ -1012,10 +1016,7 @@ fn compile_record(
                 })
                 .collect::<Result<Vec<_>, (Code, String)>>()?,
         },
-        projection_plan: ContextProjectionPlan {
-            field_indexes: projection,
-            join_indexes: vec![],
-        },
+        projection_plan,
         record_key: RecordKeyPlan {
             field_indexes: key,
             error_code,
@@ -1055,7 +1056,7 @@ mod tests {
         record.documented_non_executable_rules.clear();
         record.rules.clear();
         record.record_length = 1;
-        let (code, message) = compile_record(record, &RegexPlans::new(), &[]).unwrap_err();
+        let (code, message) = compile_record(record, &RegexPlans::new(), &[], 0, &[]).unwrap_err();
         assert_eq!(code, Code::InternalCompilerInvariant);
         assert!(message.contains("FieldOutsideRecord"));
     }

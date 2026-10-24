@@ -16,7 +16,7 @@ use std::{
 };
 
 /// Two fields expose independent errors and explicit raw/logical policies.
-/// The compiler's PK projection remains nonempty throughout these tests.
+/// The compiler's PK/identity projection remains nonempty throughout these tests.
 fn raw_schema() -> RawFlowSchema {
     let mut value: Value =
         serde_json::from_slice(include_bytes!("golden/synthetic/v1/schema.json")).unwrap();
@@ -88,7 +88,7 @@ fn audited_metadata(schema: &CompiledFlowSchema, bytes: &[u8]) -> RunMetadata {
 fn valid_local_record_extracts_identity_with_nonempty_projection() {
     let schema = schema();
     let plan = schema.traces()[0].projection_plan();
-    assert_eq!(plan.field_indexes, [0]);
+    assert_eq!(plan.field_indexes, [0, 1]);
     let mut validator = RecordValidator::new(&schema, schema.traces()[0].id()).unwrap();
     let mut sink = VecSink::default();
     let mut summary = builder(&schema);
@@ -107,7 +107,7 @@ fn valid_local_record_extracts_identity_with_nonempty_projection() {
         artifacts.identity.unwrap().technical_ids["synthetic"].as_ref(),
         "ABC"
     );
-    assert_eq!(schema.traces()[0].projection_plan().field_indexes, [0]);
+    assert_eq!(schema.traces()[0].projection_plan().field_indexes, [0, 1]);
     assert!(sink.errors().is_empty());
     let summary = summary
         .finish(audited_metadata(&schema, b"001ABC"))

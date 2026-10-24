@@ -1,7 +1,22 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-10-23**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-10-24**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
+
+## Frontiera corrente — T-P13-02 locale verificata; CI nativa da avviare
+
+Ripresa 2026-10-24 dopo interruzione: nessun processo cargo precedente attivo,
+log/cache /tmp non disponibili. Ricreata cache isolata da sorgenti ufficiali
+presenti nell'ambiente e rieseguiti tutti i gate, senza presumere esiti persi.
+548 test/64 suite, zero falliti e un probe memoria ignorato; fmt/check/Clippy/
+test/release/Windows GNU/diff passati. Projection minima owned con PK/identity,
+join source/target distinte, consensus e dipendenze derived; missing tipizzato.
+[Dossier](docs/verification/T-P13-02.md). Nessuna dipendenza nuova, 90 artefatti
+protetti invariati e modifica esterna di newline alla proposta preservata.
+13-02 DONE_UNVERIFIED fino a CI Linux/MSVC; candidata 13-03, preflight prima
+del codice. 78/140 task verificate (55,7%); nessun Full/ContextStore anticipato.
+
+## Registro storico — avvio 13-02
 
 ## Frontiera corrente — T-P12-05 verificata; avvio T-P13-02
 
@@ -1402,6 +1417,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P12-04 | DONE | 2026-10-23 | CLI XLSX/temp spool/guard reali, 534 test/62 suite e gate locali passati; CI 39974616511 Linux/MSVC success; [dossier](docs/verification/T-P12-04.md) |
 | T-P12-05 | DONE | 2026-10-23 | Parser XLSX indipendente, 539 test/63 suite e gate locali passati; CI 39976689575 Linux/MSVC success; [dossier](docs/verification/T-P12-05.md) |
 | T-P13-01 | DONE | 2026-10-23 | CI cumulativa 39959838976 su 8fc31f5: Linux/Windows MSVC completed/success; 504 test/59 suite; [dossier](docs/verification/T-P13-01.md) |
+| T-P13-02 | DONE_UNVERIFIED | 2026-10-24 | 548 test/64 suite e gate locali passati; CI nativa pendente; [dossier](docs/verification/T-P13-02.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

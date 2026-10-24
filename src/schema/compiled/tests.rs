@@ -169,6 +169,7 @@ fn record_parts(id: &str) -> RecordParts {
         projection_plan: ContextProjectionPlan {
             field_indexes: vec![0, 1],
             join_indexes: vec![],
+            join_plans: vec![],
         },
         record_key: RecordKeyPlan {
             field_indexes: vec![0, 1],
@@ -177,6 +178,33 @@ fn record_parts(id: &str) -> RecordParts {
         repeated_groups: vec![],
         documented_non_executable_rules: vec![],
     }
+}
+
+#[test]
+fn projection_invariants_reject_omitted_dependencies_duplicate_order_and_dangling_joins() {
+    for indexes in [vec![1], vec![0, 0, 1], vec![1, 0]] {
+        let mut parts = record_parts("S");
+        parts.projection_plan.field_indexes = indexes;
+        assert!(matches!(
+            CompiledRecordSchema::from_parts(parts),
+            Err(ModelInvariantError::InvalidProjectionPlan)
+        ));
+    }
+    let mut parts = record_parts("S");
+    parts.projection_plan.join_indexes = vec![0];
+    parts.projection_plan.join_plans = vec![JoinProjectionPlan {
+        join_index: 0,
+        key: JoinProjectionKey {
+            join_id: crate::JoinId("SYNTHETIC".into()),
+            side: JoinProjectionSide::Source,
+        },
+        field_indexes: vec![0],
+    }];
+    let record = CompiledRecordSchema::from_parts(parts).unwrap();
+    assert!(matches!(
+        CompiledFlowSchema::from_parts(flow_parts(vec![record])),
+        Err(ModelInvariantError::InvalidProjectionPlan)
+    ));
 }
 
 fn flow_parts(traces: Vec<CompiledRecordSchema>) -> FlowParts {

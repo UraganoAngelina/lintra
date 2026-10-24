@@ -608,6 +608,33 @@ pub struct IdentityExtractionPlan {
 pub struct ContextProjectionPlan {
     pub field_indexes: Vec<usize>,
     pub join_indexes: Vec<usize>,
+    /// Locally resolved bindings; projection needs no hidden flow lookup.
+    pub join_plans: Vec<JoinProjectionPlan>,
+}
+impl ContextProjectionPlan {
+    pub fn required(&self) -> bool {
+        !self.field_indexes.is_empty() || !self.join_plans.is_empty()
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum JoinProjectionSide {
+    Source,
+    Target,
+}
+
+/// A self-join retains both sides even when they belong to the same trace.
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct JoinProjectionKey {
+    pub join_id: JoinId,
+    pub side: JoinProjectionSide,
+}
+
+#[derive(Debug, Clone)]
+pub struct JoinProjectionPlan {
+    pub join_index: usize,
+    pub key: JoinProjectionKey,
+    pub field_indexes: Vec<usize>,
 }
 
 #[derive(Debug, Clone)]

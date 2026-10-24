@@ -90,6 +90,7 @@ enum ModelInvariantError {
     PhysicalOrderMismatch(FieldId),
     RecordLengthMismatch,
     InvalidFieldIndex(usize),
+    InvalidProjectionPlan,
     EmptyRecordKey,
     EmptyFlow,
     DuplicateTraceId(TraceId),
@@ -147,6 +148,54 @@ impl CompiledRecordSchema {
         {
             if *index >= parts.fields.len() {
                 return Err(ModelInvariantError::InvalidFieldIndex(*index));
+            }
+        }
+        if parts
+            .projection_plan
+            .field_indexes
+            .windows(2)
+            .any(|w| w[0] >= w[1])
+            || parts
+                .projection_plan
+                .join_indexes
+                .windows(2)
+                .any(|w| w[0] >= w[1])
+            || parts.projection_plan.join_indexes.iter().any(|index| {
+                !parts
+                    .projection_plan
+                    .join_plans
+                    .iter()
+                    .any(|plan| plan.join_index == *index)
+            })
+            || parts.identity_plan.bindings.iter().any(|binding| {
+                !parts
+                    .projection_plan
+                    .field_indexes
+                    .contains(&binding.field_index)
+            })
+            || parts
+                .record_key
+                .field_indexes
+                .iter()
+                .any(|index| !parts.projection_plan.field_indexes.contains(index))
+        {
+            return Err(ModelInvariantError::InvalidProjectionPlan);
+        }
+        for (index, plan) in parts.projection_plan.join_plans.iter().enumerate() {
+            if plan.field_indexes.is_empty()
+                || plan
+                    .field_indexes
+                    .iter()
+                    .any(|field| !parts.projection_plan.field_indexes.contains(field))
+                || !parts
+                    .projection_plan
+                    .join_indexes
+                    .contains(&plan.join_index)
+                || parts.projection_plan.join_plans[..index]
+                    .iter()
+                    .any(|prior| prior.key == plan.key)
+            {
+                return Err(ModelInvariantError::InvalidProjectionPlan);
             }
         }
         Ok(Self {
@@ -221,6 +270,37 @@ impl CompiledFlowSchema {
                 .any(|prior| prior.id == trace.id)
             {
                 return Err(ModelInvariantError::DuplicateTraceId(trace.id.clone()));
+            }
+            for binding in &trace.projection_plan.join_plans {
+                let join = parts
+                    .cross_record_plan
+                    .joins
+                    .get(binding.join_index)
+                    .ok_or(ModelInvariantError::InvalidProjectionPlan)?;
+                let (expected_trace, expected_fields) = match binding.key.side {
+                    JoinProjectionSide::Source => (join.source_trace, &join.source_fields),
+                    JoinProjectionSide::Target => (join.target_trace, &join.target_fields),
+                };
+                if expected_trace != index
+                    || binding.key.join_id != join.id
+                    || binding.field_indexes != *expected_fields
+                {
+                    return Err(ModelInvariantError::InvalidProjectionPlan);
+                }
+            }
+            for (join_index, join) in parts.cross_record_plan.joins.iter().enumerate() {
+                for (expected_trace, side) in [
+                    (join.source_trace, JoinProjectionSide::Source),
+                    (join.target_trace, JoinProjectionSide::Target),
+                ] {
+                    if expected_trace == index
+                        && !trace.projection_plan.join_plans.iter().any(|binding| {
+                            binding.join_index == join_index && binding.key.side == side
+                        })
+                    {
+                        return Err(ModelInvariantError::InvalidProjectionPlan);
+                    }
+                }
             }
         }
         Ok(Self {
