@@ -102,7 +102,7 @@ fn artifacts(result: RuleValidationResult) -> LocalRuleArtifacts {
         failed_assertion: None,
     }
 }
-enum AssertionFailure {
+pub(crate) enum AssertionFailure {
     Violated(FieldViolation),
     Unknown(UnknownReason),
     Reference(super::reference_execution::ReferenceExecutionError),
@@ -127,7 +127,7 @@ fn present(value: ResolvedFieldValue<'_>) -> Result<&[u8], UnknownReason> {
         ResolvedFieldValue::Unavailable(reason) => Err(reason),
     }
 }
-fn validate_assertion(
+pub(crate) fn validate_assertion(
     assertion: &CompiledAssertion,
     ctx: &EvaluationContext<'_>,
     references: Option<&mut super::reference_execution::ReferenceExecution<'_>>,

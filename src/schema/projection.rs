@@ -75,9 +75,13 @@ pub(super) fn compile(
     joins: &[CompiledJoinSpec],
     derived_plans: &[DerivedValuePlan],
     record_key: &[usize],
+    additional_fields: &[usize],
 ) -> Result<ContextProjectionPlan, Issue> {
     let mut fields = vec![false; record.fields.len()];
     for &index in record_key {
+        select(&mut fields, index)?;
+    }
+    for &index in additional_fields {
         select(&mut fields, index)?;
     }
     for binding in &record.identity {

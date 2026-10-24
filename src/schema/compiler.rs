@@ -74,7 +74,7 @@ impl Checks<'_> {
             );
         }
     }
-    fn record(&mut self, record: &RawRecordSchema) {
+    fn record(&mut self, record: &RawRecordSchema, trace_index: usize, joins: &[CompiledJoinSpec]) {
         let trace = Some(record.id.as_str());
         if record.name.is_empty() {
             self.error(
@@ -98,12 +98,17 @@ impl Checks<'_> {
         // expression nodes still prevent a successful compiled schema.
         for expression in record.named_conditions.values() {
             if let Err((code, message)) =
-                crate::schema::expression::compile_local_expr(expression, record)
+                crate::schema::reference_binding::ReferenceBindings::cross(
+                    self.raw,
+                    trace_index,
+                    joins,
+                )
+                .and_then(|bindings| crate::schema::expression::compile_expr(expression, &bindings))
             {
                 self.error(code, trace, None, message);
             }
         }
-        self.rules(record);
+        self.rules(record, trace_index, joins);
         // Resolve identity like other local references. A destination can hold
         // only one value: reject collisions instead of silently overwriting.
         let mut identity_targets = HashSet::new();
@@ -568,8 +573,8 @@ impl SchemaCompiler {
                 vec![]
             }
         };
-        for record in &raw.traces {
-            checks.record(record);
+        for (trace_index, record) in raw.traces.iter().enumerate() {
+            checks.record(record, trace_index, &joins);
         }
         let (issues, regexes) = checks.finish();
         if issues
@@ -591,11 +596,136 @@ impl SchemaCompiler {
                 }],
             }
         };
-        let mut traces = Vec::with_capacity(raw.traces.len());
+        let derived_tables = raw
+            .traces
+            .iter()
+            .map(crate::schema::derived::compile_derived_values)
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|(code, message)| fail(None, None, code, message))?;
+        let mut local_rules = vec![Vec::new(); raw.traces.len()];
+        let mut cross_rules = Vec::new();
+        let mut cross_fields = vec![std::collections::BTreeSet::new(); raw.traces.len()];
         for (trace_index, record) in raw.traces.iter().enumerate() {
+            let bindings = crate::schema::reference_binding::ReferenceBindings::cross(
+                &raw,
+                trace_index,
+                &joins,
+            )
+            .map_err(|(code, message)| fail(Some(&record.id), None, code, message))?;
+            for rule in rules::compile_rules(record, &regexes, &raw.reference_data, &bindings)
+                .map_err(|(code, message)| fail(Some(&record.id), None, code, message))?
+            {
+                let dependencies = crate::schema::rule_dependencies::RuleDependencies::collect(
+                    &rule,
+                    trace_index,
+                    &joins,
+                    &derived_tables,
+                )
+                .map_err(|(code, message)| fail(Some(&record.id), None, code, message))?;
+                if dependencies.joins.is_empty() {
+                    local_rules[trace_index].push(rule);
+                } else {
+                    for &index in &dependencies.joins {
+                        let join = joins.get(index).ok_or_else(|| {
+                            fail(
+                                Some(&record.id),
+                                None,
+                                Code::InternalCompilerInvariant,
+                                "cross join index is inconsistent".into(),
+                            )
+                        })?;
+                        for diagnostic in [
+                            Some(join.on_missing_record.diagnostic()),
+                            Some(join.on_missing_trace.diagnostic()),
+                            join.consensus
+                                .as_ref()
+                                .map(|plan| &plan.conflict_diagnostic),
+                        ]
+                        .into_iter()
+                        .flatten()
+                        {
+                            let parts =
+                                crate::schema::rule_template::parse(&diagnostic.message_template)
+                                    .map_err(|message| {
+                                    fail(
+                                        Some(&record.id),
+                                        None,
+                                        Code::InvalidSchemaValue,
+                                        message.into(),
+                                    )
+                                })?;
+                            if parts.iter().any(|part| {
+                                matches!(
+                                    part,
+                                    crate::schema::rule_template::Part::Token(
+                                        crate::schema::rule_template::Token::FieldId
+                                            | crate::schema::rule_template::Token::FieldName
+                                    )
+                                )
+                            }) {
+                                return Err(fail(Some(&record.id),None,Code::UnsupportedConstruct,"join diagnostic field placeholders require an explicit field target".into()));
+                            }
+                        }
+                    }
+                    if rule.assertions.iter().any(|assertion| {
+                        matches!(
+                            assertion,
+                            CompiledAssertion::Constraint {
+                                constraint: CompiledConstraint::ReferenceData { .. },
+                                ..
+                            }
+                        )
+                    }) {
+                        return Err(fail(
+                            Some(&record.id),
+                            None,
+                            Code::UnsupportedConstruct,
+                            "reference assertions in cross rules require full audit integration"
+                                .into(),
+                        ));
+                    }
+                    for (trace, field) in dependencies.fields {
+                        cross_fields
+                            .get_mut(trace)
+                            .ok_or_else(|| {
+                                fail(
+                                    None,
+                                    None,
+                                    Code::InternalCompilerInvariant,
+                                    "cross projection trace is inconsistent".into(),
+                                )
+                            })?
+                            .insert(field);
+                    }
+                    cross_rules.push(CompiledCrossRecordRule {
+                        source_trace: trace_index,
+                        rule,
+                    });
+                }
+            }
+        }
+        let mut traces = Vec::with_capacity(raw.traces.len());
+        for (trace_index, ((record, rules), derived)) in raw
+            .traces
+            .iter()
+            .zip(local_rules)
+            .zip(derived_tables)
+            .enumerate()
+        {
             traces.push(
-                compile_record(record, &regexes, &raw.reference_data, trace_index, &joins)
-                    .map_err(|(code, message)| fail(Some(&record.id), None, code, message))?,
+                compile_record(
+                    record,
+                    &regexes,
+                    &raw.reference_data,
+                    RecordLowering {
+                        trace_index,
+                        joins: &joins,
+                        rules,
+                        derived,
+                        additional_fields: cross_fields[trace_index].iter().copied().collect(),
+                    },
+                )
+                .map_err(|(code, message)| fail(Some(&record.id), None, code, message))?,
             );
         }
         CompiledFlowSchema::from_parts(FlowParts {
@@ -618,7 +748,7 @@ impl SchemaCompiler {
                     })
                     .collect(),
                 joins,
-                rules: vec![],
+                rules: cross_rules,
             },
             parameters,
             required_capabilities: raw
@@ -943,12 +1073,18 @@ fn identity_target(raw: &RawIdentitySpec) -> Result<IdentityTarget, (Code, Strin
         )),
     }
 }
+struct RecordLowering<'a> {
+    trace_index: usize,
+    joins: &'a [CompiledJoinSpec],
+    rules: Vec<CompiledRule>,
+    derived: Vec<DerivedValuePlan>,
+    additional_fields: Vec<usize>,
+}
 fn compile_record(
     raw: &RawRecordSchema,
     regexes: &RegexPlans,
     dependencies: &[RawReferenceDataDependency],
-    trace_index: usize,
-    joins: &[CompiledJoinSpec],
+    lowering: RecordLowering<'_>,
 ) -> Result<CompiledRecordSchema, (Code, String)> {
     let fields = raw
         .fields
@@ -962,8 +1098,15 @@ fn compile_record(
         .iter()
         .map(|id| index(raw, id))
         .collect::<Result<Vec<_>, _>>()?;
-    let derived_values = crate::schema::derived::compile_derived_values(raw)?;
-    let projection_plan = projection::compile(raw, trace_index, joins, &derived_values, &key)?;
+    let derived_values = lowering.derived;
+    let projection_plan = projection::compile(
+        raw,
+        lowering.trace_index,
+        lowering.joins,
+        &derived_values,
+        &key,
+        &lowering.additional_fields,
+    )?;
     let error_code = raw
         .record_key
         .error_code
@@ -1000,7 +1143,7 @@ fn compile_record(
             )
         })?,
         fields,
-        local_rules: rules::compile_rules(raw, regexes, dependencies)?,
+        local_rules: lowering.rules,
         derived_values,
         identity_plan: IdentityExtractionPlan {
             // Preflight checked targets and references; retain typed defensive
@@ -1056,7 +1199,19 @@ mod tests {
         record.documented_non_executable_rules.clear();
         record.rules.clear();
         record.record_length = 1;
-        let (code, message) = compile_record(record, &RegexPlans::new(), &[], 0, &[]).unwrap_err();
+        let (code, message) = compile_record(
+            record,
+            &RegexPlans::new(),
+            &[],
+            RecordLowering {
+                trace_index: 0,
+                joins: &[],
+                rules: vec![],
+                derived: vec![],
+                additional_fields: vec![],
+            },
+        )
+        .unwrap_err();
         assert_eq!(code, Code::InternalCompilerInvariant);
         assert!(message.contains("FieldOutsideRecord"));
     }

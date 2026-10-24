@@ -20,6 +20,8 @@ pub enum FieldReferenceError {
     JoinSourceMismatch,
     JoinTargetMismatch,
     ScalarRequiresSingleCardinality,
+    FieldOutsideReduction,
+    /// Retained for source compatibility with the initial scalar-only binder.
     UnsupportedReduction,
 }
 impl std::fmt::Display for FieldReferenceError {
@@ -70,19 +72,20 @@ pub fn resolve_field_reference(
             if join.target_trace != trace_index {
                 return Err(FieldReferenceError::JoinTargetMismatch);
             }
-            if join.consensus.is_some() {
-                return Err(FieldReferenceError::UnsupportedReduction);
-            }
-            if !matches!(
+            let field_id = crate::FieldId(reference.field.clone());
+            let field_index = flow.traces()[trace_index]
+                .field_index(&field_id)
+                .ok_or(FieldReferenceError::FieldMissing)?;
+            if let Some(consensus) = &join.consensus {
+                if !consensus.fields.contains(&field_index) {
+                    return Err(FieldReferenceError::FieldOutsideReduction);
+                }
+            } else if !matches!(
                 join.cardinality,
                 crate::JoinCardinality::ZeroOrOne | crate::JoinCardinality::ExactlyOne
             ) {
                 return Err(FieldReferenceError::ScalarRequiresSingleCardinality);
             }
-            let field_id = crate::FieldId(reference.field.clone());
-            let field_index = flow.traces()[trace_index]
-                .field_index(&field_id)
-                .ok_or(FieldReferenceError::FieldMissing)?;
             Ok(ResolvedFieldRef::External {
                 trace_index,
                 field_index,
@@ -111,6 +114,17 @@ pub(crate) fn compile_local_expr(
     expression: &RawExpr,
     record: &RawRecordSchema,
 ) -> Result<CompiledExpr, Issue> {
+    compile_expr(
+        expression,
+        &super::reference_binding::ReferenceBindings::local(record),
+    )
+}
+
+pub(crate) fn compile_expr(
+    expression: &RawExpr,
+    bindings: &super::reference_binding::ReferenceBindings<'_>,
+) -> Result<CompiledExpr, Issue> {
+    let record = bindings.record;
     let mut work = vec![Step::Expr(expression)];
     let mut values = Vec::new();
     let mut active_names = HashSet::new();
@@ -118,27 +132,27 @@ pub(crate) fn compile_local_expr(
         match step {
             Step::Expr(expression) => match expression {
                 RawExpr::Eq(node) => values.push(CompiledExpr::Eq(
-                    resolve_local_ref(&node.r#ref, record)?,
+                    bindings.resolve(&node.r#ref)?,
                     node.value.as_bytes().to_vec(),
                 )),
                 RawExpr::Ne(node) => values.push(CompiledExpr::Ne(
-                    resolve_local_ref(&node.r#ref, record)?,
+                    bindings.resolve(&node.r#ref)?,
                     node.value.as_bytes().to_vec(),
                 )),
                 RawExpr::In(node) => values.push(CompiledExpr::In(
-                    resolve_local_ref(&node.r#ref, record)?,
+                    bindings.resolve(&node.r#ref)?,
                     literals(&node.values)?,
                 )),
                 RawExpr::NotIn(node) => values.push(CompiledExpr::NotIn(
-                    resolve_local_ref(&node.r#ref, record)?,
+                    bindings.resolve(&node.r#ref)?,
                     literals(&node.values)?,
                 )),
-                RawExpr::IsPresent(node) => values.push(CompiledExpr::IsPresent(
-                    resolve_local_ref(&node.r#ref, record)?,
-                )),
-                RawExpr::IsMissing(node) => values.push(CompiledExpr::IsMissing(
-                    resolve_local_ref(&node.r#ref, record)?,
-                )),
+                RawExpr::IsPresent(node) => {
+                    values.push(CompiledExpr::IsPresent(bindings.resolve(&node.r#ref)?))
+                }
+                RawExpr::IsMissing(node) => {
+                    values.push(CompiledExpr::IsMissing(bindings.resolve(&node.r#ref)?))
+                }
                 RawExpr::Const(value) => values.push(CompiledExpr::Const(*value)),
                 RawExpr::And(children) | RawExpr::Or(children) => {
                     if children.is_empty() {
@@ -175,25 +189,19 @@ pub(crate) fn compile_local_expr(
                     work.push(Step::Expr(definition));
                 }
                 RawExpr::DerivedEq(node) => {
-                    let field = resolve_local_ref(&node.r#ref, record)?;
+                    let field = bindings.resolve(&node.r#ref)?;
                     let (derived_index, kind) =
                         super::derived::binding(record, &node.derived_value)?;
-                    if kind == ValueType::Integer {
-                        let ResolvedFieldRef::Local { field_index, .. } = &field else {
-                            return Err((
-                                Code::UnsupportedConstruct,
-                                "derived_eq requires local field".into(),
-                            ));
-                        };
-                        if !matches!(
-                            record.fields[*field_index].physical,
+                    if kind == ValueType::Integer
+                        && !matches!(
+                            bindings.field(&field)?.physical,
                             RawPhysical::Numeric { .. }
-                        ) {
-                            return Err((
-                                Code::ConstraintTypeMismatch,
-                                "integer derived_eq requires a numeric field".into(),
-                            ));
-                        }
+                        )
+                    {
+                        return Err((
+                            Code::ConstraintTypeMismatch,
+                            "integer derived_eq requires a numeric field".into(),
+                        ));
                     }
                     values.push(CompiledExpr::DerivedEq {
                         field,

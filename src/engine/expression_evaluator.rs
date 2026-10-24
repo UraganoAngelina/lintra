@@ -160,6 +160,62 @@ impl FieldValueResolver for LocalEvaluationContext<'_> {
 
 /// Stateless execution over immutable plans/values. No I/O or record mutation.
 pub struct ExpressionEvaluator;
+
+/// Internal provenance follows the decisive Unknown through boolean groups.
+/// Public TruthValue remains unchanged; a missing join is never inferred from
+/// an unrelated node that was dominated by False/True elsewhere in the tree.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) struct EvaluatedTruth {
+    pub truth: TruthValue,
+    pub external_cause: Option<usize>,
+}
+impl From<TruthValue> for EvaluatedTruth {
+    fn from(truth: TruthValue) -> Self {
+        Self {
+            truth,
+            external_cause: None,
+        }
+    }
+}
+impl EvaluatedTruth {
+    fn referenced(truth: TruthValue, reference: &ResolvedFieldRef) -> Self {
+        let external_cause = match (truth, reference) {
+            (
+                TruthValue::Unknown(
+                    UnknownReason::RelatedRecordMissing
+                    | UnknownReason::TraceInputUnavailable
+                    | UnknownReason::AmbiguousJoin,
+                ),
+                ResolvedFieldRef::External { join_index, .. },
+            ) => Some(*join_index),
+            _ => None,
+        };
+        Self {
+            truth,
+            external_cause,
+        }
+    }
+    fn combine(self, other: Self, and: bool) -> Self {
+        let truth = if and {
+            self.truth.and(other.truth)
+        } else {
+            self.truth.or(other.truth)
+        };
+        let external_cause = if matches!(truth, TruthValue::Unknown(_)) {
+            if matches!(self.truth, TruthValue::Unknown(_)) {
+                self.external_cause
+            } else {
+                other.external_cause
+            }
+        } else {
+            None
+        };
+        Self {
+            truth,
+            external_cause,
+        }
+    }
+}
 enum EvalStep<'a> {
     Expr(&'a CompiledExpr),
     Group { and: bool, count: usize },
@@ -170,12 +226,19 @@ impl ExpressionEvaluator {
     /// on nested input trees. Every unsupported/inconsistent direct plan is
     /// Unknown(UnsupportedPlan); the schema compiler already rejects such plans.
     pub fn evaluate(&self, expression: &CompiledExpr, ctx: &EvaluationContext<'_>) -> TruthValue {
+        self.evaluate_with_cause(expression, ctx).truth
+    }
+    pub(crate) fn evaluate_with_cause(
+        &self,
+        expression: &CompiledExpr,
+        ctx: &EvaluationContext<'_>,
+    ) -> EvaluatedTruth {
         let mut work = vec![EvalStep::Expr(expression)];
         let mut values = Vec::new();
         while let Some(step) = work.pop() {
             match step {
                 EvalStep::Expr(expression) => match expression {
-                    CompiledExpr::Const(value) => values.push(truth(*value)),
+                    CompiledExpr::Const(value) => values.push(truth(*value).into()),
                     CompiledExpr::Eq(reference, expected)
                     | CompiledExpr::Ne(reference, expected) => {
                         let value = match ctx.fields.resolve_field(reference) {
@@ -187,7 +250,7 @@ impl ExpressionEvaluator {
                             }
                             ResolvedFieldValue::Unavailable(reason) => TruthValue::Unknown(reason),
                         };
-                        values.push(value);
+                        values.push(EvaluatedTruth::referenced(value, reference));
                     }
                     CompiledExpr::In(reference, domain)
                     | CompiledExpr::NotIn(reference, domain) => {
@@ -207,7 +270,7 @@ impl ExpressionEvaluator {
                                 }
                             }
                         };
-                        values.push(value);
+                        values.push(EvaluatedTruth::referenced(value, reference));
                     }
                     CompiledExpr::IsPresent(reference) | CompiledExpr::IsMissing(reference) => {
                         let value = match ctx.fields.resolve_field(reference) {
@@ -219,11 +282,11 @@ impl ExpressionEvaluator {
                             }
                             ResolvedFieldValue::Unavailable(reason) => TruthValue::Unknown(reason),
                         };
-                        values.push(value);
+                        values.push(EvaluatedTruth::referenced(value, reference));
                     }
                     CompiledExpr::And(children) | CompiledExpr::Or(children) => {
                         if children.is_empty() {
-                            values.push(unsupported());
+                            values.push(unsupported().into());
                             continue;
                         }
                         work.push(EvalStep::Group {
@@ -240,11 +303,17 @@ impl ExpressionEvaluator {
                         field,
                         derived_index,
                     } => {
+                        let mut external_cause = None;
                         let value = match ctx.fields.resolve_field(field) {
                             ResolvedFieldValue::Missing => {
                                 TruthValue::Unknown(UnknownReason::FieldUnavailable)
                             }
-                            ResolvedFieldValue::Unavailable(reason) => TruthValue::Unknown(reason),
+                            ResolvedFieldValue::Unavailable(reason) => {
+                                let result =
+                                    EvaluatedTruth::referenced(TruthValue::Unknown(reason), field);
+                                external_cause = result.external_cause;
+                                result.truth
+                            }
                             ResolvedFieldValue::Present(bytes) => {
                                 match ctx.fields.resolve_derived(*derived_index) {
                                     DerivedValue::Bytes(value) => truth(bytes == value),
@@ -262,44 +331,53 @@ impl ExpressionEvaluator {
                                 }
                             }
                         };
-                        values.push(value);
+                        values.push(EvaluatedTruth {
+                            truth: value,
+                            external_cause,
+                        });
                     }
                     CompiledExpr::DerivedCompare {
                         derived_index,
                         operator,
                         value,
-                    } => values.push(compare_derived(
-                        ctx.fields.resolve_derived(*derived_index),
-                        *operator,
-                        value,
-                    )),
+                    } => values.push(
+                        compare_derived(
+                            ctx.fields.resolve_derived(*derived_index),
+                            *operator,
+                            value,
+                        )
+                        .into(),
+                    ),
                 },
                 EvalStep::Group { and, count } => {
                     let Some(start) = values.len().checked_sub(count) else {
-                        return unsupported();
+                        return unsupported().into();
                     };
                     let value = values.drain(start..).fold(
-                        if and {
+                        EvaluatedTruth::from(if and {
                             TruthValue::True
                         } else {
                             TruthValue::False
-                        },
-                        |left, right| if and { left.and(right) } else { left.or(right) },
+                        }),
+                        |left, right| left.combine(right, and),
                     );
                     values.push(value);
                 }
                 EvalStep::Not => {
                     let Some(value) = values.pop() else {
-                        return unsupported();
+                        return unsupported().into();
                     };
-                    values.push(!value);
+                    values.push(EvaluatedTruth {
+                        truth: !value.truth,
+                        external_cause: value.external_cause,
+                    });
                 }
             }
         }
         if values.len() != 1 {
-            return unsupported();
+            return unsupported().into();
         }
-        values.pop().unwrap_or_else(unsupported)
+        values.pop().unwrap_or_else(|| unsupported().into())
     }
 }
 fn truth(value: bool) -> TruthValue {
@@ -423,4 +501,78 @@ pub(crate) fn derived_comparison_supported(
         (Some(ValueType::Bytes), CompiledValue::Bytes(_))
             | (Some(ValueType::Integer), CompiledValue::Integer(_))
     )
+}
+
+#[cfg(test)]
+mod cause_tests {
+    use super::*;
+    struct MissingRelations;
+    impl FieldValueResolver for MissingRelations {
+        fn resolve_field(&self, _: &ResolvedFieldRef) -> ResolvedFieldValue<'_> {
+            ResolvedFieldValue::Unavailable(UnknownReason::RelatedRecordMissing)
+        }
+    }
+    fn missing(join_index: usize) -> CompiledExpr {
+        CompiledExpr::IsPresent(ResolvedFieldRef::External {
+            trace_index: 1,
+            field_index: 0,
+            field_id: crate::FieldId("SYNTHETIC".into()),
+            join_index,
+            join_id: crate::JoinId(format!("SYNTHETIC_{join_index}")),
+        })
+    }
+    #[test]
+    fn decisive_unknown_cause_survives_nested_boolean_dominance() {
+        let ctx = EvaluationContext {
+            fields: &MissingRelations,
+        };
+        for (expr, truth, cause) in [
+            (
+                CompiledExpr::Or(vec![
+                    CompiledExpr::And(vec![CompiledExpr::Const(false), missing(0)]),
+                    missing(1),
+                ]),
+                TruthValue::Unknown(UnknownReason::RelatedRecordMissing),
+                Some(1),
+            ),
+            (
+                CompiledExpr::And(vec![
+                    CompiledExpr::Or(vec![CompiledExpr::Const(true), missing(0)]),
+                    missing(1),
+                ]),
+                TruthValue::Unknown(UnknownReason::RelatedRecordMissing),
+                Some(1),
+            ),
+            (
+                CompiledExpr::Or(vec![missing(0), CompiledExpr::Const(true)]),
+                TruthValue::True,
+                None,
+            ),
+            (
+                CompiledExpr::And(vec![missing(0), CompiledExpr::Const(false)]),
+                TruthValue::False,
+                None,
+            ),
+            (
+                CompiledExpr::Not(Box::new(missing(1))),
+                TruthValue::Unknown(UnknownReason::RelatedRecordMissing),
+                Some(1),
+            ),
+            (
+                CompiledExpr::And(vec![missing(1), missing(0)]),
+                TruthValue::Unknown(UnknownReason::RelatedRecordMissing),
+                Some(1),
+            ),
+        ] {
+            let actual = ExpressionEvaluator.evaluate_with_cause(&expr, &ctx);
+            assert_eq!(
+                actual,
+                EvaluatedTruth {
+                    truth,
+                    external_cause: cause
+                }
+            );
+            assert_eq!(ExpressionEvaluator.evaluate(&expr, &ctx), truth);
+        }
+    }
 }

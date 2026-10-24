@@ -3,6 +3,21 @@
 Consuntivo aggiornato al **2026-10-24**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P13-05 locale verificata; CI nativa da avviare
+
+575 test/67 suite, zero falliti, un probe memoria ignorato. fmt/check/Clippy/
+test/release/Windows GNU/diff passati. Compiler cross integrato con projection
+completa, passata su store reale e diagnostica source/target; policy distinte
+Violation/NotApplicable/Unknown, set/consensus e cause logiche esatte.
+LocalOnly dichiara skip record/rule e Partial, senza falsa Complete.
+[Dossier](docs/verification/T-P13-05.md). Nessuna dipendenza nuova, 90 artefatti
+protetti invariati. Cross ReferenceData assertion/presenza esterna/derived
+esterni restano rifiutati, non saltati. Service Full rimane 13-06/07.
+Modifica esterna di newline alla proposta preservata fuori dalla consegna.
+CI Linux/MSVC pendente; 81/140 verificate (57,9%). Next 13-06 dopo gate.
+
+## Registro storico — avvio 13-05
+
 ## Frontiera corrente — T-P13-04 verificata; avvio T-P13-05
 
 CI [40085732901](https://github.com/UraganoAngelina/lintra/actions/runs/40085732901)
@@ -1496,7 +1511,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-02 | DONE | 2026-10-24 | 548 test/64 suite e gate locali passati; CI 40083872023 Linux/MSVC success; [dossier](docs/verification/T-P13-02.md) |
 | T-P13-03 | DONE | 2026-10-24 | 553 test/65 suite e gate locali passati; CI 40084567433 Linux/MSVC success; [dossier](docs/verification/T-P13-03.md) |
 | T-P13-04 | DONE | 2026-10-24 | Binding/resolver esterno scalare reale, 560 test/66 suite e gate locali passati; CI 40085732901 Linux/MSVC success; [dossier](docs/verification/T-P13-04.md) |
-| T-P13-05 | IN_PROGRESS | 2026-10-24 | Prerequisito 13-04 verificato CI 40085732901; [preflight](docs/verification/T-P13-05-preflight.md); integrazione cross da consegnare |
+| T-P13-05 | DONE_UNVERIFIED | 2026-10-24 | Compiler/projection/passata cross reali, 575 test/67 suite e gate locali passati; CI nativa pendente; [dossier](docs/verification/T-P13-05.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

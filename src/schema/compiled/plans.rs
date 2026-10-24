@@ -547,6 +547,15 @@ pub enum RelatedPolicy {
         diagnostic: RelatedDiagnostic,
     },
 }
+impl RelatedPolicy {
+    pub fn diagnostic(&self) -> &RelatedDiagnostic {
+        match self {
+            Self::Violation { diagnostic, .. }
+            | Self::NotApplicable { diagnostic }
+            | Self::Unknown { diagnostic } => diagnostic,
+        }
+    }
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum JoinCardinality {

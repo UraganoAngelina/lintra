@@ -437,7 +437,7 @@ fn invalid_trace_and_zero_line_are_explicit_technical_errors() {
 /// Unsupported primitives and missing dataset declarations remain distinct
 /// compiler errors; neither is tolerated as degraded runtime data.
 #[test]
-fn compiler_rejects_unsupported_assertions_and_undeclared_reference_data() {
+fn compiler_rejects_undeclared_joins_and_undeclared_reference_data() {
     for (name, payload) in [
         (
             "rules",
@@ -460,7 +460,7 @@ fn compiler_rejects_unsupported_assertions_and_undeclared_reference_data() {
         let error = SchemaCompiler.compile(raw).unwrap_err();
         assert!(error.issues.iter().any(|issue| issue.code
             == if name == "rules" {
-                SchemaIssueCode::UnsupportedConstruct
+                SchemaIssueCode::InvalidSchemaValue
             } else {
                 SchemaIssueCode::MissingReferenceDatasetDeclaration
             }));

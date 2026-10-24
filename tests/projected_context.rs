@@ -493,12 +493,12 @@ fn self_join_and_inconsistent_direct_refs_never_choose_arbitrary_data() {
 }
 
 #[test]
-fn unsupported_consensus_is_an_explicit_preflight_error_not_a_false_negative() {
+fn declared_consensus_without_candidates_keeps_missing_policy_and_restricts_scalar_fields() {
     let mut raw = raw_schema();
     raw["required_capabilities"]
         .as_array_mut()
         .unwrap()
-        .extend([json!("joins.consensus.v1")]);
+        .push(json!("joins.consensus.v1"));
     raw["traces"][0]["joins"][0]["reduction"] = json!({"kind":"consensus","fields":["VALUE"],"include_if":{"const":true},"on_conflict":"unknown","diagnostic":{"code":"SYNTHETIC_CONFLICT","message_template":"Synthetic conflict"}});
     let flow = compile(raw);
     let source = project(&flow, "S", b"00AA05Ab  ZZ", 1);
@@ -507,25 +507,31 @@ fn unsupported_consensus_is_an_explicit_preflight_error_not_a_false_negative() {
     let store = CountingStore {
         inner: InMemoryContextStore::new(),
         calls: Cell::new(0),
-        fail: true,
+        fail: false,
     };
-    assert!(matches!(
-        ProjectedEvaluationContext::new(
-            &flow,
-            &source,
-            &store,
-            CrossRecordInputs {
-                available_traces: &traces,
-                parameters: &params
-            }
-        ),
-        Err(RelatedContextError::UnsupportedReduction)
-    ));
-    assert_eq!(store.calls.get(), 0);
-    let r: RawRef =
-        serde_json::from_value(json!({"trace":"T","field":"VALUE","join":"S_T"})).unwrap();
+    let ctx = ProjectedEvaluationContext::new(
+        &flow,
+        &source,
+        &store,
+        CrossRecordInputs {
+            available_traces: &traces,
+            parameters: &params,
+        },
+    )
+    .unwrap();
+    assert_eq!(store.calls.get(), 1);
     assert_eq!(
-        resolve_field_reference(&r, &TraceId("S".into()), &flow),
-        Err(FieldReferenceError::UnsupportedReduction)
+        ctx.resolve_field(&reference(&flow, "T", "VALUE")),
+        ResolvedFieldValue::Unavailable(UnknownReason::RelatedRecordMissing)
+    );
+    assert!(matches!(
+        ctx.related(0).unwrap().join.on_missing_record,
+        RelatedPolicy::NotApplicable { .. }
+    ));
+    let outside: RawRef =
+        serde_json::from_value(json!({"trace":"T","field":"TEXT","join":"S_T"})).unwrap();
+    assert_eq!(
+        resolve_field_reference(&outside, &TraceId("S".into()), &flow),
+        Err(FieldReferenceError::FieldOutsideReduction)
     );
 }

@@ -117,6 +117,7 @@ pub struct RecordValidator<'schema> {
     schema: &'schema CompiledRecordSchema,
     factory: ErrorFactory<'schema>,
     failed: bool,
+    skipped_cross_rules: usize,
 }
 impl<'schema> RecordValidator<'schema> {
     /// Resolve a trace through its actual compiled flow, preventing inconsistent
@@ -145,6 +146,16 @@ impl<'schema> RecordValidator<'schema> {
         check_local_plan(schema, references)?;
         Ok(Self {
             schema,
+            skipped_cross_rules: flow
+                .cross_record_plan()
+                .rules
+                .iter()
+                .filter(|rule| {
+                    flow.traces()
+                        .get(rule.source_trace)
+                        .is_some_and(|source| source.id() == trace_id)
+                })
+                .count(),
             factory: ErrorFactory {
                 flow_id: &flow.key().flow_id,
                 schema_version: &flow.key().version,
@@ -191,6 +202,13 @@ impl<'schema> RecordValidator<'schema> {
         summary
             .record_processed()
             .map_err(RecordValidationError::Summary)?;
+        // This API is explicitly LocalOnly. Count omitted cross evaluations
+        // per processed physical record, never label them as performed/passed.
+        for _ in 0..self.skipped_cross_rules {
+            summary
+                .rule_skipped()
+                .map_err(RecordValidationError::Summary)?;
+        }
         if record.bytes.len() != self.schema.record_length() {
             let error = self.factory.record_length_error(
                 record.line_number,

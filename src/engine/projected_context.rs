@@ -57,7 +57,7 @@ impl fmt::Display for RelatedContextError {
             Self::InvalidParameter => "runtime join parameter is unknown or invalid",
             Self::MissingNamespaceParameter => "required join namespace parameter is missing",
             Self::InvalidJoinBinding => "projected source join binding is inconsistent",
-            Self::UnsupportedReduction => "consensus execution is not integrated in this context",
+            Self::UnsupportedReduction => "reduction is unsupported by the selected context",
             Self::Store(_) => "related context lookup failed",
         })
     }
@@ -87,6 +87,19 @@ pub struct ProjectedEvaluationContext<'a> {
     projected: &'a ProjectedRecord,
     source_index: usize,
     related: BTreeMap<usize, RelatedLookup<'a>>,
+    scalar: BTreeMap<usize, ScalarResolution<'a>>,
+}
+enum ScalarResolution<'a> {
+    Record(&'a ProjectedRecord),
+    Consensus(ConsensusProjection),
+    Unavailable(UnknownReason),
+}
+struct ConsensusProjection {
+    fields: Vec<usize>,
+    // None = declared Missing; Some(empty) = present empty logical value.
+    logical: Vec<Option<Vec<u8>>>,
+    raw: Vec<Option<Vec<u8>>>,
+    raw_consistent: bool,
 }
 impl<'a> ProjectedEvaluationContext<'a> {
     pub fn new(
@@ -103,50 +116,9 @@ impl<'a> ProjectedEvaluationContext<'a> {
         if projected.line_number == 0 {
             return Err(RelatedContextError::InvalidSourcePosition);
         }
-        let mut available = HashSet::new();
-        for id in inputs.available_traces {
-            if flow.trace(id).is_none() {
-                return Err(RelatedContextError::InvalidTraceInput);
-            }
-            if !available.insert(id) {
-                return Err(RelatedContextError::DuplicateTraceInput);
-            }
-        }
+        let available = validate_cross_inputs(flow, &inputs)?;
         if !available.contains(&projected.trace_id) {
             return Err(RelatedContextError::SourceInputUnavailable);
-        }
-        // Validate all supplied bindings, including otherwise unused values:
-        // no ignored unknown parameters, no default from an allowed domain.
-        for (id, value) in inputs.parameters {
-            let valid = flow
-                .parameters()
-                .iter()
-                .any(|definition| match (definition, value) {
-                    (
-                        ParameterDefinition::String {
-                            id: declared,
-                            allowed_values,
-                        },
-                        JoinParameterValue::Text(value),
-                    ) => {
-                        declared.as_ref() == id
-                            && allowed_values
-                                .iter()
-                                .any(|allowed| allowed.as_ref() == value)
-                    }
-                    (
-                        ParameterDefinition::Integer {
-                            id: declared,
-                            min,
-                            max,
-                        },
-                        JoinParameterValue::Integer(value),
-                    ) => declared.as_ref() == id && min <= value && value <= max,
-                    _ => false,
-                });
-            if !valid {
-                return Err(RelatedContextError::InvalidParameter);
-            }
         }
         let joins = &flow.cross_record_plan().joins;
         // Complete preflight before the first lookup, even if another join's
@@ -155,9 +127,6 @@ impl<'a> ProjectedEvaluationContext<'a> {
             .iter()
             .filter(|join| join.source_trace == source_index)
         {
-            if join.consensus.is_some() {
-                return Err(RelatedContextError::UnsupportedReduction);
-            }
             for &index in &join.namespace_parameters {
                 let definition = flow
                     .parameters()
@@ -213,11 +182,20 @@ impl<'a> ProjectedEvaluationContext<'a> {
             };
             related.insert(index, RelatedLookup { join, resolution });
         }
+        let mut scalar = BTreeMap::new();
+        for (&index, lookup) in &related {
+            let target = flow
+                .traces()
+                .get(lookup.join.target_trace)
+                .ok_or(RelatedContextError::InvalidJoinBinding)?;
+            scalar.insert(index, scalar_resolution(lookup, target));
+        }
         Ok(Self {
             flow,
             projected,
             source_index,
             related,
+            scalar,
         })
     }
     pub fn related(&self, join_index: usize) -> Option<&RelatedLookup<'a>> {
@@ -246,34 +224,47 @@ impl<'a> ProjectedEvaluationContext<'a> {
                 join_index,
                 join_id,
             } => {
-                let Some(lookup) = self.related.get(join_index).filter(|lookup| {
+                if !self.related.get(join_index).is_some_and(|lookup| {
                     lookup.join.id == *join_id && lookup.join.target_trace == *trace_index
-                }) else {
-                    return ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan);
-                };
-                if !matches!(
-                    lookup.join.cardinality,
-                    JoinCardinality::ZeroOrOne | JoinCardinality::ExactlyOne
-                ) {
-                    return ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan);
-                }
-                let records = match &lookup.resolution {
-                    RelatedResolution::Unavailable(reason) => {
-                        return ResolvedFieldValue::Unavailable(*reason);
-                    }
-                    RelatedResolution::Records(records) => records,
-                };
-                if records.is_empty() {
-                    return ResolvedFieldValue::Unavailable(UnknownReason::RelatedRecordMissing);
-                }
-                if records.len() != 1 {
-                    return ResolvedFieldValue::Unavailable(UnknownReason::AmbiguousJoin);
-                }
-                let Some(record) = records.iter().next() else {
+                }) {
                     return ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan);
                 };
                 let Some(schema) = self.flow.traces().get(*trace_index) else {
                     return ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan);
+                };
+                if !schema
+                    .fields()
+                    .get(*field_index)
+                    .is_some_and(|field| field.id() == field_id)
+                {
+                    return ResolvedFieldValue::Unavailable(UnknownReason::FieldUnavailable);
+                }
+                let record = match self.scalar.get(join_index) {
+                    Some(ScalarResolution::Unavailable(reason)) => {
+                        return ResolvedFieldValue::Unavailable(*reason);
+                    }
+                    Some(ScalarResolution::Record(record)) => *record,
+                    Some(ScalarResolution::Consensus(tuple)) => {
+                        let Some(position) =
+                            tuple.fields.iter().position(|index| index == field_index)
+                        else {
+                            return ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan);
+                        };
+                        if raw_target && !tuple.raw_consistent {
+                            return ResolvedFieldValue::Unavailable(UnknownReason::AmbiguousJoin);
+                        }
+                        let values = if raw_target {
+                            &tuple.raw
+                        } else {
+                            &tuple.logical
+                        };
+                        return match values.get(position) {
+                            Some(Some(value)) => ResolvedFieldValue::Present(value),
+                            Some(None) => ResolvedFieldValue::Missing,
+                            None => ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan),
+                        };
+                    }
+                    None => return ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan),
                 };
                 if &record.trace_id != schema.id() {
                     return ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan);
@@ -284,7 +275,7 @@ impl<'a> ProjectedEvaluationContext<'a> {
         projected_value(schema, record, field_index, field_id, raw_target)
     }
 }
-fn projected_value<'a>(
+pub(crate) fn projected_value<'a>(
     schema: &CompiledRecordSchema,
     record: &'a ProjectedRecord,
     index: usize,
@@ -312,6 +303,136 @@ fn projected_value<'a>(
         Err(_) => ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan),
     }
 }
+
+/// Predicate/derived access to one target projection, without preparing or
+/// accidentally following that target's unrelated outgoing joins.
+pub(crate) struct ProjectedFieldContext<'a> {
+    pub schema: &'a CompiledRecordSchema,
+    pub record: &'a ProjectedRecord,
+}
+impl ProjectedFieldContext<'_> {
+    fn value(&self, reference: &ResolvedFieldRef, raw: bool) -> ResolvedFieldValue<'_> {
+        match reference {
+            ResolvedFieldRef::Local {
+                field_index,
+                field_id,
+            } => projected_value(self.schema, self.record, *field_index, field_id, raw),
+            ResolvedFieldRef::External { .. } => {
+                ResolvedFieldValue::Unavailable(UnknownReason::UnsupportedPlan)
+            }
+        }
+    }
+}
+impl FieldValueResolver for ProjectedFieldContext<'_> {
+    fn resolve_field(&self, reference: &ResolvedFieldRef) -> ResolvedFieldValue<'_> {
+        self.value(reference, false)
+    }
+    fn resolve_raw_field(&self, reference: &ResolvedFieldRef) -> ResolvedFieldValue<'_> {
+        self.value(reference, true)
+    }
+    fn resolve_derived(&self, index: usize) -> DerivedValue<'_> {
+        match self.schema.derived_values().get(index) {
+            Some(plan) => DerivedValueEvaluator.evaluate(plan, &EvaluationContext { fields: self }),
+            None => DerivedValue::Unknown(UnknownReason::FieldUnavailable),
+        }
+    }
+}
+fn owned_value(value: ResolvedFieldValue<'_>) -> Result<Option<Vec<u8>>, UnknownReason> {
+    match value {
+        ResolvedFieldValue::Present(bytes) => Ok(Some(bytes.to_vec())),
+        ResolvedFieldValue::Missing => Ok(None),
+        ResolvedFieldValue::Unavailable(reason) => Err(reason),
+    }
+}
+fn scalar_resolution<'a>(
+    lookup: &RelatedLookup<'a>,
+    schema: &CompiledRecordSchema,
+) -> ScalarResolution<'a> {
+    let records = match &lookup.resolution {
+        RelatedResolution::Unavailable(reason) => return ScalarResolution::Unavailable(*reason),
+        RelatedResolution::Records(records) => records,
+    };
+    if records.is_empty() {
+        return ScalarResolution::Unavailable(UnknownReason::RelatedRecordMissing);
+    }
+    let single = matches!(
+        lookup.join.cardinality,
+        JoinCardinality::ZeroOrOne | JoinCardinality::ExactlyOne
+    );
+    if single && records.len() > 1 {
+        return ScalarResolution::Unavailable(UnknownReason::AmbiguousJoin);
+    }
+    let Some(consensus) = &lookup.join.consensus else {
+        if !single {
+            return ScalarResolution::Unavailable(UnknownReason::UnsupportedPlan);
+        }
+        return match records.iter().next() {
+            Some(record) => ScalarResolution::Record(record),
+            None => ScalarResolution::Unavailable(UnknownReason::RelatedRecordMissing),
+        };
+    };
+    let mut tuple: Option<ConsensusProjection> = None;
+    let mut unknown = None;
+    for record in records.iter() {
+        if &record.trace_id != schema.id() {
+            return ScalarResolution::Unavailable(UnknownReason::UnsupportedPlan);
+        }
+        let context = ProjectedFieldContext { schema, record };
+        match crate::ExpressionEvaluator.evaluate(
+            &consensus.include_if,
+            &EvaluationContext { fields: &context },
+        ) {
+            crate::TruthValue::False => continue,
+            crate::TruthValue::Unknown(reason) => {
+                unknown.get_or_insert(reason);
+                continue;
+            }
+            crate::TruthValue::True => {}
+        }
+        let mut logical = Vec::with_capacity(consensus.fields.len());
+        let mut raw = Vec::with_capacity(consensus.fields.len());
+        for &index in &consensus.fields {
+            let Some(field) = schema.fields().get(index) else {
+                return ScalarResolution::Unavailable(UnknownReason::UnsupportedPlan);
+            };
+            let logical_value =
+                owned_value(projected_value(schema, record, index, field.id(), false));
+            let raw_value = owned_value(projected_value(schema, record, index, field.id(), true));
+            match (logical_value, raw_value) {
+                (Ok(value), Ok(original)) => {
+                    logical.push(value);
+                    raw.push(original);
+                }
+                (Err(reason), _) | (_, Err(reason)) => {
+                    return ScalarResolution::Unavailable(reason);
+                }
+            }
+        }
+        match &mut tuple {
+            Some(previous) => {
+                if previous.logical != logical {
+                    return ScalarResolution::Unavailable(UnknownReason::AmbiguousJoin);
+                }
+                previous.raw_consistent &= previous.raw == raw;
+            }
+            None => {
+                tuple = Some(ConsensusProjection {
+                    fields: consensus.fields.clone(),
+                    logical,
+                    raw,
+                    raw_consistent: true,
+                })
+            }
+        }
+    }
+    if let Some(reason) = unknown {
+        return ScalarResolution::Unavailable(reason);
+    }
+    match tuple {
+        Some(tuple) => ScalarResolution::Consensus(tuple),
+        None => ScalarResolution::Unavailable(UnknownReason::RelatedRecordMissing),
+    }
+}
 impl FieldValueResolver for ProjectedEvaluationContext<'_> {
     fn resolve_field(&self, reference: &ResolvedFieldRef) -> ResolvedFieldValue<'_> {
         self.resolve_value(reference, false)
@@ -328,4 +449,53 @@ impl FieldValueResolver for ProjectedEvaluationContext<'_> {
             None => DerivedValue::Unknown(UnknownReason::FieldUnavailable),
         }
     }
+}
+
+pub(crate) fn validate_cross_inputs<'a>(
+    flow: &CompiledFlowSchema,
+    inputs: &CrossRecordInputs<'a>,
+) -> Result<HashSet<&'a TraceId>, RelatedContextError> {
+    let mut available = HashSet::new();
+    for id in inputs.available_traces {
+        if flow.trace(id).is_none() {
+            return Err(RelatedContextError::InvalidTraceInput);
+        }
+        if !available.insert(id) {
+            return Err(RelatedContextError::DuplicateTraceInput);
+        }
+    }
+    // Validate all supplied bindings, including otherwise unused values:
+    // no ignored unknown parameters, no default from an allowed domain.
+    for (id, value) in inputs.parameters {
+        let valid = flow
+            .parameters()
+            .iter()
+            .any(|definition| match (definition, value) {
+                (
+                    ParameterDefinition::String {
+                        id: declared,
+                        allowed_values,
+                    },
+                    JoinParameterValue::Text(value),
+                ) => {
+                    declared.as_ref() == id
+                        && allowed_values
+                            .iter()
+                            .any(|allowed| allowed.as_ref() == value)
+                }
+                (
+                    ParameterDefinition::Integer {
+                        id: declared,
+                        min,
+                        max,
+                    },
+                    JoinParameterValue::Integer(value),
+                ) => declared.as_ref() == id && min <= value && value <= max,
+                _ => false,
+            });
+        if !valid {
+            return Err(RelatedContextError::InvalidParameter);
+        }
+    }
+    Ok(available)
 }

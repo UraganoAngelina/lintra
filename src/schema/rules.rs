@@ -1,13 +1,26 @@
 //! Local rule lowering inside compiler: refs/literals/templates are frozen first.
 use super::*;
 use crate::schema::{
-    expression::{compile_local_expr, operator_plan, resolve_local_ref},
+    expression::{compile_expr, compile_local_expr, operator_plan},
+    reference_binding::ReferenceBindings,
     rule_template::{self, Part, Token},
 };
 
 type Issue = (Code, String);
 impl Checks<'_> {
-    pub(super) fn rules(&mut self, record: &RawRecordSchema) {
+    pub(super) fn rules(
+        &mut self,
+        record: &RawRecordSchema,
+        trace_index: usize,
+        joins: &[CompiledJoinSpec],
+    ) {
+        let bindings = match ReferenceBindings::cross(self.raw, trace_index, joins) {
+            Ok(bindings) => bindings,
+            Err((code, message)) => {
+                self.error(code, Some(&record.id), None, message);
+                return;
+            }
+        };
         let mut ids = HashSet::new();
         for rule in &record.rules {
             if rule.id.is_empty() || rule.id.trim() != rule.id || !ids.insert(&rule.id) {
@@ -22,10 +35,10 @@ impl Checks<'_> {
             // target does not get an independent, weaker validation dialect.
             for assertion in &rule.assertions {
                 if let RawAssertion::Constraint { field, constraint } = assertion
-                    && let Ok(ResolvedFieldRef::Local { field_index, .. }) =
-                        resolve_local_ref(field, record)
+                    && let Ok(reference) = bindings.resolve(field)
+                    && let Ok(field) = bindings.field(&reference)
                 {
-                    let mut spec = record.fields[field_index].clone();
+                    let mut spec = field.clone();
                     spec.constraints = vec![constraint.clone()];
                     let width = match spec.physical {
                         RawPhysical::Numeric { length, .. }
@@ -37,7 +50,7 @@ impl Checks<'_> {
                 }
             }
             if let Err((code, message)) =
-                compile_rule(rule, record, &self.regexes, &self.raw.reference_data)
+                compile_rule(rule, &bindings, &self.regexes, &self.raw.reference_data)
             {
                 self.error(code, Some(&record.id), None, message);
             }
@@ -48,16 +61,17 @@ pub(super) fn compile_rules(
     record: &RawRecordSchema,
     regexes: &RegexPlans,
     dependencies: &[RawReferenceDataDependency],
+    bindings: &ReferenceBindings<'_>,
 ) -> Result<Vec<CompiledRule>, Issue> {
     record
         .rules
         .iter()
-        .map(|rule| compile_rule(rule, record, regexes, dependencies))
+        .map(|rule| compile_rule(rule, bindings, regexes, dependencies))
         .collect()
 }
 fn compile_rule(
     rule: &RawRule,
-    record: &RawRecordSchema,
+    bindings: &ReferenceBindings<'_>,
     regexes: &RegexPlans,
     dependencies: &[RawReferenceDataDependency],
 ) -> Result<CompiledRule, Issue> {
@@ -67,11 +81,11 @@ fn compile_rule(
             "rule assertions must be nonempty".into(),
         ));
     }
-    let when = compile_local_expr(&rule.when, record)?;
+    let when = compile_expr(&rule.when, bindings)?;
     let assertions = rule
         .assertions
         .iter()
-        .map(|assertion| compile_assertion(assertion, record, regexes, dependencies))
+        .map(|assertion| compile_assertion(assertion, bindings, regexes, dependencies))
         .collect::<Result<Vec<_>, _>>()?;
     let parts = rule_template::parse(&rule.message_template)
         .map_err(|message| (Code::InvalidSchemaValue, message.into()))?;
@@ -102,19 +116,20 @@ fn compile_rule(
 }
 fn compile_assertion(
     raw: &RawAssertion,
-    record: &RawRecordSchema,
+    bindings: &ReferenceBindings<'_>,
     regexes: &RegexPlans,
     dependencies: &[RawReferenceDataDependency],
 ) -> Result<CompiledAssertion, Issue> {
+    let record = bindings.record;
     Ok(match raw {
         RawAssertion::FieldPresent { field } => {
-            CompiledAssertion::FieldPresent(resolve_local_ref(field, record)?)
+            CompiledAssertion::FieldPresent(bindings.resolve(field)?)
         }
         RawAssertion::ConditionTrue { condition } => {
-            CompiledAssertion::ConditionTrue(compile_local_expr(condition, record)?)
+            CompiledAssertion::ConditionTrue(compile_expr(condition, bindings)?)
         }
         RawAssertion::Constraint { field, constraint } => CompiledAssertion::Constraint {
-            field: resolve_local_ref(field, record)?,
+            field: bindings.resolve(field)?,
             constraint: compile_constraint(constraint, regexes, dependencies)
                 .map_err(|code| (code, "rule constraint is not supported or valid".into()))?,
         },
@@ -126,10 +141,10 @@ fn compile_assertion(
                 ));
             }
             CompiledAssertion::EqualsConcat {
-                field: resolve_local_ref(field, record)?,
+                field: bindings.resolve(field)?,
                 parts: parts
                     .iter()
-                    .map(|part| resolve_local_ref(part, record))
+                    .map(|part| bindings.resolve(part))
                     .collect::<Result<_, _>>()?,
             }
         }
@@ -145,9 +160,9 @@ fn compile_assertion(
                 RawMetadataBindingValueType::Date => ValueType::Date,
             };
             CompiledAssertion::FieldCompare {
-                left: operand(left, value_type, record)?,
+                left: operand(left, value_type, bindings)?,
                 operator: operator_plan(operator),
-                right: operand(right, value_type, record)?,
+                right: operand(right, value_type, bindings)?,
                 value_type,
             }
         }
@@ -171,7 +186,7 @@ fn compile_assertion(
             source_format,
             year_digits,
         } => {
-            let field = resolve_local_ref(field, record)?;
+            let field = bindings.resolve(field)?;
             let range = source_range(*start, *length)
                 .map_err(|code| (code, "invalid year assertion substring range".into()))?;
             let year_digits = match year_digits {
@@ -184,13 +199,7 @@ fn compile_assertion(
                     ));
                 }
             };
-            let ResolvedFieldRef::Local { field_index, .. } = &field else {
-                return Err((
-                    Code::UnsupportedConstruct,
-                    "year assertion requires a local target".into(),
-                ));
-            };
-            let width = match record.fields[*field_index].physical {
+            let width = match bindings.field(&field)?.physical {
                 RawPhysical::Numeric { length, .. }
                 | RawPhysical::Alphanumeric { length, .. }
                 | RawPhysical::Date { length, .. }
@@ -214,23 +223,39 @@ fn compile_assertion(
             CompiledAssertion::SubstringEqualsDerivedYear {
                 field,
                 range,
-                source: crate::schema::derived::date_ref(source_ref, record)?,
+                source: {
+                    let source = bindings.resolve(source_ref)?;
+                    if !matches!(bindings.field(&source)?.physical, RawPhysical::Date { .. }) {
+                        return Err((
+                            Code::ConstraintTypeMismatch,
+                            "year assertion source requires a date field".into(),
+                        ));
+                    }
+                    source
+                },
                 format: crate::schema::derived::date_format_plan(source_format),
                 year_digits,
             }
         }
-        _ => {
-            return Err((
-                Code::UnsupportedConstruct,
-                "rule assertion requires an executor not delivered in the local subset".into(),
-            ));
+        RawAssertion::RecordExists { join } => CompiledAssertion::RecordExists {
+            join_index: bindings.join(join)?.0,
+        },
+        RawAssertion::SetExists { join, predicate } => {
+            bindings.require_sets()?;
+            let (join_index, plan) = bindings.join(join)?;
+            let target = bindings.target(plan.target_trace)?;
+            // Predicates are explicitly local to the target, not nested joins.
+            CompiledAssertion::SetExists {
+                join_index,
+                predicate: compile_local_expr(predicate, target.record)?,
+            }
         }
     })
 }
 fn operand(
     raw: &RawOperand,
     kind: ValueType,
-    record: &RawRecordSchema,
+    bindings: &ReferenceBindings<'_>,
 ) -> Result<CompiledOperand, Issue> {
     let mismatch = || {
         (
@@ -240,20 +265,16 @@ fn operand(
     };
     Ok(match raw {
         RawOperand::Ref(reference) => {
-            let field = resolve_local_ref(reference, record)?;
-            let ResolvedFieldRef::Local { field_index, .. } = &field else {
-                return Err(mismatch());
-            };
+            let field = bindings.resolve(reference)?;
             let compatible = match kind {
                 ValueType::Bytes => true,
                 ValueType::Integer => matches!(
-                    record.fields[*field_index].physical,
+                    bindings.field(&field)?.physical,
                     RawPhysical::Numeric { .. }
                 ),
-                ValueType::Date => matches!(
-                    record.fields[*field_index].physical,
-                    RawPhysical::Date { .. }
-                ),
+                ValueType::Date => {
+                    matches!(bindings.field(&field)?.physical, RawPhysical::Date { .. })
+                }
             };
             if !compatible {
                 return Err(mismatch());

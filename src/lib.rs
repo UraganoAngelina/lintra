@@ -284,5 +284,10 @@ pub use engine::projected_context::{
     CrossRecordInputs, JoinParameterValue, ProjectedEvaluationContext, RelatedContextError,
     RelatedLookup, RelatedResolution,
 };
+
+pub use engine::flow_validator::{
+    CrossRecordEvaluationObserver, CrossRecordPassSummary, CrossRecordValidationError,
+    CrossRuleOutcome, validate_cross_record_rules,
+};
 pub use schema::expression::{FieldReferenceError, resolve_field_reference};
 pub use schema::raw::{RawRef, RawRefExternal, RawRefLocal};

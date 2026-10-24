@@ -124,7 +124,7 @@ fn field<'a>(
         .filter(|field| field.id() == field_id)
         .ok_or(RuleDiagnosticError::InvalidPlan)
 }
-fn expression_refs<'a>(
+pub(crate) fn expression_refs<'a>(
     expression: &'a CompiledExpr,
     schema: &'a CompiledRecordSchema,
     refs: &mut Vec<&'a ResolvedFieldRef>,
@@ -180,7 +180,7 @@ fn derived_refs<'a>(
     }
     Ok(())
 }
-fn assertion_refs<'a>(
+pub(crate) fn assertion_refs<'a>(
     assertion: &'a CompiledAssertion,
     schema: &'a CompiledRecordSchema,
     refs: &mut Vec<&'a ResolvedFieldRef>,
@@ -225,7 +225,7 @@ fn quote(bytes: &[u8]) -> Result<String, RuleDiagnosticError> {
 }
 /// Descriptive text only: controlled operators and quoted literal bytes, no
 /// runtime field_index, Debug AST output, script or recursive interpolation.
-fn condition_text(
+pub(crate) fn condition_text(
     expression: &CompiledExpr,
     schema: &CompiledRecordSchema,
 ) -> Result<String, RuleDiagnosticError> {

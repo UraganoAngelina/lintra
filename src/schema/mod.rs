@@ -14,6 +14,8 @@ pub(crate) mod canonical;
 pub(crate) mod registry;
 
 pub(crate) mod expression;
+pub(crate) mod reference_binding;
+pub(crate) mod rule_dependencies;
 
 pub(crate) mod presence;
 
