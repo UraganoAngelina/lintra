@@ -241,4 +241,33 @@ x86_64-pc-windows-gnu passati con --offline --locked/CARGO_HOME isolata.
 git diff --check passato. Manifest33 hash senza mismatch, baseline90 identica
 a6e4b411. I gate sono stati ripetuti dopo l'integrazione del nuovo harness;
 nessun expected precedente modificato per risolvere il primo rifiuto.
-Gate nativo Linux/MSVC ancora da eseguire sul commit pubblicato.
+Gate nativo Linux/MSVC avviato sul commit pubblicato; esito non accessibile,
+come dettagliato sotto. Nessuna attestazione di successo.
+
+
+### Pubblicazione, CI remota e handoff finale della sessione
+
+Codice52762c8525b878a72c7a59f9589c207a17e1efc6 pubblicato su
+work/p1-foundations il2026-10-25. Il push include79b31f3 (chiusura13-07).
+Sono stati contabilizzati tre tentativi, con intervalli≥45s:
+
+1. POST dispatch: timeout del resolver DNS prima di contattare l’API GitHub.
+2. POST dispatch: risposta di successo senza body, circa12:18 UTC.
+3. GET check-runs dello SHA52762c8, dopo oltre8 minuti: timeout di connessione
+   dopo10s. Nessun risultato job ricevuto.
+
+Non è stato effettuato un quarto tentativo, né un nuovo gate per aggirare il
+limite. Il timeout non dimostra un test fallito o una CI positiva. Run/job non
+identificati; Linux/MSVC **non verificati**. La CI13-07 resta invece positivamente
+verificata come riportato nella sezione1. Nessun risultato storico modificato.
+
+**T-P13-08 resta IN_PROGRESS; M6 non dichiarata.** Il golden reale DET§152 e
+la memoria sono superati localmente; manca soltanto il gate nativo effettivo.
+Alla ripresa autorizzata verificare il run già avviato sul commit esatto, senza
+duplicare il codice. Nessuna task ulteriore viene avviata: stop della ratifica.
+
+[Stato di avanzamento completo](PROJECT_PROGRESS_2026-10-25.md):84/140 DONE,60%;
+54 non iniziate, T-P2-03 parziale e13-08 locale verificata/native pendente.
+Il manifest33 hash e i90 file protetti sono stati ricontrollati dopo il push:
+identici alle evidenze locali. La modifica esterna alla newline della proposta
+reference rimane esclusa da staging/commit.

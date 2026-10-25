@@ -21,8 +21,12 @@ altri costrutti non supportati. Il componente è scope esplicito, non Full SIOC.
 [ratifica](docs/verification/CNF-SIOC-REFERENTIAL-G0-01-ratification.md).
 
 STOP dopo T-P13-08 secondo l'ultima ratifica: nessuna task successiva senza
-nuova autorizzazione. Gate nativo da avviare sul commit pubblicato, massimo tre
-richieste ≥45s. Newline esterna proposta reference ancora preservata/non staged.
+nuova autorizzazione. Codice 52762c8525b878a72c7a59f9589c207a17e1efc6 pubblicato.
+Gate nativo: tre tentativi esauriti con intervalli ≥45s: primo dispatch fermato
+prima dell’API per timeout DNS, secondo dispatch accettato, GET finale dopo oltre
+otto minuti in timeout di connessione. Run/job ed esito non verificati; nessuna
+quarta chiamata. Newline esterna proposta reference preservata/non staged.
+[Avanzamento aggiornato](docs/verification/PROJECT_PROGRESS_2026-10-25.md).
 
 ## Registro storico — chiusura 13-07 e conflitto G0 poi ratificato
 
@@ -1633,7 +1637,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-05 | DONE | 2026-10-24 | Compiler/projection/passata cross reali, 575 test/67 suite e gate locali passati; CI 40089317003 Linux/MSVC success; [dossier](docs/verification/T-P13-05.md) |
 | T-P13-06 | DONE | 2026-10-24 | Core due passate: 589 test/68 suite, CI 40091666797 Linux/MSVC success su 134b593; [report](docs/verification/T-P13-06-flow-validator.md) |
 | T-P13-07 | DONE | 2026-10-25 | 602 test/70 suite; CI 40183843102 Linux/MSVC success su 5dbb92c; [report](docs/verification/T-P13-07-full-service.md) |
-| T-P13-08 | IN_PROGRESS | 2026-10-25 | Ratifica applicata, .2/componente, golden reali e memoria; 611/72 suite locali, CI da eseguire; [report](docs/verification/T-P13-08-goldens-memory.md) |
+| T-P13-08 | IN_PROGRESS | 2026-10-25 | Ratifica applicata, .2/componente, golden reali e memoria; 611/72 suite locali; codice 52762c8 pubblicato, dispatch accettato, lettura CI in timeout e limite tre tentativi esaurito; [report](docs/verification/T-P13-08-goldens-memory.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -3796,3 +3800,26 @@ modifiche al profilo normativo/golden reale. Nessun task successivo/M6 prima del
 - BLOCCANTI: conflitto risolto dalla ratifica. Manca solo gate nativo effettivo.
 - NEXT: chiudere13-08/M6 soltanto dopo CI positiva, aggiornare evidenze e fermarsi.
   Stop specifico prevale sul workflow automatico; nessuna task ulteriore autorizzata.
+
+
+## HANDOFF §15.3 — T-P13-08, pubblicazione e gate remoto 2026-10-25
+
+- TASK/STATUS: IN_PROGRESS, implementazione e gate locali conclusi. Native
+  Linux/MSVC non verificata: non dichiarare DONE o M6. Progresso84/140=60%.
+- GIT: codice52762c8525b878a72c7a59f9589c207a17e1efc6 pubblicato sul branch
+  work/p1-foundations, incluso il precedente79b31f3 di chiusura13-07.
+- CI: primo tentativo POST fallito nel resolver DNS prima dell’API; secondo POST
+  dispatch accettato circa12:18 UTC; terzo GET check-runs dello SHA esatto dopo
+  oltre8 minuti fallito per connect timeout10s. Non è un fallimento dei test.
+  Tre tentativi contabilizzati prudenzialmente, intervalli≥45s; nessuna quarta
+  chiamata, nessun run/job identificato o risultato presunto.
+- EVIDENZE: gate locale611 test/72 suite già superato sul codice pubblicato;
+  manifest33 e baseline90 ricontrollati dopo il push, senza differenze.
+- FILE: report13-08/stato aggiornati, nuovi snapshot avanzamento2026-10-25.md/json;
+  artefatti normativi e codice del commit CI invariati. Newline esterna preservata.
+- BLOCCANTI: soltanto evidenza CI remota non accessibile entro il limite richiesto.
+  Nessun conflitto contrattuale residuo nelle relazioni ratificate.
+- NEXT: alla ripresa autorizzata leggere il gate già avviato sullo stesso SHA,
+  senza duplicare implementazione o presumere successo. Solo dopo esito positivo
+  chiudere13-08/M6 nello scope referenziale dichiarato; in caso di fallimento
+  correggere soltanto difetti pertinenti. Non avviare ulteriori task: stop specifico.
