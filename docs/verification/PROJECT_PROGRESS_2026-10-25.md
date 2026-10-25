@@ -1,7 +1,7 @@
 # Lintra — avanzamento al 2026-10-25
 
-**84 task verificate su 140: 60%.** T-P13-08 ha superato il gate locale,
-ma la CI nativa è ancora da verificare. Non è inclusa nel conteggio DONE.
+**85 task verificate su140:60,7%.** T-P13-08 ha superato anche la CI nativa:
+run40192491629, Linux e MSVC completed/success sul commit52762c8.
 Il conteggio esatto per tutti gli ID è nello [snapshot JSON](PROJECT_PROGRESS_2026-10-25.json).
 Ogni task pesa uno: la percentuale non misura ore, costi o tempo residuo.
 Le consegne con scope ratificato contano per quel solo scope.
@@ -45,7 +45,8 @@ verificati. Nessuna modifica al runtime Rust di produzione in questa task.
   Slint (9), hardening/benchmark (6), documentazione operativa (4), persistenza
   core (12), integrazione CAD (12).
 - T-P2-03 resta parziale con residuo approvato relativo ai payload applicativi.
-- T-P13-08 attende l'esito CI Linux/MSVC; M6 non è dichiarata prima del gate.
+- T-P13-08 e M6 nello scope referenziale ratificato sono verificate: non
+  costituiscono certificazione dell’intero SIOC.
 - Restano i rinvii G0: dataset ufficiali e capability normative non supportate,
   lookup metadata/tempo, regole cliniche e storico secondo le decisioni aperte.
   Il profilo SIOC .2 completo conserva persistence.audit e continua a essere
@@ -55,13 +56,13 @@ La persistenza del summary/audit su file è reale; il repository storico persist
 core rimane da implementare. Non sono ancora consegnati prodotto completo,
 certificazione SIOC/CAD, UI o distribuzione finale.
 
-## Workflow
+## Workflow precedente, superato dal mandato di ripresa sotto
 
 Commit e push sul branch work/p1-foundations autorizzati, CI automatica entro tre
 chiamate e intervalli di almeno 45 secondi. La ratifica più recente impone uno
 stop dopo T-P13-08: nessuna task successiva verrà avviata senza nuova autorizzazione.
 
-## Esito operativo del gate remoto
+## Storico — esito operativo del gate remoto nella sessione precedente
 
 Codice52762c8525b878a72c7a59f9589c207a17e1efc6 pubblicato. Tre tentativi
 contabilizzati: timeout DNS prima dell’API, dispatch accettato, lettura finale
@@ -69,3 +70,11 @@ dello SHA esatto in timeout di connessione dopo oltre8 minuti. Nessuna quarta
 chiamata. Job Linux/MSVC non verificati, nessun esito presunto. T-P13-08 rimane
 aperta soltanto sul gate nativo; implementazione/golden/memoria locali conclusi.
 La CI T-P13-07 è invece verificata positiva: run40183843102, entrambi i target.
+
+## Ripresa autorizzata e verifica positiva
+
+Il nuovo mandato supera lo stop dopo13-08. Una GET dello SHA52762c8 ha verificato
+CI40192491629: job Linux121166275121 e MSVC121166274875 completed/success.
+I timeout descritti sopra restano storici; esito ottenuto alla ripresa senza
+nuovo dispatch. T-P13-08 DONE, M6 REACHED nello scope ratificato.
+Next T-P14-01 preflight, avanzamento automatico con gate/prerequisiti verificati.

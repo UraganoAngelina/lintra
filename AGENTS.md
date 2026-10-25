@@ -171,3 +171,11 @@ Ratifica CNF-SIOC-REFERENTIAL-G0-01 — 2026-10-25:
 - Memoria indipendente; 13-08/M6 solo dopo golden reale e tutti i gate effettivi.
 - STOP al termine del perimetro T-P13-08: attendere nuova autorizzazione prima
   di ulteriori task. Questo stop specifico prevale sul workflow automatico generale.
+
+Mandato successivo — ripresa del workflow dopo T-P13-08, 2026-10-25:
+- L’autore ordina «procedi con il workflow concordato a sviluppare le task».
+- Riprendere dalla verifica del gate13-08 già avviato; se positivo, chiudere
+  la task e avanzare automaticamente con prerequisiti/contratti verificati.
+- Superato lo stop specifico dopo13-08. Restano gate, spiegazioni dettagliate,
+  esclusione Superpowers/subagenti/background e limite tre chiamate Actions
+  con intervalli≥45s nella ripresa autorizzata. Nessuna baseline riscritta.

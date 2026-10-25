@@ -3,6 +3,32 @@
 Consuntivo aggiornato al **2026-10-25**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P13-08 verificata; preflight T-P14-01
+
+2026-10-25: ripresa autorizzata dall’autore, incluso avanzamento automatico
+quando gate e prerequisiti sono chiari. Superato lo stop specifico dopo13-08.
+CI [40192491629](https://github.com/UraganoAngelina/lintra/actions/runs/40192491629)
+su52762c8525b878a72c7a59f9589c207a17e1efc6: Linux job121166275121 e Windows
+MSVC job121166274875 entrambi completed/success, letti direttamente alla prima
+chiamata della ripresa. Non riscritto lo storico dei precedenti timeout.
+611 test/72 suite e tutti i gate locali già passati sullo stesso codice.
+**85/140 DONE = 60,7%**. T-P13-08 DONE; M6 raggiunta nello scope referenziale
+ratificato DET§152, non certificazione dell’intero SIOC o chiusura dei rinvii G0.
+
+Nuova revisione structural-minimal.2 e componente references-golden.1, quattro
+REL-* esplicite e policy revoking_act corrette. .1/FROZEN e90 file protetti
+invariati;33 hash nuovi verificati. Completo.2 conserva persistence.audit e
+continua a essere rifiutato per capability mancanti. Golden0/5/1 errori reali,
+memoria con contesto7040904 byte invariato per width32→4096 a4096 righe/trace.
+[Report/handoff](docs/verification/T-P13-08-goldens-memory.md),
+[hash](docs/verification/T-P13-08-artifact-hashes.json),
+[avanzamento](docs/verification/PROJECT_PROGRESS_2026-10-25.md).
+
+Next autorizzata: preflight T-P14-01 importer XLSX; T-P14-03 già DONE.
+Preservata la modifica esterna della newline nella proposta reference.
+
+## Registro storico — T-P13-08 locale e timeout remoto
+
 ## Frontiera corrente — T-P13-08 locale verificata; gate nativo pendente
 
 2026-10-25: ratifica CNF-SIOC-REFERENTIAL-G0-01 registrata; nuova revisione
@@ -1491,10 +1517,10 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 |---|---|---|
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
-| QG-1 — controlli locali | PASS per T-P11-03 | fmt/check/clippy/test/release/GNU, 471 test in 56 suite |
-| QG-2 — CI Linux/Windows | PASS T-P11-03 | CI 39930225299 su 1b40c0e, workflow/job Linux GNU e Windows MSVC completed/success |
-| QG-3 — architettura | PASS nel perimetro LocalOnly ratificato | Moduli privati, compiled con sola lettura e costruzione privata, piani tipizzati senza evaluator; nessuna logica normativa o backend nel core |
-| QG-4 — golden | PASS locale e CI estesa | 12 scenari/quattro profili, oracolo derivati indipendente, ripetizione byte-identica; CI 39920597392 Linux/Windows success, vecchi attesi invariati |
+| QG-1 — controlli locali | PASS per T-P13-08 | fmt/check/clippy/test/release/GNU, 611 test in72 suite |
+| QG-2 — CI Linux/Windows | PASS T-P13-08 | CI40192491629 su52762c8, Linux GNU e Windows MSVC completed/success letti direttamente |
+| QG-3 — architettura | PASS nello scope LocalOnly/Full ratificato | Compiled non forgiabili, DSL/projection/Context Store generici; nessuna norma hardcoded, nessuna dipendenza engine→application |
+| QG-4 — golden | PASS T-P13-08 | Scenari precedenti invariati più3 normativi SIOC referenziali nel percorso produttivo; oracolo indipendente, CI40192491629 Linux/MSVC success |
 | QG-8 — documenti | PASS con revisione autorizzata T-P6-03 | DET §44 e prompt kit aggiornati per mandato esplicito; hash prima/dopo registrati; ARCH/Piano invariati; nessun residuo fisico formato 1 |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
 | G-SIOC-HIST | OPEN_POLICY | DEC-SIOC-HIST-01, non blocca scaffold |
@@ -1542,7 +1568,8 @@ contratti approvati e rinvii secondo la procedura di T-P0-09.
 | M2 | LOCAL_SCOPE_VERIFIED | P3–P6 verificate nello scope corrente; non chiude il residuo M1 |
 | M3 | REACHED — LocalOnly | Chiusura nativa T-P8-06, CI 39747270986 su 90528c4; perimetro DET §151 ratificato |
 | M4 | LOCAL_SCOPE_VERIFIED | P9–P12 verificate, ultima CI 39976689575 Linux/MSVC success; rinvii G0 e capacità non supportate espliciti, nessuna certificazione normativa completa |
-| M5–M9 | NOT_REACHED | Restano release, Full, tooling, UI e hardening |
+| M6 | REACHED — scope referenziale ratificato | DET§152: due passate/projection/join/policy/report, golden cross-trace reale e memoria; CI40192491629 Linux/MSVC success. Non certifica Full SIOC/G0 residuo |
+| M5, M7–M9 | NOT_REACHED | Restano release, tooling, UI e hardening |
 
 `DONE` riguarda i criteri e lo scope ratificato della singola task; non
 chiude automaticamente milestone o capacità future. G0 è approvato con rinvii.
@@ -1637,7 +1664,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-05 | DONE | 2026-10-24 | Compiler/projection/passata cross reali, 575 test/67 suite e gate locali passati; CI 40089317003 Linux/MSVC success; [dossier](docs/verification/T-P13-05.md) |
 | T-P13-06 | DONE | 2026-10-24 | Core due passate: 589 test/68 suite, CI 40091666797 Linux/MSVC success su 134b593; [report](docs/verification/T-P13-06-flow-validator.md) |
 | T-P13-07 | DONE | 2026-10-25 | 602 test/70 suite; CI 40183843102 Linux/MSVC success su 5dbb92c; [report](docs/verification/T-P13-07-full-service.md) |
-| T-P13-08 | IN_PROGRESS | 2026-10-25 | Ratifica applicata, .2/componente, golden reali e memoria; 611/72 suite locali; codice 52762c8 pubblicato, dispatch accettato, lettura CI in timeout e limite tre tentativi esaurito; [report](docs/verification/T-P13-08-goldens-memory.md) |
+| T-P13-08 | DONE | 2026-10-25 | 611/72 suite, golden referenziale reale e memoria; CI40192491629 Linux/MSVC success su52762c8, letta alla ripresa; [report](docs/verification/T-P13-08-goldens-memory.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -3823,3 +3850,18 @@ modifiche al profilo normativo/golden reale. Nessun task successivo/M6 prima del
   senza duplicare implementazione o presumere successo. Solo dopo esito positivo
   chiudere13-08/M6 nello scope referenziale dichiarato; in caso di fallimento
   correggere soltanto difetti pertinenti. Non avviare ulteriori task: stop specifico.
+
+
+## HANDOFF §15.3 — chiusura T-P13-08 e ripresa T-P14-01
+
+- TASK/STATUS: T-P13-08 DONE. Alla ripresa autorizzata, CI40192491629 sul commit
+  codice52762c8525b878a72c7a59f9589c207a17e1efc6 letta direttamente: Linux
+  121166275121 e MSVC121166274875 completed/success. Una chiamata GET; nessun
+  nuovo dispatch. I timeout storici restano registrati come tali.
+- EVIDENZE: 611 test/72 suite, gate locali e nativi positivi; golden reale e
+  memoria attiva verificati. M6 REACHED nello scope ratificato,85/140 DONE60,7%.
+- LIMITI: componente operativo esplicito, non Full SIOC; .2 completo conserva
+  capability mancanti e rifiuto, persistenza/G0 clinico/dataset/UI ancora futuri.
+- NEXT: T-P14-01 preflight XLSX, autorizzata dal nuovo mandato che supera lo stop
+  precedente. Verificare sorgenti/mapping, nessuna interpretazione normativa
+  automatica. T-P14-03 già conclusa, non ripeterla. Modifica esterna preservata.

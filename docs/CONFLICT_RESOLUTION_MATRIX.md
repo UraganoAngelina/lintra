@@ -34,3 +34,8 @@ Le task di implementazione e le decisioni tecniche su backend storage/gestione c
 | ID | Conflitto | Decisione successiva | Stato |
 |---|---|---|---|
 | CNF-SIOC-REFERENTIAL-G0-01 | Obblighi parent G0 senza regole esplicite; atto revocante negativo N/A contro obbligo E012 | Nuova revisione operativa derivata con quattro REL-* e policy revoking_act corretta; no controlli impliciti; .1/FROZEN invariati; sottoinsieme golden tracciato autorizzato | APPROVED 2026-10-25; [ratifica](verification/CNF-SIOC-REFERENTIAL-G0-01-ratification.md); implementazione/gate da verificare |
+
+Chiusura T-P13-08 verificata2026-10-25 alla ripresa: CNF-SIOC-REFERENTIAL-G0-01
+implementata in structural-minimal.2/componente tracciato, gate locale611 test e
+CI40192491629 Linux/MSVC success sul codice52762c8. Nessuna modifica alle fonti
+protette; rinvii/capability del completo conservati. Nuovo mandato supera lo stop.

@@ -271,3 +271,18 @@ duplicare il codice. Nessuna task ulteriore viene avviata: stop della ratifica.
 Il manifest33 hash e i90 file protetti sono stati ricontrollati dopo il push:
 identici alle evidenze locali. La modifica esterna alla newline della proposta
 reference rimane esclusa da staging/commit.
+
+
+### Chiusura verificata alla ripresa autorizzata — 2026-10-25
+
+Il nuovo mandato autorizza lettura del gate già avviato e prosecuzione automatica
+oltre lo stop precedente. Prima chiamata GET della ripresa sullo SHA esatto:
+[CI40192491629](https://github.com/UraganoAngelina/lintra/actions/runs/40192491629),
+Linux job121166275121 e MSVC job121166274875 entrambi completed/success sul codice
+52762c8525b878a72c7a59f9589c207a17e1efc6. Nessun nuovo dispatch. I timeout della
+sessione precedente restano evidenze storiche, non sono reinterpretati.
+
+**T-P13-08 DONE; M6 raggiunta nello scope referenziale ratificato di DET§152.**
+Tutti i criteri obbligatori golden reale, memoria e gate sono verificati;
+non costituisce certificazione Full SIOC né chiusura dei rinvii già elencati.
+Avanzamento85/140=60,7%. Next T-P14-01 preflight, secondo nuovo mandato.
