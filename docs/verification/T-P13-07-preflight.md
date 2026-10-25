@@ -79,3 +79,12 @@ Windows GNU e CI nativa Linux/MSVC; baseline90 intatta.
 Nessun conflitto nuovo da sottoporre: sono integrazioni minime necessarie per
 consegnare il servizio Full e i requisiti già ratificati, con impatto pubblico
 esplicitato prima del codice. T-P13-08/G0 reale, PERSIST e P16 restano task distinte.
+
+### Port observer cross opzionale
+
+Il core 13-06 aggrega già le evidenze cross reali dentro FullCrossObserver.
+Rendere opzionale il port observer esterno del FlowExecutionPorts: l'applicazione
+può consumare gli artifacts senza inventare un NoOp o duplicare aggregati.
+I consumer con callback reale passano Some(observer), comportamento invariato.
+È una variazione del campo pubblico appena introdotto, dichiarata qui prima
+della modifica; test core aggiornati e integrazione servizio esercitata.

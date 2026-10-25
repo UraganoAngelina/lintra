@@ -18,6 +18,7 @@ pub enum SummaryBuildError {
     CounterOverflow(SummaryCounter),
     UnreportedReferenceEvidence,
     UnreportedFullEvidence,
+    InconsistentFullAudit,
     InconsistentReferenceAudit,
     PreviousFailure,
     InconsistentRecordCounts,
@@ -33,6 +34,9 @@ pub enum SummaryBuildError {
 impl fmt::Display for SummaryBuildError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::InconsistentFullAudit => {
+                f.write_str("Full evidence is inconsistent with the run")
+            }
             Self::UnreportedFullEvidence => {
                 f.write_str("Full execution requires an explicit evidence summary contract")
             }
@@ -124,6 +128,11 @@ impl ValidationSummary {
                 return Err(SummaryBuildError::IncompleteInput);
             }
         }
+        match (&self.full_validation, self.validation_mode) {
+            (Some(audit), super::ValidationMode::Full) if audit.valid(self) => {}
+            (None, super::ValidationMode::LocalOnly) => {}
+            _ => return Err(SummaryBuildError::InconsistentFullAudit),
+        }
         if let Some(audit) = &self.reference_validation
             && (!audit.valid(interrupted || self.skipped_rules > 0)
                 || audit.verified_versions() != self.reference_data_versions
@@ -157,6 +166,7 @@ pub struct ValidationSummaryBuilder {
     failed: bool,
     unreported_reference_evidence: bool,
     unreported_full_evidence: bool,
+    expected_full: Option<FullExecutionExpectation>,
 }
 impl ValidationSummaryBuilder {
     pub fn new(key: SchemaKey, scope: ScopeSummary) -> Self {
@@ -175,6 +185,7 @@ impl ValidationSummaryBuilder {
             failed: false,
             unreported_reference_evidence: false,
             unreported_full_evidence: false,
+            expected_full: None,
         }
     }
     fn increment(&mut self, counter: SummaryCounter) -> Result<(), SummaryBuildError> {
@@ -265,6 +276,8 @@ impl ValidationSummaryBuilder {
         &mut self,
         key: &SchemaKey,
         traces: &[crate::TraceId],
+        context_traces: Vec<crate::TraceId>,
+        controls: Vec<(crate::TraceId, String)>,
     ) -> Result<(), SummaryBuildError> {
         if self.failed
             || self.unreported_full_evidence
@@ -284,6 +297,10 @@ impl ValidationSummaryBuilder {
             return Err(SummaryBuildError::InconsistentRecordCounts);
         }
         self.unreported_full_evidence = true;
+        self.expected_full = Some(FullExecutionExpectation {
+            traces: context_traces,
+            controls,
+        });
         Ok(())
     }
     pub(crate) fn invalidate_previously_valid_record(&mut self) -> Result<(), SummaryBuildError> {
@@ -313,7 +330,7 @@ impl ValidationSummaryBuilder {
     }
     /// Checked Result refines DET §58 to report counter/audit failures explicitly.
     pub fn finish(self, metadata: RunMetadata) -> Result<ValidationSummary, SummaryBuildError> {
-        self.finish_inner(metadata, None)
+        self.finish_inner(metadata, None, None)
     }
     pub fn finish_with_reference_data(
         self,
@@ -332,17 +349,75 @@ impl ValidationSummaryBuilder {
         } else {
             super::ValidationCompleteness::Complete
         };
-        self.finish_inner(metadata, Some(audit))
+        self.finish_inner(metadata, Some(audit), None)
+    }
+    pub fn finish_full(
+        self,
+        metadata: RunMetadata,
+        mut audit: super::FullValidationSummary,
+        mut references: Option<super::ReferenceValidationSummary>,
+    ) -> Result<ValidationSummary, SummaryBuildError> {
+        if !self.unreported_full_evidence || metadata.validation_mode != super::ValidationMode::Full
+        {
+            return Err(SummaryBuildError::InconsistentFullAudit);
+        }
+        let expected = self
+            .expected_full
+            .as_ref()
+            .ok_or(SummaryBuildError::InconsistentFullAudit)?;
+        if expected
+            .traces
+            .iter()
+            .ne(audit.traces.iter().map(|trace| &trace.trace_id))
+            || expected
+                .controls
+                .iter()
+                .map(|(trace, rule)| (trace, rule.as_str()))
+                .ne(audit
+                    .controls
+                    .iter()
+                    .map(|control| (&control.trace_id, control.rule_id.as_str())))
+        {
+            return Err(SummaryBuildError::InconsistentFullAudit);
+        }
+        if self.unreported_reference_evidence
+            != references
+                .as_ref()
+                .is_some_and(|audit| audit.has_non_definitive_evaluations())
+        {
+            return Err(SummaryBuildError::InconsistentReferenceAudit);
+        }
+        let interrupted = self.cancelled || self.truncated || self.skipped > 0;
+        if let Some(references) = &mut references {
+            references.completeness = if interrupted || references.has_non_definitive_evaluations()
+            {
+                super::ValidationCompleteness::Partial
+            } else {
+                super::ValidationCompleteness::Complete
+            };
+        }
+        audit.completeness = if interrupted
+            || audit.partial(&self.scope)
+            || references
+                .as_ref()
+                .is_some_and(|audit| audit.has_non_definitive_evaluations())
+        {
+            super::ValidationCompleteness::Partial
+        } else {
+            super::ValidationCompleteness::Complete
+        };
+        self.finish_inner(metadata, references, Some(audit))
     }
     fn finish_inner(
         self,
         metadata: RunMetadata,
         reference_validation: Option<super::ReferenceValidationSummary>,
+        full_validation: Option<super::FullValidationSummary>,
     ) -> Result<ValidationSummary, SummaryBuildError> {
         if self.failed {
             return Err(SummaryBuildError::PreviousFailure);
         }
-        if self.unreported_full_evidence {
+        if self.unreported_full_evidence != full_validation.is_some() {
             return Err(SummaryBuildError::UnreportedFullEvidence);
         }
         if self.unreported_reference_evidence && reference_validation.is_none() {
@@ -372,6 +447,7 @@ impl ValidationSummaryBuilder {
             schema_hash: metadata.schema_hash,
             reference_data_versions: metadata.reference_data_versions,
             reference_validation,
+            full_validation,
             elapsed: self.started.elapsed(),
             inputs: metadata.inputs,
         };
@@ -444,4 +520,11 @@ pub struct ValidationCounters {
     pub invalid_records: u64,
     pub total_errors: u64,
     pub skipped_evaluations: u64,
+}
+
+/// Captured by engine preflight from the compiled plan, never supplied by a
+/// report consumer. Prevents a finalizer from dropping expected controls.
+struct FullExecutionExpectation {
+    traces: Vec<crate::TraceId>,
+    controls: Vec<(crate::TraceId, String)>,
 }

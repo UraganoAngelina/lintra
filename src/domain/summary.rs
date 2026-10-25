@@ -72,6 +72,7 @@ pub struct ValidationSummary {
     pub schema_hash: String,
     pub reference_data_versions: BTreeMap<DatasetId, DatasetVersion>,
     pub reference_validation: Option<super::ReferenceValidationSummary>,
+    pub full_validation: Option<super::FullValidationSummary>,
     pub elapsed: Duration,
     pub inputs: Vec<InputAudit>,
 }
@@ -88,6 +89,10 @@ impl ValidationSummary {
         if self.run_status == RunStatus::Cancelled
             || self.truncated
             || self.skipped_rules > 0
+            || self
+                .full_validation
+                .as_ref()
+                .is_some_and(|audit| audit.partial(&self.scope_summary))
             || self
                 .reference_validation
                 .as_ref()
@@ -161,6 +166,7 @@ mod tests {
             schema_hash: metadata.schema_hash.clone(),
             reference_data_versions: metadata.reference_data_versions.clone(),
             reference_validation: None,
+            full_validation: None,
             elapsed: Duration::from_millis(12),
             inputs: metadata.inputs.clone(),
         };

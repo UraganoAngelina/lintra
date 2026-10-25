@@ -1,7 +1,28 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-10-24**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-10-25**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
+
+## Frontiera corrente — T-P13-07 locale verificata; gate nativo pendente
+
+Ripresa 2026-10-25 (data client): servizio Flow/Full e validate-flow implementati.
+602 test passati / 70 suite, 0 fallimenti, 1 probe memoria ignored. Fmt,
+check all-targets, clippy -D warnings, test, release e Windows GNU check passati
+--offline --locked. Baseline90 identica a 6e4b411; nessuna nuova dipendenza.
+T-P13-07 IN_PROGRESS finché Linux/MSVC non sono verificati sul codice pubblicato;
+**83/140 DONE = 59,3%**, nessun incremento sulla sola evidenza locale.
+
+[Preflight](docs/verification/T-P13-07-preflight.md) e
+[report tecnico](docs/verification/T-P13-07-full-service.md): envelope Full
+persistente con copertura/PK/controlli e cause aggregate; finalize vincolato al
+piano, parametri per run secondo tipi dichiarati, audit reference per trace,
+CLI native ID=PATH e protezione di tutti gli input, JSONL/XLSX/summary atomici.
+LocalOnly preservato, N/A distinto da Unknown, nessun falso Complete.
+La newline esterna della proposta reference resta esclusa dai commit.
+Next 13-08 soltanto dopo gate positivo; nessun M6 o certificazione normativa
+anticipato. PERSIST storico/UI/metadata-tempo restano consegne future esplicite.
+
+## Registro storico — chiusura 13-06 e preflight 13-07
 
 ## Frontiera corrente — T-P13-06 verificata; avvio T-P13-07
 
@@ -1569,6 +1590,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-04 | DONE | 2026-10-24 | Binding/resolver esterno scalare reale, 560 test/66 suite e gate locali passati; CI 40085732901 Linux/MSVC success; [dossier](docs/verification/T-P13-04.md) |
 | T-P13-05 | DONE | 2026-10-24 | Compiler/projection/passata cross reali, 575 test/67 suite e gate locali passati; CI 40089317003 Linux/MSVC success; [dossier](docs/verification/T-P13-05.md) |
 | T-P13-06 | DONE | 2026-10-24 | Core due passate: 589 test/68 suite, CI 40091666797 Linux/MSVC success su 134b593; [report](docs/verification/T-P13-06-flow-validator.md) |
+| T-P13-07 | IN_PROGRESS | 2026-10-25 | Servizio Full/CLI/audit locale: 602 test/70 suite; CI nativa da eseguire; [report](docs/verification/T-P13-07-full-service.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -3672,3 +3694,24 @@ ancora preservata ed esclusa dai commit. Non effettuare altre chiamate su questo
 gate: limite tre raggiunto. Avvio autorizzato 13-07, prerequisito 8-03 verificato.
 Next: leggere preflight 13-07; service Full e CLI processo reale, serializzare
 copertura/PK/esiti cross e reference, conservare LocalOnly e output atomici.
+
+
+## HANDOFF §15.3 — T-P13-07, gate locale 2026-10-25
+
+- TASK/STATUS: T-P13-07 IN_PROGRESS; sviluppo/verifiche locali conclusi,
+  pubblicazione e gate Linux/MSVC da eseguire, massimo tre chiamate ≥45s.
+- FILE: application/full.rs e domain/full_validation.rs nuovi; service/progress,
+  builder/summary, engine preflight/observer opzionale, CLI args/command,
+  report JSON/human/exports; test full_service (7) e cli_full (6) nuovi, fixture
+  sintetiche condivise e aggiornamento costruttori summary; README e dossier.
+- TEST: 602 passati/70 suite, 0 fail/1 ignored; fmt/check/clippy -D warnings,
+  release/Windows GNU/diff passati. Baseline protette90 invariate, no nuovi crate.
+- DECISIONI: ratifiche immutate; preflight esplicita Option summary, API parametri,
+  DTO neutrali e port cross opzionale, semantica N/A e completezza preservate.
+  Nessun recupero permissivo, normative hardcoded o import inverso.
+- BLOCCANTI: nessun conflitto contrattuale, manca gate nativo effettivo.
+- GIT: work/p1-foundations, chiusura documentale precedente c697dc8; codice da
+  committare/pubblicare; proposta reference con newline esterna preservata.
+- NEXT: dopo verifica chiudere 13-07 e avviare 13-08 automaticamente. Prima
+  delle modifiche, controllare G0/regola cross reale e contratto memoria DET §152;
+  M6 richiede queste evidenze, non la sola CLI sintetica appena consegnata.

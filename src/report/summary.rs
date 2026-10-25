@@ -29,6 +29,10 @@ struct SummaryDocument<'a> {
     reference_data_versions: BTreeMap<&'a str, &'a str>,
     #[serde(skip_serializing_if = "Option::is_none")]
     reference_validation: Option<&'a crate::ReferenceValidationSummary>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    full_validation: Option<&'a crate::FullValidationSummary>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    completeness: Option<crate::ValidationCompleteness>,
     started_at: String,
     elapsed: Elapsed,
     inputs: Vec<InputDocument<'a>>,
@@ -140,6 +144,11 @@ pub fn write_summary<W: Write>(
             .map(|(id, version)| (id.0.as_str(), version.0.as_str()))
             .collect(),
         reference_validation: summary.reference_validation.as_ref(),
+        full_validation: summary.full_validation.as_ref(),
+        completeness: summary
+            .full_validation
+            .as_ref()
+            .map(|_| summary.completeness()),
         started_at,
         elapsed: Elapsed {
             seconds: summary.elapsed.as_secs(),

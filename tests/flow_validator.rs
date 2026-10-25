@@ -6,37 +6,10 @@ use std::{
     cell::Cell, collections::BTreeMap, error::Error, fs, io, path::PathBuf, time::UNIX_EPOCH,
 };
 
-fn raw() -> Value {
-    let mut raw: Value =
-        serde_json::from_str(include_str!("golden/synthetic/v1/schema.json")).unwrap();
-    let mut trace = raw["traces"][0].clone();
-    trace["record_length"] = json!(6);
-    let field = trace["fields"][0].clone();
-    trace["fields"] = json!(
-        ["PK", "KEY", "DATA"]
-            .into_iter()
-            .enumerate()
-            .map(|(i, id)| {
-                let mut field = field.clone();
-                field["id"] = json!(id);
-                field["physical"]["start"] = json!(i * 2 + 1);
-                field["physical"]["length"] = json!(2);
-                field
-            })
-            .collect::<Vec<_>>()
-    );
-    trace["record_key"]["fields"] = json!(["PK"]);
-    raw["traces"] = json!(["S", "T"].map(|id| {
-        let mut trace = trace.clone();
-        trace["id"] = json!(id);
-        trace
-    }));
-    raw["required_capabilities"] = json!(["local.v1", "expressions.v1", "joins.v1"]);
-    let policy = json!({"policy":"violation","error_code":"E_RELATED_RECORD_MISSING","diagnostic":{"code":"SYNTHETIC_MISSING","message_template":"Missing related record for {rule_id}"}});
-    raw["traces"][0]["joins"] = json!([{"id":"S_T","target_trace":"T","source_fields":["KEY"],"target_fields":["KEY"],"cardinality":"zero_or_one","scope":"current_submission","namespace_parameters":[],"on_missing_record":policy,"on_missing_trace":policy}]);
-    raw["traces"][0]["rules"] = json!([{"id":"COMPARE","when":{"const":true},"assertions":[{"kind":"field_compare","left":{"ref":{"field":"DATA"}},"operator":"==","right":{"ref":{"trace":"T","field":"DATA","join":"S_T"}},"value_type":"bytes"}],"error_code":"E_CROSS_FIELD","message_template":"Synthetic {rule_id}: {condition}"}]);
-    raw
-}
+#[path = "support/full_schema.rs"]
+mod full_schema;
+use full_schema::raw;
+
 fn compile(value: Value) -> CompiledFlowSchema {
     let mut raw: RawFlowSchema = serde_json::from_value(value).unwrap();
     raw.encoding.resolved = Some(RawResolvedEncoding::Utf8);
@@ -145,7 +118,7 @@ fn run(s: &CompiledFlowSchema, files: &Bundle) -> ResultRun {
                     on_event: &mut |event| events.push(event),
                 },
                 reference_observers: None,
-                cross_observer: &mut cross,
+                cross_observer: Some(&mut cross),
             },
         )
         .unwrap();
@@ -261,7 +234,7 @@ fn bundle_errors_and_namespace_fail_before_opening_any_file() {
                         on_event: &mut |e| events.push(e),
                     },
                     reference_observers: None,
-                    cross_observer: &mut cross,
+                    cross_observer: Some(&mut cross),
                 },
             )
             .unwrap_err();
@@ -418,7 +391,7 @@ fn cancellation_at_each_phase_preserves_observed_audit_and_atomic_record() {
                         },
                     },
                     reference_observers: None,
-                    cross_observer: &mut cross,
+                    cross_observer: Some(&mut cross),
                 },
             )
             .unwrap();
@@ -475,7 +448,7 @@ fn observer_failure_is_technical_and_cannot_finalize_a_full_summary() {
                     on_event: &mut |_| {},
                 },
                 reference_observers: None,
-                cross_observer: &mut cross,
+                cross_observer: Some(&mut cross),
             },
         )
         .unwrap_err();
@@ -528,7 +501,7 @@ fn cancellation_during_pass_one_does_not_drain_for_an_eof_digest() {
                     },
                 },
                 reference_observers: None,
-                cross_observer: &mut cross,
+                cross_observer: Some(&mut cross),
             },
         )
         .unwrap();
@@ -687,7 +660,7 @@ fn full_pass_one_uses_real_reference_snapshot_and_separate_trace_observers() {
                         on_event: &mut |_| {},
                     },
                     reference_observers: Some(&mut observers),
-                    cross_observer: &mut cross,
+                    cross_observer: Some(&mut cross),
                 },
             )
             .unwrap();
@@ -786,7 +759,7 @@ fn sink_failure_before_acknowledgement_does_not_increase_cross_counts() {
                     on_event: &mut |_| {},
                 },
                 reference_observers: None,
-                cross_observer: &mut cross,
+                cross_observer: Some(&mut cross),
             },
         )
         .unwrap_err();

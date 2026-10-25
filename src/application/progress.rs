@@ -17,6 +17,7 @@ pub enum ProgressEvent {
     TraceStarted { trace_id: TraceId },
     RecordsProcessed { trace_id: TraceId, count: u64 },
     TraceCompleted { trace_id: TraceId, count: u64 },
+    CrossRecordsProcessed { count: u64 },
     RunCompleted,
 }
 /// Synchronous observer contract. Thread affinity, batching and UI scheduling

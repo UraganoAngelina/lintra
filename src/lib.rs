@@ -300,3 +300,10 @@ pub use engine::flow_execution::{
     FlowExecutionPorts, FlowReferenceObservers, FlowTraceInput, FlowValidationArtifacts,
     FlowValidationError, FlowValidator, NonDefinitiveCrossResult, RecordKeyEvidence,
 };
+
+pub use domain::{
+    ContextCoverage, CrossCauseKind, CrossControlSummary, CrossEvaluationCause,
+    CrossUncertaintyReason, FlowTraceEvidence, FullValidationSummary, RunParameterAudit,
+};
+
+pub use engine::flow_execution::preflight_flow_inputs;

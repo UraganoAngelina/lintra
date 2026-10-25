@@ -90,7 +90,7 @@ pub struct FlowExecutionPorts<'a, 'control> {
     pub audits: &'a InputAuditSession,
     pub control: &'a mut FlowControl<'control>,
     pub reference_observers: Option<&'a mut dyn FlowReferenceObservers>,
-    pub cross_observer: &'a mut dyn CrossRecordEvaluationObserver,
+    pub cross_observer: Option<&'a mut dyn CrossRecordEvaluationObserver>,
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum FlowCompletion {
@@ -173,79 +173,13 @@ impl<'a> FlowValidator<'a> {
             newline,
         })
     }
-    fn prepare<'b>(
-        &self,
-        inputs: &'b [FlowTraceInput<'b>],
-        parameters: &BTreeMap<String, JoinParameterValue>,
-    ) -> Result<Vec<(usize, &'b Path)>, FlowValidationError> {
-        let mut paths = HashMap::new();
-        for input in inputs {
-            if self.schema.trace(input.trace_id).is_none() {
-                return Err(FlowValidationError::UnknownTrace(input.trace_id.clone()));
-            }
-            if paths.insert(input.trace_id, input.path).is_some() {
-                return Err(FlowValidationError::DuplicateTrace(input.trace_id.clone()));
-            }
-            if input.path.as_os_str().is_empty() {
-                return Err(FlowValidationError::EmptyPath(input.trace_id.clone()));
-            }
-        }
-        for &index in &self.schema.cross_record_plan().required_traces {
-            let trace = self
-                .schema
-                .traces()
-                .get(index)
-                .ok_or(FlowValidationError::InvalidPlan)?;
-            if !paths.contains_key(trace.id()) {
-                return Err(FlowValidationError::MissingTrace(trace.id().clone()));
-            }
-        }
-        let available = inputs
-            .iter()
-            .map(|input| input.trace_id.clone())
-            .collect::<Vec<_>>();
-        super::projected_context::validate_cross_inputs(
-            self.schema,
-            &CrossRecordInputs {
-                available_traces: &available,
-                parameters,
-            },
-        )
-        .map_err(FlowValidationError::Inputs)?;
-        // Required parameters must be checked even for empty files or before cancellation.
-        for join in &self.schema.cross_record_plan().joins {
-            for &index in &join.namespace_parameters {
-                let definition = self
-                    .schema
-                    .parameters()
-                    .get(index)
-                    .ok_or(FlowValidationError::InvalidPlan)?;
-                let id = match definition {
-                    ParameterDefinition::String { id, .. }
-                    | ParameterDefinition::Integer { id, .. } => id,
-                };
-                if !parameters.contains_key(id.as_ref()) {
-                    return Err(FlowValidationError::Inputs(
-                        RelatedContextError::MissingNamespaceParameter,
-                    ));
-                }
-            }
-        }
-        Ok(self
-            .schema
-            .traces()
-            .iter()
-            .enumerate()
-            .filter_map(|(index, trace)| paths.get(trace.id()).map(|path| (index, *path)))
-            .collect())
-    }
     pub fn validate(
         &self,
         inputs: &[FlowTraceInput<'_>],
         parameters: &BTreeMap<String, JoinParameterValue>,
         mut ports: FlowExecutionPorts<'_, '_>,
     ) -> Result<FlowValidationArtifacts, FlowValidationError> {
-        let prepared = self.prepare(inputs, parameters)?;
+        let prepared = prepare_flow(self.schema, inputs, parameters)?;
         let available = prepared
             .iter()
             .map(|(index, _)| self.schema.traces()[*index].id().clone())
@@ -263,7 +197,26 @@ impl<'a> FlowValidator<'a> {
         }
         ports
             .summary
-            .begin_full(self.schema.key(), &available)
+            .begin_full(
+                self.schema.key(),
+                &available,
+                self.schema
+                    .traces()
+                    .iter()
+                    .map(|trace| trace.id().clone())
+                    .collect(),
+                self.schema
+                    .cross_record_plan()
+                    .rules
+                    .iter()
+                    .map(|plan| {
+                        (
+                            self.schema.traces()[plan.source_trace].id().clone(),
+                            plan.rule.id.to_string(),
+                        )
+                    })
+                    .collect(),
+            )
             .map_err(FlowValidationError::Summary)?;
         let mut state = FlowState::new(self.schema);
         for (index, path) in prepared {
@@ -342,7 +295,7 @@ impl<'a> FlowValidator<'a> {
         let mut observer = FullCrossObserver {
             invalid: &mut state.invalid,
             summary: ports.summary,
-            external: ports.cross_observer,
+            external: &mut ports.cross_observer,
             evidence: &mut state.cross,
         };
         let mut on_record =
@@ -537,13 +490,13 @@ impl FullRecordCollector for ProjectionCollector<'_, '_> {
         Ok(())
     }
 }
-struct FullCrossObserver<'a> {
+struct FullCrossObserver<'a, 'observer> {
     invalid: &'a mut HashSet<(TraceId, u64)>,
     summary: &'a mut ValidationSummaryBuilder,
-    external: &'a mut dyn CrossRecordEvaluationObserver,
+    external: &'a mut Option<&'observer mut dyn CrossRecordEvaluationObserver>,
     evidence: &'a mut [CrossControlEvidence],
 }
-impl CrossRecordEvaluationObserver for FullCrossObserver<'_> {
+impl CrossRecordEvaluationObserver for FullCrossObserver<'_, '_> {
     fn on_evaluation(
         &mut self,
         trace: &TraceId,
@@ -603,6 +556,86 @@ impl CrossRecordEvaluationObserver for FullCrossObserver<'_> {
                 });
             }
         }
-        self.external.on_evaluation(trace, line, rule, outcome)
+        match &mut self.external {
+            Some(observer) => observer.on_evaluation(trace, line, rule, outcome),
+            None => Ok(()),
+        }
     }
+}
+
+fn prepare_flow<'b>(
+    schema: &CompiledFlowSchema,
+    inputs: &'b [FlowTraceInput<'b>],
+    parameters: &BTreeMap<String, JoinParameterValue>,
+) -> Result<Vec<(usize, &'b Path)>, FlowValidationError> {
+    let mut paths = HashMap::new();
+    for input in inputs {
+        if schema.trace(input.trace_id).is_none() {
+            return Err(FlowValidationError::UnknownTrace(input.trace_id.clone()));
+        }
+        if paths.insert(input.trace_id, input.path).is_some() {
+            return Err(FlowValidationError::DuplicateTrace(input.trace_id.clone()));
+        }
+        if input.path.as_os_str().is_empty() {
+            return Err(FlowValidationError::EmptyPath(input.trace_id.clone()));
+        }
+    }
+    for &index in &schema.cross_record_plan().required_traces {
+        let trace = schema
+            .traces()
+            .get(index)
+            .ok_or(FlowValidationError::InvalidPlan)?;
+        if !paths.contains_key(trace.id()) {
+            return Err(FlowValidationError::MissingTrace(trace.id().clone()));
+        }
+    }
+    let available = inputs
+        .iter()
+        .map(|input| input.trace_id.clone())
+        .collect::<Vec<_>>();
+    super::projected_context::validate_cross_inputs(
+        schema,
+        &CrossRecordInputs {
+            available_traces: &available,
+            parameters,
+        },
+    )
+    .map_err(FlowValidationError::Inputs)?;
+    // Required parameters must be checked even for empty files or before cancellation.
+    for join in &schema.cross_record_plan().joins {
+        for &index in &join.namespace_parameters {
+            let definition = schema
+                .parameters()
+                .get(index)
+                .ok_or(FlowValidationError::InvalidPlan)?;
+            let id = match definition {
+                ParameterDefinition::String { id, .. }
+                | ParameterDefinition::Integer { id, .. } => id,
+            };
+            if !parameters.contains_key(id.as_ref()) {
+                return Err(FlowValidationError::Inputs(
+                    RelatedContextError::MissingNamespaceParameter,
+                ));
+            }
+        }
+    }
+    Ok(schema
+        .traces()
+        .iter()
+        .enumerate()
+        .filter_map(|(index, trace)| paths.get(trace.id()).map(|path| (index, *path)))
+        .collect())
+}
+
+/// Same preparation used by execution, exposed for application preflight before
+/// reference loading. Returned IDs are schema ordered; no input is opened.
+pub fn preflight_flow_inputs(
+    schema: &CompiledFlowSchema,
+    inputs: &[FlowTraceInput<'_>],
+    parameters: &BTreeMap<String, JoinParameterValue>,
+) -> Result<Vec<TraceId>, FlowValidationError> {
+    Ok(prepare_flow(schema, inputs, parameters)?
+        .into_iter()
+        .map(|(index, _)| schema.traces()[index].id().clone())
+        .collect())
 }

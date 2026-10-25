@@ -62,6 +62,7 @@ fn record_error() -> ValidationError {
 fn summary() -> ValidationSummary {
     ValidationSummary {
         reference_validation: None,
+        full_validation: None,
         started_at: std::time::UNIX_EPOCH,
         validation_mode: lintra::ValidationMode::LocalOnly,
         run_status: RunStatus::CompletedInvalid,

@@ -5,3 +5,5 @@ pub(crate) mod request;
 pub(crate) mod service;
 
 pub(crate) mod reference_audit;
+
+pub(crate) mod full;

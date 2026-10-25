@@ -73,11 +73,17 @@ fn resolved(path: &Path) -> io::Result<PathBuf> {
 /// Protect input and the selected bundle from both final destinations and part
 /// filenames. Cross-output part collisions would otherwise depend on write order.
 fn check_outputs(args: &ValidateArgs, schema: &Path, reference: &Path) -> Result<(), Failure> {
-    let ValidationScope::Trace(input) = &args.request.scope else {
-        return Err(invalid("validate requires Trace scope"));
+    let inputs = match &args.request.scope {
+        ValidationScope::Trace(input) => vec![input],
+        ValidationScope::Flow(flow) => flow.traces.iter().collect(),
     };
-    let InputSource::Path(input) = &input.source;
-    let input = fs::canonicalize(input)?;
+    let inputs = inputs
+        .into_iter()
+        .map(|input| {
+            let InputSource::Path(path) = &input.source;
+            fs::canonicalize(path)
+        })
+        .collect::<Result<Vec<_>, _>>()?;
     let schema = fs::canonicalize(schema)?;
     let reference = fs::canonicalize(reference)?;
     let mut seen = Vec::new();
@@ -91,7 +97,7 @@ fn check_outputs(args: &ValidateArgs, schema: &Path, reference: &Path) -> Result
         part.push(".part");
         for path in [destination.clone(), PathBuf::from(part)] {
             let path = resolved(&path)?;
-            if path == input
+            if inputs.contains(&path)
                 || path.starts_with(&schema)
                 || path.starts_with(&reference)
                 || seen.contains(&path)
@@ -162,7 +168,13 @@ fn validate_with_token(
                 log_result = writeln!(log, "{{\"event\":\"{event}\"}}");
             }
         };
-        let outcome = service.validate(args.request, &mut sink, &mut progress, cancellation)?;
+        let outcome = service.validate_with_parameters(
+            args.request,
+            args.parameters,
+            &mut sink,
+            &mut progress,
+            cancellation,
+        )?;
         sink.finish()?;
         log_result?;
         log.flush()?;
@@ -294,6 +306,7 @@ mod cancellation_tests {
                     schema_dir: Some(root.join("schemas")),
                     reference_data_dir: Some(root.join("reference-data")),
                 },
+                parameters: std::collections::BTreeMap::new(),
                 request: ValidationRequest {
                     schema_key: SchemaKey {
                         flow_id: FlowId("SYNTHETIC".into()),

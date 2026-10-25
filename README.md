@@ -3,17 +3,17 @@
 Motore generico e versionato per validare flussi sanitari fixed-width.
 **Il motore conosce come validare; gli schemi conoscono cosa è valido.**
 
-La libreria espone `ValidationService` e una factory filesystem LocalOnly,
-con compiler incrementale, validazione strutturale e controlli locali supportati
-(presenza base, Numeric/AN, date DDMMYYYY, AllowedValues e range interi inclusivi;
-Decimal per importi espliciti nel formato 2),
-report JSONL/summary, audit degli input, progress e cancellazione. Full,
-reference data e persistenza completa rimangono consegne future esplicite.
+La libreria espone `ValidationService` per Trace/LocalOnly e Flow/Full, con
+compiler incrementale, controlli locali, membership reference e validazione
+cross-record a due passate. I record sono byte-oriented; Decimal nel formato 2
+riguarda soltanto importi dichiarati esplicitamente. Report JSONL/XLSX/summary,
+audit degli input, progress e cancellazione mantengono distinti errori normativi,
+warning e completezza. Persistenza storica, lookup metadata/temporali e capacità
+normative non ancora compilabili restano consegne future esplicite.
 Il consuntivo verificato è in [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md).
 
-La CLI esegue `validate` nel perimetro Trace/LocalOnly: produce errori JSONL,
-summary JSON e riepilogo testuale, mantenendo distinti gli errori tecnici dalle
-violazioni locali. `--version` mostra versione e commit di build. Full resta futuro.
+La CLI esegue `validate` per Trace/LocalOnly e `validate-flow` per Flow/Full;
+produce report e un riepilogo testuale. `--version` mostra versione e commit.
 `schema lint` verifica gli schemi con il compiler corrente. Ctrl+C richiede
 la cancellazione cooperativa e restituisce 130, conservando i report definitivi
 precedenti e rimuovendo le parti create dal run interrotto.
@@ -54,7 +54,7 @@ non attestano il superamento del gate multipiattaforma.
 - [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md): consuntivo,
   verifiche reali, decisioni e handoff.
 
-`context` ospiterà il contesto effimero della validazione a due passate;
+`context` ospita il contesto effimero della validazione a due passate;
 `persistence` è il confine distinto della persistenza core generica.
 La persistenza fisica resta da implementare nelle task PERSIST.
 
@@ -72,7 +72,8 @@ Origine delle copie: directory adiacente
 `../LINTRA_STARTER_KIT_FINAL_20261016/`. Il kit originale contiene anche
 `MASTER_AGENT_PROMPT.md`, `TASK_DEPENDENCY_MAP.md`, `ATOMIC_TASKS_INDEX.md`
 e i prompt delle task successive. Non è una dipendenza di build/runtime.
-L'autore ha autorizzato l'esecuzione continua e parallela dal 2026-10-16.
+Il workflow corrente in AGENTS.md prevede task sequenziali e prosecuzione
+automatica dopo i gate, senza Superpowers, subagenti o processi in background.
 Le task seguono le dipendenze effettive: nessun avanzamento supera un gate
 CI o normativo ancora aperto. Consultare lo stato per la frontiera corrente.
 
@@ -95,10 +96,10 @@ dei file prima di aggiungerli a Git.
 
 ## Contratto CLI — T-P8-03
 
-Exit code: **0** analisi locale valida; **1** errore tecnico o di sintassi;
+Exit code: **0** analisi completata senza violazioni normative rilevate; **1** errore tecnico o di sintassi;
 **2** analisi completata con violazioni; **130** cancellazione controllata.
-`--help` e `--version` terminano con 0. Il risultato valido riguarda soltanto
-i controlli LocalOnly supportati, senza dichiarare conformità globale.
+`--help` e `--version` terminano con 0. Il risultato riguarda lo scope selezionato:
+con completezza `partial`, assenza di violazioni non significa piena conformità.
 
 Il parser richiede flow, schema-version, trace, input, errors (alias output),
 summary ed encoding esplicito (`utf8`, unico profilo attualmente supportato).
@@ -110,8 +111,10 @@ Risoluzione di bundle esterno per coppie complete, in ordine: opzioni
 all’eseguibile. Una coppia incompleta o una directory scelta non valida produce
 errore, senza ripiego su livelli inferiori. Nessuna ricerca in cwd/home.
 Lo snapshot incorporato sarà introdotto in P15: senza bundle esterno il build
-corrente fallisce esplicitamente. La risoluzione dei path non fornisce ancora
-un provider reference data; i relativi controlli restano P11.
+corrente fallisce esplicitamente. Le reference membership vengono preparate dal
+provider filesystem: `--reference-policy continue` usa le evidenze disponibili,
+con audit distinto per dataset verificati/degradati/indisponibili; `strict`
+richiede preparazione verificata. Nessun dataset normativo viene inventato.
 
 DEC-12 approvata: righe vuote conservate come record di zero byte, nessun
 record extra dopo l’ultimo terminatore, BOM rifiutato. `--bom strip` non è
@@ -159,7 +162,7 @@ JSON malformato/duplicato, identità diversa o sintassi CLI).
 Le diagnostiche schema sono oggetti JSON su stdout, una per riga nell'ordine
 del compiler, seguite dall'esito; gli errori tecnici vanno su stderr.
 
-Ctrl+C viene intercettato soltanto durante `validate`, prima di elaborare input
+Ctrl+C viene intercettato durante `validate` e `validate-flow`, prima di elaborare input
 e report. L'handler imposta il token: il servizio si ferma ai propri checkpoint
 e il riepilogo stdout indica CANCELLED e incompletezza. Il JSONL/summary del run
 annullato non sostituisce i definitivi. Un guasto tecnico durante la finalizzazione
@@ -175,3 +178,41 @@ la larghezza fisica e non converte i dati con floating point.
 Codici/range di compartecipazione restano Numeric/AN con gli stessi controlli:
 nessuna classificazione per nome né migrazione degli schemi esistenti.
 Esempio sintetico e contratto in [authoring](docs/SCHEMA_AUTHORING.md).
+
+
+## Validazione Full — T-P13-07
+
+```sh
+lintra validate-flow --flow SYNTHETIC --schema-version v1 --encoding utf8 \
+  --trace-input "S=./sorgente.txt" --trace-input "T=./target.txt" \
+  --schema-dir ./bundle/schemas --reference-data-dir ./bundle/reference-data \
+  --errors ./errors.jsonl --summary ./summary.json --xlsx ./errors.xlsx
+```
+
+L'ordine degli input a riga di comando è libero; elaborazione e report seguono
+l'ordine dello schema. Trace indispensabili mancanti, duplicati o ignoti sono
+errori di preflight. Tutti gli input sono protetti da collisioni con gli output,
+compresi i nomi `.part`. I path possono contenere spazi e `=` dopo il separatore.
+
+Gli eventuali namespace richiedono binding espliciti, per esempio
+`--parameter org=001 --parameter year=2025`, soltanto se dichiarati nello schema.
+Il tipo deriva dalla dichiarazione: `001` rimane una stringa per un parametro
+stringa; gli interi sono esatti e vengono verificati contro il range dichiarato.
+Parametri duplicati, ignoti, mancanti o fuori dominio vengono rifiutati.
+La libreria offre `validate_with_parameters`; `validate` equivale a binding vuoti.
+Full richiede scope Flow. Le factory storiche con nome `local` restano API
+compatibili e possono comporre anche richieste Flow/Full.
+
+Il summary Full conserva `full_validation`, `completeness`, copertura per trace,
+verifiche PK e conteggi per regola: satisfied, violations, not_applicable, unknown
+e skipped. Le cause inconcludenti sono aggregate con JoinId e motivazione;
+non diventano errori JSONL né incrementano total_errors. I contatori misurano
+valutazioni record/regola; cross_rules_declared conta invece definizioni distinte.
+`NotApplicable` conserva il suo significato di scope e non equivale a Unknown.
+
+SHA completo prova lettura fino a EOF; un indice con righe non proiettabili
+resta parziale. Una ricerca negativa in tale indice non prova un parent assente.
+Il riepilogo testuale e XLSX espongono la completezza; un run parziale concluso
+regolarmente può pubblicare report definitivi dichiaratamente parziali.
+Cancelled o errore tecnico mantengono le regole di rollback dei report.
+Nessuno snapshot storico viene aggiornato durante queste validazioni.

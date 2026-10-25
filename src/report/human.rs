@@ -81,7 +81,7 @@ fn render(writer: &mut dyn Write, summary: &ValidationSummary) -> Result<(), Rep
     let write = || -> std::io::Result<()> {
         writeln!(writer, "Result: {result}")?;
         writeln!(writer, "Mode: {mode}")?;
-        if summary.reference_validation.is_some() {
+        if summary.reference_validation.is_some() || summary.full_validation.is_some() {
             writeln!(writer, "Completeness: {:?}", summary.completeness())?;
             if summary.completeness() == crate::ValidationCompleteness::Partial {
                 writeln!(
@@ -98,6 +98,21 @@ fn render(writer: &mut dyn Write, summary: &ValidationSummary) -> Result<(), Rep
                             control.field_id.0
                         )?;
                     }
+                }
+            }
+        }
+        if let Some(audit) = &summary.full_validation {
+            for control in &audit.controls {
+                if control.unknown > 0 || control.not_applicable > 0 || control.skipped > 0 {
+                    writeln!(
+                        writer,
+                        "Cross control: {}; trace {}; inconclusive {}; not applicable {}; skipped {}",
+                        control.rule_id,
+                        control.trace_id.0,
+                        control.unknown,
+                        control.not_applicable,
+                        control.skipped
+                    )?;
                 }
             }
         }

@@ -45,7 +45,8 @@ fn trace_local_only_prepares_without_opening_or_rewriting_paths() {
         assert_eq!(plan.options(), request.options);
     }
 }
-/// Full is always rejected, even for a single trace with no cross dependencies.
+/// The legacy trace-only preflight never downgrades Full. The Full service uses
+/// the engine bundle preflight, exercised separately in full_service.rs.
 #[test]
 fn full_and_flow_capabilities_are_never_silently_downgraded() {
     let schema = schema();
