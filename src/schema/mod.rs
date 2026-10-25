@@ -11,6 +11,7 @@ pub use compiled::compiler::{SchemaCompilationError, SchemaCompiler};
 pub(crate) mod compatibility;
 
 pub(crate) mod canonical;
+pub(crate) mod diff;
 pub(crate) mod registry;
 
 pub(crate) mod expression;

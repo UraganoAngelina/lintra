@@ -187,6 +187,10 @@ pub use engine::trace_validator::{
 };
 pub use input::source::InputSource;
 pub use schema::canonical::{CanonicalSchemaError, canonical_schema_bytes, schema_fingerprint};
+pub use schema::diff::{
+    SchemaChange, SchemaChangeKind, SchemaDiff, SchemaDiffError, SchemaDiffRevision,
+    SchemaDiffSide, diff_schemas,
+};
 pub use schema::registry::ResolvedSchema;
 
 pub use application::clock::{Clock, SystemClock};

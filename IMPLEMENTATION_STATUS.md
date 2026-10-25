@@ -24,7 +24,10 @@ memoria con contesto7040904 byte invariato per width32→4096 a4096 righe/trace.
 [hash](docs/verification/T-P13-08-artifact-hashes.json),
 [avanzamento](docs/verification/PROJECT_PROGRESS_2026-10-25.md).
 
-Next autorizzata: preflight T-P14-01 importer XLSX; T-P14-03 già DONE.
+L’autore ha fornito il workbook regionale SIOC per T-P14-01: blocco disponibilità
+superato, formato/mapping da esaminare; altri flussi esclusi. [Preflight](docs/verification/T-P14-01-preflight.md).
+T-P14-04 IN_PROGRESS,620 test/73 suite e gate locali passati, CI nativa pendente.
+Prerequisito T-P14-03 già DONE.
 Preservata la modifica esterna della newline nella proposta reference.
 
 ## Registro storico — T-P13-08 locale e timeout remoto
@@ -1624,6 +1627,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P7-01 | DONE | 2026-10-21 | Request/preflight Trace LocalOnly, 251 locali; CI 39567896281 Linux/Windows verde 20f6835; [report](docs/verification/T-P7-01.md) |
 | T-P7-02 | DONE | 2026-10-21 | Token condiviso e progress, 254 locali; CI 39569282614 Linux/Windows verde bacedba; [report](docs/verification/T-P7-02.md) |
 | T-P7-03 | DONE | 2026-10-21 | Loop streaming, audit/cancellazione, 263 locali; CI 39571479598 Linux/Windows verde 5d2f371; [report](docs/verification/T-P7-03.md) |
+| T-P14-01 | NOT_STARTED | 2026-10-25 | Workbook SIOC fornito dall’autore dopo preflight; disponibilità risolta, esame mapping da svolgere; [preflight](docs/verification/T-P14-01-preflight.md) |
+| T-P14-04 | IN_PROGRESS | 2026-10-25 | Diff versioni, prerequisito14-03 verificato; [preflight](docs/verification/T-P14-04-preflight.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
@@ -3865,3 +3870,19 @@ modifiche al profilo normativo/golden reale. Nessun task successivo/M6 prima del
 - NEXT: T-P14-01 preflight XLSX, autorizzata dal nuovo mandato che supera lo stop
   precedente. Verificare sorgenti/mapping, nessuna interpretazione normativa
   automatica. T-P14-03 già conclusa, non ripeterla. Modifica esterna preservata.
+
+
+## HANDOFF §15.3 — T-P14-04 gate locale
+
+- STATUS: IN_PROGRESS.620 test/73 suite,0 fail/1 ignored, fmt/check/clippy/release/
+  GNU/diff passati. Native Linux/MSVC da verificare sul commit pubblicato.
+- FILE: schema/diff.rs API additiva, mod/lib export,9 test integration,
+  preflight/report/stato. Nessuna dipendenza o baseline modificata;33 hash13-08
+  e90 file protetti ricontrollati identici.
+- COMPORTAMENTO: report revisioni/hash canonici, trace/field per ID scoped,
+  add/remove/modify/ordine significativo, pointer per lato, errore su ID ambigui;
+  metadata/regole/policy conservati, nessuna esecuzione o migrazione implicita.
+- BLOCCANTI: nessuno per14-04, solo gate remoto. Autore ha fornito workbook SIOC
+  per14-01; consultarlo dopo la consegna locale, senza anticipare altri flussi.
+- GIT: modifica esterna proposta reference e nuova cartella schemas/xlsx preservate,
+  escluse dal commit della task. NEXT: verifica CI14-04, poi ripresa14-01.
