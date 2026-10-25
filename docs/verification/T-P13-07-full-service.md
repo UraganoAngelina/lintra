@@ -207,3 +207,14 @@ cargo fmt --all -- --check; cargo check --all-targets; cargo clippy --all-target
 --check. Cargo con --offline --locked, CARGO_HOME isolata /tmp/lintra-cargo-home.
 Tutti passati; baseline90 confrontata byte per byte con 6e4b411, invariata.
 CI Linux/MSVC da avviare sul commit pubblicato, non inferita dal check GNU.
+
+### Gate nativo e chiusura — 2026-10-25
+
+Codice 5dbb92c6ec5afad50e8f2ae1dfa96a8a36a1ae44 pubblicato. CI 40183843102:
+Linux 121140342859 e MSVC 121140343028 completed/success verificati direttamente.
+Tre chiamate Actions effettive distanziate ≥45s. L'auto-review del terzo comando
+è scaduto prima di CreateProcess; unico retry consentito riuscito, nessun HTTP
+aggiuntivo dal comando non avviato. T-P13-07 DONE. Non equivale a M6 né alla
+certificazione SIOC: 13-08 deve verificare memoria e golden cross-trace reale.
+Il conflitto del profilo G0 rilevato nel preflight successivo è nella proposta
+CNF-SIOC-REFERENTIAL-G0-01, decisione richiesta all'autore senza cambiare baseline.

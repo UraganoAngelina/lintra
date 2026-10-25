@@ -3,6 +3,25 @@
 Consuntivo aggiornato al **2026-10-25**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P13-07 verificata; T-P13-08 memoria / preflight G0
+
+2026-10-25: CI [40183843102](https://github.com/UraganoAngelina/lintra/actions/runs/40183843102)
+su 5dbb92c6ec5afad50e8f2ae1dfa96a8a36a1ae44, Linux job 121140342859 e Windows
+MSVC job 121140343028 entrambi completed/success, letti direttamente. Tre chiamate
+Actions effettive; prima del terzo GET il controllo automatico è scaduto rifiutando
+CreateProcess, nessuna richiesta inviata; unico retry consentito riuscito.
+602 test/70 suite e gate locali passati. **84/140 DONE = 60%**, 13-07 DONE.
+
+T-P13-08 avviata per la porzione indipendente memoria. Il golden reale G0 richiede
+una decisione documentale: [CNF-SIOC-REFERENTIAL-G0-01](docs/proposals/sioc-referential-g0-contract.md),
+proposta sottoposta all'autore, risposta pendente. Il profilo minimale approvato
+dichiara relazioni parent attive ma non contiene assertion per esse; la regola
+atto revocante attiva ha lookup negativo NotApplicable in contrasto con E012.
+Riproduzione sintetica reale registrata nella proposta; baseline intatta.
+Non iniziare modifiche normative dipendenti dalla risposta. Nessuna M6 anticipata.
+
+## Registro storico — gate locale 13-07
+
 ## Frontiera corrente — T-P13-07 locale verificata; gate nativo pendente
 
 Ripresa 2026-10-25 (data client): servizio Flow/Full e validate-flow implementati.
@@ -1590,7 +1609,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-04 | DONE | 2026-10-24 | Binding/resolver esterno scalare reale, 560 test/66 suite e gate locali passati; CI 40085732901 Linux/MSVC success; [dossier](docs/verification/T-P13-04.md) |
 | T-P13-05 | DONE | 2026-10-24 | Compiler/projection/passata cross reali, 575 test/67 suite e gate locali passati; CI 40089317003 Linux/MSVC success; [dossier](docs/verification/T-P13-05.md) |
 | T-P13-06 | DONE | 2026-10-24 | Core due passate: 589 test/68 suite, CI 40091666797 Linux/MSVC success su 134b593; [report](docs/verification/T-P13-06-flow-validator.md) |
-| T-P13-07 | IN_PROGRESS | 2026-10-25 | Servizio Full/CLI/audit locale: 602 test/70 suite; CI nativa da eseguire; [report](docs/verification/T-P13-07-full-service.md) |
+| T-P13-07 | DONE | 2026-10-25 | 602 test/70 suite; CI 40183843102 Linux/MSVC success su 5dbb92c; [report](docs/verification/T-P13-07-full-service.md) |
+| T-P13-08 | IN_PROGRESS | 2026-10-25 | Memoria indipendente; golden normativo in attesa decisione CNF-SIOC-REFERENTIAL-G0-01 |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -3715,3 +3735,16 @@ copertura/PK/esiti cross e reference, conservare LocalOnly e output atomici.
 - NEXT: dopo verifica chiudere 13-07 e avviare 13-08 automaticamente. Prima
   delle modifiche, controllare G0/regola cross reale e contratto memoria DET §152;
   M6 richiede queste evidenze, non la sola CLI sintetica appena consegnata.
+
+
+## HANDOFF §15.3 — chiusura 13-07 / avvio parziale 13-08
+
+2026-10-25. Codice 5dbb92c pubblicato; CI 40183843102 Linux 121140342859 e
+MSVC 121140343028 success verificati direttamente. 13-07 DONE, 84/140=60%.
+Gate locale602/70suite, baseline90 intatta, nessun nuovo crate. File/contratti
+nel dossier 13-07 e README. Proposta reference con newline esterna preservata.
+Tre richieste Actions effettive; timeout auto-review prima dell'avvio del terzo
+comando, retry unico consentito riuscito. Non effettuare ulteriori GET su questo gate.
+13-08: task autorizzata, prerequisiti13-07/0-08 soddisfatti; svolgere memoria
+indipendente, attendere decisione autore sul conflitto G0 documentato prima
+modifiche al profilo normativo/golden reale. Nessun task successivo/M6 prima del gate.
