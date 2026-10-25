@@ -783,7 +783,7 @@
   "last_verified_native_commit": "52762c8525b878a72c7a59f9589c207a17e1efc6",
   "last_verified_native_run": "40192491629",
   "verified_percent": 60.7,
-  "workflow": "T-P14-04 local verified; push rejected twice before CreateProcess by automatic review timeout; no native dispatch. SIOC workbook received and inspected for T-P14-01.",
+  "workflow": "T-P14-04 published; native CI40211195991 Linux success, MSVC unverified after final connection timeout; three CI calls exhausted, intervals>=60s. T-P14-01 preflight ready.",
   "native_gate_previous_session": {
     "dispatch_accepted": true,
     "results_verified": false,
@@ -804,10 +804,19 @@
     "conclusion": "success"
   },
   "t_p14_04_native_gate": {
-    "dispatch_accepted": false,
-    "results_verified": false,
-    "actions_requests": 0,
-    "push_processes_started": 0,
-    "automatic_review_timeouts": 2
-  }
+    "dispatch_accepted": true,
+    "code_ancestor": "7024f5f66a69f87480a030206a01a88e7b6d3c94",
+    "head_sha": "e887fcdc3256759f7196d4413c055ad5113ed4fd",
+    "run": "40211195991",
+    "actions_requests_counted": 3,
+    "minimum_interval_seconds": 60,
+    "linux_job": "121222585528",
+    "linux_conclusion": "success",
+    "msvc_job": "121222585745",
+    "msvc_conclusion": null,
+    "msvc_last_observed_status": "in_progress",
+    "final_read": "connect timeout after10s",
+    "further_requests_made": false
+  },
+  "remote_commit": "e887fcdc3256759f7196d4413c055ad5113ed4fd"
 }

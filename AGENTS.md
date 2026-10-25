@@ -179,3 +179,10 @@ Mandato successivo — ripresa del workflow dopo T-P13-08, 2026-10-25:
 - Superato lo stop specifico dopo13-08. Restano gate, spiegazioni dettagliate,
   esclusione Superpowers/subagenti/background e limite tre chiamate Actions
   con intervalli≥45s nella ripresa autorizzata. Nessuna baseline riscritta.
+
+Mandato aggiornato — ripresa autonoma push/CI,2026-10-25:
+- L’autore rinnova autonomia nei push e negli avvii CI e autorizza l’avvio
+  automatico della task successiva con output/prerequisiti senza criticità.
+- Limite aggiornato: tre chiamate CI, distanziate di almeno un minuto.
+- Riprendere dalla pubblicazione14-04 senza duplicare codice; poi14-01 usando
+  il solo workbook SIOC fornito. Nessun altro flusso o funzionalità fuori piano.

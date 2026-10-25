@@ -92,3 +92,15 @@ col profilo approvato,8 note differenti solo per whitespace. Esame e hash nel
 [preflight14-01](T-P14-01-preflight.md); nessuna implementazione aggiuntiva
 per altri flussi. File utente preservati. Serve sbloccare il push nell’ambiente
 per completare il gate14-04 e continuare14-01 senza duplicare codice.
+
+## Aggiornamento — pubblicazione riuscita e gate40211195991
+
+Il nuovo mandato rinnova push/CI autonomi con tre chiamate distanziate≥60s.
+Pubblicatoe887fcd, incluso il codice14-04 invariato7024f5f. CI40211195991:
+Linux job121222585528 completed/success; MSVC121222585745 in_progress alla
+prima lettura. Ultima GET dopo>8min in connection timeout: MSVC non verificata,
+nessuna quarta chiamata.14-04 resta aperta sul solo gate,85/14060,7%.
+
+Il blocco storico del push è superato. Alla ripresa verificare il run già
+avviato e, dopo successo, iniziare14-01 dal preflight del workbook SIOC reale.
+Nessun altro flusso o nuova regola implementato. Source utente preservati.

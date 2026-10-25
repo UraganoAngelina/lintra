@@ -74,3 +74,45 @@ su layout o note. Implementazione14-01 non avviata mentre14-04 attende il gate.
 Sorgente utente preservata non staged. Alla ripresa chiudere14-04, poi definire
 profilo/mapping esplicito e fixture sintetica fedele a questo layout entro14-01;
 non implementare capacità di flussi futuri o modificare documenti protetti.
+
+## Preflight implementativo — mapping esplicito, ripresa2026-10-25
+
+L'importer deve completare RawFlowSchema, ma il workbook non specifica da solo
+encoding, missing per eccezioni, DSL condizionale, PK/identity/join, persistenza
+e capability. Queste decisioni restano nel blueprint dichiarativo revisionato
+fornito al costruttore; non vengono dedotte dal testo H. Il workbook deve
+fornire realmente ID/nomi/coordinate/note, con mapping di celle esplicito e
+verificato; non si restituisce il blueprint senza leggere il file. Nessun flow
+o field ID hardcoded nell'implementazione generica. I profili sono dati.
+
+Lettura di un unico snapshot byte del file, hash SHA-256 degli stessi byte usati
+per ZIP/XML e provenienza in source. Le righe/formule e i token originali devono
+restare tracciabili. Nessuna macro o formula Excel eseguita: policy tecnica
+esplicita di lettura del valore numerico cached per le coordinate, distinta da
+verifica del ricalcolo; rifiutare cache mancante, non numerica o non intera.
+Valori stringa/codici/note non convertiti da float, nessun trim delle note.
+
+Ogni binding collega una cella/row a un field del blueprint nello stesso trace;
+richiedere copertura completa e univoca, rifiutare ID inattesi/duplicati e
+header/sezioni non corrispondenti. Le decisioni semantiche del blueprint devono
+essere esplicite: non sostituire NBB con optional o A con Alphabetic. Eventuali
+nuovi campi/tipi richiedono il corrispondente mapping revisionato, non default
+normativi inventati. Il risultato raw deve attraversare lint/revisione/compiler
+come ogni schema importato, senza promessa di validità automatica.
+
+DEC-15 candidato prima dell'eventuale modifica Cargo: calamine=0.36.1 già
+qualificata come dev-only in12-05, promozione allo scope tooling produttivo
+schema/importer richiesta da14-01 e coerente con ARCH§39C.1. MIT/pure-Rust,
+MSRV1.88 già verificati; nessuna nuova versione, default-features=false, nessun
+uso di calamine nel validation loop. Verificare lock/features effettive dopo
+promozione; nessuna modifica alle dipendenze di scrittura XLSX.
+
+Solo preflight durante l'attesa del gate14-04: non ancora implementazione14-01.
+
+Verifica aggiuntiva sul file originale:130 celle formula, tutte numeriche con
+cache presente; nessuna vbaProject.bin. La qualificazione runtime deve comunque
+rifiutare cache mancanti/non intere e formule in celle testuali. L'assenza di
+macro in questo file non autorizza esecuzione di macro in altri workbook.
+Il subtree calamine0.36.1 letto dalla versione installata resta pure-Rust,
+comprende quick-xml0.41.0 e zip8.6.0 con deflate/zlib-rs; nessun backend di
+sistema aggiunto. calamine è ancora dev-only finché14-01 non viene avviata.

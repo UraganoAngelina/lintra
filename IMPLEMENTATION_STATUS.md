@@ -3,7 +3,7 @@
 Consuntivo aggiornato al **2026-10-25**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P13-08 verificata; T-P14-04 locale verificata, push bloccato
+## Frontiera corrente — T-P14-04 pubblicata, Linux positivo, MSVC da verificare
 
 2026-10-25: ripresa autorizzata dall’autore, incluso avanzamento automatico
 quando gate e prerequisiti sono chiari. Superato lo stop specifico dopo13-08.
@@ -26,9 +26,13 @@ memoria con contesto7040904 byte invariato per width32→4096 a4096 righe/trace.
 
 L’autore ha fornito il workbook regionale SIOC per T-P14-01: blocco disponibilità
 superato, formato/mapping da esaminare; altri flussi esclusi. [Preflight](docs/verification/T-P14-01-preflight.md).
-T-P14-04 IN_PROGRESS,620 test/73 suite e gate locali passati. Codice7024f5f
-committato; push e unico retry respinti prima di CreateProcess per timeout della
-revisione automatica dei permessi. Nessuna CI14-04 avviata, nessun esito presunto.
+T-P14-04 IN_PROGRESS,620 test/73 suite e gate locali passati. Ripresa autorizzata:
+push e887fcd riuscito usando github.com appena risolto dopo timeout di rete
+del vecchio indirizzo. CI40211195991 avviata sullo SHA e887fcdc3256759f7196d4413c055ad5113ed4fd:
+Linux job121222585528 completed/success, Windows job121222585745 in_progress
+alla prima lettura. GET finale dopo oltre8 minuti fallito per connect timeout10s;
+MSVC non verificata. Tre chiamate CI esaurite con intervalli≥60s, nessuna quarta
+richiesta. I blocchi precedenti restano storici.
 Prerequisito T-P14-03 già DONE. Consultato workbook SIOC:135 campi/layout
 identici,8 note con soli delta whitespace; nessuna baseline modificata.
 Preservata la modifica esterna della newline nella proposta reference.
@@ -1631,7 +1635,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P7-02 | DONE | 2026-10-21 | Token condiviso e progress, 254 locali; CI 39569282614 Linux/Windows verde bacedba; [report](docs/verification/T-P7-02.md) |
 | T-P7-03 | DONE | 2026-10-21 | Loop streaming, audit/cancellazione, 263 locali; CI 39571479598 Linux/Windows verde 5d2f371; [report](docs/verification/T-P7-03.md) |
 | T-P14-01 | NOT_STARTED | 2026-10-25 | Workbook SIOC fornito dall’autore dopo preflight; disponibilità risolta, esame mapping da svolgere; [preflight](docs/verification/T-P14-01-preflight.md) |
-| T-P14-04 | IN_PROGRESS | 2026-10-25 | Diff implementato7024f5f,620 test/73 suite e gate locali passati; push respinto due volte prima di CreateProcess per timeout review, CI non avviata; [report](docs/verification/T-P14-04-schema-diff.md) |
+| T-P14-04 | IN_PROGRESS | 2026-10-25 | Diff7024f5f pubblicato in e887fcd;620 test/73 suite e gate locali passati; CI40211195991 Linux success, MSVC non verificata: GET finale timeout, tre chiamate esaurite; [report](docs/verification/T-P14-04-schema-diff.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
@@ -3910,3 +3914,34 @@ e7bca849066d68747abfc78b92ce273e3;135 campi in5trace con layout identico e8 note
  avviare CI14-04 e leggere esiti Linux/MSVC entro limite tre chiamate≥45s. Dopo
  successo chiudere14-04 e riprendere14-01 dal workbook reale già esaminato.
  Non duplicare codice, non far passare il gate GNU per Windows nativa.
+
+
+## HANDOFF §15.3 — ripresa14-04: pubblicata, gate nativo incompleto
+
+- MANDATO: push e CI autonomi rinnovati dall'autore, tre chiamate CI distanziate
+  di almeno un minuto, prosecuzione dopo gate/output e prerequisiti chiari.
+- GIT: primo push realmente avviato scaduto a40s sull'IP precedente; query DNS
+  github.com→140.82.121.3, secondo push riuscito. Pubblicati1b2fb33/7024f5f/e887fcd.
+  Nessun force/reset; modifica esterna proposta reference e source schemas/xlsx
+  preservati non staged. Codice14-04 invariato rispetto ai gate locali.
+- CI: dispatch accettato circa16:20 UTC; GET dopo>2min, Linux121222585528
+  completed/success, MSVC121222585745 in_progress. Run40211195991 sullo SHA
+  e887fcdc3256759f7196d4413c055ad5113ed4fd. GET finale dopo>8min, connection
+  timeout10s: nessun esito finale ricevuto. Tre tentativi esauriti, intervalli
+  ≥60s. Non effettuare ulteriori chiamate in questo gate o un nuovo dispatch
+  per aggirare il limite. Nessun test fallito osservato.
+- STATUS: T-P14-04 IN_PROGRESS,620 locali/73 suite e Linux positivo; native
+  MSVC non verificata.85/140 DONE60,7%.13-08/M6 ratificata già verificata.
+- ATTIVITÀ INDIPENDENTI: preflight14-01 completato su workbook SIOC autorizzato,
+  hash6be8ae60a2c236e5a25b731365b42f8e7bca849066d68747abfc78b92ce273e3;
+  135 layout coincidenti,8 delta whitespace note,130 formule con cache numerica,
+  nessun VBA. Proposta tecnica di mapping/blueprint espliciti e audit delle cache;
+  nessun importer finto, implementazione14-01 non avviata. Dipendenza calamine
+  ancora solo dev, candidata alla promozione tooling già registrata prima di Cargo.
+- NEXT: alla ripresa autorizzata leggere il run esistente sullo stesso SHA. Dopo
+  MSVC success chiudere14-04(86/14061,4%) e iniziare14-01 da sorgente/profilo
+  espliciti. Se errore reale, correggere solo quello pertinente prima di proseguire.
+
+Pubblicazione dell'handoff finale: push documentale terminato per timeout40s,
+nessun esito remoto ricevuto. Ultimo push confermatoe887fcd; handoff successivo
+salvato localmente. Nessun nuovo tentativo di rete o chiamata Actions effettuato.

@@ -174,3 +174,36 @@ ma finché manca resta85/140=60,7%. Nessuna dichiarazione M7.
 Proseguita soltanto la consultazione indipendente del workbook SIOC ora ricevuto:
 135 layout esatti,8 delta whitespace note, hash e dettagli nel preflight14-01.
 Nessun sourceXLSX/PDF utente incluso, nessuna implementazione importer anticipata.
+
+### Ripresa autorizzata del workflow,2026-10-25
+
+Nuovo mandato: push/CI autonomi, massimo tre chiamate CI distanziate≥60s. Primo
+push eseguito ma scaduto a40s per rete sull'indirizzo GitHub precedente; query
+DNS pubblica restituisce140.82.121.3 e push con TLS invariato riesce: pubblicato
+e887fcdc3256759f7196d4413c055ad5113ed4fd, che include il codice7024f5f invariato.
+CI40211195991 avviata, prima lettura sullo SHA esatto: Linux job121222585528
+completed/success e MSVC job121222585745 in_progress. Nessuna chiusura anticipata;
+lettura finale ancora da effettuare. Due chiamate CI fin qui, intervallo>60s.
+
+### Esito effettivamente disponibile del gate40211195991
+
+Terza e ultima chiamata dopo oltre8 minuti dal dispatch: GET check-runs dello
+SHAe887fcdc3256759f7196d4413c055ad5113ed4fd fallita con connect timeout10s.
+Resta verificato soltanto Linux completed/success, job121222585528; MSVC
+job121222585745 era in_progress alla lettura precedente, esito finale non
+verificato. Non è un test fallito o un successo presunto. Nessuna quarta
+chiamata, nessun nuovo dispatch per aggirare il limite. Intervalli≥60s.
+
+T-P14-04 resta IN_PROGRESS, locale620 test/73 suite positivo. Push riuscito,
+precedenti blocchi di permessi superati dal nuovo mandato; ora manca soltanto
+la verifica finale MSVC. Progresso85/14060,7%. Alla ripresa leggere il run già
+avviato, poi proseguire14-01 senza duplicare il diff o reinterpretare G0.
+
+Preflight14-01 completato durante attesa: workbook reale SIOC135 campi,130
+formule con cache numerica, nessuna macro; tipo/presenza/join/persistenza dal
+blueprint esplicito, note originali dal file, nessuna trasformazione automatica
+delle note in DSL. Nessuna implementazione anticipata della task o di altri flussi.
+
+Il push del solo handoff aggiornato è scaduto a40s senza esito remoto: documenti
+salvati localmente, ultimo push confermatoe887fcd. Non ripetuti test già superati
+per le sole modifiche documentali. Il codice valutato dalla CI resta invariato.
