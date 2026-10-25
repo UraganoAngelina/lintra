@@ -218,3 +218,21 @@ Nessun doctest disabilitato o sorgente modificata per aggirare l'errore locale.
 
 La CI nativa sarà eseguita sul commit pubblicato con impostazioni standard
 del workflow, includendo regressioni14-04. Native ancora non attestata.
+
+Checkpoint aggiornato: l'autore chiede di completare la prossima task e fermarsi
+con la percentuale. Identificato esplicitamente14-02 come checkpoint successivo,
+previa verifica14-01, senza ulteriori task. Dopo interruzione /tmp è stato
+ricreato: log/target temporanei precedenti non più disponibili, esiti storici
+restano verificati dagli output effettivi e dal dossier, non inventati.
+
+### Chiusura verificata — CI discendente40238421197
+
+2026-10-25: sul commit7b8bd8bad5d67a2f538909b94f0561356336f091 entrambi i
+job Linux121304841503 e MSVC121304841698 completed/success, letti direttamente.
+14-01 e14-04 DONE: il codice/test14-04 sono invariati e inclusi nel gate della
+nuova consegna reale14-01. La precedente CI40211195991 rimane storicamente
+con MSVC non verificata; non è stata fatta una quarta chiamata a quel gate.
+Nuovo gate: dispatch+GET, due API effettive≥60s; un GET prima respinto prima
+del processo per review timeout, retry consentito poi riuscito.
+632 test/74 suite locali e qualificazione workbook originale positivi.
+Avanzamento87/14062,1%. Prosegue14-02, poi stop richiesto dall'autore.

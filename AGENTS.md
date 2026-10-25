@@ -194,3 +194,9 @@ Precisazione dell'autore — prosecuzione indipendente,2026-10-25:
 - T-P14-01 avviata: richiede T-P3-01/G0, non T-P14-04. Tenere14-04 aperta
   sulla verifica MSVC senza dichiararla DONE. Nessuna quarta chiamata al vecchio
   gate; il gate della nuova consegna reale include le regressioni precedenti.
+
+Checkpoint successivo dell’autore —2026-10-25:
+- «Completa la prossima task poi fermati e dimmi a che percentuale»:
+  checkpoint dichiarato su T-P14-02 dopo verifica della consegna14-01.
+- Terminata14-02 e relativi gate, fermarsi con resoconto/progresso verificato.
+  Nessuna14-05/P15 o ulteriore task prima di nuova autorizzazione.

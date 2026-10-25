@@ -3,6 +3,26 @@
 Consuntivo aggiornato al **2026-10-25**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P14-01/14-04 verificate; checkpoint T-P14-02
+
+2026-10-25: CI [40238421197](https://github.com/UraganoAngelina/lintra/actions/runs/40238421197)
+su7b8bd8bad5d67a2f538909b94f0561356336f091 letta direttamente: Linux
+121304841503 e MSVC121304841698 completed/success.632 test/74 suite locali,
+qualificazione originale SIOC135campi/130formule/8note e tutti i gate positivi.
+T-P14-01 DONE. Lo stesso gate include i9 test e il codice invariato di14-04:
+chiusa14-04 su questa evidenza discendente, non presunto il vecchio esito MSVC.
+**87/140 DONE =62,1%**. M6 nello scope ratificato, M7 ancora non raggiunta.
+
+T-P14-02 IN_PROGRESS: normalizzazione alias espliciti, review note con hash,
+lint warning/error e domini contraddittori. Nessuna nuova norma hardcoded,
+nessuna baseline modificata. Stop al termine14-02 per checkpoint richiesto
+dall'autore: resoconto e percentuale, nessuna ulteriore task.
+[Importer](docs/verification/T-P14-01-xlsx-importer.md),
+[preflight14-02](docs/verification/T-P14-02-preflight.md).
+Preservate newline esterna proposta reference e intera cartella source XLSX.
+
+## Registro storico — sviluppo locale14-01 e gate remoto14-04 pendente
+
 ## Frontiera corrente — T-P14-01 locale verificata, pubblicazione/CI in avvio
 
 2026-10-25: ripresa autorizzata dall’autore, incluso avanzamento automatico
@@ -1644,8 +1664,9 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P7-01 | DONE | 2026-10-21 | Request/preflight Trace LocalOnly, 251 locali; CI 39567896281 Linux/Windows verde 20f6835; [report](docs/verification/T-P7-01.md) |
 | T-P7-02 | DONE | 2026-10-21 | Token condiviso e progress, 254 locali; CI 39569282614 Linux/Windows verde bacedba; [report](docs/verification/T-P7-02.md) |
 | T-P7-03 | DONE | 2026-10-21 | Loop streaming, audit/cancellazione, 263 locali; CI 39571479598 Linux/Windows verde 5d2f371; [report](docs/verification/T-P7-03.md) |
-| T-P14-01 | IN_PROGRESS | 2026-10-25 | Importer XLSX reale e profilo135binding,12 test sintetici e qualificazione SIOC originale positivi;632/74 suite e gate locali passati, native pendente; [report](docs/verification/T-P14-01-xlsx-importer.md) |
-| T-P14-04 | IN_PROGRESS | 2026-10-25 | Diff7024f5f pubblicato in e887fcd;620 test/73 suite e gate locali passati; CI40211195991 Linux success, MSVC non verificata: GET finale timeout, tre chiamate esaurite; [report](docs/verification/T-P14-04-schema-diff.md) |
+| T-P14-01 | DONE | 2026-10-25 | 632/74 suite, qualificazione SIOC reale positiva; CI40238421197 Linux/MSVC success su7b8bd8b; [report](docs/verification/T-P14-01-xlsx-importer.md) |
+| T-P14-04 | DONE | 2026-10-25 | Codice/test invariati7024f5f, qualificati nella CI discendente40238421197 Linux/MSVC success su7b8bd8b; vecchio pollingMSVC ignoto conservato storico; [report](docs/verification/T-P14-04-schema-diff.md) |
+| T-P14-02 | IN_PROGRESS | 2026-10-25 | Prerequisiti14-01/3-04 verificati, prossimo checkpoint con stop; [preflight](docs/verification/T-P14-02-preflight.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
@@ -3991,3 +4012,16 @@ lock immutato/features e gate Linux/MSVC dopo la promozione.
 - NEXT: pubblicare/concludere gate14-01 includente regressioni14-04. Proseguire
  14-02 quando output e prerequisiti non presentano criticità; non fermare lavoro
  indipendente per il solo polling remoto. Chiamate CI tre con intervalli≥60s.
+
+
+## HANDOFF §15.3 — chiusura14-01/14-04, checkpoint14-02
+
+CI40238421197 su7b8bd8bad5d67a2f538909b94f0561356336f091: Linux121304841503
+e MSVC121304841698 completed/success letti direttamente. Due chiamate API
+effettive (dispatch e GET). Il primo avvio del GET è stato respinto prima di
+CreateProcess per timeout della revisione automatica: nessuna richiesta inviata,
+unico retry consentito riuscito. Intervallo>60s. Nessun altro GET di questo gate
+necessario.14-01 DONE e14-04 DONE sulla nuova evidenza che include i suoi test/
+codice invariati, non riscritto il precedente polling incompleto.87/14062,1%.
+14-02 prosegue secondo mandato; al termine fermarsi e rendicontare percentuale.
+Nessuna14-05/P15. Source utente e baseline protetti inalterati.
