@@ -1,0 +1,866 @@
+{
+  "decision": "CNF-SIOC-REFERENTIAL-G0-01",
+  "subset_version": "2026-04-20.references-golden.1",
+  "parent_schema_version": "2026-04-20.structural-minimal.2",
+  "parent_profile_sha256": "b1bffeb800570d8f4ac045110bf849e5380ed4062f209b4cb1f34dee3df1c33b",
+  "purpose": "Real approved structural relationships tested with synthetic rows; NOT full SIOC validation.",
+  "full_profile_capabilities_unchanged": [
+    "local.v1",
+    "expressions.v1",
+    "joins.v1",
+    "joins.sets.v1",
+    "derived.substring.v1",
+    "persistence.audit.v1"
+  ],
+  "full_profile_persistence_unchanged": true,
+  "excluded_obligations": [
+    "persistence.audit and historical storage: retained in complete .2, not executed by this selected component (PERSIST tasks).",
+    "Clinical/reference datasets and inherited G0 deferrals: no replacement data and no semantic acceptance.",
+    "All unselected field checks, named conditions, derived values and non-executable rule ledgers remain in the complete profile.",
+    "Logical_length/composite_segments on selected keys are unsupported: retained in .2, excluded explicitly from this referential component."
+  ],
+  "selected_controls": [
+    {
+      "trace": "2",
+      "rule_id": "REL-trace2_to_trace1",
+      "source_rule_sha256": "978dd68463401745ba61454942cc147123cc45a8728bd66de9c164954f1f333c"
+    },
+    {
+      "trace": "3",
+      "rule_id": "REL-trace3_to_trace2",
+      "source_rule_sha256": "e4f4b808da94c2d546eb8cf1553c2975e378433fbe3b620b83dfef17ec812835"
+    },
+    {
+      "trace": "3",
+      "rule_id": "REL-trace3_to_trace1",
+      "source_rule_sha256": "4e5c09b1d39e9e6eaeede5852f4a3b06670d25b9a69af5a8f1899062c2311838"
+    },
+    {
+      "trace": "4.2",
+      "rule_id": "R-4.30-REQUIRES-4.29",
+      "source_rule_sha256": "52853045bba59c10bba41bd8776b01a00fc36cfec325de2fbb9a5034bcfea27f"
+    },
+    {
+      "trace": "4.2",
+      "rule_id": "R-4.30-REFERENCES-4.22",
+      "source_rule_sha256": "dbaedc1a42f740f3b80e2dd3c201a81a89e4222a617fd454453cf881116853e5"
+    },
+    {
+      "trace": "4.2",
+      "rule_id": "REL-trace42_to_trace41",
+      "source_rule_sha256": "32eeb993864d0595aa73a710dee1ca471e57f955c5d70d3baf7a21e8c52b065f"
+    }
+  ],
+  "selected_fields": [
+    {
+      "trace": "1",
+      "field": "1.1",
+      "source_field_sha256": "474f72a497a843e41bd706daf5fe19261405c7d1e460c889ed86de2068ed6f9a"
+    },
+    {
+      "trace": "1",
+      "field": "1.17",
+      "source_field_sha256": "0ab026eb26c40434d1cbe02c98e8839a4f77489b45216e66096d834c0d612a29"
+    },
+    {
+      "trace": "1",
+      "field": "1.18",
+      "source_field_sha256": "f62a8cd345d5aea080fb5fddb844a11548015f69530a38de7c84a1e3aa37a638"
+    },
+    {
+      "trace": "2",
+      "field": "2.1",
+      "source_field_sha256": "e657262979ac3b8098271da55c4c7ce0269ebdbba5e929d6be462dca003d4729"
+    },
+    {
+      "trace": "2",
+      "field": "2.49",
+      "source_field_sha256": "2d97def7baa25ccf0e4427c539d04c3238c037dc52b3f01792cd126bee1d4110"
+    },
+    {
+      "trace": "2",
+      "field": "2.50",
+      "source_field_sha256": "6aa4fe7eed7115fac2e598999f482ce9e2f7eac4abf2a4c65303af2497b0ff75"
+    },
+    {
+      "trace": "3",
+      "field": "3.1",
+      "source_field_sha256": "45824bbe54238229d910fa7579297446e4a8c54d2ec2003266535c193c07293c"
+    },
+    {
+      "trace": "3",
+      "field": "3.2",
+      "source_field_sha256": "7d748cc224dc009f4b9105af445768812baccdb2e096856ceb0bcb4e173ba8ca"
+    },
+    {
+      "trace": "3",
+      "field": "3.35",
+      "source_field_sha256": "600563cff4048418db7040646c2282c4cd5cc2885683ca3d75efc770ac959a47"
+    },
+    {
+      "trace": "3",
+      "field": "3.36",
+      "source_field_sha256": "8f41c92b884687251144e6b5b2373a6314948a6f997ceb75bd924f687d6253a2"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.1",
+      "source_field_sha256": "d3acdf962f37d060ea24eb3835851701c212ea39dc4fc1778259555ade2aabd9"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.2",
+      "source_field_sha256": "213d8a1330504304c420aac7e7e631edef8447c3a7415f383d00a11a20c4385e"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.7",
+      "source_field_sha256": "859fedf7308164d9ae1ce73c2a7bb247fa0262668948fe1d28620e27874ab001"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.8",
+      "source_field_sha256": "56c345ba392f4088356baf69aa89a11f79bade9ef85a844eac300ac13219dcb9"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.19.1",
+      "source_field_sha256": "7f95ac76164349af4fe496fea8baf197e72b0c1dbc34ae590e5877f51686f9d9"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.20",
+      "source_field_sha256": "742c7e67615c93a6794b279699b999ddd348b006446699a305914bb8c47c3fc1"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.21",
+      "source_field_sha256": "7e3738c50ba8c387b43a515f2d5f1ad26a94c919c74d401f104b2b318868715d"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.22",
+      "source_field_sha256": "9bbcec50c1c7c9d5a134ff855865d8154f2d530abe1bcdfc2b70072b20a4ffb8"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.29",
+      "source_field_sha256": "4ce8a4b4b0540fbc4b17d19f9014982b6bd447f9360472b1f98e6d85c8b51fa7"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.30",
+      "source_field_sha256": "e49d34924959ef5ae1cc227fb6cfbf868b7a91dbc668d9f06bdc2417f03bb229"
+    }
+  ],
+  "excluded_fields": [
+    {
+      "trace": "1",
+      "field": "1.2",
+      "source_field_sha256": "19d32edf50c528fdb8baef154064ea1302ac4c5f2ac698cc4619918ab3ca8fcf"
+    },
+    {
+      "trace": "1",
+      "field": "1.3",
+      "source_field_sha256": "66068ccdc8b4e6d613aac065e07063d56178ef5142cb6f56ebeccc6f2852e672"
+    },
+    {
+      "trace": "1",
+      "field": "1.4",
+      "source_field_sha256": "9cfa2ec38fcdd67b31e269b7a92d2384accdcbba6040107774aa5916b3595713"
+    },
+    {
+      "trace": "1",
+      "field": "1.5",
+      "source_field_sha256": "24dc40362e4bee7432fda6c97c93b20280a7d19062b3f17851f0d45fb5be7e11"
+    },
+    {
+      "trace": "1",
+      "field": "1.6",
+      "source_field_sha256": "ec0ef76e015f658d0dd7e0281947bfcbe1f2990cada124485cdbb45d3f0014e6"
+    },
+    {
+      "trace": "1",
+      "field": "1.7",
+      "source_field_sha256": "e704d314415b26d2545183577a74c1e7655a88c0eff8ab21e8a8a5c44123a924"
+    },
+    {
+      "trace": "1",
+      "field": "1.8",
+      "source_field_sha256": "4e62f5bebca2d3e38cabba4521faed18f55b946a5fe3c667acd0818c7eacc7fc"
+    },
+    {
+      "trace": "1",
+      "field": "1.9",
+      "source_field_sha256": "3ea975c284ff22244f8b2fc875318d4050b81661c70122aba842426ac2f5d3bf"
+    },
+    {
+      "trace": "1",
+      "field": "1.10",
+      "source_field_sha256": "ede44a6159bebc4271369b01ab5b4a37de0e323d18ebb7d2c0fcdd32d84472e8"
+    },
+    {
+      "trace": "1",
+      "field": "1.11",
+      "source_field_sha256": "0e99bc77bc13c5070d6af5bb6ad1b187cc7bfad4f6940c613a457feb5b836997"
+    },
+    {
+      "trace": "1",
+      "field": "1.12",
+      "source_field_sha256": "607375a8a418fba968160bb2a48d789358bd99e42329f93d41fcec025c9fa835"
+    },
+    {
+      "trace": "1",
+      "field": "1.13",
+      "source_field_sha256": "b88898bfde0ce109eb117c814cbb28bbf3ea64bbe7795045e1ad6d64df247c37"
+    },
+    {
+      "trace": "1",
+      "field": "1.14",
+      "source_field_sha256": "66885df1ed4d3b0be25747e47bef4e2a7027ce0ac083a085f9628be3c0a1050b"
+    },
+    {
+      "trace": "1",
+      "field": "1.15",
+      "source_field_sha256": "526d6e241f138b5fbc5e6dd045aa81cb1fe7661889ed625b6996359f723bb778"
+    },
+    {
+      "trace": "1",
+      "field": "1.16",
+      "source_field_sha256": "99bbdb642e092d842003506eec025344b46ff37e15979771f7d1959057a99e30"
+    },
+    {
+      "trace": "2",
+      "field": "2.2",
+      "source_field_sha256": "91ac4bf88f6966f7d9daf9d0c75d35be849a688659005cf9635617d45c5f5d09"
+    },
+    {
+      "trace": "2",
+      "field": "2.3",
+      "source_field_sha256": "c8d0d506dc9c477dafea96def04db30a37b19721c10347a4454ecdd7d961c422"
+    },
+    {
+      "trace": "2",
+      "field": "2.4",
+      "source_field_sha256": "6c9133d8612160488600b2bd9ab0efe96b88660bcfe54d5966d7622cca22ee96"
+    },
+    {
+      "trace": "2",
+      "field": "2.5",
+      "source_field_sha256": "03c5a6d8dc747050dd937383f01104047cf204096e7c41e28ca6dc2bce3a59ad"
+    },
+    {
+      "trace": "2",
+      "field": "2.6",
+      "source_field_sha256": "52491e07343f0927c2980862280d06043358216097ad3d46154960d80e804828"
+    },
+    {
+      "trace": "2",
+      "field": "2.7",
+      "source_field_sha256": "c3b3534bd28f21ddefda769c66d41fe67c95a2cd1fc093102f614ae06ba8a171"
+    },
+    {
+      "trace": "2",
+      "field": "2.8",
+      "source_field_sha256": "e701a928ef7986b0c1e796e5c315f2f557800d1e7abe61f70d8d6e4d2f04e1b9"
+    },
+    {
+      "trace": "2",
+      "field": "2.9",
+      "source_field_sha256": "1f55cf35f0b9f4d59435bfb7d9e414f3bf2e56c418c15aaf7b4e4627fb87a283"
+    },
+    {
+      "trace": "2",
+      "field": "2.10",
+      "source_field_sha256": "1d25f471705e044d571ac0e59f8db227e7d94a53f3208c53a9a34743aa987bbb"
+    },
+    {
+      "trace": "2",
+      "field": "2.11",
+      "source_field_sha256": "83f930699889dbdb27ecf3aa2b9102b84e23c55406e73f978dd98e516b293597"
+    },
+    {
+      "trace": "2",
+      "field": "2.12",
+      "source_field_sha256": "5d33a51ccee3c9b25ee36281f85e39e26ac0e2865cb27891c3b8a112128fd1e1"
+    },
+    {
+      "trace": "2",
+      "field": "2.13",
+      "source_field_sha256": "2ce450b0314dc9259494ae6f1122cfd9349019848d3331138a848b0b406b4f0a"
+    },
+    {
+      "trace": "2",
+      "field": "2.14",
+      "source_field_sha256": "8719b61aacf41d0a96f526a18982361d97a7bf97d48bf6c942d9f18b2fddff17"
+    },
+    {
+      "trace": "2",
+      "field": "2.15",
+      "source_field_sha256": "624627f3c0a71a9ca84c64f90f7363e39073fd0f138d6f0cf80d3596431d73c8"
+    },
+    {
+      "trace": "2",
+      "field": "2.16",
+      "source_field_sha256": "24821ddfae3097eaee62f4904813535a6d3e96f7f4330879e0fe218bb130f611"
+    },
+    {
+      "trace": "2",
+      "field": "2.17",
+      "source_field_sha256": "64aa1626156a9782736904ece68d6358f385a67fc793b7e5604556dba68410c1"
+    },
+    {
+      "trace": "2",
+      "field": "2.18",
+      "source_field_sha256": "57e7c406ae9a9e1e605445e26142548d5f2c1b73bdcc8998381a60d29d5f819c"
+    },
+    {
+      "trace": "2",
+      "field": "2.19",
+      "source_field_sha256": "64b81afd912f776f2da418888835b9008114ef346c23996c71408a2c976141ec"
+    },
+    {
+      "trace": "2",
+      "field": "2.20",
+      "source_field_sha256": "cf351be7e782bc69354ef8ddf75f178d1e2da4ed25bdf8f7305d766525031fe5"
+    },
+    {
+      "trace": "2",
+      "field": "2.21",
+      "source_field_sha256": "58e16034a5979b5c176abf4cba2a0b82c735e525ba801b30e652f855b553fa8a"
+    },
+    {
+      "trace": "2",
+      "field": "2.22",
+      "source_field_sha256": "1200791b6d5c423a7353a593de84ffde48d6eb256ec44a5e3989353a92ffebb5"
+    },
+    {
+      "trace": "2",
+      "field": "2.23",
+      "source_field_sha256": "acde216096c34cc73a0fc9ffe28c43d1af0e17e9af8751ba0375f486843a8731"
+    },
+    {
+      "trace": "2",
+      "field": "2.24",
+      "source_field_sha256": "da3354c72be8eae4f5d2785e690b477be0075491d7893a3376a1ff003070e6fd"
+    },
+    {
+      "trace": "2",
+      "field": "2.25",
+      "source_field_sha256": "2dbbab6d75c481417a61920908f960e0399d4a7dcb9c06284fd275ed16942994"
+    },
+    {
+      "trace": "2",
+      "field": "2.26",
+      "source_field_sha256": "cd7391a48e69f86a6765f14902cee9561656d8697c7bda2aa3f62e7214fc1c25"
+    },
+    {
+      "trace": "2",
+      "field": "2.27",
+      "source_field_sha256": "25e37fe2677650d14552bc6155c075c4ecddec90b0501dbda0d78d1981a1689a"
+    },
+    {
+      "trace": "2",
+      "field": "2.28",
+      "source_field_sha256": "80ef385a8f30c4402e657758de4d65dabc1b6a533437fadd2460d4137e305a12"
+    },
+    {
+      "trace": "2",
+      "field": "2.29",
+      "source_field_sha256": "e04905c5fd88cc3dd4bf89ea4cb30348ca5fbc49096a88d4843a1711cff4365b"
+    },
+    {
+      "trace": "2",
+      "field": "2.30",
+      "source_field_sha256": "98cda4f207003630601309554b89c1226b05ab7ca4280039ba01c54410f57548"
+    },
+    {
+      "trace": "2",
+      "field": "2.31",
+      "source_field_sha256": "00dd55cd859df14e72cedf77df81d902c6efb2a2db873a342401f734a8ee01f2"
+    },
+    {
+      "trace": "2",
+      "field": "2.32",
+      "source_field_sha256": "543797ced91d5c99fe4b52a2fffd49fa6394f3b10fde6c566f71153fdcf4c441"
+    },
+    {
+      "trace": "2",
+      "field": "2.33",
+      "source_field_sha256": "02472e2ef3bb5d88e2f641fafb102e814f6cbea52977d3485ea8bcef13ca1117"
+    },
+    {
+      "trace": "2",
+      "field": "2.34",
+      "source_field_sha256": "c393c82c6d1da728a9063da721009c83964453f8231e2a401a411b7141470996"
+    },
+    {
+      "trace": "2",
+      "field": "2.35",
+      "source_field_sha256": "12c45e4b5d860eea4bc4a45b4224e366c425033376fe138fa26ae7e08172a8d1"
+    },
+    {
+      "trace": "2",
+      "field": "2.36",
+      "source_field_sha256": "01481cfa2a6839eb3fd553a4ad3d91d1302c1a402512502d03d2e711cdd4c2c1"
+    },
+    {
+      "trace": "2",
+      "field": "2.37",
+      "source_field_sha256": "68f1ff2fed2f4a6eab4f3ced44c5329c9019cc2877fc27762bff135bcbed5c6e"
+    },
+    {
+      "trace": "2",
+      "field": "2.38",
+      "source_field_sha256": "f2555b0c408e0a2d298bba77bf7d8ce16e031a6d5098802e51aa10cdde2e3488"
+    },
+    {
+      "trace": "2",
+      "field": "2.39",
+      "source_field_sha256": "c93c196660cf60e8b2fb3b4e3a2bcd45b91f78db74051b1ff40c3497c6ece849"
+    },
+    {
+      "trace": "2",
+      "field": "2.40",
+      "source_field_sha256": "f02710f1b372dae221d0226d2be62c5b0a80d90cdc5f9f40ade7929c62015fd9"
+    },
+    {
+      "trace": "2",
+      "field": "2.41",
+      "source_field_sha256": "87bdf18721778ab7c5ff1dabd03c2f397903e50bd9b0ce7d52bbcf3fd86656b0"
+    },
+    {
+      "trace": "2",
+      "field": "2.42",
+      "source_field_sha256": "f2cb37a783778ff3ea22fab9b876f5cec95a74eb79d15a5f00b869bc518ff085"
+    },
+    {
+      "trace": "2",
+      "field": "2.43",
+      "source_field_sha256": "0afa9593ebf9083e4437bdfad83a3b88b40e6e9ac1e43f184097a73f477b468f"
+    },
+    {
+      "trace": "2",
+      "field": "2.44",
+      "source_field_sha256": "32a7ca25d9a7677308dcabf202a26e074588755aa232b9644d49a7a7babc0a27"
+    },
+    {
+      "trace": "2",
+      "field": "2.45",
+      "source_field_sha256": "8cc351e03e7c40d5f78ca08fda0075f4636a99cdbb6d65b83bea31e062ca24f0"
+    },
+    {
+      "trace": "2",
+      "field": "2.46",
+      "source_field_sha256": "a08b3b80007d03785c1b2377ae03e636bbde77efcd6faa5828714bdb49f94a31"
+    },
+    {
+      "trace": "2",
+      "field": "2.47",
+      "source_field_sha256": "7ff7d2f91ab7e254965669dbc70cc7360ded46fc553b212dff2de634a273986e"
+    },
+    {
+      "trace": "2",
+      "field": "2.48",
+      "source_field_sha256": "ffd48fcef5f0d59aa787ed29e195965f168823c01d646d2ee44cd672059cc66f"
+    },
+    {
+      "trace": "3",
+      "field": "3.3",
+      "source_field_sha256": "2895fc58104a0c14a2786bc5298ef71b4c6ff7ec739e9b32e9e81325967674c6"
+    },
+    {
+      "trace": "3",
+      "field": "3.4",
+      "source_field_sha256": "43118515d1bdac8c42c81c2858c9829c65bd5193d9d5cd6397d9c4b580dce59e"
+    },
+    {
+      "trace": "3",
+      "field": "3.5",
+      "source_field_sha256": "2d30c888844a3101403a4efcdc4d8aa4339a15971e8231d403be6491f615bfe3"
+    },
+    {
+      "trace": "3",
+      "field": "3.6",
+      "source_field_sha256": "44eadcff92de40003ee6c0357d9c8bdfe58e5b0ec306e06de29a1e16fd511cb0"
+    },
+    {
+      "trace": "3",
+      "field": "3.7",
+      "source_field_sha256": "3472b4b70a8d5b7587df441ec65edf96437b69459c4e7365dbcdaa3b6cc57723"
+    },
+    {
+      "trace": "3",
+      "field": "3.8",
+      "source_field_sha256": "565d315b6bd005ae236e17d0b528d287e8652101693873304b1f16b30336a13b"
+    },
+    {
+      "trace": "3",
+      "field": "3.9",
+      "source_field_sha256": "a6dd82b33c8329c461d08a899158b98ec978eafc88fc63c028c971146e2513ac"
+    },
+    {
+      "trace": "3",
+      "field": "3.10",
+      "source_field_sha256": "38f68a054e6daf99927139800898b4e077579e73ce25f7da781cfd97f0f21752"
+    },
+    {
+      "trace": "3",
+      "field": "3.11",
+      "source_field_sha256": "8b49f9a590dfe263697e258086ed8c51a3457f9fc4b7ee308d53fdcbdc6bc923"
+    },
+    {
+      "trace": "3",
+      "field": "3.12",
+      "source_field_sha256": "03bd271ada154d3580df1f9db8e0c24d12f3cb4ee04a9c961263060658759a27"
+    },
+    {
+      "trace": "3",
+      "field": "3.13",
+      "source_field_sha256": "aba6cc4070e8b4dae87b0e9dd62edce2564b3d4b6c84f983185859d9d1d89653"
+    },
+    {
+      "trace": "3",
+      "field": "3.14",
+      "source_field_sha256": "78e2eb18d3818a19e6ef6d3bcfa4aad450d5740348a9302a391d5a0d27f8c440"
+    },
+    {
+      "trace": "3",
+      "field": "3.15",
+      "source_field_sha256": "c518b5fd3276c26f73c7b1f9bc2e1be67606d7dd7ddef38d53d60f08fa303732"
+    },
+    {
+      "trace": "3",
+      "field": "3.16",
+      "source_field_sha256": "712725f68bdccb820b000c94065696646ffe9466eb12a437fb56f2bd20e6959b"
+    },
+    {
+      "trace": "3",
+      "field": "3.17",
+      "source_field_sha256": "d91597aa79557549ef087504aa8a67b8da02f956b5f803da8d406219c71e8de9"
+    },
+    {
+      "trace": "3",
+      "field": "3.18",
+      "source_field_sha256": "e07de670258a25350115c4e9804aa2e076831d4b48b65a28e79eda52053c5bf1"
+    },
+    {
+      "trace": "3",
+      "field": "3.19",
+      "source_field_sha256": "b01b279177e79ff6e7daf8ac84cd79aa6a06ca6f48a7bc3b8f92197b6b2a6f73"
+    },
+    {
+      "trace": "3",
+      "field": "3.20",
+      "source_field_sha256": "d07c59f4a42362baf2f077d043ce0fdecd28cb74208f2cc4f5c74b9e3cee87ae"
+    },
+    {
+      "trace": "3",
+      "field": "3.21",
+      "source_field_sha256": "61433260215ed13b1f9e25e0a1dc2ecb96156ab1eb522133f79e7727ab2dd67d"
+    },
+    {
+      "trace": "3",
+      "field": "3.22",
+      "source_field_sha256": "ea0ac8f9d9173096878eac91f40f18d7d2962e0a36868eadcb4d4ce8dde7c852"
+    },
+    {
+      "trace": "3",
+      "field": "3.23",
+      "source_field_sha256": "0c38538d43f88569e9c0062a38625941d3def93e6eb2229d08e0fee5559191da"
+    },
+    {
+      "trace": "3",
+      "field": "3.24",
+      "source_field_sha256": "fc4aac0dfd5e80bcbf7b0de689d8928ad8e2228bde334029275425d863ddb015"
+    },
+    {
+      "trace": "3",
+      "field": "3.25",
+      "source_field_sha256": "a9de06fb80f880429e5d68c4906435acb931be420b2bcde4ef858c35d86b031b"
+    },
+    {
+      "trace": "3",
+      "field": "3.26",
+      "source_field_sha256": "994d2dca8874699d602a010b359151bf1f15d666a19a9a37b6676380c14c2e61"
+    },
+    {
+      "trace": "3",
+      "field": "3.27",
+      "source_field_sha256": "e7701a8f625910b093ab36f94ffd27493c3d1325d8cf369ccfa8f5b1b5d21185"
+    },
+    {
+      "trace": "3",
+      "field": "3.28",
+      "source_field_sha256": "a32b8b9e51da24688b79f7c27a9ddbc5a503e6388d89cdcf1ec5da3d0899768e"
+    },
+    {
+      "trace": "3",
+      "field": "3.29",
+      "source_field_sha256": "7e89503448242313302b558c8febf7334bc4ec72eb9e2444e6ca6320915302ef"
+    },
+    {
+      "trace": "3",
+      "field": "3.30",
+      "source_field_sha256": "5d6345edec4449d90858ace48a0e06b41420f45061ec232844c67d785c041edc"
+    },
+    {
+      "trace": "3",
+      "field": "3.31",
+      "source_field_sha256": "1e204e6bcddaa278dcf5c4be634b9883a944c2831bbaac226b9efdc0eecfbe50"
+    },
+    {
+      "trace": "3",
+      "field": "3.32",
+      "source_field_sha256": "7c50472ba6ad527323731a9f4cb81ebeff249f1408d8a99707bc95c1022de330"
+    },
+    {
+      "trace": "3",
+      "field": "3.33",
+      "source_field_sha256": "e2bb231dccf580a3993663e884a5c68b343b529b095ff363e529b6db2fcb5a38"
+    },
+    {
+      "trace": "3",
+      "field": "3.34",
+      "source_field_sha256": "f129b61701367cd8a15fc0f170bac19c0166e0a0c3ac0895fed255b1349cc522"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.3",
+      "source_field_sha256": "482618405ea1aff40b22706f35f3f993b8b14f84ea8bbb5067603be685fa6101"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.4",
+      "source_field_sha256": "f4f8dc5901642ae8c189f46d913c35c3518cf403817c7705684c9ddcc5270a9c"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.5",
+      "source_field_sha256": "ce4c12c4069be3b7d463010c949605a31d67d24feff7bb9458717ea29c31e413"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.6",
+      "source_field_sha256": "e2d0e429be3c5d23a3c806d948aa9c13e2647f50a719a73e37fb49e1a2bd8305"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.9",
+      "source_field_sha256": "ddf3e247fc0537dee719f4373d982b5e74d3e84fd4c9f39aaab5f14537b77384"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.10",
+      "source_field_sha256": "8883fa0583c910c1fae0ca9607053246c1ed202aca282f864305c3beacdbd7ee"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.11",
+      "source_field_sha256": "aded98bff655bb83ac9cd9f3b874e12cb123ae2fdc87c32e549cd41c4a1f1930"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.12",
+      "source_field_sha256": "0aeab239504a7b83373726e799627476aa829133a2095852070417c8e33cbdd0"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.13",
+      "source_field_sha256": "d7c57e193dcacecda916afe95c0339559126604b49d2e9503fda169615e347fb"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.14",
+      "source_field_sha256": "8abb735d30cbc38c00f82c52d015c2d6ce58e36df5b3ed046e8d805535f7ffa9"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.15",
+      "source_field_sha256": "8f44a07c277a4b38f25bda3064024737c574249b32a260e77b9e429fd2a94d55"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.16",
+      "source_field_sha256": "a84918a2a55e3fb8f1b6077d3a4303f16358032086e9e020476c3a4150fe877e"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.17",
+      "source_field_sha256": "6575d0ba8ca830871083b4c944c907fe7280bf941446a587a77f76a57220f27c"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.18",
+      "source_field_sha256": "525fcf9ba3ad5049c1ae92d9ea5afce100561a504f435845904563de574b6614"
+    },
+    {
+      "trace": "4.1",
+      "field": "4.19",
+      "source_field_sha256": "0c33b19166c00ff6b31cc7217e132950f2e0f89cce971f73a67f1695a8552a95"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.23",
+      "source_field_sha256": "2ed08b4a666bd1466cd675d3fd27311daac78a8ace7485a26721188a5d066069"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.24",
+      "source_field_sha256": "e117e45135cf7da5976c95812d94da751e8a9ba2beeea1fc6265a21ca080b154"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.25",
+      "source_field_sha256": "09b8ad62d8aefcb005d9bb5070a563ff5c86baeba42ba86bf186a7317d2a1f89"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.26",
+      "source_field_sha256": "6e01c633b2b1ad61f10bc1b946e940dd49713acae681693ad437d1839d8daab8"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.27",
+      "source_field_sha256": "8609a7cc83b9c769f0535d7d2c1dfd4f484aea34d07f019b391e75610ee1edda"
+    },
+    {
+      "trace": "4.2",
+      "field": "4.28",
+      "source_field_sha256": "fdcb1e9113fd72db51a671e4613b322e9566777257786553962ea01f81c7191f"
+    }
+  ],
+  "excluded_constraints": [
+    {
+      "trace": "1",
+      "field": "1.17",
+      "index": 0,
+      "constraint": {
+        "kind": "logical_length",
+        "equals": 6
+      },
+      "reason": "Unsupported construct; explicit exclusion from reference-only test component, retained in full profile."
+    },
+    {
+      "trace": "1",
+      "field": "1.17",
+      "index": 2,
+      "constraint": {
+        "kind": "composite_segments",
+        "target": "logical",
+        "segments": [
+          {
+            "start": 1,
+            "length": 3,
+            "check": {
+              "equals": "050"
+            }
+          }
+        ]
+      },
+      "reason": "Unsupported construct; explicit exclusion from reference-only test component, retained in full profile."
+    },
+    {
+      "trace": "2",
+      "field": "2.49",
+      "index": 0,
+      "constraint": {
+        "kind": "logical_length",
+        "equals": 6
+      },
+      "reason": "Unsupported construct; explicit exclusion from reference-only test component, retained in full profile."
+    },
+    {
+      "trace": "2",
+      "field": "2.49",
+      "index": 2,
+      "constraint": {
+        "kind": "composite_segments",
+        "target": "logical",
+        "segments": [
+          {
+            "start": 1,
+            "length": 3,
+            "check": {
+              "equals": "050"
+            }
+          }
+        ]
+      },
+      "reason": "Unsupported construct; explicit exclusion from reference-only test component, retained in full profile."
+    },
+    {
+      "trace": "3",
+      "field": "3.35",
+      "index": 0,
+      "constraint": {
+        "kind": "logical_length",
+        "equals": 6
+      },
+      "reason": "Unsupported construct; explicit exclusion from reference-only test component, retained in full profile."
+    },
+    {
+      "trace": "3",
+      "field": "3.35",
+      "index": 2,
+      "constraint": {
+        "kind": "composite_segments",
+        "target": "logical",
+        "segments": [
+          {
+            "start": 1,
+            "length": 3,
+            "check": {
+              "equals": "050"
+            }
+          }
+        ]
+      },
+      "reason": "Unsupported construct; explicit exclusion from reference-only test component, retained in full profile."
+    }
+  ],
+  "opaque_spans": [
+    {
+      "trace": "1",
+      "field": "EXCLUDED-1-21",
+      "start": 21,
+      "length": 174,
+      "semantics": "Uninterpreted excluded byte span, not a regional normative field or a simulated validator."
+    },
+    {
+      "trace": "2",
+      "field": "EXCLUDED-2-21",
+      "start": 21,
+      "length": 239,
+      "semantics": "Uninterpreted excluded byte span, not a regional normative field or a simulated validator."
+    },
+    {
+      "trace": "3",
+      "field": "EXCLUDED-3-41",
+      "start": 41,
+      "length": 83,
+      "semantics": "Uninterpreted excluded byte span, not a regional normative field or a simulated validator."
+    },
+    {
+      "trace": "4.1",
+      "field": "EXCLUDED-4.1-22",
+      "start": 22,
+      "length": 123,
+      "semantics": "Uninterpreted excluded byte span, not a regional normative field or a simulated validator."
+    },
+    {
+      "trace": "4.1",
+      "field": "EXCLUDED-4.1-151",
+      "start": 151,
+      "length": 238,
+      "semantics": "Uninterpreted excluded byte span, not a regional normative field or a simulated validator."
+    },
+    {
+      "trace": "4.2",
+      "field": "EXCLUDED-4.2-32",
+      "start": 32,
+      "length": 18,
+      "semantics": "Uninterpreted excluded byte span, not a regional normative field or a simulated validator."
+    }
+  ]
+}

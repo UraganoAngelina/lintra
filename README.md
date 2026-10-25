@@ -216,3 +216,10 @@ Il riepilogo testuale e XLSX espongono la completezza; un run parziale concluso
 regolarmente può pubblicare report definitivi dichiaratamente parziali.
 Cancelled o errore tecnico mantengono le regole di rollback dei report.
 Nessuno snapshot storico viene aggiornato durante queste validazioni.
+
+
+Il [profilo SIOC referenziale derivato .2](schemas/sioc/2026-04-20.structural-minimal.2/README.md)
+registra gli obblighi strutturali espliciti autorizzati e conserva le capability
+ancora mancanti. Il [golden referenziale](tests/golden/cross-trace/sioc-referential/v1/README.md)
+esercita un componente operativo distinto con dati sintetici e ledger delle
+esclusioni: non certifica il SIOC completo né sostituisce il profilo .1/FROZEN.

@@ -28,3 +28,9 @@
 ## Fuori da questo gate documentale
 
 Le task di implementazione e le decisioni tecniche su backend storage/gestione chiavi, le norme SIOC cross-run (`DEC-SIOC-HIST-01`) e i restanti gate CAD-runtime restano da eseguire. Sono task e decisioni aperte, **non conflitti tra fonti**.
+
+## Ratifiche successive — appendice cronologica
+
+| ID | Conflitto | Decisione successiva | Stato |
+|---|---|---|---|
+| CNF-SIOC-REFERENTIAL-G0-01 | Obblighi parent G0 senza regole esplicite; atto revocante negativo N/A contro obbligo E012 | Nuova revisione operativa derivata con quattro REL-* e policy revoking_act corretta; no controlli impliciti; .1/FROZEN invariati; sottoinsieme golden tracciato autorizzato | APPROVED 2026-10-25; [ratifica](verification/CNF-SIOC-REFERENTIAL-G0-01-ratification.md); implementazione/gate da verificare |

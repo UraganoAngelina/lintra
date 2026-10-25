@@ -1,0 +1,2443 @@
+{
+  "id": "2",
+  "name": "ADT",
+  "record_length": 271,
+  "fields": [
+    {
+      "id": "2.1",
+      "name": "Numero della scheda di ricovero (ex Identificativo univoco assistito per episodio di accoglimento)",
+      "physical": {
+        "start": 1,
+        "length": 20,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "regex",
+          "pattern": "^0+$",
+          "match": "forbidden",
+          "target": "logical"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "2.1",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016)."
+      }
+    },
+    {
+      "id": "2.2",
+      "name": "Provenienza del Paziente",
+      "physical": {
+        "start": 21,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.2",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica la struttura o il luogo di provenienza dell’assistito. I valori ammessi sono:\n01. Domicilio dell’assistito con ADI (o SAD)\n02. Domicilio dell'assistito senza ADI (o SAD)\n03. Struttura socio-sanitaria residenziale extraospedaliera\n04. Struttura sociale (es. Casa albergo per anziani)\n05. Struttura ospedaliera pubblica\n06. Altra struttura di cure intermedie (URT)\n07. Paziente COVID19 proveniente da ospedale\n08. Paziente COVID19 proveniente da struttura socio-sanitaria residenziale extraospedaliera\n09. Altro\n10. Ospedale privato \n11. Hospice \n12. Altro ospedale di comunità \n13. Pronto Soccorso"
+      }
+    },
+    {
+      "id": "2.3",
+      "name": "Tipologia di ricovero",
+      "physical": {
+        "start": 23,
+        "length": 1,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.3",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica la tipologia di ricovero\n1. Ospedale di Comunità"
+      }
+    },
+    {
+      "id": "2.4",
+      "name": "Data richiesta accoglimento",
+      "physical": {
+        "start": 24,
+        "length": 8,
+        "type": "date",
+        "alignment": {
+          "kind": "exact"
+        },
+        "format": "DDMMYYYY"
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "date",
+          "format": "DDMMYYYY",
+          "calendar_valid": true
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "2.4",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indicare la data di dichiarazione di eleggibilità al ricovero (inserimento in lista di attesa del paziente valutato ed eleggibile). Utilizzare il formato GGMMAAAA."
+      }
+    },
+    {
+      "id": "2.5",
+      "name": "Data di ricovero",
+      "physical": {
+        "start": 32,
+        "length": 8,
+        "type": "date",
+        "alignment": {
+          "kind": "exact"
+        },
+        "format": "DDMMYYYY"
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "date",
+          "format": "DDMMYYYY",
+          "calendar_valid": true
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "2.5",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Data del ricovero in struttura. La data deve essere minore o uguale alla “data di dimissione”. Utilizzare il formato GGMMAAAA."
+      }
+    },
+    {
+      "id": "2.6",
+      "name": "Data di dimissione o di decesso",
+      "physical": {
+        "start": 40,
+        "length": 8,
+        "type": "date",
+        "alignment": {
+          "kind": "exact"
+        },
+        "format": "DDMMYYYY"
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "date",
+          "format": "DDMMYYYY",
+          "calendar_valid": true
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "2.6",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Data della dimissione dalla struttura, o del decesso in struttura. Utilizzare il formato GGMMAAAA."
+      }
+    },
+    {
+      "id": "2.7",
+      "name": "Modalità di dimissione",
+      "physical": {
+        "start": 48,
+        "length": 1,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.7",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Individua lo stato del paziente al momento della dimissione, e l’eventuale continuazione del percorso assistenziale in altre strutture, codificato con i valori di dominio indicati nelle specifiche funzionali.\n1. Domicilio dell’assistito con ADI (o SAD)\n2. Domicilio dell'assistito senza ADI (o SAD)\n3. Struttura socio-sanitaria residenziale extraospedaliera\n4. Struttura sociale (es. Casa albergo per anziani)\n5. Struttura ospedaliera\n6. Altre strutture di Cure Intermedie  (ODC, URT, Hospice)\n7. Dimissione volontaria\n8. Decesso\n9. Dimissione protetta con attivazione rete cure palliative (Hospice, Cure Palliative Domiciliari ecc.)\n0. Dimissione protetta al domicilio con attivazione altri servizi"
+      }
+    },
+    {
+      "id": "2.8",
+      "name": "Struttura erogatrice. Codice regionale dell'UDO",
+      "physical": {
+        "start": 49,
+        "length": 6,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "000000"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.8",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica il codice regionale della struttura erogatrice."
+      }
+    },
+    {
+      "id": "2.9",
+      "name": "Struttura erogatrice. Codice MRA",
+      "physical": {
+        "start": 55,
+        "length": 15,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.9",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Campo che verrà valorizzato con la codifica MRA non appena diponibile."
+      }
+    },
+    {
+      "id": "2.10",
+      "name": "Azienda ULSS pagante",
+      "physical": {
+        "start": 70,
+        "length": 6,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [
+          {
+            "condition": "ssr_fully_pays"
+          }
+        ],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.10",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Indica l'Azienda ULSS pagante la quota sanitaria giornaliera.\nIl formato del campo è il seguente: le prime tre cifre rappresentano il codice regione, le seconde tre il numero di Azienda sanitaria."
+      }
+    },
+    {
+      "id": "2.11",
+      "name": "Soggetto pagante la quota alberghiera",
+      "physical": {
+        "start": 76,
+        "length": 1,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [
+          {
+            "condition": "self_paying"
+          }
+        ],
+        "forbidden_if": [
+          {
+            "not": {
+              "condition": "self_paying"
+            }
+          }
+        ]
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.11",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Il campo va compilato solo quando è prevista la compartecipazione, come definito dalla DGR 1563/2024. I valori previsti sono: 1. Utente (in toto o con la compartecipazione della famiglia) 2. Utente (parzialmente, con la compartecipazione del Comune) 3. Comune (in toto) 4. Altro"
+      }
+    },
+    {
+      "id": "2.12",
+      "name": "Emissione quote",
+      "physical": {
+        "start": 77,
+        "length": 1,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.12",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Il campo integra la DGR 2683/2014 per rilevare la presenza di utenti solventi in proprio, non a carico del Sistema sanitario regionale\nI valori previsti sono:\n1. Utente con quota totalmente a carico del SSR\n2. Utente pagante in proprio"
+      }
+    },
+    {
+      "id": "2.13",
+      "name": "Problemi socio - familiari 1",
+      "physical": {
+        "start": 78,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.13",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Segnalazione dei problemi di natura socio-familiare rilevati al momento del ricovero, codificato con i valori di dominio indicati nelle specifiche tecniche.\nValori ammessi:\n00 = Nessun problema rilevato \n01 = In carico ai servizi sociali\n02 = Problemi relazionali/comportamentali/psichiatrici\n03 = Dipendenze\n04 = Problemi di autonomia, disabilità fisica\n05 = Problemi di carattere giudiziario\n06 = Difficoltà economiche\n07 = Difficoltà abitative\n08 = Vive solo/a\n09 = Assenza o inadeguatezza del caregiver\n10 = Presenza amministratore di sostegno/tutore\n99 = Dato mancante",
+        "source_semantic_null_values": [
+          {
+            "value": "99",
+            "meaning": "Dato mancante"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2.14",
+      "name": "Problemi socio - familiari 2",
+      "physical": {
+        "start": 80,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.14",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13",
+        "source_semantic_null_values": [
+          {
+            "value": "99",
+            "meaning": "Dato mancante"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2.15",
+      "name": "Problemi socio - familiari 3",
+      "physical": {
+        "start": 82,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.15",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13",
+        "source_semantic_null_values": [
+          {
+            "value": "99",
+            "meaning": "Dato mancante"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2.16",
+      "name": "Problemi socio - familiari 4",
+      "physical": {
+        "start": 84,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.16",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13",
+        "source_semantic_null_values": [
+          {
+            "value": "99",
+            "meaning": "Dato mancante"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2.17",
+      "name": "Problemi socio - familiari 5",
+      "physical": {
+        "start": 86,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.17",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13",
+        "source_semantic_null_values": [
+          {
+            "value": "99",
+            "meaning": "Dato mancante"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2.18",
+      "name": "Problemi socio - familiari 6",
+      "physical": {
+        "start": 88,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.18",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13",
+        "source_semantic_null_values": [
+          {
+            "value": "99",
+            "meaning": "Dato mancante"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2.19",
+      "name": "Problemi socio - familiari 7",
+      "physical": {
+        "start": 90,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.19",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13",
+        "source_semantic_null_values": [
+          {
+            "value": "99",
+            "meaning": "Dato mancante"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2.20",
+      "name": "Problemi socio - familiari 8",
+      "physical": {
+        "start": 92,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.20",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13",
+        "source_semantic_null_values": [
+          {
+            "value": "99",
+            "meaning": "Dato mancante"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2.21",
+      "name": "Problemi socio - familiari 9",
+      "physical": {
+        "start": 94,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.21",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13",
+        "source_semantic_null_values": [
+          {
+            "value": "99",
+            "meaning": "Dato mancante"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2.22",
+      "name": "Problemi socio - familiari 10",
+      "physical": {
+        "start": 96,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.22",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Valori ammessi: vedi campo 2.13",
+        "source_semantic_null_values": [
+          {
+            "value": "99",
+            "meaning": "Dato mancante"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2.23",
+      "name": "Soggetto proponente il ricovero",
+      "physical": {
+        "start": 98,
+        "length": 1,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.23",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Identifica il soggetto che ha richiesto il ricovero in struttura, codificato con i valori di dominio indicati nelle specifiche tecniche. \nValori ammessi:\n1 = medico di medicina generale;\n2 = medico di continuità assistenziale;\n3 = medico specialista ambulatoriale territoriale o ospedaliero; \n4 = medico del pronto soccorso;\n5 = pediatra di libera scelta."
+      }
+    },
+    {
+      "id": "2.24",
+      "name": "Soggetto segnalante al medico la possibilità di ricovero",
+      "physical": {
+        "start": 99,
+        "length": 1,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.24",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Indica se il caso sia stato segnalato al medico da un soggetto qualificato differente da quelli indicati nel campo \"Soggetto proponente il ricovero\". \nValori ammessi:\n1 = Infermiere\n2 = Assistente Sociale\n3 = Altra tipologia di medico non compresa nel campo \"Soggetto proponente il ricovero\"\n4 = Caregiver\n5 = Altro operatore dell’assistenza domiciliare \n9 = Altro"
+      }
+    },
+    {
+      "id": "2.25",
+      "name": "Indicare se il ricovero sia stato mediato attraverso le attività delle centrali operative territoriali (COT)",
+      "physical": {
+        "start": 100,
+        "length": 1,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.25",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Indica se, nel processo di valutazione dell'opportunità di ricoverare il paziente presso l'ospedale di comunità, abbia avuto un ruolo attivo una COT. Valori ammessi:\n1 = SI\n2 = NO"
+      }
+    },
+    {
+      "id": "2.26",
+      "name": "Codice COT",
+      "physical": {
+        "start": 101,
+        "length": 12,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [
+          {
+            "condition": "cot_mediated"
+          }
+        ],
+        "forbidden_if": [
+          {
+            "condition": "cot_not_mediated"
+          }
+        ]
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.26",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Indica, qualora il ricovero sia stato mediato da una COT, la concatenazione del codice identificativo della Regione, della ASL e codice STS11."
+      }
+    },
+    {
+      "id": "2.27",
+      "name": "Giornate di assenza temporanea",
+      "physical": {
+        "start": 113,
+        "length": 3,
+        "type": "numeric",
+        "alignment": {
+          "kind": "left_pad",
+          "fill_byte": 48,
+          "content_policy": "preserve_width"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "never_missing"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "regex",
+          "pattern": "^[0-9]+$",
+          "match": "required",
+          "target": "logical"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "2.27",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Numero di giornate nelle quali il paziente, durante il ricovero, è temporaneamente assente. Se paziente assente per meno di 24 ore si considera 1 giorno di assenza.\nNel caso in cui l'assenza temporanea esiti in ricovero in altra struttura, il ricovero in ODC deve essere chiuso utilizando la modalità di dimissione più appropriata."
+      }
+    },
+    {
+      "id": "2.28",
+      "name": "Motivo principale del ricovero",
+      "physical": {
+        "start": 116,
+        "length": 2,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.28",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Identifica il motivo principale che ha determinato la necessità del ricovero, codificato con i valori di dominio indicati nelle specifiche funzionali. \nValori ammessi:\n01 = Sorveglianza e assistenza infermieristica continuativa \n02 = Patologia cronica riacutizzata\n03 = Monitoraggio clinico e stabilizzazione terapeutica\n04 = Educazione/addestramento del paziente e del caregiver \n05 = Riattivazione funzionale\n06 = Interventi riabilitativi/rieducativi/monodistretto o completamento di interventi estensivi\n07 = Acuzie minori\n08 = Isolamento per patologia infettiva \n99 = Altro\n"
+      }
+    },
+    {
+      "id": "2.29",
+      "name": "Codice Regione struttura di provenienza",
+      "physical": {
+        "start": 118,
+        "length": 3,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [
+          {
+            "not_in": {
+              "ref": {
+                "field": "2.2"
+              },
+              "values": [
+                "01",
+                "02"
+              ]
+            }
+          }
+        ],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.29",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Se valore campo \"Provenienza del Paziente\" è diverso da \"01\" o \"02\", indica il codice identificativo della Regione dove si trova la struttura di provenienza del paziente. Il codice da utilizzare è quello a tre caratteri definito con DM 17 settembre 1986, pubblicato nella Gazzetta Ufficiale n.240 del 15 ottobre 1986, e successive modifiche, utilizzato anche nei modelli per le rilevazioni delle attività gestionali ed economiche delle Aziende unità sanitarie locali. Utilizzare 999 se proveniente da strutture all’estero."
+      }
+    },
+    {
+      "id": "2.30",
+      "name": "Codice ASL struttura di provenienza del paziente",
+      "physical": {
+        "start": 121,
+        "length": 3,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [
+          {
+            "and": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.29"
+                  },
+                  "value": "999"
+                }
+              },
+              {
+                "not_in": {
+                  "ref": {
+                    "field": "2.2"
+                  },
+                  "values": [
+                    "01",
+                    "02"
+                  ]
+                }
+              },
+              {
+                "derived_eq": {
+                  "ref": {
+                    "field": "2.29"
+                  },
+                  "derived_value": "sending_region"
+                }
+              }
+            ]
+          }
+        ],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.30",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Se valore campo \"Codice Regione struttura di provenienza\" è diverso da \"999\" e campo \"Provenienza del Paziente\" diverso da \"01\" o \"02\" e regione di provenienza del paziente \"Codice Regione struttura di provenienza\" coincide con la regione inviante, indica il codice identificativo dell'Azienda dove si trova la struttura di provenienza del paziente. Il campo deve essere valorizzato con i codici a tre caratteri dell'Azienda sanitaria in cui è ubicata la struttura di provenienza del paziente."
+      }
+    },
+    {
+      "id": "2.31",
+      "name": "Codice struttura di provenienza del paziente",
+      "physical": {
+        "start": 124,
+        "length": 6,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [
+          {
+            "and": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.29"
+                  },
+                  "value": "999"
+                }
+              },
+              {
+                "not_in": {
+                  "ref": {
+                    "field": "2.2"
+                  },
+                  "values": [
+                    "01",
+                    "02",
+                    "04",
+                    "09"
+                  ]
+                }
+              },
+              {
+                "derived_eq": {
+                  "ref": {
+                    "field": "2.29"
+                  },
+                  "derived_value": "sending_region"
+                }
+              }
+            ]
+          }
+        ],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.31",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Se valore campo \"Codice Regione struttura di provenienza\" è diverso da \"999\" e campo \"Provenienza del Paziente\" diverso da \"01\", \"02\", \"04\" o \"09\" e il campo \"Codice Regione struttura di provenienza\" coincide con la regione inviante, indica il codice identificativo della struttura di provenienza del paziente. \nI codici da utilizzare sono quelli indicati nei modelli ministeriali HSP11, RIA11, STS11. Inserire 999999 se dato mancante. ",
+        "source_semantic_null_values": [
+          {
+            "value": "999999",
+            "meaning": "Dato mancante"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2.32",
+      "name": "Codice diagnosi 1 ",
+      "physical": {
+        "start": 130,
+        "length": 7,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.32",
+        "source_key_marker": false,
+        "source_obligation": "OBB",
+        "source_note": "Identifica le patologie di cui il paziente è affeto, o condizioni nelle quali si trova (fino a un massimo di 6) utilizzando la codifica ICD9CM. Compilare alla dimissione. \nValori ammessi: ICD9-CM\n- il codice prevede sotto-classificazioni o sottocategorie;\n- se la patologia prevede un genere specifico, il sesso del paziente deve essere coerente con quello previsto per la diagnosi;\n- se la patologia prevede un range di età di validità, l’età del paziente deve essere compresa in questo range;\n- non è possibile indicare la stessa diagnosi più volte (con progressivi diversi)."
+      }
+    },
+    {
+      "id": "2.33",
+      "name": "Codice diagnosi 2",
+      "physical": {
+        "start": 137,
+        "length": 7,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.33",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.34",
+      "name": "Codice diagnosi 3",
+      "physical": {
+        "start": 144,
+        "length": 7,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.34",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.35",
+      "name": "Codice diagnosi 4",
+      "physical": {
+        "start": 151,
+        "length": 7,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.35",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.36",
+      "name": "Codice diagnosi 5",
+      "physical": {
+        "start": 158,
+        "length": 7,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.36",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.37",
+      "name": "Codice diagnosi 6",
+      "physical": {
+        "start": 165,
+        "length": 7,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.37",
+        "source_key_marker": false,
+        "source_obligation": "NBB",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.38",
+      "name": "Codice procedura 1",
+      "physical": {
+        "start": 172,
+        "length": 8,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.38",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Identifica gli interventi e le procedure effettuati/e durante il ricovero (fino ad un massimo di 11) utilizzando la codifica ICD9CM e successive modificazioni o integrazioni. Compilare alla dimissione. "
+      }
+    },
+    {
+      "id": "2.39",
+      "name": "Codice procedura 2",
+      "physical": {
+        "start": 180,
+        "length": 8,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.39",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.40",
+      "name": "Codice procedura 3",
+      "physical": {
+        "start": 188,
+        "length": 8,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.40",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.41",
+      "name": "Codice procedura 4",
+      "physical": {
+        "start": 196,
+        "length": 8,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.41",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.42",
+      "name": "Codice procedura 5",
+      "physical": {
+        "start": 204,
+        "length": 8,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.42",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.43",
+      "name": "Codice procedura 6",
+      "physical": {
+        "start": 212,
+        "length": 8,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.43",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.44",
+      "name": "Codice procedura 7",
+      "physical": {
+        "start": 220,
+        "length": 8,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.44",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.45",
+      "name": "Codice procedura 8",
+      "physical": {
+        "start": 228,
+        "length": 8,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.45",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.46",
+      "name": "Codice procedura 9",
+      "physical": {
+        "start": 236,
+        "length": 8,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.46",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.47",
+      "name": "Codice procedura 10",
+      "physical": {
+        "start": 244,
+        "length": 8,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.47",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.48",
+      "name": "Codice procedura 11",
+      "physical": {
+        "start": 252,
+        "length": 8,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "optional",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.48",
+        "source_key_marker": false,
+        "source_obligation": "FAC",
+        "source_note": "Vedi campo precedente"
+      }
+    },
+    {
+      "id": "2.49",
+      "name": "Codice Azienda",
+      "physical": {
+        "start": 260,
+        "length": 6,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "logical_length",
+          "equals": 6
+        },
+        {
+          "kind": "regex",
+          "pattern": "^[0-9]+$",
+          "match": "required",
+          "target": "logical"
+        },
+        {
+          "kind": "composite_segments",
+          "target": "logical",
+          "segments": [
+            {
+              "start": 1,
+              "length": 3,
+              "check": {
+                "equals": "050"
+              }
+            }
+          ]
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "2.49",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "CAMPO CHIAVE\nIl campo deve essere valorizzato con i codici a SEI  caratteri della azienda sanitaria in cui è ubicata la struttura OdC (050501,…)."
+      }
+    },
+    {
+      "id": "2.50",
+      "name": "Codice Struttura",
+      "physical": {
+        "start": 266,
+        "length": 6,
+        "type": "alphanumeric",
+        "alignment": {
+          "kind": "right_pad",
+          "fill_byte": 32,
+          "content_policy": "strip_trailing_fill"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [],
+      "regulatory_metadata": {
+        "source_id": "2.50",
+        "source_key_marker": true,
+        "source_obligation": "OBB",
+        "source_note": "CAMPO CHIAVE\nI codici da utilizzare sono quelli indicati nei modelli ministeriali STS11"
+      }
+    }
+  ],
+  "record_key": {
+    "fields": [
+      "2.1",
+      "2.49",
+      "2.50"
+    ],
+    "uniqueness_scope": "trace",
+    "error_code": "E_DUPLICATE_RECORD_KEY"
+  },
+  "joins": [
+    {
+      "id": "trace2_to_trace1",
+      "target_trace": "1",
+      "source_fields": [
+        "2.1",
+        "2.49",
+        "2.50"
+      ],
+      "target_fields": [
+        "1.1",
+        "1.17",
+        "1.18"
+      ],
+      "cardinality": "exactly_one",
+      "scope": "current_submission",
+      "namespace_parameters": [],
+      "on_missing_record": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "on_missing_trace": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      }
+    }
+  ],
+  "identity": [
+    {
+      "target": "sioc_record_id",
+      "field": "2.1"
+    }
+  ],
+  "named_conditions": {
+    "ssr_fully_pays": {
+      "eq": {
+        "ref": {
+          "field": "2.12"
+        },
+        "value": "1"
+      }
+    },
+    "self_paying": {
+      "eq": {
+        "ref": {
+          "field": "2.12"
+        },
+        "value": "2"
+      }
+    },
+    "cot_mediated": {
+      "eq": {
+        "ref": {
+          "field": "2.25"
+        },
+        "value": "1"
+      }
+    },
+    "cot_not_mediated": {
+      "eq": {
+        "ref": {
+          "field": "2.25"
+        },
+        "value": "2"
+      }
+    }
+  },
+  "derived_values": {
+    "sending_region": {
+      "kind": "substring",
+      "source_ref": {
+        "trace": "1",
+        "field": "1.17",
+        "join": "trace2_to_trace1"
+      },
+      "start": 1,
+      "length": 3,
+      "target": "logical"
+    }
+  },
+  "repeated_groups": [],
+  "rules": [
+    {
+      "id": "REL-trace2_to_trace1",
+      "when": {
+        "const": true
+      },
+      "assertions": [
+        {
+          "kind": "record_exists",
+          "join": "trace2_to_trace1"
+        }
+      ],
+      "error_code": "E_MISSING_PARENT_RECORD",
+      "message_template": "Record correlato richiesto assente",
+      "regulatory_metadata": {
+        "decision": "CNF-SIOC-REFERENTIAL-G0-01",
+        "source_join": "trace2_to_trace1",
+        "source_pointer": "/traces/1/joins/0",
+        "source_required": true,
+        "source_error_code": "E_MISSING_PARENT_RECORD"
+      }
+    }
+  ],
+  "documented_non_executable_rules": [
+    {
+      "id": "DEFER-2.1-CONSTRAINT-0",
+      "fields": [
+        "2.1"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.1-CONSTRAINT-1",
+      "fields": [
+        "2.1"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.1-CONSTRAINT-2",
+      "fields": [
+        "2.1"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.2-CONSTRAINT-0",
+      "fields": [
+        "2.2"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.3-CONSTRAINT-0",
+      "fields": [
+        "2.3"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.7-CONSTRAINT-0",
+      "fields": [
+        "2.7"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.8-CONSTRAINT-0",
+      "fields": [
+        "2.8"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.11-CONSTRAINT-0",
+      "fields": [
+        "2.11"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.12-CONSTRAINT-0",
+      "fields": [
+        "2.12"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.13-CONSTRAINT-0",
+      "fields": [
+        "2.13"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.14-CONSTRAINT-0",
+      "fields": [
+        "2.14"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.15-CONSTRAINT-0",
+      "fields": [
+        "2.15"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.16-CONSTRAINT-0",
+      "fields": [
+        "2.16"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.17-CONSTRAINT-0",
+      "fields": [
+        "2.17"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.18-CONSTRAINT-0",
+      "fields": [
+        "2.18"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.19-CONSTRAINT-0",
+      "fields": [
+        "2.19"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.20-CONSTRAINT-0",
+      "fields": [
+        "2.20"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.21-CONSTRAINT-0",
+      "fields": [
+        "2.21"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.22-CONSTRAINT-0",
+      "fields": [
+        "2.22"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.23-CONSTRAINT-0",
+      "fields": [
+        "2.23"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.24-CONSTRAINT-0",
+      "fields": [
+        "2.24"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.25-CONSTRAINT-0",
+      "fields": [
+        "2.25"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.26-CONSTRAINT-0",
+      "fields": [
+        "2.26"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.27-CONSTRAINT-1",
+      "fields": [
+        "2.27"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.28-CONSTRAINT-0",
+      "fields": [
+        "2.28"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.29-CONSTRAINT-0",
+      "fields": [
+        "2.29"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.30-CONSTRAINT-0",
+      "fields": [
+        "2.30"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.31-CONSTRAINT-0",
+      "fields": [
+        "2.31"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.32-CONSTRAINT-0",
+      "fields": [
+        "2.32"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.33-CONSTRAINT-0",
+      "fields": [
+        "2.33"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.34-CONSTRAINT-0",
+      "fields": [
+        "2.34"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.35-CONSTRAINT-0",
+      "fields": [
+        "2.35"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.36-CONSTRAINT-0",
+      "fields": [
+        "2.36"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.37-CONSTRAINT-0",
+      "fields": [
+        "2.37"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.38-CONSTRAINT-0",
+      "fields": [
+        "2.38"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.39-CONSTRAINT-0",
+      "fields": [
+        "2.39"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.40-CONSTRAINT-0",
+      "fields": [
+        "2.40"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.41-CONSTRAINT-0",
+      "fields": [
+        "2.41"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.42-CONSTRAINT-0",
+      "fields": [
+        "2.42"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.43-CONSTRAINT-0",
+      "fields": [
+        "2.43"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.44-CONSTRAINT-0",
+      "fields": [
+        "2.44"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.45-CONSTRAINT-0",
+      "fields": [
+        "2.45"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.46-CONSTRAINT-0",
+      "fields": [
+        "2.46"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.47-CONSTRAINT-0",
+      "fields": [
+        "2.47"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.48-CONSTRAINT-0",
+      "fields": [
+        "2.48"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.49-CONSTRAINT-2",
+      "fields": [
+        "2.49"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-2.50-CONSTRAINT-0",
+      "fields": [
+        "2.50"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-GROUP-socio_family_problems",
+      "fields": [
+        "2.13",
+        "2.14",
+        "2.15",
+        "2.16",
+        "2.17",
+        "2.18",
+        "2.19",
+        "2.20",
+        "2.21",
+        "2.22"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-GROUP-diagnoses",
+      "fields": [
+        "2.32",
+        "2.33",
+        "2.34",
+        "2.35",
+        "2.36",
+        "2.37"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "DEFER-GROUP-procedures",
+      "fields": [
+        "2.38",
+        "2.39",
+        "2.40",
+        "2.41",
+        "2.42",
+        "2.43",
+        "2.44",
+        "2.45",
+        "2.46",
+        "2.47",
+        "2.48"
+      ],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-2.1-ADMISSION-YEAR",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-2.10-SSR-PAYER",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-2.4-LE-2.5",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    },
+    {
+      "id": "R-2.5-LE-2.6",
+      "fields": [],
+      "policy": "not_enforced_in_this_version",
+      "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+      "decision_reference": "DEC-SIOC-MINIMAL-01"
+    }
+  ]
+}

@@ -39,3 +39,13 @@ stdout solo metriche aggregate di dati sintetici, nessun record paziente.
 
 Gate locali pertinenti e globale, release/Windows GNU e CI Linux/MSVC. Una
 consegna memoria positiva resta parziale: 13-08 non è DONE senza golden G0 reale.
+
+## Decisione e sviluppo successivi — 2026-10-25
+
+L'autore ha ratificato CNF-SIOC-REFERENTIAL-G0-01 con precisazioni vincolanti:
+nuova .2, quattro regole esplicite e policy revoking_act, nessun automatismo
+engine, .1/FROZEN preservati, componente operativo tracciato autorizzato.
+Il conflitto sopra è storico/risolto, non pendente. Stop specifico dopo13-08.
+Implementazione/golden/memoria locali passati: 611 test/72 suite, gate completi,
+33 hash artefatti e baseline90 intatta. CI nativa da verificare. Dettagli nel
+report T-P13-08-goldens-memory.md e nella ratifica registrata; nessuna M6 anticipata.

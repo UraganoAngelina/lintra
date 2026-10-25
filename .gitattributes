@@ -4,3 +4,10 @@ tests/golden/** -text
 # Fixed-width fixture padding/CRLF are data, not source-style whitespace errors.
 tests/golden/synthetic/**/input.txt -whitespace
 docs/schema-authoring/examples/** -text
+# Preserve approved SIOC provenance and new derived artifacts byte-for-byte.
+schemas/sioc/2026-04-20.structural-minimal.1/flow_schema.json -text
+schemas/sioc/2026-04-20.structural-minimal.1/scope-ledger.json -text
+docs/normative/sioc/rules-and-joins.md -text
+schemas/sioc/2026-04-20.structural-minimal.2/** -text
+# Synthetic cross-trace records contain intentional fixed-width space padding.
+tests/golden/cross-trace/**/*.dat -whitespace

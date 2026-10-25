@@ -1,0 +1,1361 @@
+{
+  "schema_format_version": 1,
+  "flow_id": "SIOC",
+  "schema_version": "2026-04-20.references-golden.1",
+  "regulatory_version": "2026-04-20",
+  "source": {
+    "status": "EXPLICIT_TEST_OPERATIONAL_SUBSET",
+    "baseline_sha256": "3567bafd3cb9b762becdd46a356454b89df094c7b88c5b1538c97a1bbaf26c45",
+    "decision": "DEC-SIOC-MINIMAL-01",
+    "scope": "referential-golden-only",
+    "full_normative_compliance": false,
+    "trace_regulatory_version": "2025-12-16",
+    "deferred_leap_day_anniversary": "mar01",
+    "derivation_decision": "CNF-SIOC-REFERENTIAL-G0-01",
+    "parent_schema_version": "2026-04-20.structural-minimal.2",
+    "parent_profile_sha256": "b1bffeb800570d8f4ac045110bf849e5380ed4062f209b4cb1f34dee3df1c33b",
+    "exclusions_ledger": "tests/golden/cross-trace/sioc-referential/v1/scope-ledger.json"
+  },
+  "encoding": {
+    "mode": "runtime_required",
+    "position_unit": "byte"
+  },
+  "required_capabilities": [
+    "local.v1",
+    "expressions.v1",
+    "joins.v1",
+    "joins.sets.v1"
+  ],
+  "parameters": [
+    {
+      "id": "organisation_namespace",
+      "type": "integer",
+      "min": 1,
+      "max": 4294967295
+    }
+  ],
+  "reference_data": [],
+  "traces": [
+    {
+      "id": "1",
+      "name": "Dati anagrafici assistito",
+      "record_length": 206,
+      "fields": [
+        {
+          "id": "1.1",
+          "name": "Numero della scheda di ricovero (ex Identificativo univoco assistito per episodio di accoglimento)",
+          "physical": {
+            "start": 1,
+            "length": 20,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "pattern": "^0+$",
+              "match": "forbidden",
+              "target": "logical"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.1",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016)."
+          }
+        },
+        {
+          "id": "EXCLUDED-1-21",
+          "name": "Excluded normative bytes; uninterpreted in this test subset",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 21,
+            "length": 174,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "never_missing"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "test_only_opaque_span": true,
+            "decision": "CNF-SIOC-REFERENTIAL-G0-01"
+          }
+        },
+        {
+          "id": "1.17",
+          "name": "Codice Azienda",
+          "physical": {
+            "start": 195,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "pattern": "^[0-9]+$",
+              "match": "required",
+              "target": "logical"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.17",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "CAMPO CHIAVE\nIl campo deve essere valorizzato con i codici a SEI caratteri della azienda sanitaria in cui è ubicata la struttura OdC (050501,…)."
+          }
+        },
+        {
+          "id": "1.18",
+          "name": "Codice Struttura",
+          "physical": {
+            "start": 201,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "1.18",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "CAMPO CHIAVE\nI codici da utilizzare sono quelli indicati nei modelli ministeriali STS11"
+          }
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "1.1",
+          "1.17",
+          "1.18"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "trace1_to_trace2_episode",
+          "target_trace": "2",
+          "source_fields": [
+            "1.1",
+            "1.17",
+            "1.18"
+          ],
+          "target_fields": [
+            "2.1",
+            "2.49",
+            "2.50"
+          ],
+          "cardinality": "zero_or_one",
+          "scope": "current_submission",
+          "namespace_parameters": [],
+          "on_missing_record": {
+            "policy": "not_applicable",
+            "diagnostic": {
+              "code": "RELATED_RECORD_ABSENT",
+              "message_template": "Anagrafica presente; dati del ricovero correlato assenti"
+            }
+          },
+          "on_missing_trace": {
+            "policy": "not_applicable",
+            "diagnostic": {
+              "code": "RELATED_RECORD_ABSENT",
+              "message_template": "Anagrafica presente; dati del ricovero correlato assenti"
+            }
+          }
+        }
+      ],
+      "identity": [
+        {
+          "target": "sioc_record_id",
+          "field": "1.1"
+        }
+      ],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [],
+      "documented_non_executable_rules": []
+    },
+    {
+      "id": "2",
+      "name": "ADT",
+      "record_length": 271,
+      "fields": [
+        {
+          "id": "2.1",
+          "name": "Numero della scheda di ricovero (ex Identificativo univoco assistito per episodio di accoglimento)",
+          "physical": {
+            "start": 1,
+            "length": 20,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "pattern": "^0+$",
+              "match": "forbidden",
+              "target": "logical"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.1",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016)."
+          }
+        },
+        {
+          "id": "EXCLUDED-2-21",
+          "name": "Excluded normative bytes; uninterpreted in this test subset",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 21,
+            "length": 239,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "never_missing"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "test_only_opaque_span": true,
+            "decision": "CNF-SIOC-REFERENTIAL-G0-01"
+          }
+        },
+        {
+          "id": "2.49",
+          "name": "Codice Azienda",
+          "physical": {
+            "start": 260,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "pattern": "^[0-9]+$",
+              "match": "required",
+              "target": "logical"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.49",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "CAMPO CHIAVE\nIl campo deve essere valorizzato con i codici a SEI  caratteri della azienda sanitaria in cui è ubicata la struttura OdC (050501,…)."
+          }
+        },
+        {
+          "id": "2.50",
+          "name": "Codice Struttura",
+          "physical": {
+            "start": 266,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "2.50",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "CAMPO CHIAVE\nI codici da utilizzare sono quelli indicati nei modelli ministeriali STS11"
+          }
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "2.1",
+          "2.49",
+          "2.50"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "trace2_to_trace1",
+          "target_trace": "1",
+          "source_fields": [
+            "2.1",
+            "2.49",
+            "2.50"
+          ],
+          "target_fields": [
+            "1.1",
+            "1.17",
+            "1.18"
+          ],
+          "cardinality": "exactly_one",
+          "scope": "current_submission",
+          "namespace_parameters": [],
+          "on_missing_record": {
+            "policy": "violation",
+            "diagnostic": {
+              "code": "RELATED_RECORD_ABSENT",
+              "message_template": "Record correlato richiesto assente"
+            },
+            "error_code": "E_MISSING_PARENT_RECORD"
+          },
+          "on_missing_trace": {
+            "policy": "violation",
+            "diagnostic": {
+              "code": "RELATED_RECORD_ABSENT",
+              "message_template": "Record correlato richiesto assente"
+            },
+            "error_code": "E_MISSING_PARENT_RECORD"
+          }
+        }
+      ],
+      "identity": [
+        {
+          "target": "sioc_record_id",
+          "field": "2.1"
+        }
+      ],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [
+        {
+          "id": "REL-trace2_to_trace1",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "record_exists",
+              "join": "trace2_to_trace1"
+            }
+          ],
+          "error_code": "E_MISSING_PARENT_RECORD",
+          "message_template": "Record correlato richiesto assente",
+          "regulatory_metadata": {
+            "decision": "CNF-SIOC-REFERENTIAL-G0-01",
+            "source_join": "trace2_to_trace1",
+            "source_pointer": "/traces/1/joins/0",
+            "source_required": true,
+            "source_error_code": "E_MISSING_PARENT_RECORD"
+          }
+        }
+      ],
+      "documented_non_executable_rules": []
+    },
+    {
+      "id": "3",
+      "name": "Valutazione",
+      "record_length": 135,
+      "fields": [
+        {
+          "id": "3.1",
+          "name": "Numero della scheda di ricovero (ex Identificativo univoco assistito per episodio di accoglimento)",
+          "physical": {
+            "start": 1,
+            "length": 20,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "pattern": "^0+$",
+              "match": "forbidden",
+              "target": "logical"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "3.1",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016)."
+          }
+        },
+        {
+          "id": "3.2",
+          "name": "Numero di valutazione",
+          "physical": {
+            "start": 21,
+            "length": 20,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "3.2",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "Codice identificativo univoco assegnato alla valutazione sull'assistito ed inserito nell'archivio aziendale delle valutazioni."
+          }
+        },
+        {
+          "id": "EXCLUDED-3-41",
+          "name": "Excluded normative bytes; uninterpreted in this test subset",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 41,
+            "length": 83,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "never_missing"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "test_only_opaque_span": true,
+            "decision": "CNF-SIOC-REFERENTIAL-G0-01"
+          }
+        },
+        {
+          "id": "3.35",
+          "name": "Codice Azienda",
+          "physical": {
+            "start": 124,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "pattern": "^[0-9]+$",
+              "match": "required",
+              "target": "logical"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "3.35",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "CAMPO CHIAVE\nIl campo deve essere valorizzato con i codici a sei caratteri della azienda sanitaria in cui è ubicata la struttura OdC (050501,…).",
+            "source_source_id": "3.35"
+          }
+        },
+        {
+          "id": "3.36",
+          "name": "Codice Struttura",
+          "physical": {
+            "start": 130,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "3.36",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "CAMPO CHIAVE\nI codici da utilizzare sono quelli indicati nei modelli ministeriali STS11",
+            "source_source_id": "3.36"
+          }
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "3.1",
+          "3.2",
+          "3.35",
+          "3.36"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "trace3_to_trace2",
+          "target_trace": "2",
+          "source_fields": [
+            "3.1",
+            "3.35",
+            "3.36"
+          ],
+          "target_fields": [
+            "2.1",
+            "2.49",
+            "2.50"
+          ],
+          "cardinality": "exactly_one",
+          "scope": "current_submission",
+          "namespace_parameters": [],
+          "on_missing_record": {
+            "policy": "violation",
+            "diagnostic": {
+              "code": "RELATED_RECORD_ABSENT",
+              "message_template": "Record correlato richiesto assente"
+            },
+            "error_code": "E_MISSING_PARENT_RECORD"
+          },
+          "on_missing_trace": {
+            "policy": "violation",
+            "diagnostic": {
+              "code": "RELATED_RECORD_ABSENT",
+              "message_template": "Record correlato richiesto assente"
+            },
+            "error_code": "E_MISSING_PARENT_RECORD"
+          }
+        },
+        {
+          "id": "trace3_to_trace1",
+          "target_trace": "1",
+          "source_fields": [
+            "3.1",
+            "3.35",
+            "3.36"
+          ],
+          "target_fields": [
+            "1.1",
+            "1.17",
+            "1.18"
+          ],
+          "cardinality": "exactly_one",
+          "scope": "current_submission",
+          "namespace_parameters": [],
+          "on_missing_record": {
+            "policy": "violation",
+            "diagnostic": {
+              "code": "RELATED_RECORD_ABSENT",
+              "message_template": "Record correlato richiesto assente"
+            },
+            "error_code": "E_MISSING_PARENT_RECORD"
+          },
+          "on_missing_trace": {
+            "policy": "violation",
+            "diagnostic": {
+              "code": "RELATED_RECORD_ABSENT",
+              "message_template": "Record correlato richiesto assente"
+            },
+            "error_code": "E_MISSING_PARENT_RECORD"
+          }
+        }
+      ],
+      "identity": [
+        {
+          "target": "sioc_record_id",
+          "field": "3.1"
+        }
+      ],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [
+        {
+          "id": "REL-trace3_to_trace2",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "record_exists",
+              "join": "trace3_to_trace2"
+            }
+          ],
+          "error_code": "E_MISSING_PARENT_RECORD",
+          "message_template": "Record correlato richiesto assente",
+          "regulatory_metadata": {
+            "decision": "CNF-SIOC-REFERENTIAL-G0-01",
+            "source_join": "trace3_to_trace2",
+            "source_pointer": "/traces/2/joins/0",
+            "source_required": true,
+            "source_error_code": "E_MISSING_PARENT_RECORD"
+          }
+        },
+        {
+          "id": "REL-trace3_to_trace1",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "record_exists",
+              "join": "trace3_to_trace1"
+            }
+          ],
+          "error_code": "E_MISSING_PARENT_RECORD",
+          "message_template": "Record correlato richiesto assente",
+          "regulatory_metadata": {
+            "decision": "CNF-SIOC-REFERENTIAL-G0-01",
+            "source_join": "trace3_to_trace1",
+            "source_pointer": "/traces/2/joins/1",
+            "source_required": true,
+            "source_error_code": "E_MISSING_PARENT_RECORD"
+          }
+        }
+      ],
+      "documented_non_executable_rules": []
+    },
+    {
+      "id": "4.1",
+      "name": "Tracciato regionale UDO",
+      "record_length": 394,
+      "fields": [
+        {
+          "id": "4.1",
+          "name": "Struttura erogatrice. Codice regionale dell'UDO",
+          "physical": {
+            "start": 1,
+            "length": 6,
+            "type": "numeric",
+            "alignment": {
+              "kind": "left_pad",
+              "fill_byte": 48,
+              "content_policy": "preserve_width"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000000"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "4.1",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "Indica il codice regionale provvisorio della struttura erogatrice."
+          }
+        },
+        {
+          "id": "4.2",
+          "name": "Struttura erogatrice. Codice regionale MRA",
+          "physical": {
+            "start": 7,
+            "length": 15,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "4.2",
+            "source_key_marker": false,
+            "source_obligation": "OBB",
+            "source_note": "Codifica della struttura secondo il progetto MRA (in corso di definizione)"
+          }
+        },
+        {
+          "id": "EXCLUDED-4.1-22",
+          "name": "Excluded normative bytes; uninterpreted in this test subset",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 22,
+            "length": 123,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "never_missing"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "test_only_opaque_span": true,
+            "decision": "CNF-SIOC-REFERENTIAL-G0-01"
+          }
+        },
+        {
+          "id": "4.7",
+          "name": "Regione sede UDO",
+          "physical": {
+            "start": 145,
+            "length": 3,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "050"
+              ],
+              "target": "logical"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.7",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "Codice della Regione dove ha sede l'UDO. Il codice da utilizzare è quello a tre caratteri definito con DM 17 settembre 1986, pubblicato nella Gazzetta Ufficiale n.240 del 15 ottobre 1986, e successive modifiche, utilizzato anche nei modelli per le rilevazioni delle attività gestionali ed economiche delle Aziende unità sanitarie locali."
+          }
+        },
+        {
+          "id": "4.8",
+          "name": "ULSS sede UDO",
+          "physical": {
+            "start": 148,
+            "length": 3,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "4.8",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "Codice della Azienda ULSS dove ha sede l'UDO. Il campo deve essere valorizzato con i codici a tre caratteri dell' Azienda sanitaria in cui è ubicata la struttura OdC.",
+            "canonical_interpretation": "Three-character ULSS/health-authority code; no hierarchical validation against 4.7."
+          }
+        },
+        {
+          "id": "EXCLUDED-4.1-151",
+          "name": "Excluded normative bytes; uninterpreted in this test subset",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 151,
+            "length": 238,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "never_missing"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "test_only_opaque_span": true,
+            "decision": "CNF-SIOC-REFERENTIAL-G0-01"
+          }
+        },
+        {
+          "id": "4.19.1",
+          "name": "COD_STRUT_EROG_STS",
+          "physical": {
+            "start": 389,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "4.19.1",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "Struttura erogatrice Codice STS11"
+          }
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "4.1",
+          "4.7",
+          "4.8",
+          "4.19.1"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [],
+      "identity": [],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [],
+      "documented_non_executable_rules": []
+    },
+    {
+      "id": "4.2",
+      "name": "Tracciato regionale Atti LR 22/2002",
+      "record_length": 67,
+      "fields": [
+        {
+          "id": "4.20",
+          "name": "Struttura erogatrice. Codice regionale dell'UDO",
+          "physical": {
+            "start": 1,
+            "length": 6,
+            "type": "numeric",
+            "alignment": {
+              "kind": "left_pad",
+              "fill_byte": 48,
+              "content_policy": "preserve_width"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000000"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "4.20",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "Indica il codice regionale provvisorio della struttura erogatrice, in correlazione con il campo 4.1."
+          }
+        },
+        {
+          "id": "4.21",
+          "name": "Struttura erogatrice. Codice regionale MRA",
+          "physical": {
+            "start": 7,
+            "length": 15,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "4.21",
+            "source_key_marker": false,
+            "source_obligation": "OBB",
+            "source_note": "Codifica della struttura secondo il progetto MRA (in corso di definizione)"
+          }
+        },
+        {
+          "id": "4.22",
+          "name": "ID atto",
+          "physical": {
+            "start": 22,
+            "length": 10,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "4.22",
+            "source_key_marker": true,
+            "source_obligation": "OBB",
+            "source_note": "Numero univoco del record del tracciato 4.2"
+          }
+        },
+        {
+          "id": "EXCLUDED-4.2-32",
+          "name": "Excluded normative bytes; uninterpreted in this test subset",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 32,
+            "length": 18,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "never_missing"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "test_only_opaque_span": true,
+            "decision": "CNF-SIOC-REFERENTIAL-G0-01"
+          }
+        },
+        {
+          "id": "4.29",
+          "name": "Data fine validità atto",
+          "physical": {
+            "start": 50,
+            "length": 8,
+            "type": "date",
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "date",
+              "format": "DDMMYYYY",
+              "calendar_valid": true
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.29",
+            "source_key_marker": false,
+            "source_obligation": "FAC",
+            "source_note": "Data di cessazione della validità dell'atto"
+          }
+        },
+        {
+          "id": "4.30",
+          "name": "ID atto revocante",
+          "physical": {
+            "start": 58,
+            "length": 10,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "4.30",
+            "source_key_marker": false,
+            "source_obligation": "FAC",
+            "source_note": "ID dell'atto di revoca del presente"
+          }
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "4.20",
+          "4.22"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "trace42_to_trace41",
+          "target_trace": "4.1",
+          "source_fields": [
+            "4.20",
+            "4.21"
+          ],
+          "target_fields": [
+            "4.1",
+            "4.2"
+          ],
+          "cardinality": "one_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [],
+          "on_missing_record": {
+            "policy": "violation",
+            "diagnostic": {
+              "code": "RELATED_RECORD_ABSENT",
+              "message_template": "Record correlato richiesto assente"
+            },
+            "error_code": "E_MISSING_PARENT_RECORD"
+          },
+          "on_missing_trace": {
+            "policy": "violation",
+            "diagnostic": {
+              "code": "RELATED_RECORD_ABSENT",
+              "message_template": "Record correlato richiesto assente"
+            },
+            "error_code": "E_MISSING_PARENT_RECORD"
+          }
+        },
+        {
+          "id": "revoking_act",
+          "target_trace": "4.2",
+          "source_fields": [
+            "4.30"
+          ],
+          "target_fields": [
+            "4.22"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [],
+          "on_missing_record": {
+            "policy": "violation",
+            "error_code": "E_RELATED_RECORD_MISSING",
+            "diagnostic": {
+              "code": "RELATED_RECORD_ABSENT",
+              "message_template": "Atto revocante indicato non presente tra gli atti disponibili"
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "RELATED_TRACE_UNAVAILABLE",
+              "message_template": "Verifica dell'atto revocante inconcludente: universo non disponibile"
+            }
+          }
+        }
+      ],
+      "identity": [],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [
+        {
+          "id": "R-4.30-REQUIRES-4.29",
+          "when": {
+            "is_present": {
+              "ref": {
+                "field": "4.30"
+              }
+            }
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "4.29"
+              }
+            }
+          ],
+          "error_code": "E_CROSS_FIELD",
+          "message_template": "R-4.30-REQUIRES-4.29",
+          "regulatory_metadata": {
+            "source_error_code": "E003"
+          }
+        },
+        {
+          "id": "R-4.30-REFERENCES-4.22",
+          "when": {
+            "is_present": {
+              "ref": {
+                "field": "4.30"
+              }
+            }
+          },
+          "assertions": [
+            {
+              "kind": "record_exists",
+              "join": "revoking_act"
+            }
+          ],
+          "error_code": "E_RELATED_RECORD_MISSING",
+          "message_template": "R-4.30-REFERENCES-4.22",
+          "regulatory_metadata": {
+            "source_error_code": "E012"
+          }
+        },
+        {
+          "id": "REL-trace42_to_trace41",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "record_exists",
+              "join": "trace42_to_trace41"
+            }
+          ],
+          "error_code": "E_MISSING_PARENT_RECORD",
+          "message_template": "Record correlato richiesto assente",
+          "regulatory_metadata": {
+            "decision": "CNF-SIOC-REFERENTIAL-G0-01",
+            "source_join": "trace42_to_trace41",
+            "source_pointer": "/traces/4/joins/0",
+            "source_required": true,
+            "source_error_code": "E_MISSING_PARENT_RECORD"
+          }
+        }
+      ],
+      "documented_non_executable_rules": []
+    }
+  ],
+  "persistence_policy": null
+}

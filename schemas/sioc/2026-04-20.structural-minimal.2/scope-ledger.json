@@ -1,0 +1,371 @@
+{
+  "decision": "CNF-SIOC-REFERENTIAL-G0-01",
+  "schema_version": "2026-04-20.structural-minimal.2",
+  "source_profile_sha256": "2592c46889a2c06fc9dd5da5b9220f2f1c2a3ac42985f56bd24e476058128c31",
+  "frozen_flow_sha256": "3567bafd3cb9b762becdd46a356454b89df094c7b88c5b1538c97a1bbaf26c45",
+  "normative_source": "SIOC_2026-04-20_FROZEN/flow_schema.json",
+  "approved_formalization": "docs/normative/sioc/rules-and-joins.md",
+  "full_normative_compliance": false,
+  "rules": [
+    {
+      "rule_id": "REL-trace2_to_trace1",
+      "source_pointer": "/traces/1/joins/0",
+      "source_join_snapshot": {
+        "id": "trace2_to_trace1",
+        "target_trace": "1",
+        "source_fields": [
+          "2.1",
+          "2.49",
+          "2.50"
+        ],
+        "target_fields": [
+          "1.1",
+          "1.17",
+          "1.18"
+        ],
+        "required": true,
+        "cardinality": "exactly_one",
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "source_join_sha256": "b5a00913072b6d9af528cd619eaf5ef6235cbb6c246d31447cda250dcf02b9e3",
+      "source_trace": "2",
+      "target_trace": "1",
+      "join": "trace2_to_trace1",
+      "source_fields": [
+        "2.1",
+        "2.49",
+        "2.50"
+      ],
+      "target_fields": [
+        "1.1",
+        "1.17",
+        "1.18"
+      ],
+      "cardinality": "exactly_one",
+      "applicability": {
+        "const": true
+      },
+      "applicability_evidence": "Approved FROZEN required=true with no guard; ratification sections 3-4 and DEC-SIOC-MINIMAL-01 structural relationships.",
+      "on_missing_record": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "on_missing_trace": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "stable_code": "E_MISSING_PARENT_RECORD",
+      "legacy_code": "E_MISSING_PARENT_RECORD",
+      "legacy_origin": "Symbolic code supplied by approved source join, not an invented regional numeric code.",
+      "message_template": "Record correlato richiesto assente",
+      "tests": [
+        "valid",
+        "missing",
+        "cardinality",
+        "full_missing_target_preflight"
+      ]
+    },
+    {
+      "rule_id": "REL-trace3_to_trace2",
+      "source_pointer": "/traces/2/joins/0",
+      "source_join_snapshot": {
+        "id": "trace3_to_trace2",
+        "target_trace": "2",
+        "source_fields": [
+          "3.1",
+          "3.35",
+          "3.36"
+        ],
+        "target_fields": [
+          "2.1",
+          "2.49",
+          "2.50"
+        ],
+        "required": true,
+        "cardinality": "exactly_one",
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "source_join_sha256": "74c110c891a18c0a027da4c1e2b1c821095bb222276cf3538f8150b06e98351e",
+      "source_trace": "3",
+      "target_trace": "2",
+      "join": "trace3_to_trace2",
+      "source_fields": [
+        "3.1",
+        "3.35",
+        "3.36"
+      ],
+      "target_fields": [
+        "2.1",
+        "2.49",
+        "2.50"
+      ],
+      "cardinality": "exactly_one",
+      "applicability": {
+        "const": true
+      },
+      "applicability_evidence": "Approved FROZEN required=true with no guard; ratification sections 3-4 and DEC-SIOC-MINIMAL-01 structural relationships.",
+      "on_missing_record": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "on_missing_trace": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "stable_code": "E_MISSING_PARENT_RECORD",
+      "legacy_code": "E_MISSING_PARENT_RECORD",
+      "legacy_origin": "Symbolic code supplied by approved source join, not an invented regional numeric code.",
+      "message_template": "Record correlato richiesto assente",
+      "tests": [
+        "valid",
+        "missing",
+        "cardinality",
+        "full_missing_target_preflight"
+      ]
+    },
+    {
+      "rule_id": "REL-trace3_to_trace1",
+      "source_pointer": "/traces/2/joins/1",
+      "source_join_snapshot": {
+        "id": "trace3_to_trace1",
+        "target_trace": "1",
+        "source_fields": [
+          "3.1",
+          "3.35",
+          "3.36"
+        ],
+        "target_fields": [
+          "1.1",
+          "1.17",
+          "1.18"
+        ],
+        "required": true,
+        "cardinality": "exactly_one",
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "source_join_sha256": "85e349ab8505aafce5592dabbaf072f8bd97400d52b0ea56c58dd850cb58678f",
+      "source_trace": "3",
+      "target_trace": "1",
+      "join": "trace3_to_trace1",
+      "source_fields": [
+        "3.1",
+        "3.35",
+        "3.36"
+      ],
+      "target_fields": [
+        "1.1",
+        "1.17",
+        "1.18"
+      ],
+      "cardinality": "exactly_one",
+      "applicability": {
+        "const": true
+      },
+      "applicability_evidence": "Approved FROZEN required=true with no guard; ratification sections 3-4 and DEC-SIOC-MINIMAL-01 structural relationships.",
+      "on_missing_record": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "on_missing_trace": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "stable_code": "E_MISSING_PARENT_RECORD",
+      "legacy_code": "E_MISSING_PARENT_RECORD",
+      "legacy_origin": "Symbolic code supplied by approved source join, not an invented regional numeric code.",
+      "message_template": "Record correlato richiesto assente",
+      "tests": [
+        "valid",
+        "missing",
+        "cardinality",
+        "full_missing_target_preflight"
+      ]
+    },
+    {
+      "rule_id": "REL-trace42_to_trace41",
+      "source_pointer": "/traces/4/joins/0",
+      "source_join_snapshot": {
+        "id": "trace42_to_trace41",
+        "target_trace": "4.1",
+        "source_fields": [
+          "4.20",
+          "4.21"
+        ],
+        "target_fields": [
+          "4.1",
+          "4.2"
+        ],
+        "required": true,
+        "cardinality": "at_least_one",
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "source_join_sha256": "c2e8db2454234276f600999a56f5ca34b1d94f5c19015449c6ef4e7289ae1220",
+      "source_trace": "4.2",
+      "target_trace": "4.1",
+      "join": "trace42_to_trace41",
+      "source_fields": [
+        "4.20",
+        "4.21"
+      ],
+      "target_fields": [
+        "4.1",
+        "4.2"
+      ],
+      "cardinality": "one_or_many",
+      "applicability": {
+        "const": true
+      },
+      "applicability_evidence": "Approved FROZEN required=true with no guard; ratification sections 3-4 and DEC-SIOC-MINIMAL-01 structural relationships.",
+      "on_missing_record": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "on_missing_trace": {
+        "policy": "violation",
+        "diagnostic": {
+          "code": "RELATED_RECORD_ABSENT",
+          "message_template": "Record correlato richiesto assente"
+        },
+        "error_code": "E_MISSING_PARENT_RECORD"
+      },
+      "stable_code": "E_MISSING_PARENT_RECORD",
+      "legacy_code": "E_MISSING_PARENT_RECORD",
+      "legacy_origin": "Symbolic code supplied by approved source join, not an invented regional numeric code.",
+      "message_template": "Record correlato richiesto assente",
+      "tests": [
+        "valid",
+        "missing",
+        "cardinality",
+        "full_missing_target_preflight"
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "kind": "revoking_act_policy",
+      "before": {
+        "id": "revoking_act",
+        "target_trace": "4.2",
+        "source_fields": [
+          "4.30"
+        ],
+        "target_fields": [
+          "4.22"
+        ],
+        "cardinality": "zero_or_many",
+        "scope": "current_submission",
+        "namespace_parameters": [],
+        "on_missing_record": {
+          "policy": "not_applicable",
+          "diagnostic": {
+            "code": "RELATED_RECORD_ABSENT",
+            "message_template": "Nessun atto corrispondente"
+          }
+        },
+        "on_missing_trace": {
+          "policy": "not_applicable",
+          "diagnostic": {
+            "code": "RELATED_RECORD_ABSENT",
+            "message_template": "Nessun atto corrispondente"
+          }
+        }
+      },
+      "after": {
+        "id": "revoking_act",
+        "target_trace": "4.2",
+        "source_fields": [
+          "4.30"
+        ],
+        "target_fields": [
+          "4.22"
+        ],
+        "cardinality": "zero_or_many",
+        "scope": "current_submission",
+        "namespace_parameters": [],
+        "on_missing_record": {
+          "policy": "violation",
+          "error_code": "E_RELATED_RECORD_MISSING",
+          "diagnostic": {
+            "code": "RELATED_RECORD_ABSENT",
+            "message_template": "Atto revocante indicato non presente tra gli atti disponibili"
+          }
+        },
+        "on_missing_trace": {
+          "policy": "unknown",
+          "diagnostic": {
+            "code": "RELATED_TRACE_UNAVAILABLE",
+            "message_template": "Verifica dell'atto revocante inconcludente: universo non disponibile"
+          }
+        }
+      },
+      "source_rule": "R-4.30-REFERENCES-4.22",
+      "legacy_code": "E012",
+      "source": "docs/normative/sioc/rules-and-joins.md / DEC-05-SIOC-REVOKING-ACT",
+      "preserved": [
+        "4.2->4.2",
+        "4.30->4.22",
+        "zero_or_many",
+        "current_submission",
+        "guard",
+        "no UDO restriction"
+      ],
+      "tests": [
+        "valid",
+        "missing",
+        "cardinality",
+        "partial_universe_unknown"
+      ]
+    }
+  ],
+  "inherited_scope_ledger": "schemas/sioc/2026-04-20.structural-minimal.1/scope-ledger.json",
+  "artifacts": {
+    "flow_schema.json": "b1bffeb800570d8f4ac045110bf849e5380ed4062f209b4cb1f34dee3df1c33b",
+    "golden_subset_schema.json": "b7a5a8d91ffe6aecff39065ea4cfd634551b7cc83d4ceff219bdc6bca9b96ec7",
+    "trace-1.json": "393916264a65ca8ba472a0bc48df861fdbaebfbc3a22ab8056a28cebedbad3da",
+    "trace-2.json": "8c90d47be255e483a00ee2875c9579ceebde7115b9eda2a29dae37efee361df9",
+    "trace-3.json": "4b03afcffb285d5e6d55fc458d9dedafa872683b611d14c9d3d4131925005f8d",
+    "trace-4.1.json": "6718ba7cbbb182bf1058d7cf194d4a465b111c9aeea7abcabf21330d34761884",
+    "trace-4.2.json": "c7aa5bdf82fbed6f8b2c824ed9921037101f2a2dcb772b08499532546fbd8f86"
+  },
+  "outstanding_capabilities": {
+    "required_by_complete_profile": [
+      "local.v1",
+      "expressions.v1",
+      "joins.v1",
+      "joins.sets.v1",
+      "derived.substring.v1",
+      "persistence.audit.v1"
+    ],
+    "persistence_policy_retained": true,
+    "compiler_must_reject_complete_profile": true,
+    "obligations": "Inherited G0 deferrals, unsupported local constructs and persistence.audit remain mandatory outside the explicitly selected golden component; see inherited scope-ledger and subset exclusions."
+  }
+}

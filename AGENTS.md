@@ -156,3 +156,18 @@ Mandato successivo — ripresa dopo l'allineamento, 2026-10-23:
 - Commit, push su UraganoAngelina/lintra work/p1-foundations e CI autonomi
   nel workflow già concordato; massimo tre chiamate Actions per gate, ≥45s.
 - Restano vietati Superpowers, subagenti e processi locali in background.
+
+Ratifica CNF-SIOC-REFERENTIAL-G0-01 — 2026-10-25:
+- Autorizzata una nuova revisione operativa SIOC derivata da structural-minimal.1,
+  preservando integralmente .1, FROZEN e documenti normativi sorgente.
+- Quattro regole REL-* esplicite approvate con provenance per relazione e
+  condizioni verificate; nessun controllo implicito generato dai join nell'engine.
+- revoking_act mantiene self-join 4.30→4.22 zero_or_many e guard; record assente
+  verificato Violation E_RELATED_RECORD_MISSING, universo indisponibile Unknown.
+- Anagrafica→ricovero opzionale NotApplicable invariata. Niente first(), nuove
+  regole cliniche o rimozione delle capability mancanti dal profilo completo.
+- Per 13-08 autorizzato sottoinsieme operativo esplicito/tracciato per golden
+  con almeno una relazione cross-trace reale, dati sintetici e ledger esclusioni.
+- Memoria indipendente; 13-08/M6 solo dopo golden reale e tutti i gate effettivi.
+- STOP al termine del perimetro T-P13-08: attendere nuova autorizzazione prima
+  di ulteriori task. Questo stop specifico prevale sul workflow automatico generale.

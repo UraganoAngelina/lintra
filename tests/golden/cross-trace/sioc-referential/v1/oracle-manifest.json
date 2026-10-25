@@ -1,0 +1,51 @@
+{
+  "schema_canonical_sha256": "cdd9a697696ce84ba6713f5a414e466153ca82f9218347f0e71f6f282c299a37",
+  "decision": "CNF-SIOC-REFERENTIAL-G0-01",
+  "expected_source": "Independent normative case specification; no Rust output read.",
+  "cases": [
+    {
+      "case": "valid",
+      "processed": 7,
+      "invalid": 0,
+      "errors": 0,
+      "motivation": "Four explicit parent obligations satisfied; multiple administrative parents allowed; guarded revoking act found."
+    },
+    {
+      "case": "missing",
+      "processed": 3,
+      "invalid": 3,
+      "errors": 5,
+      "motivation": "Four distinct applicable parent obligations fail plus E012 revoking act negative; source records invalid once each."
+    },
+    {
+      "case": "cardinality",
+      "processed": 7,
+      "invalid": 1,
+      "errors": 1,
+      "motivation": "Duplicate source anagraphic PK diagnosed once; scalar joins retain both parents and return Unknown, not first(); one_or_many administrative join remains satisfied."
+    }
+  ],
+  "artifacts": {
+    "valid/trace-1.dat": "592226e7c389534633537860417088c9dbc3b419fc3514c1da7d5e9afcea2302",
+    "valid/trace-2.dat": "c8fae92efba6fbb5302b6bbff139405c506e4b90f2bff2439600f1c56e81e6e9",
+    "valid/trace-3.dat": "88fcc3cd9b1518cf8f7392d5fcc4cd5a0f42833770fc040eb8361dbd579c423d",
+    "valid/trace-4.1.dat": "497c6b455f37c115b7c28cf2704461cdbf22444377e4c7c9670f1d699c80453e",
+    "valid/trace-4.2.dat": "675a6a67d129348d3f4a8a14e8b64249614312f63f69a5044d45d4dd0ed4f7b1",
+    "valid/expected.errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "valid/expected.summary.json": "49902b2bf7a55de746056d74de2c3e3b0f12a279df4e6a3c44d549926c6f6638",
+    "missing/trace-1.dat": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "missing/trace-2.dat": "c8fae92efba6fbb5302b6bbff139405c506e4b90f2bff2439600f1c56e81e6e9",
+    "missing/trace-3.dat": "daed55b09fb633deed651bd5e7cc35fdc0d36565c5f4a3e6a3207af7153be918",
+    "missing/trace-4.1.dat": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "missing/trace-4.2.dat": "5ac1766bc9664113351137cc0d663c18de2d03f45b43cae4a517a39877eb5675",
+    "missing/expected.errors.jsonl": "5d640574a0de21a141dc3f340b6eca4fadaad9642646c2de4cdb205dd7490c53",
+    "missing/expected.summary.json": "daf9e26eee7fffe3b424f8d6dc8997b41287e5503bded9d661f0f698dba497bf",
+    "cardinality/trace-1.dat": "5781845410877cb7aa47509563ff7de42369ac187b21f83dfb5d330c93b3c0a4",
+    "cardinality/trace-2.dat": "c8fae92efba6fbb5302b6bbff139405c506e4b90f2bff2439600f1c56e81e6e9",
+    "cardinality/trace-3.dat": "88fcc3cd9b1518cf8f7392d5fcc4cd5a0f42833770fc040eb8361dbd579c423d",
+    "cardinality/trace-4.1.dat": "497c6b455f37c115b7c28cf2704461cdbf22444377e4c7c9670f1d699c80453e",
+    "cardinality/trace-4.2.dat": "3839e67f4eb1eb4d0366b7f2d294528ac9145d4d55b73d7ff3eed6e6bceb3643",
+    "cardinality/expected.errors.jsonl": "a7db484cac72f417096e7779a70d896331de6168c9590fdb1364bf4b89dd5012",
+    "cardinality/expected.summary.json": "3c893699414550550bab393d3863ff0a63234c5351f5a539e5d1d4ce650472b1"
+  }
+}

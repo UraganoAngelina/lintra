@@ -1,0 +1,145 @@
+{
+  "decision": "CNF-SIOC-REFERENTIAL-G0-01",
+  "date": "2026-10-25",
+  "hash_scope": "Exact UTF-8/file bytes; JSON subtree snapshot hashes are separately specified in the scope ledger.",
+  "frozen_source_sha256": "3567bafd3cb9b762becdd46a356454b89df094c7b88c5b1538c97a1bbaf26c45",
+  "sources": {
+    "schemas/sioc/2026-04-20.structural-minimal.1/flow_schema.json": "2592c46889a2c06fc9dd5da5b9220f2f1c2a3ac42985f56bd24e476058128c31",
+    "schemas/sioc/2026-04-20.structural-minimal.1/scope-ledger.json": "e5043f09dfa383ab8a14bf733f8bea2d8022b33f1acf10c7236ff558217e369f",
+    "docs/normative/sioc/rules-and-joins.md": "4826c8167811eee8a57ee4038d403ed3144feef553dc38664ffe088a166a5951"
+  },
+  "artifacts": {
+    "schemas/sioc/2026-04-20.structural-minimal.2/README.md": {
+      "sha256": "7256e5ec39f4204bbff9d1f4fe69576c10e73ae2372a7e8eadb8870e347aae71",
+      "bytes": 2654
+    },
+    "schemas/sioc/2026-04-20.structural-minimal.2/flow_schema.json": {
+      "sha256": "b1bffeb800570d8f4ac045110bf849e5380ed4062f209b4cb1f34dee3df1c33b",
+      "bytes": 237116
+    },
+    "schemas/sioc/2026-04-20.structural-minimal.2/scope-ledger.json": {
+      "sha256": "9c7dc7e7977c2ee34772573594338c6985143b0f6fb75d174428beba92064c35",
+      "bytes": 11890
+    },
+    "schemas/sioc/2026-04-20.structural-minimal.2/trace-1.json": {
+      "sha256": "393916264a65ca8ba472a0bc48df861fdbaebfbc3a22ab8056a28cebedbad3da",
+      "bytes": 30069
+    },
+    "schemas/sioc/2026-04-20.structural-minimal.2/trace-2.json": {
+      "sha256": "8c90d47be255e483a00ee2875c9579ceebde7115b9eda2a29dae37efee361df9",
+      "bytes": 71277
+    },
+    "schemas/sioc/2026-04-20.structural-minimal.2/trace-3.json": {
+      "sha256": "4b03afcffb285d5e6d55fc458d9dedafa872683b611d14c9d3d4131925005f8d",
+      "bytes": 67867
+    },
+    "schemas/sioc/2026-04-20.structural-minimal.2/trace-4.1.json": {
+      "sha256": "6718ba7cbbb182bf1058d7cf194d4a465b111c9aeea7abcabf21330d34761884",
+      "bytes": 22633
+    },
+    "schemas/sioc/2026-04-20.structural-minimal.2/trace-4.2.json": {
+      "sha256": "c7aa5bdf82fbed6f8b2c824ed9921037101f2a2dcb772b08499532546fbd8f86",
+      "bytes": 15068
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/README.md": {
+      "sha256": "315e6b7e86cb7e05d027970b00b3b7641729d77acee33e698dc96194a75a893c",
+      "bytes": 3937
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/cardinality/expected.errors.jsonl": {
+      "sha256": "a7db484cac72f417096e7779a70d896331de6168c9590fdb1364bf4b89dd5012",
+      "bytes": 406
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/cardinality/expected.summary.json": {
+      "sha256": "3c893699414550550bab393d3863ff0a63234c5351f5a539e5d1d4ce650472b1",
+      "bytes": 3693
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/cardinality/trace-1.dat": {
+      "sha256": "5781845410877cb7aa47509563ff7de42369ac187b21f83dfb5d330c93b3c0a4",
+      "bytes": 414
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/cardinality/trace-2.dat": {
+      "sha256": "c8fae92efba6fbb5302b6bbff139405c506e4b90f2bff2439600f1c56e81e6e9",
+      "bytes": 272
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/cardinality/trace-3.dat": {
+      "sha256": "88fcc3cd9b1518cf8f7392d5fcc4cd5a0f42833770fc040eb8361dbd579c423d",
+      "bytes": 136
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/cardinality/trace-4.1.dat": {
+      "sha256": "497c6b455f37c115b7c28cf2704461cdbf22444377e4c7c9670f1d699c80453e",
+      "bytes": 790
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/cardinality/trace-4.2.dat": {
+      "sha256": "3839e67f4eb1eb4d0366b7f2d294528ac9145d4d55b73d7ff3eed6e6bceb3643",
+      "bytes": 68
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/missing/expected.errors.jsonl": {
+      "sha256": "5d640574a0de21a141dc3f340b6eca4fadaad9642646c2de4cdb205dd7490c53",
+      "bytes": 2776
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/missing/expected.summary.json": {
+      "sha256": "daf9e26eee7fffe3b424f8d6dc8997b41287e5503bded9d661f0f698dba497bf",
+      "bytes": 3423
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/missing/trace-1.dat": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/missing/trace-2.dat": {
+      "sha256": "c8fae92efba6fbb5302b6bbff139405c506e4b90f2bff2439600f1c56e81e6e9",
+      "bytes": 272
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/missing/trace-3.dat": {
+      "sha256": "daed55b09fb633deed651bd5e7cc35fdc0d36565c5f4a3e6a3207af7153be918",
+      "bytes": 136
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/missing/trace-4.1.dat": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/missing/trace-4.2.dat": {
+      "sha256": "5ac1766bc9664113351137cc0d663c18de2d03f45b43cae4a517a39877eb5675",
+      "bytes": 68
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/oracle-manifest.json": {
+      "sha256": "b39db724371a3234118ef4bc577f2cbb46be98f1ced603aafa6993c4f96038fd",
+      "bytes": 3108
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/schema.json": {
+      "sha256": "b7a5a8d91ffe6aecff39065ea4cfd634551b7cc83d4ceff219bdc6bca9b96ec7",
+      "bytes": 41690
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/scope-ledger.json": {
+      "sha256": "6d457f70882aa2947a75bcbf2ebaf08c86be21c59606e0ff87f8386775b1f25b",
+      "bytes": 26408
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/valid/expected.errors.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/valid/expected.summary.json": {
+      "sha256": "49902b2bf7a55de746056d74de2c3e3b0f12a279df4e6a3c44d549926c6f6638",
+      "bytes": 3375
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/valid/trace-1.dat": {
+      "sha256": "592226e7c389534633537860417088c9dbc3b419fc3514c1da7d5e9afcea2302",
+      "bytes": 207
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/valid/trace-2.dat": {
+      "sha256": "c8fae92efba6fbb5302b6bbff139405c506e4b90f2bff2439600f1c56e81e6e9",
+      "bytes": 272
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/valid/trace-3.dat": {
+      "sha256": "88fcc3cd9b1518cf8f7392d5fcc4cd5a0f42833770fc040eb8361dbd579c423d",
+      "bytes": 136
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/valid/trace-4.1.dat": {
+      "sha256": "497c6b455f37c115b7c28cf2704461cdbf22444377e4c7c9670f1d699c80453e",
+      "bytes": 790
+    },
+    "tests/golden/cross-trace/sioc-referential/v1/valid/trace-4.2.dat": {
+      "sha256": "675a6a67d129348d3f4a8a14e8b64249614312f63f69a5044d45d4dd0ed4f7b1",
+      "bytes": 136
+    }
+  }
+}

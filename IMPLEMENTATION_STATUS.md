@@ -3,6 +3,29 @@
 Consuntivo aggiornato al **2026-10-25**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P13-08 locale verificata; gate nativo pendente
+
+2026-10-25: ratifica CNF-SIOC-REFERENTIAL-G0-01 registrata; nuova revisione
+operativa structural-minimal.2 e componente references-golden.1 implementati.
+611 test/72 suite passati, 0 fail/1 ignored; fmt/check/clippy -D warnings,
+release/Windows GNU e diff passati. Oracoli/profili riprodotti in check-only;
+33 hash artefatti verificati; baseline90 preesistente identica a 6e4b411.
+**84/140 DONE = 60%**: 13-08 resta IN_PROGRESS, M6 non dichiarata prima della CI.
+
+Tre golden normativi reali (0/5/1 errori) e memoria passati nel percorso
+produttivo, niente regole implicite o source Rust di produzione modificato.
+.1 e FROZEN invariati; completo .2 continua a rifiutare persistence.audit e
+altri costrutti non supportati. Il componente è scope esplicito, non Full SIOC.
+[Report/handoff](docs/verification/T-P13-08-goldens-memory.md),
+[hash](docs/verification/T-P13-08-artifact-hashes.json),
+[ratifica](docs/verification/CNF-SIOC-REFERENTIAL-G0-01-ratification.md).
+
+STOP dopo T-P13-08 secondo l'ultima ratifica: nessuna task successiva senza
+nuova autorizzazione. Gate nativo da avviare sul commit pubblicato, massimo tre
+richieste ≥45s. Newline esterna proposta reference ancora preservata/non staged.
+
+## Registro storico — chiusura 13-07 e conflitto G0 poi ratificato
+
 ## Frontiera corrente — T-P13-07 verificata; T-P13-08 memoria / preflight G0
 
 2026-10-25: CI [40183843102](https://github.com/UraganoAngelina/lintra/actions/runs/40183843102)
@@ -1610,7 +1633,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-05 | DONE | 2026-10-24 | Compiler/projection/passata cross reali, 575 test/67 suite e gate locali passati; CI 40089317003 Linux/MSVC success; [dossier](docs/verification/T-P13-05.md) |
 | T-P13-06 | DONE | 2026-10-24 | Core due passate: 589 test/68 suite, CI 40091666797 Linux/MSVC success su 134b593; [report](docs/verification/T-P13-06-flow-validator.md) |
 | T-P13-07 | DONE | 2026-10-25 | 602 test/70 suite; CI 40183843102 Linux/MSVC success su 5dbb92c; [report](docs/verification/T-P13-07-full-service.md) |
-| T-P13-08 | IN_PROGRESS | 2026-10-25 | Memoria indipendente; golden normativo in attesa decisione CNF-SIOC-REFERENTIAL-G0-01 |
+| T-P13-08 | IN_PROGRESS | 2026-10-25 | Ratifica applicata, .2/componente, golden reali e memoria; 611/72 suite locali, CI da eseguire; [report](docs/verification/T-P13-08-goldens-memory.md) |
 | T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -3748,3 +3771,28 @@ comando, retry unico consentito riuscito. Non effettuare ulteriori GET su questo
 13-08: task autorizzata, prerequisiti13-07/0-08 soddisfatti; svolgere memoria
 indipendente, attendere decisione autore sul conflitto G0 documentato prima
 modifiche al profilo normativo/golden reale. Nessun task successivo/M6 prima del gate.
+
+
+## HANDOFF §15.3 — T-P13-08, consegna locale 2026-10-25
+
+- TASK/STATUS: T-P13-08 IN_PROGRESS, golden reale e memoria/gate locali passati;
+  native Linux/MSVC da verificare. M6 non ancora dichiarata.
+- FILE: nuova revisione SIOC structural-minimal.2, ledger/source/hash; componente
+  references-golden.1 e tre casi .dat/expected/oracolo; tests/sioc_referential.rs
+  (8) e memory.rs (1), harness golden registrazione famiglie; due generator Python,
+  ratifica/matrice/AGENTS/preflight/report/manifeste hash e gitattributes byte-safe.
+- EVIDENZE: 611 test/72 suite, 0 fail/1 ignored; fmt/check/clippy/release/GNU/diff
+  passati; 9 profili/ledger e 22 input/oracoli verificati senza scrittura;
+  33 hash nuovi e baseline90 invariata. Nessun nuovo crate o modifica engine/compiler.
+- NORMATIVA: quattro REL-* da required=true FROZEN con condizioni verificate;
+  revoking_act corretto per ratifica, N/A opzionale preservato; .1/FROZEN intatti.
+  Completo .2 rifiutato correttamente; componente autorizzato con 20 campi,
+  115 esclusi, 6 constraint esclusi esplicitamente, nessun audit persistente finto.
+- MEMORIA: 4096 record/trace, width32→4096, contesto7040904 byte invariato;
+  peak7393307→7397371. Richieste all'allocatore, non RSS. Golden0/5/1 errori
+  indipendenti, due Unknown nel caso cardinalità, nessun first()/duplicazione.
+- GIT: branch work/p1-foundations, ultimo79b31f3; codice da pubblicare. Modifica
+  esterna newline docs/proposals/reference-filesystem-format.md esclusa da staging.
+- BLOCCANTI: conflitto risolto dalla ratifica. Manca solo gate nativo effettivo.
+- NEXT: chiudere13-08/M6 soltanto dopo CI positiva, aggiornare evidenze e fermarsi.
+  Stop specifico prevale sul workflow automatico; nessuna task ulteriore autorizzata.

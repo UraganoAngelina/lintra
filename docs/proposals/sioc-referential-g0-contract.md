@@ -116,3 +116,12 @@ Il gate nativo di 13-07 può essere chiuso con le evidenze effettive. La porzion
 memoria di 13-08 è verificabile senza cambiare contratti normativi; non può però
 chiudere 13-08/M6 senza il golden cross-trace reale richiesto. Nessuna task
 successiva deve essere dichiarata completata aggirando questo prerequisito.
+
+## Esito successivo — 2026-10-25
+
+Proposta approvata con precisazioni vincolanti dall'autore:
+[ratifica definitiva](../verification/CNF-SIOC-REFERENTIAL-G0-01-ratification.md).
+Nessun controllo implicito engine, nuova revisione e sottoinsieme tracciato,
+capability mancanti preservate nel completo, golden reale e memoria obbligatori;
+stop specifico dopo T-P13-08. Il testo sopra resta la proposta storica, non viene
+riscritto retroattivamente. CI13-07 nel frattempo verificata Linux/MSVC success.
