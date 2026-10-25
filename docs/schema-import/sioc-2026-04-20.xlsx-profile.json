@@ -1,0 +1,1161 @@
+{
+  "flow_id": "SIOC",
+  "blueprint_version": "2026-04-20.structural-minimal.2",
+  "sheet": "Tracciato_SIOC definitivo",
+  "header_row": 5,
+  "columns": {
+    "field_id": {
+      "number": 1,
+      "header": "N"
+    },
+    "key_marker": {
+      "number": 2,
+      "header": "Chiave "
+    },
+    "name": {
+      "number": 3,
+      "header": "Descrizione Campo"
+    },
+    "length": {
+      "number": 4,
+      "header": "LUNGH."
+    },
+    "start": {
+      "number": 5,
+      "header": "POS. INIZ."
+    },
+    "source_type": {
+      "number": 6,
+      "header": "TIPO"
+    },
+    "obligation": {
+      "number": 7,
+      "header": "OBB"
+    },
+    "notes": {
+      "number": 8,
+      "header": "Istruzioni per la codifica"
+    }
+  },
+  "traces": [
+    {
+      "trace_id": "1",
+      "heading_row": 7,
+      "heading": "1. TRACCIATO DATI ANAGRAFICI ASSISTITO",
+      "fields": [
+        {
+          "row": 8,
+          "field_id": "1.1",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 9,
+          "field_id": "1.2",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 10,
+          "field_id": "1.3",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 11,
+          "field_id": "1.4",
+          "source_type": "AN",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 12,
+          "field_id": "1.5",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 13,
+          "field_id": "1.6",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 14,
+          "field_id": "1.7",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 15,
+          "field_id": "1.8",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 16,
+          "field_id": "1.9",
+          "source_type": "Data",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "date"
+        },
+        {
+          "row": 17,
+          "field_id": "1.10",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 18,
+          "field_id": "1.11",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 19,
+          "field_id": "1.12",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 20,
+          "field_id": "1.13",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 21,
+          "field_id": "1.14",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 22,
+          "field_id": "1.15",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 23,
+          "field_id": "1.16",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 24,
+          "field_id": "1.17",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 25,
+          "field_id": "1.18",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "2",
+      "heading_row": 28,
+      "heading": "2. TRACCIATO  ADT",
+      "fields": [
+        {
+          "row": 29,
+          "field_id": "2.1",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 30,
+          "field_id": "2.2",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 31,
+          "field_id": "2.3",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 32,
+          "field_id": "2.4",
+          "source_type": "Data",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "date"
+        },
+        {
+          "row": 33,
+          "field_id": "2.5",
+          "source_type": "Data",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "date"
+        },
+        {
+          "row": 34,
+          "field_id": "2.6",
+          "source_type": "Data",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "date"
+        },
+        {
+          "row": 35,
+          "field_id": "2.7",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 36,
+          "field_id": "2.8",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 37,
+          "field_id": "2.9",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 38,
+          "field_id": "2.10",
+          "source_type": "AN",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 39,
+          "field_id": "2.11",
+          "source_type": "AN",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 40,
+          "field_id": "2.12",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 41,
+          "field_id": "2.13",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 42,
+          "field_id": "2.14",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 43,
+          "field_id": "2.15",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 44,
+          "field_id": "2.16",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 45,
+          "field_id": "2.17",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 46,
+          "field_id": "2.18",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 47,
+          "field_id": "2.19",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 48,
+          "field_id": "2.20",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 49,
+          "field_id": "2.21",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 50,
+          "field_id": "2.22",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 51,
+          "field_id": "2.23",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 52,
+          "field_id": "2.24",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 53,
+          "field_id": "2.25",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 54,
+          "field_id": "2.26",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 55,
+          "field_id": "2.27",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 56,
+          "field_id": "2.28",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 57,
+          "field_id": "2.29",
+          "source_type": "AN",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 58,
+          "field_id": "2.30",
+          "source_type": "AN",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 59,
+          "field_id": "2.31",
+          "source_type": "AN",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 60,
+          "field_id": "2.32",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 61,
+          "field_id": "2.33",
+          "source_type": "AN",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 62,
+          "field_id": "2.34",
+          "source_type": "AN",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 63,
+          "field_id": "2.35",
+          "source_type": "AN",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 64,
+          "field_id": "2.36",
+          "source_type": "AN",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 65,
+          "field_id": "2.37",
+          "source_type": "AN",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 66,
+          "field_id": "2.38",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 67,
+          "field_id": "2.39",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 68,
+          "field_id": "2.40",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 69,
+          "field_id": "2.41",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 70,
+          "field_id": "2.42",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 71,
+          "field_id": "2.43",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 72,
+          "field_id": "2.44",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 73,
+          "field_id": "2.45",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 74,
+          "field_id": "2.46",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 75,
+          "field_id": "2.47",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 76,
+          "field_id": "2.48",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 77,
+          "field_id": "2.49",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 78,
+          "field_id": "2.50",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "3",
+      "heading_row": 81,
+      "heading": "3. TRACCIATO  VALUTAZIONE",
+      "fields": [
+        {
+          "row": 82,
+          "field_id": "3.1",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 83,
+          "field_id": "3.2",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 84,
+          "field_id": "3.3",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 85,
+          "field_id": "3.4",
+          "source_type": "D",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "date"
+        },
+        {
+          "row": 86,
+          "field_id": "3.5",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 87,
+          "field_id": "3.6",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 88,
+          "field_id": "3.7",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 89,
+          "field_id": "3.8",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 90,
+          "field_id": "3.9",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 91,
+          "field_id": "3.10",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 92,
+          "field_id": "3.11",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 93,
+          "field_id": "3.12",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 94,
+          "field_id": "3.13",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 95,
+          "field_id": "3.14",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 96,
+          "field_id": "3.15",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 97,
+          "field_id": "3.16",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 98,
+          "field_id": "3.17",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 99,
+          "field_id": "3.18",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 100,
+          "field_id": "3.19",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 101,
+          "field_id": "3.20",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 102,
+          "field_id": "3.21",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 103,
+          "field_id": "3.22",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 104,
+          "field_id": "3.23",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 105,
+          "field_id": "3.24",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 106,
+          "field_id": "3.25",
+          "source_type": "N",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 107,
+          "field_id": "3.26",
+          "source_type": "N",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 108,
+          "field_id": "3.27",
+          "source_type": "N",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 109,
+          "field_id": "3.28",
+          "source_type": "N",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 110,
+          "field_id": "3.29",
+          "source_type": "N",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 111,
+          "field_id": "3.30",
+          "source_type": "N",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 112,
+          "field_id": "3.31",
+          "source_type": "N",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 113,
+          "field_id": "3.32",
+          "source_type": "N",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 114,
+          "field_id": "3.33",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 115,
+          "field_id": "3.34",
+          "source_type": "N",
+          "obligation": "NBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 116,
+          "field_id": "3.35",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 117,
+          "field_id": "3.36",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.1",
+      "heading_row": 119,
+      "heading": "4.1 TRACCIATO  REGIONALE UDO",
+      "fields": [
+        {
+          "row": 120,
+          "field_id": "4.1",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 121,
+          "field_id": "4.2",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 122,
+          "field_id": "4.3",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 123,
+          "field_id": "4.4",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 124,
+          "field_id": "4.5",
+          "source_type": null,
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 125,
+          "field_id": "4.6",
+          "source_type": "A",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 126,
+          "field_id": "4.7",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 127,
+          "field_id": "4.8",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 128,
+          "field_id": "4.9",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 129,
+          "field_id": "4.10",
+          "source_type": "A",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 130,
+          "field_id": "4.11",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 131,
+          "field_id": "4.12",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 132,
+          "field_id": "4.13",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 133,
+          "field_id": "4.14",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 134,
+          "field_id": "4.15",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 135,
+          "field_id": "4.16",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 136,
+          "field_id": "4.17",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 137,
+          "field_id": "4.18",
+          "source_type": "D",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "date"
+        },
+        {
+          "row": 138,
+          "field_id": "4.19",
+          "source_type": "D",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "date"
+        },
+        {
+          "row": 139,
+          "field_id": "4.19.1",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        }
+      ]
+    },
+    {
+      "trace_id": "4.2",
+      "heading_row": 142,
+      "heading": "4.2 TRACCIATO REGIONALE ATTI LR 22/2002",
+      "fields": [
+        {
+          "row": 143,
+          "field_id": "4.20",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 144,
+          "field_id": "4.21",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 145,
+          "field_id": "4.22",
+          "source_type": "AN",
+          "obligation": "OBB",
+          "key_marker": "X",
+          "reviewed_physical_type": "alphanumeric"
+        },
+        {
+          "row": 146,
+          "field_id": "4.23",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 147,
+          "field_id": "4.24",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 148,
+          "field_id": "4.25",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 149,
+          "field_id": "4.26",
+          "source_type": "D",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "date"
+        },
+        {
+          "row": 150,
+          "field_id": "4.27",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 151,
+          "field_id": "4.28",
+          "source_type": "N",
+          "obligation": "OBB",
+          "key_marker": null,
+          "reviewed_physical_type": "numeric"
+        },
+        {
+          "row": 152,
+          "field_id": "4.29",
+          "source_type": "D",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "date"
+        },
+        {
+          "row": 153,
+          "field_id": "4.30",
+          "source_type": "AN",
+          "obligation": "FAC",
+          "key_marker": null,
+          "reviewed_physical_type": "alphanumeric"
+        }
+      ]
+    }
+  ],
+  "coordinate_formulas": "use_cached_values",
+  "annotation_sheets": [
+    "Indicazioni operative"
+  ]
+}

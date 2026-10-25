@@ -3,7 +3,7 @@
 Consuntivo aggiornato al **2026-10-25**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P14-04 pubblicata, Linux positivo, MSVC da verificare
+## Frontiera corrente — T-P14-01 locale verificata, pubblicazione/CI in avvio
 
 2026-10-25: ripresa autorizzata dall’autore, incluso avanzamento automatico
 quando gate e prerequisiti sono chiari. Superato lo stop specifico dopo13-08.
@@ -36,6 +36,16 @@ richiesta. I blocchi precedenti restano storici.
 Prerequisito T-P14-03 già DONE. Consultato workbook SIOC:135 campi/layout
 identici,8 note con soli delta whitespace; nessuna baseline modificata.
 Preservata la modifica esterna della newline nella proposta reference.
+
+Mandato successivo: avanzare con attività indipendenti senza fermarsi sulla sola
+lettura remota. T-P14-01 implementata: reader XLSX reale/profilo135 binding,
+12 test sintetici e qualificazione originale135 campi/130formule/8note passati.
+Nessuna baseline o lock modificati; calamine esistente promossa al tooling.
+Gate globale completo positivo in target isolato:632 test/74 suite,0 fail/2
+ignored, fmt/check/clippy/release/GNU/diff passati. Qualificazione workbook
+originale eseguita separatamente. Primo E0463 locale risolto con artefatti nuovi,
+nessun doctest disabilitato. Native Linux/MSVC da avviare dopo pubblicazione.
+[Report](docs/verification/T-P14-01-xlsx-importer.md).
 
 ## Registro storico — T-P13-08 locale e timeout remoto
 
@@ -1634,7 +1644,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P7-01 | DONE | 2026-10-21 | Request/preflight Trace LocalOnly, 251 locali; CI 39567896281 Linux/Windows verde 20f6835; [report](docs/verification/T-P7-01.md) |
 | T-P7-02 | DONE | 2026-10-21 | Token condiviso e progress, 254 locali; CI 39569282614 Linux/Windows verde bacedba; [report](docs/verification/T-P7-02.md) |
 | T-P7-03 | DONE | 2026-10-21 | Loop streaming, audit/cancellazione, 263 locali; CI 39571479598 Linux/Windows verde 5d2f371; [report](docs/verification/T-P7-03.md) |
-| T-P14-01 | NOT_STARTED | 2026-10-25 | Workbook SIOC fornito dall’autore dopo preflight; disponibilità risolta, esame mapping da svolgere; [preflight](docs/verification/T-P14-01-preflight.md) |
+| T-P14-01 | IN_PROGRESS | 2026-10-25 | Importer XLSX reale e profilo135binding,12 test sintetici e qualificazione SIOC originale positivi;632/74 suite e gate locali passati, native pendente; [report](docs/verification/T-P14-01-xlsx-importer.md) |
 | T-P14-04 | IN_PROGRESS | 2026-10-25 | Diff7024f5f pubblicato in e887fcd;620 test/73 suite e gate locali passati; CI40211195991 Linux success, MSVC non verificata: GET finale timeout, tre chiamate esaurite; [report](docs/verification/T-P14-04-schema-diff.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
@@ -3945,3 +3955,39 @@ e7bca849066d68747abfc78b92ce273e3;135 campi in5trace con layout identico e8 note
 Pubblicazione dell'handoff finale: push documentale terminato per timeout40s,
 nessun esito remoto ricevuto. Ultimo push confermatoe887fcd; handoff successivo
 salvato localmente. Nessun nuovo tentativo di rete o chiamata Actions effettuato.
+
+
+## Avvio indipendente T-P14-01 — mandato esplicito2026-10-25
+
+L’autore ribadisce di procedere senza fermarsi quando sviluppo/prerequisiti non
+presentano criticità.14-01 dipende soltanto da3-01/G0, entrambi verificati, non
+da14-04. Avviata implementazione reale importer dopo preflight del workbook
+SIOC.14-04 resta IN_PROGRESS sul gate MSVC non letto; nessuna quarta richiesta
+al vecchio gate. Una nuova consegna con codice reale avrà il proprio gate e
+regressioni includenti14-04, senza reinterpretare gli esiti storici.
+
+DEC-15 prima di Cargo: promuovere calamine0.36.1 da dev-only a dipendenza tooling
+per schema/importer, MIT/pure-Rust/default-features=false, versione e subtree
+già qualificati in12-05. Nessun nuovo package o backend di sistema; verificare
+lock immutato/features e gate Linux/MSVC dopo la promozione.
+
+
+## HANDOFF §15.3 — T-P14-01 locale verificata
+
+- STATUS: IN_PROGRESS finché gate nativo non verificato; nessun blocco normativo.
+  Prerequisiti3-01/G0 verificati, indipendente da14-04.
+- FILE: schema/importer.rs, mod/lib export, Cargo promozione calamine già
+  qualificata, tests/schema_importer.rs, profilo dati135binding/README/generator,
+  dossier/preflight/stato/AGENTS. Nessun workbook/PDF utente o baseline incluso.
+- API: SchemaImporter::import(Path)→RawFlowSchema; XlsxSchemaImporter con
+  blueprint/profilo espliciti, note/celle/formule/hash reali, nessuna nota→DSL.
+- TEST:632 passati/74 suite/0 fail/2ignored, fmt/check/clippy/release/GNU/diff
+  positivi in target isolato con debug symbols0 e incremental0. E0463 iniziale
+  del target vecchio conservato nel dossier;12 doctest e gate completo pulito
+  poi passati senza cambiare test. Qualificazione originale eseguita:135campi,
+  130formule,8note esatte, hash verificato, PersistenceAuditV1 ancora rifiutata.
+- INTEGRITÀ:90 fonti protette e33 hash13-08 invariati; Cargo.lock identico.
+  Source xlsx e newline proposta reference preservati/non staged.
+- NEXT: pubblicare/concludere gate14-01 includente regressioni14-04. Proseguire
+ 14-02 quando output e prerequisiti non presentano criticità; non fermare lavoro
+ indipendente per il solo polling remoto. Chiamate CI tre con intervalli≥60s.

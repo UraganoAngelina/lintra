@@ -186,3 +186,11 @@ Mandato aggiornato — ripresa autonoma push/CI,2026-10-25:
 - Limite aggiornato: tre chiamate CI, distanziate di almeno un minuto.
 - Riprendere dalla pubblicazione14-04 senza duplicare codice; poi14-01 usando
   il solo workbook SIOC fornito. Nessun altro flusso o funzionalità fuori piano.
+
+Precisazione dell'autore — prosecuzione indipendente,2026-10-25:
+- Procedere con la task successiva se lo sviluppo precedente e i prerequisiti
+  non presentano problemi o criticità normative. Il solo gate remoto non letto
+  non blocca task indipendenti con prerequisiti soddisfatti.
+- T-P14-01 avviata: richiede T-P3-01/G0, non T-P14-04. Tenere14-04 aperta
+  sulla verifica MSVC senza dichiararla DONE. Nessuna quarta chiamata al vecchio
+  gate; il gate della nuova consegna reale include le regressioni precedenti.

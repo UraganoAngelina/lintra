@@ -5,8 +5,8 @@
   "counts": {
     "DONE": 85,
     "IN_PROGRESS": 1,
-    "NOT_STARTED": 53,
-    "LOCAL_VERIFIED_NATIVE_PENDING": 1
+    "LOCAL_VERIFIED_NATIVE_PENDING": 2,
+    "NOT_STARTED": 52
   },
   "phases": {
     "P0": {
@@ -53,9 +53,9 @@
       "DONE": 8
     },
     "P14": {
-      "NOT_STARTED": 3,
-      "DONE": 1,
-      "LOCAL_VERIFIED_NATIVE_PENDING": 1
+      "LOCAL_VERIFIED_NATIVE_PENDING": 2,
+      "NOT_STARTED": 2,
+      "DONE": 1
     },
     "P15": {
       "NOT_STARTED": 7
@@ -504,8 +504,8 @@
     },
     {
       "task": "T-P14-01",
-      "status": "NOT_STARTED",
-      "declared_status": "NOT_STARTED"
+      "status": "LOCAL_VERIFIED_NATIVE_PENDING",
+      "declared_status": "IN_PROGRESS"
     },
     {
       "task": "T-P14-02",
@@ -783,7 +783,7 @@
   "last_verified_native_commit": "52762c8525b878a72c7a59f9589c207a17e1efc6",
   "last_verified_native_run": "40192491629",
   "verified_percent": 60.7,
-  "workflow": "T-P14-04 published; native CI40211195991 Linux success, MSVC unverified after final connection timeout; three CI calls exhausted, intervals>=60s. T-P14-01 preflight ready.",
+  "workflow": "T-P14-01 implemented and local gate632/74 passed, native pending;14-04 MSVC unverified; independent progression authorized.",
   "native_gate_previous_session": {
     "dispatch_accepted": true,
     "results_verified": false,

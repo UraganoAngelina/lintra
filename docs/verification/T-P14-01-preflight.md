@@ -116,3 +116,11 @@ macro in questo file non autorizza esecuzione di macro in altri workbook.
 Il subtree calamine0.36.1 letto dalla versione installata resta pure-Rust,
 comprende quick-xml0.41.0 e zip8.6.0 con deflate/zlib-rs; nessun backend di
 sistema aggiunto. calamine è ancora dev-only finché14-01 non viene avviata.
+
+## Sviluppo autorizzato indipendente — precisazione successiva dell'autore
+
+L'autore richiede di non fermare task pronte sulla sola lettura remota pendente.
+14-01 dipende3-01/G0, non14-04; implementata dopo questa precisazione. Il vecchio
+stop del preflight è storico. Adapter/profilo reali e qualificazione originale
+positivi; gate locale632 test/74 suite positivo in target isolato dopo problema
+locale di risoluzione doctest. Report dettagliatoT-P14-01-xlsx-importer.md.

@@ -311,3 +311,8 @@ pub use domain::{
 };
 
 pub use engine::flow_execution::preflight_flow_inputs;
+
+pub use schema::importer::{
+    CoordinateFormulaPolicy, ImportError, SchemaImporter, XlsxColumn, XlsxColumns, XlsxFieldRow,
+    XlsxImportProfile, XlsxSchemaImporter, XlsxTraceBlock,
+};
