@@ -30,3 +30,47 @@ riguardano flussi futuri e non sono scope di14-01. Il precedente inventario
 era corretto al momento della ricerca; ora la sorgente esiste. Non sono stati
 sostituiti gli schemi approvati. Il blocco di disponibilità è superato; esame
 formato/mapping dopo il gate locale14-04, senza anticipare implementazione.
+
+## Esame effettivo del workbook SIOC ricevuto
+
+File912412 byte, SHA-256 esatto
+6be8ae60a2c236e5a25b731365b42f8e7bca849066d68747abfc78b92ce273e3.
+Lettura locale ZIP/XML stdlib, sola consultazione normativa; gli altri file
+forniti dall'autore non sono stati analizzati o inclusi nei commit.
+
+Fogli: Intestazione_SIOC, Tracciato_SIOC definitivo, Indicazioni operative.
+Il foglio tracciato ha header riga5: A=N, B=Chiave, C=Descrizione Campo,
+D=LUNGH., E=POS. INIZ., F=TIPO, G=OBB, H=Istruzioni per la codifica.
+Sezioni1/2/3/4.1/4.2 nelle righe7/28/81/119/142. La sezione corrente è
+necessaria: i field4.x appartengono a4.1 oppure4.2 secondo intestazione, non
+si può dedurre il trace dal solo prefisso del field. L'ID4.19.1 è una stringa
+valida, non un numero decimale o una coppia di soli interi.
+
+135 campi unici:18/50/36/20/11 nei cinque trace. Confrontati con
+structural-minimal.1: tutti gli ID presenti, nessun campo mancante/extra, tutte
+le posizioni e lunghezze identiche. Le note di8 campi(1.11,1.15,2.11,2.30,3.29,
+3.30,3.32,3.34) differiscono solo per whitespace: verificato con confronto di
+testo normalizzato esclusivamente per classificare il delta, non per modificare
+il contenuto importato. L'importer dovrà preservare la stringa originale, incluse
+newline e spazi, distinguendola dalla precedente trascrizione approvata. Nessuna
+nota è stata tradotta automaticamente in DSL o resa nuova regola eseguibile.
+
+F contiene AN/N/Data/D/A e un vuoto in4.5. Sono già documentati nelle fonti
+ratificate: docs/normative/sioc/presence-matrix.md e4.1-fields.json indicano
+4.5 source_type=null→numeric;4.6/4.10 sono alphanumeric nel profilo approvato.
+Non introdurre Alphabetic o nuove interpretazioni da A; eventuali mapping del
+profilo importer devono essere espliciti e mantenere il token originale per audit.
+Le formule Excel sono presenti in POS. INIZ.; una lettura del valore cached non
+equivale a ricalcolo verificato. Specificare e testare la gestione di formule e
+valori assenti/incoerenti prima dell'implementazione; niente esecuzione di macro.
+
+Il foglio Indicazioni operative conferma allineamento numerico/alfanumerico e
+la regola monetaria Decimal già ratificata. Non riclassificare codici di
+compartecipazione o altri campi per nome. Encoding/PK/join/presenza condizionale
+restano contratti approvati: non possono essere inferiti dalle sole colonne.
+
+Disponibilità XLSX risolta; nessun nuovo conflitto normativo sostanziale rilevato
+su layout o note. Implementazione14-01 non avviata mentre14-04 attende il gate.
+Sorgente utente preservata non staged. Alla ripresa chiudere14-04, poi definire
+profilo/mapping esplicito e fixture sintetica fedele a questo layout entro14-01;
+non implementare capacità di flussi futuri o modificare documenti protetti.

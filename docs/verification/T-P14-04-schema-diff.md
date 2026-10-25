@@ -154,3 +154,23 @@ Durante il gate l'autore ha fornito schemas/xlsx/SIOC_tracciato_regionale_202604
 definitivo_v05.xlsx, autorizzando la consultazione per14-01. Gli altri flussi
 restano fuori scope. I nuovi source non vengono inclusi nel commit14-04;
 il blocco precedente non è più assenza del workbook, resta da esaminare il mapping.
+
+### Blocco operativo di pubblicazione
+
+Codice committato7024f5f66a69f87480a030206a01a88e7b6d3c94. Primo push e unico
+retry consentito rifiutati prima di CreateProcess: «The automatic permission
+approval review did not finish before its deadline». Nessun comando Git avviato,
+nessun dispatch CI14-04 o lettura GitHub effettuati per questo gate. Non è un
+fallimento dei test o una revoca dell'autorizzazione dell'autore. Non effettuati
+terzi retry, force push o altri percorsi per aggirare il controllo.
+
+T-P14-04 resta IN_PROGRESS, locale verificata620 test/73 suite. Remoto ancora
+a90a67c9 secondo ultimo push riuscito. Chiusura13-08 in1b2fb33 e codice14-04
+sono locali; l'evidenza CI13-08 su52762c8 resta valida e positiva.
+Alla ripresa pubblicare il commit già pronto sul branch autorizzato e avviare
+gate nativo; non duplicare l'implementazione. Dopo esito positivo86/140=61,4%,
+ma finché manca resta85/140=60,7%. Nessuna dichiarazione M7.
+
+Proseguita soltanto la consultazione indipendente del workbook SIOC ora ricevuto:
+135 layout esatti,8 delta whitespace note, hash e dettagli nel preflight14-01.
+Nessun sourceXLSX/PDF utente incluso, nessuna implementazione importer anticipata.

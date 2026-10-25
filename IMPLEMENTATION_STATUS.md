@@ -3,7 +3,7 @@
 Consuntivo aggiornato al **2026-10-25**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P13-08 verificata; preflight T-P14-01
+## Frontiera corrente — T-P13-08 verificata; T-P14-04 locale verificata, push bloccato
 
 2026-10-25: ripresa autorizzata dall’autore, incluso avanzamento automatico
 quando gate e prerequisiti sono chiari. Superato lo stop specifico dopo13-08.
@@ -26,8 +26,11 @@ memoria con contesto7040904 byte invariato per width32→4096 a4096 righe/trace.
 
 L’autore ha fornito il workbook regionale SIOC per T-P14-01: blocco disponibilità
 superato, formato/mapping da esaminare; altri flussi esclusi. [Preflight](docs/verification/T-P14-01-preflight.md).
-T-P14-04 IN_PROGRESS,620 test/73 suite e gate locali passati, CI nativa pendente.
-Prerequisito T-P14-03 già DONE.
+T-P14-04 IN_PROGRESS,620 test/73 suite e gate locali passati. Codice7024f5f
+committato; push e unico retry respinti prima di CreateProcess per timeout della
+revisione automatica dei permessi. Nessuna CI14-04 avviata, nessun esito presunto.
+Prerequisito T-P14-03 già DONE. Consultato workbook SIOC:135 campi/layout
+identici,8 note con soli delta whitespace; nessuna baseline modificata.
 Preservata la modifica esterna della newline nella proposta reference.
 
 ## Registro storico — T-P13-08 locale e timeout remoto
@@ -1628,7 +1631,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P7-02 | DONE | 2026-10-21 | Token condiviso e progress, 254 locali; CI 39569282614 Linux/Windows verde bacedba; [report](docs/verification/T-P7-02.md) |
 | T-P7-03 | DONE | 2026-10-21 | Loop streaming, audit/cancellazione, 263 locali; CI 39571479598 Linux/Windows verde 5d2f371; [report](docs/verification/T-P7-03.md) |
 | T-P14-01 | NOT_STARTED | 2026-10-25 | Workbook SIOC fornito dall’autore dopo preflight; disponibilità risolta, esame mapping da svolgere; [preflight](docs/verification/T-P14-01-preflight.md) |
-| T-P14-04 | IN_PROGRESS | 2026-10-25 | Diff versioni, prerequisito14-03 verificato; [preflight](docs/verification/T-P14-04-preflight.md) |
+| T-P14-04 | IN_PROGRESS | 2026-10-25 | Diff implementato7024f5f,620 test/73 suite e gate locali passati; push respinto due volte prima di CreateProcess per timeout review, CI non avviata; [report](docs/verification/T-P14-04-schema-diff.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
@@ -3886,3 +3889,24 @@ modifiche al profilo normativo/golden reale. Nessun task successivo/M6 prima del
   per14-01; consultarlo dopo la consegna locale, senza anticipare altri flussi.
 - GIT: modifica esterna proposta reference e nuova cartella schemas/xlsx preservate,
   escluse dal commit della task. NEXT: verifica CI14-04, poi ripresa14-01.
+
+
+## HANDOFF §15.3 — T-P14-04 pubblicazione bloccata / XLSX SIOC ricevuto
+
+- STATUS: T-P13-08 DONE/native verificata;14-04 IN_PROGRESS locale verificata.
+ 85/140 DONE60,7%, M6 nello scope ratificato, M7 non raggiunta.
+- CODICE:7024f5f66a69f87480a030206a01a88e7b6d3c94 contiene diff schema reale,
+ 9 nuovi test e dossier. Gate locali620/73 suite fmt/check/clippy/release/GNU/diff
+ positivi; nessun nuovo crate.90 baseline e33 hash nuovi13-08 invariati.
+- BLOCCO: push e unico retry consentito respinti dal controllo automatico per
+ scadenza della revisione dei permessi prima di CreateProcess. Nessun processo
+ Git eseguito, nessun dispatch14-04, nessun terzo retry/aggiramento. Autorizzazione
+ utente al push già presente; ostacolo operativo dell'ambiente, non contrattuale.
+- FILE UTENTE: proposta reference newline e intera schemas/xlsx preservate non
+ staged. Consultato solo SIOC XLSX autorizzato, SHA6be8ae60a2c236e5a25b731365b42f8
+e7bca849066d68747abfc78b92ce273e3;135 campi in5trace con layout identico e8 note
+ whitespace-equivalenti. Nessun nuovo obbligo dedotto, altri flussi non toccati.
+- NEXT: sbloccare esecuzione push nell'ambiente, pubblicare i commit pronti,
+ avviare CI14-04 e leggere esiti Linux/MSVC entro limite tre chiamate≥45s. Dopo
+ successo chiudere14-04 e riprendere14-01 dal workbook reale già esaminato.
+ Non duplicare codice, non far passare il gate GNU per Windows nativa.

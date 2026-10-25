@@ -41,7 +41,7 @@ verificati. Nessuna modifica al runtime Rust di produzione in questa task.
 
 ## Cosa resta da consegnare
 
-- 54 task non iniziate: tooling schema restante (4), packaging/release (7), UI
+- 53 task non iniziate: tooling schema restante (3), packaging/release (7), UI
   Slint (9), hardening/benchmark (6), documentazione operativa (4), persistenza
   core (12), integrazione CAD (12).
 - T-P2-03 resta parziale con residuo approvato relativo ai payload applicativi.
@@ -78,3 +78,17 @@ CI40192491629: job Linux121166275121 e MSVC121166274875 completed/success.
 I timeout descritti sopra restano storici; esito ottenuto alla ripresa senza
 nuovo dispatch. T-P13-08 DONE, M6 REACHED nello scope ratificato.
 Next T-P14-01 preflight, avanzamento automatico con gate/prerequisiti verificati.
+
+## Stato della prosecuzione14-04 e ricezione sorgente XLSX
+
+T-P14-04 implementata nel commit7024f5f: API diff revisioni con hash e puntatori
+per lato, campi aggiunti/rimossi/modificati e ordine,9 nuovi test. Gate locale
+620/73 suite positivo; CI nativa non avviata perché push e unico retry sono
+stati respinti prima dell’esecuzione per timeout della revisione automatica
+dei permessi. Non conteggiata come DONE: progresso resta85/14060,7%.
+
+L'autore ha fornito il workbook SIOC:135 campi, coordinate tutte coincidenti
+col profilo approvato,8 note differenti solo per whitespace. Esame e hash nel
+[preflight14-01](T-P14-01-preflight.md); nessuna implementazione aggiuntiva
+per altri flussi. File utente preservati. Serve sbloccare il push nell’ambiente
+per completare il gate14-04 e continuare14-01 senza duplicare codice.
