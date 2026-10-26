@@ -28,3 +28,5 @@ pub(crate) mod derived;
 pub(crate) mod importer;
 
 pub(crate) mod authoring;
+#[cfg(feature = "embedded-bundle")]
+pub(crate) mod embedded;

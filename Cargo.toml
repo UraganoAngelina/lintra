@@ -5,6 +5,10 @@ edition = "2024"
 description = "Configurable, versioned validation engine for fixed-width healthcare flows"
 publish = false
 
+[features]
+default = []
+embedded-bundle = []
+
 [lib]
 path = "src/lib.rs"
 

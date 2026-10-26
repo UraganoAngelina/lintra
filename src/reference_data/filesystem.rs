@@ -94,26 +94,7 @@ impl FileSystemReferenceDataProvider {
         if root.as_os_str().is_empty() {
             return Err(FilesystemReferenceError::EmptyRoot);
         }
-        let mut indices = HashMap::new();
-        for (index, dependency) in dependencies.iter().enumerate() {
-            let issue = if validate_key(&dependency.key).is_err() {
-                Some(ReferenceBindingIssue::InvalidIdentity)
-            } else if !dependency.metadata_attributes.is_empty() {
-                Some(ReferenceBindingIssue::UnsupportedMetadata)
-            } else if !portable_relative(&dependency.bundle_path) {
-                Some(ReferenceBindingIssue::UnsafeRelativePath)
-            } else if indices.insert(dependency.key.clone(), index).is_some() {
-                Some(ReferenceBindingIssue::DuplicateIdentity)
-            } else {
-                None
-            };
-            if let Some(issue) = issue {
-                return Err(FilesystemReferenceError::InvalidBinding {
-                    key: dependency.key.clone(),
-                    issue,
-                });
-            }
-        }
+        let indices = validate_bindings(&dependencies)?;
         let root = if root.is_absolute() {
             root
         } else {
@@ -150,23 +131,58 @@ impl FileSystemReferenceDataProvider {
         let root = fs::canonicalize(&self.root).map_err(Arc::new);
         for dependency in dependencies {
             let (evidence, set) = load_one(&root, dependency, policy)?;
-            if policy == DatasetPreparationPolicy::Strict
-                && evidence.availability != DatasetAvailability::Verified
-            {
-                return Err(FilesystemReferenceError::StrictPreparation {
-                    evidence: Box::new(evidence),
-                });
-            }
-            if let Some(set) = set {
-                prepared.sets.insert(dependency.key.clone(), set);
-            }
-            prepared
-                .indices
-                .insert(dependency.key.clone(), prepared.evidence.len());
-            prepared.evidence.push(evidence);
+            append_prepared(&mut prepared, evidence, set)?;
         }
         Ok(prepared)
     }
+}
+
+// Shared configuration/evidence logic for real filesystem and embedded sources.
+pub(super) fn validate_bindings(
+    dependencies: &[ReferenceDependency],
+) -> Result<HashMap<DatasetKey, usize>, FilesystemReferenceError> {
+    let mut indices = HashMap::new();
+    for (index, dependency) in dependencies.iter().enumerate() {
+        let issue = if validate_key(&dependency.key).is_err() {
+            Some(ReferenceBindingIssue::InvalidIdentity)
+        } else if !dependency.metadata_attributes.is_empty() {
+            Some(ReferenceBindingIssue::UnsupportedMetadata)
+        } else if !portable_relative(&dependency.bundle_path) {
+            Some(ReferenceBindingIssue::UnsafeRelativePath)
+        } else if indices.insert(dependency.key.clone(), index).is_some() {
+            Some(ReferenceBindingIssue::DuplicateIdentity)
+        } else {
+            None
+        };
+        if let Some(issue) = issue {
+            return Err(FilesystemReferenceError::InvalidBinding {
+                key: dependency.key.clone(),
+                issue,
+            });
+        }
+    }
+    Ok(indices)
+}
+pub(super) fn append_prepared(
+    prepared: &mut PreparedReferenceEvidence,
+    evidence: DatasetEvidence,
+    set: Option<Arc<dyn LookupSet>>,
+) -> Result<(), FilesystemReferenceError> {
+    if prepared.policy == DatasetPreparationPolicy::Strict
+        && evidence.availability != DatasetAvailability::Verified
+    {
+        return Err(FilesystemReferenceError::StrictPreparation {
+            evidence: Box::new(evidence),
+        });
+    }
+    if let Some(set) = set {
+        prepared.sets.insert(evidence.key.clone(), set);
+    }
+    prepared
+        .indices
+        .insert(evidence.key.clone(), prepared.evidence.len());
+    prepared.evidence.push(evidence);
+    Ok(())
 }
 impl ReferenceDataProvider for FileSystemReferenceDataProvider {
     /// Legacy API is deliberately strict: it cannot express degraded trust.
@@ -197,13 +213,12 @@ impl ReferenceDataProvider for FileSystemReferenceDataProvider {
     }
 }
 
-type Loaded = (DatasetEvidence, Option<Arc<dyn LookupSet>>);
-fn load_one(
-    root: &Result<PathBuf, Arc<io::Error>>,
+pub(super) type Loaded = (DatasetEvidence, Option<Arc<dyn LookupSet>>);
+pub(super) fn initial_evidence(
     dependency: &ReferenceDependency,
     policy: DatasetPreparationPolicy,
-) -> Result<Loaded, FilesystemReferenceError> {
-    let mut evidence = DatasetEvidence {
+) -> DatasetEvidence {
+    DatasetEvidence {
         key: dependency.key.clone(),
         expected_sha256: Sha256Digest(dependency.sha256),
         actual_sha256: None,
@@ -211,7 +226,14 @@ fn load_one(
         availability: DatasetAvailability::Unavailable,
         policy,
         anomalies: vec![],
-    };
+    }
+}
+fn load_one(
+    root: &Result<PathBuf, Arc<io::Error>>,
+    dependency: &ReferenceDependency,
+    policy: DatasetPreparationPolicy,
+) -> Result<Loaded, FilesystemReferenceError> {
+    let mut evidence = initial_evidence(dependency, policy);
     let root = match root {
         Ok(root) => root,
         Err(source) => {
@@ -252,7 +274,14 @@ fn load_one(
             return Ok((evidence, None));
         }
     };
-    let actual: [u8; 32] = Sha256::digest(&bytes).into();
+    decode_bytes(evidence, dependency, &bytes)
+}
+pub(super) fn decode_bytes(
+    mut evidence: DatasetEvidence,
+    dependency: &ReferenceDependency,
+    bytes: &[u8],
+) -> Result<Loaded, FilesystemReferenceError> {
+    let actual: [u8; 32] = Sha256::digest(bytes).into();
     evidence.actual_sha256 = Some(Sha256Digest(actual));
     if actual != dependency.sha256 {
         evidence.anomalies.push(DatasetAnomaly::IntegrityMismatch);
@@ -267,7 +296,7 @@ fn load_one(
             .push(format_issue(MembershipFormatIssue::Bom));
         return Ok((evidence, None));
     }
-    let document = match membership_format::parse(&bytes) {
+    let document = match membership_format::parse(bytes) {
         Ok(document) => document,
         Err(failure) => {
             evidence.anomalies.push(DatasetAnomaly::Format {
@@ -352,7 +381,7 @@ fn checked_path(root: &Path, relative: &str) -> Result<PathBuf, PathFailure> {
     }
     Ok(resolved)
 }
-fn portable_relative(path: &str) -> bool {
+pub(crate) fn portable_relative(path: &str) -> bool {
     path.split('/').all(|part| {
         if part.is_empty()
             || matches!(part, "." | "..")

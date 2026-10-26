@@ -8,4 +8,6 @@ mod membership_format;
 pub(crate) mod normalization;
 pub(crate) mod provider;
 
+#[cfg(feature = "embedded-bundle")]
+pub(crate) mod embedded;
 pub(crate) mod preparer;

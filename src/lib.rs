@@ -75,6 +75,7 @@
 //! ```
 
 mod application;
+mod bundle;
 mod context;
 mod domain;
 mod engine;
@@ -83,6 +84,13 @@ mod persistence;
 mod reference_data;
 mod report;
 mod schema;
+pub use bundle::{BundleError, BundleManifest};
+#[cfg(feature = "embedded-bundle")]
+pub use bundle::{EmbeddedBundle, EmbeddedFile};
+#[cfg(feature = "embedded-bundle")]
+pub use reference_data::embedded::{EmbeddedReferenceDataPreparer, EmbeddedReferenceDataProvider};
+#[cfg(feature = "embedded-bundle")]
+pub use schema::embedded::EmbeddedSchemaRepository;
 mod validators;
 
 // Explicit domain primitives; module internals remain private.

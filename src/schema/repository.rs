@@ -37,6 +37,7 @@ pub enum SchemaKeyError {
 #[derive(Debug)]
 #[non_exhaustive]
 pub enum SchemaLoadError {
+    Bundle(crate::BundleError),
     EmptyRoot,
     InvalidKey {
         component: SchemaKeyComponent,
@@ -65,6 +66,7 @@ pub enum SchemaLoadError {
 impl fmt::Display for SchemaLoadError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::Bundle(error) => write!(f, "schema bundle acquisition failed: {error}"),
             Self::EmptyRoot => f.write_str("an explicit nonempty schema root is required"),
             Self::InvalidKey { component, reason } => {
                 write!(f, "invalid schema selector {component:?}: {reason:?}")
@@ -89,6 +91,7 @@ impl fmt::Display for SchemaLoadError {
 impl Error for SchemaLoadError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
+            Self::Bundle(error) => Some(error),
             Self::Io { source, .. } => Some(source),
             Self::Json { source, .. } => Some(source),
             _ => None,
@@ -113,7 +116,7 @@ fn validate_selection(key: &SchemaKey) -> Result<(), SchemaLoadError> {
 
 // These are path-component checks, not a normative identifier alphabet.
 // Unicode is retained; neither case nor version spelling is normalized.
-fn portable_component(value: &str) -> bool {
+pub(crate) fn portable_component(value: &str) -> bool {
     if matches!(value, "." | "..")
         || value.ends_with(['.', ' '])
         || value.chars().any(|c| {
@@ -266,15 +269,22 @@ pub fn read_raw_schema_file(path: &Path) -> Result<RawFlowSchema, SchemaLoadErro
     parse_raw_schema(&bytes, path)
 }
 
-fn parse_raw_schema(bytes: &[u8], path: &Path) -> Result<RawFlowSchema, SchemaLoadError> {
+pub(crate) fn parse_raw_schema(
+    bytes: &[u8],
+    path: &Path,
+) -> Result<RawFlowSchema, SchemaLoadError> {
     let parse_error = |source| SchemaLoadError::Json {
         path: path.to_owned(),
         source,
     };
-    let mut parser = serde_json::Deserializer::from_slice(bytes);
-    UniqueJson::deserialize(&mut parser).map_err(parse_error)?;
-    parser.end().map_err(parse_error)?;
+    validate_unique_json(bytes).map_err(parse_error)?;
     serde_json::from_slice(bytes).map_err(parse_error)
+}
+
+pub(crate) fn validate_unique_json(bytes: &[u8]) -> Result<(), serde_json::Error> {
+    let mut parser = serde_json::Deserializer::from_slice(bytes);
+    UniqueJson::deserialize(&mut parser)?;
+    parser.end()
 }
 
 // Syntax-only pass to reject duplicates even inside open metadata. It does not

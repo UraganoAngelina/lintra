@@ -1,0 +1,23 @@
+{
+  "task": "T-P15-03",
+  "scope": "partial embedded backends; CLI/resolver/audit untouched pending CNF-BUNDLE-AUDIT-01",
+  "done": false,
+  "native_ci_verified": false,
+  "previous_task_native_ci": {
+    "task": "T-P15-02",
+    "commit": "59b16637e623bc4c3b150ca98a9fa9b276658ec9",
+    "run": "40329791116",
+    "linux": "success",
+    "msvc": "success"
+  },
+  "local": {
+    "format": "pass",
+    "clippy_default_all_targets": "pass",
+    "clippy_all_features_all_targets": "pass",
+    "test_default": { "passed": 671, "failed": 0, "ignored": 2, "suites": 78 },
+    "test_all_features": { "passed": 676, "failed": 0, "ignored": 2, "suites": 78 },
+    "windows_gnu_lib_all_features_check": "pass",
+    "governance_audit": "pass",
+    "git_diff_check": "pass"
+  }
+}

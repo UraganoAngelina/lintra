@@ -76,3 +76,13 @@ via Windows. [Ratifica](verification/CNF-ARTIFACT-LINUX-01-ratification.md).
 Allowlist CLI GNU chiusa: libc.so.6, libm.so.6, ld-linux-x86-64.so.2,
 libgcc_s.so.1; altro SONAME rifiutato. Windows invariato, nessuna scelta implicita
 di baseline Linux o riduzione dei gate. Preflight15-02 sbloccato, sviluppo ripreso.
+
+### CNF-BUNDLE-AUDIT-01 — aperto,2026-10-26
+
+T-P15-03: ARCH§39C.2/DET A.1 richiedono bundle_source/bundle_version, mentre il
+contratto CLI consegnato ammette root esterne senza manifest e anche con parent
+distinti. Nessuna ratifica su versione assente o rottura di quella configurazione.
+CNF-REFERENCE-FORMAT-01 mantiene Strict/Continue e non viene riaperta: il manifest
+non può annullarne le evidenze con un abort globale indiscriminato.
+[A compatibile con null esplicito/B manifest obbligatorio](proposals/CNF-BUNDLE-AUDIT-01.md).
+Stato PROPOSTO, non ratificato; wiring/audit non implementati, backend preservati.

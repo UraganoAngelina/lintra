@@ -4,6 +4,8 @@ tests/golden/** -text
 # Fixed-width fixture padding/CRLF are data, not source-style whitespace errors.
 tests/golden/synthetic/**/input.txt -whitespace
 docs/schema-authoring/examples/** -text
+# Embedded synthetic assets and manifest hashes must survive checkout unchanged.
+bundles/embedded/** -text
 # Preserve approved SIOC provenance and new derived artifacts byte-for-byte.
 schemas/sioc/2026-04-20.structural-minimal.1/flow_schema.json -text
 schemas/sioc/2026-04-20.structural-minimal.1/scope-ledger.json -text

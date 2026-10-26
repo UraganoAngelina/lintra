@@ -1,0 +1,8 @@
+{
+  "bundle_version": "synthetic-embedded-v1",
+  "schema_format_version": 1,
+  "files": {
+    "reference-data/example-codes.json": "d42577f285ce8926363ae9bf8b23ef3796512407553d9216e9bc9ee969607a5f",
+    "schemas/SYNTHETIC/v1/flow.json": "bffd9fceae426addd5b36c782d3fb25de1c9463240b861d8917ce5d51f2db8c3"
+  }
+}

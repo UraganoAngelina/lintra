@@ -71,6 +71,18 @@ L'opzione build --verify-artifact verifica anche il fallimento del comando reale
 su una copia alterata con path host, senza modificare l'originale. Non certifica
 la risoluzione delle librerie su ogni macchina destinataria o caricamenti via plugin.
 
+I backend snapshot di T-P15-03 sono disponibili nella libreria con la feature
+esplicita embedded-bundle; i payload di esempio sono dichiaratamente sintetici:
+
+```sh
+cargo test --locked --features embedded-bundle --test embedded_backends
+```
+
+Il wiring CLI, il fallback e l'audit dello snapshot restano in sviluppo, sospesi
+sul [contratto manifest/audit esterno](docs/proposals/CNF-BUNDLE-AUDIT-01.md).
+La feature non è predefinita né attiva nella ricetta release corrente. Stato e
+residui nel [dossier T-P15-03](docs/verification/T-P15-03-embedded-bundle.md).
+
 ## Struttura
 
 - `src/lib.rs`: moduli privati `application`, `domain`, `schema`, `input`,
