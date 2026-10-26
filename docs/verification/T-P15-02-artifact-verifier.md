@@ -101,9 +101,26 @@ loader e ne verifica separatamente il rifiuto, senza indebolire il checker.
 Tree tooling Linux/MSVC e licenze transitive verificati nel registro DEC-15.
 Audit governance PASS e git diff --check PASS. CI nativa da avviare, nessun DONE.
 
-## Handoff provvisorio
+Commit59b16637e623bc4c3b150ca98a9fa9b276658ec9 pubblicato; dispatch204.
+CI [40329791116](https://github.com/UraganoAngelina/lintra/actions/runs/40329791116)
+sullo SHA atteso, prima lettura in_progress. Nessun esito nativo presunto.
 
-Task IN_PROGRESS; implementazione disponibile, ratifica applicata. Restano
-evidenze finali e CI Linux/MSVC sul commit pubblicato. Nessun blocker contrattuale
-residuo. Prossima candidata15-03; da verificare prima di iniziarla, senza aggirare
-prerequisiti o assumere dati ufficiali. Prosecuzione AUTO_CONTINUE dopo i gate.
+## Esito finale e handoff
+
+13:29:08 UTC, lettura diretta Jobs: CI40329791116 sullo SHA59b16637e623bc4c3b150ca98a9fa9b276658ec9,
+Linux121595856525 e MSVC121595855833 entrambi completed/success, tutti gli step
+positivi. Quattro letture, ultima necessaria dopo terza Linux success/MSVC in
+corso; intervalli fra letture superiori a60s, già autorizzata dalla governance.
+Non è stata necessaria alcuna correzione dopo il commit o pipeline duplicata.
+Le due build release pulite sono byte-identiche su ciascun runner, il verifier
+accetta l'artefatto reale e il comando fallisce sulla copia volutamente errata.
+
+T-P15-02 DONE.91/140=65,0%,1 parziale,48 non iniziate alla chiusura; M5 aperta.
+Implementazione/ratifica59b1663 pubblicata; chiusura documentale successiva sullo
+stesso codice verificato. File: xtask main/artifact/manifest/lock, workflow CI,
+README, registro dipendenze/matrice, ratifica/proposta/preflight/report/status.
+Residui della task: nessuno; delay imports dichiaratamente rifiutati, nessuna
+certificazione dei caricamenti arbitrari futuri o delle DLL sul PC destinatario.
+Prossima READY15-03, prerequisiti15-01 (CI40307076976) e8-01 (CI39628560176)
+verificati; schema sintetico esistente ammesso dal prompt. Nessun dato ufficiale
+inventato. Preflight successivo avviato, AUTO_CONTINUE senza consenso ordinario.
