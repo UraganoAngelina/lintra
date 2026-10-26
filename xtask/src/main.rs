@@ -166,17 +166,33 @@ fn run(options: Options) -> Result<(), Failure> {
         add_remap(&mut flags, source, replacement)?;
     }
     if options.target.ends_with("msvc") {
-        flags.extend(["-C".into(), "target-feature=+crt-static".into()]);
+        // link.exe otherwise embeds the wall-clock time in the PE header.
+        // /Brepro requests a content-derived value; byte comparison stays strict.
+        flags.extend([
+            "-C".into(),
+            "target-feature=+crt-static".into(),
+            "-C".into(),
+            "link-arg=/Brepro".into(),
+        ]);
     }
     let artifact = build(repo, &first, &options, &flags)?;
     if options.reproducible {
         fs::create_dir(&second)?;
         let repeated = build(repo, &second, &options, &flags)?;
-        if fs::read(&artifact)? != fs::read(&repeated)? {
-            return Err(io::Error::other(
-                "clean release builds differ; reproducibility gate failed",
-            )
-            .into());
+        let first_bytes = fs::read(&artifact)?;
+        let second_bytes = fs::read(&repeated)?;
+        if first_bytes != second_bytes {
+            // Diagnostic offsets/sizes only, never discard differing bytes or
+            // normalize headers to make an unsuccessful comparison pass.
+            let offset = first_bytes
+                .iter()
+                .zip(&second_bytes)
+                .position(|(left, right)| left != right)
+                .unwrap_or_else(|| first_bytes.len().min(second_bytes.len()));
+            return Err(io::Error::other(format!(
+                "clean release builds differ; reproducibility gate failed: lengths {}/{}, first difference at {offset:#x}",
+                first_bytes.len(), second_bytes.len()
+            )).into());
         }
         println!("reproducible=true target={}", options.target);
     }

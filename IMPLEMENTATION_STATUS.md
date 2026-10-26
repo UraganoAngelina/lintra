@@ -13,7 +13,11 @@ Rust xtask portabile implementati; nessuna regola runtime o norma modificata.
 Tooling separato std-only, nessun nuovo crate esterno o workspace del prodotto.
 Clippy tooling positivo; due build release Linux pulite byte-identiche
 (2m36s e2m41s). Gate locali fmt/check/clippy/test/GNU positivi:671 test/77suite,
-0fail,2ignored; tooling2/2. Resta CI Linux/MSVC: nessun DONE/M5 anticipato.
+0fail,2ignored; tooling2/2. Commit272be20 pubblicato. CI40305761076 avviata,
+terza lettura alle10:19:50 UTC: Linux success, MSVC failure sul confronto byte
+delle release; compilazioni/test entrambi positivi, confermati dal log acquisito.
+Ricetta MSVC corretta con /Brepro e diagnostica offset; nuova CI da avviare.
+Nessun DONE/M5 anticipato.
 [Report tecnico e handoff](docs/verification/T-P15-01-release-profile.md).
 Avanzamento89/140=63,6% invariato. Prosecuzione automatica dopo gate effettivi.
 
@@ -1742,6 +1746,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P14-02 | DONE | 2026-10-26 | Normalizzazione/lint avanzato,642 test/75 suite; CI40290169690 Linux/MSVC success, checkpoint STOP; [report](docs/verification/T-P14-02-authoring-lint.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P14-05 | DONE | 2026-10-26 | DEC-18,671 test/77 suite, CI40298536590 Linux/MSVC success su8a9ffd8; M7 raggiunta, STOP; [report](docs/verification/T-P14-05-schema-tooling.md) |
+| T-P15-01 | IN_PROGRESS | 2026-10-26 | Commit272be20 pubblicato; CI40305761076 Linux success/MSVC confronto byte failure; fix /Brepro, nuovo gate necessario; [report](docs/verification/T-P15-01-release-profile.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |

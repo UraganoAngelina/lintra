@@ -82,7 +82,36 @@ Ambiente locale CARGO_HOME=/tmp/lintra-cargo-home, profili dev/test debug=0,
 CARGO_INCREMENTAL=0, target di regressione riusato verification-p14-05; log
 separati in target/verification-p15-01. La ricetta release usa directory proprie
 nuove, non la cache di regressione. Nessun cambio al lock del prodotto.
-CI nativa ancora pendente. Nessun DONE/M5 anticipato.
+Commit implementativo272be20c725aff7c136520acd06b0f1d8a7b9693 pubblicato.
+CI [40305761076](https://github.com/UraganoAngelina/lintra/actions/runs/40305761076)
+avviata con dispatch204; prima lettura in_progress, nessun esito nativo ancora
+dichiarato. Il primo tentativo API non inviato per DNS; un controllo DNS e un
+dispatch hanno richiesto ciascuno un retry per timeout della revisione automatica
+dei permessi. Diagnosi e retry già autorizzati dalla governance. DNS-over-HTTPS
+ha risolto API140.82.121.6; hostname/SNI e verifica TLS preservati, nessuna modifica
+permanente alla rete o credenziale registrata. Nessuna pipeline duplicata.
+Nessun DONE/M5 anticipato.
+
+Seconda lettura CI alle10:17:27 UTC: Linux121514350663 e MSVC121514351175
+entrambi in_progress nello step Build reproducible release. Tutti gli step
+precedenti (fmt/Clippy/test prodotto e tooling) success su entrambi. Intervallo
+tra letture superiore a60s; nessun esito finale presunto.
+
+Terza lettura alle10:19:50 UTC: Linux completed/success; MSVC completed/failure
+nel solo step release riproducibile. Log diagnostico acquisito dopo due timeout
+di download con retry autorizzati: entrambe le build MSVC terminano, il confronto
+dei byte fallisce. Log locale ignorato msvc-failure.log. Nessun fallimento dei
+test prodotto/tooling. Non si trasforma il successo Linux in chiusura del gate.
+
+Correzione ordinaria: aggiunto -C link-arg=/Brepro alla sola ricetta release
+MSVC. Il flag richiede al linker un timestamp derivato dal contenuto anziché
+dall'orologio, secondo la [documentazione del progetto LLVM](https://blog.llvm.org/2019/11/deterministic-builds-with-clang-and-lld.html).
+L'assenza del flag era una causa plausibile, non dimostrabile dal solo log:
+il successivo confronto integrale nativo deve verificare l'ipotesi. Aggiunta
+diagnostica con lunghezze e primo offset diverso: per file di lunghezza diversa
+ma prefisso uguale l'offset è la lunghezza minima. Non si modificano i binari,
+non si ignorano header/byte e non si indebolisce il confronto.
+Nuova CI richiesta; test/clippy tooling ripetuti dopo la correzione.
 
 ## Handoff provvisorio
 
