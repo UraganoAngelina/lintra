@@ -204,3 +204,45 @@ da eseguire sul codice pubblicato: T-P14-05 IN_PROGRESS, M7 non dichiarata.
   ufficiali mancanti/metadata-tempo, Full SIOC non supportato e task fuori scope.
 - Next: verificare nativi, poi STOP. Eventuale prossima task richiede nuova
   autorizzazione, anche se il piano ne indica già una candidata.
+
+### Pubblicazione e avvio gate nativo
+
+Commit174272c6db7bd5e4ac55afa4f6ea8bb8ef289cd1 pubblicato su
+UraganoAngelina/lintra, branch work/p1-foundations. Dispatch ci.yml accettato
+2026-10-26 circa09:00:32 UTC, prima chiamata Actions del gate. Accesso GitHub
+verificato mediante autenticazione reale; nessun token registrato nei log.
+Run/job/esiti ancora da leggere; nessun DONE/M7 sulla sola pubblicazione.
+
+Seconda chiamata Actions alle09:02:39 UTC: run
+[40296287288](https://github.com/UraganoAngelina/lintra/actions/runs/40296287288)
+con head_sha esatto174272c, in_progress/conclusion null. Ultima chiamata
+riservata alla lettura dei job dopo attesa; nessun risultato nativo presunto.
+
+### Primo gate nativo fallito, non chiuso
+
+Terza chiamata circa09:12:59 UTC: Linux121483043969 completed/success,
+MSVC121483043646 completed/failure nello step Test; fmt e Clippy success,
+release skipped. JSON completo job/step conservato in
+target/verification-p14-05/T-P14-05-native-jobs.json. T-P14-05 IN_PROGRESS,
+M7 non raggiunta. Esaurite le tre chiamate, chiesta eccezione all'autore per
+recuperare il log diagnostico senza violare il limite registrato in AGENTS.
+
+Riesame indipendente: il test di ordine del primo candidato confrontava il path
+canonical del catalogo con quello originale tempfile. Su Windows canonicalize
+usa sintassi extended-length, secondo la
+[documentazione std 1.99.1](https://doc.rust-lang.org/std/fs/fn.canonicalize.html).
+L'atteso usa ora fs::canonicalize del preciso candidato A: continua a provare
+A prima di B e nessuna omissione, senza cambiare il catalogo o il suo contratto.
+Il log resta necessario per confermare che questo sia il fallimento nativo
+osservato e individuare eventuali ulteriori cause. Nessun esito MSVC presunto.
+
+### Correzione portabilità della fixture
+
+Modificato soltanto tests/schema_catalog.rs; nessuna variazione del codice
+produttivo, delle fixture normative o dell'ordinamento atteso A/B. Prova mirata
+11/11 pass, poi fmt/clippy-all-targets -D warnings/cargo test tutti exit0,
+671 test/77 suite/0 fail/2ignored. Log T-P14-05-portability-{nome}.log.
+Release/GNU già qualificati sullo stesso codice produttivo invariato.
+Nuova consegna reale della correzione autorizzata nel workflow: pubblicare e
+avviare un nuovo gate, con budget proprio di tre chiamate distanziate≥60s.
+Nessuna quarta richiesta al vecchio gate; l'eccezione per il log resta pendente.

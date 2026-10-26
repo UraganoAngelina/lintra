@@ -116,7 +116,12 @@ fn relevant_invalid_candidates_fail_in_sorted_order_without_omission() {
         .unwrap()
         .list_schemas()
     {
-        Err(SchemaCatalogError::Load(SchemaLoadError::Json { path, .. })) => assert_eq!(path, a),
+        // Catalog diagnostics use its canonical root. Windows canonicalize adds
+        // the extended-length prefix; compare the same physical candidate in
+        // that representation while still requiring A to fail before B.
+        Err(SchemaCatalogError::Load(SchemaLoadError::Json { path, .. })) => {
+            assert_eq!(path, fs::canonicalize(a).unwrap());
+        }
         other => panic!("unexpected {other:?}"),
     }
 }

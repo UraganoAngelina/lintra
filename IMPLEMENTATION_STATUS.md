@@ -12,7 +12,15 @@ Registry implementati;671 test/77 suite/0 fail/2ignored e gate locali positivi:
 fmt/check-all-targets/clippy -D warnings/test con doctest/release/Windows GNU.
 Qualificazione CLI workbook SIOC originale positiva:135 field/130 cached formulas,
 note/provenienza preservate; completo continua a fallire compilazione come richiesto.
-CI Linux/MSVC da avviare dopo pubblicazione: nessun DONE/M7 anticipato.
+Commit174272c6db7bd5e4ac55afa4f6ea8bb8ef289cd1 pubblicato; dispatch CI Linux/MSVC
+accettato circa09:00:32 UTC. Seconda chiamata alle09:02:39 UTC:
+[run40296287288](https://github.com/UraganoAngelina/lintra/actions/runs/40296287288)
+in_progress sullo SHA esatto. Terza chiamata circa09:12:59 UTC: Linux121483043969
+completed/success; MSVC121483043646 completed/failure nello step Test, release
+skipped. Fmt/Clippy nativi positivi anche su MSVC. Nessun DONE/M7.
+Budget tre chiamate esaurito; richiesta eccezione per log diagnostico. Riesame
+test: confronto path del candidato ora usa rappresentazione canonical anche
+nell'atteso, come richiesto su Windows; causa completa da confermare col log.
 [Report tecnico/handoff](docs/verification/T-P14-05-schema-tooling.md).
 STOP dopo14-05/gate/handoff, nessuna task successiva autorizzata.
 
@@ -1583,8 +1591,8 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 |---|---|---|
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
-| QG-1 — controlli locali | PASS per T-P14-02 | fmt/check/clippy/test/release/GNU,642 test in75 suite; qualificazione SIOC originale positiva |
-| QG-2 — CI Linux/Windows | PASS T-P14-02 | CI40290169690 su e68881c, Linux GNU e Windows MSVC completed/success letti direttamente |
+| QG-1 — controlli locali | PASS T-P14-05 | fmt/check/clippy/test/release/GNU,671 test in77 suite; dopo correzione atteso canonical ripetuti fmt/clippy/test, tutti positivi |
+| QG-2 — CI Linux/Windows | FAIL primo gate T-P14-05 | CI40296287288 su174272c: Linux success, MSVC failure/Test; correzione portabilità del test in verifica. Precedente14-02 resta qualificata dalla sua CI |
 | QG-3 — architettura | PASS nello scope LocalOnly/Full ratificato | Compiled non forgiabili, DSL/projection/Context Store generici; nessuna norma hardcoded, nessuna dipendenza engine→application |
 | QG-4 — golden | PASS T-P13-08 | Scenari precedenti invariati più3 normativi SIOC referenziali nel percorso produttivo; oracolo indipendente, CI40192491629 Linux/MSVC success |
 | QG-8 — documenti | PASS con revisione autorizzata T-P6-03 | DET §44 e prompt kit aggiornati per mandato esplicito; hash prima/dopo registrati; ARCH/Piano invariati; nessun residuo fisico formato 1 |
