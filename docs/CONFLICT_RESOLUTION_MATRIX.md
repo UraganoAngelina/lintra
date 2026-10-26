@@ -91,3 +91,9 @@ Stato PROPOSTO, non ratificato; wiring/audit non implementati, backend preservat
 
 Approvazione esplicita dell’autore: [contratto ratificato](verification/CNF-BUNDLE-AUDIT-01-ratification.md).
 Ripresa T-P15-03; audit additivo, manifest esterno opzionale, policy reference invariate.
+
+### DEC-08/09/11 — preflight release15-05, ancora aperte
+
+Non sono nuovi conflitti runtime: prerequisiti umani espliciti del piano.
+Proposta concreta [DEC-RELEASE-SETUP-01](proposals/DEC-RELEASE-SETUP-01.md),
+nessuna ratifica presunta.15-04 prosegue indipendentemente con il proprio gate.

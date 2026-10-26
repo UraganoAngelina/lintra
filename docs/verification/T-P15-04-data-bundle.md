@@ -81,3 +81,44 @@ fra due destinazioni differenti. Nessun artefatto locale pubblicato come release
 Stato DONE_UNVERIFIED, CI Linux/MSVC ancora da avviare sulla consegna completa.
 T-P15-05 resta soggetta al proprio preflight DEC-08/09/11; nessun prerequisito o
 milestone M5 dichiarato soddisfatto.92/140 task DONE,15-04 ancora aperta.
+
+Commitf7426a5ef737fb392e79eb3a80fda8ebf53a7b11 pubblicato, dispatch204.
+CI40343261368 prima lettura14:51:12 UTC sullo SHA atteso, in_progress.
+Seconda14:54:34 UTC: Linux121643329347 fmt/Clippy/test default/all-features e
+tooling/estratto positivi, ultimo step release in corso. MSVC121643329604 test
+all-features in corso, tooling/estratto ancora pending; nessun DONE presunto.
+
+Preflight indipendente15-05: DEC-08/09/11 richiedono decisione umana già prevista
+dal piano. Proposta concreta DEC-RELEASE-SETUP-01 predisposta; domanda asincrona
+all’autore mentre15-04 prosegue. Nessuna creazione repository o credenziale,
+nessun workflow15-05 e nessun gate15-04 aggirato.
+
+## Esito finale e handoff —2026-10-26 15:02:28 UTC
+
+T-P15-04 **DONE**. [CI40343261368](https://github.com/UraganoAngelina/lintra/actions/runs/40343261368)
+sullo SHA f7426a5ef737fb392e79eb3a80fda8ebf53a7b11: Linux121643329347 e
+MSVC121643329604 completed/success, tutti15step di ciascun job success. Tre
+letture totali, nessun retry o pipeline duplicata. Provati su entrambi gli OS
+packager/archivio estratto con binario esistente e audit versione esterna nuova,
+regressioni default/all-features, lint e build release a due alberi puliti
+byte-identiche, verifier reale e negative probe. Nessun gate dedotto dalla sola
+verifica locale o dalla presenza del manifest.
+
+File modificati: xtask bundle_data/main/manifest/lock, CI, registro dipendenze,
+README, status/evidenze/handoff. Runtime e Cargo.lock del prodotto invariati.
+Decisioni applicate: contratto manifest esistente e CNF-BUNDLE-AUDIT-01 A;
+nessuna nuova norma o revisione di baseline. Packaging verificato, non release
+pubblicata: pubblicazione immutabile e repository esterni appartengono15-05/06.
+Residui della task: nessuno. Dati della prova solo sintetici dichiarati.
+
+Branch work/p1-foundations, commit implementazione f7426a5 pubblicato;
+chiusura documentale successiva sul codice verificato.93/140 DONE=66,4%,
+T-P2-03 ancora parziale, T-P15-05 BLOCKED al preflight,45 NOT_STARTED.
+M5 resta aperta: richiede workflow release/cross-OS successivi.
+
+Prossima candidata15-05, prerequisito tecnico15-02 verificato; DEC-08/09/11
+ancora da ratificare/configurare. [Proposta reviewabile](../proposals/DEC-RELEASE-SETUP-01.md)
+e domanda asincrona già inviate all’autore. Prosecuzione BLOCKED per questo
+gate umano esplicito, non per uno stop generico di sessione. Nessun repository,
+credenziale o workflow release modificato. Ripresa automatica dopo risoluzione
+dei prerequisiti effettivi, senza richiedere conferme ordinarie di commit/push/CI.

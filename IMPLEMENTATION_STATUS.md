@@ -3,17 +3,20 @@
 Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P15-03 DONE; avvio automatico T-P15-04
+## Frontiera corrente — T-P15-04 DONE; T-P15-05 BLOCKED al gate umano
 
-CI40339655671 sullo SHAc5384938aae0935d3478a89b0845eba41436a5fc: lettura finale
-2026-10-26 14:38:47 UTC, Linux121630565367/MSVC121630564873 completed/success,
-tutti gli step positivi, incluse due release pulite riproducibili e artifact gate.
-CNF-BUNDLE-AUDIT-01 A ratificata e applicata; audit additivo, manifest opzionale
-esterno, Strict/Continue invariati. [Dossier15-03](docs/verification/T-P15-03-embedded-bundle.md).
-92/140 DONE=65,7%,2 IN_PROGRESS (2-03 parziale e15-04),46 NOT_STARTED; M5 aperta.
-T-P15-04 implementata: ZIP runtime deterministico, manifest/checksum/no-clobber,
-681/689 test prodotto e15 tooling locali positivi. DONE_UNVERIFIED, CI da avviare;
-[handoff15-04](docs/verification/T-P15-04-data-bundle.md). WAITING_GATE; nessun gate saltato.
+T-P15-03 DONE: CI40339655671 su c538493, Linux/MSVC success.
+T-P15-04 DONE: CI40343261368 su f7426a5ef737fb392e79eb3a80fda8ebf53a7b11,
+lettura finale2026-10-26 15:02:28 UTC: Linux121643329347/MSVC121643329604
+completed/success, tutti15step positivi per job. Bundle estratto accettato dal
+binario esistente, release riproducibili e artifact gate reali su entrambi gli OS.
+[Dossier15-04](docs/verification/T-P15-04-data-bundle.md).
+
+**93/140 DONE=66,4%**,1 IN_PROGRESS (2-03 parziale),1 BLOCKED (15-05),45 NOT_STARTED.
+M5 aperta. Prosecuzione BLOCKED sui prerequisiti umani DEC-08/09/11 di15-05,
+non su Git/CI o stop ordinario: [proposta DEC-RELEASE-SETUP-01](docs/proposals/DEC-RELEASE-SETUP-01.md)
+sottoposta all’autore. Nessun repo/credenziale/workflow release creato; decisioni
+non presunte. Ripresa automatica dopo risoluzione dei prerequisiti reali.
 
 ## Registro storico — blocco contrattuale prima della ratifica
 
@@ -1835,7 +1838,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-01 | DONE | 2026-10-26 | Profilo/remap/CRT/riproducibilità: CI40307076976 Linux/MSVC success su7c919fb;671 test prodotto+2 tooling locali; [report](docs/verification/T-P15-01-release-profile.md) |
 | T-P15-02 | DONE | 2026-10-26 | CNF-ARTIFACT-LINUX-01 A ratificata;671 prodotto/9 tooling locali; CI40329791116 Linux/MSVC success su59b1663, verifier e negative probe reali; [report](docs/verification/T-P15-02-artifact-verifier.md) |
 | T-P15-03 | DONE | 2026-10-26 | Snapshot/wiring/audit ratificati; locale681/689 e CI40339655671 Linux/MSVC success su c538493; [dossier](docs/verification/T-P15-03-embedded-bundle.md) |
-| T-P15-04 | DONE_UNVERIFIED | 2026-10-26 | ZIP runtime/manifest/checksum, locale681/689 prodotto+15 tooling, binario esistente accetta estratto; CI pendente; [dossier](docs/verification/T-P15-04-data-bundle.md) |
+| T-P15-04 | DONE | 2026-10-26 | ZIP runtime/manifest/checksum/no-clobber; locale681/689 prodotto+15 tooling; CI40343261368 Linux/MSVC success su f7426a5, estratto accettato da binario esistente; [dossier](docs/verification/T-P15-04-data-bundle.md) |
+| T-P15-05 | BLOCKED | 2026-10-26 | Preflight: DEC-08/09/11 aperte; proposta DEC-RELEASE-SETUP-01 sottoposta, nessun workflow o destinazione inventati |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |

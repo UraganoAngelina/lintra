@@ -1,7 +1,7 @@
 {
   "task": "T-P15-04",
-  "done": false,
-  "native_ci_verified": false,
+  "done": true,
+  "native_ci_verified": true,
   "local_commands": [
     {
       "name": "fmt",
@@ -130,5 +130,25 @@
   "real_cli_zip_sha256": "773026a67f84cc8e4c6499794eac4241caf90ae77f84ef5b5e2603a5032baa3b",
   "cli_existing_target_exit": 1,
   "lock_versions_already_qualified": true,
-  "product_lock_unchanged": true
+  "product_lock_unchanged": true,
+  "native_ci": {
+    "run": 40343261368,
+    "commit": "f7426a5ef737fb392e79eb3a80fda8ebf53a7b11",
+    "first_read_utc": "2026-10-26T14:51:12Z",
+    "second_read_utc": "2026-10-26T14:54:34Z",
+    "linux_job": 121643329347,
+    "msvc_job": 121643329604,
+    "status": "completed",
+    "verified": true,
+    "linux_tooling_and_extracted_bundle": "success",
+    "msvc_tooling_and_extracted_bundle": "success",
+    "final_read_utc": "2026-10-26T15:02:28Z",
+    "reads": 3,
+    "linux_conclusion": "success",
+    "msvc_conclusion": "success",
+    "all_steps_success": true,
+    "whole_byte_reproducibility": true,
+    "artifact_verifier": true,
+    "negative_command_probe": true
+  }
 }
