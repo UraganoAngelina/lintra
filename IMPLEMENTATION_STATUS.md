@@ -3,7 +3,21 @@
 Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — governance GOV-2026-10-26-01 applicata; avanzamento automatico
+## Frontiera corrente — T-P15-01 IN_PROGRESS; governance permanente applicata
+
+26 ottobre2026: migrazione GOV-2026-10-26-01 verificata e committata cbcb750;
+push completato dopo retry motivato per errore DNS. T-P15-01
+avviata dopo preflight: T-P8-06 DONE/CI39747270986 e specifiche ARCH§39B.1/3,
+39C.1/4 consultate. Profilo lto thin/codegen1/strip, CRT statico MSVC e ricetta
+Rust xtask portabile implementati; nessuna regola runtime o norma modificata.
+Tooling separato std-only, nessun nuovo crate esterno o workspace del prodotto.
+Clippy tooling positivo; due build release Linux pulite byte-identiche
+(2m36s e2m41s). Gate locali fmt/check/clippy/test/GNU positivi:671 test/77suite,
+0fail,2ignored; tooling2/2. Resta CI Linux/MSVC: nessun DONE/M5 anticipato.
+[Report tecnico e handoff](docs/verification/T-P15-01-release-profile.md).
+Avanzamento89/140=63,6% invariato. Prosecuzione automatica dopo gate effettivi.
+
+## Registro storico — governance GOV-2026-10-26-01 applicata; avanzamento automatico
 
 2026-10-26: migrazione permanente autorizzata dall'autore e materialmente applicata.
 AGENTS GLOBAL AGENT EXECUTION POLICY, master/mappa/indice operativi, §14 del piano,

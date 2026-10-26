@@ -33,3 +33,9 @@ calamine = { version = "=0.36.1", default-features = false }
 [dev-dependencies]
 # Read the actual XLSX ZIP/XML in the backend probe; same pure-Rust backend.
 zip = { version = "=9.0.5", default-features = false, features = ["deflate"] }
+
+# T-P15-01: controlled release optimization; performance qualification is P17.
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true

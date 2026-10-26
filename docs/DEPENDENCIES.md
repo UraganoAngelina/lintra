@@ -88,3 +88,11 @@ Toolchain 1.99.1 compatibile. Nessuna dipendenza PCRE/OpenSSL/host.
 La libreria rifiuta backreference/lookaround anziché ignorarli; i limiti di
 compilazione standard del crate restano attivi e producono InvalidRegex.
 Gate nativo e spiegazione completa nel dossier T-P9-04.
+
+## T-P15-01 — tooling first-party prima dell'introduzione
+
+`xtask`, package locale separato, non pubblicabile, sola libreria standard Rust.
+Nessuna dipendenza esterna o nuova licenza di terze parti. Lock autonomo con il
+solo package locale, Cargo.lock del motore invariato. Serve alla ricetta release
+portabile richiesta da ARCH§39B.3; non è distribuito come prodotto e non introduce
+un workspace/GUI o un requisito runtime. Verifica artefatti15-02 ancora futura.

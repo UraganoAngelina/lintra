@@ -2,3 +2,11 @@
 [target.x86_64-pc-windows-gnu]
 linker = "x86_64-w64-mingw32-gcc"
 runner = "wine"
+
+# Native Windows release/test builds link the CRT statically.
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
+
+# Portable first-party tooling, separate from the product package.
+[alias]
+xtask = ["run", "--locked", "--manifest-path", "xtask/Cargo.toml", "--"]
