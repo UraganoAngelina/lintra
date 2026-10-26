@@ -176,3 +176,50 @@ continua a superare i golden byte-per-byte; API service/request/domain invariate
 
 Stato consegna: DONE_UNVERIFIED, CI Linux/MSVC da avviare sul commit completo.
 T-P15-04 dipende dal gate15-03 e non viene iniziata prima del suo esito effettivo.
+
+Commit completo `c5384938aae0935d3478a89b0845eba41436a5fc` pubblicato sul branch
+work/p1-foundations. Dispatch204, prima lettura2026-10-26 14:27:29 UTC:
+[CI40339655671](https://github.com/UraganoAngelina/lintra/actions/runs/40339655671),
+head SHA corrispondente, in_progress. Nessun gate nativo ancora dichiarato positivo.
+
+Seconda lettura14:29:36 UTC: Linux121630565367 ha completato con successo
+fmt/Clippy/test default/all-features/tooling ed è nella doppia build release;
+MSVC121630564873 ha fmt/Clippy positivi ed è nei test default. Entrambi ancora
+in_progress, nessuna conclusione presunta.
+
+Build locale pulita GNU con ricetta release e feature incorporata:2m38s, exit0.
+Verifier accetta esattamente le quattro SONAME ratificate, openssl-sys assente;
+negative probe respinto con exit1. Smoke test del binario reale da cwd temporanea
+con spazi, senza root esterne/env: exit0, JSONL vuoto, audit embedded /
+synthetic-embedded-v1 / present, --version sul commitc538493 completo. Log ignorati
+release-with-embedded.log/release-smoke.json nella directory di verifica15-03.
+La prova locale non sostituisce riproducibilità e gate nativi in CI.
+
+Terza lettura14:36:25 UTC: Linux completed/success su tutti gli step, MSVC
+fmt/Clippy/test default/all-features/tooling tutti positivi, ultimo step release
+in_progress. Necessaria una lettura finale successiva, già autorizzata dalla
+governance; nessun DONE o nuovo prerequisito ancora soddisfatto.
+
+## Esito finale e handoff —2026-10-26 14:38:47 UTC
+
+T-P15-03 **DONE**. Lettura diretta Jobs sullo SHA
+c5384938aae0935d3478a89b0845eba41436a5fc: Linux121630565367 e
+MSVC121630564873 entrambi completed/success, tutti gli step positivi.
+CI40339655671 include default/all-features, tooling e due build release pulite
+byte-identiche per OS, verifier reale e negative probe. Quattro letture riuscite,
+ultima necessaria per MSVC; un timeout TCP della lettura finale risolto con retry
+(mai interpretato come esito positivo, nessuna pipeline duplicata).
+
+File consegnati: feature/assets sintetici e backends del checkpoint6f8ae70;
+ratifica/matrice, bundle audit/guard, CLI args/paths/composition/command, writer
+additivo, test backend/CLI/writer, recipe xtask e CI, README/status/report.
+Nessun residuo15-03; snapshot dichiaratamente sintetico, aggiornamenti ufficiali
+e pubblicazione immutabile appartengono alle task successive. Generic service/
+request/domain, error JSONL e policy reference invariati.
+
+Branch work/p1-foundations, implementazione pubblicata c538493; chiusura
+documentale successiva senza cambiare il codice verificato.92/140 DONE=65,7%,
+T-P2-03 ancora parziale,47 non iniziate prima dell’avvio successivo; M5 aperta.
+Prossima task READY T-P15-04, unica dipendenza15-03 ora verificata; autorizzazione
+globale vigente. AUTO_CONTINUE: preflight del packaging dati avviato subito,
+senza release pubbliche o modifiche alle decisioni umane ancora aperte.

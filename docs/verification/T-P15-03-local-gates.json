@@ -1,8 +1,8 @@
 {
   "task": "T-P15-03",
   "scope": "complete embedded wiring and CNF-BUNDLE-AUDIT-01 A",
-  "done": false,
-  "native_ci_verified": false,
+  "done": true,
+  "native_ci_verified": true,
   "backend_checkpoint": {
     "task": "T-P15-03",
     "scope": "partial embedded backends; CLI/resolver/audit untouched pending CNF-BUNDLE-AUDIT-01",
@@ -61,6 +61,37 @@
       "failed": 0
     },
     "governance_audit": "pass",
-    "git_diff_check": "pass"
+    "git_diff_check": "pass",
+    "clean_linux_release_with_embedded": "pass",
+    "release_artifact_verifier": "pass",
+    "negative_artifact_probe_exit": 1,
+    "release_embedded_smoke": {
+      "exit": 0,
+      "source": "embedded",
+      "version": "synthetic-embedded-v1",
+      "manifest_status": "present",
+      "errors_bytes": 0
+    }
+  },
+  "native_ci": {
+    "commit": "c5384938aae0935d3478a89b0845eba41436a5fc",
+    "run": 40339655671,
+    "first_read_at": "2026-10-26T14:27:29Z",
+    "status": "completed",
+    "verified": true,
+    "second_read_at": "2026-10-26T14:29:36Z",
+    "linux_job": 121630565367,
+    "msvc_job": 121630564873,
+    "linux_status": "completed",
+    "msvc_status": "completed",
+    "third_read_at": "2026-10-26T14:36:25Z",
+    "linux_conclusion": "success",
+    "final_read_at": "2026-10-26T14:38:47Z",
+    "msvc_conclusion": "success",
+    "successful_reads": 4,
+    "final_read_tcp_retry": true,
+    "whole_byte_reproducibility": true,
+    "artifact_verifier": true,
+    "negative_command_probe": true
   }
 }
