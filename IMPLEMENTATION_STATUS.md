@@ -3,7 +3,22 @@
 Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P14-05 DONE; M7 raggiunta; STOP richiesto
+## Frontiera corrente — governance GOV-2026-10-26-01 applicata; avanzamento automatico
+
+2026-10-26: migrazione permanente autorizzata dall'autore e materialmente applicata.
+AGENTS GLOBAL AGENT EXECUTION POLICY, master/mappa/indice operativi, §14 del piano,
+51 prompt futuri/parziali e template task/handoff/recovery allineati. Un solo
+agente, niente Superpowers/subagenti/delega, commit/push/CI autorizzati, next READY
+automatica; stop solo per decisioni reali mancanti o assenza di task pronte.
+Superato lo stop di sola sessione dopo14-05, senza cambiare DEC-18 nel merito.
+Verifica governance:51 prompt con sole modifiche operative reversibili; piano
+fuori§14, ARCH/DET, kit e contratti dei prompt invariati. Nessun override trovato.
+La migrazione non conta come nuova task atomica:89/140=63,6% invariato.
+[Revisione e handoff](docs/governance/README.md). Prossima READY T-P15-01:
+prerequisito8-06 DONE (CI39747270986), preflight e sviluppo da iniziare subito.
+Prosecuzione: AUTO_CONTINUE. Nessuna approvazione ordinaria pendente.
+
+## Registro storico — T-P14-05 DONE; M7 raggiunta; stop allora richiesto
 
 2026-10-26: DEC-18 ratificata e applicata. Catalogo/load separati, inventory
 reference schema-scoped con evidenze reali, import draft canonical/lint e warning

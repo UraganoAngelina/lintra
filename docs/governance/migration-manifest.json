@@ -1,0 +1,694 @@
+{
+  "revision": "GOV-2026-10-26-01",
+  "date": "2026-10-26",
+  "scope": "Operational governance only; original kit and historical artifacts unchanged",
+  "source_kit": "LINTRA_STARTER_KIT_FINAL_20261016",
+  "source_governance": {
+    "MASTER_AGENT_PROMPT.md": "ee2b3f75065eb2ac55c3e1152716ba4d2511a35bdadcb77698f06a5ce3566e52",
+    "TASK_DEPENDENCY_MAP.md": "4ac75ff125263cfe8cfa4f8ca16969e677f5e22c748ef1cff8df846be3e8ab0e",
+    "SOURCE_DOCUMENTS/MASTER_IMPLEMENTATION_PLAN.md": "6a2161709e929a8de66984eba1c12540d998df042d499376cd546f2bd9e88b40",
+    "KIT_MANIFEST.json": "a56536ec63bba07b533e8da9ea7fe4124faaae6af72ca380a3d655f1aa56ac71"
+  },
+  "plan_prefix_sha256": "3c5908d013cde286d397b1e0317830929ef3f7541dab6b722dbd99c114ec74a1",
+  "plan_suffix_sha256": "dff7cdbf365a75c1059a811d50041b18959c87c9721e97604d969428355b71a0",
+  "protected_documents": {
+    "docs/ARCHITECTURE.md": "37c4b0bc43b65a90a9ccd3bb6a6ae0f5b17ca8424c923207b47c6a91c18d1093",
+    "docs/DETAILED_DESIGN.md": "700bed27ab8b54af9e8b951a494b5541abbdcff076e2acd42854f813dc4bce16"
+  },
+  "active_prompts": {
+    "T-P2-03.md": {
+      "source_sha256": "32a7f03422fdf95470f120a143da282851e1db759cb72cd1951bee5066d2ec28",
+      "active_sha256": "b6a727f4a176a95ba735f74c5d851c3c1fea58f684db83f1d8dedad11a57e686",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "IN_PROGRESS"
+    },
+    "T-P15-01.md": {
+      "source_sha256": "f6bfc288f505f68adea85bdd956d3fd549c86485db34bb9c9d9821283104ceaa",
+      "active_sha256": "8fb889a1e9b390074f6072989d95d65221e25869a9d2bbb1c007d5546b4662f2",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P15-02.md": {
+      "source_sha256": "e1181fe888406b5bcbf437895b5cced9c0c693699bf559c10a4ff3cc3ab22083",
+      "active_sha256": "8afb5143eada5647c9eb5b8d3a76af55ee6a9995c73df01d9f6cd760041aff36",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P15-03.md": {
+      "source_sha256": "4d5287b71ed39be819a3bb39d6e5a32c904a439c0367bb7106e5fc5d1a5bef0a",
+      "active_sha256": "d8ff40249dec98f00611fb2a2f21d2a298e1b52372b00f5bec3852e96a68e6c7",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P15-04.md": {
+      "source_sha256": "429195b468d0524dcd13d7590045cafd28b3088bdaae8d4678c404e011018f26",
+      "active_sha256": "1ee830fb9f25faffdb36538a29d4c4fac8bef29a880d29797e79164c8aed6208",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P15-05.md": {
+      "source_sha256": "c4e0729f12956853ce0a398403cf1fbabbd3b3149a5f1de55fa051364c100713",
+      "active_sha256": "04ad8a892eaa8be0d957223a50c25eb8889537c634c26082044b60567a696dd0",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P15-06.md": {
+      "source_sha256": "af4e14c4b392332eec462c58805556be3bdaaae1c88e87d749a5af49cf6954b1",
+      "active_sha256": "79d15f941e87a5b7779d66e2c63bd67bf37cc03e11192595ef66d4df56c45506",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P15-07.md": {
+      "source_sha256": "b5c6e6373aa48b2fb713ed8bfb2fa8ccac5b09660ed3972bb27cc74909964b80",
+      "active_sha256": "854e5906722ba3eb3c6876ab1344b5b428ae99d008a749855db9f06ace3c51a5",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P16-00.md": {
+      "source_sha256": "bb9ca46af7c6cc1e9b0e027bd9a1c97ea5b3e3a55496e549c3a3ccd1cc686948",
+      "active_sha256": "b1a70e979d65d21c949e9cfefaf397dc27c09992c6193f90791ae114199cbd57",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P16-01.md": {
+      "source_sha256": "adf6eb944be26c5596b43859890d2e2acebc209d722585c9a48191003aa2ce18",
+      "active_sha256": "d542c85b5f67f38a05582ad2e5814f0d8b0905cda8d2203abbf518aaa2cad617",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P16-02.md": {
+      "source_sha256": "f149cc7f0d784dcdeae439e652637663e5bd1cb65a8540bd0aba90df7a3242b5",
+      "active_sha256": "cd3964e57a713c548cbf2fd615668590113e3f2846227abadd51d87c6fe1780a",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P16-03.md": {
+      "source_sha256": "30c984fe514d8726164e396c6ac6e936147256b0f9ef6cee82dd8de85a4f471d",
+      "active_sha256": "b75ce511dcb2f0436d6b9bccc309d5beb8db2447fc0667f796339e430723c9c2",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P16-04.md": {
+      "source_sha256": "de7edf7e0e8df8eef83b07bb0feea9817dd1f0e3ea903e319e847cf285596453",
+      "active_sha256": "aebc21ab183e780c49d776bbe99f39efe368449aa7a889e47f840e8d0ff08b00",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P16-05.md": {
+      "source_sha256": "7eebdd2ed4624244d3d336d7a893dda15cd48884167e054ecade501050112d3b",
+      "active_sha256": "c908135430ac15c2dde7b2713225e22b575df1b8160f187105dfa61b7406f16c",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P16-06.md": {
+      "source_sha256": "4774c83153820671a14dea33c39eec5aafc5c81ad1632b0b405b57632d5cc7d4",
+      "active_sha256": "e0d03552550ea529bdd87e8f940713250485c176af1647a1827c30d9298fd645",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P16-07.md": {
+      "source_sha256": "40d3d0e81abc3da26b2597698abd85c8340d05892117523104b28790bb20caa5",
+      "active_sha256": "8b40f358b5212850492ba0e7e488ecdfa800117e0b6ba42409cebdcc4f0e418b",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P16-08.md": {
+      "source_sha256": "659fd5176ac01cad2f963625407fabf759b40627dff4f6cca17d5da125447fb9",
+      "active_sha256": "97450bdd1880325aca139bb5e867b9e69da90e5174f7217c71128ccb26a60a84",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P17-01.md": {
+      "source_sha256": "54b79d6a1b0f6b14eec5b51505fea7cb1c0e5d6453cd4a9387ddd3cfcdb0a13e",
+      "active_sha256": "7fc751f857c3c909a4a62dd85c68ea901c3194288c6937fb3b0ed6aa1a601654",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P17-02.md": {
+      "source_sha256": "e5da810352ddd4a01c11d5358f5192594bd0f2fc830ba1313585935f4eb9bed9",
+      "active_sha256": "e0abd17d9ff50cca9f30303e918d599798191fba55fe8f7296b6109e87a321b3",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P17-03.md": {
+      "source_sha256": "73c4e7316deb136c7325bdb2e8954b498d3f39c4f3707de00e774acb62d8440b",
+      "active_sha256": "43f623e6207ea280d278bd4aed44fc95f36d7c0db4417660a8b1b98f8ea0510a",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P17-04.md": {
+      "source_sha256": "eca698478220eedcbac34ecf1c72681b81a6fc40a7b04c5d799ceffed6e60930",
+      "active_sha256": "a97b3c16d34b7b8d4ed4aebe648929da6aaac056a50e0c24a9929ce45acb9fc1",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P17-05.md": {
+      "source_sha256": "faade57efdc08c4879efed7dd48c4fcc0d7ae8ba0be49033405436209f795eeb",
+      "active_sha256": "9810f9b0d6ec27cde6a9fbea089d4204379df5603198648bdeff8b009b360c36",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P17-06.md": {
+      "source_sha256": "ef2bfb2db0de68328a948840b3046b0d02726e4590bd5630e8ae3d05843fa8eb",
+      "active_sha256": "042254a7dd1da91a40d7ae9297746dafdc16a231443f4c04767f24954d91eb5d",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P18-01.md": {
+      "source_sha256": "d38093e981adbd6f505cbc0c3de56b9ddcd5de70af167d7e313652942aa4e84c",
+      "active_sha256": "1decc01a6fbe63b5ad0bf57830444ff32d96e3cae59fad87adce2f9613d42f21",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P18-02.md": {
+      "source_sha256": "824a445959f8caae1a07506fa536505ed77a8b54476b49b71e9b7e887da74b87",
+      "active_sha256": "1df76c940a7630b17a2a9d48360cef9449edc30001c1463a969748e00d24be7d",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P18-03.md": {
+      "source_sha256": "941d9d82a0f975a7f1f157c134da20fa618471830f2f8f8aea0672a7513f59e9",
+      "active_sha256": "0171d3ac2c268ef66ad4a4b28911828f944c297103da1c6087ea91f8eeac6253",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-P18-04.md": {
+      "source_sha256": "8bc5a40710d100078fb8c723a90caafb659dd9224c03908db36c2ddb3559add9",
+      "active_sha256": "33a8d199097f89c76ce115d20971d3b75e712894740a7d79ce57f9a9c8715201",
+      "operational_replacements": [
+        {
+          "before": "FERMATI: nessun task successivo autonomo.",
+          "after": "Prosegui automaticamente con la prossima task READY secondo AGENTS.md, dopo gate e handoff; fermati solo per criticità reali.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-PERSIST-01.md": {
+      "source_sha256": "3d6064c90f5b6166a5a613e53a9a12dd341b20c62217310e03493fa4423d3033",
+      "active_sha256": "3147a7a5999d0a42aa01d09e5df9c6c41c0cd214986da0f750e8fbe5f921dfb2",
+      "operational_replacements": [
+        {
+          "before": "Non avviare task successive autonomamente.",
+          "after": "Dopo gate e handoff prosegui automaticamente con la prossima task READY, senza delega, secondo AGENTS.md.",
+          "count": 1
+        },
+        {
+          "before": "; ferma l'esecuzione.",
+          "after": "; registra la prosecuzione automatica verso la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-PERSIST-02.md": {
+      "source_sha256": "2e1a888da7e46a6c937ac6ea3fa2d83ea7924920a63b7f360211fb0b87396c58",
+      "active_sha256": "f7d6402b481be5ed835e7bef756c2e0d9c9f0a377bf3244556706e98693627e5",
+      "operational_replacements": [
+        {
+          "before": "Non avviare task successive autonomamente.",
+          "after": "Dopo gate e handoff prosegui automaticamente con la prossima task READY, senza delega, secondo AGENTS.md.",
+          "count": 1
+        },
+        {
+          "before": "; ferma l'esecuzione.",
+          "after": "; registra la prosecuzione automatica verso la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-PERSIST-03.md": {
+      "source_sha256": "6c9e04a9d31e4f2623af91f7813194e6e386cf175e9791aa5e4228c36cdd4673",
+      "active_sha256": "3ff61b5c1020011f848b21ab6f4c86d28171c4e6547f8cd5db92cdbf9960ed9b",
+      "operational_replacements": [
+        {
+          "before": "Non avviare task successive autonomamente.",
+          "after": "Dopo gate e handoff prosegui automaticamente con la prossima task READY, senza delega, secondo AGENTS.md.",
+          "count": 1
+        },
+        {
+          "before": "; ferma l'esecuzione.",
+          "after": "; registra la prosecuzione automatica verso la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-PERSIST-04.md": {
+      "source_sha256": "316619767de0ed03cf99a5b84ddd68cbaf539d963c0b61c71941fa0891faafd0",
+      "active_sha256": "ae8fb96b2a88ae7ba3721d0131b7ed67866a37cde325cde85263fa552cadea8f",
+      "operational_replacements": [
+        {
+          "before": "Non avviare task successive autonomamente.",
+          "after": "Dopo gate e handoff prosegui automaticamente con la prossima task READY, senza delega, secondo AGENTS.md.",
+          "count": 1
+        },
+        {
+          "before": "; ferma l'esecuzione.",
+          "after": "; registra la prosecuzione automatica verso la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-PERSIST-05.md": {
+      "source_sha256": "e733ec91e5ff8d2c544c8f71797fc6726ec77a1042d513338e171b8ab1b30d71",
+      "active_sha256": "ae0e6f6a7b2f990a2089326e978ab0f52613860a568249be5a39a3532b598d1d",
+      "operational_replacements": [
+        {
+          "before": "Non avviare task successive autonomamente.",
+          "after": "Dopo gate e handoff prosegui automaticamente con la prossima task READY, senza delega, secondo AGENTS.md.",
+          "count": 1
+        },
+        {
+          "before": "; ferma l'esecuzione.",
+          "after": "; registra la prosecuzione automatica verso la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-PERSIST-06.md": {
+      "source_sha256": "0e552793ee09ebe125a55df550ee262bd976b27b54dccebfc81d70cff25138f8",
+      "active_sha256": "0f5f8f0c94d6ca836e51ee6011a45900934a910bfc7cea80f7891fb048274e64",
+      "operational_replacements": [
+        {
+          "before": "Non avviare task successive autonomamente.",
+          "after": "Dopo gate e handoff prosegui automaticamente con la prossima task READY, senza delega, secondo AGENTS.md.",
+          "count": 1
+        },
+        {
+          "before": "; ferma l'esecuzione.",
+          "after": "; registra la prosecuzione automatica verso la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-PERSIST-07.md": {
+      "source_sha256": "9d1e3122161de260860dc0b060388a10f2434e5bcda5e241f30aa5e12ba74aec",
+      "active_sha256": "a5745bdff308fe5a9af5e2313d6ed0d9a6fa26172a52eaf358d9565453869dab",
+      "operational_replacements": [
+        {
+          "before": "Non avviare task successive autonomamente.",
+          "after": "Dopo gate e handoff prosegui automaticamente con la prossima task READY, senza delega, secondo AGENTS.md.",
+          "count": 1
+        },
+        {
+          "before": "; ferma l'esecuzione.",
+          "after": "; registra la prosecuzione automatica verso la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-PERSIST-08.md": {
+      "source_sha256": "cd1c2f4d1d90e0135b8145364edf17ac5ce66045087e6997fa924dd406c312d6",
+      "active_sha256": "b8351bd77572cf051839fccff65809449e50a834b8900e5e87d7c5cf21083cfc",
+      "operational_replacements": [
+        {
+          "before": "Non avviare task successive autonomamente.",
+          "after": "Dopo gate e handoff prosegui automaticamente con la prossima task READY, senza delega, secondo AGENTS.md.",
+          "count": 1
+        },
+        {
+          "before": "; ferma l'esecuzione.",
+          "after": "; registra la prosecuzione automatica verso la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-PERSIST-09.md": {
+      "source_sha256": "39e54039575b485085b30ef87144c66d73e734f6d7420d5ef732ddab00cfd323",
+      "active_sha256": "063f073e8fbe80703106f004498181da8cfdab1f90ddfa3493be2f4114aed286",
+      "operational_replacements": [
+        {
+          "before": "Non avviare task successive autonomamente.",
+          "after": "Dopo gate e handoff prosegui automaticamente con la prossima task READY, senza delega, secondo AGENTS.md.",
+          "count": 1
+        },
+        {
+          "before": "; ferma l'esecuzione.",
+          "after": "; registra la prosecuzione automatica verso la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-PERSIST-10.md": {
+      "source_sha256": "476daf5ba8373f3f432b823e3326dfc9723c8cfe4dc6c858dc5aa8384e3a66d9",
+      "active_sha256": "1fce350b1dd1fa377b2a65f29351086743503779268587ee7a4e210ee1c89e54",
+      "operational_replacements": [
+        {
+          "before": "Non avviare task successive autonomamente.",
+          "after": "Dopo gate e handoff prosegui automaticamente con la prossima task READY, senza delega, secondo AGENTS.md.",
+          "count": 1
+        },
+        {
+          "before": "; ferma l'esecuzione.",
+          "after": "; registra la prosecuzione automatica verso la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-PERSIST-11.md": {
+      "source_sha256": "207090d40b334028c9c287be4a4f15df68adb79cf8450ae7878d7b8f943d0957",
+      "active_sha256": "6221d1df214098e9aba8beabe3151b0e19edbf0e4dfb9076db446e37673b9aa4",
+      "operational_replacements": [
+        {
+          "before": "Non avviare task successive autonomamente.",
+          "after": "Dopo gate e handoff prosegui automaticamente con la prossima task READY, senza delega, secondo AGENTS.md.",
+          "count": 1
+        },
+        {
+          "before": "; ferma l'esecuzione.",
+          "after": "; registra la prosecuzione automatica verso la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-PERSIST-12.md": {
+      "source_sha256": "822fbb080b9f6dccf6519df6555747704a8e0b5606dabfe78d8b2c8e8b3f31c1",
+      "active_sha256": "f6a31eef6fbabb7f67364fbdefb4656ba803a770355fb6707691ec673e81ce14",
+      "operational_replacements": [
+        {
+          "before": "Non avviare task successive autonomamente.",
+          "after": "Dopo gate e handoff prosegui automaticamente con la prossima task READY, senza delega, secondo AGENTS.md.",
+          "count": 1
+        },
+        {
+          "before": "; ferma l'esecuzione.",
+          "after": "; registra la prosecuzione automatica verso la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-CAD-01.md": {
+      "source_sha256": "06ff248550de481e3d8ea16938bc0086f80e3fe68239fd82408e3e128b5c3ed0",
+      "active_sha256": "b7ac65cae4aabaae5130aca96c87cbfefae942a7d9e4fd6c3c515589707d9676",
+      "operational_replacements": [
+        {
+          "before": "Aggiorna stato con handoff e ferma la sessione.",
+          "after": "Aggiorna stato e handoff, quindi prosegui automaticamente con la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-CAD-02.md": {
+      "source_sha256": "9b1629613b5ed3002427a0023b210c64170e878b2ccf8d2cb4c8d52f2fa2a3df",
+      "active_sha256": "319df7213a10120f64a3e0244f73e6ab51fd3cebcf4498f4e4ee181bf38bcfe1",
+      "operational_replacements": [
+        {
+          "before": "Aggiorna stato con handoff e ferma la sessione.",
+          "after": "Aggiorna stato e handoff, quindi prosegui automaticamente con la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-CAD-03.md": {
+      "source_sha256": "fa534437354e204cbc71aa3447a9013eeb0e7cc2f857f83424481e6b79e97b50",
+      "active_sha256": "9f3da5b3e46d0343ab49329ea5c51b8030eb1023e32652e1e5600cc8471b8f09",
+      "operational_replacements": [
+        {
+          "before": "Aggiorna stato con handoff e ferma la sessione.",
+          "after": "Aggiorna stato e handoff, quindi prosegui automaticamente con la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-CAD-04.md": {
+      "source_sha256": "7dc501436edb0a97a5be5e6fc71c1972a89b7be72e416d5405f8bd9659390bd8",
+      "active_sha256": "1f1f0feb384dccb2ae55c7de15046f1a30258f32f8dc673894fa32e4ab7f4827",
+      "operational_replacements": [
+        {
+          "before": "Aggiorna stato con handoff e ferma la sessione.",
+          "after": "Aggiorna stato e handoff, quindi prosegui automaticamente con la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-CAD-05.md": {
+      "source_sha256": "51d09a051ba2a6bb91a1ccf1d94b501f758507e5657b54fa93a009425f3217e5",
+      "active_sha256": "c7304bdd0a0de5f8ce565883bcd9cba87029c096b2402e18228b57dc6ed69a16",
+      "operational_replacements": [
+        {
+          "before": "Aggiorna stato con handoff e ferma la sessione.",
+          "after": "Aggiorna stato e handoff, quindi prosegui automaticamente con la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-CAD-06.md": {
+      "source_sha256": "f5312e7eab0e5fac3cb5125beec9bd8d1839d9d9bb897f6a312994a583c4a341",
+      "active_sha256": "0e5463282f5ecec51715db84f0570b6b9777f98ee561b596eb63ee1e9f0783de",
+      "operational_replacements": [
+        {
+          "before": "Aggiorna stato con handoff e ferma la sessione.",
+          "after": "Aggiorna stato e handoff, quindi prosegui automaticamente con la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-CAD-07.md": {
+      "source_sha256": "ae3909fca821612c9b4ef639a13b2bf87f319d45c5b08bb97d35be75b83b2269",
+      "active_sha256": "1d83994377a73b0b099eabf21cdf8cf2595dda34d11caacb7ddfdeb5cf604328",
+      "operational_replacements": [
+        {
+          "before": "Aggiorna stato con handoff e ferma la sessione.",
+          "after": "Aggiorna stato e handoff, quindi prosegui automaticamente con la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-CAD-08.md": {
+      "source_sha256": "924fdce3e92714169bb598eba05799e94197082eb10f000124127a4d5514706b",
+      "active_sha256": "0e3e65aa3887d086c79f60d04438eaadce263756950e50d51af33f6cc4a03961",
+      "operational_replacements": [
+        {
+          "before": "Aggiorna stato con handoff e ferma la sessione.",
+          "after": "Aggiorna stato e handoff, quindi prosegui automaticamente con la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-CAD-09.md": {
+      "source_sha256": "a97e61cf0fd22b790b735bcab40f4426086e7aae613001c0b2a9235f4f2efae0",
+      "active_sha256": "802988d3e9d9059c447b271bc6a1222862b653eaec8b72172d3ad640eb55d948",
+      "operational_replacements": [
+        {
+          "before": "Aggiorna stato con handoff e ferma la sessione.",
+          "after": "Aggiorna stato e handoff, quindi prosegui automaticamente con la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-CAD-10.md": {
+      "source_sha256": "0d3eb6726e7804424686d0accb95224ad6de0b66fed80f6366cd7954f58d56aa",
+      "active_sha256": "1025107b43f6f4f04d802a66385da5890daecd558fa02a07c2ade82f9ff2f3b2",
+      "operational_replacements": [
+        {
+          "before": "Aggiorna stato con handoff e ferma la sessione.",
+          "after": "Aggiorna stato e handoff, quindi prosegui automaticamente con la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-CAD-11.md": {
+      "source_sha256": "e173860dc010297669cb9b20b881d9880d73896310034db35fde1ecf78815516",
+      "active_sha256": "b7d8dcd3f885fe46d6af7e8440381bad47128a99f708d19e7163a2625ae8d3f4",
+      "operational_replacements": [
+        {
+          "before": "Aggiorna stato con handoff e ferma la sessione.",
+          "after": "Aggiorna stato e handoff, quindi prosegui automaticamente con la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    },
+    "T-CAD-12.md": {
+      "source_sha256": "e56f73e04a518fadb3955daa4d0b3c23e7434c708087a62428e4cc2ad9a8d41f",
+      "active_sha256": "593a8ffa31b8641124b3ac3d02183ef7f6180285c1ddf6a6c9c6227c00562c23",
+      "operational_replacements": [
+        {
+          "before": "Aggiorna stato con handoff e ferma la sessione.",
+          "after": "Aggiorna stato e handoff, quindi prosegui automaticamente con la prossima task READY secondo AGENTS.md.",
+          "count": 1
+        }
+      ],
+      "state_at_migration": "NOT_STARTED"
+    }
+  },
+  "master_invariants_sha256": "fdb2cd0ca1ac5a374b148e7097277817d89cd4c42771b2662fffc96d86e3b922",
+  "dependency_map_body_sha256": "3d75ef133e7884df0f8a1b99d045efa80caa1e475c670f3681646c411a99aab4"
+}

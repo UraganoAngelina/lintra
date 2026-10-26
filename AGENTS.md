@@ -1,5 +1,72 @@
 # Istruzioni operative Lintra
 
+## GLOBAL AGENT EXECUTION POLICY
+
+Revisione GOV-2026-10-26-01, approvata esplicitamente dall'autore il26 ottobre2026.
+Questa è la governance operativa corrente di tutte le task Lintra. Supera gli
+stop generici e i checkpoint di sola sessione precedenti, incluso quello dopo
+T-P14-05, senza modificare ratifiche normative, contratti runtime o Quality Gate.
+
+1. **Un solo agente principale.** Vietati categoricamente Superpowers, subagenti,
+   delega e strumenti multi-agent. Eseguire task atomiche in sequenza; nessuna
+   orchestrazione parallela e nessun processo locale in background.
+2. **Commit, push e CI autorizzati permanentemente** quando necessari sul repository
+   UraganoAngelina/lintra e branch concordato work/p1-foundations. Nessuna conferma
+   ordinaria; rispettare branch protection, sicurezza, piattaforma e Quality Gate.
+   Niente force-push, perdita di lavoro altrui, segreti o dati paziente versionati.
+3. **Prosecuzione automatica.** Dopo i gate effettivi aggiornare stato e handoff,
+   scegliere la prossima task autorizzata e pronta e iniziarla nello stesso flusso.
+   Fine task e handoff non terminano automaticamente la sessione.
+4. **Arresto solo per criticità reali.** Richiedere approvazione per decisioni
+   normative, architetturali, contrattuali o di sicurezza non già autorizzate.
+   Diagnosticare e correggere autonomamente bug ordinari, errori di test/build,
+   problemi implementativi e di rete. Se non esistono task autorizzate e pronte,
+   registrare il prerequisito mancante senza inventare progresso o consenso.
+
+Workflow vincolante:
+TASK READY → PREFLIGHT → IMPLEMENTAZIONE SINGLE-AGENT → TEST LOCALI →
+COMMIT/PUSH E CI QUANDO NECESSARI → QUALITY GATE → AGGIORNAMENTO STATUS →
+HANDOFF → PROSSIMA TASK READY → RIPETI.
+
+### Gate e condizioni di prontezza
+
+- READY richiede dipendenze e decisioni applicabili verificate con evidenze.
+  DONE_UNVERIFIED, CI pendente/non leggibile o gate fallito non soddisfano un
+  prerequisito che richiede quel gate. Nessun DONE o milestone senza criteri reali.
+- Durante l'attesa remota si può sospendere la task con stato fedele e lavorare
+  sequenzialmente su una task indipendente autorizzata; mai aggirare dipendenze.
+- Conservare determinismo, streaming, audit, confini di layer, gestione byte/raw/
+  logical/MissingValuePolicy e separazione errori normativi/tecnici. Il motore sa
+  COME validare; lo schema sa COSA è valido. Nessuna norma hardcoded o implicita.
+- Restano validi i gate umani reali (norme/ADR/CNF/contratti/sicurezza irrisolti).
+  Gli stop storici di sola sessione sono superati dalla presente autorizzazione.
+- CI sobria: pianificare non più di tre interrogazioni ordinarie per run, con
+  almeno60s fra letture. Log necessari, retry motivati e letture finali mancanti
+  sono già autorizzati: il vecchio limite non è una barriera di approvazione per
+  diagnosi o chiusura. Evitare busy polling e pipeline duplicate. Non trasformare
+  timeout in successi e non indebolire controlli TLS o confini di sicurezza.
+- Spiegare dettagliatamente codice nuovo/modificato (struct, funzioni, condizioni,
+  motivi di correttezza) con commenti/documentazione e report consultabile;
+  comunicare per ogni task un breve recap dei file e degli esiti effettivi.
+
+### Fonti operative e memoria storica
+
+- Leggere MASTER_AGENT_PROMPT.md, docs/MASTER_IMPLEMENTATION_PLAN.md §14,
+  TASK_DEPENDENCY_MAP.md, ATOMIC_TASKS_INDEX.md e TASK_PROMPTS/<ID>.md del
+  repository. Template correnti in docs/governance/templates/.
+- Il kit adiacente LINTRA_STARTER_KIT_FINAL_20261016, docs/bootstrap, i vecchi
+  piani Superpowers e i report/ratifiche/handoff precedenti sono fonti storiche
+  per contratti/evidenze. Non costituiscono un'autorizzazione a delegare o uno
+  stop operativo corrente. Non riscriverli retroattivamente.
+- Le ratifiche contrattuali presenti nella cronologia seguente continuano a
+  valere nel merito; soltanto le clausole operative incompatibili sono superate.
+  Specifiche normative, ARCH e DET non sono modificate da questa policy.
+- Nessun override annidato può ripristinare uno stop generico o la delega; eventuali
+  istruzioni successive dell'autore e le regole della piattaforma mantengono la
+  propria priorità. Verificare override reali durante ogni ripresa.
+
+## Registro storico e ratifiche precedenti
+
 Mandato dell'autore aggiornato il 2026-10-19:
 
 - Non usare le skill Superpowers o i relativi workflow.

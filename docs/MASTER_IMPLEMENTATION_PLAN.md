@@ -923,6 +923,11 @@ REST API; **database server obbligatorio o scelta anticipata di backend persiste
 
 ## 14. `AI_AGENT_EXECUTION_PROTOCOL`
 
+Revisione operativa GOV-2026-10-26-01 approvata dall'autore. Si applica GLOBAL
+AGENT EXECUTION POLICY in AGENTS.md. Ordine/dipendenze/gate/criteri di accettazione,
+milestone e norme nelle altre sezioni rimangono invariati. Vietati Superpowers,
+subagenti, delega e workflow multi-agent; un solo agente e task sequenziali.
+
 ### 14.1 Regole di ogni sessione
 
 1. **Leggere** questo piano (almeno §4, §14) e `IMPLEMENTATION_STATUS.md`; individuare la fase e la task attive.
@@ -936,13 +941,29 @@ REST API; **database server obbligatorio o scelta anticipata di backend persiste
 9. **Non dichiarare** test, build o funzionalità completati senza evidenza (output, link a una run CI). Cosa non è stato eseguito si scrive: «non eseguito, motivo».
 10. **Aggiornare** lo stato della task in `IMPLEMENTATION_STATUS.md` (`DONE`, `DONE_UNVERIFIED`, `BLOCKED`) e registrare problemi residui e decisioni prese.
 11. **Lasciare il repository coerente**: niente modifiche non committate di altri; non sovrascrivere modifiche preesistenti dell'utente; niente file temporanei; nessun segreto nei file.
-12. **Produrre l'handoff** (§15.3).
+12. **Produrre l'handoff** (§15.3), includendo prossima task READY, gate verificati,
+    blocker e stato della prosecuzione automatica; usare il template corrente
+    docs/governance/templates/HANDOFF.md.
+13. **Proseguire automaticamente** con la prossima task autorizzata e pronta;
+    fine task e handoff non sono una barriera di sessione. Task DONE_UNVERIFIED
+    o con gate pendente/fallito non soddisfa dipendenze che richiedono quel gate.
+14. **Applicare il ciclo** READY → PREFLIGHT → IMPLEMENTAZIONE SINGLE-AGENT →
+    TEST LOCALI → COMMIT/PUSH E CI QUANDO NECESSARI → QUALITY GATE → STATUS →
+    HANDOFF → PROSSIMA READY. Nessuna delega o esecuzione locale in background.
 
-### 14.2 Regola di arresto
+### 14.2 Criticità reali e prosecuzione
 
 Fermare **le attività interessate** e segnalare esplicitamente il problema quando si incontra: conflitto tra documenti; decisione architetturale mancante; dipendenza non disponibile; requisito normativo non verificabile; incompatibilità tra contratti; errore che impedisce di garantire la correttezza; necessità di cambiare una decisione non negoziabile.
 
-L'agente può continuare le attività **indipendenti e sicure** (che non aggirano il problema e non introducono assunzioni nascoste).
+Un errore implementativo ordinario, un test fallito o un problema di rete si
+risolve autonomamente: non richiede una nuova autorizzazione. Approvazione umana
+solo per una decisione normativa, architetturale, contrattuale o di sicurezza
+non già ratificata; non per un normale commit, push, log o avvio/verifica CI.
+
+L'agente prosegue sequenzialmente con attività **indipendenti e sicure** che non
+aggirano il problema. Durante attesa CI può sospendere la task con stato reale;
+nessun gate pendente viene dichiarato superato. Se non esistono task autorizzate
+e READY, registra il motivo e termina senza inventare progresso.
 
 Formato del blocco:
 
@@ -968,14 +989,25 @@ Decisione richiesta (e a chi):
 - Una decisione presa durante l'implementazione si registra nel registro delle decisioni di `IMPLEMENTATION_STATUS.md`, con la sezione sorgente collegata.
 - Se un documento sorgente risulta superato, si apre un `CNF-*` nel registro; non si modifica in silenzio.
 
-### 14.5 Dipendenze e Git
+### 14.5 Dipendenze, Git e CI autorizzati
+
+- Commit, push e avvio/verifica CI sono permanentemente autorizzati quando
+  necessari, senza conferme ordinarie, rispettando branch protection e sicurezza.
+- Conservare evidenze reali, evitare pipeline duplicate e polling frequente;
+  leggere log e riprovare guasti tecnici entro la policy CI di AGENTS.md.
+- Riferimenti operativi e template correnti: MASTER_AGENT_PROMPT.md,
+  TASK_DEPENDENCY_MAP.md, ATOMIC_TASKS_INDEX.md, TASK_PROMPTS/ e
+  docs/governance/templates/. Kit/vecchi handoff sono storici per il workflow.
 
 - Nuovo crate: una riga in DEC-15 (scopo, licenza, pure-Rust sì/no) **prima** di aggiungerlo; `Cargo.lock` aggiornato nello stesso commit.
 - Commit piccoli e coesi, riferiti all'ID della task; nessun `--force` sul branch principale; nessun commit di artefatti di build.
 
 ### 14.6 Contesto limitato
 
-Se il contesto non basta per la task, **non** ridurre la verifica: dividere la task proponendo sotto-task (ID `T-P<n>-<nn>.a`, `.b`) nel registro di stato e chiedere conferma.
+Se il contesto non basta, **non** ridurre la verifica: salvare stato/handoff
+persistente e riprendere dal punto effettivo con SESSION_RECOVERY.md. Passaggi
+tecnici interni allo scope non richiedono consenso; cambiare contratti, criteri,
+dipendenze o perimetro autorizzato richiede invece la decisione umana pertinente.
 
 ---
 

@@ -60,22 +60,26 @@ La persistenza fisica resta da implementare nelle task PERSIST.
 
 ## Documentazione e ripresa del lavoro
 
-Leggere in ordine [ARCHITECTURE](docs/ARCHITECTURE.md),
-[DETAILED_DESIGN](docs/DETAILED_DESIGN.md),
-[MASTER_IMPLEMENTATION_PLAN](docs/MASTER_IMPLEMENTATION_PLAN.md) (§4, §14),
-[ADR-PERSIST-001](docs/PERSISTENCE_CORE_SPEC.md),
-[matrice dei conflitti risolti](docs/CONFLICT_RESOLUTION_MATRIX.md) e lo stato.
-Il [piano locale T-P1-01](docs/bootstrap/T-P1-01_PLAN.md) registra il perimetro;
-il [prompt atomico](docs/bootstrap/T-P1-01.md) conserva i criteri di accettazione.
+Per la ripresa leggere [AGENTS.md](AGENTS.md),
+[MASTER_AGENT_PROMPT](MASTER_AGENT_PROMPT.md), la frontiera di
+[IMPLEMENTATION_STATUS](IMPLEMENTATION_STATUS.md), ultimo handoff e decisioni
+pertinenti. Usare [indice operativo](ATOMIC_TASKS_INDEX.md),
+[mappa dipendenze](TASK_DEPENDENCY_MAP.md) e prompt in TASK_PROMPTS/.
+Consultare poi soltanto le sezioni pertinenti di ARCH/DET/ADR e del piano.
 
-Origine delle copie: directory adiacente
-`../LINTRA_STARTER_KIT_FINAL_20261016/`. Il kit originale contiene anche
-`MASTER_AGENT_PROMPT.md`, `TASK_DEPENDENCY_MAP.md`, `ATOMIC_TASKS_INDEX.md`
-e i prompt delle task successive. Non è una dipendenza di build/runtime.
-Il workflow corrente in AGENTS.md prevede task sequenziali e prosecuzione
-automatica dopo i gate, senza Superpowers, subagenti o processi in background.
-Le task seguono le dipendenze effettive: nessun avanzamento supera un gate
-CI o normativo ancora aperto. Consultare lo stato per la frontiera corrente.
+La [governance GOV-2026-10-26-01](docs/governance/README.md) rende permanenti
+esecuzione con un solo agente, divieto di Superpowers/subagenti/delega,
+autorizzazione a commit/push/CI e avanzamento automatico dopo i gate.
+Errori ordinari si correggono autonomamente; decisioni sostanziali non ratificate
+restano gate umani. Una CI pendente non soddisfa una dipendenza.
+
+Il kit adiacente ../LINTRA_STARTER_KIT_FINAL_20261016/ resta intatto come fonte
+storica/normativa, non è una dipendenza di build/runtime. docs/bootstrap,
+vecchi piani e handoff conservano le istruzioni del tempo senza imporre stop
+correnti. Le versioni operative dei master e dei prompt futuri/parziali sono
+ora versionate nel repository. Nel piano è cambiato soltanto il protocollo §14;
+ARCH/DET, norme, dipendenze e criteri di accettazione restano invariati.
+Template di task/handoff/recovery in docs/governance/templates/.
 
 L'[inventario degli input normativi](docs/normative/INPUT_INVENTORY.md)
 distingue fonti ricevute, configurazioni derivate e materiali mancanti;
