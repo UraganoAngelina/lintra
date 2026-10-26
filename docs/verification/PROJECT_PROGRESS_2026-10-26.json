@@ -3,9 +3,8 @@
   "total": 140,
   "basis": "140 catalogued atomic tasks; each task has equal weight, not effort or time",
   "counts": {
-    "DONE": 87,
+    "DONE": 88,
     "IN_PROGRESS": 1,
-    "LOCAL_VERIFIED_NATIVE_PENDING": 1,
     "NOT_STARTED": 51
   },
   "phases": {
@@ -53,8 +52,7 @@
       "DONE": 8
     },
     "P14": {
-      "DONE": 3,
-      "LOCAL_VERIFIED_NATIVE_PENDING": 1,
+      "DONE": 4,
       "NOT_STARTED": 1
     },
     "P15": {
@@ -509,8 +507,8 @@
     },
     {
       "task": "T-P14-02",
-      "status": "LOCAL_VERIFIED_NATIVE_PENDING",
-      "declared_status": "IN_PROGRESS"
+      "status": "DONE",
+      "declared_status": "DONE"
     },
     {
       "task": "T-P14-03",
@@ -779,11 +777,11 @@
     }
   ],
   "branch": "work/p1-foundations",
-  "code_commit": "7b8bd8bad5d67a2f538909b94f0561356336f091",
-  "last_verified_native_commit": "7b8bd8bad5d67a2f538909b94f0561356336f091",
-  "last_verified_native_run": "40238421197",
-  "verified_percent": 62.1,
-  "workflow": "Checkpoint14-02: local642/75 passed, native pending; stop after verification",
+  "code_commit": "e68881cd89b5cf100c58d7f682db191c4210e86b",
+  "last_verified_native_commit": "e68881cd89b5cf100c58d7f682db191c4210e86b",
+  "last_verified_native_run": "40290169690",
+  "verified_percent": 62.9,
+  "workflow": "Checkpoint14-02 completed: local642/75 and native Linux/MSVC passed; STOP requested by author",
   "native_gate_previous_session": {
     "dispatch_accepted": true,
     "results_verified": false,
@@ -801,7 +799,8 @@
     "new_dispatch": false,
     "linux_job": "121166275121",
     "msvc_job": "121166274875",
-    "conclusion": "success"
+    "conclusion": "success",
+    "historical_scope": "T-P13-08; retained without rewriting historical observations"
   },
   "t_p14_04_native_gate": {
     "dispatch_accepted": true,
@@ -818,5 +817,16 @@
     "final_read": "connect timeout after10s",
     "further_requests_made": false
   },
-  "remote_commit": "e887fcdc3256759f7196d4413c055ad5113ed4fd"
+  "remote_commit": "e68881cd89b5cf100c58d7f682db191c4210e86b",
+  "t_p14_02_native_gate": {
+    "run": "40290169690",
+    "head_sha": "e68881cd89b5cf100c58d7f682db191c4210e86b",
+    "results_verified": true,
+    "linux_job": "121463096084",
+    "msvc_job": "121463095876",
+    "conclusion": "success",
+    "actions_requests_counted": 3,
+    "minimum_interval_seconds": 60,
+    "final_read_utc": "2026-10-26 08:19 UTC"
+  }
 }

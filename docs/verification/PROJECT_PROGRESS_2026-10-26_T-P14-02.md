@@ -1,8 +1,8 @@
 # Lintra — checkpoint T-P14-02,2026-10-26
 
-**87 task verificate su140:62,1%.** T-P14-02 ha superato i test locali e attende
-la conclusione dei gate rimanenti: non è ancora conteggiata DONE. Questo file
-sarà aggiornato soltanto con gli esiti effettivamente disponibili.
+**88 task verificate su140:62,9%.** T-P14-02 è DONE: gate locali e CI nativa
+Linux/Windows superati sul commit e68881cd89b5cf100c58d7f682db191c4210e86b.
+Workflow fermo al checkpoint richiesto dall’autore.
 
 La percentuale conta gli ID atomici del piano con peso uguale:116 task originali
 P0–P18,12 PERSIST core e12 CAD. Non misura ore, costi, percentuale di tempo rimasto
@@ -12,7 +12,7 @@ scope, senza dichiarare completate le capacità rinviate.
 | Area | Task verificate / totale | Stato effettivo |
 |---|---:|---|
 | Core, runtime, CLI e report P0–P13 |84/85| Operativi nello scope ratificato; T-P2-03 conserva il residuo approvato |
-| Tooling schema P14 |3/5| Importer/canonical/diff verificati;14-02 locale, CLI import/list futura |
+| Tooling schema P14 |4/5| Importer/normalizzazione/lint/canonical/diff verificati; CLI import/list futura |
 | Packaging e release P15 |0/7| Non iniziato |
 | UI Slint P16 |0/9| Non iniziata |
 | Hardening/benchmark P17 |0/6| Non iniziato |
@@ -20,9 +20,8 @@ scope, senza dichiarare completate le capacità rinviate.
 | Persistenza core |0/12| Requisito definitivo, backend/repository storico da implementare |
 | Integrazione CAD |0/12| Formalizzazioni ricevute, runtime completo non consegnato |
 
-Prima della chiusura14-02:87 DONE,1 task parziale(T-P2-03),1 locale in verifica
-nativa(14-02),51 non iniziate. Il totale rimane140, nessun incremento sulla sola
-implementazione o sull'approvazione della proposta.
+Dopo la chiusura14-02:88 DONE,1 task parziale(T-P2-03),51 non iniziate.
+Il totale rimane140; sono conteggiate soltanto le consegne verificate.
 
 ## Cosa è già operativo
 
@@ -57,8 +56,10 @@ controlli strutturali e il compiler mantengono il rifiuto dei veri errori.
 642 test in75 suite locali passati, nessun fallimento;2 test esplicitamente
 ignored nella suite ordinaria. La qualificazione sul workbook SIOC originale è
 eseguita separatamente; la fonte esterna non è un prerequisito nascosto della CI.
-Fmt/check/clippy/release/GNU e qualificazione SIOC post-lint passati. CI nativa
-ancora da verificare sul commit pubblicato.
+Fmt/check/clippy/release/GNU e qualificazione SIOC post-lint passati.
+CI [40290169690](https://github.com/UraganoAngelina/lintra/actions/runs/40290169690):
+Linux121463096084 e MSVC121463095876 entrambi completed/success, letti direttamente
+sull’esatto commit e68881c. Tre chiamate totali, intervalli superiori a60 secondi.
 
 ## Limiti e consegne future
 

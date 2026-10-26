@@ -3,23 +3,22 @@
 Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P14-01/14-04 verificate; checkpoint T-P14-02
+## Frontiera corrente — T-P14-02 DONE; checkpoint richiesto dall’autore
 
-2026-10-25: CI [40238421197](https://github.com/UraganoAngelina/lintra/actions/runs/40238421197)
-su7b8bd8bad5d67a2f538909b94f0561356336f091 letta direttamente: Linux
-121304841503 e MSVC121304841698 completed/success.632 test/74 suite locali,
-qualificazione originale SIOC135campi/130formule/8note e tutti i gate positivi.
-T-P14-01 DONE. Lo stesso gate include i9 test e il codice invariato di14-04:
-chiusa14-04 su questa evidenza discendente, non presunto il vecchio esito MSVC.
-**87/140 DONE =62,1%**. M6 nello scope ratificato, M7 ancora non raggiunta.
+2026-10-26: **88/140 DONE =62,9%**, conteggio per task con peso uguale, non
+stima temporale o copertura normativa.1 task parziale(T-P2-03),51 non iniziate.
+T-P14-02 conclusa su e68881cd89b5cf100c58d7f682db191c4210e86b:
+642 test/75 suite/0 fail/2ignored; fmt/check/clippy/release/GNU e qualificazione
+workbook SIOC originale positivi. CI [40290169690](https://github.com/UraganoAngelina/lintra/actions/runs/40290169690):
+Linux121463096084 e MSVC121463095876 entrambi completed/success letti direttamente.
+Tre chiamate totali, intervalli≥60s. Normalizzazione alias espliciti, review
+note con hash e lint warning/error; nessuna norma hardcoded o baseline modificata.
 
-T-P14-02 IN_PROGRESS, gate locale642/75 suite positivo, fmt/check/clippy/
-release/GNU/diff e qualificazione SIOC originale passati. Normalizzazione alias
-espliciti, review note con hash, lint warning/error e domini contraddittori. Nessuna nuova norma hardcoded,
-nessuna baseline modificata. Stop al termine14-02 per checkpoint richiesto
-dall'autore: resoconto e percentuale, nessuna ulteriore task.
-[Importer](docs/verification/T-P14-01-xlsx-importer.md),
-[preflight14-02](docs/verification/T-P14-02-preflight.md).
+T-P14-01/14-04 già DONE su CI40238421197, commit7b8bd8b; il vecchio polling
+14-04 incompleto resta storico. M6 raggiunta nello scope ratificato, M7 ancora
+aperta:14-05/DEC-18 future. STOP al checkpoint: nessuna task successiva avviata.
+[Resoconto avanzamento](docs/verification/PROJECT_PROGRESS_2026-10-26_T-P14-02.md),
+[report tecnico/handoff](docs/verification/T-P14-02-authoring-lint.md).
 Preservate newline esterna proposta reference e intera cartella source XLSX.
 
 ## Registro storico — sviluppo locale14-01 e gate remoto14-04 pendente
@@ -1558,8 +1557,8 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 |---|---|---|
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
-| QG-1 — controlli locali | PASS per T-P13-08 | fmt/check/clippy/test/release/GNU, 611 test in72 suite |
-| QG-2 — CI Linux/Windows | PASS T-P13-08 | CI40192491629 su52762c8, Linux GNU e Windows MSVC completed/success letti direttamente |
+| QG-1 — controlli locali | PASS per T-P14-02 | fmt/check/clippy/test/release/GNU,642 test in75 suite; qualificazione SIOC originale positiva |
+| QG-2 — CI Linux/Windows | PASS T-P14-02 | CI40290169690 su e68881c, Linux GNU e Windows MSVC completed/success letti direttamente |
 | QG-3 — architettura | PASS nello scope LocalOnly/Full ratificato | Compiled non forgiabili, DSL/projection/Context Store generici; nessuna norma hardcoded, nessuna dipendenza engine→application |
 | QG-4 — golden | PASS T-P13-08 | Scenari precedenti invariati più3 normativi SIOC referenziali nel percorso produttivo; oracolo indipendente, CI40192491629 Linux/MSVC success |
 | QG-8 — documenti | PASS con revisione autorizzata T-P6-03 | DET §44 e prompt kit aggiornati per mandato esplicito; hash prima/dopo registrati; ARCH/Piano invariati; nessun residuo fisico formato 1 |
@@ -1667,7 +1666,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P7-03 | DONE | 2026-10-21 | Loop streaming, audit/cancellazione, 263 locali; CI 39571479598 Linux/Windows verde 5d2f371; [report](docs/verification/T-P7-03.md) |
 | T-P14-01 | DONE | 2026-10-25 | 632/74 suite, qualificazione SIOC reale positiva; CI40238421197 Linux/MSVC success su7b8bd8b; [report](docs/verification/T-P14-01-xlsx-importer.md) |
 | T-P14-04 | DONE | 2026-10-25 | Codice/test invariati7024f5f, qualificati nella CI discendente40238421197 Linux/MSVC success su7b8bd8b; vecchio pollingMSVC ignoto conservato storico; [report](docs/verification/T-P14-04-schema-diff.md) |
-| T-P14-02 | IN_PROGRESS | 2026-10-26 | Normalizzazione/lint avanzato,642 test/75 suite e gate locali positivi; native da verificare, poi stop checkpoint; [report](docs/verification/T-P14-02-authoring-lint.md) |
+| T-P14-02 | DONE | 2026-10-26 | Normalizzazione/lint avanzato,642 test/75 suite; CI40290169690 Linux/MSVC success, checkpoint STOP; [report](docs/verification/T-P14-02-authoring-lint.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
@@ -4049,3 +4048,19 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
   entrambi, un solo errore. Nessun test/golden normativo indebolito o riscritto.
 - NEXT: push/CI reali, massimo tre chiamate≥60s. Dopo successo chiudere14-02,
   rendicontare88/14062,9% e fermarsi. Non presumere esiti non disponibili.
+
+## HANDOFF §15.3 — T-P14-02 DONE, checkpoint2026-10-26
+
+- STATUS: DONE;88/140 task=62,9%,1 parziale e51 non iniziate.
+- COMMIT: e68881cd89b5cf100c58d7f682db191c4210e86b pubblicato sul branch
+  work/p1-foundations. Nessun conflitto contrattuale nuovo.
+- FILE: authoring/linter/export, alias SIOC/README, test authoring/field_pipeline;
+  dossier dettagliato, preflight, stato e resoconto aggiornati.
+- TEST:642 pass/75 suite/0 fail/2ignored, fmt/check/clippy/release/Windows GNU;
+  qualificazione manuale SIOC e generator check-only passati.
+- CI:40290169690, Linux121463096084/MSVC121463095876 completed/success
+  sull’esatto commit.3 chiamate, intervalli≥60s; nessuna quarta richiesta.
+- INTEGRITÀ:90 file protetti e33 hash golden invariati; Cargo.lock invariato.
+  XLSX utente e newline esterna della proposta reference non staged.
+- NEXT: STOP richiesto dall’autore.14-05 candidata futura, preflight DEC-18 e
+  dipendenze da verificare alla ripresa. Nessuna14-05/P15 avviata.

@@ -164,3 +164,26 @@ Qualificazione manuale sul workbook originale di nuovo positiva dopo il lint:
 135field/130formule/8note, PERSIST completo ancora correttamente rifiutato.
 Generator135binding in check-only passato, fonti/schema/lock invariati.
 Gate nativo sul commit pubblicato ancora da verificare:14-02 IN_PROGRESS.
+
+### Gate nativo — prima lettura
+
+Commit pubblicato e68881cd89b5cf100c58d7f682db191c4210e86b,
+CI [40290169690](https://github.com/UraganoAngelina/lintra/actions/runs/40290169690).
+Dispatch accettato; seconda chiamata dopo oltre4 minuti: Linux121463096084
+completed/success, Windows MSVC121463095876 in_progress, conclusion null.
+Questa osservazione non chiude il gate Windows. Budget massimo3 chiamate,
+intervallo minimo60 secondi; ultima lettura riservata dopo ulteriore attesa.
+
+### Chiusura definitiva e handoff —2026-10-26
+
+Terza e ultima chiamata, oltre7 minuti dopo la seconda: Linux121463096084 e
+Windows MSVC121463095876 entrambi completed/success su e68881c, run40290169690.
+Gate nativi fmt/clippy/test/release superati su entrambe le piattaforme.
+T-P14-02 DONE; nessun blocco contrattuale residuo della task.88/140 DONE=62,9%.
+
+File consegnati: authoring/linter/export, tabella alias SIOC e README,10 test
+authoring e fixture field_pipeline soddisfacibile; dossier, preflight e stato.
+Nessuna nuova dipendenza, baseline o semantica runtime. Source XLSX utente e
+newline preesistente della proposta reference preservati fuori commit.
+Prossima candidata T-P14-05 non avviata: richiede il preflight DEC-18 e i
+prerequisiti di piano. STOP al checkpoint richiesto, nessuna task successiva.
