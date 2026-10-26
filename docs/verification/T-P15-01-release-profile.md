@@ -113,9 +113,28 @@ ma prefisso uguale l'offset è la lunghezza minima. Non si modificano i binari,
 non si ignorano header/byte e non si indebolisce il confronto.
 Nuova CI richiesta; test/clippy tooling ripetuti dopo la correzione.
 
-## Handoff provvisorio
+Correzione7c919fb5690b95863e3f8b3746a4b6e67b07f728 pubblicata, nuovo dispatch204.
+CI [40307076976](https://github.com/UraganoAngelina/lintra/actions/runs/40307076976),
+prima lettura in_progress sullo SHA atteso.
+La documentazione README espone la ricetta esatta per entrambi i runner, i limiti
+della riproducibilità verificata e la distinzione fra verifica locale e release.
 
-Task T-P15-01 IN_PROGRESS. Ricetta e verifica Linux implementate. Restano
-CI Linux/MSVC sul commit implementativo. Nessun
-blocco contrattuale rilevato. Prossima candidata T-P15-02, dipendente dal gate
-di questa task: non READY finché manca la verifica. Prosecuzione AUTO_CONTINUE.
+## Esito finale e handoff
+
+26 ottobre2026,10:31:01 UTC: lettura diretta Jobs del run40307076976 sullo
+SHA7c919fb5690b95863e3f8b3746a4b6e67b07f728: Linux121518727583 e
+MSVC121518727360 entrambi completed/success, tutti gli step positivi. Quattro
+letture per questo run: la terza mostrava Linux success/MSVC in_progress;
+quarta necessaria alla chiusura, già autorizzata dalla governance permanente,
+intervalli superiori a60s. Nessuna nuova richiesta di consenso o pipeline duplicata.
+Il confronto byte passa integralmente anche su MSVC con il flag correttivo.
+
+T-P15-01 DONE;90/140=64,3%,1 parziale,49 non iniziate alla chiusura. M5 resta
+aperta: artifact verifier, bundle, release e test cross-OS ancora futuri.
+File: Cargo.toml, .cargo/config.toml, workflow CI, xtask manifest/lock/main,
+README, registro dipendenze, status/report/snapshot. Implementazione272be20 e
+fix7c919fb pubblicati; chiusura documentale successiva senza cambio al codice
+sottoposto al gate. Nessun conflitto o residuo della task, nessun benchmark
+anticipato. Nessuna modifica ad engine, norme, ARCH/DET o lock del prodotto.
+Prossima READY T-P15-02 (prerequisito nativo ora verificato), preflight avviato
+immediatamente. Prosecuzione AUTO_CONTINUE, nessuna approvazione ordinaria.

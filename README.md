@@ -40,6 +40,22 @@ cross-check Windows GNU e conservazione dei byte delle fixture.
 La CI T-P1-03 usa runner Linux e Windows MSVC reali; le verifiche locali
 non attestano il superamento del gate multipiattaforma.
 
+La ricetta release della CI applica remapping dei path, CRT statico e linker
+deterministico su MSVC, poi confronta due compilazioni pulite:
+
+```sh
+cargo xtask build-release --target x86_64-unknown-linux-gnu --verify-reproducible
+# Sul runner Windows nativo:
+cargo xtask build-release --target x86_64-pc-windows-msvc --verify-reproducible
+```
+
+Il tooling è Rust std-only, con manifest/lock autonomi in xtask/. L'opzione
+--offline usa esclusivamente dipendenze già acquisite. Le directory di verifica
+sono nuove sotto target/release-profile e vengono conservate per diagnosi.
+Il gate riguarda lo stesso checkout/toolchain/runner; non promette identità
+tra OS diversi. Le release distribuibili restano prodotte esclusivamente in CI;
+packaging, autosufficienza e pubblicazione richiedono i rispettivi gate P15.
+
 ## Struttura
 
 - `src/lib.rs`: moduli privati `application`, `domain`, `schema`, `input`,

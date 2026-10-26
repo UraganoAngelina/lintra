@@ -3,7 +3,18 @@
 Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P15-01 IN_PROGRESS; governance permanente applicata
+## Frontiera corrente — T-P15-01 DONE; preflight T-P15-02 avviato automaticamente
+
+26 ottobre2026,10:31:01 UTC: CI40307076976 su7c919fb5690b95863e3f8b3746a4b6e67b07f728
+Linux121518727583 e MSVC121518727360 completed/success, letti direttamente.
+Profilo release/remap/CRT e confronto byte di due build pulite verificati su
+entrambi gli OS. Dopo failure MSVC del primo run, /Brepro corregge la ricetta;
+nessun byte escluso dal confronto. **90/140 DONE=64,3%**,1 parziale,49 non iniziate
+alla chiusura. M5 resta aperta. Status/handoff aggiornati, prossima READY15-02
+(prerequisito15-01 ora verificato). AUTO_CONTINUE, nessun consenso ordinario.
+[Report e spiegazione tecnica](docs/verification/T-P15-01-release-profile.md).
+
+## Registro storico — attuazione T-P15-01 e gate correttivo
 
 26 ottobre2026: migrazione GOV-2026-10-26-01 verificata e committata cbcb750;
 push completato dopo retry motivato per errore DNS. T-P15-01
@@ -16,7 +27,8 @@ Clippy tooling positivo; due build release Linux pulite byte-identiche
 0fail,2ignored; tooling2/2. Commit272be20 pubblicato. CI40305761076 avviata,
 terza lettura alle10:19:50 UTC: Linux success, MSVC failure sul confronto byte
 delle release; compilazioni/test entrambi positivi, confermati dal log acquisito.
-Ricetta MSVC corretta con /Brepro e diagnostica offset; nuova CI da avviare.
+Ricetta MSVC corretta con /Brepro e diagnostica offset, commit7c919fb pubblicato;
+nuova CI40307076976 avviata, prima lettura in_progress.
 Nessun DONE/M5 anticipato.
 [Report tecnico e handoff](docs/verification/T-P15-01-release-profile.md).
 Avanzamento89/140=63,6% invariato. Prosecuzione automatica dopo gate effettivi.
@@ -1746,7 +1758,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P14-02 | DONE | 2026-10-26 | Normalizzazione/lint avanzato,642 test/75 suite; CI40290169690 Linux/MSVC success, checkpoint STOP; [report](docs/verification/T-P14-02-authoring-lint.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P14-05 | DONE | 2026-10-26 | DEC-18,671 test/77 suite, CI40298536590 Linux/MSVC success su8a9ffd8; M7 raggiunta, STOP; [report](docs/verification/T-P14-05-schema-tooling.md) |
-| T-P15-01 | IN_PROGRESS | 2026-10-26 | Commit272be20 pubblicato; CI40305761076 Linux success/MSVC confronto byte failure; fix /Brepro, nuovo gate necessario; [report](docs/verification/T-P15-01-release-profile.md) |
+| T-P15-01 | DONE | 2026-10-26 | Profilo/remap/CRT/riproducibilità: CI40307076976 Linux/MSVC success su7c919fb;671 test prodotto+2 tooling locali; [report](docs/verification/T-P15-01-release-profile.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
