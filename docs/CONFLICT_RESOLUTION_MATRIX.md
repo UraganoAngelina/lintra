@@ -55,3 +55,16 @@ perimetro tooling;671 test/77 suite locali e CI40298536590 Linux/MSVC success
 su8a9ffd8. Primo gate fallito per path non canonical nell'atteso del test Windows,
 correzione e diagnosi registrate nel [report](verification/T-P14-05-schema-tooling.md).
 Nessuna semantica normativa modificata; nessuna task successiva avviata.
+
+### CNF-ARTIFACT-LINUX-01 — aperto,2026-10-26
+
+Preflight T-P15-02 avviato automaticamente dopo T-P15-01 DONE/CI40307076976.
+ARCH§39C.1 e DET A.3 limitano le dipendenze CLI Linux alla «libc di base» senza
+allowlist esplicita; l'artefatto GNU locale importa anche libgcc_s.so.1 (runtime
+GCC). Nessuna eccezione ratificata trovata; DEC-11 Linux resta aperta. Non si
+estende il gate né si cambia linking/panic/target implicitamente.
+[Proposta A circoscritta e alternativa](proposals/CNF-ARTIFACT-LINUX-01.md),
+[evidenza e handoff](verification/T-P15-02-preflight.md). Stato PROPOSTO,
+non approvato/non implementato;15-02 BLOCKED al preflight. Nessuna modifica
+normativa o architetturale applicata. Governance permanente single-agent e Git/CI
+autorizzati conservati: la pausa riguarda soltanto una decisione contrattuale reale.

@@ -3,7 +3,20 @@
 Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P15-01 DONE; preflight T-P15-02 avviato automaticamente
+## Frontiera corrente — T-P15-01 DONE; T-P15-02 BLOCKED su decisione runtime Linux
+
+Preflight15-02 eseguito automaticamente dopo la chiusura15-01: prerequisito CI
+verificato, ma libgcc_s.so.1 osservata nei DT_NEEDED del CLI GNU locale e assente
+da una allowlist ratificata della «libc di base» (ARCH§39C.1/DET A.3).
+CNF-ARTIFACT-LINUX-01 aperto: proposta A limita esplicitamente il runtime ammesso
+ai quattro SONAME osservati; richiede ratifica, non viene applicata implicitamente.
+DEC-11 distribuzione Linux resta aperta. Nessun verifier/crate/contratto nuovo
+implementato. Stato90 DONE,1 parziale,1 BLOCKED preflight,48 NOT_STARTED.
+[Proposta pronta](docs/proposals/CNF-ARTIFACT-LINUX-01.md),
+[preflight/handoff](docs/verification/T-P15-02-preflight.md).
+Prosecuzione BLOCKED su criticità contrattuale reale; nessun consenso Git/CI richiesto.
+
+## Registro corrente — chiusura T-P15-01 e avvio automatico del preflight successivo
 
 26 ottobre2026,10:31:01 UTC: CI40307076976 su7c919fb5690b95863e3f8b3746a4b6e67b07f728
 Linux121518727583 e MSVC121518727360 completed/success, letti direttamente.
@@ -1759,6 +1772,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P14-05 | DONE | 2026-10-26 | DEC-18,671 test/77 suite, CI40298536590 Linux/MSVC success su8a9ffd8; M7 raggiunta, STOP; [report](docs/verification/T-P14-05-schema-tooling.md) |
 | T-P15-01 | DONE | 2026-10-26 | Profilo/remap/CRT/riproducibilità: CI40307076976 Linux/MSVC success su7c919fb;671 test prodotto+2 tooling locali; [report](docs/verification/T-P15-01-release-profile.md) |
+| T-P15-02 | BLOCKED | 2026-10-26 | Prerequisito15-01 verificato; preflight contrattuale CNF-ARTIFACT-LINUX-01 aperto sull'allowlist libgcc_s Linux, nessuna implementazione; [report](docs/verification/T-P15-02-preflight.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
