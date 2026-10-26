@@ -4,6 +4,10 @@
 IN_PROGRESS: i risultati dei gate vengono aggiunti soltanto dopo esecuzione.
 Nessun Superpowers, subagente o processo locale in background.
 
+**Stato attuale: DONE, M7 raggiunta nel perimetro tooling DEC-18.** CI40298536590
+Linux/MSVC success su8a9ffd8 verificata direttamente; chiusura e handoff in fondo.
+Le sezioni intermedie conservano gli esiti storici, incluso il primo gate fallito.
+
 ## Contratto e prerequisiti
 
 T-P14-01 e T-P8-04 DONE; DEC-18 risolta con
@@ -246,3 +250,66 @@ Release/GNU già qualificati sullo stesso codice produttivo invariato.
 Nuova consegna reale della correzione autorizzata nel workflow: pubblicare e
 avviare un nuovo gate, con budget proprio di tre chiamate distanziate≥60s.
 Nessuna quarta richiesta al vecchio gate; l'eccezione per il log resta pendente.
+
+Correzione pubblicata come8a9ffd8c26a016f8484fe9060cb0694a91fd8768; nuovo
+dispatch accettato circa09:18:32 UTC. Budget nuovo gate: prima chiamata.
+L'autore ha poi autorizzato la lettura diagnostica aggiuntiva del vecchio job.
+Primo tentativo09:19:48 UTC fallito con TLS handshake timeout prima della
+richiesta HTTP; nessun log acquisito. Non viene trasformato in diagnosi letta.
+
+### Diagnosi nativa confermata
+
+L'eccezione dell'autore ha autorizzato la chiamata diagnostica. Retry della
+lettura ha ottenuto il redirect GitHub, ma il download Azure si è fermato su TLS;
+completato poi dal medesimo URL firmato senza un'altra richiesta Actions API.
+Log acquisito alle09:22:54 UTC, conservato localmente senza pubblicare URL firmati.
+Il log conferma un solo test fallito: relevant_invalid_candidates_fail_in_sorted_order_without_omission,
+tests/schema_catalog.rs119. Il path effettivo usa prefisso extended e runneradmin,
+l'atteso originario usa RUNNER~1 senza prefisso. È il difetto di rappresentazione
+già corretto con canonicalize dell'atteso; nessun difetto del catalogo o della
+semantica dei run. Gli8 test precedenti del catalogo su Windows erano passati.
+L'eccezione diagnostica è esaurita, non amplia il polling ordinario. Nuovo gate
+sul commit8a9ffd8 resta da verificare; nessun DONE/M7 prima degli esiti.
+
+## Chiusura definitiva e handoff —2026-10-26
+
+Nuovo gate: dispatch09:18:32 UTC su8a9ffd8c26a016f8484fe9060cb0694a91fd8768.
+Seconda chiamata09:24:37 UTC: GET run list fallita con TCP dial timeout prima
+dell'HTTP. Terza chiamata09:26:28 UTC tramite trasporto urllib autenticato:
+Check Runs REST restituisce esattamente i due check dell'app github-actions,
+entrambi con SHA atteso, completed/success e0 annotazioni:
+
+- Linux:121490454216, completato09:21:10 UTC.
+- Windows MSVC:121490454924, completato09:24:23 UTC.
+- Run:[40298536590](https://github.com/UraganoAngelina/lintra/actions/runs/40298536590),
+  identificato dai details_url di entrambi i check. JSON originale conservato in
+  target/verification-p14-05/T-P14-05-corrected-native-checks.json.
+
+Tre chiamate contate per il nuovo gate, compreso il timeout, intervalli≥60s;
+nessuna quarta. La lettura extra del vecchio log era un'eccezione espressa e
+separata: non viene usata per ampliare il polling. Token solo in memoria durante
+il fallback e mai scritto in repository/log. La CI qualificata usa workflow
+immutato con fmt/clippy/test/release su entrambi i target; il successo dei due
+job conclude QG-2. QG-1/3/4 locali e determinismo regressioni sono già verificati.
+
+T-P14-05 DONE; M7 REACHED: tutte le cinque task P14 verificate, importer/lint,
+canonical/hash, diff e CLI/cataloghi effettivamente consegnati.89/140=63,6%,
+1 parziale(T-P2-03),50 non iniziate; percentuale per task, non effort/copertura.
+Nessun documento residuo per questa task, README/decision log/stato/progresso
+allineati. Il primo fallimento è preservato: non trasformato retroattivamente
+in successo e non causato dal codice produttivo.
+
+Commit implementazione174272c, correzione test8a9ffd8, entrambi pubblicati su
+work/p1-foundations. Chiusura documentale successiva sullo stesso codice/test,
+da pubblicare senza avviare una task o una CI duplicata. Lista file e spiegazione
+dettagliata delle struct/funzioni/condizioni nelle sezioni precedenti.
+
+Nessun residuo14-05 o conflitto aperto nel perimetro. Restano esclusi catalogo
+globale dataset, embedded/P15, nuovi flussi, metadata-tempo, dataset ufficiali
+mancanti, persistente storico e UI. Listing/import riusciti non certificano
+Strict/Full, norme complete o schema eseguibile. Baseline e capacità mancanti
+preservate; provider e semantiche di validazione invariati.
+
+Prossima candidata: T-P15-01 (profilo release), prerequisito di piano T-P8-06
+già documentato DONE; preflight completo solo dopo nuova autorizzazione.
+**STOP richiesto dall'autore: nessuna task successiva avviata.**

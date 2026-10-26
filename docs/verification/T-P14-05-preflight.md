@@ -24,3 +24,11 @@ DEC-18 approvata con precisazioni vincolanti il2026-10-26, registrata in
 Blocco risolto; task IN_PROGRESS. Prevale il nuovo STOP dopo14-05/gate/handoff:
 la prosecuzione automatica descritta sopra non autorizza task successive.
 [Spiegazione codice e gate](T-P14-05-schema-tooling.md).
+
+## Chiusura successiva
+
+T-P14-05 DONE/M7 REACHED:671 test/77 suite e CI40298536590 Linux/MSVC success
+su8a9ffd8, verificata26 ottobre2026. Primo errore di rappresentazione path nel
+test Windows corretto e qualificato. Questo preflight resta storico; prevale
+l'handoff finale nel report collegato e in IMPLEMENTATION_STATUS. STOP richiesto,
+nessuna task successiva avviata o autorizzata implicitamente.

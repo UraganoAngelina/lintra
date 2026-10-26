@@ -3,9 +3,9 @@
   "total": 140,
   "basis": "140 catalogued atomic tasks; each task has equal weight, not effort or time",
   "counts": {
-    "DONE": 88,
+    "DONE": 89,
     "IN_PROGRESS": 1,
-    "NOT_STARTED": 51
+    "NOT_STARTED": 50
   },
   "phases": {
     "P0": {
@@ -52,8 +52,7 @@
       "DONE": 8
     },
     "P14": {
-      "DONE": 4,
-      "NOT_STARTED": 1
+      "DONE": 5
     },
     "P15": {
       "NOT_STARTED": 7
@@ -522,8 +521,8 @@
     },
     {
       "task": "T-P14-05",
-      "status": "NOT_STARTED",
-      "declared_status": "NOT_STARTED"
+      "status": "DONE",
+      "declared_status": "DONE"
     },
     {
       "task": "T-P15-01",
@@ -777,11 +776,11 @@
     }
   ],
   "branch": "work/p1-foundations",
-  "code_commit": "e68881cd89b5cf100c58d7f682db191c4210e86b",
-  "last_verified_native_commit": "e68881cd89b5cf100c58d7f682db191c4210e86b",
-  "last_verified_native_run": "40290169690",
-  "verified_percent": 62.9,
-  "workflow": "Checkpoint14-02 completed: local642/75 and native Linux/MSVC passed; STOP requested by author",
+  "code_commit": "8a9ffd8c26a016f8484fe9060cb0694a91fd8768",
+  "last_verified_native_commit": "8a9ffd8c26a016f8484fe9060cb0694a91fd8768",
+  "last_verified_native_run": "40298536590",
+  "verified_percent": 63.6,
+  "workflow": "T-P14-05 DONE, M7 reached under ratified DEC-18; local671/77 and native Linux/MSVC passed; STOP requested by author",
   "native_gate_previous_session": {
     "dispatch_accepted": true,
     "results_verified": false,
@@ -817,7 +816,7 @@
     "final_read": "connect timeout after10s",
     "further_requests_made": false
   },
-  "remote_commit": "e68881cd89b5cf100c58d7f682db191c4210e86b",
+  "remote_commit": "8a9ffd8c26a016f8484fe9060cb0694a91fd8768",
   "t_p14_02_native_gate": {
     "run": "40290169690",
     "head_sha": "e68881cd89b5cf100c58d7f682db191c4210e86b",
@@ -828,5 +827,21 @@
     "actions_requests_counted": 3,
     "minimum_interval_seconds": 60,
     "final_read_utc": "2026-10-26 08:19 UTC"
+  },
+  "t_p14_05_native_gate": {
+    "run": "40298536590",
+    "head_sha": "8a9ffd8c26a016f8484fe9060cb0694a91fd8768",
+    "results_verified": true,
+    "linux_job": "121490454216",
+    "msvc_job": "121490454924",
+    "conclusion": "success",
+    "actions_requests_counted": 3,
+    "minimum_interval_seconds": 60,
+    "final_read_utc": "2026-10-26 09:26:28 UTC",
+    "evidence_api": "commit check-runs, github-actions app",
+    "previous_failed_run": "40296287288",
+    "previous_failure": "Windows test compared canonical path to original tempfile path; confirmed by authorized diagnostic log read",
+    "diagnostic_exception_authorized": true,
+    "unavailable_second_read": "TCP dial timeout before HTTP; final check-runs read succeeded"
   }
 }

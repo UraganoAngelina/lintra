@@ -218,3 +218,7 @@ Ratifica DEC-18 —2026-10-26:
   import draft/lint reali, nessuna certificazione normativa implicita.
 - STOP dopo T-P14-05 e relativi gate/handoff: nessuna task successiva senza
   nuova autorizzazione. Questo stop prevale sulla progressione generale.
+
+Eccezione dell'autore — log MSVC T-P14-05,2026-10-26:
+- Autorizzata una chiamata GitHub aggiuntiva per leggere il log diagnostico del
+  job fallito121483043646, run40296287288. Nessuna estensione generale del polling.

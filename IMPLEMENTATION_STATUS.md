@@ -3,26 +3,35 @@
 Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P14-05 IN_PROGRESS; DEC-18 ratificata
+## Frontiera corrente — T-P14-05 DONE; M7 raggiunta; STOP richiesto
 
-2026-10-26: autore approva DEC-18 con precisazioni vincolanti e autorizza14-05.
-[Ratifica](docs/verification/DEC-18-ratification.md). Catalogo/load separati,
-inventory schema-scoped con trust effettivo, draft import canonical/lint e warning
-Registry implementati;671 test/77 suite/0 fail/2ignored e gate locali positivi:
-fmt/check-all-targets/clippy -D warnings/test con doctest/release/Windows GNU.
-Qualificazione CLI workbook SIOC originale positiva:135 field/130 cached formulas,
-note/provenienza preservate; completo continua a fallire compilazione come richiesto.
-Commit174272c6db7bd5e4ac55afa4f6ea8bb8ef289cd1 pubblicato; dispatch CI Linux/MSVC
-accettato circa09:00:32 UTC. Seconda chiamata alle09:02:39 UTC:
-[run40296287288](https://github.com/UraganoAngelina/lintra/actions/runs/40296287288)
-in_progress sullo SHA esatto. Terza chiamata circa09:12:59 UTC: Linux121483043969
-completed/success; MSVC121483043646 completed/failure nello step Test, release
-skipped. Fmt/Clippy nativi positivi anche su MSVC. Nessun DONE/M7.
-Budget tre chiamate esaurito; richiesta eccezione per log diagnostico. Riesame
-test: confronto path del candidato ora usa rappresentazione canonical anche
-nell'atteso, come richiesto su Windows; causa completa da confermare col log.
-[Report tecnico/handoff](docs/verification/T-P14-05-schema-tooling.md).
-STOP dopo14-05/gate/handoff, nessuna task successiva autorizzata.
+2026-10-26: DEC-18 ratificata e applicata. Catalogo/load separati, inventory
+reference schema-scoped con evidenze reali, import draft canonical/lint e warning
+Registry consegnati. **89/140 DONE=63,6%**,1 parziale(T-P2-03),50 non iniziate;
+conteggio per task a peso uguale, non copertura normativa o stima temporale.
+
+671 test/77 suite/0 fail/2ignored; fmt/check-all-targets/clippy -D warnings/test
+con doctest/release/Windows GNU passati. Dopo correzione del solo atteso del test
+canonical ripetuti fmt/clippy/test, tutti positivi. Qualificazione CLI workbook
+SIOC originale positiva:135 field/130 cached formulas, note/provenienza intatte;
+il completo continua a essere rifiutato dal compiler per capability mancanti.
+
+Implementazione174272c, correzione test8a9ffd8c26a016f8484fe9060cb0694a91fd8768.
+CI [40298536590](https://github.com/UraganoAngelina/lintra/actions/runs/40298536590)
+sullo SHA8a9ffd8: Linux121490454216 e MSVC121490454924 entrambi completed/success,
+letti direttamente via Check Runs alle09:26:28 UTC. Tre chiamate del nuovo gate,
+seconda in timeout TCP; intervalli≥60s. Primo run40296287288 fallito su un confronto
+path del test Windows, preservato nello storico. Log acquisito con eccezione
+dell'autore; correzione confermata senza cambiare codice produttivo o aspettative
+normative. Nessun'altra chiamata necessaria.
+
+M7 raggiunta nel perimetro tooling DEC-18: tutte le cinque task P14 verificate.
+Schemi elencati/draft importati e inventory exit0 non certificano conformità,
+compilabilità o disponibilità Strict/Full. Norme/baseline/engine/application/
+provider/dipendenze invariati. Nessun residuo14-05, nessun documento da aggiornare.
+[Ratifica](docs/verification/DEC-18-ratification.md),
+[report tecnico/handoff](docs/verification/T-P14-05-schema-tooling.md).
+**STOP dopo T-P14-05. Nessuna task successiva avviata; serve nuova autorizzazione.**
 
 ## Registro storico — preflight T-P14-05 bloccato su DEC-18, poi risolto
 
@@ -1592,10 +1601,10 @@ Le analisi aggregate preesistenti non sono test Rust o golden approvati.
 | G0 — normativa | APPROVED_WITH_DEFERRALS | Autore: «Approvo G0 con i rinvii indicati», checklist commit 407f89e, 2026-10-19 |
 | G1 — repository CI | PASS | [Run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518), Linux GNU e Windows MSVC success, commit 34e67da |
 | QG-1 — controlli locali | PASS T-P14-05 | fmt/check/clippy/test/release/GNU,671 test in77 suite; dopo correzione atteso canonical ripetuti fmt/clippy/test, tutti positivi |
-| QG-2 — CI Linux/Windows | FAIL primo gate T-P14-05 | CI40296287288 su174272c: Linux success, MSVC failure/Test; correzione portabilità del test in verifica. Precedente14-02 resta qualificata dalla sua CI |
+| QG-2 — CI Linux/Windows | PASS T-P14-05 | CI40298536590 su8a9ffd8, Linux121490454216/MSVC121490454924 completed/success letti direttamente; primo gate fallito conservato nello storico |
 | QG-3 — architettura | PASS nello scope LocalOnly/Full ratificato | Compiled non forgiabili, DSL/projection/Context Store generici; nessuna norma hardcoded, nessuna dipendenza engine→application |
-| QG-4 — golden | PASS T-P13-08 | Scenari precedenti invariati più3 normativi SIOC referenziali nel percorso produttivo; oracolo indipendente, CI40192491629 Linux/MSVC success |
-| QG-8 — documenti | PASS con revisione autorizzata T-P6-03 | DET §44 e prompt kit aggiornati per mandato esplicito; hash prima/dopo registrati; ARCH/Piano invariati; nessun residuo fisico formato 1 |
+| QG-4 — golden | PASS T-P14-05 | Golden precedenti invariati e regressioni catalogo/JSON ripetibile; CI40298536590 Linux/MSVC success. Scenari SIOC13-08 preservati |
+| QG-8 — documenti | PASS T-P14-05 | DEC-18 ratificata/registrata, README/stato/handoff/progresso aggiornati; nessun documento residuo per14-05. ARCH/DET/piano/norme invariati |
 | G-PERSIST | NOT_STARTED | ADR approvata; solo modulo vuoto |
 | G-SIOC-HIST | OPEN_POLICY | DEC-SIOC-HIST-01, non blocca scaffold |
 | G-CAD-RUNTIME | NOT_STARTED | Richiede compiler, cross-record e persistenza |
@@ -1643,7 +1652,8 @@ contratti approvati e rinvii secondo la procedura di T-P0-09.
 | M3 | REACHED — LocalOnly | Chiusura nativa T-P8-06, CI 39747270986 su 90528c4; perimetro DET §151 ratificato |
 | M4 | LOCAL_SCOPE_VERIFIED | P9–P12 verificate, ultima CI 39976689575 Linux/MSVC success; rinvii G0 e capacità non supportate espliciti, nessuna certificazione normativa completa |
 | M6 | REACHED — scope referenziale ratificato | DET§152: due passate/projection/join/policy/report, golden cross-trace reale e memoria; CI40192491629 Linux/MSVC success. Non certifica Full SIOC/G0 residuo |
-| M5, M7–M9 | NOT_REACHED | Restano release, tooling, UI e hardening |
+| M7 | REACHED — tooling DEC-18 | P14 cinque task DONE; importer/lint/canonical/hash/diff/cataloghi/CLI verificati, CI40298536590 Linux/MSVC success; nessuna certificazione normativa implicita |
+| M5, M8–M9 | NOT_REACHED | Restano release/autosufficienza, UI e hardening |
 
 `DONE` riguarda i criteri e lo scope ratificato della singola task; non
 chiude automaticamente milestone o capacità future. G0 è approvato con rinvii.
@@ -1702,7 +1712,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P14-04 | DONE | 2026-10-25 | Codice/test invariati7024f5f, qualificati nella CI discendente40238421197 Linux/MSVC success su7b8bd8b; vecchio pollingMSVC ignoto conservato storico; [report](docs/verification/T-P14-04-schema-diff.md) |
 | T-P14-02 | DONE | 2026-10-26 | Normalizzazione/lint avanzato,642 test/75 suite; CI40290169690 Linux/MSVC success, checkpoint STOP; [report](docs/verification/T-P14-02-authoring-lint.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
-| T-P14-05 | IN_PROGRESS | 2026-10-26 | DEC-18 ratificata;671 test/77 suite e gate locali positivi, Linux/MSVC da avviare; [report](docs/verification/T-P14-05-schema-tooling.md) |
+| T-P14-05 | DONE | 2026-10-26 | DEC-18,671 test/77 suite, CI40298536590 Linux/MSVC success su8a9ffd8; M7 raggiunta, STOP; [report](docs/verification/T-P14-05-schema-tooling.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
@@ -2360,6 +2370,10 @@ I doctest verificano importabilità e divieto di importare `engine` e
 | Nessuna nuova dipendenza | N-26/DEC-15: lockfile contiene solo `lintra` |
 
 ## Documenti da aggiornare
+
+T-P14-05: nessuno. DEC-18 e relativi contratti pubblici registrati nei dossier,
+README/matrice/stato/progresso allineati. Le note seguenti conservano il contesto
+storico delle ratifiche precedenti, senza residui aggiuntivi per questa task.
 
 ARCH, DET, PLAN e ADR sorgenti rimangono inalterati. CNF-LINTRA-DSL-01
 risolta dalla deroga circoscritta approvata dall’autore; l’allineamento
@@ -4099,3 +4113,30 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
   XLSX utente e newline esterna della proposta reference non staged.
 - NEXT: STOP richiesto dall’autore.14-05 candidata futura, preflight DEC-18 e
   dipendenze da verificare alla ripresa. Nessuna14-05/P15 avviata.
+
+
+## HANDOFF §15.3 — T-P14-05 DONE e M7 raggiunta,2026-10-26
+
+- OBIETTIVO: completare schema list/import e reference-data list secondo DEC-18.
+- STATUS: DONE;89/140=63,6%,1 parziale e50 non iniziate. M7 REACHED nello scope
+  tooling; nessuna certificazione Full SIOC o chiusura dei rinvii G0.
+- COMMIT:174272c implementazione;8a9ffd8 correzione test canonical, pubblicati su
+  work/p1-foundations. Chiusura documentale successiva sullo stesso codice/test.
+- FILE: catalog/repository/lowering/export, Registry warning read-only, CLI args/
+  dispatch/tooling/lint, test catalog/inventory/import/lint/parser; README, DEC-18,
+  matrice append-only, AGENTS, stato/preflight/report e snapshot progresso.
+- DECISIONI: DEC-18 ratificata con trust/evidenze reali, inventory schema-scoped,
+  root esplicite, file nuovo atomico; CNF precedenti e contratti load invariati.
+- TEST:671/77 suite/0 fail/2ignored, fmt/check/clippy/test con doctest/release/GNU;
+  fmt/clippy/test ripetuti dopo il solo fix del test. Qualificazione CLI SIOC
+  originale135 field/130 formule cached e135 warning note preservate.
+- CI:40298536590 su8a9ffd8; Linux121490454216/MSVC121490454924 success letti
+  direttamente alle09:26:28 UTC.3 chiamate per il nuovo gate,≥60s, nessuna quarta.
+  Primo gate40296287288: errore fixture Windows confermato dal log, conservato
+  nello storico. Lettura diagnostica aggiuntiva esplicitamente autorizzata.
+- INTEGRITÀ: engine/application/provider/schemi/norme/ARCH/DET/piano e dipendenze
+  invariati;3 hash sorgenti/33 artefatti13-08 verificati; nessun dato paziente.
+- RESIDUI14-05: nessuno. Restano futuri embedded/release, UI, persistenza storica,
+  metadata-tempo/dataset ufficiali mancanti e capacità Full SIOC non implementate.
+- NEXT: STOP dell'autore. Prossima area candidata P15 secondo piano e prerequisiti
+  da verificare; nessuna task futura iniziata o autorizzata da questa chiusura.

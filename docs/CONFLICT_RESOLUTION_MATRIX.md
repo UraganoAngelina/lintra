@@ -49,3 +49,9 @@ Verified/Degraded/Unavailable reali, import draft canonical/lint e warning Regis
 Tooling exit0/1, mai2 per authoring. Listing/import non certificano conformità.
 Nessun cambiamento a norme/capability/Strict; DONE/M7 solo dopo gate effettivi.
 STOP al termine14-05, nuova autorizzazione necessaria per task successive.
+
+Applicazione DEC-18 verificata2026-10-26: T-P14-05 DONE e M7 raggiunta nel
+perimetro tooling;671 test/77 suite locali e CI40298536590 Linux/MSVC success
+su8a9ffd8. Primo gate fallito per path non canonical nell'atteso del test Windows,
+correzione e diagnosi registrate nel [report](verification/T-P14-05-schema-tooling.md).
+Nessuna semantica normativa modificata; nessuna task successiva avviata.
