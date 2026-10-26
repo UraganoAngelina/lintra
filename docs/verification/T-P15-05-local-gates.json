@@ -1,0 +1,161 @@
+{
+  "task": "T-P15-05",
+  "done": false,
+  "native_ci_verified": false,
+  "release_verified": false,
+  "ratification": "DEC-RELEASE-SETUP-01 A",
+  "version": "0.1.1-rc.1",
+  "repositories_private_verified": [
+    "UraganoAngelina/lintra-binaries",
+    "UraganoAngelina/lintra-data"
+  ],
+  "native_immutable_releases_enabled_verified": true,
+  "release_secret_last_read_present": true,
+  "local_commands": [
+    {
+      "name": "python-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/tests",
+        "-v"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "clippy-default",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "test-default",
+      "command": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "clippy-features",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--all-features",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "test-features",
+      "command": [
+        "cargo",
+        "test",
+        "--all-features",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tool-fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "xtask/Cargo.toml",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tool-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "xtask/Cargo.toml",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tool-test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "xtask/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--",
+        "--include-ignored"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "product_tests": {
+    "default": {
+      "passed": 681,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 79
+    },
+    "features": {
+      "passed": 689,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 79
+    }
+  },
+  "tool_tests": {
+    "passed": 15,
+    "failed": 0,
+    "ignored": 0
+  },
+  "python_tests": {
+    "passed": 12,
+    "failed": 0
+  },
+  "actionlint": "1.7.12 pass (syntax/expressions; external shellcheck/pyflakes unavailable)",
+  "governance_audit": "pass",
+  "golden_changes": "validator_version only in three expected summaries",
+  "native_ci": "not started",
+  "publication": "not attempted",
+  "actionlint_exit": 0
+}

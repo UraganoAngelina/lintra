@@ -3,7 +3,17 @@
 Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P15-04 DONE; T-P15-05 BLOCKED al gate umano
+## Frontiera corrente — T-P15-05 IN_PROGRESS, ratifica release A acquisita
+
+L’autore approva DEC-RELEASE-SETUP-01 A: destinazioni private, PAT dedicato e
+baseline Linux ubuntu-24.04. [Ratifica](docs/verification/DEC-RELEASE-SETUP-01-ratification.md).
+Ripresi bootstrap/workflow/packaging15-05; configurazione effettiva del secret e
+release di prova ancora da verificare. Nessun DONE o credenziale inventati.
+93/140 DONE=66,4%,2 IN_PROGRESS (2-03 parziale e15-05),45 NOT_STARTED; M5 aperta.
+
+## Registro storico — gate umano precedente alla ratifica
+
+### Chiusura15-04 e preflight iniziale15-05
 
 T-P15-03 DONE: CI40339655671 su c538493, Linux/MSVC success.
 T-P15-04 DONE: CI40343261368 su f7426a5ef737fb392e79eb3a80fda8ebf53a7b11,
@@ -1839,7 +1849,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-02 | DONE | 2026-10-26 | CNF-ARTIFACT-LINUX-01 A ratificata;671 prodotto/9 tooling locali; CI40329791116 Linux/MSVC success su59b1663, verifier e negative probe reali; [report](docs/verification/T-P15-02-artifact-verifier.md) |
 | T-P15-03 | DONE | 2026-10-26 | Snapshot/wiring/audit ratificati; locale681/689 e CI40339655671 Linux/MSVC success su c538493; [dossier](docs/verification/T-P15-03-embedded-bundle.md) |
 | T-P15-04 | DONE | 2026-10-26 | ZIP runtime/manifest/checksum/no-clobber; locale681/689 prodotto+15 tooling; CI40343261368 Linux/MSVC success su f7426a5, estratto accettato da binario esistente; [dossier](docs/verification/T-P15-04-data-bundle.md) |
-| T-P15-05 | BLOCKED | 2026-10-26 | Preflight: DEC-08/09/11 aperte; proposta DEC-RELEASE-SETUP-01 sottoposta, nessun workflow o destinazione inventati |
+| T-P15-05 | IN_PROGRESS | 2026-10-26 | DEC-RELEASE-SETUP-01 A ratificata; workflow/packaging ripresi, secret e release di prova pendenti |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |

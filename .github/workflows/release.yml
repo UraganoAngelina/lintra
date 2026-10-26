@@ -1,0 +1,85 @@
+name: Release executable
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Exact Cargo package version, always a new release
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lintra-executable-release
+  cancel-in-progress: false
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - name: Verify exact source gate, credential and unused version
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+          LINTRA_RELEASE_TOKEN: ${{ secrets.LINTRA_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/release.py preflight
+  build:
+    needs: preflight
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - os: windows-2025
+            target: x86_64-pc-windows-msvc
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - name: Install native Rust target
+        run: rustup target add ${{ matrix.target }}
+      - name: Native build, reproducibility, artifact gate and packaging
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_TARGET: ${{ matrix.target }}
+        run: python scripts/release.py build --directory release-output
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: executable-${{ matrix.target }}
+          path: release-output/*
+          if-no-files-found: error
+          retention-days: 7
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: executable-*
+          path: release-artifacts
+          merge-multiple: true
+      - name: Publish complete immutable release in approved private repository
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+          LINTRA_RELEASE_TOKEN: ${{ secrets.LINTRA_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/release.py publish --directory release-artifacts

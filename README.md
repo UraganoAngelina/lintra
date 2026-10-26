@@ -104,6 +104,17 @@ normativamente gli schemi. Pubblicazione delle release nei workflow successivi.
 Il test di accettazione del tooling richiede un binario già costruito:
 `LINTRA_TEST_BIN=/percorso/lintra cargo test --manifest-path xtask/Cargo.toml --locked -- --include-ignored`.
 
+Il workflow `Release executable` si avvia manualmente con versione identica a
+Cargo.toml, su uno SHA che abbia superato la CI nativa. Destinazione approvata:
+`UraganoAngelina/lintra-binaries` privata, con immutabilità GitHub abilitata.
+Richiede nel sorgente il secret `LINTRA_RELEASE_TOKEN` dedicato a quella sola
+destinazione (Contents write, Metadata read, scadenza90giorni); non riusa token
+locali e non li passa alle build. Tag/release/draft esistenti fanno fallire il run.
+Gli upload sono controllati in draft prima della pubblicazione immutabile;
+errori lasciano la versione riservata, da diagnosticare senza sovrascriverla.
+La prova di release resta pendente finché credenziale e pubblicazione non sono
+verificate: [stato T-P15-05](docs/verification/T-P15-05-executable-release.md).
+
 ## Struttura
 
 - `src/lib.rs`: moduli privati `application`, `domain`, `schema`, `input`,

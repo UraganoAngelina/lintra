@@ -97,3 +97,8 @@ Ripresa T-P15-03; audit additivo, manifest esterno opzionale, policy reference i
 Non sono nuovi conflitti runtime: prerequisiti umani espliciti del piano.
 Proposta concreta [DEC-RELEASE-SETUP-01](proposals/DEC-RELEASE-SETUP-01.md),
 nessuna ratifica presunta.15-04 prosegue indipendentemente con il proprio gate.
+
+### DEC-RELEASE-SETUP-01 — A ratificata,2026-10-26
+
+DEC-08/09/11: [contratto A approvato](verification/DEC-RELEASE-SETUP-01-ratification.md).
+Ripresa15-05; disponibilità effettiva del secret resta da verificare prima del gate release.

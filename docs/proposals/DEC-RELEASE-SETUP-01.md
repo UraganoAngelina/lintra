@@ -1,6 +1,9 @@
 # DEC-RELEASE-SETUP-01 — Repository, credenziale e baseline release
 
-2026-10-26. **PROPOSTA, NON RATIFICATA.**
+Nota successiva: **A ratificata** dall’autore; vedere [ratifica](../verification/DEC-RELEASE-SETUP-01-ratification.md).
+Testo storico della proposta conservato.
+
+2026-10-26. **PROPOSTA, NON RATIFICATA al momento della redazione.**
 Nota successiva15:02:28 UTC: T-P15-04 DONE, CI40343261368 Linux/MSVC success.
 Il gate di questa proposta resta aperto; i fatti seguenti descrivono il preflight. Preflight dei prerequisiti umani
 DEC-08/09/11 di T-P15-05; non è richiesta di permesso per normali commit/push/CI.
