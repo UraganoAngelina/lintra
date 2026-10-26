@@ -39,3 +39,13 @@ Chiusura T-P13-08 verificata2026-10-25 alla ripresa: CNF-SIOC-REFERENTIAL-G0-01
 implementata in structural-minimal.2/componente tracciato, gate locale611 test e
 CI40192491629 Linux/MSVC success sul codice52762c8. Nessuna modifica alle fonti
 protette; rinvii/capability del completo conservati. Nuovo mandato supera lo stop.
+
+### DEC-18 — ratifica successiva,2026-10-26
+
+Decisione del registro Master Plan risolta dall'autore senza riscrivere il piano:
+[ratifica definitiva](verification/DEC-18-ratification.md). Autorizzata T-P14-05:
+SchemaCatalog separato da load_raw, inventory reference schema-scoped con stati
+Verified/Degraded/Unavailable reali, import draft canonical/lint e warning Registry.
+Tooling exit0/1, mai2 per authoring. Listing/import non certificano conformità.
+Nessun cambiamento a norme/capability/Strict; DONE/M7 solo dopo gate effettivi.
+STOP al termine14-05, nuova autorizzazione necessaria per task successive.

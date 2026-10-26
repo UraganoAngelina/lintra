@@ -24,6 +24,21 @@ pub struct ValidateArgs {
 pub enum CliCommand {
     Validate(Box<ValidateArgs>),
     SchemaLint(LintArgs),
+    SchemaList(PathBuf),
+    ReferenceList(ReferenceListArgs),
+    SchemaImport(ImportArgs),
+}
+pub struct ReferenceListArgs {
+    pub schema_root: PathBuf,
+    pub reference_root: PathBuf,
+    pub key: SchemaKey,
+}
+pub struct ImportArgs {
+    pub input: PathBuf,
+    pub blueprint: PathBuf,
+    pub profile: PathBuf,
+    pub output: PathBuf,
+    pub aliases: Option<PathBuf>,
 }
 /// Lint checks an explicitly selected version using the production registry.
 /// A schema-only operation does not require a reference-data bundle or input.
@@ -112,6 +127,20 @@ pub fn command() -> Command {
                 .subcommand_required(true)
                 .arg_required_else_help(true)
                 .subcommand(
+                    Command::new("list")
+                        .about("Elenca schemi acquisibili, senza certificarli")
+                        .arg(path("schema-dir").required(true)),
+                )
+                .subcommand(
+                    Command::new("import")
+                        .about("Importa un draft XLSX con blueprint e profilo revisionati")
+                        .arg(path("input").required(true))
+                        .arg(path("blueprint").required(true))
+                        .arg(path("profile").required(true))
+                        .arg(path("output").required(true))
+                        .arg(path("type-aliases")),
+                )
+                .subcommand(
                     Command::new("lint")
                         .about("Verifica lo schema con il compiler attualmente supportato")
                         .arg(text("flow"))
@@ -123,6 +152,19 @@ pub fn command() -> Command {
                                 .required(true)
                                 .value_parser(["utf8"]),
                         ),
+                ),
+        )
+        .subcommand(
+            Command::new("reference-data")
+                .subcommand_required(true)
+                .arg_required_else_help(true)
+                .subcommand(
+                    Command::new("list")
+                        .about("Inventario diagnostico delle dipendenze dello schema")
+                        .arg(path("schema-dir").required(true))
+                        .arg(path("reference-data-dir").required(true))
+                        .arg(text("flow"))
+                        .arg(text("schema-version")),
                 ),
         )
         .subcommand(validation_command("validate", false))
@@ -145,8 +187,33 @@ where
 {
     let matches = command().try_get_matches_from(arguments)?;
     let (name, args) = matches.subcommand().expect("clap requires a subcommand");
+    if name == "reference-data" {
+        let (_, list) = args
+            .subcommand()
+            .expect("clap requires reference-data subcommand");
+        return Ok(CliCommand::ReferenceList(ReferenceListArgs {
+            schema_root: required(list, "schema-dir"),
+            reference_root: required(list, "reference-data-dir"),
+            key: SchemaKey {
+                flow_id: FlowId(required(list, "flow")),
+                version: SchemaVersion(required(list, "schema-version")),
+            },
+        }));
+    }
     if name == "schema" {
-        let (_, lint) = args.subcommand().expect("clap requires schema lint");
+        let (operation, lint) = args.subcommand().expect("clap requires schema subcommand");
+        if operation == "list" {
+            return Ok(CliCommand::SchemaList(required(lint, "schema-dir")));
+        }
+        if operation == "import" {
+            return Ok(CliCommand::SchemaImport(ImportArgs {
+                input: required(lint, "input"),
+                blueprint: required(lint, "blueprint"),
+                profile: required(lint, "profile"),
+                output: required(lint, "output"),
+                aliases: lint.get_one::<PathBuf>("type-aliases").cloned(),
+            }));
+        }
         return Ok(CliCommand::SchemaLint(LintArgs {
             schema_root: required(lint, "schema-dir"),
             key: SchemaKey {

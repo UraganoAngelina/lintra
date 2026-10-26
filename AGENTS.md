@@ -200,3 +200,21 @@ Checkpoint successivo dell’autore —2026-10-25:
   checkpoint dichiarato su T-P14-02 dopo verifica della consegna14-01.
 - Terminata14-02 e relativi gate, fermarsi con resoconto/progresso verificato.
   Nessuna14-05/P15 o ulteriore task prima di nuova autorizzazione.
+
+Mandato successivo dell'autore — ripresa2026-10-26:
+- Autorizzato lo sviluppo delle task del piano dopo il checkpoint14-02.
+- Niente Superpowers o task parallele; restano esclusi subagenti/background.
+- Autorizzati push sul repository e avvii CI quando necessari.
+- Dopo ogni task verificata proseguire automaticamente senza criticità.
+- Fermarsi per criticità evidenti sottoponendo proposte risolutive all'autore;
+  le decisioni esplicitamente aperte non sono ratificate implicitamente.
+- Restano limite tre chiamate CI per gate distanziate almeno un minuto,
+  spiegazioni dettagliate del codice, gate reali e recap file.
+
+Ratifica DEC-18 —2026-10-26:
+- Proposta catalogo approvata con precisazioni vincolanti; vedere
+  docs/verification/DEC-18-ratification.md. Autorizzata T-P14-05.
+- Catalogo separato da load; inventory reference schema-scoped e trust effettivo;
+  import draft/lint reali, nessuna certificazione normativa implicita.
+- STOP dopo T-P14-05 e relativi gate/handoff: nessuna task successiva senza
+  nuova autorizzazione. Questo stop prevale sulla progressione generale.

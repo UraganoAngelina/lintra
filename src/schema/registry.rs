@@ -97,9 +97,16 @@ impl SchemaRegistry {
         let schema_hash =
             crate::schema_fingerprint(&raw).map_err(SchemaResolutionError::Canonical)?;
         raw.encoding.resolved = Some(self.encoding.clone());
+        // Preserve authoring warnings from this exact loaded snapshot; compiler
+        // remains authoritative and failures carry its own issue sequence.
+        let warnings = crate::lint_raw_schema(&raw)
+            .into_iter()
+            .filter(|issue| issue.severity == crate::SchemaIssueSeverity::Warning)
+            .collect();
         Ok(ResolvedSchema {
             schema: Arc::new(self.compiler.compile(raw)?),
             schema_hash,
+            warnings,
         })
     }
 }
@@ -108,6 +115,7 @@ impl SchemaRegistry {
 pub struct ResolvedSchema {
     schema: Arc<CompiledFlowSchema>,
     schema_hash: crate::Sha256Digest,
+    warnings: Vec<crate::SchemaIssue>,
 }
 impl ResolvedSchema {
     pub fn schema(&self) -> &Arc<CompiledFlowSchema> {
@@ -115,5 +123,9 @@ impl ResolvedSchema {
     }
     pub fn schema_hash(&self) -> &crate::Sha256Digest {
         &self.schema_hash
+    }
+    /// Successful compilation retains authoring diagnostics, never record errors.
+    pub fn warnings(&self) -> &[crate::SchemaIssue] {
+        &self.warnings
     }
 }

@@ -79,6 +79,27 @@ fn valid_selected_schema_is_checked_without_input_or_reference_provider() {
     );
     assert!(out.stderr.is_empty());
 }
+
+#[test]
+fn successful_registry_compilation_preserves_each_authoring_warning_once() {
+    let file = Fixture::new();
+    file.mutate(|raw| {
+        raw["traces"][0]["fields"][0]["regulatory_metadata"] = serde_json::json!({
+            "source_note":"  Original note\n00123  ",
+            "xlsx_source":{"notes_original":"  Original note\n00123  "}
+        });
+    });
+    let out = file.run();
+    assert_eq!(out.status.code(), Some(0), "{:?}", out.stderr);
+    let docs = documents(&out);
+    assert_eq!(docs.len(), 2);
+    assert_eq!(docs[0]["code"], "UnreviewedImportedNote");
+    assert_eq!(docs[0]["severity"], "warning");
+    assert_eq!(docs[0]["field_id"], "F1");
+    assert_eq!(docs[0]["source_note"], "  Original note\n00123  ");
+    assert_eq!(docs[1]["result"], "VALID");
+    assert!(out.stderr.is_empty());
+}
 #[test]
 fn structural_and_semantic_errors_are_schema_invalidity_with_context() {
     for structural in [false, true] {
@@ -91,7 +112,7 @@ fn structural_and_semantic_errors_are_schema_invalidity_with_context() {
             }
         });
         let out = file.run();
-        assert_eq!(out.status.code(), Some(2), "{:?}", out.stderr);
+        assert_eq!(out.status.code(), Some(1), "{:?}", out.stderr);
         let docs = documents(&out);
         let expected = if structural {
             "InvalidPosition"
@@ -115,7 +136,7 @@ fn unsupported_construct_is_not_silently_skipped_by_lint() {
             serde_json::json!([{"kind":"logical_length","equals":3}]);
     });
     let out = file.run();
-    assert_eq!(out.status.code(), Some(2), "{:?}", out.stderr);
+    assert_eq!(out.status.code(), Some(1), "{:?}", out.stderr);
     assert!(
         documents(&out)
             .iter()
@@ -190,7 +211,7 @@ fn invalid_regex_is_a_contextual_lint_issue() {
         ]);
     });
     let output = file.run();
-    assert_eq!(output.status.code(), Some(2));
+    assert_eq!(output.status.code(), Some(1));
     assert!(
         documents(&output)
             .iter()
@@ -208,7 +229,7 @@ fn provable_presence_conflict_is_rejected_before_any_input_is_required() {
             serde_json::json!([{"const":true}])
     });
     let output = file.run();
-    assert_eq!(output.status.code(), Some(2));
+    assert_eq!(output.status.code(), Some(1));
     assert!(
         documents(&output)
             .iter()

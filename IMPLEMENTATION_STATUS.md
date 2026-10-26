@@ -3,7 +3,33 @@
 Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P14-02 DONE; checkpoint richiesto dall’autore
+## Frontiera corrente — T-P14-05 IN_PROGRESS; DEC-18 ratificata
+
+2026-10-26: autore approva DEC-18 con precisazioni vincolanti e autorizza14-05.
+[Ratifica](docs/verification/DEC-18-ratification.md). Catalogo/load separati,
+inventory schema-scoped con trust effettivo, draft import canonical/lint e warning
+Registry implementati;671 test/77 suite/0 fail/2ignored e gate locali positivi:
+fmt/check-all-targets/clippy -D warnings/test con doctest/release/Windows GNU.
+Qualificazione CLI workbook SIOC originale positiva:135 field/130 cached formulas,
+note/provenienza preservate; completo continua a fallire compilazione come richiesto.
+CI Linux/MSVC da avviare dopo pubblicazione: nessun DONE/M7 anticipato.
+[Report tecnico/handoff](docs/verification/T-P14-05-schema-tooling.md).
+STOP dopo14-05/gate/handoff, nessuna task successiva autorizzata.
+
+## Registro storico — preflight T-P14-05 bloccato su DEC-18, poi risolto
+
+2026-10-26: autore autorizza ripresa del piano, push/CI quando necessari e
+avanzamento automatico senza criticità, senza Superpowers/subagenti/parallelo.
+Superato lo stop del checkpoint14-02;88/140 DONE=62,9% invariato.
+T-P14-05 preflight eseguito:14-01 e8-04 DONE; DEC-18 ancora aperta nel registro
+del Master Plan e richiesta come decisione umana. Nessuna ratifica reperita.
+Preparata [proposta DEC-18](docs/proposals/DEC-18-schema-reference-catalog.md)
+con catalogo additivo, inventario reference da binding espliciti e wiring import.
+In attesa dell'approvazione: nessuna semantica implementata, nessuna chiusura M7
+o nuova task avviata. [Preflight/handoff](docs/verification/T-P14-05-preflight.md).
+HEAD iniziale ad0d66c, working tree inizialmente pulito; nessun Rust modificato.
+
+## Registro storico — T-P14-02 DONE; checkpoint richiesto dall’autore
 
 2026-10-26: **88/140 DONE =62,9%**, conteggio per task con peso uguale, non
 stima temporale o copertura normativa.1 task parziale(T-P2-03),51 non iniziate.
@@ -1668,6 +1694,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P14-04 | DONE | 2026-10-25 | Codice/test invariati7024f5f, qualificati nella CI discendente40238421197 Linux/MSVC success su7b8bd8b; vecchio pollingMSVC ignoto conservato storico; [report](docs/verification/T-P14-04-schema-diff.md) |
 | T-P14-02 | DONE | 2026-10-26 | Normalizzazione/lint avanzato,642 test/75 suite; CI40290169690 Linux/MSVC success, checkpoint STOP; [report](docs/verification/T-P14-02-authoring-lint.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
+| T-P14-05 | IN_PROGRESS | 2026-10-26 | DEC-18 ratificata;671 test/77 suite e gate locali positivi, Linux/MSVC da avviare; [report](docs/verification/T-P14-05-schema-tooling.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |

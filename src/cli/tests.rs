@@ -315,6 +315,6 @@ where
 {
     match args::parse(arguments)? {
         args::CliCommand::Validate(args) => Ok(*args),
-        args::CliCommand::SchemaLint(_) => panic!("test expected validate"),
+        _ => panic!("test expected validate"),
     }
 }

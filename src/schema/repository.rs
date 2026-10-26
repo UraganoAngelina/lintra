@@ -12,6 +12,11 @@ use std::{
 };
 
 /// A repository locates and deserializes a raw schema; it never makes it executable.
+#[path = "catalog.rs"]
+mod catalog;
+pub use catalog::{SchemaCatalog, SchemaCatalogEntry, SchemaCatalogError};
+
+/// Loading remains independent of catalog discovery.
 pub trait SchemaRepository: Send + Sync {
     fn load_raw(&self, key: &SchemaKey) -> Result<RawFlowSchema, SchemaLoadError>;
 }
@@ -193,14 +198,7 @@ impl SchemaRepository for FileSystemSchemaRepository {
                 }
             }
         })?;
-        let parse_error = |source| SchemaLoadError::Json {
-            path: path.clone(),
-            source,
-        };
-        let mut parser = serde_json::Deserializer::from_slice(&bytes);
-        UniqueJson::deserialize(&mut parser).map_err(parse_error)?;
-        parser.end().map_err(parse_error)?;
-        let raw: RawFlowSchema = serde_json::from_slice(&bytes).map_err(parse_error)?;
+        let raw = parse_raw_schema(&bytes, &path)?;
         let found = schema_key(&raw);
         if found != *key {
             return Err(SchemaLoadError::KeyMismatch {
@@ -256,6 +254,27 @@ fn schema_key(raw: &RawFlowSchema) -> SchemaKey {
         flow_id: FlowId(raw.flow_id.clone()),
         version: SchemaVersion(raw.schema_version.clone()),
     }
+}
+
+/// Tooling file input with exactly the repository's duplicate-key/typed parsing.
+/// This acquires a raw draft only; no selection, lint or compilation is implied.
+pub fn read_raw_schema_file(path: &Path) -> Result<RawFlowSchema, SchemaLoadError> {
+    let bytes = fs::read(path).map_err(|source| SchemaLoadError::Io {
+        path: path.to_owned(),
+        source,
+    })?;
+    parse_raw_schema(&bytes, path)
+}
+
+fn parse_raw_schema(bytes: &[u8], path: &Path) -> Result<RawFlowSchema, SchemaLoadError> {
+    let parse_error = |source| SchemaLoadError::Json {
+        path: path.to_owned(),
+        source,
+    };
+    let mut parser = serde_json::Deserializer::from_slice(bytes);
+    UniqueJson::deserialize(&mut parser).map_err(parse_error)?;
+    parser.end().map_err(parse_error)?;
+    serde_json::from_slice(bytes).map_err(parse_error)
 }
 
 // Syntax-only pass to reject duplicates even inside open metadata. It does not

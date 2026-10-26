@@ -221,7 +221,7 @@ fn validate_with_token(
 }
 
 /// Lint follows the same repository/registry/compiler path as validate. Loading
-/// or canonicalization failures remain technical (1); compiler issues return 2.
+/// or compilation failures are tooling errors (1), never record violations (2).
 /// The issue sequence is retained verbatim; the CLI does not infer new rules.
 pub fn schema_lint(args: super::args::LintArgs) -> Result<u8, Failure> {
     use std::sync::Arc;
@@ -233,7 +233,10 @@ pub fn schema_lint(args: super::args::LintArgs) -> Result<u8, Failure> {
     let stdout = io::stdout();
     let mut output = stdout.lock();
     let code = match registry.resolve_with_hash(&args.key) {
-        Ok(_) => {
+        Ok(resolved) => {
+            for issue in resolved.warnings() {
+                writeln!(output, "{}", super::tooling::issue_json(issue))?;
+            }
             writeln!(
                 output,
                 "{}",
@@ -243,28 +246,14 @@ pub fn schema_lint(args: super::args::LintArgs) -> Result<u8, Failure> {
         }
         Err(SchemaResolutionError::Compilation(error)) => {
             for issue in &error.issues {
-                // JSON escaping prevents metadata/newlines from creating fake
-                // diagnostics. Serialization changes presentation, never severity.
-                writeln!(
-                    output,
-                    "{}",
-                    serde_json::json!({
-                        "severity": match issue.severity { SchemaIssueSeverity::Error => "error", SchemaIssueSeverity::Warning => "warning" },
-                        "code": format!("{:?}", issue.code),
-                        "flow_id": issue.flow_id.as_ref().map(|id| &id.0),
-                        "trace_id": issue.trace_id.as_ref().map(|id| &id.0),
-                        "field_id": issue.field_id.as_ref().map(|id| &id.0),
-                        "message": issue.message,
-                        "source_note": issue.source_note,
-                    })
-                )?;
+                writeln!(output, "{}", super::tooling::issue_json(issue))?;
             }
             writeln!(
                 output,
                 "{}",
                 serde_json::json!({"result": "INVALID", "issues": error.issues.len()})
             )?;
-            2
+            1
         }
         Err(error) => return Err(error.into()),
     };

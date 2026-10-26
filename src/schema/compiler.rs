@@ -13,6 +13,27 @@ mod projection;
 #[path = "reference.rs"]
 mod reference;
 
+/// DEC-18 tooling validates only reference declarations. No CompiledFlowSchema
+/// is produced, so this cannot make an unsupported schema executable.
+pub fn compile_reference_dependencies(
+    raw: &[RawReferenceDataDependency],
+) -> Result<Vec<ReferenceDependency>, ReferenceDeclarationError> {
+    reference::compile_dependencies(raw)
+        .map_err(|(code, message)| ReferenceDeclarationError { code, message })
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ReferenceDeclarationError {
+    pub code: Code,
+    pub message: String,
+}
+impl fmt::Display for ReferenceDeclarationError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(&self.message)
+    }
+}
+impl Error for ReferenceDeclarationError {}
+
 use std::{
     collections::{BTreeMap, HashSet},
     error::Error,

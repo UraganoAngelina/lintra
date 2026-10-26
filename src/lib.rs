@@ -113,10 +113,12 @@ pub use schema::compiled::{
 };
 
 pub use schema::repository::{
-    FileSystemSchemaRepository, InMemorySchemaRepository, SchemaKeyComponent, SchemaKeyError,
-    SchemaLoadError, SchemaRepository,
+    FileSystemSchemaRepository, InMemorySchemaRepository, SchemaCatalog, SchemaCatalogEntry,
+    SchemaCatalogError, SchemaKeyComponent, SchemaKeyError, SchemaLoadError, SchemaRepository,
+    read_raw_schema_file,
 };
 
+pub use schema::compiled::compiler::{ReferenceDeclarationError, compile_reference_dependencies};
 pub use schema::linter::{SchemaIssue, SchemaIssueCode, SchemaIssueSeverity, lint_raw_schema};
 
 pub use schema::{SchemaCompilationError, SchemaCompiler};

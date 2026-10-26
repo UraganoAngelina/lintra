@@ -8,6 +8,194 @@ use std::{
 };
 
 const NOTE: &str = "  Nota originale 00123\r\nSeconda riga è invariata  ";
+
+/// Exercise the actual executable with the same synthetic XLSX as the importer
+/// contract tests. Neither argv nor the command invents a normative mapping.
+fn import_command(root: &Path, input: &Path, output: &Path) -> std::process::Command {
+    let mut command = std::process::Command::new(env!("CARGO_BIN_EXE_lintra"));
+    command
+        .args(["schema", "import", "--input"])
+        .arg(input)
+        .arg("--blueprint")
+        .arg(root.join("blueprint.json"))
+        .arg("--profile")
+        .arg(root.join("profile.json"))
+        .arg("--output")
+        .arg(output);
+    command
+}
+fn save_import_configuration(root: &Path, b: &RawFlowSchema, p: &XlsxImportProfile) {
+    fs::write(root.join("blueprint.json"), serde_json::to_vec(b).unwrap()).unwrap();
+    fs::write(root.join("profile.json"), serde_json::to_vec(p).unwrap()).unwrap();
+}
+fn import_failure(output: &std::process::Output) {
+    assert_eq!(output.status.code(), Some(1), "{:?}", output);
+    assert!(output.stdout.is_empty());
+}
+
+#[test]
+fn cli_real_xlsx_publishes_canonical_draft_with_original_notes_and_warnings() {
+    let (dir, path) = workbook(|_| {});
+    save_import_configuration(dir.path(), &blueprint(), &profile());
+    let before = fs::read(&path).unwrap();
+    let output = dir.path().join("draft.json");
+    let result = import_command(dir.path(), &path, &output).output().unwrap();
+    assert_eq!(
+        result.status.code(),
+        Some(0),
+        "{}",
+        String::from_utf8_lossy(&result.stderr)
+    );
+    assert!(result.stdout.is_empty());
+    let draft = read_raw_schema_file(&output).unwrap();
+    assert_eq!(
+        fs::read(&output).unwrap(),
+        canonical_schema_bytes(&draft).unwrap()
+    );
+    assert_eq!(draft, importer().import(&path).unwrap());
+    assert_eq!(fs::read(path).unwrap(), before);
+    let diagnostics = String::from_utf8(result.stderr)
+        .unwrap()
+        .lines()
+        .map(|s| serde_json::from_str::<Value>(s).unwrap())
+        .collect::<Vec<_>>();
+    assert_eq!(diagnostics.len(), 4);
+    assert!(diagnostics.iter().all(|d| d["severity"] == "warning"
+        && d["code"] == "UnreviewedImportedNote"
+        && d["source_note"] == NOTE));
+    assert!(
+        fs::read_dir(dir.path()).unwrap().all(|e| !e
+            .unwrap()
+            .file_name()
+            .to_string_lossy()
+            .starts_with(".tmp"))
+    );
+}
+#[test]
+fn cli_alias_mapping_is_explicit_and_invalid_aliases_do_not_publish() {
+    for valid in [true, false] {
+        let (dir, path) = workbook(|_| {});
+        let mut p = profile();
+        for trace in &mut p.traces {
+            for field in &mut trace.fields {
+                field.reviewed_physical_type = "AN".into();
+            }
+        }
+        save_import_configuration(dir.path(), &blueprint(), &p);
+        let aliases = dir.path().join("aliases.json");
+        fs::write(
+            &aliases,
+            serde_json::to_vec(
+                &json!([{ "alias":if valid {"AN"} else {"UNKNOWN"},"canonical":"alphanumeric" }]),
+            )
+            .unwrap(),
+        )
+        .unwrap();
+        let output = dir.path().join("draft.json");
+        // Source alias AN never becomes a canonical type without this explicit file.
+        import_failure(&import_command(dir.path(), &path, &output).output().unwrap());
+        assert!(!output.exists());
+        let result = import_command(dir.path(), &path, &output)
+            .arg("--type-aliases")
+            .arg(&aliases)
+            .output()
+            .unwrap();
+        if valid {
+            assert_eq!(result.status.code(), Some(0), "{:?}", result.stderr);
+            assert!(output.exists());
+        } else {
+            import_failure(&result);
+            assert!(!output.exists());
+        }
+    }
+}
+#[test]
+fn cli_import_errors_preserve_all_inputs_and_never_publish_or_leave_temp_files() {
+    for failure in 0..4 {
+        let (dir, path) = workbook(|_| {});
+        let mut b = blueprint();
+        if failure == 0 {
+            // Disjoint required domains are a real authoring error, even though
+            // the workbook transport itself can be acquired successfully.
+            let mut value = serde_json::to_value(&b).unwrap();
+            value["traces"][0]["fields"][0]["presence"]["base"] = json!("required");
+            value["traces"][0]["fields"][0]["presence"]["forbidden_if"] = json!([]);
+            value["traces"][0]["fields"][0]["constraints"] = json!([
+                {"kind":"allowed_values","target":"logical","values":["A"]},
+                {"kind":"allowed_values","target":"logical","values":["B"]}]);
+            b = serde_json::from_value(value).unwrap();
+        }
+        save_import_configuration(dir.path(), &b, &profile());
+        if failure == 1 {
+            fs::write(&path, b"not a workbook").unwrap();
+        }
+        if failure == 2 {
+            fs::write(dir.path().join("profile.json"), b"{}").unwrap();
+        }
+        let output = dir.path().join(if failure == 3 {
+            "missing-parent/draft.json"
+        } else {
+            "draft.json"
+        });
+        let inputs = [
+            &path,
+            &dir.path().join("blueprint.json"),
+            &dir.path().join("profile.json"),
+        ]
+        .into_iter()
+        .map(|p| (p.clone(), fs::read(p).unwrap()))
+        .collect::<Vec<_>>();
+        let result = import_command(dir.path(), &path, &output).output().unwrap();
+        import_failure(&result);
+        assert!(!output.exists());
+        if failure == 0 {
+            assert!(String::from_utf8_lossy(&result.stderr).contains("ContradictoryConstraints"));
+        }
+        for (p, bytes) in inputs {
+            assert_eq!(fs::read(p).unwrap(), bytes);
+        }
+        assert!(
+            fs::read_dir(dir.path()).unwrap().all(|e| !e
+                .unwrap()
+                .file_name()
+                .to_string_lossy()
+                .starts_with(".tmp"))
+        );
+    }
+}
+#[test]
+fn cli_existing_outputs_and_input_collisions_are_never_overwritten() {
+    let (dir, path) = workbook(|_| {});
+    save_import_configuration(dir.path(), &blueprint(), &profile());
+    let existing = dir.path().join("existing.json");
+    fs::write(&existing, b"original destination").unwrap();
+    for output in [
+        existing,
+        path.clone(),
+        dir.path().join("blueprint.json"),
+        dir.path().join("profile.json"),
+    ] {
+        let before = fs::read(&output).unwrap();
+        import_failure(&import_command(dir.path(), &path, &output).output().unwrap());
+        assert_eq!(fs::read(output).unwrap(), before);
+    }
+}
+#[cfg(unix)]
+#[test]
+fn cli_import_preserves_hard_links_and_dangling_symlinks_at_destination() {
+    let (dir, path) = workbook(|_| {});
+    save_import_configuration(dir.path(), &blueprint(), &profile());
+    let before = fs::read(&path).unwrap();
+    let hard = dir.path().join("hard.json");
+    fs::hard_link(&path, &hard).unwrap();
+    import_failure(&import_command(dir.path(), &path, &hard).output().unwrap());
+    assert_eq!(fs::read(&path).unwrap(), before);
+    let link = dir.path().join("dangling.json");
+    std::os::unix::fs::symlink(dir.path().join("absent.json"), &link).unwrap();
+    import_failure(&import_command(dir.path(), &path, &link).output().unwrap());
+    assert!(fs::symlink_metadata(link).unwrap().file_type().is_symlink());
+    assert!(!dir.path().join("absent.json").exists());
+}
 fn blueprint() -> RawFlowSchema {
     let mut v: Value =
         serde_json::from_str(include_str!("golden/synthetic/v1/schema.json")).unwrap();

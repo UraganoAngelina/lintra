@@ -157,10 +157,41 @@ La selezione è esplicita e usa lo stesso repository/registry/compiler della
 validazione. Il comando non richiede input o directory reference data e non
 attiva provider mancanti. L'esito valido riguarda il sottoinsieme supportato dal
 compiler attuale; non certifica completezza normativa. Gli exit code sono 0
-schema compilabile, 2 issue del compiler, 1 errore tecnico (inclusi caricamento,
-JSON malformato/duplicato, identità diversa o sintassi CLI).
+schema compilabile (anche con warning), 1 errore tecnico o di authoring (incluse
+issue del compiler, JSON malformato/duplicato, identità diversa o sintassi CLI).
+Il codice 2 resta riservato alle violazioni normative dei record.
 Le diagnostiche schema sono oggetti JSON su stdout, una per riga nell'ordine
 del compiler, seguite dall'esito; gli errori tecnici vanno su stderr.
+I warning sono conservati anche se la compilazione riesce, senza duplicazioni.
+
+Gli altri strumenti di authoring richiedono sorgenti esplicite:
+
+```sh
+lintra schema list --schema-dir ./bundle/schemas
+lintra reference-data list --schema-dir ./bundle/schemas \
+  --reference-data-dir ./bundle/reference-data --flow SYNTHETIC --schema-version v1
+lintra schema import --input ./source.xlsx --blueprint ./blueprint.json \
+  --profile ./profile.json --output ./draft.json
+```
+
+`schema list` enumera soltanto `root/flow/version/flow.json`, ordinando flow/version
+per byte UTF-8 e conservando l'ordine dichiarato dei trace. Non compila gli schemi,
+non seleziona latest e non installa cartelle di authoring `flow_schema.json`.
+Errori sui candidati, identità incoerenti e symlink enumerati fanno fallire l'elenco.
+
+`reference-data list` ispeziona soltanto le dipendenze dello schema selezionato,
+con `continue_with_available_evidence`. Il JSON distingue `verified`, `degraded`
+e `unavailable`, digest atteso/effettivo e cause diagnostiche; non espone le chiavi.
+Exit0 significa inventario costruito, anche con dataset mancanti o degradati:
+non garantisce che una validazione Strict o Full sia eseguibile. Root invalide,
+dichiarazioni invalide e violazioni di boundary rimangono errori fatali.
+
+`schema import` usa blueprint e profilo revisionati obbligatori; gli alias
+opzionali sono un array `TypeAlias` JSON passato con `--type-aliases PATH`.
+Le note non diventano regole. Errori di lint impediscono l'output; warning JSON
+completi vanno su stderr. Il draft canonical viene pubblicato atomicamente in un
+file nuovo, senza sovrascritture, e non è dichiarato compilato o installato.
+Tutti i comandi tooling usano exit0 successo/exit1 errore tecnico o di authoring.
 
 Ctrl+C viene intercettato durante `validate` e `validate-flow`, prima di elaborare input
 e report. L'handler imposta il token: il servizio si ferma ai propri checkpoint
