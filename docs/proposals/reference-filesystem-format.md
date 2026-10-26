@@ -86,4 +86,5 @@ Baseline SIOC/CAD, documenti normativi, grammar flow v1/v2 e sentinel invariati.
 
 Approvare questo profilo tecnico membership esplicito, con i limiti sopra,
 oppure mantenere T-P11-03 in attesa di una specifica runtime alternativa.
-Non è richiesta una nuova decisione sui codici/regole regionali.
+Non è richiesta una nuova decisione sui codici/regole re/gionali.
+z
