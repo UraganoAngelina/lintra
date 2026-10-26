@@ -12,6 +12,8 @@ use std::{
 
 #[derive(Serialize)]
 struct SummaryDocument<'a> {
+    #[serde(flatten)]
+    bundle: Option<&'a crate::BundleAudit>,
     result: &'static str,
     validation_mode: ValidationMode,
     flow: &'a str,
@@ -98,9 +100,18 @@ fn utc_timestamp(value: SystemTime) -> Result<String, ReportError> {
 /// Consume metadata in the builder; preserve its Copy started_at for this call.
 /// File publication/rollback remains the responsibility of T-P5-06.
 pub fn write_summary<W: Write>(
+    writer: W,
+    summary: &ValidationSummary,
+    started_at: SystemTime,
+) -> Result<W, ReportError> {
+    write_summary_document(writer, summary, started_at, None)
+}
+
+fn write_summary_document<W: Write>(
     mut writer: W,
     summary: &ValidationSummary,
     started_at: SystemTime,
+    bundle: Option<&crate::BundleAudit>,
 ) -> Result<W, ReportError> {
     summary.validate().map_err(ReportError::InvalidSummary)?;
     let started_at = utc_timestamp(started_at)?;
@@ -120,6 +131,7 @@ pub fn write_summary<W: Write>(
         errors_by_code.insert(symbol, count);
     }
     let document = SummaryDocument {
+        bundle,
         result: match summary.run_status {
             RunStatus::CompletedValid => "VALID",
             RunStatus::CompletedInvalid => "INVALID",
@@ -184,4 +196,14 @@ pub fn write_run_summary<W: Write>(
     summary: &ValidationSummary,
 ) -> Result<W, ReportError> {
     write_summary(writer, summary, summary.started_at)
+}
+
+/// Add bundle provenance only when supplied by a selecting adapter. Legacy
+/// writers retain their exact document shape for callers with opaque repositories.
+pub fn write_run_summary_with_bundle<W: Write>(
+    writer: W,
+    summary: &ValidationSummary,
+    bundle: &crate::BundleAudit,
+) -> Result<W, ReportError> {
+    write_summary_document(writer, summary, summary.started_at, Some(bundle))
 }

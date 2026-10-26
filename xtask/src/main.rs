@@ -117,6 +117,8 @@ fn build(
     cargo.current_dir(repo).args([
         "build",
         "--release",
+        "--features",
+        "embedded-bundle",
         "--locked",
         "--target",
         &options.target,

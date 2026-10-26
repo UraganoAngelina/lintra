@@ -1,4 +1,4 @@
-//! External bundle resolution, DET A.1 levels 1–3. No cwd/home discovery.
+//! Whole-bundle resolution, DET A.1 levels 1–4. No cwd/home discovery.
 use std::{
     error::Error,
     ffi::OsString,
@@ -12,10 +12,11 @@ pub struct CliDirs {
     pub schema_dir: Option<PathBuf>,
     pub reference_data_dir: Option<PathBuf>,
 }
-/// External directories are resolved together. Embedded loading belongs to P15;
-/// absence currently produces an explicit error rather than a fake snapshot.
+/// External directories are selected together; embedded is the final level only.
 #[derive(Debug, PartialEq, Eq)]
 pub enum BundleSource {
+    #[cfg(feature = "embedded-bundle")]
+    Embedded,
     External {
         schema_root: PathBuf,
         reference_data_root: PathBuf,
@@ -65,6 +66,7 @@ pub enum BundleResolveError {
         source: io::Error,
     },
     InvalidExecutablePath,
+    #[cfg(not(feature = "embedded-bundle"))]
     NoExternalBundle,
 }
 impl fmt::Display for BundleResolveError {
@@ -85,6 +87,7 @@ impl fmt::Display for BundleResolveError {
             Self::InvalidExecutablePath => {
                 f.write_str("executable path needs an explicit parent directory")
             }
+            #[cfg(not(feature = "embedded-bundle"))]
             Self::NoExternalBundle => f.write_str(
                 "no external bundle found; embedded bundle is not available in this build",
             ),
@@ -141,7 +144,10 @@ fn selected_pair(
 /// Probe only executable-adjacent defaults. Only NotFound means absent; access
 /// errors and wrong types remain explicit, so corruption never enables fallback.
 fn adjacent(path: PathBuf, kind: DirectoryKind) -> Result<Option<PathBuf>, BundleResolveError> {
-    match fs::metadata(&path) {
+    match fs::symlink_metadata(&path) {
+        // A dangling link is a present but broken external selection. Never
+        // treat its missing target as permission to use the embedded snapshot.
+        Ok(metadata) if metadata.file_type().is_symlink() => directory(path, kind).map(Some),
         Ok(metadata) if metadata.is_dir() => Ok(Some(path)),
         Ok(_) => Err(BundleResolveError::NotDirectory { kind, path }),
         Err(source) if source.kind() == io::ErrorKind::NotFound => Ok(None),
@@ -176,6 +182,15 @@ pub fn resolve_bundle_source(
         .ok_or(BundleResolveError::InvalidExecutablePath)?;
     let schema = adjacent(parent.join("schemas"), DirectoryKind::Schemas)?;
     let reference = adjacent(parent.join("reference-data"), DirectoryKind::ReferenceData)?;
-    selected_pair(schema, reference, BundleLevel::Executable)?
-        .ok_or(BundleResolveError::NoExternalBundle)
+    if let Some(source) = selected_pair(schema, reference, BundleLevel::Executable)? {
+        return Ok(source);
+    }
+    #[cfg(feature = "embedded-bundle")]
+    {
+        Ok(BundleSource::Embedded)
+    }
+    #[cfg(not(feature = "embedded-bundle"))]
+    {
+        Err(BundleResolveError::NoExternalBundle)
+    }
 }

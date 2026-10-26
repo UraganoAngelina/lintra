@@ -1,6 +1,9 @@
 # CNF-BUNDLE-AUDIT-01 — Manifest e audit dei bundle esterni preesistenti
 
-2026-10-26. **PROPOSTA, NON RATIFICATA.** T-P15-03, wiring ancora non modificato.
+Nota successiva: **A ratificata**; vedere [ratifica](../verification/CNF-BUNDLE-AUDIT-01-ratification.md).
+Il testo seguente conserva la proposta storica.
+
+2026-10-26. **PROPOSTA, NON RATIFICATA al momento della redazione.** T-P15-03, wiring ancora non modificato.
 
 ## Punto da decidere, evidenza effettiva
 

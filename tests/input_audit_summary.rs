@@ -662,3 +662,32 @@ fn summary_write_and_flush_failures_are_technical_report_errors() {
         }
     }
 }
+
+#[test]
+fn bundle_writer_is_additive_and_propagates_io_errors() {
+    let summary = builder().finish(read_file_metadata()).unwrap();
+    let bundle = lintra::BundleAudit::external(None);
+    let bytes = lintra::write_run_summary_with_bundle(Vec::new(), &summary, &bundle).unwrap();
+    let mut new: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+    assert_eq!(new["bundle_source"], "external");
+    assert!(new["bundle_version"].is_null());
+    assert_eq!(new["bundle_manifest_status"], "absent");
+    for key in ["bundle_source", "bundle_version", "bundle_manifest_status"] {
+        new.as_object_mut().unwrap().remove(key);
+    }
+    let old = lintra::write_run_summary(Vec::new(), &summary).unwrap();
+    assert_eq!(
+        new,
+        serde_json::from_slice::<serde_json::Value>(&old).unwrap()
+    );
+    struct BrokenWriter;
+    impl Write for BrokenWriter {
+        fn write(&mut self, _: &[u8]) -> io::Result<usize> {
+            Err(io::ErrorKind::BrokenPipe.into())
+        }
+        fn flush(&mut self) -> io::Result<()> {
+            Err(io::ErrorKind::BrokenPipe.into())
+        }
+    }
+    assert!(lintra::write_run_summary_with_bundle(BrokenWriter, &summary, &bundle).is_err());
+}

@@ -84,7 +84,10 @@ mod persistence;
 mod reference_data;
 mod report;
 mod schema;
-pub use bundle::{BundleError, BundleManifest};
+pub use bundle::{
+    BundleAudit, BundleError, BundleManifest, ManifestReferenceDataPreparer,
+    ManifestSchemaRepository,
+};
 #[cfg(feature = "embedded-bundle")]
 pub use bundle::{EmbeddedBundle, EmbeddedFile};
 #[cfg(feature = "embedded-bundle")]
@@ -207,7 +210,7 @@ pub use application::clock::{Clock, SystemClock};
 pub use application::service::{
     ValidationRunError, ValidationService, build_default_local_service,
 };
-pub use report::summary::write_run_summary;
+pub use report::summary::{write_run_summary, write_run_summary_with_bundle};
 
 // Text summary adapter for CLI/UI consumers; report internals stay private.
 pub use report::human::HumanReadableSink;

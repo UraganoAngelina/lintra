@@ -288,14 +288,15 @@ fn no_bundle_and_invalid_executable_do_not_discover_cwd_or_home() {
     let file = Fixture::new();
     // A complete unrelated pair cannot be chosen without its explicit path.
     let _unrelated = file.pair("unrelated");
-    assert!(matches!(
-        resolve_bundle_source(
-            &CliDirs::default(),
-            &FakeEnv::default(),
-            &file.exe("missing")
-        ),
-        Err(BundleResolveError::NoExternalBundle)
-    ));
+    let result = resolve_bundle_source(
+        &CliDirs::default(),
+        &FakeEnv::default(),
+        &file.exe("missing"),
+    );
+    #[cfg(not(feature = "embedded-bundle"))]
+    assert!(matches!(result, Err(BundleResolveError::NoExternalBundle)));
+    #[cfg(feature = "embedded-bundle")]
+    assert_eq!(result.unwrap(), BundleSource::Embedded);
     assert!(matches!(
         resolve_bundle_source(
             &CliDirs::default(),
@@ -317,4 +318,21 @@ where
         args::CliCommand::Validate(args) => Ok(*args),
         _ => panic!("test expected validate"),
     }
+}
+
+#[cfg(unix)]
+#[test]
+fn dangling_adjacent_link_does_not_enable_embedded_fallback() {
+    use std::os::unix::fs::symlink;
+    let file = Fixture::new();
+    fs::create_dir_all(file.0.join("broken")).unwrap();
+    symlink(file.0.join("absent"), file.0.join("broken/schemas")).unwrap();
+    assert!(matches!(
+        resolve_bundle_source(
+            &CliDirs::default(),
+            &FakeEnv::default(),
+            &file.exe("broken")
+        ),
+        Err(BundleResolveError::Inspect { .. })
+    ));
 }

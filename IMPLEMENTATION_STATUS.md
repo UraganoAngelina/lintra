@@ -3,7 +3,14 @@
 Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P15-03 BLOCKED su audit/manifest esterno; T-P15-02 DONE
+## Frontiera corrente — T-P15-03 IN_PROGRESS, ratifica A acquisita
+
+CNF-BUNDLE-AUDIT-01 A approvata dall’autore: [ratifica](docs/verification/CNF-BUNDLE-AUDIT-01-ratification.md).
+Wiring CLI/audit concluso dal checkpoint6f8ae70; gate locali completi positivi,
+CI Linux/MSVC da avviare. T-P15-03 DONE_UNVERIFIED, nessun prerequisito anticipato.
+91 DONE,2 IN_PROGRESS,47 NOT_STARTED. AUTO_CONTINUE; nessun DONE anticipato.
+
+## Registro storico — blocco contrattuale prima della ratifica
 
 Backend embedded reali e manifest sintetico implementati dietro feature esplicita
 non predefinita; cinque test mirati positivi. Wiring/audit/level4 non applicati:
@@ -1822,7 +1829,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P14-05 | DONE | 2026-10-26 | DEC-18,671 test/77 suite, CI40298536590 Linux/MSVC success su8a9ffd8; M7 raggiunta, STOP; [report](docs/verification/T-P14-05-schema-tooling.md) |
 | T-P15-01 | DONE | 2026-10-26 | Profilo/remap/CRT/riproducibilità: CI40307076976 Linux/MSVC success su7c919fb;671 test prodotto+2 tooling locali; [report](docs/verification/T-P15-01-release-profile.md) |
 | T-P15-02 | DONE | 2026-10-26 | CNF-ARTIFACT-LINUX-01 A ratificata;671 prodotto/9 tooling locali; CI40329791116 Linux/MSVC success su59b1663, verifier e negative probe reali; [report](docs/verification/T-P15-02-artifact-verifier.md) |
-| T-P15-03 | BLOCKED | 2026-10-26 | Backend embedded parziali/5 test mirati positivi; CNF-BUNDLE-AUDIT-01 aperto su manifest/versione esterna, wiring non applicato; [dossier](docs/verification/T-P15-03-embedded-bundle.md) |
+| T-P15-03 | DONE_UNVERIFIED | 2026-10-26 | Backend embedded parziali/5 test mirati positivi; CNF-BUNDLE-AUDIT-01 A ratificata; wiring/gate locali completi, CI nativa pendente; [dossier](docs/verification/T-P15-03-embedded-bundle.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |

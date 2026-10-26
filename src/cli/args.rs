@@ -12,6 +12,7 @@ use std::{
 /// Reference data directories describe bundle selection, not provider availability.
 pub struct ValidateArgs {
     pub dirs: CliDirs,
+    pub bundle_manifest: Option<PathBuf>,
     pub request: ValidationRequest,
     pub encoding: RawResolvedEncoding,
     pub reference_policy: DatasetPreparationPolicy,
@@ -82,6 +83,7 @@ pub fn command() -> Command {
                     .required(true)
                     .value_parser(["utf8"]),
             )
+            .arg(path("bundle-manifest"))
             .arg(path("schema-dir"))
             .arg(path("reference-data-dir"))
             .arg(
@@ -264,6 +266,7 @@ where
         )
     };
     Ok(CliCommand::Validate(Box::new(ValidateArgs {
+        bundle_manifest: args.get_one::<PathBuf>("bundle-manifest").cloned(),
         dirs: CliDirs {
             schema_dir: args.get_one::<PathBuf>("schema-dir").cloned(),
             reference_data_dir: args.get_one::<PathBuf>("reference-data-dir").cloned(),

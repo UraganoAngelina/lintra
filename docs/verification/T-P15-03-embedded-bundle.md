@@ -105,3 +105,74 @@ attivazione release e test processuali/cross-OS restano incompleti.
 Prosecuzione BLOCKED su CNF-BUNDLE-AUDIT-01: attesa decisione A/B. Non è una
 richiesta di permesso Git/CI o uno stop ordinario di fine task. Codice valido
 preservato; ripresa sul residuo dopo ratifica, senza ricominciare.
+
+## Ripresa autorizzata — CNF-BUNDLE-AUDIT-01 A
+
+L’autore approva A: [ratifica](CNF-BUNDLE-AUDIT-01-ratification.md). Il precedente
+blocco è risolto, non si ripetono i backend già verificati. Checkpoint6f8ae70.
+
+### Wiring e audit additivi
+
+- `BundleAudit` ha campi privati e costruttori external/embedded: external senza
+  manifest serializza version null/status absent, con manifest versione dichiarata
+  e present. Embedded richiede un EmbeddedBundle realmente verificato e conserva
+  la sua versione. Present descrive i metadata, non certifica i dataset.
+- `ManifestSchemaRepository` avvolge solo la sorgente filesystem esplicita: usa
+  schema_path per verificare il selettore, canonicalizza root/file e rifiuta escape,
+  legge una volta e verifica gli stessi byte prima di deserializzarli. Identità
+  e formato devono corrispondere a selettore e manifest. Nessuna compilazione
+  alternativa o fallback: SchemaRegistry/SchemaCompiler restano obbligatori.
+  Il containment non promette protezione contro sostituzioni ostili concorrenti.
+- `ManifestReferenceDataPreparer` confronta path/digest di tutte le dipendenze
+  compilate con il manifest, poi delega al preparer esistente. Non apre alcun file
+  prima del provider; mismatch dei byte/missing/malformed restano rispettivamente
+  Degraded/Unavailable/Unavailable secondo identità e parse, con Strict invariata.
+- Il writer privato condiviso riceve un contesto opzionale e serializza i campi
+  additivi solo con contesto. `write_summary`/`write_run_summary` passano None,
+  mantenendo il contratto precedente. `write_run_summary_with_bundle` aggiunge
+  provenienza effettiva per la CLI. Nessun campo/firma modificato in service,
+  request, RunMetadata o ValidationSummary; JSONL errori invariato.
+- Il resolver mantiene la selezione esclusiva CLI→env→exe e abilita Embedded
+  soltanto dopo assenza di entrambe le directory adiacenti. Pair incompleti,
+  directory inesistenti/errate o errori di lettura non attivano fallback.
+  Senza feature la precedente assenza rimane errore esplicito.
+- `cli/bundle.rs` compone service/registry/preparer reali della sola sorgente
+  scelta. Il manifest esterno esplicito deve esistere; discovery implicita solo
+  per sibling schemas/reference-data nello stesso parent. JSON invalido, symlink
+  del manifest e file non regolari sono errori. Nessun manifest cwd/home.
+  Un manifest esterno esplicito senza sorgente esterna non viene ignorato.
+- `check_outputs` riceve le root effettive (nessuna root fittizia per Embedded)
+  e protegge anche il manifest esplicito/individuato dalle collisioni con file
+  finali/part. Restano rollback e cancellazione dei report precedenti.
+- La ricetta release xtask seleziona esplicitamente embedded-bundle; il default
+  dev rimane senza feature. CI verifica entrambe le configurazioni su Linux/MSVC
+  e mantiene build riproducibili/controllo artifact/negative probe.
+
+Stato: implementazione e test in corso, gate completi/CI ancora da eseguire.
+Le evidenze backend precedenti non sono attribuite al nuovo wiring.
+
+Revisione del caso di confine: il probe delle directory adiacenti usa
+symlink_metadata prima di seguire un link. Un link pendente è una sorgente
+esterna presente ma rotta, quindi errore e mai fallback embedded. Test Unix
+specifico; link validi a directory mantengono il comportamento precedente.
+
+## Gate completi locali e consegna alla CI
+
+Configurazione finale, dopo il fix symlink: test default 681 pass,
+all-features 689 pass, entrambi 79 suite/0fail/2ignored previsti;
+fmt, Clippy all-targets default/all-features -D warnings, check lib Windows GNU
+all-features positivi. Tooling fmt/Clippy/9 test positivi; governance e diff check
+positivi. Le due test run complete includono doctest e golden precedenti. Nuovi
+test: quattro livelli e symlink pendente, 11 integrazioni bundle con feature,
+writer additivo e propagazione I/O; oltre ai5 test backend del checkpoint.
+
+I processi reali verificano manifest implicito/esplicito e root indipendenti,
+versione assente/null, rifiuto di manifest assente esplicito/invalido/duplicato/
+pericoloso/symlink, digest schema, mancato fallback per chiave/versione assente,
+protezione report/input, parità JSONL e hash external/embedded. Il test CLI reference
+con due dipendenze verifica trust e indipendenza, Strict e conflitto di dichiarazioni
+fatale, senza chiamare present una certificazione normativa. Il writer legacy
+continua a superare i golden byte-per-byte; API service/request/domain invariate.
+
+Stato consegna: DONE_UNVERIFIED, CI Linux/MSVC da avviare sul commit completo.
+T-P15-04 dipende dal gate15-03 e non viene iniziata prima del suo esito effettivo.

@@ -1,9 +1,5 @@
 //! Wire public application/report APIs. No normative rule belongs in this adapter.
-use super::{
-    args::ValidateArgs,
-    error_spool::ErrorSpool,
-    paths::{self, BundleSource},
-};
+use super::{args::ValidateArgs, error_spool::ErrorSpool, paths};
 use lintra::*;
 use std::{
     error::Error,
@@ -72,20 +68,29 @@ fn resolved(path: &Path) -> io::Result<PathBuf> {
 }
 /// Protect input and the selected bundle from both final destinations and part
 /// filenames. Cross-output part collisions would otherwise depend on write order.
-fn check_outputs(args: &ValidateArgs, schema: &Path, reference: &Path) -> Result<(), Failure> {
+fn check_outputs(
+    args: &ValidateArgs,
+    roots: &[PathBuf],
+    manifest: Option<&Path>,
+) -> Result<(), Failure> {
     let inputs = match &args.request.scope {
         ValidationScope::Trace(input) => vec![input],
         ValidationScope::Flow(flow) => flow.traces.iter().collect(),
     };
-    let inputs = inputs
+    let mut inputs = inputs
         .into_iter()
         .map(|input| {
             let InputSource::Path(path) = &input.source;
             fs::canonicalize(path)
         })
         .collect::<Result<Vec<_>, _>>()?;
-    let schema = fs::canonicalize(schema)?;
-    let reference = fs::canonicalize(reference)?;
+    if let Some(manifest) = manifest {
+        inputs.push(fs::canonicalize(manifest)?);
+    }
+    let roots = roots
+        .iter()
+        .map(fs::canonicalize)
+        .collect::<Result<Vec<_>, _>>()?;
     let mut seen = Vec::new();
     for destination in args
         .errors
@@ -98,8 +103,7 @@ fn check_outputs(args: &ValidateArgs, schema: &Path, reference: &Path) -> Result
         for path in [destination.clone(), PathBuf::from(part)] {
             let path = resolved(&path)?;
             if inputs.contains(&path)
-                || path.starts_with(&schema)
-                || path.starts_with(&reference)
+                || roots.iter().any(|root| path.starts_with(root))
                 || seen.contains(&path)
             {
                 return Err(invalid(
@@ -124,17 +128,10 @@ fn validate_with_token(
     cancellation: &CancellationToken,
 ) -> Result<RunStatus, Failure> {
     let exe = std::env::current_exe()?;
-    let BundleSource::External {
-        schema_root,
-        reference_data_root,
-    } = paths::resolve_bundle_source(&args.dirs, &paths::SystemEnv, &exe)?;
-    check_outputs(&args, &schema_root, &reference_data_root)?;
-    let service = build_local_service_with_reference_data(
-        schema_root,
-        reference_data_root,
-        args.encoding,
-        args.reference_policy,
-    )?;
+    let source = paths::resolve_bundle_source(&args.dirs, &paths::SystemEnv, &exe)?;
+    let selected = super::bundle::compose(&args, source)?;
+    check_outputs(&args, &selected.roots, selected.manifest_path.as_deref())?;
+    let service = selected.service;
     let mut errors = ErrorSpool::create(args.errors.as_deref())?;
     let mut summary =
         match AtomicReportFile::create_replacing(&args.summary, PartialOutputPolicy::Delete) {
@@ -178,7 +175,7 @@ fn validate_with_token(
         sink.finish()?;
         log_result?;
         log.flush()?;
-        write_run_summary(summary.writer(), &outcome.summary)?;
+        write_run_summary_with_bundle(summary.writer(), &outcome.summary, &selected.audit)?;
         // Human output uses its own stream. A broken pipe is a technical error
         // and must be observed while both report guards can still be aborted.
         let mut human = HumanReadableSink::new(io::stdout().lock());
@@ -290,6 +287,7 @@ mod cancellation_tests {
             fs::write(root.join("summary.json"), b"old summary").unwrap();
             fs::write(root.join("report.xlsx"), b"old workbook").unwrap();
             let args = ValidateArgs {
+                bundle_manifest: None,
                 reference_policy: DatasetPreparationPolicy::ContinueWithAvailableEvidence,
                 dirs: paths::CliDirs {
                     schema_dir: Some(root.join("schemas")),

@@ -4,6 +4,7 @@ mod exit_code;
 mod paths;
 mod signal;
 
+mod bundle;
 mod command;
 mod error_spool;
 mod tooling;

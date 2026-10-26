@@ -86,3 +86,8 @@ CNF-REFERENCE-FORMAT-01 mantiene Strict/Continue e non viene riaperta: il manife
 non può annullarne le evidenze con un abort globale indiscriminato.
 [A compatibile con null esplicito/B manifest obbligatorio](proposals/CNF-BUNDLE-AUDIT-01.md).
 Stato PROPOSTO, non ratificato; wiring/audit non implementati, backend preservati.
+
+### CNF-BUNDLE-AUDIT-01 — risolto, ratifica A,2026-10-26
+
+Approvazione esplicita dell’autore: [contratto ratificato](verification/CNF-BUNDLE-AUDIT-01-ratification.md).
+Ripresa T-P15-03; audit additivo, manifest esterno opzionale, policy reference invariate.

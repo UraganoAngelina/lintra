@@ -71,17 +71,22 @@ L'opzione build --verify-artifact verifica anche il fallimento del comando reale
 su una copia alterata con path host, senza modificare l'originale. Non certifica
 la risoluzione delle librerie su ogni macchina destinataria o caricamenti via plugin.
 
-I backend snapshot di T-P15-03 sono disponibili nella libreria con la feature
-esplicita embedded-bundle; i payload di esempio sono dichiaratamente sintetici:
+Lo snapshot incorporato si abilita con `--features embedded-bundle`; la ricetta
+`cargo xtask build-release` lo include sempre. Gli asset SYNTHETIC/v1 sono esempi
+sintetici dichiarati, senza dataset ufficiali o certificazione normativa.
+La CLI seleziona una coppia completa di root: opzioni esplicite, variabili
+LINTRA_SCHEMA_DIR/LINTRA_REFERENCE_DATA_DIR, directory accanto all’eseguibile,
+infine snapshot (solo se compilato). Errori o file mancanti nella sorgente scelta
+non attivano fallback allo snapshot.
 
-```sh
-cargo test --locked --features embedded-bundle --test embedded_backends
-```
-
-Il wiring CLI, il fallback e l'audit dello snapshot restano in sviluppo, sospesi
-sul [contratto manifest/audit esterno](docs/proposals/CNF-BUNDLE-AUDIT-01.md).
-La feature non è predefinita né attiva nella ricetta release corrente. Stato e
-residui nel [dossier T-P15-03](docs/verification/T-P15-03-embedded-bundle.md).
+Per la validazione esterna `--bundle-manifest PATH` è opzionale. In sua assenza
+si considera soltanto MANIFEST.json del parent comune delle root standard
+schemas/ e reference-data/. Un manifest valido verifica lo schema selezionato e
+la coerenza delle dichiarazioni reference; i byte dei dataset seguono ancora
+Strict/Continue. Il summary JSON riporta bundle_source, bundle_version (null se
+manifest esterno assente) e bundle_manifest_status. Present non significa che i
+dataset siano Verified. Tooling DEC-18 e API generiche conservano i propri contratti.
+Stato e gate nel [dossier T-P15-03](docs/verification/T-P15-03-embedded-bundle.md).
 
 ## Struttura
 

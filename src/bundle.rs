@@ -8,6 +8,7 @@ use std::{collections::BTreeMap, error::Error, fmt};
 #[non_exhaustive]
 pub enum BundleError {
     Json(serde_json::Error),
+    Io(std::io::Error),
     InvalidManifest(&'static str),
     UnsafePath(String),
     MissingFile(String),
@@ -16,6 +17,7 @@ pub enum BundleError {
 impl fmt::Display for BundleError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::Io(_) => f.write_str("cannot acquire bundle metadata or payload"),
             Self::Json(_) => f.write_str("invalid bundle manifest JSON"),
             Self::InvalidManifest(reason) => write!(f, "invalid bundle manifest: {reason}"),
             Self::UnsafePath(path) => write!(f, "unsafe bundle path: {path}"),
@@ -28,6 +30,7 @@ impl Error for BundleError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
             Self::Json(e) => Some(e),
+            Self::Io(e) => Some(e),
             _ => None,
         }
     }
@@ -149,5 +152,139 @@ impl EmbeddedBundle {
     }
     pub fn file(&self, path: &str) -> Option<&'static [u8]> {
         self.files.get(path).copied()
+    }
+}
+
+/// Provenance supplied by the adapter that actually selected the bundle.
+/// Private fields keep source/version/manifest status consistent. An absent
+/// external version is serialized as null, never inferred from a schema or path.
+#[derive(Debug, Clone, Serialize)]
+pub struct BundleAudit {
+    bundle_source: &'static str,
+    bundle_version: Option<String>,
+    bundle_manifest_status: &'static str,
+}
+impl BundleAudit {
+    pub fn external(manifest: Option<&BundleManifest>) -> Self {
+        Self {
+            bundle_source: "external",
+            bundle_version: manifest.map(|m| m.bundle_version().to_owned()),
+            bundle_manifest_status: if manifest.is_some() {
+                "present"
+            } else {
+                "absent"
+            },
+        }
+    }
+    #[cfg(feature = "embedded-bundle")]
+    pub fn embedded(bundle: &EmbeddedBundle) -> Self {
+        Self {
+            bundle_source: "embedded",
+            bundle_version: Some(bundle.manifest().bundle_version().to_owned()),
+            bundle_manifest_status: "present",
+        }
+    }
+}
+
+/// Optional manifest guard for an explicitly configured filesystem schema root.
+/// Reads once: exactly the bytes checked against the manifest are deserialized.
+/// Canonical containment rejects symlink escape, without claiming protection
+/// against hostile concurrent replacement of filesystem objects.
+pub struct ManifestSchemaRepository {
+    repository: crate::FileSystemSchemaRepository,
+    manifest: BundleManifest,
+}
+impl ManifestSchemaRepository {
+    pub fn new(
+        root: std::path::PathBuf,
+        manifest: BundleManifest,
+    ) -> Result<Self, crate::SchemaLoadError> {
+        Ok(Self {
+            repository: crate::FileSystemSchemaRepository::new(root)?,
+            manifest,
+        })
+    }
+}
+impl crate::SchemaRepository for ManifestSchemaRepository {
+    fn load_raw(
+        &self,
+        key: &crate::SchemaKey,
+    ) -> Result<crate::RawFlowSchema, crate::SchemaLoadError> {
+        use crate::SchemaLoadError;
+        let path = self.repository.schema_path(key)?;
+        let acquire = || -> Result<Vec<u8>, BundleError> {
+            let root = std::fs::canonicalize(self.repository.root()).map_err(BundleError::Io)?;
+            let actual = std::fs::canonicalize(&path).map_err(BundleError::Io)?;
+            if !actual.starts_with(&root) {
+                return Err(BundleError::UnsafePath(path.display().to_string()));
+            }
+            let bytes = std::fs::read(actual).map_err(BundleError::Io)?;
+            self.manifest.verify_bytes(
+                &format!("schemas/{}/{}/flow.json", key.flow_id.0, key.version.0),
+                &bytes,
+            )?;
+            Ok(bytes)
+        };
+        let bytes = acquire().map_err(SchemaLoadError::Bundle)?;
+        let raw = crate::schema::repository::parse_raw_schema(&bytes, &path)?;
+        if raw.schema_format_version != self.manifest.schema_format_version() {
+            return Err(SchemaLoadError::Bundle(BundleError::InvalidManifest(
+                "schema format differs from manifest",
+            )));
+        }
+        let found = crate::SchemaKey {
+            flow_id: crate::FlowId(raw.flow_id.clone()),
+            version: crate::SchemaVersion(raw.schema_version.clone()),
+        };
+        if found != *key {
+            return Err(SchemaLoadError::KeyMismatch {
+                requested: key.clone(),
+                found,
+            });
+        }
+        Ok(raw)
+    }
+}
+
+/// Checks declaration metadata only, then delegates byte acquisition and trust
+/// classification to the existing filesystem preparer. No global file scan,
+/// digest override, dataset fallback or altered Strict/Continue behavior.
+pub struct ManifestReferenceDataPreparer {
+    preparer: crate::FileSystemReferenceDataPreparer,
+    manifest: BundleManifest,
+}
+impl ManifestReferenceDataPreparer {
+    pub fn new(
+        root: std::path::PathBuf,
+        manifest: BundleManifest,
+    ) -> Result<Self, crate::FilesystemReferenceError> {
+        Ok(Self {
+            preparer: crate::FileSystemReferenceDataPreparer::new(root)?,
+            manifest,
+        })
+    }
+}
+impl crate::ReferenceDataPreparer for ManifestReferenceDataPreparer {
+    fn prepare(
+        &self,
+        dependencies: &[crate::ReferenceDependency],
+        policy: crate::DatasetPreparationPolicy,
+    ) -> Result<crate::PreparedReferenceEvidence, crate::ReferencePreparationError> {
+        for dependency in dependencies {
+            let path = format!("reference-data/{}", dependency.bundle_path);
+            let digest = dependency
+                .sha256
+                .iter()
+                .map(|b| format!("{b:02x}"))
+                .collect::<String>();
+            if self.manifest.files().get(&path) != Some(&digest) {
+                return Err(crate::ReferencePreparationError::Provider(Box::new(
+                    BundleError::InvalidManifest(
+                        "reference declaration path/digest differs from manifest",
+                    ),
+                )));
+            }
+        }
+        self.preparer.prepare(dependencies, policy)
     }
 }
