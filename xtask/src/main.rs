@@ -1,5 +1,6 @@
 //! Native release recipe and artifact checks. No normative input or application API.
 mod artifact;
+mod bundle_data;
 use std::{
     env,
     error::Error,
@@ -218,7 +219,9 @@ fn main() -> Result<(), Failure> {
                 .map_err(|_| invalid("non-Unicode tooling argument"))
         })
         .collect::<Result<Vec<_>, _>>()?;
-    if args.first().map(String::as_str) == Some("verify-artifact") {
+    if args.first().map(String::as_str) == Some("bundle-data") {
+        bundle_data::cli(args)
+    } else if args.first().map(String::as_str) == Some("verify-artifact") {
         let repo = Path::new(env!("CARGO_MANIFEST_DIR"))
             .parent()
             .ok_or_else(|| invalid("tool needs repository parent"))?;

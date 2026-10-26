@@ -11,7 +11,9 @@ tutti gli step positivi, incluse due release pulite riproducibili e artifact gat
 CNF-BUNDLE-AUDIT-01 A ratificata e applicata; audit additivo, manifest opzionale
 esterno, Strict/Continue invariati. [Dossier15-03](docs/verification/T-P15-03-embedded-bundle.md).
 92/140 DONE=65,7%,2 IN_PROGRESS (2-03 parziale e15-04),46 NOT_STARTED; M5 aperta.
-AUTO_CONTINUE: prerequisito15-03 verificato, preflight15-04 avviato. Nessun gate saltato.
+T-P15-04 implementata: ZIP runtime deterministico, manifest/checksum/no-clobber,
+681/689 test prodotto e15 tooling locali positivi. DONE_UNVERIFIED, CI da avviare;
+[handoff15-04](docs/verification/T-P15-04-data-bundle.md). WAITING_GATE; nessun gate saltato.
 
 ## Registro storico — blocco contrattuale prima della ratifica
 
@@ -1833,6 +1835,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-01 | DONE | 2026-10-26 | Profilo/remap/CRT/riproducibilità: CI40307076976 Linux/MSVC success su7c919fb;671 test prodotto+2 tooling locali; [report](docs/verification/T-P15-01-release-profile.md) |
 | T-P15-02 | DONE | 2026-10-26 | CNF-ARTIFACT-LINUX-01 A ratificata;671 prodotto/9 tooling locali; CI40329791116 Linux/MSVC success su59b1663, verifier e negative probe reali; [report](docs/verification/T-P15-02-artifact-verifier.md) |
 | T-P15-03 | DONE | 2026-10-26 | Snapshot/wiring/audit ratificati; locale681/689 e CI40339655671 Linux/MSVC success su c538493; [dossier](docs/verification/T-P15-03-embedded-bundle.md) |
+| T-P15-04 | DONE_UNVERIFIED | 2026-10-26 | ZIP runtime/manifest/checksum, locale681/689 prodotto+15 tooling, binario esistente accetta estratto; CI pendente; [dossier](docs/verification/T-P15-04-data-bundle.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |

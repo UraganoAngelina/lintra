@@ -88,6 +88,22 @@ manifest esterno assente) e bundle_manifest_status. Present non significa che i
 dataset siano Verified. Tooling DEC-18 e API generiche conservano i propri contratti.
 Stato e gate nel [dossier T-P15-03](docs/verification/T-P15-03-embedded-bundle.md).
 
+Il packager dati usa un manifest runtime esplicito e non sovrascrive gli archivi:
+
+```sh
+mkdir -p target/data-bundle
+cargo xtask bundle-data --input bundles/embedded --output-dir target/data-bundle
+```
+
+Produce `schemas-<bundle_version>.zip` con `schemas/`, `reference-data/`, il
+MANIFEST.json originale e SHA256SUMS (payload e manifest, escluso sé stesso).
+Include soltanto i file dichiarati e verificati; rifiuta file mancanti/alterati,
+symlink e output dentro la sorgente. ZIP Stored, timestamp e permessi fissi,
+ordine stabile. L’esempio confeziona dati sintetici; non compila né certifica
+normativamente gli schemi. Pubblicazione delle release nei workflow successivi.
+Il test di accettazione del tooling richiede un binario già costruito:
+`LINTRA_TEST_BIN=/percorso/lintra cargo test --manifest-path xtask/Cargo.toml --locked -- --include-ignored`.
+
 ## Struttura
 
 - `src/lib.rs`: moduli privati `application`, `domain`, `schema`, `input`,

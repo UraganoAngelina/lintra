@@ -24,9 +24,11 @@ jobs:
         include:
           - os: ubuntu-24.04
             target: x86_64-unknown-linux-gnu
+            binary: lintra
             msvc_rustflags: ''
           - os: windows-2025
             target: x86_64-pc-windows-msvc
+            binary: lintra.exe
             msvc_rustflags: '-C target-feature=+crt-static'
     env:
       CARGO_TERM_COLOR: always
@@ -54,7 +56,9 @@ jobs:
         run: cargo fmt --manifest-path xtask/Cargo.toml -- --check
       - name: Clippy tooling
         run: cargo clippy --manifest-path xtask/Cargo.toml --all-targets --locked -- -D warnings
-      - name: Test tooling
-        run: cargo test --manifest-path xtask/Cargo.toml --locked
+      - name: Test tooling and extracted data bundle
+        env:
+          LINTRA_TEST_BIN: ${{ github.workspace }}/target/${{ matrix.target }}/debug/${{ matrix.binary }}
+        run: cargo test --manifest-path xtask/Cargo.toml --locked -- --include-ignored
       - name: Build reproducible release and verify artifact
         run: cargo xtask build-release --target ${{ matrix.target }} --verify-reproducible --verify-artifact

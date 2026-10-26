@@ -112,3 +112,15 @@ consultati; toolchain1.99.1 compatibile. Tree Linux GNU e Windows MSVC identici,
 nessuna libreria nativa o cc/cmake/OpenSSL. I build script di proc-macro2/quote
 sono tooling Rust del compilatore, nessun requisito runtime del prodotto.
 Nessuna selezione di nuove librerie runtime Linux autorizzate.
+
+## T-P15-04 — riuso nel solo xtask,2026-10-26
+
+Il packager riusa `lintra` via path (default-features=false) per il contratto
+BundleManifest già ratificato, senza duplicarne parser o grammatica. Nel tooling
+si riusano versioni già qualificate dal prodotto: sha2=0.11.1 per checksum,
+zip=9.0.5 con default-features=false e archivi Stored (nessun codec nativo),
+tempfile=3.27.0 senza default per staging RAII e pubblicazione no-clobber.
+serde_json=1.0.151 resta solo dev-dependency del tooling per fixture negative.
+Licenze/API verificate sulle copie sorgente Cargo già qualificate; nessun nuovo
+crate/versione o dipendenza runtime del prodotto introdotti. Cargo.lock del
+prodotto invariato; il lock separato di xtask registra il grafo effettivo.

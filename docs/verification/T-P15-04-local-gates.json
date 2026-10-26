@@ -1,0 +1,134 @@
+{
+  "task": "T-P15-04",
+  "done": false,
+  "native_ci_verified": false,
+  "local_commands": [
+    {
+      "name": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "clippy-default",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "test-default",
+      "command": [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "clippy-features",
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--all-features",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "test-features",
+      "command": [
+        "cargo",
+        "test",
+        "--all-features",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tool-fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "xtask/Cargo.toml",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tool-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "xtask/Cargo.toml",
+        "--all-targets",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tool-test",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "xtask/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--",
+        "--include-ignored"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "product_tests": {
+    "default": {
+      "passed": 681,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 79
+    },
+    "features": {
+      "passed": 689,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 79
+    }
+  },
+  "tool_tests": {
+    "passed": 15,
+    "failed": 0,
+    "ignored": 0,
+    "existing_binary_acceptance": true
+  },
+  "real_cli_zip_sha256": "773026a67f84cc8e4c6499794eac4241caf90ae77f84ef5b5e2603a5032baa3b",
+  "cli_existing_target_exit": 1,
+  "lock_versions_already_qualified": true,
+  "product_lock_unchanged": true
+}
