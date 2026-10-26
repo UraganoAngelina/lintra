@@ -96,3 +96,19 @@ Nessuna dipendenza esterna o nuova licenza di terze parti. Lock autonomo con il
 solo package locale, Cargo.lock del motore invariato. Serve alla ricetta release
 portabile richiesta da ARCH§39B.3; non è distribuito come prodotto e non introduce
 un workspace/GUI o un requisito runtime. Verifica artefatti15-02 ancora futura.
+
+## T-P15-02 — parser artefatti, registrazione prima dell'aggiunta
+
+goblin =0.10.7, MIT, MSRV1.85/edition2024: parser ELF/PE portabile pure Rust,
+solo tooling xtask. Default disabilitati; std, elf32/elf64, pe32/pe64, endian_fd.
+Fonte primaria: [manifest0.10.7](https://docs.rs/crate/goblin/0.10.7/source/Cargo.toml).
+Non si riscrive un parser binario e non si richiedono dumpbin/readelf sull'OS
+del runner. Nessuna dipendenza aggiunta al prodotto; suo Cargo.lock invariato.
+Lock tooling verificato: log0.4.34 MIT/Apache2 MSRV1.71; plain0.2.3 MIT/Apache2
+MSRV non dichiarato; scroll0.13.0 e scroll_derive0.13.2 MIT/MSRV1.85;
+proc-macro2 1.0.107, quote1.0.47 e syn3.0.9 MIT/Apache2/MSRV1.71;
+unicode-ident1.0.27 (MIT OR Apache2) AND Unicode3.0/MSRV1.71. Manifest locali
+consultati; toolchain1.99.1 compatibile. Tree Linux GNU e Windows MSVC identici,
+nessuna libreria nativa o cc/cmake/OpenSSL. I build script di proc-macro2/quote
+sono tooling Rust del compilatore, nessun requisito runtime del prodotto.
+Nessuna selezione di nuove librerie runtime Linux autorizzate.

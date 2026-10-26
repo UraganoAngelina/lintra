@@ -44,17 +44,32 @@ La ricetta release della CI applica remapping dei path, CRT statico e linker
 deterministico su MSVC, poi confronta due compilazioni pulite:
 
 ```sh
-cargo xtask build-release --target x86_64-unknown-linux-gnu --verify-reproducible
+cargo xtask build-release --target x86_64-unknown-linux-gnu --verify-reproducible --verify-artifact
 # Sul runner Windows nativo:
-cargo xtask build-release --target x86_64-pc-windows-msvc --verify-reproducible
+cargo xtask build-release --target x86_64-pc-windows-msvc --verify-reproducible --verify-artifact
 ```
 
-Il tooling è Rust std-only, con manifest/lock autonomi in xtask/. L'opzione
+Il tooling è Rust, con parser ELF/PE Goblin e manifest/lock autonomi in xtask/. L'opzione
 --offline usa esclusivamente dipendenze già acquisite. Le directory di verifica
 sono nuove sotto target/release-profile e vengono conservate per diagnosi.
 Il gate riguarda lo stesso checkout/toolchain/runner; non promette identità
 tra OS diversi. Le release distribuibili restano prodotte esclusivamente in CI;
 packaging, autosufficienza e pubblicazione richiedono i rispettivi gate P15.
+
+Per verificare un artefatto esistente:
+
+```sh
+cargo xtask verify-artifact --target x86_64-unknown-linux-gnu --artifact PATH
+```
+
+Il verifier controlla import diretti, path host (UTF-8/UTF-16) e dependency tree
+locked senza openssl-sys. GNU ammette soltanto i quattro SONAME ratificati in
+[CNF-ARTIFACT-LINUX-01](docs/verification/CNF-ARTIFACT-LINUX-01-ratification.md).
+Windows applica DLL di sistema/API set e rifiuta runtime CRT/GCC dinamici;
+immagini con delay imports non ispezionabili vengono rifiutate esplicitamente.
+L'opzione build --verify-artifact verifica anche il fallimento del comando reale
+su una copia alterata con path host, senza modificare l'originale. Non certifica
+la risoluzione delle librerie su ogni macchina destinataria o caricamenti via plugin.
 
 ## Struttura
 

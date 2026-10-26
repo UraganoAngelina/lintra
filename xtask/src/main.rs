@@ -1,4 +1,5 @@
-//! Native release recipe only. No normative input or application API is used.
+//! Native release recipe and artifact checks. No normative input or application API.
+mod artifact;
 use std::{
     env,
     error::Error,
@@ -15,6 +16,7 @@ struct Options {
     target: String,
     offline: bool,
     reproducible: bool,
+    verify_artifact: bool,
 }
 fn invalid(message: &str) -> io::Error {
     io::Error::new(io::ErrorKind::InvalidInput, message)
@@ -24,13 +26,14 @@ fn options(args: impl IntoIterator<Item = String>) -> Result<Options, Failure> {
     let mut args = args.into_iter();
     if args.next().as_deref() != Some("build-release") {
         return Err(invalid(
-            "expected build-release --target TARGET [--offline] [--verify-reproducible]",
+            "expected build-release --target TARGET [--offline] [--verify-reproducible] [--verify-artifact]",
         )
         .into());
     }
     let mut target = None;
     let mut offline = false;
     let mut reproducible = false;
+    let mut verify_artifact = false;
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--target" if target.is_none() => {
@@ -38,6 +41,7 @@ fn options(args: impl IntoIterator<Item = String>) -> Result<Options, Failure> {
             }
             "--offline" if !offline => offline = true,
             "--verify-reproducible" if !reproducible => reproducible = true,
+            "--verify-artifact" if !verify_artifact => verify_artifact = true,
             _ => return Err(invalid("unknown or duplicate build option").into()),
         }
     }
@@ -52,6 +56,7 @@ fn options(args: impl IntoIterator<Item = String>) -> Result<Options, Failure> {
         target,
         offline,
         reproducible,
+        verify_artifact,
     })
 }
 /// Unit separators preserve paths with spaces. Include lexical and canonical
@@ -197,10 +202,28 @@ fn run(options: Options) -> Result<(), Failure> {
         println!("reproducible=true target={}", options.target);
     }
     println!("artifact={}", artifact.display());
+    if options.verify_artifact {
+        artifact::verify(repo, &artifact, &options.target, options.offline)?;
+        artifact::negative_probe(&artifact, &options.target, options.offline)?;
+    }
     Ok(())
 }
 fn main() -> Result<(), Failure> {
-    run(options(env::args().skip(1))?)
+    let args = env::args_os()
+        .skip(1)
+        .map(|arg| {
+            arg.into_string()
+                .map_err(|_| invalid("non-Unicode tooling argument"))
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    if args.first().map(String::as_str) == Some("verify-artifact") {
+        let repo = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .ok_or_else(|| invalid("tool needs repository parent"))?;
+        artifact::cli(repo, args)
+    } else {
+        run(options(args)?)
+    }
 }
 
 #[cfg(test)]
@@ -236,7 +259,8 @@ mod tests {
             Options {
                 target: "x86_64-pc-windows-msvc".into(),
                 offline: true,
-                reproducible: true
+                reproducible: true,
+                verify_artifact: false,
             }
         );
     }

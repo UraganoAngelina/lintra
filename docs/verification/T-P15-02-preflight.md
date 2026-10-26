@@ -1,5 +1,9 @@
 # T-P15-02 — Preflight e handoff contrattuale
 
+Ripresa successiva2026-10-26: l'autore ha ratificato A, motivando Linux per uso
+interno/personale e distribuzione ad altri su Windows. Il blocco sotto è storico
+e risolto; implementazione ripresa senza nuovo consenso. [Ratifica](CNF-ARTIFACT-LINUX-01-ratification.md).
+
 26 ottobre2026. Branch work/p1-foundations. HEAD iniziale df03feb, chiusura
 documentale15-01; codice verificato7c919fb. Nessuna implementazione precedente
 del verifier rilevata; xtask attuale contiene soltanto la ricetta release.

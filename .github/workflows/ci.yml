@@ -52,5 +52,5 @@ jobs:
         run: cargo clippy --manifest-path xtask/Cargo.toml --all-targets --locked -- -D warnings
       - name: Test tooling
         run: cargo test --manifest-path xtask/Cargo.toml --locked
-      - name: Build reproducible release
-        run: cargo xtask build-release --target ${{ matrix.target }} --verify-reproducible
+      - name: Build reproducible release and verify artifact
+        run: cargo xtask build-release --target ${{ matrix.target }} --verify-reproducible --verify-artifact

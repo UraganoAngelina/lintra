@@ -68,3 +68,11 @@ estende il gate né si cambia linking/panic/target implicitamente.
 non approvato/non implementato;15-02 BLOCKED al preflight. Nessuna modifica
 normativa o architetturale applicata. Governance permanente single-agent e Git/CI
 autorizzati conservati: la pausa riguarda soltanto una decisione contrattuale reale.
+
+### CNF-ARTIFACT-LINUX-01 — ratifica A successiva,2026-10-26
+
+L'autore approva A: Linux previsto solo interno/personale, distribuzione ad altri
+via Windows. [Ratifica](verification/CNF-ARTIFACT-LINUX-01-ratification.md).
+Allowlist CLI GNU chiusa: libc.so.6, libm.so.6, ld-linux-x86-64.so.2,
+libgcc_s.so.1; altro SONAME rifiutato. Windows invariato, nessuna scelta implicita
+di baseline Linux o riduzione dei gate. Preflight15-02 sbloccato, sviluppo ripreso.

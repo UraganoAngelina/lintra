@@ -4,5 +4,8 @@ version = "0.1.0"
 edition = "2024"
 publish = false
 
+[dependencies]
+goblin = { version = "=0.10.7", default-features = false, features = ["std", "elf32", "elf64", "pe32", "pe64", "endian_fd"] }
+
 # Standalone build tooling; the product remains the current single package.
 [workspace]

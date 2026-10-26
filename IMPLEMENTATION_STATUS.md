@@ -3,7 +3,21 @@
 Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P15-01 DONE; T-P15-02 BLOCKED su decisione runtime Linux
+## Frontiera corrente — T-P15-02 IN_PROGRESS, ratifica A applicata
+
+2026-10-26: autore approva CNF-ARTIFACT-LINUX-01 A; Linux solo interno/personale,
+distribuzione ad altri Windows. Allowlist dei quattro SONAME applicata senza
+ridurre i gate Windows/Linux. Prerequisito15-01 verificato in CI40307076976.
+Verifier Rust ELF/PE, controllo path UTF-8/UTF-16 e dependency tree, probe negativo
+del comando reale implementati nel solo xtask/workflow. Parser goblin registrato
+prima dell'aggiunta; lock del prodotto invariato. Test tooling9/9, regressione
+prodotto671/77 e build release Linux/verifier/probe negativo positivi;
+fmt/clippy/check GNU e audit governance positivi. Resta CI nativa.
+90 DONE,2 IN_PROGRESS (2-03 parziale e15-02),48 NOT_STARTED. M5 non raggiunta.
+[Ratifica](docs/verification/CNF-ARTIFACT-LINUX-01-ratification.md).
+Prosecuzione AUTO_CONTINUE dopo gate reali, nessuna decisione residua15-02.
+
+## Registro storico — preflight T-P15-02 bloccato, poi ratificato A
 
 Preflight15-02 eseguito automaticamente dopo la chiusura15-01: prerequisito CI
 verificato, ma libgcc_s.so.1 osservata nei DT_NEEDED del CLI GNU locale e assente
@@ -1772,7 +1786,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P14-05 | DONE | 2026-10-26 | DEC-18,671 test/77 suite, CI40298536590 Linux/MSVC success su8a9ffd8; M7 raggiunta, STOP; [report](docs/verification/T-P14-05-schema-tooling.md) |
 | T-P15-01 | DONE | 2026-10-26 | Profilo/remap/CRT/riproducibilità: CI40307076976 Linux/MSVC success su7c919fb;671 test prodotto+2 tooling locali; [report](docs/verification/T-P15-01-release-profile.md) |
-| T-P15-02 | BLOCKED | 2026-10-26 | Prerequisito15-01 verificato; preflight contrattuale CNF-ARTIFACT-LINUX-01 aperto sull'allowlist libgcc_s Linux, nessuna implementazione; [report](docs/verification/T-P15-02-preflight.md) |
+| T-P15-02 | IN_PROGRESS | 2026-10-26 | CNF-ARTIFACT-LINUX-01 A ratificata; verifier/negative probe implementati; gate completi locali e CI pendenti; [preflight](docs/verification/T-P15-02-preflight.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |

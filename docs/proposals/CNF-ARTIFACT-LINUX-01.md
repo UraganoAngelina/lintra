@@ -1,5 +1,9 @@
 # CNF-ARTIFACT-LINUX-01 — Runtime Linux ammesso dal verifier
 
+Nota successiva2026-10-26: proposta A approvata dall'autore. La
+[ratifica e motivazione](../verification/CNF-ARTIFACT-LINUX-01-ratification.md)
+governano lo stato corrente; il testo seguente conserva la proposta originaria.
+
 2026-10-26. **PROPOSTA, NON RATIFICATA.** Preflight T-P15-02.
 
 ## Evidenza e fonti del conflitto
