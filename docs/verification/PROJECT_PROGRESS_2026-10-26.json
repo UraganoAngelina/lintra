@@ -1,0 +1,822 @@
+{
+  "date": "2026-10-26",
+  "total": 140,
+  "basis": "140 catalogued atomic tasks; each task has equal weight, not effort or time",
+  "counts": {
+    "DONE": 87,
+    "IN_PROGRESS": 1,
+    "LOCAL_VERIFIED_NATIVE_PENDING": 1,
+    "NOT_STARTED": 51
+  },
+  "phases": {
+    "P0": {
+      "DONE": 9
+    },
+    "P1": {
+      "DONE": 3
+    },
+    "P2": {
+      "DONE": 2,
+      "IN_PROGRESS": 1
+    },
+    "P3": {
+      "DONE": 7
+    },
+    "P4": {
+      "DONE": 5
+    },
+    "P5": {
+      "DONE": 7
+    },
+    "P6": {
+      "DONE": 8
+    },
+    "P7": {
+      "DONE": 6
+    },
+    "P8": {
+      "DONE": 6
+    },
+    "P9": {
+      "DONE": 6
+    },
+    "P10": {
+      "DONE": 6
+    },
+    "P11": {
+      "DONE": 6
+    },
+    "P12": {
+      "DONE": 5
+    },
+    "P13": {
+      "DONE": 8
+    },
+    "P14": {
+      "DONE": 3,
+      "LOCAL_VERIFIED_NATIVE_PENDING": 1,
+      "NOT_STARTED": 1
+    },
+    "P15": {
+      "NOT_STARTED": 7
+    },
+    "P16": {
+      "NOT_STARTED": 9
+    },
+    "P17": {
+      "NOT_STARTED": 6
+    },
+    "P18": {
+      "NOT_STARTED": 4
+    },
+    "PERSIST": {
+      "NOT_STARTED": 12
+    },
+    "CAD": {
+      "NOT_STARTED": 12
+    }
+  },
+  "tasks": [
+    {
+      "task": "T-P0-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P0-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P0-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P0-04",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P0-05",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P0-06",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P0-07",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P0-08",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P0-09",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P1-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P1-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P1-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P2-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P2-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P2-03",
+      "status": "IN_PROGRESS",
+      "declared_status": "IN_PROGRESS"
+    },
+    {
+      "task": "T-P3-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P3-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P3-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P3-04",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P3-05",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P3-06",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P3-07",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P4-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P4-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P4-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P4-04",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P4-05",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P5-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P5-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P5-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P5-04",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P5-05",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P5-06",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P5-07",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P6-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P6-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P6-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P6-04",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P6-05",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P6-06",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P6-07",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P6-08",
+      "status": "DONE",
+      "declared_status": "DONE — LocalOnly scope approved by CNF-RECORD-01"
+    },
+    {
+      "task": "T-P7-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P7-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P7-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P7-04",
+      "status": "DONE",
+      "declared_status": "DONE — LocalOnly"
+    },
+    {
+      "task": "T-P7-05",
+      "status": "DONE",
+      "declared_status": "DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01"
+    },
+    {
+      "task": "T-P7-06",
+      "status": "DONE",
+      "declared_status": "DONE — LocalOnly"
+    },
+    {
+      "task": "T-P8-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P8-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P8-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P8-04",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P8-05",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P8-06",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P9-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P9-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P9-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P9-04",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P9-05",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P9-06",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P10-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P10-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P10-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P10-04",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P10-05",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P10-06",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P11-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P11-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P11-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P11-04",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P11-05",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P11-06",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P12-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P12-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P12-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P12-04",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P12-05",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P13-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P13-02",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P13-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P13-04",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P13-05",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P13-06",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P13-07",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P13-08",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P14-01",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P14-02",
+      "status": "LOCAL_VERIFIED_NATIVE_PENDING",
+      "declared_status": "IN_PROGRESS"
+    },
+    {
+      "task": "T-P14-03",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P14-04",
+      "status": "DONE",
+      "declared_status": "DONE"
+    },
+    {
+      "task": "T-P14-05",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P15-01",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P15-02",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P15-03",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P15-04",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P15-05",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P15-06",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P15-07",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P16-00",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P16-01",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P16-02",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P16-03",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P16-04",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P16-05",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P16-06",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P16-07",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P16-08",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P17-01",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P17-02",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P17-03",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P17-04",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P17-05",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P17-06",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P18-01",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P18-02",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P18-03",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-P18-04",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-PERSIST-01",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-PERSIST-02",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-PERSIST-03",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-PERSIST-04",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-PERSIST-05",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-PERSIST-06",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-PERSIST-07",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-PERSIST-08",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-PERSIST-09",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-PERSIST-10",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-PERSIST-11",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-PERSIST-12",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-CAD-01",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-CAD-02",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-CAD-03",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-CAD-04",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-CAD-05",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-CAD-06",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-CAD-07",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-CAD-08",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-CAD-09",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-CAD-10",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-CAD-11",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    },
+    {
+      "task": "T-CAD-12",
+      "status": "NOT_STARTED",
+      "declared_status": "NOT_STARTED"
+    }
+  ],
+  "branch": "work/p1-foundations",
+  "code_commit": "7b8bd8bad5d67a2f538909b94f0561356336f091",
+  "last_verified_native_commit": "7b8bd8bad5d67a2f538909b94f0561356336f091",
+  "last_verified_native_run": "40238421197",
+  "verified_percent": 62.1,
+  "workflow": "Checkpoint14-02: local642/75 passed, native pending; stop after verification",
+  "native_gate_previous_session": {
+    "dispatch_accepted": true,
+    "results_verified": false,
+    "attempts_counted": 3,
+    "attempts": [
+      "DNS timeout before API",
+      "dispatch accepted",
+      "check-runs connection timeout after more than eight minutes"
+    ],
+    "further_requests_made": false
+  },
+  "native_gate": {
+    "results_verified": true,
+    "resume_get_calls": 1,
+    "new_dispatch": false,
+    "linux_job": "121166275121",
+    "msvc_job": "121166274875",
+    "conclusion": "success"
+  },
+  "t_p14_04_native_gate": {
+    "dispatch_accepted": true,
+    "code_ancestor": "7024f5f66a69f87480a030206a01a88e7b6d3c94",
+    "head_sha": "e887fcdc3256759f7196d4413c055ad5113ed4fd",
+    "run": "40211195991",
+    "actions_requests_counted": 3,
+    "minimum_interval_seconds": 60,
+    "linux_job": "121222585528",
+    "linux_conclusion": "success",
+    "msvc_job": "121222585745",
+    "msvc_conclusion": null,
+    "msvc_last_observed_status": "in_progress",
+    "final_read": "connect timeout after10s",
+    "further_requests_made": false
+  },
+  "remote_commit": "e887fcdc3256759f7196d4413c055ad5113ed4fd"
+}

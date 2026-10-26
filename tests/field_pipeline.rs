@@ -168,9 +168,14 @@ fn first_semantic_failure_stops_remaining_constraints() {
         "numeric",
         json!([
             {"kind":"allowed_values","target":"raw","values":["0012"]},
-            {"kind":"allowed_values","target":"raw","values":["0014"]}
+            {"kind":"allowed_values","target":"raw","values":["0012","0014"]}
         ]),
     );
+    // The schema has a real common value; 0013 still fails both domains.
+    // Authoring lint rejects contradictory required domains since T-P14-02.
+    let (valid, errors, _) = observe(&schema, b"0012");
+    assert_eq!(valid, ResultKind::Valid);
+    assert!(errors.is_empty());
     let (_, errors, summary) = observe(&schema, b"0013");
     assert_eq!(errors.len(), 1);
     assert_eq!(errors[0].code, ValidationCode::InvalidDomain);

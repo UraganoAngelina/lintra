@@ -1,6 +1,6 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-10-25**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
 ## Frontiera corrente — T-P14-01/14-04 verificate; checkpoint T-P14-02
@@ -13,8 +13,9 @@ T-P14-01 DONE. Lo stesso gate include i9 test e il codice invariato di14-04:
 chiusa14-04 su questa evidenza discendente, non presunto il vecchio esito MSVC.
 **87/140 DONE =62,1%**. M6 nello scope ratificato, M7 ancora non raggiunta.
 
-T-P14-02 IN_PROGRESS: normalizzazione alias espliciti, review note con hash,
-lint warning/error e domini contraddittori. Nessuna nuova norma hardcoded,
+T-P14-02 IN_PROGRESS, gate locale642/75 suite positivo, fmt/check/clippy/
+release/GNU/diff e qualificazione SIOC originale passati. Normalizzazione alias
+espliciti, review note con hash, lint warning/error e domini contraddittori. Nessuna nuova norma hardcoded,
 nessuna baseline modificata. Stop al termine14-02 per checkpoint richiesto
 dall'autore: resoconto e percentuale, nessuna ulteriore task.
 [Importer](docs/verification/T-P14-01-xlsx-importer.md),
@@ -1666,7 +1667,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P7-03 | DONE | 2026-10-21 | Loop streaming, audit/cancellazione, 263 locali; CI 39571479598 Linux/Windows verde 5d2f371; [report](docs/verification/T-P7-03.md) |
 | T-P14-01 | DONE | 2026-10-25 | 632/74 suite, qualificazione SIOC reale positiva; CI40238421197 Linux/MSVC success su7b8bd8b; [report](docs/verification/T-P14-01-xlsx-importer.md) |
 | T-P14-04 | DONE | 2026-10-25 | Codice/test invariati7024f5f, qualificati nella CI discendente40238421197 Linux/MSVC success su7b8bd8b; vecchio pollingMSVC ignoto conservato storico; [report](docs/verification/T-P14-04-schema-diff.md) |
-| T-P14-02 | IN_PROGRESS | 2026-10-25 | Prerequisiti14-01/3-04 verificati, prossimo checkpoint con stop; [preflight](docs/verification/T-P14-02-preflight.md) |
+| T-P14-02 | IN_PROGRESS | 2026-10-26 | Normalizzazione/lint avanzato,642 test/75 suite e gate locali positivi; native da verificare, poi stop checkpoint; [report](docs/verification/T-P14-02-authoring-lint.md) |
 | T-P14-03 | DONE | 2026-10-21 | Canonical JSON/hash e registry, 268 locali; CI 39574640180 Linux/Windows verde da80163; [report](docs/verification/T-P14-03.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
@@ -4025,3 +4026,26 @@ necessario.14-01 DONE e14-04 DONE sulla nuova evidenza che include i suoi test/
 codice invariati, non riscritto il precedente polling incompleto.87/14062,1%.
 14-02 prosegue secondo mandato; al termine fermarsi e rendicontare percentuale.
 Nessuna14-05/P15. Source utente e baseline protetti inalterati.
+
+
+## HANDOFF §15.3 — T-P14-02 locale verificata,2026-10-26
+
+- STATUS: IN_PROGRESS sul gate nativo;87/140 DONE62,1%. Al termine stop esplicito
+  richiesto dall'autore, nessuna task14-05/P15 o ulteriore.
+- FILE: schema/authoring.rs, linter/mod/lib export,10 test/schema_authoring.rs,
+  tabella alias dati SIOC/README, fixture field_pipeline resa soddisfacibile
+  mantenendo prova di short-circuit, dossier/preflight/progresso. Nessuna nuova
+  dipendenza o modifica a source/baseline/grammatica/engine/application.
+- CONTRATTO: alias solo espliciti con report, testo/token originali invariati;
+  note non interpretate in DSL, review umana legata al digest, warning/error
+  distinti. Domini disgiunti stesso target Error se sempre Required senza
+  forbidden_if, Warning altrimenti; target raw/logical e valori esatti preservati.
+- EVIDENZE:642 test/75 suite/0 fail/2ignored; fmt/check/clippy/release/GNU/diff
+  positivi, qualificazione originale SIOC passata dopo nuove issue di lint.
+  90 fonti protette/33 hash13-08/lock invariati. FonteXLSX e newline esterna
+  preservate non staged.
+- NOTE: vecchia fixture runtime aveva due domini required disgiunti; aggiunto
+  valore comune0012 al secondo dominio e prova positiva;0013 ancora fallisce
+  entrambi, un solo errore. Nessun test/golden normativo indebolito o riscritto.
+- NEXT: push/CI reali, massimo tre chiamate≥60s. Dopo successo chiudere14-02,
+  rendicontare88/14062,9% e fermarsi. Non presumere esiti non disponibili.

@@ -1,4 +1,4 @@
-//! Structural lint only. An empty result is not a compiled or executable schema.
+//! Structural and explicit authoring lint; an empty result is not executable approval.
 
 use super::{
     compatibility::{EngineCapabilities, SchemaFormatVersion},
@@ -13,7 +13,7 @@ pub enum SchemaIssueSeverity {
     Warning,
 }
 
-/// Codes implemented by structural lint. Later compiler stages may extend this set.
+/// Codes shared by schema lint and compiler diagnostics.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum SchemaIssueCode {
@@ -48,6 +48,9 @@ pub enum SchemaIssueCode {
     MissingReferenceDatasetDeclaration,
     InvalidDiagnosticCode,
     InternalCompilerInvariant,
+    UnreviewedImportedNote,
+    InvalidImportedNoteReview,
+    ContradictoryConstraints,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -267,7 +270,7 @@ fn checked_source_end(start: usize, length: usize) -> Result<usize, SchemaIssueC
 /// Checks format identity, physical layout and parameters of the format-1/2 types.
 ///
 /// Order: flow issues, then traces in declaration order; trace identity before
-/// fields, fields in declaration order, record-length issue last. No hash-map
+/// fields, fields in declaration order, then record length and authoring issues. No hash-map
 /// iteration determines diagnostics. References, constraint compatibility,
 /// encoding binding and supported runtime capabilities require compiler stages.
 pub fn lint_raw_schema(raw: &RawFlowSchema) -> Vec<SchemaIssue> {
@@ -307,8 +310,116 @@ pub fn lint_raw_schema(raw: &RawFlowSchema) -> Vec<SchemaIssue> {
             );
         }
         diagnostics.record(record);
+        lint_authoring(raw, record, &mut diagnostics.issues);
     }
     diagnostics.issues
+}
+
+/// Inspect only the importer's owned note namespace; arbitrary metadata is not DSL.
+fn lint_authoring(raw: &RawFlowSchema, record: &RawRecordSchema, issues: &mut Vec<SchemaIssue>) {
+    use super::{
+        authoring::{ImportedNoteReview, note_hash, valid_disposition},
+        raw::{RawConstraint, RawConstraintAllowedValuesTarget, RawPresenceBase},
+    };
+    use std::collections::BTreeSet;
+    for field in &record.fields {
+        let mut emit = |code, severity, message: &str, note: Option<&str>| {
+            issues.push(SchemaIssue {
+                code,
+                severity,
+                flow_id: Some(FlowId(raw.flow_id.clone())),
+                trace_id: Some(TraceId(record.id.clone())),
+                field_id: Some(FieldId(field.id.clone())),
+                message: message.into(),
+                source_note: note.map(str::to_owned),
+            })
+        };
+        if let Some(metadata) = &field.regulatory_metadata
+            && let Some(note) = metadata
+                .get("xlsx_source")
+                .and_then(|v| v.get("notes_original"))
+                .and_then(|v| v.as_str())
+                .filter(|s| !s.is_empty())
+        {
+            if metadata.get("source_note").and_then(|v| v.as_str()) != Some(note) {
+                emit(
+                    SchemaIssueCode::InvalidImportedNoteReview,
+                    SchemaIssueSeverity::Error,
+                    "Displayed source note disagrees with the imported original",
+                    Some(note),
+                );
+            } else {
+                match metadata.get("xlsx_note_review") {
+                    None => emit(
+                        SchemaIssueCode::UnreviewedImportedNote,
+                        SchemaIssueSeverity::Warning,
+                        "Imported source note awaits explicit classification; no rule was inferred",
+                        Some(note),
+                    ),
+                    Some(value) => {
+                        match serde_json::from_value::<ImportedNoteReview>(value.clone()) {
+                            Ok(review) if review.note_sha256 != note_hash(note) => emit(
+                                SchemaIssueCode::UnreviewedImportedNote,
+                                SchemaIssueSeverity::Warning,
+                                "Source note changed after review; acknowledgement is stale",
+                                Some(note),
+                            ),
+                            Ok(review) if valid_disposition(&review.disposition, &record.rules) => {
+                            }
+                            _ => emit(
+                                SchemaIssueCode::InvalidImportedNoteReview,
+                                SchemaIssueSeverity::Error,
+                                "Imported note review is malformed or references absent/ambiguous rules",
+                                Some(note),
+                            ),
+                        }
+                    }
+                }
+            }
+        }
+        // Constraints are conjunctive. Compare only domains on the same byte view.
+        for target in [
+            RawConstraintAllowedValuesTarget::Raw,
+            RawConstraintAllowedValuesTarget::Logical,
+        ] {
+            let mut intersection: Option<BTreeSet<&str>> = None;
+            let mut count = 0;
+            for constraint in &field.constraints {
+                if let RawConstraint::AllowedValues { values, target: t } = constraint
+                    && *t == target
+                {
+                    count += 1;
+                    let values: BTreeSet<_> = values.iter().map(String::as_str).collect();
+                    intersection = Some(match intersection {
+                        None => values,
+                        Some(current) => current.intersection(&values).copied().collect(),
+                    });
+                }
+            }
+            if count > 1 && intersection.as_ref().is_some_and(BTreeSet::is_empty) {
+                let severity = if field.presence.base == RawPresenceBase::Required
+                    && field.presence.forbidden_if.is_empty()
+                {
+                    SchemaIssueSeverity::Error
+                } else {
+                    SchemaIssueSeverity::Warning
+                };
+                emit(
+                    SchemaIssueCode::ContradictoryConstraints,
+                    severity,
+                    match target {
+                        RawConstraintAllowedValuesTarget::Raw => {
+                            "Raw allowed-value constraints have no common present value"
+                        }
+                        RawConstraintAllowedValuesTarget::Logical => {
+                            "Logical allowed-value constraints have no common present value"
+                        }
+                    },
+                    None,
+                );
+            }
+        }
+    }
 }
 
 #[cfg(test)]

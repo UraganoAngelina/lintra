@@ -38,3 +38,18 @@ Default confronta soltanto; --write scrive solo il profilo, previa verifica hash
 originale6be8ae60a2c236e5a25b731365b42f8e7bca849066d68747abfc78b92ce273e3.
 Il workbook originale rimane locale, mai destinazione dello script o fixture CI.
 I documenti degli altri flussi forniti dall'autore restano fuori scope.
+
+## Normalizzazione e lint avanzato14-02
+
+normalize_import_profile(profile, aliases) normalizza solo i tag revisionati
+mediante una tabella esplicita, restituendo il report dei cambiamenti; non tocca
+token originali o blueprint. La tabella SIOC allegata deriva dagli alias già
+ratificati, inclusa A→alphanumeric; non è una convenzione globale per nuovi flussi.
+Alias sconosciuti/ambigui o tentativi di ridefinire tag canonical sono errori.
+
+lint_raw_schema espone warning delle note importate non ancora classificate e
+contraddizioni dichiarate. review_imported_note registra la classificazione
+esplicita Metadata(reason) o Mapped(rule_ids esistenti), con hash del testo
+originale; non compie la revisione e non genera regole. Una modifica del testo
+invalida il vecchio acknowledgement. I warning non sono violazioni normative.
+Dettagli e limiti nel dossierT-P14-02-authoring-lint.md.

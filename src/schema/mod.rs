@@ -26,3 +26,5 @@ pub(crate) mod coordinates;
 pub(crate) mod derived;
 
 pub(crate) mod importer;
+
+pub(crate) mod authoring;

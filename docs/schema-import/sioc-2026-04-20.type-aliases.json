@@ -1,0 +1,7 @@
+[
+  {"alias":"AN","canonical":"alphanumeric"},
+  {"alias":"A","canonical":"alphanumeric"},
+  {"alias":"N","canonical":"numeric"},
+  {"alias":"D","canonical":"date"},
+  {"alias":"Data","canonical":"date"}
+]

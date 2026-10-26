@@ -316,3 +316,9 @@ pub use schema::importer::{
     CoordinateFormulaPolicy, ImportError, SchemaImporter, XlsxColumn, XlsxColumns, XlsxFieldRow,
     XlsxImportProfile, XlsxSchemaImporter, XlsxTraceBlock,
 };
+
+pub use schema::authoring::{
+    ImportedNoteDisposition, ImportedNoteReview, ImportedPhysicalType, NormalizedImportProfile,
+    SchemaAuthoringError, TypeAlias, TypeNormalization, normalize_import_profile,
+    review_imported_note,
+};
