@@ -3,6 +3,20 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P2-03 DONE/M1 raggiunta, T-P16-02 IN_PROGRESS
+
+2026-10-27: residuo2-03 codeb415d73 e CI40515191339/3cd162e completati;
+Linux/MSVC/JSONL tutti success, evidenza singoli job verificata. M1 raggiunta.
+103/140 DONE=73,6%,1 IN_PROGRESS (16-02),36 NOT_STARTED. M8 ancora aperta.
+16-02: finestra base software, font originali incorporati e obbligatori, temi
+chiaro fedele/scuro nero+arancione/rosso e controllo accessibile, vero AboutSlint.
+Test UI locali render/puntatore/tastiera/contrasto e font positivi; regressione
+workspace, negativa build senza font e CI nuova ancora da completare.
+Nessun nuovo prerequisito mancante per PERSIST-02; può seguire indipendente
+solo dopo consegna locale16-02. AUTO_CONTINUE, nessun consenso ordinario.
+
+## Registro storico — chiusura workspace e residuo dominio
+
 ## Frontiera corrente — T-P16-01 DONE, T-P2-03 WAITING_GATE
 
 2026-10-27: CI40513168784/e5b00b2 completed/success Linux/MSVC/compare JSONL.
@@ -1976,7 +1990,7 @@ contratti approvati e rinvii secondo la procedura di T-P0-09.
 | Milestone | Stato | Evidenza |
 |---|---|---|
 | M0 | REACHED | G0 approvato dall’autore con rinvii espliciti, 2026-10-19 |
-| M1 | IN_PROGRESS — residuo approvato | P1 e T-P2-01/02 verificate; T-P2-03 resta parziale per payload applicativi completi futuri |
+| M1 | REACHED | P1/P2 complete; residuo applicativo2-03 verificato CI40515191339 Linux/MSVC |
 | M2 | LOCAL_SCOPE_VERIFIED | P3–P6 verificate nello scope corrente; non chiude il residuo M1 |
 | M3 | REACHED — LocalOnly | Chiusura nativa T-P8-06, CI 39747270986 su 90528c4; perimetro DET §151 ratificato |
 | M4 | LOCAL_SCOPE_VERIFIED | P9–P12 verificate, ultima CI 39976689575 Linux/MSVC success; rinvii G0 e capacità non supportate espliciti, nessuna certificazione normativa completa |
@@ -2007,7 +2021,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P1-03 | DONE | 2026-10-19 | CI su commit 34e67da: Linux GNU e Windows MSVC verdi, [run 39232752518](https://github.com/UraganoAngelina/lintra/actions/runs/39232752518) |
 | T-P2-01 | DONE | 2026-10-19 | 7 newtype + ByteRange; 5 unit/2 integration/5 doctest; CI Linux/Windows verde su 6ac0fb8, run 39233324913 |
 | T-P2-02 | DONE | 2026-10-19 | Mapping unico, 9 unit/2 integration/5 doctest e release; [CI 39234593522](https://github.com/UraganoAngelina/lintra/actions/runs/39234593522) verde Linux/Windows su 30af262 |
-| T-P2-03 | IN_PROGRESS | 2026-10-19 | Proposta A approvata; identità/chiave/scope/summary/outcome verificati in locale e CI 39235805213, 70cdb5e; errore tecnico applicativo rinviato esplicitamente |
+| T-P2-03 | DONE | 2026-10-27 | Parte autonoma storica e residuo typed Context verificati, CI40515191339; [completion](docs/verification/T-P2-03-completion.md) |
 | T-P3-01 | DONE | 2026-10-19 | Raw DTO/AST formato 1, round-trip e negativi; 17 unit/2 integration/5 doctest; [CI 39236782609](https://github.com/UraganoAngelina/lintra/actions/runs/39236782609) verde Linux/Windows su 225419d |
 | T-P3-02 | DONE | 2026-10-19 | Compiled immutabile, piani tipizzati e indice derivato; 25 unit/2 integration/10 doctest; [CI 39250930467](https://github.com/UraganoAngelina/lintra/actions/runs/39250930467) verde Linux/Windows su f04bb60 |
 | T-P3-03 | DONE | 2026-10-19 | Repository filesystem/memoria e errori tecnici tipizzati; 25 unit/11 integration/10 doctest; [CI 39253152098](https://github.com/UraganoAngelina/lintra/actions/runs/39253152098) verde Linux/Windows su a39924d |
@@ -2052,6 +2066,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-07 | DONE | 2026-10-27 | CI40475046094 su30d82fb Linux/MSVC e confronto JSONL success; [dossier](docs/verification/T-P15-07-cross-os-bundle.md) |
 | T-P16-00 | DONE | 2026-10-27 | CI40485215039 positiva, riferimento chiaro approvato dall’autore; [report](docs/ui/SPIKE_REPORT.md) |
 | T-P16-01 | DONE | 2026-10-27 | CI40513168784 Linux/MSVC/compare pass, workspace e QG-5 reali; [dossier](docs/verification/T-P16-01-workspace.md) |
+| T-P16-02 | IN_PROGRESS | 2026-10-27 | Software bootstrap, font/temi/attribuzione e test UI positivi; gate workspace/nativo in corso |
 | T-P18-02 | DONE | 2026-10-27 | Due dry-run dati Linux, binario invariato e v1 golden preservato; [runbook](docs/RUNBOOK_SCHEMA_UPDATE.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P17-06 | DONE | 2026-10-27 | CI40486090209 Linux/MSVC/compare success; [dossier](docs/verification/T-P17-06-robustness.md) |
@@ -4730,3 +4745,15 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
 - Residuo2-03 codice pubblicabile e locale701/709test pass, CI ancora da avviare.
 - Next16-02 pronta da iniziare, font originali/software/theme selector autorizzati.
 - PERSIST-02 dopo gate2-03. M1/M8 non dichiarate complete; AUTO_CONTINUE.
+
+## HANDOFF §15.3 — T-P2-03 DONE e M1,2026-10-27
+
+- Codeb415d73, CI40515191339/3cd162e: Linux/MSVC/JSONL completati success.
+- Payload Context reale e source preservata, non ValidationError; CNF-DOMAIN-01
+  completata senza reinterpretazioni, P1/P2 qualificati e M1 raggiunta.
+-701/709test/83suite e fmt/Clippy/guard positivi; dossier/evidenze archiviati.
+- Nessun residuo2-03. UI16-02 attiva: bootstrap temi/font/software qualificato
+  localmente con puntatore/tastiera e RGB1×/2×,20Python positivi; gate completi
+  e negativa build senza font in esecuzione. Non DONE16-02/M8 anticipati.
+- Next PERSIST-02 ora pronta dopo consegna localeUI durante attesa remota;
+  nessuna nuova autorizzazione ordinaria. AUTO_CONTINUE, un solo agente.

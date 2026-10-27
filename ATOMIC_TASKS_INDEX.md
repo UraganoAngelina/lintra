@@ -7,7 +7,7 @@ restano nel kit storico. Nessuna conclusione di task impone lo stop della sessio
 
 | Task | Stato operativo (aggiornato alla recovery) | Prompt |
 |---|---|---|
-| T-P2-03 | IN_PROGRESS | [prompt](TASK_PROMPTS/T-P2-03.md) |
+| T-P2-03 | DONE | [prompt](TASK_PROMPTS/T-P2-03.md) |
 | T-P15-01 | DONE | [prompt](TASK_PROMPTS/T-P15-01.md) |
 | T-P15-02 | DONE | [prompt](TASK_PROMPTS/T-P15-02.md) |
 | T-P15-03 | DONE | [prompt](TASK_PROMPTS/T-P15-03.md) |
@@ -17,7 +17,7 @@ restano nel kit storico. Nessuna conclusione di task impone lo stop della sessio
 | T-P15-07 | DONE | [prompt](TASK_PROMPTS/T-P15-07.md) |
 | T-P16-00 | DONE | [prompt](TASK_PROMPTS/T-P16-00.md) |
 | T-P16-01 | DONE | [prompt](TASK_PROMPTS/T-P16-01.md) |
-| T-P16-02 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P16-02.md) |
+| T-P16-02 | IN_PROGRESS | [prompt](TASK_PROMPTS/T-P16-02.md) |
 | T-P16-03 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P16-03.md) |
 | T-P16-04 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P16-04.md) |
 | T-P16-05 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P16-05.md) |

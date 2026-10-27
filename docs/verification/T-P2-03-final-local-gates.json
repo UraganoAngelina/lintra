@@ -1,6 +1,6 @@
 {
   "task": "T-P2-03",
-  "done": false,
+  "done": true,
   "fmt": true,
   "clippy_workspace_default": true,
   "clippy_workspace_all_features": true,
@@ -20,6 +20,6 @@
   },
   "new_tests": 2,
   "new_compile_fail_doctest": 1,
-  "native_ci": "pending",
-  "M1_reached": false
+  "native_ci": 40515191339,
+  "M1_reached": true
 }

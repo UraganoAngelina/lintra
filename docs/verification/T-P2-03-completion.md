@@ -56,3 +56,12 @@ AUTO_CONTINUE, nessuna conferma ordinaria richiesta.
 Fmt/Clippy workspace default/all-features positivi;701/709test,83suite,0fail/2ignored,
 11doctest inclusi. Guard reale core/CLI senza Slint positivo. Nessuna modifica
 a fixture/golden, normativi e report invariati. CI nuova da avviare; non DONE/M1.
+
+## Chiusura nativa e M1
+
+CI40515191339 su3cd162e, codeb415d73: Linux/MSVC e confronto JSONL tutti
+completed/success. Verificati i singoli job viaAPI dopo una transitoria
+incoerenza degli snapshot. Evidenza finale archiviata; T-P2-03 DONE.
+P1 e P2 ora interamente qualificate: M1 raggiunta, nessun residuo applicativo.
+PERSIST-02 ha ora anche questo prerequisito effettivo. Nessuna nuova ratifica
+richiesta: completamento del contratto CNF-DOMAIN-01 già autorizzato.
