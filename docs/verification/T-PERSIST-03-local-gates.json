@@ -2,7 +2,7 @@
   "task": "T-PERSIST-03",
   "base_head": "0a2121b",
   "local_gates_complete": true,
-  "native_ci": null,
+  "native_ci": 40581933176,
   "pipeline": [
     {
       "gate": "fmt",
@@ -117,5 +117,6 @@
     "tests/persistence_repository.rs": "89f7912c087e288fd71c54f1bb7d5d2a2bfbecf73492efa9b9e1c910e516dc1a",
     "src/lib.rs": "1efb200130f7e4323eebfde096361e3d630604fc37848bcb9db929a32618c4bc",
     "src/cli/bundle.rs": "b19e3490ac0bb24071ff8ab0e29b68a65b93efcaa4a7bb598d2736d2f6392b54"
-  }
+  },
+  "done": true
 }

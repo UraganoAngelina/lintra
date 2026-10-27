@@ -64,3 +64,16 @@ dipendenze Cargo. Nessun Rust modificato in questa task: non ripetuti i gate
 Residuo: commit/push e nuova CI nativa per PERSIST03+18-01. Non DONE fino a
 PowerShell5.1 reale e gate completo. Nessun dato paziente o release creata.
 UI03 ora DONE/CI40577920052,16-04 pronta. AUTO_CONTINUE single-agent.
+
+## Chiusura nativa
+
+DONE: CI40581933176/5bc8402 tutti4job success. Download artifactREADME per i due
+runner: bash Linux eWindowsPowerShell5.1.26100.33648 reali, sei casi ciascuno,
+versione/commit5bc8402 ecomandi effettivi verificati. Evidenza T-P18-01-native-shells.json
+conserva rawshaREADME: LF Linux eCRLF Windows secondo `.gitattributes * text=auto`.
+Il primo confronto locale che presupponeva identici rawbyteMD è stato corretto
+verificando gli esatti hash dei due checkout previsti e gli hash dei frammenti
+estratti, senza alterare artifact. JSONL einput non normalizzati: gategrezzo pass.
+Non eseguiti ExcelGUI/SmartScreen/tastoCtrl+C interattivo, come dichiarato;
+nessun claim aggiunto. Comandi da zero eseguiti sui dueOS, nessun residuo18-01.
+ProseguireUI04 corrente; rilascio di prova runbook18-03 è una task distinta.

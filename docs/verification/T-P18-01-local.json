@@ -34,12 +34,12 @@
   ],
   "version": "lintra 0.1.1-rc.1 (commit 59ba77104dc487c4a887a41189bf892e5e9272ed)",
   "task": "T-P18-01",
-  "done": false,
+  "done": true,
   "local_acceptance_passed": true,
-  "native_windows_acceptance": "pending CI; actual PowerShell5.1 shell required",
+  "native_windows_acceptance": "passed: actual PowerShell5.1.26100.33648, native MSVC release, six cases",
   "python_tests": 21,
   "actionlint": "1.7.12 verified official archive checksum, pass",
   "actionlint_archive_sha256": "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8",
   "rust_tests_repeated": "not repeated for docs/Python/workflow only; code49 already qualified735/735/717 locally",
-  "native_ci": null
+  "native_ci": 40581933176
 }

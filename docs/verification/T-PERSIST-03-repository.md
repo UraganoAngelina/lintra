@@ -111,3 +111,11 @@ Clippy core standalone all-targets già positivo. JSON locale conserva comandi,
 esiti/tempi e hash dei sorgenti. Nessun nuovo crate, golden precedente modificato,
 backend scelto o capability storica dichiarata. Commit/push/CI nuovi ancora residui;
 non DONE prima della verifica nativa. UI03CI40577920052 Linux success, MSVC pendente.
+
+## Chiusura nativa
+
+DONE: code49a3f4e, CI40581933176 su5bc8402 completed/success, Linux/MSVC e
+confronti JSONL/RGB tutti pass. Evidenza condivisa con18-01 nel JSONnative-ci.
+Tutti i test del fake e della regressione passati sui dueOS; nessun residuo03.
+Backend/crypto/history service/policy rimangono taskfuture, senza capacità attivata.
+Next PERSIST04 pronta per preflight; UI04 già corrente, AUTO_CONTINUE.

@@ -3,15 +3,17 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P16-03 DONE; PERSIST-03/P18-01 IN_PROGRESS
+## Frontiera corrente — T-P16-04 IN_PROGRESS; PERSIST03/P18-01 DONE
 
-UI03/0a2121b, CI40577920052 completed/success tutti4job; artifactRGB dei dueOS
-identici e coincidenti con le capture locali. Nessun residuo03, M8 aperta.
-106/140 DONE=75,7%,2 IN_PROGRESS (PERSIST03/P18-01),32NOT_STARTED.
-PERSIST03/49a3f4e pubblicata e qualificata localmente735/735/717test, non ancoraCI.
-P18-01 doc/probeREADME locale Linuxpositivo, PowerShell5.1 da qualificareCI.
-Prossima pubblicazione doc/CI unica per03+18-01, poiUI16-04 pronta eautorizzata.
-Skills UI no-ai-slop/Impeccable/ui-ux-pro-max; AUTO_CONTINUE single-agent.
+108/140 DONE=77,1%,1IN_PROGRESS (UI04),31NOT_STARTED.
+PERSIST03/49a3f4e eP18-01/5bc8402 qualificatiCI40581933176: Linux/MSVC e
+confronti JSONL/RGB tutti success. ArtifactREADME scaricati: sei casi perOS,
+PowerShell5.1.26100.33648 reale, commit/digest/comandi verificati. Nessun residuo.
+UI04 worker/service/channels bounded/Slint/cancel implementati, testmirati pass,
+fmt/Clippy workspace pass e741testdefault in verifica consuntivo; allfeatures/
+graph/font e rifinitura finale export-intent ancora da completare. NonDONE04/M8.
+UI03 giàDONE/0a2121b/CI40577920052. Next16-05 dopo gate04; PERSIST04 pronta per
+preflight sicurezza dopo03. Skills UI aggiornate eAUTO_CONTINUE single-agent.
 
 ## T-P18-01 avviata indipendente —2026-10-27
 
@@ -2201,7 +2203,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-08 | DONE | 2026-10-25 | 611/72 suite, golden referenziale reale e memoria; CI40192491629 Linux/MSVC success su52762c8, letta alla ripresa; [report](docs/verification/T-P13-08-goldens-memory.md) |
 | T-PERSIST-01 | DONE | 2026-10-27 | CI40510757138 Linux/MSVC/compare JSONL pass, profilo dichiarativo senza runtime; [report](docs/verification/T-PERSIST-01-profile.md) |
 | T-PERSIST-02 | DONE | 2026-10-27 | CI40528607856 Linux/MSVC/JSONL/RGB tutti pass; [dossier](docs/verification/T-PERSIST-02-domain.md) |
-| T-PERSIST-03 | IN_PROGRESS | 2026-10-27 | Trait repository e adapter transazionale in memoria in sviluppo |
+| T-PERSIST-03 | DONE | 2026-10-27 | Code49a3f4e, CI40581933176 su5bc8402 tutti4job success; snapshot/trait/CAS/abort/reopen fake qualificati |
 | T-PERSIST-04..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -5029,3 +5031,41 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
 - Pubblicare eavviareCI unica per49+doc18-01 ora che40577920052 è terminata;
   poi iniziareUI16-04 giàpronta, conno-ai-slop/Impeccable/ui-ux-pro-max.
 - AUTO_CONTINUE, nessun nuovo consenso, nessuna nuova release/PHI/dipendenza.
+
+## HANDOFF §15.3 — UI16-04 worker/controller locale in verifica,2026-10-27
+
+- HEAD5bc8402, UI03DONE/40577920052; PERSIST03+P18-01CI40581933176 in_progress.
+  Prima lettura dopo15min: Linux tutti step inclREADMEpass, Windows Rust/font/
+  artifactpixel pass, release riproducibile in corso; PS5.1 non ancora eseguita.
+- UI04 prereq03 e7-02qualificati. Worker/channels(1+1)/throttle50ms/AtomicJSONL/
+  TempDir owned, SlintWeak upgrade_in_event_loop, cancel richiesto/outcome reali,
+  erroretecnico/violazione/partial distinti; nessun Vec globale o falsa percentuale.
+-4test worker+unitthrottle e testSlintproxy/UIresponsive/barriera passati;
+  previewdiinputcambiato invalidata suErr, causatyped conservata, snapshot precedenti
+  non spacciati per esito corrente. Capturetarget/ui-worker-visual diagnostiche.
+- Code ui/src/worker.rs,worker_controller.rs,analysisClone/main/lib, Slintform/
+  controls/properties; tempfiledev→runtime già registrata, nessun crate nuovo.
+- fmt/Clippy workspace default/all-features positivi; pipeline testworkspace
+  default/allfeatures,graph,fontnegativa in corso target/verification-16-04-pipeline.json.
+- Report docs/verification/T-P16-04-worker.md,design/Hallmark aggiornati. Non DONE04/M8.
+- Residuo: finalgate/captureevidence/commitpush/CI dopo40581933176, no cancellazione
+  di pipelineprecedente. Next16-05 dopo04; AUTO_CONTINUE,no subagenti/backgrounddaemon.
+
+## HANDOFF §15.3 — T-PERSIST-03 eT-P18-01 DONE,2026-10-27
+
+- Code49a3f4e/PERSIST03 e5bc8402/docs18-01, CI40581933176 su5bc8402
+  completed/success: Linux,MSVC,compareJSONL ecompareRGB tutti pass.
+- PERSIST03:735/735/717test locali,90suiteworkspace e84core,fmt/Clippy pass;
+  fake staging/abort/reopen/generation/CAS/metadata/snapshot read qualificati.
+  Nessun backenddisco,crypto,servicehistory o regola clinica introdotti.
+- Docs18-01: literal READMEquickstart inbash eWindowsPowerShell5.1.26100.33648
+  reali, sei casi/OS; outputXLSX/JSONL e0/1/2BOM/parse/versione/pair verificati.
+  Artifact scaricati ecommit5bc8402 verificato; READMEsha LinuxLF/WinCRLF esatti
+  coerenti context=textauto, hashframmenti corrispondenti. Nessuna normalizzazione
+  dei dati o report: confrontoJSONLgrezzo resta invariato/pass.
+- Evidenze docs/verification/T-PERSIST-03-T-P18-01-native-ci.json e
+  T-P18-01-native-shells.json. Nessun residuo;108/140DONE=77,1%.
+- UI04locale corrente:worker/channels/AtomicJSONL,Slintcancel/status distinti,
+  testmirati eClippy positivi; pipeline completa eultima rifinitura report-intent
+  da finalizzare prima di commit/CI. NonDONE04/M8. Next05 dopo04, PERSIST04 ora
+  prereq03qualificata perpreflight. AUTO_CONTINUE, nessuna domanda ordinaria.
