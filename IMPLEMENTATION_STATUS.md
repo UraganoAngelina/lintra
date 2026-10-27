@@ -3,6 +3,34 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P16-02 DONE, T-PERSIST-02 locale in verifica
+
+2026-10-27: UI bootstrap9832d85 +fixUTF8216e662, CI40522626495 completata
+success: Linux/MSVC, confronto JSONL e quattro RGB temi/DPI tutti pass.
+Artifact scaricati e pixel confrontati anche localmente; contrasti/font/build
+negativa veri sui due runner.16-02 DONE, nessun M8 anticipato.
+104/140 DONE=74,3%,1 IN_PROGRESS (PERSIST-02),35 NOT_STARTED.
+PERSIST-02: namespace/identità/sessioni/token/diff e serde,8test mirati pass;
+corretto decode TracePresence absent+record_count ora respinto, gate completi
+in corso. Non DONE02 prima di CI. Next16-03 Nuova analisi ora pronta dopo
+consegna localePERSIST02; no backend/protezione crypto attivati. AUTO_CONTINUE.
+
+## Registro storico — tipi persistenti e gate UI
+
+## Frontiera corrente — T-PERSIST-02 IN_PROGRESS, UI16-02 WAITING_GATE
+
+2026-10-27: UI16-02 Linux positivo, Windows primo gate fallito solo per locale
+CP1252 nel guard Cargo metadata; test Rust/UI positivi, compare skipped.
+Fix216e662 UTF8 strict+regressione pubblicato, CI40522626495 avviata, non DONE.
+PERSIST-02 avviata con P2/M1 ePERSIST-01 realmente qualificate: tipi namespace,
+identità/invii/stati/presenze/revisioni/token/diff, metadati sintetici e serde stabile.
+Otto test mirati pass, check/fmt pass; Clippy corretto, gate completi in esecuzione.
+103/140 DONE=73,6%,2 IN_PROGRESS (16-02,PERSIST-02),35 NOT_STARTED.
+Nessun backend/protezione crypto/runtime storico simulato, FROZEN intatta.
+NextUI16-03 dopo gateUI; PERSIST-03 dopo gate02. AUTO_CONTINUE.
+
+## Registro storico — bootstrap locale e chiusura M1
+
 ## Frontiera corrente — T-P16-02 locale verificata, M1 raggiunta
 
 2026-10-27: bootstrap UI software con font incorporati obbligatori, scelta
@@ -2079,7 +2107,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-07 | DONE | 2026-10-27 | CI40475046094 su30d82fb Linux/MSVC e confronto JSONL success; [dossier](docs/verification/T-P15-07-cross-os-bundle.md) |
 | T-P16-00 | DONE | 2026-10-27 | CI40485215039 positiva, riferimento chiaro approvato dall’autore; [report](docs/ui/SPIKE_REPORT.md) |
 | T-P16-01 | DONE | 2026-10-27 | CI40513168784 Linux/MSVC/compare pass, workspace e QG-5 reali; [dossier](docs/verification/T-P16-01-workspace.md) |
-| T-P16-02 | IN_PROGRESS | 2026-10-27 | Software bootstrap, font/temi/attribuzione e test UI positivi; gate workspace/nativo in corso |
+| T-P16-02 | DONE | 2026-10-27 | CI40522626495 Linux/MSVC/JSONL/RGB temi tutti pass; [report](docs/verification/T-P16-02-bootstrap.md) |
 | T-P18-02 | DONE | 2026-10-27 | Due dry-run dati Linux, binario invariato e v1 golden preservato; [runbook](docs/RUNBOOK_SCHEMA_UPDATE.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P17-06 | DONE | 2026-10-27 | CI40486090209 Linux/MSVC/compare success; [dossier](docs/verification/T-P17-06-robustness.md) |
@@ -2124,7 +2152,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-07 | DONE | 2026-10-25 | 602 test/70 suite; CI 40183843102 Linux/MSVC success su 5dbb92c; [report](docs/verification/T-P13-07-full-service.md) |
 | T-P13-08 | DONE | 2026-10-25 | 611/72 suite, golden referenziale reale e memoria; CI40192491629 Linux/MSVC success su52762c8, letta alla ripresa; [report](docs/verification/T-P13-08-goldens-memory.md) |
 | T-PERSIST-01 | DONE | 2026-10-27 | CI40510757138 Linux/MSVC/compare JSONL pass, profilo dichiarativo senza runtime; [report](docs/verification/T-PERSIST-01-profile.md) |
-| T-PERSIST-02..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
+| T-PERSIST-02 | IN_PROGRESS | 2026-10-27 | Tipi domain,8test mirati e golden metadata pass, gate completi in corso; [dossier](docs/verification/T-PERSIST-02-domain.md) |
+| T-PERSIST-03..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — Linux locale
@@ -4796,3 +4825,29 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
 - Pubblicare fix e rilanciare CI completa;16-02 resta IN_PROGRESS, non M8.
 - PERSIST-02 locale nuova domain metadata in sviluppo,8test mirati passati;
   non inclusa nella correzione CI e non DONE. Scope solo tipi, nessun backend.
+
+## HANDOFF §15.3 — T-PERSIST-02 locale in verifica,2026-10-27
+
+- Prerequisiti P2/M1 CI40515191339 ePERSIST-01 CI40510757138 verificati.
+- File src/domain/persistence.rs, serde aggiuntive ids/input_audit/SchemaKey,
+  export domain/lib, tests/persistence_types.rs e fixture golden sintetica indipendente.
+- Namespace tipato/canonico senza normalizzazioni valori, identità scope completo,
+  fingerprint opaco con descriptor/keyID (non crypto proof), presenze esplicite,
+  source inventory/UTC, revision overflow e diff singolo streaming coerente.
+-8test mirati pass; check/fmt pass; modulo2 segnalato daClippy corretto senzaallow;
+  Clippy/test workspace default/all-features attualmente in esecuzione.
+- Nessun backend, secret, PHI, nuovo crate o capability storica attivata.
+- UI16-02 corretto216e662/CI40522626495 pendente. Non DONE02 o UI/M8.
+- Next PERSIST-03 dopo gate02, UI16-03 dopoUI; AUTO_CONTINUE, nessun consenso ordinario.
+
+## HANDOFF §15.3 — T-P16-02 DONE,2026-10-27
+
+- Code9832d85, fix216e662, CI40522626495 tutti4job completed/success.
+- Font/coregraph/negative actualbuild e capture/lightdark1×/2× provati sui dueOS.
+  Artifact scaricati,4RGB identici localmente, hash/contrasti archiviati.
+- Riferimento Risultati approvato intatto, capture bootstrap native diagnostiche.
+- Nessun residuo16-02; M8/UI completa ancora aperte. Next16-03 Nuova analisi
+  dopo consegna localePERSIST-02 corrente, senza nuove conferme ordinarie.
+- PERSIST02:8test mirati pass, nuovo decode Presence strict valido, regression
+  default/all-features in esecuzione. Nessun backend/securityproof inventato.
+- AUTO_CONTINUE, un solo agente; file utente .agents/.codex/skills-lock intatti.

@@ -1,0 +1,90 @@
+{
+  "linux": {
+    "rgb_sha256": {
+      "dark-1x.rgb": "7d96fff55cfd2656a1702d9281c513b1027452666430c2999be74b6ba6e0d702",
+      "dark-2x.rgb": "7edf3690ba0cd91ff8c395a6a354544963e5ca7edbdc280884fa14b90e1a7e43",
+      "light-1x.rgb": "c77eea978535cb56c556b63ada65390e7e6ac003491dd02a8841dff18d973dab",
+      "light-2x.rgb": "6a19d0b2ca2883cce04c9dde1acfd7915f7e0e550e6bffbb5f4549b9161922a9"
+    },
+    "png_sha256": {
+      "dark-1x.png": "c37d769ae3b7a59f5fefd76c6cf4927cbf482253bf2c7b2b91bcd7b7c44b7faf",
+      "dark-2x.png": "9c847a9e7a5f9988a545904b77c5da91d70c2245d6290e85805192b3d778700e",
+      "light-1x.png": "3fc6a06c32de40f36de2ad6e42ca5d0da486b4fb61f551a167a639e6b73a96e4",
+      "light-2x.png": "3825a63a09df554000224a9dd1e1703b7baf0c409cb9bc9b9b5a3239dc5ee6e7"
+    },
+    "contrast": [
+      {
+        "scale": "1",
+        "theme": "light",
+        "body_contrast": "15.24849555806192",
+        "muted_contrast": "6.46165504951419",
+        "selected_contrast": "4.8412322676696276"
+      },
+      {
+        "scale": "1",
+        "theme": "dark",
+        "body_contrast": "17.970189404083907",
+        "muted_contrast": "9.99705752006253",
+        "selected_contrast": "6.457922104537495"
+      },
+      {
+        "scale": "2",
+        "theme": "light",
+        "body_contrast": "15.24849555806192",
+        "muted_contrast": "6.46165504951419",
+        "selected_contrast": "4.8412322676696276"
+      },
+      {
+        "scale": "2",
+        "theme": "dark",
+        "body_contrast": "17.970189404083907",
+        "muted_contrast": "9.99705752006253",
+        "selected_contrast": "6.457922104537495"
+      }
+    ]
+  },
+  "windows": {
+    "rgb_sha256": {
+      "dark-1x.rgb": "7d96fff55cfd2656a1702d9281c513b1027452666430c2999be74b6ba6e0d702",
+      "dark-2x.rgb": "7edf3690ba0cd91ff8c395a6a354544963e5ca7edbdc280884fa14b90e1a7e43",
+      "light-1x.rgb": "c77eea978535cb56c556b63ada65390e7e6ac003491dd02a8841dff18d973dab",
+      "light-2x.rgb": "6a19d0b2ca2883cce04c9dde1acfd7915f7e0e550e6bffbb5f4549b9161922a9"
+    },
+    "png_sha256": {
+      "dark-1x.png": "c37d769ae3b7a59f5fefd76c6cf4927cbf482253bf2c7b2b91bcd7b7c44b7faf",
+      "dark-2x.png": "9c847a9e7a5f9988a545904b77c5da91d70c2245d6290e85805192b3d778700e",
+      "light-1x.png": "3fc6a06c32de40f36de2ad6e42ca5d0da486b4fb61f551a167a639e6b73a96e4",
+      "light-2x.png": "3825a63a09df554000224a9dd1e1703b7baf0c409cb9bc9b9b5a3239dc5ee6e7"
+    },
+    "contrast": [
+      {
+        "scale": "1",
+        "theme": "light",
+        "body_contrast": "15.24849555806192",
+        "muted_contrast": "6.46165504951419",
+        "selected_contrast": "4.8412322676696276"
+      },
+      {
+        "scale": "1",
+        "theme": "dark",
+        "body_contrast": "17.970189404083907",
+        "muted_contrast": "9.99705752006253",
+        "selected_contrast": "6.457922104537495"
+      },
+      {
+        "scale": "2",
+        "theme": "light",
+        "body_contrast": "15.24849555806192",
+        "muted_contrast": "6.46165504951419",
+        "selected_contrast": "4.8412322676696276"
+      },
+      {
+        "scale": "2",
+        "theme": "dark",
+        "body_contrast": "17.970189404083907",
+        "muted_contrast": "9.99705752006253",
+        "selected_contrast": "6.457922104537495"
+      }
+    ]
+  }
+}

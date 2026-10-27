@@ -93,3 +93,14 @@ e decodifica UTF-8 strict, senza fallback permissivo. Rustc -vV usa UTF-8
 esplicito. Regressione Unicode riproduce il fallimento CP1252 e prova UTF-8
 corretto/byte invalido respinto.21Python e metadata reale positivi.
 Nessun pixel/font/contrasto o gate rimosso; run sostitutiva da avviare.
+
+## Chiusura nativa
+
+CI40522626495 su216e662 completed/success: Linux/MSVC, compare JSONL e
+compare desktop theme pixels tutti pass. Correzione UTF8 strict verificata su
+Windows; build senza font respinta realmente in entrambi. Artifact scaricati:
+quattro RGB perOS confrontati anche localmente byte per byte, hash uguali,
+contrasti>=4.5 su tutte le righe native. runner-evidence.json archivia hash
+e misure effettive; PNG1× native diagnostiche in docs/ui/bootstrap.
+T-P16-02 DONE, nessun residuo; M8 ancora aperta. Next16-03 Nuova analisi
+con prerequisiti verificati, dopo consegna localePERSIST-02 già in lavorazione.
