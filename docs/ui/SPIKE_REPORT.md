@@ -120,3 +120,20 @@ direttamente; aggiunta la sola dipendenza di build libfontconfig1-dev nel job
 Linux, senza modificare il codice, i pixel, le tolleranze o i gate. Nessun
 package installato sul computer dell’autore. Non è una nuova allowlist runtime
 UI approvata: il packaging e le sue dipendenze restano task16-08.
+
+## Gate nativo completato — prima revisione visiva pendente
+
+Run40485215039 su bdef3c3e75ae1cfa65c6eb8930b43e5f7da0effe:
+Linux, WindowsMSVC e confronto RGB1×/2× tutti completed/success, letti viaAPI.
+T-P16-00-native-ci.json registra job/step; T-P16-00-runner-measurements.json
+riporta le misure effettive degli artifact scaricati. Anche SHA256 dei due PNG
+coincidono fra runner. A1Mrighe p95: Linux2.261ms1×/4.374ms2×;
+Windows3.106ms1×/3.755ms2×.300k p95massimo6.365ms2× Windows.
+Viewport avanzato,324richieste su1M, bordi max1pixel logico su entrambi gliOS.
+Nessuna soglia performance prodotto/DEC-14 ricavata da questi tempi UI.
+
+[Capture1×](review/results-1x.png), [capture2×](review/results-2x.png),
+[vista del mockup derivata1×](review/mockup-derived-1x.png) rese persistenti per
+la prima approvazione visiva ARCH39D.5. Stato WAITING_VISUAL_REVIEW, non DONE
+e nessun PNG promosso a golden. Le differenze tipografiche/ritorni a capo sono
+esplicite, font originali mantenuti. Nessuna richiesta di conferma Git/CI.

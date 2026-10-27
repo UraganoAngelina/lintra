@@ -1,0 +1,342 @@
+{
+  "task": "T-P16-00",
+  "verified_at_utc": "2026-10-27T10:10:44.963202+00:00",
+  "run": {
+    "conclusion": "success",
+    "databaseId": 40485215039,
+    "headSha": "bdef3c3e75ae1cfa65c6eb8930b43e5f7da0effe",
+    "jobs": [
+      {
+        "completedAt": "2026-10-27T10:05:23Z",
+        "conclusion": "success",
+        "databaseId": 122125182181,
+        "name": "Slint software (x86_64-unknown-linux-gnu)",
+        "startedAt": "2026-10-27T10:01:12Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-27T10:01:14Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-27T10:01:13Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:01:16Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-10-27T10:01:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:01:16Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 3,
+            "startedAt": "2026-10-27T10:01:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:01:18Z",
+            "conclusion": "success",
+            "name": "Test raw pixel comparator boundaries",
+            "number": 4,
+            "startedAt": "2026-10-27T10:01:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:01:28Z",
+            "conclusion": "success",
+            "name": "Check pinned Rust toolchain",
+            "number": 5,
+            "startedAt": "2026-10-27T10:01:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:01:38Z",
+            "conclusion": "success",
+            "name": "Install Linux fontconfig build dependency",
+            "number": 6,
+            "startedAt": "2026-10-27T10:01:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:01:38Z",
+            "conclusion": "success",
+            "name": "Format prototype",
+            "number": 7,
+            "startedAt": "2026-10-27T10:01:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:02:52Z",
+            "conclusion": "success",
+            "name": "Clippy prototype",
+            "number": 8,
+            "startedAt": "2026-10-27T10:01:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:05:16Z",
+            "conclusion": "success",
+            "name": "Capture native software pixels and measure lazy table",
+            "number": 9,
+            "startedAt": "2026-10-27T10:02:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:05:18Z",
+            "conclusion": "success",
+            "name": "Upload actual native pixels",
+            "number": 10,
+            "startedAt": "2026-10-27T10:05:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:05:20Z",
+            "conclusion": "success",
+            "name": "Upload visual and scroll evidence",
+            "number": 11,
+            "startedAt": "2026-10-27T10:05:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:05:20Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 21,
+            "startedAt": "2026-10-27T10:05:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:05:20Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 22,
+            "startedAt": "2026-10-27T10:05:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:05:20Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 23,
+            "startedAt": "2026-10-27T10:05:20Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/UraganoAngelina/lintra/actions/runs/40485215039/job/122125182181"
+      },
+      {
+        "completedAt": "2026-10-27T10:07:29Z",
+        "conclusion": "success",
+        "databaseId": 122125182184,
+        "name": "Slint software (x86_64-pc-windows-msvc)",
+        "startedAt": "2026-10-27T10:01:12Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-27T10:01:14Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-27T10:01:12Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:01:23Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-10-27T10:01:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:01:23Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 3,
+            "startedAt": "2026-10-27T10:01:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:01:26Z",
+            "conclusion": "success",
+            "name": "Test raw pixel comparator boundaries",
+            "number": 4,
+            "startedAt": "2026-10-27T10:01:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:01:40Z",
+            "conclusion": "success",
+            "name": "Check pinned Rust toolchain",
+            "number": 5,
+            "startedAt": "2026-10-27T10:01:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:01:40Z",
+            "conclusion": "skipped",
+            "name": "Install Linux fontconfig build dependency",
+            "number": 6,
+            "startedAt": "2026-10-27T10:01:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:01:42Z",
+            "conclusion": "success",
+            "name": "Format prototype",
+            "number": 7,
+            "startedAt": "2026-10-27T10:01:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:03:57Z",
+            "conclusion": "success",
+            "name": "Clippy prototype",
+            "number": 8,
+            "startedAt": "2026-10-27T10:01:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:21Z",
+            "conclusion": "success",
+            "name": "Capture native software pixels and measure lazy table",
+            "number": 9,
+            "startedAt": "2026-10-27T10:03:57Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:23Z",
+            "conclusion": "success",
+            "name": "Upload actual native pixels",
+            "number": 10,
+            "startedAt": "2026-10-27T10:07:21Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:25Z",
+            "conclusion": "success",
+            "name": "Upload visual and scroll evidence",
+            "number": 11,
+            "startedAt": "2026-10-27T10:07:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:25Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 21,
+            "startedAt": "2026-10-27T10:07:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:27Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 22,
+            "startedAt": "2026-10-27T10:07:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:27Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 23,
+            "startedAt": "2026-10-27T10:07:27Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/UraganoAngelina/lintra/actions/runs/40485215039/job/122125182184"
+      },
+      {
+        "completedAt": "2026-10-27T10:07:37Z",
+        "conclusion": "success",
+        "databaseId": 122127960081,
+        "name": "Compare native UI pixels",
+        "startedAt": "2026-10-27T10:07:31Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-27T10:07:33Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-27T10:07:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:34Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-10-27T10:07:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:34Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 3,
+            "startedAt": "2026-10-27T10:07:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:35Z",
+            "conclusion": "success",
+            "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+            "number": 4,
+            "startedAt": "2026-10-27T10:07:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:35Z",
+            "conclusion": "success",
+            "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+            "number": 5,
+            "startedAt": "2026-10-27T10:07:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:35Z",
+            "conclusion": "success",
+            "name": "Compare raw pixels without tolerance between runners",
+            "number": 6,
+            "startedAt": "2026-10-27T10:07:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:35Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 11,
+            "startedAt": "2026-10-27T10:07:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:36Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 12,
+            "startedAt": "2026-10-27T10:07:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-27T10:07:36Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-10-27T10:07:36Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/UraganoAngelina/lintra/actions/runs/40485215039/job/122127960081"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/UraganoAngelina/lintra/actions/runs/40485215039"
+  }
+}

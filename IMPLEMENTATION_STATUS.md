@@ -8,7 +8,9 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
 2026-10-27: UI spike32c30af pubblicato; CI40483413398 MSVC success, Linux
 fallita per fontconfig.pc assente, confronto skipped. Correzione setup runner
 bdef3c3 pubblicata: installazione libfontconfig1-dev solo nella CI Linux,
-nessun codice o tolleranza modificati. Gate corretto UI40485215039 avviato su bdef3c3, nessun DONE.
+nessun codice o tolleranza modificati. Gate corretto UI40485215039 su bdef3c3 completed/success: Linux/MSVC e
+confronto RGB1×/2× tutti positivi. Restano prima revisione visiva ARCH39D.5
+e scelta del riferimento chiaro; capture persistenti in docs/ui/review. Nessun DONE16-00.
 Nel frattempo avviata17-06 indipendente, prerequisito17-01 verificato in
 CI40476599897. Otto test generativi/fault injection senza nuovi crate o codice
 produttivo; gate locali689/697pass/80suite/0fail/2ignored, fmt/Clippy positivi.
@@ -4543,3 +4545,16 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
   fixbdef3c3 e run40485215039 avviato. Confronto pixel non aggirato.
 - NEXT: chiudere gate17-06 e16-00 quando realmente soddisfatti; continuare su
   task indipendenti pronte durante l’attesa. AUTO_CONTINUE, nessun consenso Git/CI.
+
+## HANDOFF §15.3 — T-P16-00 CI positiva, prima revisione visiva,2026-10-27
+
+- STATO: IN_PROGRESS/WAITING_VISUAL_REVIEW, gate nativo completato su bdef3c3,
+  CI40485215039 Linux/MSVC/compareRGB tutti success. Nessun DONE anticipato.
+- EVIDENZE: native-ci16-00, runner-measurements16-00, PNG in docs/ui/review.
+  Scaricati artifact dei due OS: pixel e checksum PNG identici1×/2×;
+  300k/1M lazy, viewport avanza, p95runner<=6.365ms; otto bordi max1px logico.
+- RESIDUO REALE: ARCH39D.5 richiede prima approvazione visiva prima del riferimento
+  regressivo; differenze glifi/ritorni a capo dichiarate, font originali forniti.
+  Una review concreta delle capture è pronta, non una conferma ordinaria di codice.
+- NEXT: dopo review positiva16-01; intanto17-06 CI40486090209 pendente, altre
+  task indipendenti solo con prerequisiti verificati. AUTO_CONTINUE attivo.

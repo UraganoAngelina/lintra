@@ -1,0 +1,232 @@
+{
+  "task": "T-P16-00",
+  "run": 40485215039,
+  "source_sha": "bdef3c3e75ae1cfa65c6eb8930b43e5f7da0effe",
+  "measurements": {
+    "linux": {
+      "scroll": [
+        {
+          "scale": "1",
+          "rows": "4",
+          "row_requests": "13",
+          "highest_requested_row": "3",
+          "frames": "30",
+          "median_ms": "0.042",
+          "p95_ms": "0.063"
+        },
+        {
+          "scale": "1",
+          "rows": "300000",
+          "row_requests": "323",
+          "highest_requested_row": "313",
+          "frames": "30",
+          "median_ms": "2.169",
+          "p95_ms": "2.205"
+        },
+        {
+          "scale": "1",
+          "rows": "1000000",
+          "row_requests": "324",
+          "highest_requested_row": "613",
+          "frames": "30",
+          "median_ms": "2.171",
+          "p95_ms": "2.261"
+        },
+        {
+          "scale": "2",
+          "rows": "4",
+          "row_requests": "14",
+          "highest_requested_row": "3",
+          "frames": "30",
+          "median_ms": "0.043",
+          "p95_ms": "0.072"
+        },
+        {
+          "scale": "2",
+          "rows": "300000",
+          "row_requests": "323",
+          "highest_requested_row": "313",
+          "frames": "30",
+          "median_ms": "4.179",
+          "p95_ms": "5.324"
+        },
+        {
+          "scale": "2",
+          "rows": "1000000",
+          "row_requests": "324",
+          "highest_requested_row": "613",
+          "frames": "30",
+          "median_ms": "4.176",
+          "p95_ms": "4.374"
+        }
+      ],
+      "geometry": [
+        {
+          "anchor": "table-left",
+          "reference_physical_px": "48",
+          "actual_physical_px": "48",
+          "delta_physical_px": "0"
+        },
+        {
+          "anchor": "table-right",
+          "reference_physical_px": "1646",
+          "actual_physical_px": "1647",
+          "delta_physical_px": "1"
+        },
+        {
+          "anchor": "detail-left",
+          "reference_physical_px": "1679",
+          "actual_physical_px": "1680",
+          "delta_physical_px": "1"
+        },
+        {
+          "anchor": "detail-right",
+          "reference_physical_px": "2511",
+          "actual_physical_px": "2511",
+          "delta_physical_px": "0"
+        },
+        {
+          "anchor": "table-top",
+          "reference_physical_px": "248",
+          "actual_physical_px": "248",
+          "delta_physical_px": "0"
+        },
+        {
+          "anchor": "table-bottom",
+          "reference_physical_px": "800",
+          "actual_physical_px": "799",
+          "delta_physical_px": "1"
+        },
+        {
+          "anchor": "detail-top",
+          "reference_physical_px": "248",
+          "actual_physical_px": "248",
+          "delta_physical_px": "0"
+        },
+        {
+          "anchor": "detail-bottom",
+          "reference_physical_px": "794",
+          "actual_physical_px": "792",
+          "delta_physical_px": "2"
+        }
+      ],
+      "capture_sha256": {
+        "results-1x.png": "89bec3583d6b7be7e5cdf0c7911ffbdf306e8f3136615cf8e1d1ab8ef2aa2e47",
+        "results-2x.png": "ecc76589234149dde717b7b686be40dbd1ebc2eaef5c1f5aa89ed4d51b9d4d22"
+      }
+    },
+    "windows": {
+      "scroll": [
+        {
+          "scale": "1",
+          "rows": "4",
+          "row_requests": "13",
+          "highest_requested_row": "3",
+          "frames": "30",
+          "median_ms": "0.065",
+          "p95_ms": "0.109"
+        },
+        {
+          "scale": "1",
+          "rows": "300000",
+          "row_requests": "323",
+          "highest_requested_row": "313",
+          "frames": "30",
+          "median_ms": "3.428",
+          "p95_ms": "3.555"
+        },
+        {
+          "scale": "1",
+          "rows": "1000000",
+          "row_requests": "324",
+          "highest_requested_row": "613",
+          "frames": "30",
+          "median_ms": "1.985",
+          "p95_ms": "3.106"
+        },
+        {
+          "scale": "2",
+          "rows": "4",
+          "row_requests": "14",
+          "highest_requested_row": "3",
+          "frames": "30",
+          "median_ms": "0.065",
+          "p95_ms": "0.117"
+        },
+        {
+          "scale": "2",
+          "rows": "300000",
+          "row_requests": "323",
+          "highest_requested_row": "313",
+          "frames": "30",
+          "median_ms": "3.684",
+          "p95_ms": "6.365"
+        },
+        {
+          "scale": "2",
+          "rows": "1000000",
+          "row_requests": "324",
+          "highest_requested_row": "613",
+          "frames": "30",
+          "median_ms": "3.589",
+          "p95_ms": "3.755"
+        }
+      ],
+      "geometry": [
+        {
+          "anchor": "table-left",
+          "reference_physical_px": "48",
+          "actual_physical_px": "48",
+          "delta_physical_px": "0"
+        },
+        {
+          "anchor": "table-right",
+          "reference_physical_px": "1646",
+          "actual_physical_px": "1647",
+          "delta_physical_px": "1"
+        },
+        {
+          "anchor": "detail-left",
+          "reference_physical_px": "1679",
+          "actual_physical_px": "1680",
+          "delta_physical_px": "1"
+        },
+        {
+          "anchor": "detail-right",
+          "reference_physical_px": "2511",
+          "actual_physical_px": "2511",
+          "delta_physical_px": "0"
+        },
+        {
+          "anchor": "table-top",
+          "reference_physical_px": "248",
+          "actual_physical_px": "248",
+          "delta_physical_px": "0"
+        },
+        {
+          "anchor": "table-bottom",
+          "reference_physical_px": "800",
+          "actual_physical_px": "799",
+          "delta_physical_px": "1"
+        },
+        {
+          "anchor": "detail-top",
+          "reference_physical_px": "248",
+          "actual_physical_px": "248",
+          "delta_physical_px": "0"
+        },
+        {
+          "anchor": "detail-bottom",
+          "reference_physical_px": "794",
+          "actual_physical_px": "792",
+          "delta_physical_px": "2"
+        }
+      ],
+      "capture_sha256": {
+        "results-1x.png": "89bec3583d6b7be7e5cdf0c7911ffbdf306e8f3136615cf8e1d1ab8ef2aa2e47",
+        "results-2x.png": "ecc76589234149dde717b7b686be40dbd1ebc2eaef5c1f5aa89ed4d51b9d4d22"
+      }
+    }
+  },
+  "pixel_equality": "verified by native CI compare job; PNG checksums also identical on download"
+}
