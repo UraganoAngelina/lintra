@@ -98,3 +98,13 @@ Stato resta IN_PROGRESS fino alla CI nativa. Non viene avviata una seconda
 pipeline sullo stesso branch mentre il gate corretto15-07 è attivo, perché la
 concurrency del workflow cancellerebbe la precedente. Pubblicazione autorizzata,
 dispatch successivo appena concluso15-07. Nessun blocco umano nuovo17-01.
+
+## Chiusura nativa —2026-10-27
+
+DONE: CI40476599897 su485c98fb161faa1c24b9d9d47f7818d62107fba7
+completed/success. Verificati step smoke benchmark su entrambi i job nativi
+e job di confronto JSONL, tutti success. Evidenza
+[T-P17-01-native-ci.json](T-P17-01-native-ci.json). Gate locali e due run
+ottimizzate complete già registrati; nessun gate residuo17-01.
+97/140DONE69,3%. Prosecuzione con16-00 sui materiali reali forniti dall’autore;
+17-02 pronta per futuro profiling, nessuna ottimizzazione presunta dai soli tempi.

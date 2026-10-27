@@ -1,6 +1,6 @@
 {
   "task": "T-P17-01",
-  "done": false,
+  "done": true,
   "rust_tests": {
     "passed": 681,
     "failed": 0,
@@ -19,7 +19,7 @@
     "source_hashes_verified": true,
     "actionlint": "1.7.12 pass, external shellcheck/pyflakes unavailable"
   },
-  "native_ci": "not dispatched while T-P15-07 corrected gate is active; avoid cancelling it",
+  "native_ci": "40476599897 Linux/MSVC benchmark smoke and compare-jsonl success on485c98f",
   "metric": "peak additional requested Rust heap bytes, not RSS",
   "thresholds": null
 }

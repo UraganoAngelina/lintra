@@ -3,6 +3,25 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P17-01 DONE, T-P16-00 IN_PROGRESS
+
+2026-10-27: CI40476599897 su485c98fb161faa1c24b9d9d47f7818d62107fba7
+completed/success, Linux/MSVC con smoke benchmark e confronto JSONL tutti pass.
+T-P17-01 DONE: due run ottimizzate10k/100k/1M ×3scenari archiviate, heap e
+throughput reali con limiti dichiarati. T-P15-07 e M5 generica già verificate.
+97/140 DONE=69,3%,2 IN_PROGRESS (2-03 parziale,16-00),41 NOT_STARTED.
+16-00: materiale dell’autore inventariato1188cartelle/19file sorgente o asset;
+prototipo clonato in spike isolato senza workspace/UI nel prodotto. Font OFL
+verificati e licenza accompagnatoria; Slint1.18.1 del lock originale fissato.
+Primo test headless a1×/2× produce capture e richieste lazy ~324 anche su1Mrighe;
+non è ancora prova di congruenza, fluidità ottimizzata o identità cross-OS.
+Capture evidenzia layout tabella704px rispetto a~800del riferimento: correzione
+ordinaria del prototipo e misura release ancora da completare. Palette chiara
+preservata, tema scuro autorizzato registrato ma non anticipato nello spike.
+AUTO_CONTINUE: collaudo16-00, senza16-01 prima dei suoi gate reali.
+
+## Registro storico — chiusura15-07 e avvio17-01
+
 ## Frontiera corrente — T-P15-07 DONE, T-P17-01 WAITING_GATE, T-P16-00 preflight
 
 2026-10-27: CI40475046094 su30d82fba243f8a9742b1374c63b6e799fca75f5e
@@ -1940,7 +1959,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-06 | DONE | 2026-10-27 | CI40350440129 success su3a6cf48; release dati immutabile, manifest/payload/checksum scaricati verificati; [dossier](docs/verification/T-P15-06-data-release.md) |
 | T-P15-07 | DONE | 2026-10-27 | CI40475046094 su30d82fb Linux/MSVC e confronto JSONL success; [dossier](docs/verification/T-P15-07-cross-os-bundle.md) |
 | T-P16-00 | IN_PROGRESS | 2026-10-27 | Materiali forniti in mockup_slint_UI: prototipo, font e PNG2×; preflight/collaudo da completare; [preflight](docs/ui/SPIKE_REPORT.md) |
-| T-P17-01 | IN_PROGRESS | 2026-10-27 | Harness std-only10k/100k/1M, due run9scenari,smoke/no-clobber/gate locali positivi; CI nativa da avviare; [dossier](docs/verification/T-P17-01-benchmark.md) |
+| T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
@@ -4452,3 +4471,19 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
   durante il lavoro, preservati e non inclusi nei commit del prodotto.
 - AUTO_CONTINUE: nessun consenso ordinario; T-P16-00 richiede ancora criteri
   reali di geometria/scorrimento e identità nativa prima di16-01.
+
+## HANDOFF §15.3 — T-P17-01 DONE,2026-10-27 Europe/Rome
+
+- CI40476599897 su485c98fb161faa1c24b9d9d47f7818d62107fba7 completata
+  success: smoke benchmark verificato nei due job Linux/MSVC e compare-jsonl
+  positivo. Evidenza completa T-P17-01-native-ci.json, local-gates.done=true.
+- Locale:681test/79suite, fmt/Clippy default/all-features, smoke due profili,
+  no-clobber e due run complete10k/100k/1M, tutti positivi. Risultati e metrica
+  heap strumentato archiviati; nessuna soglia o RSS inventata. Nessun residuo17-01.
+- File di chiusura: status/indice/dossier17-01/local-gates/native-ci.97/140DONE69,3%.
+- Prossima task già avviata:16-00 sul materiale fornito; spike isolato, capture
+  diagnostiche e modello lazy sintetico. Non UI finale, non16-01. Correzioni
+  layout e misure ottimizzate/cross-OS da completare; origine intatta.
+- Skills richieste dall’autore applicate al desktop nativo; palette chiara e
+  futuro selettore scuro nero/rosso/arancione registrati. Nessun nuovo consenso
+  ordinario, AUTO_CONTINUE. PERSIST solo preflight, nessun codice scritto.
