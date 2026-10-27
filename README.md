@@ -26,9 +26,10 @@ rustfmt e clippy disponibili:
 ```sh
 cargo build --locked
 cargo fmt --all -- --check
-cargo check --all-targets --locked
-cargo clippy --all-targets --locked -- -D warnings
-cargo test --locked
+cargo check --workspace --all-targets --locked
+cargo clippy --workspace --all-targets --locked -- -D warnings
+cargo test --workspace --locked
+python3 scripts/check_workspace.py
 cargo run --locked -- --help
 ```
 
@@ -120,6 +121,8 @@ verificate: [stato T-P15-05](docs/verification/T-P15-05-executable-release.md).
 - `src/lib.rs`: moduli privati `application`, `domain`, `schema`, `input`,
   `engine`, `validators`, `context`, `persistence`, `reference_data`, `report`.
 - `src/main.rs` e `src/cli/`: adapter CLI separato dalla libreria.
+- `ui/`: membro workspace `lintra-ui`, adapter desktop distinto; bootstrap
+  grafico nella task T-P16-02. [Stato e comandi](ui/README.md).
 - `schemas/`, `reference-data/`: directory riservate ai bundle versionati;
   nessuno schema o dataset importato nello scaffold.
 - `tests/{integration,golden,fixtures,support}/`: test sintetici e harness
@@ -132,6 +135,11 @@ verificate: [stato T-P15-05](docs/verification/T-P15-05-executable-release.md).
 `context` ospita il contesto effimero della validazione a due passate;
 `persistence` è il confine distinto della persistenza core generica.
 La persistenza fisica resta da implementare nelle task PERSIST.
+
+Il package `lintra` resta il membro predefinito: `cargo build` conserva la build
+CLI, `--workspace` controlla anche l’adapter UI. `xtask` e il prototipo in
+`spikes/ui-prototype` rimangono workspace indipendenti. Il guard delle dipendenze
+verifica che Slint non sia raggiungibile dal core/CLI su ciascun runner nativo.
 
 ## Documentazione e ripresa del lavoro
 
