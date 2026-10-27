@@ -29,7 +29,7 @@ restano nel kit storico. Nessuna conclusione di task impone lo stop della sessio
 | T-P17-03 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P17-03.md) |
 | T-P17-04 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P17-04.md) |
 | T-P17-05 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P17-05.md) |
-| T-P17-06 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P17-06.md) |
+| T-P17-06 | IN_PROGRESS | [prompt](TASK_PROMPTS/T-P17-06.md) |
 | T-P18-01 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P18-01.md) |
 | T-P18-02 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P18-02.md) |
 | T-P18-03 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P18-03.md) |

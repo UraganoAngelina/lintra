@@ -3,6 +3,21 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P17-06 IN_PROGRESS, T-P16-00 WAITING_GATE
+
+2026-10-27: UI spike32c30af pubblicato; CI40483413398 MSVC success, Linux
+fallita per fontconfig.pc assente, confronto skipped. Correzione setup runner
+bdef3c3 pubblicata: installazione libfontconfig1-dev solo nella CI Linux,
+nessun codice o tolleranza modificati. Gate corretto UI40485215039 avviato su bdef3c3, nessun DONE.
+Nel frattempo avviata17-06 indipendente, prerequisito17-01 verificato in
+CI40476599897. Otto test generativi/fault injection senza nuovi crate o codice
+produttivo; gate locali689/697pass/80suite/0fail/2ignored, fmt/Clippy positivi.
+CI nativa17-06 da avviare. Nessuna regola o API anticipata.
+97/140 DONE=69,3%,3 IN_PROGRESS (2-03 parziale,16-00,17-06),40 NOT_STARTED.
+M5 generica verificata; M8/M9 aperte. AUTO_CONTINUE, nessuna conferma ordinaria.
+
+## Registro storico — benchmark chiuso e qualificazione UI locale
+
 ## Frontiera corrente — T-P17-01 DONE, T-P16-00 IN_PROGRESS
 
 2026-10-27: CI40476599897 su485c98fb161faa1c24b9d9d47f7818d62107fba7
@@ -1961,6 +1976,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-07 | DONE | 2026-10-27 | CI40475046094 su30d82fb Linux/MSVC e confronto JSONL success; [dossier](docs/verification/T-P15-07-cross-os-bundle.md) |
 | T-P16-00 | IN_PROGRESS | 2026-10-27 | Materiali forniti in mockup_slint_UI: prototipo, font e PNG2×; preflight/collaudo da completare; [preflight](docs/ui/SPIKE_REPORT.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
+| T-P17-06 | IN_PROGRESS | 2026-10-27 | Otto test generativi/fault,689/697pass/80suite e fmt/Clippy positivi, nessun codice produttivo; CI nativa da avviare; [dossier](docs/verification/T-P17-06-robustness.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
@@ -4511,3 +4527,19 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
 - NEXT: completare gate, raccogliere sola approvazione visiva reale, poi16-01
   con dipendenze soddisfatte; durante attesa soltanto task indipendenti pronte.
   AUTO_CONTINUE attivo. Contributi esterni .agents/.codex/skills-lock preservati.
+
+## HANDOFF §15.3 — T-P17-06 locale verificata,2026-10-27 Europe/Rome
+
+- STATO: IN_PROGRESS, otto test in tests/robustness.rs; nessun nuovo crate/API
+  o modifica runtime. Prerequisito17-01 verificato via CI40476599897.
+- COPERTURA:20kByteRange con oracolo u128,512newlinecase,180read-faultcase,
+  1280tuple/byte keys,512canonicalroundtrip, JSON malformati/nesting512,
+  filesystem250krecord con buffer64byte,64sink-fault +controlli summary/input.
+  Nessun panic nel corpus provato; non è una prova universale per ogni input.
+- GATE: fmt/Clippy all-targets default/all-features positivi,689/697pass,
+  80suite,0fail/2ignored. File doc/local-gates persistono risultati reali.
+- RESIDUO: pubblicazione e CI Linux/MSVC, noDONE17-06. UI16-00 sospesa con
+  stato fedele: MSVC primo run positivo/Linux build fontconfig mancante;
+  fixbdef3c3 e run40485215039 avviato. Confronto pixel non aggirato.
+- NEXT: chiudere gate17-06 e16-00 quando realmente soddisfatti; continuare su
+  task indipendenti pronte durante l’attesa. AUTO_CONTINUE, nessun consenso Git/CI.

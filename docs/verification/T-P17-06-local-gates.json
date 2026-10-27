@@ -1,0 +1,25 @@
+{
+  "task": "T-P17-06",
+  "done": false,
+  "fmt": true,
+  "clippy_default_all_targets": true,
+  "clippy_all_features_all_targets": true,
+  "rust_tests": {
+    "default": {
+      "passed": 689,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 80
+    },
+    "all_features": {
+      "passed": 697,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 80
+    }
+  },
+  "new_tests": 8,
+  "new_crates": false,
+  "runtime_changes": false,
+  "native_ci": "pending"
+}
