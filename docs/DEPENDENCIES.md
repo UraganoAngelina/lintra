@@ -176,3 +176,19 @@ nessun filename paziente o path condiviso fisso. Package/versione/checksum già
 qualificati nel core e nei test UI, MIT/Apache-2.0, implementazione Rust con API
 filesystem native. Nessun nuovo crate/versione o dipendenza GUI nel core.
 La protezione della persistenza storica resta PERSIST04, non questa spool report.
+
+## T-PERSIST-04 — primitive protezione e memoria segreti
+
+Prima della modifica manifest, risolte e lette le fonti originali:
+- hmac=0.13.0, MIT/Apache2.0, MSRV1.85, RustCrypto/MACs, pure Rust/no librerie
+  C runtime. Default off, featurezeroize. Digest0.11.3 esistente compatibile.
+- zeroize=1.9.1, MIT/Apache2.0, MSRV1.85, RustCrypto/utils, pure Rust, niente
+  FFI; default off/alloc per buffer SecretKey owned. Nessun derive/serde segreti.
+- ctutils0.4.6 (digest/mac), MIT/Apache2.0, MSRV1.87, RustCrypto/utils; cmov0.5.4,
+  MIT/Apache2.0, MSRV1.85, stesso repository: operazioni constant-time in Rust,
+  eventuali intrinseci/assembly della piattaforma, nessun nuovo driver C/DB/TLS.
+- sha2=0.11.1 resta pin esistente; abilitata featurezeroize per stati hash.
+
+MetadataCargo isolata in /tmp/lintra-protection-deps prima del prodotto,
+manifest ufficialehmac tag verificato. Protocollo e fonti nel report04.
+Nessuna scelta di backend o storage reale/dati paziente in questa task.

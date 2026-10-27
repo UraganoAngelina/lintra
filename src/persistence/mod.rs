@@ -8,7 +8,12 @@ use crate::{
 use std::{collections::HashSet, error::Error, fmt, sync::Arc};
 
 mod memory;
+mod protection;
 pub use memory::{InMemoryPersistenceImage, InMemoryPersistenceRepository};
+pub use protection::{
+    IdentityProtectionScope, IdentityProtector, PersistenceKey, PersistenceKeyProvider,
+    ProtectionAudit, ProtectionError,
+};
 
 /// Technical storage/structural failures. Messages deliberately omit tenant,
 /// submission identifiers, fingerprints and record contents.

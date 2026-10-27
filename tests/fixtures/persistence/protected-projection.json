@@ -1,0 +1,21 @@
+{
+  "projection_definition": "ef3bb7524ad488d41dafa5e5ac94d94776ac44bbadcbe94ab678b4145a229fe4",
+  "audit": {
+    "policy_id": "lintra.hmac-sha256.v1",
+    "key_confirmation": {
+      "protection_scheme": "lintra.hmac-sha256.confirm.v1",
+      "key_id": "test-key",
+      "value_hex": "0b7cad79a8a1b2462ce531cc6c93fa3f05fa8b2ecb14db4b23a913d794739f3c"
+    }
+  },
+  "key_fingerprint": {
+    "protection_scheme": "lintra.hmac-sha256.key.v1",
+    "key_id": "test-key",
+    "value_hex": "9110a0831955705b53521c4a5a7ee4448a09345aa5f397b86f0e4e1e476839c2"
+  },
+  "record_fingerprint": {
+    "protection_scheme": "lintra.hmac-sha256.record.v1:ef3bb7524ad488d41dafa5e5ac94d94776ac44bbadcbe94ab678b4145a229fe4",
+    "key_id": "test-key",
+    "value_hex": "9f3e7589a2a0b762a1f00bbc58d598a164b8fb4b685ac2d3b917136de4e5269e"
+  }
+}

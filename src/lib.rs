@@ -360,3 +360,8 @@ pub use persistence::{
     CommitReceipt, HistoricalSnapshot, InMemoryPersistenceImage, InMemoryPersistenceRepository,
     PersistenceError, PersistenceTransaction, PersistentContextRepository, StoredIdentity,
 };
+
+pub use persistence::{
+    IdentityProtectionScope, IdentityProtector, PersistenceKey, PersistenceKeyProvider,
+    ProtectionAudit, ProtectionError,
+};
