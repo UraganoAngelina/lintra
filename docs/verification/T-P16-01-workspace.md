@@ -50,3 +50,11 @@ guard/test Python, workflow, dossier/status/indice. Next16-02 solo con CI16-01
 positiva: font originali, Slint pinned/software, palette chiara identica,
 selettore e scuro nero/rosso/arancione richiesti. Nessun PHI, nuova scelta di
 sicurezza o modifica FROZEN. AUTO_CONTINUE.
+
+## QG-5 locale completato
+
+Release Linux nativa source59ba771, due build pulite2m36/2m40: confronto
+byte identico, verify-artifact pass, negative_artifact_probe rejected exit1.
+Librerie: ld-linux-x86-64.so.2,libc.so.6,libgcc_s.so.1,libm.so.6; openssl-sys assente.
+SHA256 in local-gates. Anche il tooling xtask funziona con il workspace.
+QG-2 e conferma QG-5 su MSVC rimangono al gate CI16-01 ancora da avviare.

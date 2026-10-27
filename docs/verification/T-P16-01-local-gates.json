@@ -22,5 +22,20 @@
   "actual_core_graph_without_slint": true,
   "scaffold_explicit_unavailable_exit_code": 2,
   "actionlint": "1.7.12 pass; external shellcheck/pyflakes unavailable",
-  "native_ci": "pending; dispatch after CI40510757138 completes"
+  "native_ci": "pending; dispatch after CI40510757138 completes",
+  "local_release": {
+    "source_commit": "59ba77104dc487c4a887a41189bf892e5e9272ed",
+    "target": "x86_64-unknown-linux-gnu",
+    "reproducible": true,
+    "verify_artifact": true,
+    "negative_probe_rejected": true,
+    "sha256": "fb9c42042f3d787b17d67ab55f895574bdcc2c90bea75f099df72ce062e0a1f0",
+    "libraries": [
+      "ld-linux-x86-64.so.2",
+      "libc.so.6",
+      "libgcc_s.so.1",
+      "libm.so.6"
+    ],
+    "openssl_sys_absent": true
+  }
 }

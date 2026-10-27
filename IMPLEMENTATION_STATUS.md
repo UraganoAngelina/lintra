@@ -4626,3 +4626,9 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
 - CI40510757138 persistenza ancora in_progress alla seconda lettura pianificata.
 - Residuo16-01: dispatch CI dopo conclusione run precedente, QG-2/QG-5 nativi.
 - Next16-02 solo con gate16-01 positivo; AUTO_CONTINUE, nessun DONE anticipato.
+
+### Addendum gate locale16-01
+
+Release Linux source59ba771 riproducibile byte per byte, verify-artifact positivo
+con sole quattro librerie ammesse, openssl-sys assente e negative probe respinto.
+Evidenza hash/librerie in local-gates16-01. Nessun DONE o CI16-01 anticipato.
