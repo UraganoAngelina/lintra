@@ -217,7 +217,8 @@ La prerelease privata0.1.1-rc.1 e i relativi asset sono stati verificati:
   `engine`, `context`, `persistence`, `reference_data`, `report`, `bundle` e `bundle_resolution`.
 - `src/main.rs` e `src/cli/`: adapter CLI separato dalla libreria.
 - `ui/`: membro workspace `lintra-ui`, adapter desktop distinto; bootstrap
-  grafico verificato; Nuova analisi T-P16-03 in chiusura del gate nativo. [Stato e comandi](ui/README.md).
+  grafico, Nuova analisi e worker verificati su Linux/MSVC; risultati ed export
+  proseguono nelle rispettive task. [Stato e comandi](ui/README.md).
 - `schemas/`, `reference-data/`: directory riservate ai bundle versionati;
   nessuno schema o dataset importato nello scaffold.
 - `tests/{integration,golden,fixtures,support}/`: test sintetici e harness

@@ -3,17 +3,16 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P16-04 IN_PROGRESS; PERSIST03/P18-01 DONE
+## Frontiera corrente — PERSIST04 IN_PROGRESS, UI04 DONE
 
-108/140 DONE=77,1%,1IN_PROGRESS (UI04),31NOT_STARTED.
-PERSIST03/49a3f4e eP18-01/5bc8402 qualificatiCI40581933176: Linux/MSVC e
-confronti JSONL/RGB tutti success. ArtifactREADME scaricati: sei casi perOS,
-PowerShell5.1.26100.33648 reale, commit/digest/comandi verificati. Nessun residuo.
-UI04 worker/service/channels bounded/Slint/cancel implementati, testmirati pass,
-fmt/Clippy workspace pass e741testdefault in verifica consuntivo; allfeatures/
-graph/font e rifinitura finale export-intent ancora da completare. NonDONE04/M8.
-UI03 giàDONE/0a2121b/CI40577920052. Next16-05 dopo gate04; PERSIST04 pronta per
-preflight sicurezza dopo03. Skills UI aggiornate eAUTO_CONTINUE single-agent.
+109/140DONE=77,9%,1IN_PROGRESS (PERSIST04),30NOT_STARTED.
+UI04/311dcc6+fmt357400e qualificataCI40589848698 tutti4job success.
+4RGBstatici dei runner/localidentici,5scene worker presenti entrambiOS.
+Nessun residuo04/M8ancoraaperta; UI05 pronta dopo la consegna correntePERSIST04.
+PERSIST04 moduloHMAC/provider/audit/proiezioniprotette compila;7integration e
+unitRFCvettoreindipendente pass,UTF8codec aggiunto; gate completi in esecuzione.
+Rootlock preserva tutti pin/checksum e aggiunge solo4crate qualificati.
+No storage reale, nuova norma o chiave predefinita. AUTO_CONTINUE single-agent.
 
 ## T-P16-04 locale completata —2026-10-27
 
@@ -2213,7 +2212,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-PERSIST-01 | DONE | 2026-10-27 | CI40510757138 Linux/MSVC/compare JSONL pass, profilo dichiarativo senza runtime; [report](docs/verification/T-PERSIST-01-profile.md) |
 | T-PERSIST-02 | DONE | 2026-10-27 | CI40528607856 Linux/MSVC/JSONL/RGB tutti pass; [dossier](docs/verification/T-PERSIST-02-domain.md) |
 | T-PERSIST-03 | DONE | 2026-10-27 | Code49a3f4e, CI40581933176 su5bc8402 tutti4job success; snapshot/trait/CAS/abort/reopen fake qualificati |
-| T-PERSIST-04..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
+| T-PERSIST-04 | IN_PROGRESS | 2026-10-27 | Protezione PK/provider chiavi e audit: protocollo04 documentato, implementazione in avvio |
+| T-PERSIST-05..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — Linux locale
@@ -5094,3 +5094,21 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
   e06export rinviati. Mainchiude thread dopo eventloop, nessun daemon.
 - Residuo: commit/push eCI nuova, nonDONE04/M8. Next05 solo dopo gate04;
   PERSIST04 indipendente ora pronta perpreflight sicurezza. AUTO_CONTINUE.
+
+## HANDOFF §15.3 — T-P16-04 DONE,2026-10-27
+
+- Code311dcc6+fmt357400e, CI40589848698 tutti4jobcompleted/success.
+-741/741test/92suite,16UI+6copyreview;fmt/Clippy/graph/fontnegative/actionlintpass.
+  NativeLinux/MSVC includono i nuovi test worker eSlintdispatcher/cancel/stati.
+- Artifact scaricati /tmp/lintra-ui04-native:4RGBstaticifinestra/configurazione
+  identici fraOS eallecapturelocali;5PNGworker perOS effettivamente presenti.
+  Tempi reali neiPNGdinamici non soggetti a falsaidentitàbyte. Evidenze
+  docs/verification/T-P16-04-native-ci.json e-native-artifacts.json.
+- Primo tentativo letturaCI fermato da timeout auto-review; unico retry consentito
+  riuscito, gate letto realmente. Nessun permesso aggiuntivo o falso pass.
+- Sourceworker/channels bounded/JSONL atomico/cancel/outcome typed eUI reattiva,
+  scopeLocalOnly esplicito. Export non simulati, formati richiesti conservati.
+- Nessun residuo04;109/140DONE77,9%, M8aperta. UI05 pronta/autorizzata dopo
+  PERSIST04 attualmente in gate locale. ReportP4protocollo/fonti/deps giàregistrati,
+ 7integration+unitRFC pass, nessuna capacità storicaattiva/storage reale.
+- AUTO_CONTINUE, un solo agente/no daemon/subagenti; skills UI mantenute per05.

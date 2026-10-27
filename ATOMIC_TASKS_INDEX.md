@@ -19,7 +19,7 @@ restano nel kit storico. Nessuna conclusione di task impone lo stop della sessio
 | T-P16-01 | DONE | [prompt](TASK_PROMPTS/T-P16-01.md) |
 | T-P16-02 | DONE | [prompt](TASK_PROMPTS/T-P16-02.md) |
 | T-P16-03 | DONE | [prompt](TASK_PROMPTS/T-P16-03.md) |
-| T-P16-04 | IN_PROGRESS | [prompt](TASK_PROMPTS/T-P16-04.md) |
+| T-P16-04 | DONE | [prompt](TASK_PROMPTS/T-P16-04.md) |
 | T-P16-05 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P16-05.md) |
 | T-P16-06 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P16-06.md) |
 | T-P16-07 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P16-07.md) |
@@ -37,7 +37,7 @@ restano nel kit storico. Nessuna conclusione di task impone lo stop della sessio
 | T-PERSIST-01 | DONE | [prompt](TASK_PROMPTS/T-PERSIST-01.md) |
 | T-PERSIST-02 | DONE | [prompt](TASK_PROMPTS/T-PERSIST-02.md) |
 | T-PERSIST-03 | DONE | [prompt](TASK_PROMPTS/T-PERSIST-03.md) |
-| T-PERSIST-04 | NOT_STARTED | [prompt](TASK_PROMPTS/T-PERSIST-04.md) |
+| T-PERSIST-04 | IN_PROGRESS | [prompt](TASK_PROMPTS/T-PERSIST-04.md) |
 | T-PERSIST-05 | NOT_STARTED | [prompt](TASK_PROMPTS/T-PERSIST-05.md) |
 | T-PERSIST-06 | NOT_STARTED | [prompt](TASK_PROMPTS/T-PERSIST-06.md) |
 | T-PERSIST-07 | NOT_STARTED | [prompt](TASK_PROMPTS/T-PERSIST-07.md) |

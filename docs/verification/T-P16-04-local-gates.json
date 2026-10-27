@@ -1,8 +1,8 @@
 {
   "task": "T-P16-04",
   "local_gates_complete": true,
-  "done": false,
-  "native_ci": null,
+  "done": true,
+  "native_ci": 40589848698,
   "base_head": "cbe00bd",
   "pipeline": [
     {

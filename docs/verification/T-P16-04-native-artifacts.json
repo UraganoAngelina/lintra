@@ -1,0 +1,39 @@
+{
+  "run": 40589848698,
+  "head": "357400e95d8e24ad3f0c2362b0a5e0bcaf3846d2",
+  "static_rgb_native_and_local_identical": true,
+  "worker_scenes_present_both_os": true,
+  "dynamic_worker_scenes_compared_for_byte_equality": false,
+  "artifacts": {
+    "bootstrap-evidence-x86_64-pc-windows-msvc": {
+      "worker_png_sha256": {
+        "cancel-requested-dark.png": "d863b2191ec2f9eb94d15767a503fdb6600a1f1faacc5055303c73b66720a23c",
+        "cancelled-dark.png": "b36a1778a275091c16b9bb33d066e214a2db51aa99884564d72268acb151909b",
+        "running-dark.png": "0ac8032140719ccf5cd41bfe6be4c76a7fb7937a81df9b34efad77b542103641",
+        "running-light.png": "7423a65d9235af21c9137336e3997932e128ef55a2718f80088cd7a632ab16a1",
+        "technical-error-light.png": "dfa625ab7c60390db037810a51a8f18a8c9f12babd27d4073a07c6a27d4a497b"
+      }
+    },
+    "bootstrap-evidence-x86_64-unknown-linux-gnu": {
+      "worker_png_sha256": {
+        "cancel-requested-dark.png": "d863b2191ec2f9eb94d15767a503fdb6600a1f1faacc5055303c73b66720a23c",
+        "cancelled-dark.png": "5cf49e17540e841a6d2a640fd77b90db03e8a14f68cb7ecc4bb8bbe39aa4c08a",
+        "running-dark.png": "0ac8032140719ccf5cd41bfe6be4c76a7fb7937a81df9b34efad77b542103641",
+        "running-light.png": "7423a65d9235af21c9137336e3997932e128ef55a2718f80088cd7a632ab16a1",
+        "technical-error-light.png": "dfa625ab7c60390db037810a51a8f18a8c9f12babd27d4073a07c6a27d4a497b"
+      }
+    },
+    "bootstrap-pixels-x86_64-pc-windows-msvc": {
+      "dark-1x.rgb": "0414aafb1bd18bf754627a49d56805b803872421152924be2a74ee10c1232fbe",
+      "dark-2x.rgb": "cc4bcfaba2634a197da3eb585c511dbcc9c2a20e89d2fc342a0340b28b032294",
+      "light-1x.rgb": "019292276a26f8c23cde4f352a5a191e41827ba8a82aa3acd20848678d7fc0de",
+      "light-2x.rgb": "4824077ee369e78813641b38ed429d8dca9b1b95abd7176541ea9b5f8173aff4"
+    },
+    "bootstrap-pixels-x86_64-unknown-linux-gnu": {
+      "dark-1x.rgb": "0414aafb1bd18bf754627a49d56805b803872421152924be2a74ee10c1232fbe",
+      "dark-2x.rgb": "cc4bcfaba2634a197da3eb585c511dbcc9c2a20e89d2fc342a0340b28b032294",
+      "light-1x.rgb": "019292276a26f8c23cde4f352a5a191e41827ba8a82aa3acd20848678d7fc0de",
+      "light-2x.rgb": "4824077ee369e78813641b38ed429d8dca9b1b95abd7176541ea9b5f8173aff4"
+    }
+  }
+}

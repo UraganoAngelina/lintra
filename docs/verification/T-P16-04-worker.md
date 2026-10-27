@@ -131,3 +131,14 @@ shell non fail-fast aveva proseguito con i6test (positivi). Corretto con cargo f
 prima di push/CI, quindi fmt --check ripetuto in set-e e passato. Sole interruzioni
 di riga Rust, nessun cambiamento semantico o test allargato; hash sorgenti aggiornati.
 Il gate non è stato aggirato e la prima CI riceverà il codice già formattato.
+
+## Chiusura nativa
+
+DONE:311dcc6+fmt357400e, CI40589848698 su357400e completed/success,
+Linux/MSVC/compareJSONL/compareRGB tutti pass. Artifact scaricati e verificati:
+4RGBstatici identici fraOS eallecapturelocali,5PNGworker realmente presenti in
+entrambi gli artifact di capture; i tempi dinamici non sono confrontati comegolden.
+Nessun residuo04, nessun M8anticipato. JSONnative-ci/native-artifacts conservano
+SHA/source, job/step ehash. LetturaAPI riuscita dopo unico retry autorizzato
+per timeoutdel revisore (non una decisione di azione insicura). Nessun gate aggirato.
+NextUI05 ora pronta; PERSIST04 indipendente corrente in verifica locale.
