@@ -202,11 +202,12 @@
   },
   "source_sha256": {
     "ui/src/worker.rs": "ca28616486c5d5fa038c804213dc563fc8045ec324f853091579254914b59190",
-    "ui/src/worker_controller.rs": "78e3ab1fe6aa50781fa9b58a6fb69b4ee0805784b193a6a8d968f9b950226b19",
+    "ui/src/worker_controller.rs": "603c33c9c50d3434193f053eb40cd39fd7d23aa850c5f0cab69cd9915f9c579f",
     "ui/src/main.rs": "305c20893eb8f1724c5a236e8d04364a62df9d27aa95638ec1b3b22ff4f958f8",
     "ui/ui/analysis.slint": "4c7efa3d66021af8d4df12977af38a9732fbe336cb7e0201277a1d1eb421a626",
     "ui/ui/controls.slint": "44071c8de78e3ed5d4be60a23be6001c278f273c61756858b028a79447d51a1f",
     "ui/tests/worker.rs": "2bcdf3d4e927627cb5ce3d77fcb23928d8e2468f7db1c052dd279a076eca5014",
     "ui/tests/worker_window.rs": "0fda5097581f57adfcc4a1ea7c76ec88c7d09fccc67f4f1b8e056b3e6e60a348"
-  }
+  },
+  "post_copy_fmt": "two wrapping differences detected; fixed with cargo fmt; fail-fast fmt check passed before push"
 }

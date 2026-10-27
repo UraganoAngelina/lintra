@@ -74,9 +74,7 @@ impl WorkerController {
             self.cancel_requested = true;
             if let Some(ui) = self.window.upgrade() {
                 ui.set_execution_label("Annullamento richiesto".into());
-                ui.set_status_note(
-                    "Attendere l’esito dell’analisi.".into(),
-                );
+                ui.set_status_note("Attendere l’esito dell’analisi.".into());
             }
         }
     }
@@ -111,7 +109,10 @@ impl WorkerController {
                 ui.set_execution_label(label.into());
             }
             let count = if progress.phase == Some(ValidationPhase::CrossRecordValidation) {
-                format!("Record elaborati nella verifica tra record: {}", progress.cross_records)
+                format!(
+                    "Record elaborati nella verifica tra record: {}",
+                    progress.cross_records
+                )
             } else if let Some(trace) = progress.trace {
                 format!(
                     "Record nel tracciato {}: {}",

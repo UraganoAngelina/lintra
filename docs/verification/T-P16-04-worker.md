@@ -123,3 +123,11 @@ crossOS di screenshot con tempi reali; i4RGB statici hanno il loro gate separato
 PERSIST03 e18-01 sono oraDONE/CI40581933176 su5bc8402 tutti4job, inclPS5.1reale.
 Residuo04: commit/push/CI nuova, nonDONE/M8. Nessun conflitto contrattuale.
 Next05 dopo gate04; PERSIST04 pronta indipendente perpreflight. AUTO_CONTINUE.
+
+### Formattazione dopo la revisione copy
+
+L'ultimo fmt --check aveva mostrato due wrapping non conformi, ma la sequenza
+shell non fail-fast aveva proseguito con i6test (positivi). Corretto con cargo fmt
+prima di push/CI, quindi fmt --check ripetuto in set-e e passato. Sole interruzioni
+di riga Rust, nessun cambiamento semantico o test allargato; hash sorgenti aggiornati.
+Il gate non è stato aggirato e la prima CI riceverà il codice già formattato.
