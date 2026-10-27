@@ -3,6 +3,19 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P16-00 e T-P17-06 DONE, T-PERSIST-01 locale verificata
+
+2026-10-27: autore approva esplicitamente il riferimento chiaro results-1x/2x
+con font e differenze dichiarate. T-P16-00 DONE con CI40485215039 positiva.
+T-P17-06 DONE con CI40486090209 Linux/MSVC/compare JSONL tutti success.
+99/140 DONE=70,7%,2 IN_PROGRESS (2-03 parziale e PERSIST-01),39 NOT_STARTED.
+PERSIST-01: compiler dichiarativo separato e non eseguibile; namespace/PK/gruppi
+verificati contro schemi reali, runtime continua a rifiutare persistenza attiva.
+Gate locali positivi; documentazione/pubblicazione/CI ancora da completare.
+Prossima pronta16-01: prerequisito16-00 ora soddisfatto. AUTO_CONTINUE.
+
+## Registro storico — attesa gate17-06 e review16-00
+
 ## Frontiera corrente — T-P17-06 IN_PROGRESS, T-P16-00 WAITING_GATE
 
 2026-10-27: UI spike32c30af pubblicato; CI40483413398 MSVC success, Linux
@@ -1976,9 +1989,9 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-05 | DONE | 2026-10-27 | CI40349711927 Linux/MSVC e release40352109303 success; v0.1.1-rc.1 immutabile, tutti asset scaricati/verificati; [dossier](docs/verification/T-P15-05-executable-release.md) |
 | T-P15-06 | DONE | 2026-10-27 | CI40350440129 success su3a6cf48; release dati immutabile, manifest/payload/checksum scaricati verificati; [dossier](docs/verification/T-P15-06-data-release.md) |
 | T-P15-07 | DONE | 2026-10-27 | CI40475046094 su30d82fb Linux/MSVC e confronto JSONL success; [dossier](docs/verification/T-P15-07-cross-os-bundle.md) |
-| T-P16-00 | IN_PROGRESS | 2026-10-27 | Materiali forniti in mockup_slint_UI: prototipo, font e PNG2×; preflight/collaudo da completare; [preflight](docs/ui/SPIKE_REPORT.md) |
+| T-P16-00 | DONE | 2026-10-27 | CI40485215039 positiva, riferimento chiaro approvato dall’autore; [report](docs/ui/SPIKE_REPORT.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
-| T-P17-06 | IN_PROGRESS | 2026-10-27 | Otto test generativi/fault,689/697pass/80suite e fmt/Clippy positivi, nessun codice produttivo; CI nativa da avviare; [dossier](docs/verification/T-P17-06-robustness.md) |
+| T-P17-06 | DONE | 2026-10-27 | CI40486090209 Linux/MSVC/compare success; [dossier](docs/verification/T-P17-06-robustness.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
@@ -2019,7 +2032,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-06 | DONE | 2026-10-24 | Core due passate: 589 test/68 suite, CI 40091666797 Linux/MSVC success su 134b593; [report](docs/verification/T-P13-06-flow-validator.md) |
 | T-P13-07 | DONE | 2026-10-25 | 602 test/70 suite; CI 40183843102 Linux/MSVC success su 5dbb92c; [report](docs/verification/T-P13-07-full-service.md) |
 | T-P13-08 | DONE | 2026-10-25 | 611/72 suite, golden referenziale reale e memoria; CI40192491629 Linux/MSVC success su52762c8, letta alla ripresa; [report](docs/verification/T-P13-08-goldens-memory.md) |
-| T-PERSIST-01..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
+| T-PERSIST-01 | IN_PROGRESS | 2026-10-27 | Compilazione dichiarativa locale verificata, gate remoto da completare; nessun backend |
+| T-PERSIST-02..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — Linux locale
@@ -4558,3 +4572,14 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
   Una review concreta delle capture è pronta, non una conferma ordinaria di codice.
 - NEXT: dopo review positiva16-01; intanto17-06 CI40486090209 pendente, altre
   task indipendenti solo con prerequisiti verificati. AUTO_CONTINUE attivo.
+
+## HANDOFF §15.3 — chiusura16-00/17-06 e ripresa PERSIST-01,2026-10-27
+
+-16-00 DONE: code bdef3c3/CI40485215039, approvazione visiva esplicita registrata.
+-17-06 DONE: code a332ca5/CI40486090209, Linux/MSVC/JSONL success.
+- File aggiornati: AGENTS, status/indice, dossier/gate17-06, UI report/review/gate.
+- Nessuna nuova dipendenza o semantica normativa; FROZEN intatta.
+- PERSIST-01 in corso: src/schema/persistence_profile.rs, exports e test; fmt/Clippy
+  e test default/all-features positivi. Nessun backend, sicurezza o audit simulati.
+- Residuo PERSIST-01: report, commit/push e CI. Next16-01 pronta dopo questo
+  lavoro sequenziale; temi in16-02, nessun consenso ordinario richiesto.

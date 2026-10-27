@@ -1,8 +1,8 @@
-# Candidato chiaro per la prima revisione visiva
+# Riferimento chiaro approvato —2026-10-27
 
 Capture reali della CI40485215039, commitbdef3c3; pixel Linux/MSVC identici
-a1×/2×, anche i PNG scaricati hanno gli stessi SHA256. Non sono golden di
-regressione approvati. results-1x.png e results-2x.png sono output del renderer;
+a1×/2×, anche i PNG scaricati hanno gli stessi SHA256. Approvazione esplicita dell’autore: «Approvo il riferimento chiaro». Sono i primi riferimenti di
+regressione approvati ARCH39D.5. results-1x.png e results-2x.png sono output del renderer;
 mockup-derived-1x.png è invece la vista derivata dal PNG2× originale dell’autore
 (media RGB2×2), per confronto e con provenienza distinta.
 

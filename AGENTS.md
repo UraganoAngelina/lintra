@@ -307,3 +307,7 @@ Ratifica DEC-18 —2026-10-26:
 Eccezione dell'autore — log MSVC T-P14-05,2026-10-26:
 - Autorizzata una chiamata GitHub aggiuntiva per leggere il log diagnostico del
   job fallito121483043646, run40296287288. Nessuna estensione generale del polling.
+
+## Ratifica visiva UI —2026-10-27
+
+L’autore approva esplicitamente il riferimento chiaro («Approvo il riferimento chiaro»): docs/ui/review/results-1x.png e results-2x.png, font IBM Plex e differenze tipografiche dichiarate. Soddisfatto ARCH39D.5; T-P16-00 può chiudersi con gli altri gate positivi. Nessun cambiamento alla palette originale; tema scuro nero/rosso/arancione e selettore restano autorizzati per il successivo sviluppo UI.

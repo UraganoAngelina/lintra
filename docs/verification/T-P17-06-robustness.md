@@ -65,3 +65,7 @@ positivi. cargo test --offline --locked689pass e --all-features697pass,80suite,
 0fail/2ignored. Otto nuovi test tutti positivi, inclusi schemi malformati.
 Evidenza T-P17-06-local-gates.json. Nessuna modifica produttiva o nuova
 dipendenza. CI nativa ancora da avviare; stato IN_PROGRESS, nessun DONE anticipato.
+
+## Chiusura nativa
+
+CI40486090209 su a332ca5466c3e62ba2ed483f1154d7d33eaa30d1: Linux/MSVC e confronto JSONL completed/success. Evidenza native-ci archiviata. T-P17-06 DONE; nessun residuo o nuova semantica.

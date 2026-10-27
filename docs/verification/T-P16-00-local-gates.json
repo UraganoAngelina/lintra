@@ -1,8 +1,8 @@
 {
   "task": "T-P16-00",
-  "done": false,
+  "done": true,
   "native_ci": "40485215039 success on bdef3c3, Linux/MSVC and raw RGB comparison1x/2x",
-  "visual_baseline_approval": "pending author review per ARCH39D.5",
+  "visual_baseline_approval": "Approved explicitly by author on 2026-10-27: Approvo il riferimento chiaro",
   "local_checks": {
     "fmt": true,
     "clippy_all_targets_release": true,

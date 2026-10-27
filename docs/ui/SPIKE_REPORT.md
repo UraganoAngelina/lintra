@@ -137,3 +137,7 @@ Nessuna soglia performance prodotto/DEC-14 ricavata da questi tempi UI.
 la prima approvazione visiva ARCH39D.5. Stato WAITING_VISUAL_REVIEW, non DONE
 e nessun PNG promosso a golden. Le differenze tipografiche/ritorni a capo sono
 esplicite, font originali mantenuti. Nessuna richiesta di conferma Git/CI.
+
+## Approvazione visiva e chiusura —2026-10-27
+
+L’autore ha risposto «Approvo il riferimento chiaro» alla revisione delle capture results-1x.png e results-2x.png, con font IBM Plex e differenze tipografiche dichiarate. Questi due PNG costituiscono il primo riferimento approvato ARCH39D.5. CI40485215039 e gate locali positivi: T-P16-00 DONE. Tema scuro nero/rosso/arancione e selettore restano per16-02; nessuna modifica al mockup originale. Prossima16-01 autorizzata, dopo completamento sequenziale della task persistenza già iniziata.

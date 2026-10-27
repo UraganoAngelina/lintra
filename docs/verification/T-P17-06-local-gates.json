@@ -1,6 +1,6 @@
 {
   "task": "T-P17-06",
-  "done": false,
+  "done": true,
   "fmt": true,
   "clippy_default_all_targets": true,
   "clippy_all_features_all_targets": true,
@@ -21,5 +21,5 @@
   "new_tests": 8,
   "new_crates": false,
   "runtime_changes": false,
-  "native_ci": "pending"
+  "native_ci": 40486090209
 }
