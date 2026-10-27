@@ -50,13 +50,15 @@ jobs:
       - name: Check formatting
         run: cargo fmt --all -- --check
       - name: Clippy
-        run: cargo clippy --all-targets --target ${{ matrix.target }} --locked -- -D warnings
+        run: cargo clippy --workspace --all-targets --target ${{ matrix.target }} --locked -- -D warnings
       - name: Test
-        run: cargo test --target ${{ matrix.target }} --locked
+        run: cargo test --workspace --target ${{ matrix.target }} --locked
       - name: Clippy all features
-        run: cargo clippy --all-targets --all-features --target ${{ matrix.target }} --locked -- -D warnings
+        run: cargo clippy --workspace --all-targets --all-features --target ${{ matrix.target }} --locked -- -D warnings
       - name: Test all features
-        run: cargo test --all-features --target ${{ matrix.target }} --locked
+        run: cargo test --workspace --all-features --target ${{ matrix.target }} --locked
+      - name: Verify workspace and core dependency boundary
+        run: python scripts/check_workspace.py
       - name: Smoke synthetic benchmark and verify expected validation counts
         run: cargo test --bench validation --target ${{ matrix.target }} --locked -- --output target/benchmark-smoke.json --smoke
       - name: Check tooling formatting

@@ -1,0 +1,26 @@
+{
+  "task": "T-P16-01",
+  "done": false,
+  "fmt": true,
+  "clippy_workspace_default": true,
+  "clippy_workspace_all_features": true,
+  "rust_tests": {
+    "default": {
+      "passed": 698,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 82
+    },
+    "all_features": {
+      "passed": 706,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 82
+    }
+  },
+  "python_tests": 19,
+  "actual_core_graph_without_slint": true,
+  "scaffold_explicit_unavailable_exit_code": 2,
+  "actionlint": "1.7.12 pass; external shellcheck/pyflakes unavailable",
+  "native_ci": "pending; dispatch after CI40510757138 completes"
+}

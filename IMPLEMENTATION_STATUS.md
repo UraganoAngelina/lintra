@@ -3,6 +3,19 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P16-01 IN_PROGRESS, T-PERSIST-01 WAITING_GATE
+
+2026-10-27: PERSIST-01 pubblicata ceb90b7, CI40510757138 in corso, gate locali
+698/706pass/81suite. Non DONE prima del gate nativo.
+16-01 avviata dopo16-00 DONE e approvazione del chiaro: workspace root+ui,
+nessuna nuova dipendenza/Slint nel core, guard sul grafo reale e CI --workspace.
+19test Python e check/fmt/Clippy workspace positivi;698/706test Rust/82suite,
+0fail/2ignored, actionlint positivo. Gate nativo ancora da avviare.
+99/140 DONE=70,7%,3 IN_PROGRESS (2-03 parziale,PERSIST-01,16-01),38 NOT_STARTED.
+Next16-02 dipende dal gate16-01; temi già autorizzati. AUTO_CONTINUE.
+
+## Registro storico — chiusura spike/robustezza
+
 ## Frontiera corrente — T-P16-00 e T-P17-06 DONE, T-PERSIST-01 locale verificata
 
 2026-10-27: autore approva esplicitamente il riferimento chiaro results-1x/2x
@@ -1990,6 +2003,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-06 | DONE | 2026-10-27 | CI40350440129 success su3a6cf48; release dati immutabile, manifest/payload/checksum scaricati verificati; [dossier](docs/verification/T-P15-06-data-release.md) |
 | T-P15-07 | DONE | 2026-10-27 | CI40475046094 su30d82fb Linux/MSVC e confronto JSONL success; [dossier](docs/verification/T-P15-07-cross-os-bundle.md) |
 | T-P16-00 | DONE | 2026-10-27 | CI40485215039 positiva, riferimento chiaro approvato dall’autore; [report](docs/ui/SPIKE_REPORT.md) |
+| T-P16-01 | IN_PROGRESS | 2026-10-27 | Workspace core/CLI+UI, guard grafo reale,698/706test e19Python positivi; CI pendente; [dossier](docs/verification/T-P16-01-workspace.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P17-06 | DONE | 2026-10-27 | CI40486090209 Linux/MSVC/compare success; [dossier](docs/verification/T-P17-06-robustness.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
@@ -4592,3 +4606,23 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
 - Fmt/Clippy default/all-features pass;698/706test,81suite,0fail/2ignored.
 - Nessun backend/algoritmo protezione scelto o PHI; nessun JSON FROZEN modificato.
 - Residuo: CI nativa dopo pubblicazione, non DONE. Next16-01 indipendente pronta.
+
+## HANDOFF §15.3 — T-P16-01 avviata,2026-10-27
+
+- Prerequisito16-00 verificato via CI40485215039 e approvazione visiva autore.
+- Manifest root workspace, UI adapter scaffold, lock +solo membro locale;
+  CI --workspace e guard reale dipendenze, tre test di confine Python.
+- Nessun backend Slint o nuova dipendenza finché16-02; core/CLI invariati.
+-19test Python, check/fmt/Clippy positivi; regressione Rust in corso.
+- PERSIST-01 sospesa su CI40510757138, primo controllo in_progress entrambi OS.
+- Non avviare CI16-01 prima della conclusione di questa run (concurrency).
+- Next16-02 dopo gate reali; no consenso ordinario necessario, AUTO_CONTINUE.
+
+## HANDOFF §15.3 — T-P16-01 locale verificata,2026-10-27
+
+- Fmt/Clippy workspace default/all-features pass;698/706test,82suite,0fail/2ignored.
+-19test Python, grafo core/CLI senza Slint, scaffold exit2 e actionlint pass.
+- Dossier e local-gates16-01 aggiornati; nessuna nuova dipendenza di prodotto.
+- CI40510757138 persistenza ancora in_progress alla seconda lettura pianificata.
+- Residuo16-01: dispatch CI dopo conclusione run precedente, QG-2/QG-5 nativi.
+- Next16-02 solo con gate16-01 positivo; AUTO_CONTINUE, nessun DONE anticipato.

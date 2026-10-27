@@ -319,6 +319,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "lintra-ui"
+version = "0.1.1-rc.1"
+dependencies = [
+ "lintra",
+]
+
+[[package]]
 name = "linux-raw-sys"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"

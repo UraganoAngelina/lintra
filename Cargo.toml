@@ -1,3 +1,10 @@
+[workspace]
+members = [".", "ui"]
+# Preserve the existing CLI build/release commands; CI checks all members explicitly.
+default-members = ["."]
+exclude = ["xtask", "spikes/ui-prototype"]
+resolver = "3"
+
 [package]
 name = "lintra"
 version = "0.1.1-rc.1"
