@@ -3,15 +3,23 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-PERSIST-03 IN_PROGRESS, T-P16-03 WAITING_GATE
+## Frontiera corrente — T-P16-03 DONE; PERSIST-03/P18-01 IN_PROGRESS
 
-T-P16-03 locale completa, code0a2121b dopo commit utenteae348af; CI40577920052
-avviata, non DONE/M8.105/140 DONE,2 IN_PROGRESS,33NOT_STARTED.
-T-PERSIST-03 avviata indipendente: prereq02 CI40528607856 eP13 CI40192491629
-verificati. Trait, snapshot immutabili e fake transazionale in memoria; staging
-privato/CAS/abort/reopen da qualificare. Nessun backend/crypto/policy normativa.
-Next16-04 dopo gate03; PERSIST04 dopo gatePERSIST03 e preflight sicurezza.
-AUTO_CONTINUE, skills UI no-ai-slop/Impeccable/ui-ux-pro-max vincolanti.
+UI03/0a2121b, CI40577920052 completed/success tutti4job; artifactRGB dei dueOS
+identici e coincidenti con le capture locali. Nessun residuo03, M8 aperta.
+106/140 DONE=75,7%,2 IN_PROGRESS (PERSIST03/P18-01),32NOT_STARTED.
+PERSIST03/49a3f4e pubblicata e qualificata localmente735/735/717test, non ancoraCI.
+P18-01 doc/probeREADME locale Linuxpositivo, PowerShell5.1 da qualificareCI.
+Prossima pubblicazione doc/CI unica per03+18-01, poiUI16-04 pronta eautorizzata.
+Skills UI no-ai-slop/Impeccable/ui-ux-pro-max; AUTO_CONTINUE single-agent.
+
+## T-P18-01 avviata indipendente —2026-10-27
+
+M5 MVP generico qualificato30d82fba/CI40475046094; T-P15-05/06 release verificate.
+README operativo con esempi nativi da zero, exitcode/encoding/directory/XLSX/
+Windows; probe dei blocchi effettivi README da eseguire in CI Linux ePowerShell5.1.
+Non dipende da UI03/PERSIST03; questi gate restano aperti fedelmente.
+UI40577920052 Linux success, MSVC release ancora in corso, nessun secondoavvioCI.
 
 ## Consegna locale PERSIST-03 completata —2026-10-27
 
@@ -2147,7 +2155,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P16-00 | DONE | 2026-10-27 | CI40485215039 positiva, riferimento chiaro approvato dall’autore; [report](docs/ui/SPIKE_REPORT.md) |
 | T-P16-01 | DONE | 2026-10-27 | CI40513168784 Linux/MSVC/compare pass, workspace e QG-5 reali; [dossier](docs/verification/T-P16-01-workspace.md) |
 | T-P16-02 | DONE | 2026-10-27 | CI40522626495 Linux/MSVC/JSONL/RGB temi tutti pass; [report](docs/verification/T-P16-02-bootstrap.md) |
-| T-P16-03 | IN_PROGRESS | 2026-10-27 | Schermata Nuova analisi, catalogo/versioni esplicite e preflight tecnici in implementazione |
+| T-P16-03 | DONE | 2026-10-27 | Code0a2121b, CI40577920052 Linux/MSVC/JSONL/RGB success; catalogo e versione espliciti, preflight tecnico e form nativi |
 | T-P18-02 | DONE | 2026-10-27 | Due dry-run dati Linux, binario invariato e v1 golden preservato; [runbook](docs/RUNBOOK_SCHEMA_UPDATE.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P17-06 | DONE | 2026-10-27 | CI40486090209 Linux/MSVC/compare success; [dossier](docs/verification/T-P17-06-robustness.md) |
@@ -4978,3 +4986,31 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
 - Residuo: commit/push/CI nuova dopo fineUI40577920052, per evitare cancellazione.
   UI03 Linux success, Windows parziale positivo, non DONE. AUTO_CONTINUE.
 - Next16-04 dopo gateUI03; PERSIST04 dopo gate03 e sicurezza. Nessun aiuto ordinario.
+
+## HANDOFF §15.3 — native UI pixels verificati,2026-10-27
+
+- PERSIST03 commit49a3f4e pubblicato,735/735/717test e tutti i gate locali positivi;
+  CI nuova differita per non cancellare40577920052 ancora in corso sullo stessobranch.
+- UI03/0a2121b: Linux tutti step success; MSVC Rust/default/allfeatures/no-default,
+  font-negative/guard/pixel e benchmark pass, release riproducibile in corso.
+- Artifact pixels Linux eWindows scaricati /tmp/lintra-ui03-pixels;4RGB identici
+  fraOS ealle capture locali revisionate. Hash docs/verification/T-P16-03-native-pixels.json.
+-3letture ordinarie usate, distanziate ampiamente. Serve solo lettura finale
+  release e compare jobs, già autorizzata daAGENTS; nessuna nuova conferma.
+- Nessun DONEUI03/PERSIST03 prima degli ultimi gate; nextUI04 dopo gateUI,
+  nuovaCI per49 dopofineUI. AUTO_CONTINUE, ultimo stato persistito.
+
+## HANDOFF §15.3 — T-P16-03 DONE,2026-10-27
+
+- Code0a2121b dopo salvataggioutenteae348af; CI40577920052 tutti4job success.
+  Gate Windows release completato; JSONL e4RGB confrontati senza tolleranza.
+-727/727workspace,709core,10UI finali eClippy/fmt/21Python/guard/fontnegative/actionlint
+  positivi; pixelrunner scaricati e identici anchealle capture locali revisionate.
+- Scope configurazione reale Trace/LocalOnly/versione esplicita, no esecuzione
+  o risultati fittizi. Palette chiara/font conservati, scuro rosso/arancione.
+- Skills no-ai-slop/Impeccable/ui-ux-pro-max eHallmark applicate in-thread.
+- File/evidenze docs/verification/T-P16-03*,docs/ui/analysis,srcbundle helper,ui/*
+  nei commitutenteae348af e0a2121b. Nessun residuo03/M8 non raggiunta.
+- PERSIST03/49a3f4e locale completa nonCI; P18-01 Linux docs/casi reali pass,
+  pubblicazione doc eCI unica in preparazione. NextUI16-04 pronta eautorizzata.
+- AUTO_CONTINUE, nessuna approvazione ordinaria, un solo agente/no backgrounddaemon.

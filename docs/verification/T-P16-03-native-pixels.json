@@ -1,0 +1,19 @@
+{
+  "run": 40577920052,
+  "head": "0a2121b",
+  "both_os_and_local_identical": true,
+  "sha256": {
+    "bootstrap-pixels-x86_64-pc-windows-msvc": {
+      "dark-1x.rgb": "30748d556079677164a3142935684b3f56da261d60b4c74077025b7261a20513",
+      "dark-2x.rgb": "9664d74ce97c754d76c7905af2b91213bbe70eb9e04c2e9f90970f38255e99da",
+      "light-1x.rgb": "2890b69305cf45fa9ff0250994c6b6b69b76d361d67d008767af80a16c35c004",
+      "light-2x.rgb": "84b65b9e2ec457e5f0f5d62f5a99fcad27fdefe488f670fc6748291cf53e09a5"
+    },
+    "bootstrap-pixels-x86_64-unknown-linux-gnu": {
+      "dark-1x.rgb": "30748d556079677164a3142935684b3f56da261d60b4c74077025b7261a20513",
+      "dark-2x.rgb": "9664d74ce97c754d76c7905af2b91213bbe70eb9e04c2e9f90970f38255e99da",
+      "light-1x.rgb": "2890b69305cf45fa9ff0250994c6b6b69b76d361d67d008767af80a16c35c004",
+      "light-2x.rgb": "84b65b9e2ec457e5f0f5d62f5a99fcad27fdefe488f670fc6748291cf53e09a5"
+    }
+  }
+}

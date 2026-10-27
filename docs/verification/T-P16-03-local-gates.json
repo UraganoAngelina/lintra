@@ -1,7 +1,7 @@
 {
   "task": "T-P16-03",
   "local_gates_complete": true,
-  "native_ci": null,
+  "native_ci": 40577920052,
   "fmt": true,
   "clippy_workspace_default": true,
   "clippy_workspace_all_features": true,
@@ -55,5 +55,6 @@
     "impeccable",
     "ui-ux-pro-max",
     "hallmark"
-  ]
+  ],
+  "done": true
 }

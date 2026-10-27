@@ -116,3 +116,14 @@ senza warning. Fmt/guard/actionlint/21Python positivi. Workspace727test default
 ed all-features, core senza feature709;0fail/2ignored nei gate completi. Capture
 aggiornate in docs/ui/analysis e hash/evidenze nel JSON locale. Confronto nativo
 Linux/MSVC e CI della nuova consegna ancora pendenti:16-03 non DONE, M8 aperta.
+
+## Chiusura nativa verificata
+
+DONE su0a2121b, CI40577920052 completed/success: Linux122449203278,
+MSVC122449203739, confronto RGB eJSONL tutti success. Evidenza completa nei
+JSONnative-ci/native-pixels. Artifact dei due runner scaricati:4RGB identici
+fraOS ealle capture locali revisionate, senza tolleranza. Release riproducibile,
+artifact policy, standalonecore, font-negative eguard passati su entrambiOS.
+Nessun residuo03; avvio worker resta16-04, UI completa/M8 non raggiunte.
+Next16-04 autorizzata/pronta; commit49a3f4e/PERSIST03 locale qualificato ma
+attende ancora propriaCI. AUTO_CONTINUE con skills UI aggiornate.
