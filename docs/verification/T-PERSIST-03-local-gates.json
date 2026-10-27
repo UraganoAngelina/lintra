@@ -1,0 +1,121 @@
+{
+  "task": "T-PERSIST-03",
+  "base_head": "0a2121b",
+  "local_gates_complete": true,
+  "native_ci": null,
+  "pipeline": [
+    {
+      "gate": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.31
+    },
+    {
+      "gate": "clippy-workspace",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 13.2
+    },
+    {
+      "gate": "clippy-all",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 7.55
+    },
+    {
+      "gate": "tests-workspace",
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 166.57
+    },
+    {
+      "gate": "tests-all",
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 267.15
+    },
+    {
+      "gate": "tests-core",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "lintra",
+        "--no-default-features",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 81.79
+    }
+  ],
+  "clippy_core_all_targets": true,
+  "tests": {
+    "tests-workspace": {
+      "passed": 735,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 90
+    },
+    "tests-all": {
+      "passed": 735,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 90
+    },
+    "tests-core": {
+      "passed": 717,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 84
+    }
+  },
+  "privacy": "synthetic opaque tokens only; no actual crypto or disk durability",
+  "existing_golden_unchanged": true,
+  "prerequisites": {
+    "PERSIST-02": 40528607856,
+    "P13": 40192491629
+  },
+  "source_sha256": {
+    "src/persistence/mod.rs": "c2f694100933d02775553d3b1bbbe6dd88f451fc59bd8b158d598697937dc6b5",
+    "src/persistence/memory.rs": "0c31e562940f461842244054cf69d46d1205ee9eef730da7cdbc4de74746f62d",
+    "tests/persistence_repository.rs": "89f7912c087e288fd71c54f1bb7d5d2a2bfbecf73492efa9b9e1c910e516dc1a",
+    "src/lib.rs": "1efb200130f7e4323eebfde096361e3d630604fc37848bcb9db929a32618c4bc",
+    "src/cli/bundle.rs": "b19e3490ac0bb24071ff8ab0e29b68a65b93efcaa4a7bb598d2736d2f6392b54"
+  }
+}

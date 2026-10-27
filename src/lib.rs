@@ -354,3 +354,9 @@ pub use bundle_resolution::{
     BundleSource as BundleSelection, DirectoryKind as BundleDirectoryKind,
     EnvProvider as BundleEnvironment, SystemEnv as SystemBundleEnvironment, resolve_bundle_source,
 };
+
+/// Persistent history ports and explicit in-memory transaction test adapter.
+pub use persistence::{
+    CommitReceipt, HistoricalSnapshot, InMemoryPersistenceImage, InMemoryPersistenceRepository,
+    PersistenceError, PersistenceTransaction, PersistentContextRepository, StoredIdentity,
+};

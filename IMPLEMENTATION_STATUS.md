@@ -3,17 +3,24 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-PERSIST-02 DONE, T-P16-03 IN_PROGRESS
+## Frontiera corrente — T-PERSIST-03 IN_PROGRESS, T-P16-03 WAITING_GATE
 
-2026-10-27: CI40528607856/e9f477b completed/success Linux/MSVC/JSONL/RGB,
-PERSIST-02 DONE.105/140 DONE=75,0%,1 IN_PROGRESS (16-03),34 NOT_STARTED.
-UI16-03 avviata con16-02 CI40522626495 eT14-05/DEC18 verificati: modello
-catalogo reale/versione esplicita, selettori/filebrowser Slint, preflightBOM/
-terminatori65536byte e form mockup. Resolver/manifest CLI condivisi tramite
-API adapter-support, nessuna politica duplicata o nuova regola normativa.
-Preparazione sola richiesta: esecuzione worker resta16-04, avvio disabilitato
-finché collegato. UI/gate completi in lavorazione, nessun DONE16-03/M8.
-Next16-04 dopo16-03, PERSIST-03 indipendente pronta. AUTO_CONTINUE.
+T-P16-03 locale completa, code0a2121b dopo commit utenteae348af; CI40577920052
+avviata, non DONE/M8.105/140 DONE,2 IN_PROGRESS,33NOT_STARTED.
+T-PERSIST-03 avviata indipendente: prereq02 CI40528607856 eP13 CI40192491629
+verificati. Trait, snapshot immutabili e fake transazionale in memoria; staging
+privato/CAS/abort/reopen da qualificare. Nessun backend/crypto/policy normativa.
+Next16-04 dopo gate03; PERSIST04 dopo gatePERSIST03 e preflight sicurezza.
+AUTO_CONTINUE, skills UI no-ai-slop/Impeccable/ui-ux-pro-max vincolanti.
+
+## Consegna locale PERSIST-03 completata —2026-10-27
+
+Tutti6gate pipeline exit0: fmt/Clippy workspace default/all-features,
+735/735test workspace/90suite,717core senza feature/84suite,0fail/2ignored.
+Clippy core standalone pass.7integration+unit boundary, CAS reale due thread,
+abort/drop/reopen memoria e stage fail-closed verificati. Report/JSON/hash salvati.
+Residuo commit/push/CI nuova; attendere fine gateUI03 per non cancellarlo.
+UI40577920052: Linux success, MSVC default test/Clippy pass, resto ancora pendente.
 
 ## Consegna locale16-03 completata —2026-10-27
 
@@ -2186,7 +2193,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-08 | DONE | 2026-10-25 | 611/72 suite, golden referenziale reale e memoria; CI40192491629 Linux/MSVC success su52762c8, letta alla ripresa; [report](docs/verification/T-P13-08-goldens-memory.md) |
 | T-PERSIST-01 | DONE | 2026-10-27 | CI40510757138 Linux/MSVC/compare JSONL pass, profilo dichiarativo senza runtime; [report](docs/verification/T-PERSIST-01-profile.md) |
 | T-PERSIST-02 | DONE | 2026-10-27 | CI40528607856 Linux/MSVC/JSONL/RGB tutti pass; [dossier](docs/verification/T-PERSIST-02-domain.md) |
-| T-PERSIST-03..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
+| T-PERSIST-03 | IN_PROGRESS | 2026-10-27 | Trait repository e adapter transazionale in memoria in sviluppo |
+| T-PERSIST-04..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — Linux locale
@@ -4939,3 +4947,34 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
 - Residuo: pubblicare review/metadata e avviareCI;03IN_PROGRESS fino a tutti4job.
 - Nessun worker, output o norma simulati. Next PERSIST-03 indipendente duranteCI;
  16-04 solo dopo gate03. AUTO_CONTINUE, nessun aiuto utente necessario.
+
+## HANDOFF §15.3 — T-PERSIST-03 locale in verifica,2026-10-27
+
+- Base0a2121b, UI03CI40577920052 in_progress; non DONE/M8.
+- Prereq02/e9f477b/40528607856 eP13/52762c8/40192491629 qualificati.
+- src/persistence/mod.rs/memory.rs, rootexports,7test integration+unit fault/overflow.
+  Snapshot readonly, transaction private stage, generazioneOption e CAS commit,
+  abort/drop/reopen memoria dichiarati, indice/audit/versione pubblicati insieme.
+-7mirati iniziali pass; Clippy core/workspace/all-features positivi; gate test
+  finali in pipeline foreground target/verification-persist-03-pipeline.json.
+- Stage fallito azzera candidato precedente, errore tecnico; nessuna norma nuova.
+  SourceSubmissionID immutabile come audit, non sessione; lifecycle06 rinviato.
+- Fix import std::io CLI condizionale embedded, necessario Clippy core standalone,
+  nessun cambiamento comportamento. Nessuna dipendenza/PHI/storage reale.
+- Residuo: fullgate, commit/push, CI dopo completamentoUI per non cancellarla.
+  Report docs/verification/T-PERSIST-03-repository.md. NextUI04 dopo gateUI03;
+  PERSIST04 dopo gate03 e preflight sicurezza. AUTO_CONTINUE, no subagenti/background.
+
+## HANDOFF §15.3 — T-PERSIST-03 gate locali completi,2026-10-27
+
+- Base0a2121b; fonti ADR-PERSIST-001/ARCH45/DET167 precisate senza policy nuova.
+- Port repo/transaction, snapshot immutable, fake memory image e recupero
+  metadati/ultime identità osservate; stage fail-closed e CAS sotto mutex.
+-735/735test/90suite e717core/84suite,0fail/2ignored; fmt/Clippy workspace
+  default/all-features ecore standalone positivi. Unit overflow e poison provate.
+- No PHI, crate, database, crypto/proiezione raw, service storico o update di norme.
+  File src/persistence/*,rootexports,tests/persistence_repository,CLIcfgimport,
+  status/index/report/JSON. Backenddisco/approvazioni/reconciliation rinviati.
+- Residuo: commit/push/CI nuova dopo fineUI40577920052, per evitare cancellazione.
+  UI03 Linux success, Windows parziale positivo, non DONE. AUTO_CONTINUE.
+- Next16-04 dopo gateUI03; PERSIST04 dopo gate03 e sicurezza. Nessun aiuto ordinario.

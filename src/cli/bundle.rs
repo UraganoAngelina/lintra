@@ -1,7 +1,9 @@
 //! Adapter composition for a selected whole bundle. No file-level fallback.
 use super::{args::ValidateArgs, paths::BundleSource};
 use lintra::*;
-use std::{error::Error, fs, io, path::PathBuf, sync::Arc};
+#[cfg(feature = "embedded-bundle")]
+use std::io;
+use std::{error::Error, fs, path::PathBuf, sync::Arc};
 type Failure = Box<dyn Error>;
 
 /// Returns the actual service and audit plus filesystem inputs to protect.
