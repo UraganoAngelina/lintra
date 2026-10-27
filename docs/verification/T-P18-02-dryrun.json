@@ -1,0 +1,184 @@
+{
+  "task": "T-P18-02",
+  "synthetic_only": true,
+  "remote_published": false,
+  "binary_sha256_before_after": "fb9c42042f3d787b17d67ab55f895574bdcc2c90bea75f099df72ce062e0a1f0",
+  "archive_sha256": "c5a6055cd80d9792a2c7ca369b89a1ae55fbe7c86e75b372a9c75036e73593b6",
+  "bundle_version": "synthetic-runbook-v2",
+  "schema_hash_v1": "99f89afe8552edb6485ce48529e5bf099990d0f47bf76ac3b013169458e779ef",
+  "schema_hash_v2": "15eb7d6728cbcb961ab458b7d6224e7480cbb05b9a2d39883926957f58f7e225",
+  "commands": [
+    {
+      "args": [
+        "/home/alberto/Desktop/LINTRA/lintra/target/runbook-schema-v2/application with spaces/lintra",
+        "--version"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "/home/alberto/Desktop/LINTRA/lintra/target/runbook-schema-v2/application with spaces/lintra",
+        "validate",
+        "--flow",
+        "SYNTHETIC",
+        "--schema-version",
+        "v1",
+        "--trace",
+        "T1",
+        "--encoding",
+        "utf8",
+        "--input",
+        "input.txt",
+        "--errors",
+        "case-1.jsonl",
+        "--summary",
+        "case-1.json"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "/home/alberto/Desktop/LINTRA/lintra/target/runbook-schema-v2/application with spaces/lintra",
+        "validate",
+        "--flow",
+        "SYNTHETIC",
+        "--schema-version",
+        "v1",
+        "--trace",
+        "T1",
+        "--encoding",
+        "utf8",
+        "--input",
+        "input.txt",
+        "--errors",
+        "case-2.jsonl",
+        "--summary",
+        "case-2.json"
+      ],
+      "exit": 2
+    },
+    {
+      "args": [
+        "/home/alberto/Desktop/LINTRA/lintra/target/runbook-schema-v2/application with spaces/lintra",
+        "schema",
+        "lint",
+        "--flow",
+        "SYNTHETIC",
+        "--schema-version",
+        "v2",
+        "--schema-dir",
+        "/home/alberto/Desktop/LINTRA/lintra/target/runbook-schema-v2/candidate/schemas",
+        "--encoding",
+        "utf8"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "cargo",
+        "xtask",
+        "bundle-data",
+        "--input",
+        "/home/alberto/Desktop/LINTRA/lintra/target/runbook-schema-v2/candidate",
+        "--output-dir",
+        "/home/alberto/Desktop/LINTRA/lintra/target/runbook-schema-v2/dist"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "/home/alberto/Desktop/LINTRA/lintra/target/runbook-schema-v2/application with spaces/lintra",
+        "validate",
+        "--flow",
+        "SYNTHETIC",
+        "--schema-version",
+        "v1",
+        "--trace",
+        "T1",
+        "--encoding",
+        "utf8",
+        "--input",
+        "input.txt",
+        "--errors",
+        "case-3.jsonl",
+        "--summary",
+        "case-3.json"
+      ],
+      "exit": 2
+    },
+    {
+      "args": [
+        "/home/alberto/Desktop/LINTRA/lintra/target/runbook-schema-v2/application with spaces/lintra",
+        "validate",
+        "--flow",
+        "SYNTHETIC",
+        "--schema-version",
+        "v2",
+        "--trace",
+        "T1",
+        "--encoding",
+        "utf8",
+        "--input",
+        "input.txt",
+        "--errors",
+        "case-4.jsonl",
+        "--summary",
+        "case-4.json"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "/home/alberto/Desktop/LINTRA/lintra/target/runbook-schema-v2/application with spaces/lintra",
+        "validate",
+        "--flow",
+        "SYNTHETIC",
+        "--schema-version",
+        "v2",
+        "--trace",
+        "T1",
+        "--encoding",
+        "utf8",
+        "--input",
+        "input.txt",
+        "--errors",
+        "case-5.jsonl",
+        "--summary",
+        "case-5.json"
+      ],
+      "exit": 2
+    },
+    {
+      "args": [
+        "/home/alberto/Desktop/LINTRA/lintra/target/runbook-schema-v2/application with spaces/lintra",
+        "validate",
+        "--flow",
+        "SYNTHETIC",
+        "--schema-version",
+        "v2",
+        "--trace",
+        "T1",
+        "--encoding",
+        "utf8",
+        "--input",
+        "input.txt",
+        "--errors",
+        "case-6.jsonl",
+        "--summary",
+        "case-6.json"
+      ],
+      "exit": 2
+    }
+  ],
+  "v1_jsonl_preserved": true,
+  "v2_jsonl_deterministic": true,
+  "new_version_valid_invalid_checked": true,
+  "existing_work_directory_rejected_without_overwrite": true,
+  "repeat_dryrun_same_archive_sha256": true,
+  "python_tooling_tests_passed": 19,
+  "syntax_check": true,
+  "fmt": true,
+  "done": true,
+  "native_os": "Linux",
+  "windows_dryrun_executed": false
+}

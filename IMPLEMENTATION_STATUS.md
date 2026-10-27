@@ -3,6 +3,18 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P18-02 DONE, T-P16-01 WAITING_GATE
+
+2026-10-27: runbook dati18-02 e script dry-run completi. Due prove Linux con
+CLI release invariata: nuovo schema v2 lintato/confezionato/installato e valido,
+negativo verificato, v1 JSONL/hash conservati, hash binario/ZIP ripetibili.
+Nessuna pubblicazione remota della fixture, nessuna conformità normativa implicita.
+101/140 DONE=72,1%,2 IN_PROGRESS (2-03 parziale,16-01),37 NOT_STARTED.
+CI16-01 run40513168784 su e5b00b2 in corso, nessun DONE anticipato.
+Next16-02 dopo gate reale, temi/font/riferimento approvato vincolanti. AUTO_CONTINUE.
+
+## Registro storico — chiusura persistenza e pubblicazione workspace
+
 ## Frontiera corrente — T-PERSIST-01 DONE, T-P16-01 WAITING_GATE
 
 2026-10-27: CI40510757138 su ceb90b7 completed/success: Linux/MSVC e confronto
@@ -2016,6 +2028,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-07 | DONE | 2026-10-27 | CI40475046094 su30d82fb Linux/MSVC e confronto JSONL success; [dossier](docs/verification/T-P15-07-cross-os-bundle.md) |
 | T-P16-00 | DONE | 2026-10-27 | CI40485215039 positiva, riferimento chiaro approvato dall’autore; [report](docs/ui/SPIKE_REPORT.md) |
 | T-P16-01 | IN_PROGRESS | 2026-10-27 | Workspace core/CLI+UI, guard grafo reale,698/706test e19Python positivi; CI pendente; [dossier](docs/verification/T-P16-01-workspace.md) |
+| T-P18-02 | DONE | 2026-10-27 | Due dry-run dati Linux, binario invariato e v1 golden preservato; [runbook](docs/RUNBOOK_SCHEMA_UPDATE.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P17-06 | DONE | 2026-10-27 | CI40486090209 Linux/MSVC/compare success; [dossier](docs/verification/T-P17-06-robustness.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
@@ -4656,3 +4669,13 @@ Evidenza hash/librerie in local-gates16-01. Nessun DONE o CI16-01 anticipato.
 - Next16-01 locale verificata: ora pubblicare documentazione e avviare CI.
 - PERSIST-02 non avviata: richiede P2 oltre01; residuo2-03 non chiuso qui.
 - UI16-02 attende16-01, temi/font/riferimento chiaro vincolanti. AUTO_CONTINUE.
+
+## HANDOFF §15.3 — T-P18-02 DONE,2026-10-27
+
+- Prerequisito M5 generica/CI40475046094 verificato; ARCH39C.2/DET107/155.
+- File: runbook, script stdlib, dossier/evidence, indice/status; nessun Rust/norma.
+- Due dry-run Linux reali, lint e Rust bundler, valid/invalid, JSONL v1 invariato,
+  ZIP/hash binario identici; no-clobber negativo,19Python/py_compile/fmt pass.
+- Nessun Windows dry-run o release remota presunti, nessun gate mancante task.
+- UI16-01 run40513168784 attiva; fonte e5b00b2, prossimo16-02 dopo CI positiva.
+- Nessun consenso ordinario, AUTO_CONTINUE. Cartelle utente non tracciate preservate.
