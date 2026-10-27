@@ -1,6 +1,6 @@
 {
   "task": "T-P16-03",
-  "local_gates_complete": false,
+  "local_gates_complete": true,
   "native_ci": null,
   "fmt": true,
   "clippy_workspace_default": true,
@@ -38,8 +38,22 @@
     "light-2x.rgb": "84b65b9e2ec457e5f0f5d62f5a99fcad27fdefe488f670fc6748291cf53e09a5"
   },
   "diagnostic_capture_sha256": {
-    "dark-1280x720.png": "4c6b63367ff1454395511bb3ade70c54b7446be3f4f1e3db541e760225a40c0a",
-    "light-1280x720.png": "a56c5c476cfe83ffcb5a4100f9a3b74e7db6401bc691192812514217fa52f159"
+    "dark-1280x720.png": "3405dcc71431b408db9b041bf3122e3a7e0663d35012f0743a1bc2ef03be9b00",
+    "light-1280x720.png": "845555581453bf5d0648136ff95697f8f63f9b1f51160ebeebd6cb5b5a6858b1"
   },
-  "contrast_tsv": "scale\ttheme\tbody_contrast\tmuted_contrast\tselected_contrast\n1\tlight\t15.24849555806192\t6.46165504951419\t4.8412322676696276\n1\tdark\t17.970189404083907\t9.99705752006253\t6.457922104537495\n2\tlight\t15.24849555806192\t6.46165504951419\t4.8412322676696276\n2\tdark\t17.970189404083907\t9.99705752006253\t6.457922104537495\n"
+  "contrast_tsv": "scale\ttheme\tbody_contrast\tmuted_contrast\tselected_contrast\n1\tlight\t15.24849555806192\t6.46165504951419\t4.8412322676696276\n1\tdark\t17.970189404083907\t9.99705752006253\t6.457922104537495\n2\tlight\t15.24849555806192\t6.46165504951419\t4.8412322676696276\n2\tdark\t17.970189404083907\t9.99705752006253\t6.457922104537495\n",
+  "code_base": "ae348af",
+  "ui_final_review_tests": {
+    "passed": 10,
+    "failed": 0,
+    "checkbox_pointer_space": true,
+    "dropdown_pointer_keyboard": true
+  },
+  "ui_final_clippy": true,
+  "skills_applied": [
+    "no-ai-slop",
+    "impeccable",
+    "ui-ux-pro-max",
+    "hallmark"
+  ]
 }

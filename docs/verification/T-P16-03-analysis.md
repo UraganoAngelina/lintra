@@ -87,6 +87,32 @@ con file sintetico CRLF, azzeramento versione/tracciato, invalidazione preview,
 formati e selezione browser. Nessun worker o output report. Capture di confronto
 1280×720 con ancore geometriche delle card in entrambi i temi.
 
-Gate locali/CI da completare e registrare nelle evidenze dedicate prima di DONE.
+Gate locali completati; CI nativa ancora da avviare e verificare prima di DONE.
 Nessun nuovo crate runtime, dato paziente, backend storico o norma introdotto.
 Next16-04 dopo gate03; PERSIST-03 indipendente già pronta. AUTO_CONTINUE.
+
+## Ripresa dal commit utente e UI UX Pro Max
+
+L'autore ha salvato lo stato parziale in ae348af (branch/remoto allineati).
+Il commit conserva contesto e implementazione, non attesta i gate. Ripresa dagli
+esiti locali effettivi: workspace default/all-features727/727, core senza bundle709,
+zero fallimenti e2ignored previsti; font negativo reale positivo, Clippy finale pass.
+
+Applicata anche `.codex/skills/ui-ux-pro-max/SKILL.md`, come nuovo mandato perT-P16-*.
+Python3.14.8: ricerca `--design-system` healthcare desktop validation analyst e
+ricerca UX focus/keyboard/disabled/errors. Le proposte generiche landing/lead-magnet,
+nuovi font e palette blu non sostituiscono il mockup vincolante né il tema scuro
+rosso/arancione. Slint non è uno stack web: niente falso gate ARIA/browser.
+La review ha aggiunto focus visibile ai checkbox indipendente dal valore, senza
+spostare layout; test nativo attiva XLSX tramite puntatore e Space e CSV tramite
+puntatore, verificando l'intento propagato al controller. Nessuna nuova dipendenza.
+Output consultabili target/verification-16-03-ui-ux-design-system.md e-ui-ux-ux.txt;
+le decisioni applicate sono registrate in docs/ui/DESIGN.md. Nessun redesign.
+
+### Consegna locale finale
+
+Verifica UI dopo la rifinitura focus:10test pass,0fail; Clippy UI all-targets
+senza warning. Fmt/guard/actionlint/21Python positivi. Workspace727test default
+ed all-features, core senza feature709;0fail/2ignored nei gate completi. Capture
+aggiornate in docs/ui/analysis e hash/evidenze nel JSON locale. Confronto nativo
+Linux/MSVC e CI della nuova consegna ancora pendenti:16-03 non DONE, M8 aperta.

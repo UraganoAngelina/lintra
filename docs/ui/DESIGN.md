@@ -73,3 +73,12 @@ selettore cartelle integrato senza runtime GTK/portal o dipendenze nuove.
 Impeccable Operate applicata alla gerarchia fornita, Hallmark in-thread a
 palette/token/focus/contrasto e capture native; no-ai-slop ai testi aderenti
 alle capacità. I detector HTML non costituiscono un gate Slint.
+
+### Skill UI aggiornata
+
+ui-ux-pro-max aggiunta su mandato autore. Eseguiti `--design-system` e ricerca UX
+focus/keyboard/errori. Suggerimenti generici lead-magnet, font Figtree/Noto e
+palette blu non applicabili al mockup vincolante; nessuna sostituzione del design
+approvato. Applicati focus indipendente dal valore nei checkbox, verifica reale
+puntatore/Space e testi/stati senza claim di esecuzione. Guide web/375px non
+attestano supporto nativo: il contratto desktop resta640×480 minimo.

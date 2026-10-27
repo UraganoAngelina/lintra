@@ -213,6 +213,10 @@ export component ChoiceBox inherits Rectangle {
 }
 
 export component ReportCheck inherits Rectangle {
+    // Focus must remain visible independently from the checkbox's value.
+    border-width: key.has-focus ? Tok.focus-width : 0px;
+    border-color: Tok.accent;
+    border-radius: Tok.control-radius;
     in property <string> label;
     in-out property <bool> checked;
     in property <bool> enabled: true;

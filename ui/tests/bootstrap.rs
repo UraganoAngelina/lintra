@@ -200,8 +200,15 @@ fn native_software_bootstrap_has_real_theme_controls_fonts_and_attribution() {
     assert!(ui.get_preview_note().contains("CRLF"));
     assert!(controller.borrow().prepared().is_some());
     assert!(!ui.get_worker_available());
-    ui.set_report_csv(true);
-    ui.invoke_reports_changed();
+    // Real checkbox pointer/key activation must update export intent. Focus
+    // is independent of checked state, so Space can restore the prior value.
+    click(&window, 65.0, 456.0);
+    assert!(!ui.get_report_xlsx());
+    window.dispatch_event(WindowEvent::KeyPressed { text: " ".into() });
+    window.dispatch_event(WindowEvent::KeyReleased { text: " ".into() });
+    assert!(ui.get_report_xlsx());
+    click(&window, 245.0, 456.0);
+    assert!(ui.get_report_csv());
     assert!(controller.borrow().prepared().unwrap().reports.csv);
     ui.invoke_file_edited("altro-file.txt".into());
     assert!(!ui.get_analysis_ready());

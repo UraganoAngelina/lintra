@@ -15,6 +15,15 @@ Preparazione sola richiesta: esecuzione worker resta16-04, avvio disabilitato
 finché collegato. UI/gate completi in lavorazione, nessun DONE16-03/M8.
 Next16-04 dopo16-03, PERSIST-03 indipendente pronta. AUTO_CONTINUE.
 
+## Consegna locale16-03 completata —2026-10-27
+
+Ripresa da ae348af salvato dall’autore. Tutti i gate locali completati:
+727/727test workspace,709core senza embedded,0fail/2ignored; UI finale10test
+puntatore/tastiera/controller eClippy positivi, font-negative reale pass.
+Skill UI aggiornate no-ai-slop/Impeccable/ui-ux-pro-max applicate senza sostituire
+mockup/font/palette; focus checkbox rifinito. Capture docs/ui/analysis aggiornate.
+Residuo03: commit/push/CI nativa nuova; non DONE/M8. AUTO_CONTINUE.
+
 ## Aggiornamento locale16-03 —2026-10-27
 
 Modello/configurazione e form implementati,8test modello e test Slint/controller
@@ -4917,3 +4926,16 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
 - Residuo: gate locali finali, capture/report/evidence, commit/push eCI Linux/MSVC/RGB.
   Nessuna esecuzione/report simulati, avvio16-04 ancora disabilitato. No backend/PHI.
 - Next16-04 dopo gate03; PERSIST-03 indipendente pronta duranteCI. AUTO_CONTINUE.
+
+## HANDOFF §15.3 — T-P16-03 gate locali completi,2026-10-27
+
+- Base ae348af, commit utente del lavoro parziale; nessuna CI nuova esistente.
+- Code form/controller/resolver già salvati; review aggiunge focus checkbox e test
+  reali XLSX/CSV puntatore/Space, skillsmandato inAGENTS/design/Hallmark/report.
+-727default/727all-features/709core-no-default,0fail/2ignored;10UI finali pass,
+  Clippy/fmt/21Python/coregraph/actionlint/font-negative reali pass. Vecchio rischio
+  timeout font non avvenuto: build negativa ha dimostrato il rifiuto richiesto.
+- Capture diagnostic light/dark1280×720 e hash archiviate; Risultati approvati intatti.
+- Residuo: pubblicare review/metadata e avviareCI;03IN_PROGRESS fino a tutti4job.
+- Nessun worker, output o norma simulati. Next PERSIST-03 indipendente duranteCI;
+ 16-04 solo dopo gate03. AUTO_CONTINUE, nessun aiuto utente necessario.

@@ -311,3 +311,11 @@ Eccezione dell'autore — log MSVC T-P14-05,2026-10-26:
 ## Ratifica visiva UI —2026-10-27
 
 L’autore approva esplicitamente il riferimento chiaro («Approvo il riferimento chiaro»): docs/ui/review/results-1x.png e results-2x.png, font IBM Plex e differenze tipografiche dichiarate. Soddisfatto ARCH39D.5; T-P16-00 può chiudersi con gli altri gate positivi. Nessun cambiamento alla palette originale; tema scuro nero/rosso/arancione e selettore restano autorizzati per il successivo sviluppo UI.
+
+## Mandato skill UI aggiornato dell’autore —2026-10-27
+
+Per le task T-P16-* usare no-ai-slop, Impeccable e ui-ux-pro-max
+(`.codex/skills/ui-ux-pro-max/SKILL.md`). Restano vincolanti mockup/font/palette
+approvati e adattamento Slint nativo, con governance single-agent. Il commit
+utente ae348af salva il lavoro parziale e il contesto remoto; non è una chiusura
+implicita dei gate o di T-P16-03. Proseguire dal residuo verificato.
