@@ -1,0 +1,45 @@
+{
+  "shell": "bash",
+  "native_platform": "posix",
+  "binary_sha256": "fb9c42042f3d787b17d67ab55f895574bdcc2c90bea75f099df72ce062e0a1f0",
+  "readme_sha256": "ac5e9de63c0483ec599515707b6d3ec2d269d25ef8ddfacd099bb01c9d7bd0b7",
+  "quickstart_sha256": "5e56ef0f18c45932872fbfdf9f9692ba2ecab2fba446e2983dd6c487814076e7",
+  "cases": [
+    {
+      "case": "literal-readme-shell-block",
+      "exit": 0,
+      "records": 1,
+      "errors": 0
+    },
+    {
+      "case": "invalid",
+      "exit": 2
+    },
+    {
+      "case": "bom",
+      "exit": 1
+    },
+    {
+      "case": "version-explicit-missing",
+      "exit": 1
+    },
+    {
+      "case": "incomplete-external",
+      "exit": 1
+    },
+    {
+      "case": "parse-error-is-technical",
+      "exit": 1
+    }
+  ],
+  "version": "lintra 0.1.1-rc.1 (commit 59ba77104dc487c4a887a41189bf892e5e9272ed)",
+  "task": "T-P18-01",
+  "done": false,
+  "local_acceptance_passed": true,
+  "native_windows_acceptance": "pending CI; actual PowerShell5.1 shell required",
+  "python_tests": 21,
+  "actionlint": "1.7.12 verified official archive checksum, pass",
+  "actionlint_archive_sha256": "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8",
+  "rust_tests_repeated": "not repeated for docs/Python/workflow only; code49 already qualified735/735/717 locally",
+  "native_ci": null
+}

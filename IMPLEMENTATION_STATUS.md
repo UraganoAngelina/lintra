@@ -5014,3 +5014,18 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
 - PERSIST03/49a3f4e locale completa nonCI; P18-01 Linux docs/casi reali pass,
   pubblicazione doc eCI unica in preparazione. NextUI16-04 pronta eautorizzata.
 - AUTO_CONTINUE, nessuna approvazione ordinaria, un solo agente/no backgrounddaemon.
+
+## HANDOFF §15.3 — T-P18-01 locale completata,2026-10-27
+
+- PrereqM5/CI40475046094 verificata; UI03 oraDONE/40577920052, PERSIST03
+ 49a3f4e pubblicato locale735/735/717 qualificato, nessuna nuovaCI ancora.
+- README: quickstart Linux/PS5.1 byteesatti,0/1/2/130,directory/BOM/encoding,
+  JSONL/XLSX/SmartScreen eversion reali, no certificazione clinica oCSVCLI simulati.
+- scripts/readme_smoke.py esegue frammenti README reali in install pulita con spazi;
+  versione/help,validitàlocale/XLSX,invalid2,BOM1,missingversion1,incompletepair1,
+  parser1/input/binary immutati. Linux pass,21Python/py_compile/actionlint pass.
+- CI aggiunge probe postrelease qualificata eJSONartifact pertarget. MSVC/PS5.1
+  ancora non verificati, nonDONE18-01. Report/evidenza docs/verification/T-P18-01*.
+- Pubblicare eavviareCI unica per49+doc18-01 ora che40577920052 è terminata;
+  poi iniziareUI16-04 giàpronta, conno-ai-slop/Impeccable/ui-ux-pro-max.
+- AUTO_CONTINUE, nessun nuovo consenso, nessuna nuova release/PHI/dipendenza.

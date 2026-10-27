@@ -18,6 +18,101 @@ produce report e un riepilogo testuale. `--version` mostra versione e commit.
 la cancellazione cooperativa e restituisce 130, conservando i report definitivi
 precedenti e rimuovendo le parti create dal run interrotto.
 
+## Avvio con il binario distribuito
+
+Scaricare ed estrarre l’archivio nativo dalla release privata autorizzata.
+Non serve Rust sulla macchina che esegue il binario. `SYNTHETIC/v1` è un
+esempio incorporato di collaudo: non è uno schema sanitario certificato.
+Eseguire l’esempio in una cartella nuova contenente il solo eseguibile estratto,
+senza directory dati esterne né variabili `LINTRA_SCHEMA_DIR` e
+`LINTRA_REFERENCE_DATA_DIR`. Le due spaziature dopo `A` fanno parte del record.
+
+Linux, dalla cartella dell’eseguibile:
+
+<!-- lintra-quickstart:bash -->
+```sh
+./lintra --version
+./lintra --help
+printf '001A  \r\n' > input.txt
+./lintra validate --flow SYNTHETIC --schema-version v1 --trace T1 --encoding utf8 --input input.txt --errors errors.jsonl --summary summary.json --xlsx report.xlsx
+```
+<!-- /lintra-quickstart -->
+
+Windows PowerShell5.1 o successivo, dalla cartella di `lintra.exe`:
+
+<!-- lintra-quickstart:powershell -->
+```powershell
+.\lintra.exe --version
+.\lintra.exe --help
+[System.IO.File]::WriteAllBytes((Join-Path $PWD 'input.txt'), [byte[]](48,48,49,65,32,32,13,10))
+.\lintra.exe validate --flow SYNTHETIC --schema-version v1 --trace T1 --encoding utf8 --input input.txt --errors errors.jsonl --summary summary.json --xlsx report.xlsx
+if ($LASTEXITCODE -ne 0) { throw 'Controllare stderr e summary prima di proseguire' }
+```
+<!-- /lintra-quickstart -->
+
+Attesi: un record elaborato, zero errori, `errors.jsonl` vuoto e summary con
+`validation_mode: local_only`, `result: VALID`, origine `embedded`.
+`report.xlsx` contiene Riepilogo ed Errori e si apre direttamente in Excel.
+L’esempio verifica solo i controlli locali del tracciato: leggere sempre scope,
+completezza, warning e stati reference nel riepilogo. Non attesta conformità
+normativa completa SIOC/CAD. Per più tracciati usare `validate-flow --help`
+e una versione esplicita che dichiari le capacità realmente implementate.
+
+### Codici di uscita
+
+| Codice | Significato |
+|---|---|
+|0|Analisi completata senza violazioni nell’ambito richiesto; help/version sono anch’essi0.|
+|1|Errore tecnico, argomenti errati o esecuzione non completata.|
+|2|Analisi completata con violazioni normative.|
+|130|Cancellazione cooperativa tramite Ctrl+C.|
+
+Su Linux leggere `$?` subito dopo il comando; in PowerShell usare `$LASTEXITCODE`.
+Un errore di sintassi non usa il codice2 di default di clap: Lintra restituisce1.
+L’annullamento non equivale a report completo. I file definitivi precedenti sono
+preservati durante l’interruzione; la pubblicazione dei report è atomica per
+singolo file, non una transazione fra tutti i file. Un errore tecnico richiede
+la consultazione di stderr e degli output effettivamente disponibili.
+
+### Dati, encoding e report
+
+La risoluzione seleziona una coppia completa di directory, in quest’ordine:
+
+1. `--schema-dir PATH --reference-data-dir PATH`.
+2. `LINTRA_SCHEMA_DIR` e `LINTRA_REFERENCE_DATA_DIR`.
+3. `schemas/` e `reference-data/` accanto all’eseguibile, indipendentemente dalla directory di lavoro.
+4. Snapshot incorporato, se compilato nel binario (incluso nelle release).
+
+Una coppia incompleta o un bundle selezionato errato ferma il run: nessun mix
+fra livelli né ripiego per singolo file. Flow, tracciato, versione ed encoding
+sono espliciti; il catalogo non certifica gli schemi e non sceglie una versione
+«più recente». Versione, hash e provenienza effettivi si leggono nel summary.
+Per aggiornare i soli dati seguire il [runbook](docs/RUNBOOK_SCHEMA_UPDATE.md).
+
+La CLI corrente accetta `--encoding utf8`; non converte automaticamente altri
+encoding. I record sono posizionali in byte. LF e CRLF sono riconosciuti;
+una riga vuota è un record di zero byte. Il terminatore finale non inventa un
+record extra. Un BOM UTF8/UTF16/UTF32 causa errore tecnico: non viene rimosso
+implicitamente. Conservare una copia dell’originale prima di modificarne i byte.
+
+JSONL e summary usano UTF8 senza BOM; JSONL termina le righe con LF anche su
+Windows. Preferire `--errors PATH` (alias `--output`) e `--summary PATH`:
+**non usare `>` per ottenere i report**. In PowerShell5.1 il reindirizzamento
+può produrre UTF16, e stdout della CLI è comunque un riepilogo testuale.
+L’XLSX mantiene i campi testuali come testo e le intestazioni; usarlo per la
+lettura in Excel. La CLI attuale espone JSONL/XLSX, senza un’opzione CSV fittizia.
+I percorsi degli output devono essere distinti da input e bundle dati.
+
+### Primo avvio Windows
+
+Le release private correnti non hanno firma Authenticode, come deciso per l’uso
+locale dell’autore e dei colleghi tecnici. Windows può mostrare «app non
+riconosciuta»: per un archivio della provenienza prevista, scegliere «Ulteriori
+informazioni → Esegui comunque», oppure usare Sblocca nelle Proprietà dello zip.
+`SHA256SUMS` è disponibile nella release per confrontare i digest; la firma
+andrà rivalutata se cambia il perimetro di distribuzione. Versione e commit
+sono sempre consultabili con `--version`.
+
 ## Sviluppo locale
 
 Eseguire dalla directory di questo README, con Rust/Cargo e i componenti
@@ -113,16 +208,16 @@ destinazione (Contents write, Metadata read, scadenza90giorni); non riusa token
 locali e non li passa alle build. Tag/release/draft esistenti fanno fallire il run.
 Gli upload sono controllati in draft prima della pubblicazione immutabile;
 errori lasciano la versione riservata, da diagnosticare senza sovrascriverla.
-La prova di release resta pendente finché credenziale e pubblicazione non sono
-verificate: [stato T-P15-05](docs/verification/T-P15-05-executable-release.md).
+La prerelease privata0.1.1-rc.1 e i relativi asset sono stati verificati:
+[stato T-P15-05](docs/verification/T-P15-05-executable-release.md).
 
 ## Struttura
 
 - `src/lib.rs`: moduli privati `application`, `domain`, `schema`, `input`,
-  `engine`, `validators`, `context`, `persistence`, `reference_data`, `report`.
+  `engine`, `context`, `persistence`, `reference_data`, `report`, `bundle` e `bundle_resolution`.
 - `src/main.rs` e `src/cli/`: adapter CLI separato dalla libreria.
 - `ui/`: membro workspace `lintra-ui`, adapter desktop distinto; bootstrap
-  grafico T-P16-02 in verifica nativa. [Stato e comandi](ui/README.md).
+  grafico verificato; Nuova analisi T-P16-03 in chiusura del gate nativo. [Stato e comandi](ui/README.md).
 - `schemas/`, `reference-data/`: directory riservate ai bundle versionati;
   nessuno schema o dataset importato nello scaffold.
 - `tests/{integration,golden,fixtures,support}/`: test sintetici e harness

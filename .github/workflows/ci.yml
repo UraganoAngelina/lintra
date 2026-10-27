@@ -102,6 +102,15 @@ jobs:
         run: |
           set -o pipefail
           cargo xtask build-release --target ${{ matrix.target }} --verify-reproducible --verify-artifact | tee target/native-release.log
+      - name: Execute README quickstart in native shell from a fresh install
+        run: python scripts/readme_smoke.py --build-log target/native-release.log --output target/readme-smoke.json
+      - name: Upload native README acceptance evidence
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: readme-smoke-${{ matrix.target }}
+          path: target/readme-smoke.json
+          if-no-files-found: error
+          retention-days: 7
       - name: Package synthetic data for native bundle probe
         shell: bash
         run: |
