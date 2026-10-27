@@ -71,3 +71,19 @@ AGENTS mandato, indice/status e presente dossier. Prossima candidata P16-00,
 che richiede prototipo e PNG1×/2× da verificare prima di ogni implementazione;
 P17-01 indipendente ha prerequisito13-08 già verificato. Prosecuzione automatica
 quando i prerequisiti reali sono soddisfatti, nessuna conferma ordinaria.
+
+## Pubblicazione e CI
+
+Commit0b152aaeb3acbd0bb379d18e51e96f6c4fd32b1a pubblicato;
+CI40474096637 avviata automaticamente, prima lettura Linux/MSVC in_progress.
+Nessun gate anticipato; durante l’attesa sviluppo sequenziale indipendente17-01.
+
+## Correzione ordinaria del gate
+
+CI40474096637 Linux122087936428 fallisce nello step Package synthetic data
+for native bundle probe: Error Os code2 NotFound. Test/profilo release/verifier
+precedenti positivi. Log job acquisito via endpoint diretto (il run complessivo
+attendeva Windows); causa confermata confrontando xtask::bundle_data::build:
+`directory(output_dir)` richiede una directory preesistente. Corretto soltanto
+lo step CI con mkdir prima del bundler. Nessuna modifica al gate/prodotto.
+Run sostituito dalla consegna corretta; nessun successo Linux/Windows/M5 presunto.

@@ -71,7 +71,10 @@ jobs:
           set -o pipefail
           cargo xtask build-release --target ${{ matrix.target }} --verify-reproducible --verify-artifact | tee target/native-release.log
       - name: Package synthetic data for native bundle probe
-        run: cargo xtask bundle-data --input bundles/embedded --output-dir target/cross-os-bundle
+        shell: bash
+        run: |
+          mkdir target/cross-os-bundle
+          cargo xtask bundle-data --input bundles/embedded --output-dir target/cross-os-bundle
       - name: Exercise native release and executable-relative bundle resolution
         run: python tests/packaging_probe.py produce --build-log target/native-release.log --bundle target/cross-os-bundle/schemas-synthetic-embedded-v1.zip --output target/cross-os-jsonl
       - name: Upload raw JSONL from native runner
