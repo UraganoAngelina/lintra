@@ -34,7 +34,7 @@ restano nel kit storico. Nessuna conclusione di task impone lo stop della sessio
 | T-P18-02 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P18-02.md) |
 | T-P18-03 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P18-03.md) |
 | T-P18-04 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P18-04.md) |
-| T-PERSIST-01 | IN_PROGRESS | [prompt](TASK_PROMPTS/T-PERSIST-01.md) |
+| T-PERSIST-01 | DONE | [prompt](TASK_PROMPTS/T-PERSIST-01.md) |
 | T-PERSIST-02 | NOT_STARTED | [prompt](TASK_PROMPTS/T-PERSIST-02.md) |
 | T-PERSIST-03 | NOT_STARTED | [prompt](TASK_PROMPTS/T-PERSIST-03.md) |
 | T-PERSIST-04 | NOT_STARTED | [prompt](TASK_PROMPTS/T-PERSIST-04.md) |

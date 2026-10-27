@@ -59,3 +59,11 @@ attivato, DEC-SIOC-HIST-01 rimane aperta. CI nativa da completare prima di DONE.
 Task IN_PROGRESS/WAITING_GATE dopo pubblicazione. Prossima indipendente pronta:
 T-P16-01 (spike16-00 approvato e CI positiva). Non avanzare PERSIST-02 con questo
 gate pendente. Nessun consenso ordinario richiesto, AUTO_CONTINUE.
+
+## Chiusura nativa
+
+CI40510757138 su ceb90b7: Linux/MSVC/compare JSONL completed/success. Tutti i
+gate reali soddisfatti: T-PERSIST-01 DONE. Il proof resta solo dichiarativo,
+nessun backend o audit eseguibile. Nessun rinvio nascosto. Next UI16-01 già
+locale verificata; PERSIST-02 richiede anche P2 completa, il cui residuo2-03
+non viene qui chiuso implicitamente.

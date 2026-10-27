@@ -3,6 +3,18 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-PERSIST-01 DONE, T-P16-01 WAITING_GATE
+
+2026-10-27: CI40510757138 su ceb90b7 completed/success: Linux/MSVC e confronto
+JSONL positivi. PERSIST-01 DONE;100/140 DONE=71,4%,2 IN_PROGRESS (2-03 parziale,
+16-01),38 NOT_STARTED. Nessun backend o audit storico runtime abilitato.
+16-01 code59ba771, documentazione aggiornata: gate locali698/706test,19Python,
+fmt/Clippy/guard/actionlint e release Linux riproducibile/verify-artifact pass.
+Gate nativo workspace da avviare ora dopo conclusione CI precedente.
+Next16-02 solo dopo CI16-01 positiva. AUTO_CONTINUE, nessun consenso ordinario.
+
+## Registro storico — conversione locale e attesa persistenza
+
 ## Frontiera corrente — T-P16-01 IN_PROGRESS, T-PERSIST-01 WAITING_GATE
 
 2026-10-27: PERSIST-01 pubblicata ceb90b7, CI40510757138 in corso, gate locali
@@ -2046,7 +2058,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-06 | DONE | 2026-10-24 | Core due passate: 589 test/68 suite, CI 40091666797 Linux/MSVC success su 134b593; [report](docs/verification/T-P13-06-flow-validator.md) |
 | T-P13-07 | DONE | 2026-10-25 | 602 test/70 suite; CI 40183843102 Linux/MSVC success su 5dbb92c; [report](docs/verification/T-P13-07-full-service.md) |
 | T-P13-08 | DONE | 2026-10-25 | 611/72 suite, golden referenziale reale e memoria; CI40192491629 Linux/MSVC success su52762c8, letta alla ripresa; [report](docs/verification/T-P13-08-goldens-memory.md) |
-| T-PERSIST-01 | IN_PROGRESS | 2026-10-27 | Compilazione dichiarativa locale verificata, gate remoto da completare; nessun backend |
+| T-PERSIST-01 | DONE | 2026-10-27 | CI40510757138 Linux/MSVC/compare JSONL pass, profilo dichiarativo senza runtime; [report](docs/verification/T-PERSIST-01-profile.md) |
 | T-PERSIST-02..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -4632,3 +4644,15 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
 Release Linux source59ba771 riproducibile byte per byte, verify-artifact positivo
 con sole quattro librerie ammesse, openssl-sys assente e negative probe respinto.
 Evidenza hash/librerie in local-gates16-01. Nessun DONE o CI16-01 anticipato.
+
+## HANDOFF §15.3 — T-PERSIST-01 DONE,2026-10-27
+
+- Obiettivo: profilo compilato di sola dichiarazione; commit ceb90b7,
+  CI40510757138 completata con Linux/MSVC/JSONL success, evidenze archiviate.
+- File: compiler/proof/export/test e dossier/gate, status/indice.
+- ADR-PERSIST-001, namespace obbligatorio e compatibilità da sorgenti reali;
+  runtime compile continua a rifiutare persistenza attiva. Nessun PHI/backend.
+- Gate locali698/706test/81suite e fmt/Clippy positivi; nessun residuo della task.
+- Next16-01 locale verificata: ora pubblicare documentazione e avviare CI.
+- PERSIST-02 non avviata: richiede P2 oltre01; residuo2-03 non chiuso qui.
+- UI16-02 attende16-01, temi/font/riferimento chiaro vincolanti. AUTO_CONTINUE.

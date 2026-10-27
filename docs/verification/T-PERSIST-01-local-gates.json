@@ -1,6 +1,6 @@
 {
   "task": "T-PERSIST-01",
-  "done": false,
+  "done": true,
   "fmt": true,
   "clippy_default_all_targets": true,
   "clippy_all_features_all_targets": true,
@@ -22,5 +22,5 @@
   "new_compile_fail_doctest": 1,
   "new_dependencies": false,
   "runtime_persistence_enabled": false,
-  "native_ci": "pending"
+  "native_ci": 40510757138
 }
