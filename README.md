@@ -122,7 +122,7 @@ verificate: [stato T-P15-05](docs/verification/T-P15-05-executable-release.md).
   `engine`, `validators`, `context`, `persistence`, `reference_data`, `report`.
 - `src/main.rs` e `src/cli/`: adapter CLI separato dalla libreria.
 - `ui/`: membro workspace `lintra-ui`, adapter desktop distinto; bootstrap
-  grafico nella task T-P16-02. [Stato e comandi](ui/README.md).
+  grafico T-P16-02 in verifica nativa. [Stato e comandi](ui/README.md).
 - `schemas/`, `reference-data/`: directory riservate ai bundle versionati;
   nessuno schema o dataset importato nello scaffold.
 - `tests/{integration,golden,fixtures,support}/`: test sintetici e harness

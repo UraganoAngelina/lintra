@@ -17,7 +17,8 @@ jobs:
   verify:
     name: Verify (${{ matrix.target }})
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    # Workspace now includes the separately compiled Slint desktop adapter.
+    timeout-minutes: 35
     strategy:
       fail-fast: false
       matrix:
@@ -43,6 +44,9 @@ jobs:
           python-version: '3.13'
       - name: Test release tooling without credentials
         run: python -m unittest discover -s scripts/tests -v
+      - name: Install Linux desktop build prerequisite
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends --yes libfontconfig1-dev
       - name: Install pinned Rust toolchain
         run: rustup show active-toolchain
       - name: Install native target
@@ -59,6 +63,26 @@ jobs:
         run: cargo test --workspace --all-features --target ${{ matrix.target }} --locked
       - name: Verify workspace and core dependency boundary
         run: python scripts/check_workspace.py
+      - name: Verify actual build rejects missing embedded font
+        env:
+          LINTRA_FONT_CHECK_TARGET: ${{ matrix.target }}
+        run: python ui/check_missing_font.py
+      - name: Upload native desktop pixels
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: bootstrap-pixels-${{ matrix.target }}
+          path: target/ui-bootstrap-visual/*.rgb
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload desktop captures and contrast evidence
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: bootstrap-evidence-${{ matrix.target }}
+          path: |
+            target/ui-bootstrap-visual/*.png
+            target/ui-bootstrap-visual/contrast.tsv
+          if-no-files-found: error
+          retention-days: 7
       - name: Smoke synthetic benchmark and verify expected validation counts
         run: cargo test --bench validation --target ${{ matrix.target }} --locked -- --output target/benchmark-smoke.json --smoke
       - name: Check tooling formatting
@@ -88,6 +112,29 @@ jobs:
           path: target/cross-os-jsonl/*.jsonl
           if-no-files-found: error
           retention-days: 7
+
+  compare-ui-pixels:
+    name: Compare native desktop theme pixels
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: bootstrap-pixels-x86_64-unknown-linux-gnu
+          path: target/bootstrap-linux
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: bootstrap-pixels-x86_64-pc-windows-msvc
+          path: target/bootstrap-windows
+      - name: Compare both themes at 1x and 2x without tolerance
+        run: python ui/compare_pixels.py --left target/bootstrap-linux --right target/bootstrap-windows
 
   compare-jsonl:
     name: Compare Linux and Windows JSONL bytes

@@ -148,3 +148,16 @@ IBM Plex Sans/Mono forniti, famiglie e licenza SIL OFL1.1 verificati nei font;
 [testo primario IBM](https://github.com/IBM/plex/blob/master/LICENSE.txt).
 Font incorporati invariati, copia del testo OFL con copyright inclusa prima
 dell’eventuale ridistribuzione. Nessuna dipendenza nuova nel core/CLI/lock root.
+
+## T-P16-02 — promozione controllata nel solo adapter desktop
+
+Prima dell’aggiunta: slint/slint-build=1.18.1 e png=0.17.16 sono gli stessi
+package qualificati nello spike16-00, CI40485215039. Nel membro ui soltanto:
+software renderer, std/compat-1-2/backend-winit-x11 senza default GPU.
+Licenze/font/MSRV già verificati sopra; attribuzione con il vero AboutSlint
+accessibile dal comando Informazioni (royalty-free2.0 §2a), non testo sostitutivo.
+Risorse/fonts EmbedFiles, assenza font blocca build. tempfile=3.27.0 solo test
+font, package già presente nel core, senza nuova versione. Palette chiara
+originale e scuro nero/rosso/arancione. Nessuna dipendenza GUI nel core/CLI.
+La allowlist di packaging UI rimane16-08; libfontconfig1-dev è setup runner
+Linux, non nuova dipendenza CLI né promessa di UI già distribuibile.

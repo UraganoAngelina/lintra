@@ -1,0 +1,149 @@
+import { Tok } from "tokens.slint";
+import { AboutSlint, Palette } from "std-widgets.slint";
+export { Tok }
+
+// Primitive controls keep the supplied visual language. Focus, pointer and
+// accessibility activation all invoke the same action; no decorative toggles.
+component ActionButton inherits Rectangle {
+    in property <string> label;
+    in property <bool> selected: false;
+    callback activated();
+    height: Tok.control-height;
+    background: root.selected ? Tok.accent-tint : pointer.has-hover ? Tok.header-bg : Tok.surface;
+    border-radius: Tok.control-radius;
+    border-width: key.has-focus ? Tok.focus-width : Tok.border-width;
+    border-color: key.has-focus || root.selected ? Tok.accent : Tok.border;
+    accessible-role: button;
+    accessible-label: root.label;
+    accessible-action-default => { root.activated(); }
+    forward-focus: key;
+    Text {
+        text: root.label;
+        color: root.selected ? Tok.accent : Tok.ink;
+        font-family: Tok.sans;
+        font-size: Tok.body-size;
+        font-weight: Tok.semibold-weight;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+    pointer := TouchArea {
+        width: parent.width;
+        height: parent.height;
+        clicked => { key.focus(); root.activated(); }
+    }
+    key := FocusScope {
+        width: 0px;
+        key-pressed(event) => {
+            if (event.text == Key.Space || event.text == Key.Return) {
+                root.activated();
+                return accept;
+            }
+            return reject;
+        }
+    }
+}
+
+component ThemeChoice inherits ActionButton {
+    accessible-role: radio-button;
+    accessible-checked: root.selected;
+}
+
+export component MainWindow inherits Window {
+    in-out property <bool> dark-mode <=> Tok.dark-mode;
+    in-out property <bool> show-info: false;
+    in property <string> version;
+    title: "Lintra";
+    preferred-width: Tok.canvas-width;
+    preferred-height: Tok.canvas-height;
+    min-width: Tok.min-width;
+    min-height: Tok.min-height;
+    background: Tok.bg;
+    default-font-family: Tok.sans;
+    default-font-size: Tok.body-size;
+    init => { Palette.color-scheme = ColorScheme.light; }
+    changed dark-mode => {
+        Palette.color-scheme = root.dark-mode ? ColorScheme.dark : ColorScheme.light;
+    }
+
+    VerticalLayout {
+        padding: 0px;
+        spacing: 0px;
+        Rectangle {
+            height: Tok.header-height;
+            background: Tok.nav-bg;
+            HorizontalLayout {
+                y: (parent.height - self.height) / 2;
+                height: Tok.control-height;
+                width: parent.width;
+                padding-left: Tok.page-padding;
+                padding-right: Tok.page-padding;
+                spacing: Tok.control-gap;
+                Text {
+                    text: "Lintra";
+                    color: Tok.nav-ink;
+                    font-size: Tok.brand-size;
+                    font-weight: Tok.bold-weight;
+                    vertical-alignment: center;
+                    horizontal-stretch: 1;
+                }
+                Text {
+                    text: "Tema";
+                    color: Tok.nav-muted;
+                    vertical-alignment: center;
+                    horizontal-stretch: 0;
+                }
+                light := ThemeChoice {
+                    width: Tok.choice-width;
+                    label: "Chiaro";
+                    selected: !root.dark-mode;
+                    activated => { root.dark-mode = false; }
+                }
+                dark := ThemeChoice {
+                    width: Tok.choice-width;
+                    label: "Scuro";
+                    selected: root.dark-mode;
+                    activated => { root.dark-mode = true; }
+                }
+                ActionButton {
+                    width: Tok.info-width;
+                    label: "Informazioni";
+                    selected: root.show-info;
+                    activated => { root.show-info = !root.show-info; }
+                }
+            }
+        }
+        Rectangle {
+            vertical-stretch: 1;
+            background: Tok.bg;
+            if root.show-info: Rectangle {
+                x: (parent.width - self.width) / 2;
+                y: Tok.page-padding;
+                width: Tok.about-width;
+                height: Tok.about-height;
+                background: Tok.surface;
+                border-color: Tok.border;
+                border-width: Tok.border-width;
+                border-radius: Tok.control-radius;
+                VerticalLayout {
+                    padding: Tok.page-padding;
+                    Text { text: "Lintra " + root.version; color: Tok.ink; font-weight: Tok.semibold-weight; }
+                    // Actual licensed widget, reachable from the top-level control.
+                    AboutSlint { }
+                }
+            }
+        }
+        Rectangle {
+            height: Tok.footer-height;
+            background: Tok.bg;
+            Text {
+                x: Tok.page-padding;
+                width: parent.width - Tok.page-padding * 2;
+                height: parent.height;
+                text: "Lintra " + root.version;
+                color: Tok.muted;
+                font-size: Tok.caption-size;
+                vertical-alignment: center;
+            }
+        }
+    }
+}

@@ -36,3 +36,16 @@ ornamentali e metriche inventate. Slint nativo non è HTML/CSS: CDP e detector
 browser non provano questo rendering; il collaudo usa software renderer e
 capture PNG reali. Niente nuova pagina web o cambio di palette per seguire un
 tema estraneo. Review in-thread, un solo agente come governance del repository.
+
+## Bootstrap16-02
+
+Token di prodotto in ui/ui/tokens.slint: stessi13colori chiari del sorgente,
+font originali. Scuro bg#0B0D0F, surface#14181C, ink#F4F6F8, muted#B1BBC5,
+border#64717D, header-bg#1D2329, accent#FF8A4C, accent-tint#372117,
+error#FF7F70/error-tint#3B1C1A, warn#FFBA69. Nessun gradiente viola.
+Header chiaro#16232E come il mockup; nel tema scuro usa il nero del fondo.
+Selettore con primitive, stati selezionato/hover/focus, ruolo radio e tastiera;
+AboutSlint ufficiale riservato a Informazioni per l’attribuzione richiesta.
+Finestra vuota di base: nessuna nuova gerarchia dei risultati introdotta.
+Confronto corpo/secondario/selezionato minimo4.84:1 nei due temi e scale.
+Capture diagnostiche in bootstrap, non sostituiscono i riferimenti approvati.

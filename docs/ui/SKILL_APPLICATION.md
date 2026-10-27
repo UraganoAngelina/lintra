@@ -45,3 +45,16 @@ originale immutata. Controlli filtro/export restano quelli del prototipo, non
 azioni applicative implementate; focus/accessibilità e tutti gli stati saranno
 verificati nel perimetro delle task UI. Non viene dichiarato un audit finale
 senza queste evidenze, né approvato un nuovo riferimento dalla capture corrente.
+
+## Applicazione al bootstrap16-02
+
+Modalità Operate e craft-floor riletta prima dell’editing. Nessun context reload
+(una volta per sessione), nessuna nuova visual world: font/colori chiari autorità
+invariata. No-ai-slop: solo nomi controlli e versioni vere, nessun claim/metriche
+fittizie. Impeccable: rendering visto chiaro/scuro, token unici, contrasto
+misurato>=4.84:1, tastiera/Tab/focus/puntatore e viewport minima640×480 provati.
+Hallmark: preflight integrato con target prodotto, sloplint sullo Slint restituisce
+no supported web files: non è un audit CSS passato. Evidenze native e test reali
+sono la verifica; nessuna conversione in HTML o riscrittura della palette fornita.
+Riduzione movimento: non introdotte animazioni. Errori/cancel/report/stati analisi
+non ancora presenti nel bootstrap, restano nelle task applicative successive.

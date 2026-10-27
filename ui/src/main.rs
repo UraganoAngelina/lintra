@@ -1,6 +1,8 @@
-//! Workspace boundary only. The actual Slint bootstrap belongs to T-P16-02.
-//! Exit with an explicit unsupported status instead of pretending to open a UI.
-fn main() -> std::process::ExitCode {
-    eprintln!("Lintra UI: interfaccia desktop non ancora disponibile in questa build.");
-    std::process::ExitCode::from(2)
+use slint::ComponentHandle;
+
+fn main() -> Result<(), slint::PlatformError> {
+    lintra_ui::select_native_software_renderer()?;
+    let window = lintra_ui::MainWindow::new()?;
+    window.set_version(env!("CARGO_PKG_VERSION").into());
+    window.run()
 }

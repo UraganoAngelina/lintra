@@ -3,8 +3,16 @@ name = "lintra-ui"
 version = "0.1.1-rc.1"
 edition = "2024"
 publish = false
-description = "Desktop adapter for Lintra (workspace scaffold)"
+description = "Desktop adapter for Lintra"
 
 [dependencies]
-# The dependency points toward the public core API. Slint bootstrap is T-P16-02.
+# This direction is enforced by the resolved-graph guard in native CI.
 lintra = { path = "..", default-features = false }
+slint = { version = "=1.18.1", default-features = false, features = ["std", "compat-1-2", "renderer-software", "backend-winit-x11"] }
+
+[build-dependencies]
+slint-build = "=1.18.1"
+
+[dev-dependencies]
+png = "=0.17.16"
+tempfile = { version = "=3.27.0", default-features = false }

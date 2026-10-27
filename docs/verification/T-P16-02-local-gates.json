@@ -1,0 +1,34 @@
+{
+  "task": "T-P16-02",
+  "done": false,
+  "fmt": true,
+  "clippy_workspace_default": true,
+  "clippy_workspace_all_features": true,
+  "rust_tests": {
+    "default": {
+      "passed": 703,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 87
+    },
+    "all_features": {
+      "passed": 711,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 87
+    }
+  },
+  "ui_boundaries_after_full_gate": "pass: Tab/Space, both attribution palettes, minimum viewport640x480",
+  "python_tests": 20,
+  "actual_missing_font_build_rejected": true,
+  "original_light_colors_and_font_bytes_preserved": true,
+  "core_dependency_graph_without_slint": true,
+  "native_software_capture_scales": [
+    1,
+    2
+  ],
+  "minimum_measured_text_contrast": 4.8412322676696276,
+  "actionlint": "1.7.12 pass, external shellcheck/pyflakes unavailable",
+  "hallmark_sloplint": "no supported web files, not an audit pass",
+  "native_ci": "pending"
+}

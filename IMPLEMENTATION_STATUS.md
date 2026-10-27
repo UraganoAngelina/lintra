@@ -3,6 +3,19 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P16-02 locale verificata, M1 raggiunta
+
+2026-10-27: bootstrap UI software con font incorporati obbligatori, scelta
+chiaro/scuro nero+rosso/arancione e vero AboutSlint. Tutti i gate locali pass:
+703/711test/87suite,20Python, fmt/Clippy, grafo core senza Slint, font build
+negativa reale, contrasto>=4.84:1, tastiera/Tab/puntatore/resize640×480 e DPI1×/2×.
+103/140 DONE=73,6%,1 IN_PROGRESS (16-02),36 NOT_STARTED. Nessun DONE/M8 anticipato.
+Gate nativo nuovo da avviare, con confronto RGB entrambi i temi e JSONL/releaseCLI.
+Next16-03 dopo CI; durante attesa PERSIST-02 ora pronta dopo2-03/M1 ePERSIST-01.
+Temi/font/skill/riferimenti rispettati; nessun nuovo consenso ordinario. AUTO_CONTINUE.
+
+## Registro storico — chiusura M1 e bootstrap in sviluppo
+
 ## Frontiera corrente — T-P2-03 DONE/M1 raggiunta, T-P16-02 IN_PROGRESS
 
 2026-10-27: residuo2-03 codeb415d73 e CI40515191339/3cd162e completati;
@@ -4757,3 +4770,19 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
   e negativa build senza font in esecuzione. Non DONE16-02/M8 anticipati.
 - Next PERSIST-02 ora pronta dopo consegna localeUI durante attesa remota;
   nessuna nuova autorizzazione ordinaria. AUTO_CONTINUE, un solo agente.
+
+## HANDOFF §15.3 — T-P16-02 locale verificata,2026-10-27
+
+- Obiettivo finestra base: Slint1.18.1 pinned, renderer software, font originali
+  incorporati/obbligatori, chiaro fedele e scuro nero/rosso-arancione con selettore.
+- File ui manifest/build/support/lib/main/Slint/fonts/test, Python comparator e
+  build-font-negative, workflow/lock/registry, skill/design/report/capture/evidence.
+-703/711test/87suite,20Python, fmt/Clippy/guard/actionlint/py_compile tutti pass;
+  puntatore/Space/Tab, contrasto,4captureDPI/temi, resize e vero AboutSlint provati.
+- Skills native applicate, sloplint web non applicabile esplicito; no falseaudit.
+- Nessuna nuova dipendenza GUI nel core, vecchi checksum/versioni preservati;
+  nessun dato clinico o risultato inventato; FROZEN e riferimento chiaro intatti.
+- Residuo: commit/push/CI Linux/MSVC/RGB confronto, non DONE16-02/M8.
+- Next16-03 solo dopo gate; PERSIST-02 ora indipendente pronta durante attesa.
+- API summary/error core invariate qui; M1 realmente chiusa nel gate2-03.
+  AUTO_CONTINUE, nessun consenso Git/CI ordinario, file utente non tracciati intatti.

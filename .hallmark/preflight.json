@@ -15,5 +15,13 @@
   "introduce": [
     "headless qualification and native cross-OS pixel comparison"
   ],
-  "native_adaptation": "No HTML/CSS produced. sloplint reports no web source files; native renderer captures are the verification evidence. Review in-thread, no delegation."
+  "native_adaptation": "No HTML/CSS produced. sloplint reports no web source files; native renderer captures are the verification evidence. Review in-thread, no delegation.",
+  "bootstrap_16_02": {
+    "target": "ui/ui/main.slint",
+    "mode": "Operate",
+    "preserved": "original light colors and five supplied font bytes",
+    "introduced": "black/red-orange theme, keyboard/pointer selector, licensed AboutSlint",
+    "render_evidence": "native software RGB/PNG 1x/2x; no supported web files for sloplint",
+    "claims": "base window only; no simulated validation or results"
+  }
 }

@@ -1,0 +1,28 @@
+{
+  "original_light_colors": {
+    "bg": "#F4F6F8",
+    "surface": "#FFFFFF",
+    "ink": "#14202B",
+    "muted": "#4A5B6B",
+    "muted-on-dark": "#9FB0C0",
+    "border": "#D9DEE5",
+    "row-line": "#E4E9EE",
+    "header-bg": "#EEF1F4",
+    "accent": "#0F766E",
+    "accent-tint": "#E6F4F1",
+    "error": "#B42318",
+    "error-tint": "#FEE4E2",
+    "warn": "#B54708"
+  },
+  "all_original_light_colors_preserved": true,
+  "font_sha256": {
+    "IBMPlexMono-Regular.ttf": "fe11304a5fe956d5744e9b6a246cc83d90425245e75a62230044966ca96a7f50",
+    "IBMPlexMono-SemiBold.ttf": "c9417148ce13f8fa7d2d5c9180bbc141f72aa0d814ffeb280f6904dc2b1bbd7a",
+    "IBMPlexSans-Bold.ttf": "9e6c74a889a700d707613d24548fe4ffa6bc59559a0689d2cf9e133bdcdafb2f",
+    "IBMPlexSans-Regular.ttf": "975dcda37d80f038dcd143c22e33ca2d97a0cc5a929aace1c749153b0fe1afa5",
+    "IBMPlexSans-SemiBold.ttf": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+  },
+  "old_lock_versions_and_checksums_preserved": true,
+  "old_package_count": 74,
+  "new_package_count": 533
+}
