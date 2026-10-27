@@ -3,6 +3,18 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P16-01 DONE, T-P2-03 WAITING_GATE
+
+2026-10-27: CI40513168784/e5b00b2 completed/success Linux/MSVC/compare JSONL.
+Workspace e guard reali qualificati nei due runner, QG-2/QG-5 pass:16-01 DONE.
+102/140 DONE=72,9%,1 IN_PROGRESS (2-03),37 NOT_STARTED. M8 ancora aperta.
+Residuo2-03 codice completo,701/709test/83suite e fmt/Clippy/guard positivi;
+CI nuova da avviare, M1 ancora aperta. Next UI16-02 ora pronta e autorizzata:
+font originali, renderer software, Slint pinned e temi con selettore.
+AUTO_CONTINUE, nessun consenso ordinario richiesto.
+
+## Registro storico — residuo dominio e gate workspace
+
 ## Frontiera corrente — T-P2-03 residuo in verifica, T-P16-01 WAITING_GATE
 
 2026-10-27: riletta CNF-DOMAIN-01 e verificata presenza di tutti i payload reali.
@@ -2039,7 +2051,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-06 | DONE | 2026-10-27 | CI40350440129 success su3a6cf48; release dati immutabile, manifest/payload/checksum scaricati verificati; [dossier](docs/verification/T-P15-06-data-release.md) |
 | T-P15-07 | DONE | 2026-10-27 | CI40475046094 su30d82fb Linux/MSVC e confronto JSONL success; [dossier](docs/verification/T-P15-07-cross-os-bundle.md) |
 | T-P16-00 | DONE | 2026-10-27 | CI40485215039 positiva, riferimento chiaro approvato dall’autore; [report](docs/ui/SPIKE_REPORT.md) |
-| T-P16-01 | IN_PROGRESS | 2026-10-27 | Workspace core/CLI+UI, guard grafo reale,698/706test e19Python positivi; CI pendente; [dossier](docs/verification/T-P16-01-workspace.md) |
+| T-P16-01 | DONE | 2026-10-27 | CI40513168784 Linux/MSVC/compare pass, workspace e QG-5 reali; [dossier](docs/verification/T-P16-01-workspace.md) |
 | T-P18-02 | DONE | 2026-10-27 | Due dry-run dati Linux, binario invariato e v1 golden preservato; [runbook](docs/RUNBOOK_SCHEMA_UPDATE.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P17-06 | DONE | 2026-10-27 | CI40486090209 Linux/MSVC/compare success; [dossier](docs/verification/T-P17-06-robustness.md) |
@@ -4708,3 +4720,13 @@ Evidenza hash/librerie in local-gates16-01. Nessun DONE o CI16-01 anticipato.
 701/709test,83suite,0fail/2ignored,11doctest, fmt/Clippy/guard tutti pass.
 Nessun golden riscritto, nessun cambiamento normativo. Residuo2-03 ora codice
 completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
+
+## HANDOFF §15.3 — T-P16-01 DONE,2026-10-27
+
+- Obiettivo workspace core/CLI+UI, code59ba771, CI40513168784/e5b00b2 success.
+- Membri/guard verificati sui due OS, Rust698/706test +19Python e release
+  riproducibile/verify-artifact/negative probe tutti pass. QG-2/QG-5 soddisfatti.
+- Nessuna nuova dipendenza grafica o falso comportamento nello scaffold.
+- Residuo2-03 codice pubblicabile e locale701/709test pass, CI ancora da avviare.
+- Next16-02 pronta da iniziare, font originali/software/theme selector autorizzati.
+- PERSIST-02 dopo gate2-03. M1/M8 non dichiarate complete; AUTO_CONTINUE.

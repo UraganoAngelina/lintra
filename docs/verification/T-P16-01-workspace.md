@@ -58,3 +58,10 @@ byte identico, verify-artifact pass, negative_artifact_probe rejected exit1.
 Librerie: ld-linux-x86-64.so.2,libc.so.6,libgcc_s.so.1,libm.so.6; openssl-sys assente.
 SHA256 in local-gates. Anche il tooling xtask funziona con il workspace.
 QG-2 e conferma QG-5 su MSVC rimangono al gate CI16-01 ancora da avviare.
+
+## Chiusura nativa
+
+CI40513168784 su e5b00b2 completed/success, Linux/MSVC e JSONL compare positivi.
+Controllo membri/grafo core senza Slint eseguito su entrambi; release riproducibili
+e verify-artifact/negative probes pass. QG-2/QG-5 soddisfatti:16-01 DONE.
+Next16-02 autorizzata; nessuna finestra o tema dichiarati già implementati.
