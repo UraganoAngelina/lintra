@@ -1,0 +1,103 @@
+{
+  "arch": "x86_64",
+  "benchmark_format_version": 1,
+  "compiler_commit": "0b152aaeb3acbd0bb379d18e51e96f6c4fd32b1a",
+  "harness_source_sha256": "ebb1dafd6b8e146cdff2ab12e2e728732242ee7745c2bf878f1150f619d0f557",
+  "memory_metric": "peak additional requested Rust heap bytes, not RSS; allocator instrumentation affects throughput",
+  "optimized": true,
+  "os": "linux",
+  "results": [
+    {
+      "errors": 0,
+      "peak_additional_requested_heap_bytes": 8871396,
+      "record_width_bytes": 18,
+      "records": 10000,
+      "records_per_second": 175704.94360793763,
+      "scenario": "valid-heavy",
+      "scope": "Full service including compilation, two passes and count-only sink; fixture IO excluded",
+      "seconds": 0.056913595
+    },
+    {
+      "errors": 5000,
+      "peak_additional_requested_heap_bytes": 8916655,
+      "record_width_bytes": 18,
+      "records": 10000,
+      "records_per_second": 133237.95804994897,
+      "scenario": "error-heavy",
+      "scope": "Full service including compilation, two passes and count-only sink; fixture IO excluded",
+      "seconds": 0.075053687
+    },
+    {
+      "peak_additional_requested_heap_bytes": 535,
+      "record_width_bytes": 18,
+      "records": 10000,
+      "records_per_second": 942227.1536297605,
+      "scenario": "projection",
+      "scope": "project_record, three fields and join keys, drop each projection; no ContextStore or IO",
+      "seconds": 0.010613152
+    },
+    {
+      "errors": 0,
+      "peak_additional_requested_heap_bytes": 87128660,
+      "record_width_bytes": 18,
+      "records": 100000,
+      "records_per_second": 142036.98922159977,
+      "scenario": "valid-heavy",
+      "scope": "Full service including compilation, two passes and count-only sink; fixture IO excluded",
+      "seconds": 0.704041958
+    },
+    {
+      "errors": 50000,
+      "peak_additional_requested_heap_bytes": 87425183,
+      "record_width_bytes": 18,
+      "records": 100000,
+      "records_per_second": 106091.86456571858,
+      "scenario": "error-heavy",
+      "scope": "Full service including compilation, two passes and count-only sink; fixture IO excluded",
+      "seconds": 0.942579343
+    },
+    {
+      "peak_additional_requested_heap_bytes": 535,
+      "record_width_bytes": 18,
+      "records": 100000,
+      "records_per_second": 926098.8320078575,
+      "scenario": "projection",
+      "scope": "project_record, three fields and join keys, drop each projection; no ContextStore or IO",
+      "seconds": 0.107979836
+    },
+    {
+      "errors": 0,
+      "peak_additional_requested_heap_bytes": 903294644,
+      "record_width_bytes": 18,
+      "records": 1000000,
+      "records_per_second": 116234.2059994691,
+      "scenario": "valid-heavy",
+      "scope": "Full service including compilation, two passes and count-only sink; fixture IO excluded",
+      "seconds": 8.603319405
+    },
+    {
+      "errors": 500000,
+      "peak_additional_requested_heap_bytes": 913041407,
+      "record_width_bytes": 18,
+      "records": 1000000,
+      "records_per_second": 91913.6506506537,
+      "scenario": "error-heavy",
+      "scope": "Full service including compilation, two passes and count-only sink; fixture IO excluded",
+      "seconds": 10.879776757
+    },
+    {
+      "peak_additional_requested_heap_bytes": 535,
+      "record_width_bytes": 18,
+      "records": 1000000,
+      "records_per_second": 1123946.1945107174,
+      "scenario": "projection",
+      "scope": "project_record, three fields and join keys, drop each projection; no ContextStore or IO",
+      "seconds": 0.889722306
+    }
+  ],
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "synthetic": true,
+  "synthetic_schema_source_sha256": "edbdc25d15a8c2d9c1268eabacee88747ffa421dfdfbac160d56642048de3a7d",
+  "thresholds": null,
+  "validator_version": "0.1.1-rc.1"
+}

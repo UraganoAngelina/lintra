@@ -1,0 +1,25 @@
+{
+  "task": "T-P17-01",
+  "done": false,
+  "rust_tests": {
+    "passed": 681,
+    "failed": 0,
+    "ignored": 2,
+    "suites": 79
+  },
+  "checks": {
+    "fmt": true,
+    "clippy_default_all_targets": true,
+    "clippy_all_features_all_targets": true,
+    "optimized_smoke": true,
+    "test_profile_smoke": true,
+    "no_clobber_boundary": true,
+    "full_optimized_runs": 2,
+    "scenarios_per_run": 9,
+    "source_hashes_verified": true,
+    "actionlint": "1.7.12 pass, external shellcheck/pyflakes unavailable"
+  },
+  "native_ci": "not dispatched while T-P15-07 corrected gate is active; avoid cancelling it",
+  "metric": "peak additional requested Rust heap bytes, not RSS",
+  "thresholds": null
+}

@@ -3,6 +3,26 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P17-01 IN_PROGRESS, T-P15-07 WAITING_GATE
+
+2026-10-27: consegna15-07 pubblicata0b152aaeb3acbd0bb379d18e51e96f6c4fd32b1a,
+CI40474096637 Linux fallita sul packaging (output_dir assente); correzione
+30d82fb pubblicata, gate sostitutivo40475046094 avviato. Non DONE/M5.
+Gate locali15-07 tutti positivi (681/689 Rust,16 Python,fmt/Clippy/actionlint).
+Durante attesa, sviluppo sequenziale indipendente T-P17-01: prerequisito13-08
+DONE su52762c8/CI40192491629 verificato. Benchmark standalone senza nuovi crate,
+10k/100k/1M record sintetici totali distribuiti su due trace, valid/error-heavy
+Full e project_record isolato, record/s e picco heap richiesto misurati realmente.
+Nessuna soglia/RSS/capacità inventata. Due run ottimizzate complete9scenari
+archiviate, smoke ottimizzato/test e no-clobber passati; fmt/Clippy e681test
+positivi. Gate17-01 nativo da avviare dopo conclusione15-07 per non cancellarla.
+P16-00 BLOCKED preflight: prototipo Slint e PNG riferimento1×/2× assenti nel
+workspace, nessun riferimento visivo generato o criterio reinterpretato.
+95/140 DONE=67,9%,3 IN_PROGRESS (2-03 parziale,15-07,17-01),1 BLOCKED(16-00),
+41 NOT_STARTED. AUTO_CONTINUE; nessuna conferma ordinaria richiesta.
+
+## Registro storico — consegna locale15-07
+
 ## Frontiera corrente — T-P15-07 IN_PROGRESS
 
 2026-10-27: autore autorizza sviluppo autonomo, CI e prosecuzione verso le task
@@ -1898,6 +1918,9 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-04 | DONE | 2026-10-26 | ZIP runtime/manifest/checksum/no-clobber; locale681/689 prodotto+15 tooling; CI40343261368 Linux/MSVC success su f7426a5, estratto accettato da binario esistente; [dossier](docs/verification/T-P15-04-data-bundle.md) |
 | T-P15-05 | DONE | 2026-10-27 | CI40349711927 Linux/MSVC e release40352109303 success; v0.1.1-rc.1 immutabile, tutti asset scaricati/verificati; [dossier](docs/verification/T-P15-05-executable-release.md) |
 | T-P15-06 | DONE | 2026-10-27 | CI40350440129 success su3a6cf48; release dati immutabile, manifest/payload/checksum scaricati verificati; [dossier](docs/verification/T-P15-06-data-release.md) |
+| T-P15-07 | IN_PROGRESS | 2026-10-27 | Locale681/689 Rust,16Python,probe Linux/actionlint; correzione30d82fb output_dir; CI40475046094 pendente; [dossier](docs/verification/T-P15-07-cross-os-bundle.md) |
+| T-P16-00 | BLOCKED | 2026-10-27 | Prototipo Slint e PNG1×/2× non reperiti; nessun criterio visivo misurato/fallito, nessuno switch framework; [preflight](docs/ui/SPIKE_REPORT.md) |
+| T-P17-01 | IN_PROGRESS | 2026-10-27 | Harness std-only10k/100k/1M, due run9scenari,smoke/no-clobber/gate locali positivi; CI nativa da avviare; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
@@ -4370,3 +4393,24 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
 - NEXT: P16-00 non pronta, prototipo/PNG1×/2× non reperiti nel workspace.
   P17-01 indipendente pronta su13-08; preflight dettagliato prima di implementare.
   AUTO_CONTINUE: pubblicare gate15-07, poi attività indipendente pronta in sequenza.
+
+## HANDOFF §15.3 — T-P17-01 locale verificata, 2026-10-27 Europe/Rome
+
+- OBIETTIVO/STATO: benchmark10k/100k/1M Full valid/error-heavy e projection,
+  IN_PROGRESS, due misure complete ottimizzate9scenari archiviate e verificate.
+- FILE: Cargo.toml bench standalone, benches/validation.rs, smoke CI, dossier17-01,
+  risultati run1/run2 e local-gates JSON, status/indice. Prodotto/API/lock invariati.
+  Preflight16-00 separato in docs/ui/SPIKE_REPORT.md, nessun codice UI generato.
+- CONTRATTI: DET114, soglie non definite, dati sintetici; peak heap richiesto
+  esplicito, nessuna RSS simulata. Hash harness/helper schema e versione/toolchain
+  nei risultati; throughput strumentato, non garanzia su flussi regionali.
+- GATE LOCALI:681pass/79suite/0fail/2ignored; fmt/Clippy all-targets default e
+  all-features positivi; smoke ottimizzato e test-profile, no-clobber negativo,
+  inventario/hash di entrambe le run positivi; actionlint1.7.12/diff positivi.
+  Primo errore formattazione digest corretto prima di produrre misure valide.
+- CI:15-07 corretto30d82fb in attesa run40475046094, primo40474096637 Linux
+  fallito output_dir assente.17-01 dispatch dopo conclusione15-07 per evitare
+  cancellazione da concurrency; nessun DONE o M5 anticipato.
+- NEXT: dopo gate17-01, profiling17-02 o altre task pronte;16-00 richiede input
+  esterni reali. Domanda asincrona per percorsi prototipo/PNG, non blocca task
+  indipendenti. AUTO_CONTINUE attivo, nessuna conferma ordinaria.
