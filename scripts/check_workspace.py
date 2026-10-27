@@ -7,6 +7,11 @@ import json
 import subprocess
 
 
+def decode_metadata(output):
+    """Cargo emits UTF-8 JSON regardless of the Windows console code page."""
+    return json.loads(output.decode("utf-8"))
+
+
 def check(metadata):
     packages = {p["id"]: p for p in metadata["packages"]}
     members = {packages[key]["name"]: key for key in metadata["workspace_members"]}
@@ -32,14 +37,14 @@ if __name__ == "__main__":
     # Qualify the actual native build graph. Unfiltered metadata also downloads
     # unrelated Apple/Android packages; Linux and MSVC each run this guard in CI.
     compiler = subprocess.run(
-        ["rustc", "-vV"], check=True, capture_output=True, text=True,
+        ["rustc", "-vV"], check=True, capture_output=True, text=True, encoding="utf-8",
     ).stdout
     host = next(line.removeprefix("host: ") for line in compiler.splitlines()
                 if line.startswith("host: "))
     result = subprocess.run(
         ["cargo", "metadata", "--locked", "--all-features", "--format-version", "1",
          "--filter-platform", host],
-        check=True, stdout=subprocess.PIPE, text=True,
+        check=True, stdout=subprocess.PIPE,
     )
-    check(json.loads(result.stdout))
+    check(decode_metadata(result.stdout))
     print("workspace members and core/CLI dependency boundary verified")

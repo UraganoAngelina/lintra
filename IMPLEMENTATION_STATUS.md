@@ -4786,3 +4786,13 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
 - Next16-03 solo dopo gate; PERSIST-02 ora indipendente pronta durante attesa.
 - API summary/error core invariate qui; M1 realmente chiusa nel gate2-03.
   AUTO_CONTINUE, nessun consenso Git/CI ordinario, file utente non tracciati intatti.
+
+## HANDOFF §15.3 — correzione gate Windows16-02,2026-10-27
+
+- CI40519581845: Linux success, MSVC failure guard metadata per decodifica
+  locale CP1252 del JSON UTF-8. Rust/UI nei due profili passati; confronti skipped.
+- Fix limitato scripts/check_workspace.py/test: byte→UTF8 strict, nessuna
+  tolleranza/capacità simulata.21Python/metadata reale positivi.
+- Pubblicare fix e rilanciare CI completa;16-02 resta IN_PROGRESS, non M8.
+- PERSIST-02 locale nuova domain metadata in sviluppo,8test mirati passati;
+  non inclusa nella correzione CI e non DONE. Scope solo tipi, nessun backend.

@@ -82,3 +82,14 @@ La licenza è dichiarata nel modulo UI, il core non dipende dal framework.
 Next16-03 dopo gate16-02 positivo. Durante attesa, PERSIST-02 indipendente è
 ora pronta: P2/M1 qualificate tramite CI40515191339 e PERSIST-01 DONE tramite
 CI40510757138. Nessun consenso ordinario richiesto; AUTO_CONTINUE.
+
+## Diagnosi primo gate nativo
+
+CI40519581845/9832d85: Linux success, MSVC failure nello step guard metadata.
+Test Rust/UI default/all-features su Windows già success; compare RGB/JSONL
+skipped, nessuna identità cross-OS presunta. Log reale: CP1252 non decodifica
+un byte0x81 dei metadati Cargo UTF-8. Il guard ora acquisisce stdout come byte
+e decodifica UTF-8 strict, senza fallback permissivo. Rustc -vV usa UTF-8
+esplicito. Regressione Unicode riproduce il fallimento CP1252 e prova UTF-8
+corretto/byte invalido respinto.21Python e metadata reale positivi.
+Nessun pixel/font/contrasto o gate rimosso; run sostitutiva da avviare.

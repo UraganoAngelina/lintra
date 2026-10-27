@@ -19,7 +19,7 @@
     }
   },
   "ui_boundaries_after_full_gate": "pass: Tab/Space, both attribution palettes, minimum viewport640x480",
-  "python_tests": 20,
+  "python_tests": 21,
   "actual_missing_font_build_rejected": true,
   "original_light_colors_and_font_bytes_preserved": true,
   "core_dependency_graph_without_slint": true,
@@ -30,5 +30,5 @@
   "minimum_measured_text_contrast": 4.8412322676696276,
   "actionlint": "1.7.12 pass, external shellcheck/pyflakes unavailable",
   "hallmark_sloplint": "no supported web files, not an audit pass",
-  "native_ci": "pending"
+  "native_ci": "first run40519581845 failed Windows metadata UTF8 decode; correction ready"
 }

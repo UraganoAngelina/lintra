@@ -1,6 +1,7 @@
 """Guard regressions: a transitive GUI edge and a missing core edge must fail."""
 import copy
 import importlib.util
+import json
 from pathlib import Path
 import unittest
 
@@ -12,6 +13,18 @@ SPEC.loader.exec_module(guard)
 
 
 class WorkspaceTests(unittest.TestCase):
+    def test_cargo_utf8_metadata_is_independent_of_windows_console_encoding(self):
+        graph = self.graph()
+        graph["packages"][2]["description"] = "Café ā"
+        data = json.dumps(graph, ensure_ascii=False).encode("utf-8")
+        with self.assertRaises(UnicodeDecodeError):
+            data.decode("cp1252")
+        decoded = guard.decode_metadata(data)
+        self.assertEqual(decoded, graph)
+        guard.check(decoded)
+        with self.assertRaises(UnicodeDecodeError):
+            guard.decode_metadata(b"\x81")
+
     def graph(self):
         return {
             "packages": [{"id": name, "name": name} for name in
