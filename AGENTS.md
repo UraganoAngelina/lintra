@@ -73,6 +73,16 @@ conflitti contrattuali. Richiedere aiuto solo quando effettivamente necessario.
 Superato l’arresto di recovery dopo15-05/06; restano gate reali, scope, invarianti,
 un solo agente e divieto Superpowers/subagenti/background.
 
+## Mandato UI dell’autore —2026-10-27
+
+Fonte mockup/prototipo: `/home/alberto/Desktop/LINTRA/mockup_slint_UI`, autorizzata
+la consultazione di tutte le sottocartelle. Usare no-ai-slop, Impeccable e Hallmark
+per il modulo UI, preservando il workflow single-agent e i contratti Lintra.
+Aggiungere selettore temi chiaro/scuro: il chiaro deve riprodurre la palette del
+mockup Slint; scuro nero con accenti rosso/arancione, mai gradiente nero/viola.
+Il requisito temi è autorizzato, da attuare nel perimetro delle task UI dopo il
+collaudo del prototipo, senza riscrivere il riferimento chiaro o aggirare gate.
+
 ## Registro storico e ratifiche precedenti
 
 Mandato dell'autore aggiornato il 2026-10-19:

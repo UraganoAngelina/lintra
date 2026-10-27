@@ -3,6 +3,25 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P15-07 DONE, T-P17-01 WAITING_GATE, T-P16-00 preflight
+
+2026-10-27: CI40475046094 su30d82fba243f8a9742b1374c63b6e799fca75f5e
+completed/success: Linux, MSVC e job confronto byte JSONL tutti positivi.
+T-P15-07 DONE; M5 raggiunta nel perimetro MVP generico ARCH43 e M4 verificato,
+con rinvii G0/persistenza/runtime normativo completo espliciti; nessuna
+certificazione SIOC/CAD completa implicita. Evidenza native-ci15-07 registrata.
+T-P17-01 consegnata90d82c3, due benchmark completi e gate locali positivi,
+CI nativa ora da avviare dopo chiusura15-07 senza pipeline duplicate.
+T-P16-00: autore fornisce mockup_slint_UI con prototipo, font e due PNG;
+blocco assenza prototipo superato, collaudo da eseguire. Risultati PNG2560×1560
+è riferimento2× del canvas1280×780; riferimento1× originale da verificare.
+Tema chiaro palette identica al mockup, selettore chiaro/scuro e nero con accenti
+rosso/arancione ratificati dall’autore; skill UI richieste registrate in AGENTS.
+96/140 DONE=68,6%,3 IN_PROGRESS (2-03 parziale,17-01,16-00),41 NOT_STARTED.
+AUTO_CONTINUE: CI17-01 e collaudo16-00; nessuna conferma ordinaria.
+
+## Registro storico — benchmark locale e attesa15-07
+
 ## Frontiera corrente — T-P17-01 IN_PROGRESS, T-P15-07 WAITING_GATE
 
 2026-10-27: consegna15-07 pubblicata0b152aaeb3acbd0bb379d18e51e96f6c4fd32b1a,
@@ -1852,7 +1871,8 @@ contratti approvati e rinvii secondo la procedura di T-P0-09.
 | M4 | LOCAL_SCOPE_VERIFIED | P9–P12 verificate, ultima CI 39976689575 Linux/MSVC success; rinvii G0 e capacità non supportate espliciti, nessuna certificazione normativa completa |
 | M6 | REACHED — scope referenziale ratificato | DET§152: due passate/projection/join/policy/report, golden cross-trace reale e memoria; CI40192491629 Linux/MSVC success. Non certifica Full SIOC/G0 residuo |
 | M7 | REACHED — tooling DEC-18 | P14 cinque task DONE; importer/lint/canonical/hash/diff/cataloghi/CLI verificati, CI40298536590 Linux/MSVC success; nessuna certificazione normativa implicita |
-| M5, M8–M9 | NOT_REACHED | Restano release/autosufficienza, UI e hardening |
+| M5 | REACHED — MVP generico | CI40475046094 Linux/MSVC e confronto byte JSONL; release immutabili verificate, M4 nel perimetro registrato; rinvii G0/persistenza/runtime completo invariati |
+| M8–M9 | NOT_REACHED | Restano UI e hardening |
 
 `DONE` riguarda i criteri e lo scope ratificato della singola task; non
 chiude automaticamente milestone o capacità future. G0 è approvato con rinvii.
@@ -1918,8 +1938,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-04 | DONE | 2026-10-26 | ZIP runtime/manifest/checksum/no-clobber; locale681/689 prodotto+15 tooling; CI40343261368 Linux/MSVC success su f7426a5, estratto accettato da binario esistente; [dossier](docs/verification/T-P15-04-data-bundle.md) |
 | T-P15-05 | DONE | 2026-10-27 | CI40349711927 Linux/MSVC e release40352109303 success; v0.1.1-rc.1 immutabile, tutti asset scaricati/verificati; [dossier](docs/verification/T-P15-05-executable-release.md) |
 | T-P15-06 | DONE | 2026-10-27 | CI40350440129 success su3a6cf48; release dati immutabile, manifest/payload/checksum scaricati verificati; [dossier](docs/verification/T-P15-06-data-release.md) |
-| T-P15-07 | IN_PROGRESS | 2026-10-27 | Locale681/689 Rust,16Python,probe Linux/actionlint; correzione30d82fb output_dir; CI40475046094 pendente; [dossier](docs/verification/T-P15-07-cross-os-bundle.md) |
-| T-P16-00 | BLOCKED | 2026-10-27 | Prototipo Slint e PNG1×/2× non reperiti; nessun criterio visivo misurato/fallito, nessuno switch framework; [preflight](docs/ui/SPIKE_REPORT.md) |
+| T-P15-07 | DONE | 2026-10-27 | CI40475046094 su30d82fb Linux/MSVC e confronto JSONL success; [dossier](docs/verification/T-P15-07-cross-os-bundle.md) |
+| T-P16-00 | IN_PROGRESS | 2026-10-27 | Materiali forniti in mockup_slint_UI: prototipo, font e PNG2×; preflight/collaudo da completare; [preflight](docs/ui/SPIKE_REPORT.md) |
 | T-P17-01 | IN_PROGRESS | 2026-10-27 | Harness std-only10k/100k/1M, due run9scenari,smoke/no-clobber/gate locali positivi; CI nativa da avviare; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
@@ -4414,3 +4434,21 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
 - NEXT: dopo gate17-01, profiling17-02 o altre task pronte;16-00 richiede input
   esterni reali. Domanda asincrona per percorsi prototipo/PNG, non blocca task
   indipendenti. AUTO_CONTINUE attivo, nessuna conferma ordinaria.
+
+## HANDOFF §15.3 — chiusura15-07 e input UI acquisiti,2026-10-27 Europe/Rome
+
+- T-P15-07 DONE, CI40475046094 su30d82fb completed/success: due producer
+  nativi e job compare-jsonl positivi. M5 MVP generico raggiunta nello scope
+  ARCH43/M4 registrato; G0 clinico, persistenza e conformità SIOC/CAD completi
+  restano fuori da questa evidenza.96/140DONE68,6%.
+- FILE: stato/indice, dossier15-07/local-gates/native-ci, AGENTS mandato temi UI.
+  Nessuna nuova modifica runtime. Correzione mkdir30d82fb preservata nello storico.
+- NEXT: T-P17-01 commit90d82c3 locale verificato, avvio CI nativa automatico ora
+  possibile senza cancellare15-07. Nel frattempo preflight16-00 sui materiali
+  forniti dall’autore. Nessun codice PERSIST scritto durante il solo preflight.
+- UI: skill no-ai-slop/Impeccable/Hallmark reperite e consultate; adattamento al
+  desktop nativo e design esistente, non nuova pagina web. Single-agent invariato.
+- GIT: branch concordato, contributi esterni .agents/ e skills-lock.json comparsi
+  durante il lavoro, preservati e non inclusi nei commit del prodotto.
+- AUTO_CONTINUE: nessun consenso ordinario; T-P16-00 richiede ancora criteri
+  reali di geometria/scorrimento e identità nativa prima di16-01.

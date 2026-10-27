@@ -87,3 +87,16 @@ attendeva Windows); causa confermata confrontando xtask::bundle_data::build:
 `directory(output_dir)` richiede una directory preesistente. Corretto soltanto
 lo step CI con mkdir prima del bundler. Nessuna modifica al gate/prodotto.
 Run sostituito dalla consegna corretta; nessun successo Linux/Windows/M5 presunto.
+
+## Chiusura nativa verificata —2026-10-27
+
+DONE su30d82fba243f8a9742b1374c63b6e799fca75f5e, CI40475046094
+completed/success: Linux, Windows e job Compare Linux and Windows
+JSONL bytes tutti success (ID effettivi nell’evidenza JSON allegata).
+[T-P15-07-native-ci.json](T-P15-07-native-ci.json) contiene i tre job e step.
+Entrambi i producer nativi hanno superato estrazione, livello3, precedenza
+esterna, rifiuto esterno corrotto e integrità binario; il job dipendente ha
+confrontato i byte grezzi dei tre JSONL dei due runner. Nessun gate residuo15-07.
+M5 raggiunta per MVP generico ARCH43 con il perimetro M4 verificato e i rinvii
+G0 espliciti: non conformità completa SIOC/CAD, persistenza o UI.
+Prosecuzione automatica: CI17-01 e preflight16-00 con i materiali forniti dall’autore.

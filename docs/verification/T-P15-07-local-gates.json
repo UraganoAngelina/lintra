@@ -1,7 +1,7 @@
 {
   "task": "T-P15-07",
-  "done": false,
-  "native_ci": "pending",
+  "done": true,
+  "native_ci": "40475046094 success, Linux/MSVC and compare-jsonl",
   "checks": {
     "fmt": true,
     "clippy_default": true,
