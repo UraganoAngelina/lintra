@@ -124,3 +124,27 @@ serde_json=1.0.151 resta solo dev-dependency del tooling per fixture negative.
 Licenze/API verificate sulle copie sorgente Cargo già qualificate; nessun nuovo
 crate/versione o dipendenza runtime del prodotto introdotti. Cargo.lock del
 prodotto invariato; il lock separato di xtask registra il grafo effettivo.
+
+## T-P16-00 — spike Slint, registrazione prima dell’aggiunta
+
+Solo crate separato del collaudo, non workspace/prodotto: slint=1.18.1 e
+slint-build=1.18.1, stessi package del lock del prototipo fornito. Licenze
+GPL-3.0-only OR LicenseRef-Slint-Royalty-free-2.0 OR commerciale; per desktop
+si adotta royalty-free con attribuzione prevista nella UI finale. Verificati
+LICENSES/manifest locali della versione esatta e
+[fonte primaria](https://slint.dev/agreements/slint-royalty-free-license.pdf).
+MSRV1.92, toolchain1.99.1 compatibile. Framework implementato in Rust ma non
+si presume che ogni backend/transitiva sia pure-Rust: spike software,
+default disabilitati, std/compat-1-2/renderer-software/backend-winit-x11;
+winit è incluso per il supporto immagini/SVG richiesto dai widget e l’eventuale
+lancio nativo. I test installano una piattaforma headless prima di creare
+finestre, senza display/GPU. Grafico transitive da verificare, non cambia la allowlist
+CLI né autorizza librerie di sistema per il packaging UI futuro.
+
+png=0.17.16, MIT OR Apache-2.0, pure Rust, MSRV1.57: sole fixture/capture PNG
+del test, già nel lock del prototipo. Fonte manifest locale e
+[manifest primario](https://docs.rs/crate/png/0.17.16/source/Cargo.toml).
+IBM Plex Sans/Mono forniti, famiglie e licenza SIL OFL1.1 verificati nei font;
+[testo primario IBM](https://github.com/IBM/plex/blob/master/LICENSE.txt).
+Font incorporati invariati, copia del testo OFL con copyright inclusa prima
+dell’eventuale ridistribuzione. Nessuna dipendenza nuova nel core/CLI/lock root.

@@ -1,0 +1,134 @@
+{
+  "task": "T-P16-00",
+  "done": false,
+  "native_ci": "pending",
+  "visual_baseline_approval": "pending",
+  "local_checks": {
+    "fmt": true,
+    "clippy_all_targets_release": true,
+    "release_headless_test": true,
+    "pixel_comparator_positive_negative": true,
+    "actionlint": "1.7.12 pass; external shellcheck/pyflakes unavailable",
+    "root_tree_without_slint": true,
+    "original_19_assets_preserved": true,
+    "light_color_tokens_unchanged": true
+  },
+  "reference_1x": "derived in test from author-supplied2x via integer2x2 area averaging; no original1x export claimed",
+  "geometry_max_logical_pixel_shift": 1,
+  "geometry": [
+    {
+      "anchor": "table-left",
+      "reference_physical_px": "48",
+      "actual_physical_px": "48",
+      "delta_physical_px": "0"
+    },
+    {
+      "anchor": "table-right",
+      "reference_physical_px": "1646",
+      "actual_physical_px": "1647",
+      "delta_physical_px": "1"
+    },
+    {
+      "anchor": "detail-left",
+      "reference_physical_px": "1679",
+      "actual_physical_px": "1680",
+      "delta_physical_px": "1"
+    },
+    {
+      "anchor": "detail-right",
+      "reference_physical_px": "2511",
+      "actual_physical_px": "2511",
+      "delta_physical_px": "0"
+    },
+    {
+      "anchor": "table-top",
+      "reference_physical_px": "248",
+      "actual_physical_px": "248",
+      "delta_physical_px": "0"
+    },
+    {
+      "anchor": "table-bottom",
+      "reference_physical_px": "800",
+      "actual_physical_px": "799",
+      "delta_physical_px": "1"
+    },
+    {
+      "anchor": "detail-top",
+      "reference_physical_px": "248",
+      "actual_physical_px": "248",
+      "delta_physical_px": "0"
+    },
+    {
+      "anchor": "detail-bottom",
+      "reference_physical_px": "794",
+      "actual_physical_px": "792",
+      "delta_physical_px": "2"
+    }
+  ],
+  "incremental_release_scroll": [
+    {
+      "scale": "1",
+      "rows": "4",
+      "row_requests": "13",
+      "highest_requested_row": "3",
+      "frames": "30",
+      "median_ms": "0.118",
+      "p95_ms": "0.146"
+    },
+    {
+      "scale": "1",
+      "rows": "300000",
+      "row_requests": "323",
+      "highest_requested_row": "313",
+      "frames": "30",
+      "median_ms": "11.356",
+      "p95_ms": "12.622"
+    },
+    {
+      "scale": "1",
+      "rows": "1000000",
+      "row_requests": "324",
+      "highest_requested_row": "613",
+      "frames": "30",
+      "median_ms": "11.334",
+      "p95_ms": "11.950"
+    },
+    {
+      "scale": "2",
+      "rows": "4",
+      "row_requests": "14",
+      "highest_requested_row": "3",
+      "frames": "30",
+      "median_ms": "0.137",
+      "p95_ms": "0.199"
+    },
+    {
+      "scale": "2",
+      "rows": "300000",
+      "row_requests": "323",
+      "highest_requested_row": "313",
+      "frames": "30",
+      "median_ms": "15.178",
+      "p95_ms": "16.463"
+    },
+    {
+      "scale": "2",
+      "rows": "1000000",
+      "row_requests": "324",
+      "highest_requested_row": "613",
+      "frames": "30",
+      "median_ms": "15.342",
+      "p95_ms": "16.630"
+    }
+  ],
+  "capture_sha256": {
+    "results-1x.rgb": "1c75eca00057b0a4d9e3ae108e2209f5b2bf70eec60f0764a387ac3db14fb381",
+    "results-2x.rgb": "eecff6ec018996809fa9008bb3691a7d95b159902171a93cd3a895e4b4da95c3"
+  },
+  "limits": [
+    "Native window/compositor perception not measured by headless tests.",
+    "Synthetic lazy stress model is not production JSONL reader.",
+    "Actual cross-OS pixel identity awaits CI.",
+    "Theme selector and dark theme are authorized for UI bootstrap; not implemented in this prototype."
+  ]
+}

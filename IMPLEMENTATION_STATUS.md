@@ -13,10 +13,11 @@ throughput reali con limiti dichiarati. T-P15-07 e M5 generica già verificate.
 16-00: materiale dell’autore inventariato1188cartelle/19file sorgente o asset;
 prototipo clonato in spike isolato senza workspace/UI nel prodotto. Font OFL
 verificati e licenza accompagnatoria; Slint1.18.1 del lock originale fissato.
-Primo test headless a1×/2× produce capture e richieste lazy ~324 anche su1Mrighe;
-non è ancora prova di congruenza, fluidità ottimizzata o identità cross-OS.
-Capture evidenzia layout tabella704px rispetto a~800del riferimento: correzione
-ordinaria del prototipo e misura release ancora da completare. Palette chiara
+Test headless release a1×/2× positivo, lazy323/324 richieste e avanzamento
+313/613 su300k/1M; P95~12/17ms. Otto bordi entro1px logico dal riferimento,
+color token originali identici; Clippy/fmt/Python/actionlint positivi.
+Corrette geometria/interlinea/buffer fresh; CI nativa e approvazione visiva
+ancora pendenti. Palette chiara
 preservata, tema scuro autorizzato registrato ma non anticipato nello spike.
 AUTO_CONTINUE: collaudo16-00, senza16-01 prima dei suoi gate reali.
 
@@ -4487,3 +4488,26 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
 - Skills richieste dall’autore applicate al desktop nativo; palette chiara e
   futuro selettore scuro nero/rosso/arancione registrati. Nessun nuovo consenso
   ordinario, AUTO_CONTINUE. PERSIST solo preflight, nessun codice scritto.
+
+## HANDOFF §15.3 — T-P16-00 locale verificata,2026-10-27 Europe/Rome
+
+- STATO: IN_PROGRESS. Input dell’autore inventariati1188cartelle/19asset;
+  copia isolata spikes/ui-prototype, nessun nuovo workspace/Slint nel prodotto.
+- FILE: Slint/Rust del prototipo e lock/fonts/OFL, qualification.rs headless,
+  comparatore pixel/test Python, workflow ui-spike.yml; registry dipendenze,
+  attributi binari, docs/ui design/inventario/skill/report e local-gates JSON.
+- CONTRATTI: ARCH39D.3–7, T-P16-00, palette/fonts forniti, temi autorizzati
+  registrati. Motore/CLI/schema/norme/lock root invariati; no regole simulate.
+- SPIEGAZIONE: fixture lazy quattro seed per1Mrighe con richieste e avanzamento
+  misurati; orologio deterministico, render reale1×/2×, bordi localizzati suPNG
+  originale, cross-OS raw RGB senza tolleranza. Derivato1× etichettato da2×,
+  nessuna baseline generata dal render autoapprovata. Reset nuovo buffer corretto.
+- TEST: fmt/Clippy release/all-targets positivi; qualification release pass,
+  Python boundary pass, actionlint/diff/tree no-Slint/hash19asset/colortoken pass.
+  P95 locale1M~12ms1×/~17ms2×,8bordi max1px logico. Metriche non promettono
+  fluidità del compositore desktop; differenze tipografiche elencate nel report.
+- GATE RESIDUI: push/dispatch UI CI Linux/MSVC e confronto pixel; prima
+  approvazione visiva ARCH39D.5. Nessun DONE16-00/M8 o16-01 anticipato.
+- NEXT: completare gate, raccogliere sola approvazione visiva reale, poi16-01
+  con dipendenze soddisfatte; durante attesa soltanto task indipendenti pronte.
+  AUTO_CONTINUE attivo. Contributi esterni .agents/.codex/skills-lock preservati.

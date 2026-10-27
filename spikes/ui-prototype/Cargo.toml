@@ -1,0 +1,21 @@
+[package]
+name = "lintra-ui-proto"
+version = "0.0.1"
+edition = "2021"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "lintra-ui-proto"
+path = "src/main.rs"
+
+[dependencies]
+slint = { version = "=1.18.1", default-features = false, features = ["std", "compat-1-2", "renderer-software", "backend-winit-x11"] }
+
+[build-dependencies]
+slint-build = "=1.18.1"
+
+[dev-dependencies]
+png = "=0.17.16"

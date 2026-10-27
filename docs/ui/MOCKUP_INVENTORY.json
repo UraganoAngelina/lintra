@@ -1,0 +1,150 @@
+{
+  "source_root": "/home/alberto/Desktop/LINTRA/mockup_slint_UI",
+  "reviewed_at": "2026-10-27",
+  "directories_including_build_cache": 1188,
+  "source_assets": [
+    {
+      "path": "Lintra \u2014 discorso per il board.pdf",
+      "bytes": 95096,
+      "sha256": "68f818fc5d7e2c97f9b8b49a8e46b6439872a3effcfaf38cfa80eb17680052a6"
+    },
+    {
+      "path": "architecture/Lintra_Architecture.svg",
+      "bytes": 8932,
+      "sha256": "5f6f0b3c4fae166a1c146b544accc23fb6f5d02babe1c2798de5fe87349dfa0f"
+    },
+    {
+      "path": "lintra_ui_html/Nuova analisi (in esecuzione).png",
+      "bytes": 301469,
+      "sha256": "f43f15db3570f98e0f97ea1a68fe9555bbf5495a2a376643db7aef6c982c7df6"
+    },
+    {
+      "path": "lintra_ui_html/Risultati.png",
+      "bytes": 331220,
+      "sha256": "a86daebd0a27002e8ad15824b775f1e8d1b4a250cfe05aa3f445d9870aa74774"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/Cargo.lock",
+      "bytes": 147204,
+      "sha256": "dd27cf9827aad6adb1d674412e75e152c2d80390e36d2f81343945901cf0904f"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/Cargo.toml",
+      "bytes": 323,
+      "sha256": "3f619d06634acef66275bfaed2d73f1fa5599cf6e27ea52bd7e8e6818e5908b1"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/README.md",
+      "bytes": 2035,
+      "sha256": "a6b06e1d74e53f3c9ac309917464b2ba51d1c99509673e65546148a86f606272"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/build.rs",
+      "bytes": 211,
+      "sha256": "a184be2390067b71e7d1ce747ddf3015a5084b6fba91f3f2093bc7ca5a23bf5e"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/src/lib.rs",
+      "bytes": 2771,
+      "sha256": "44675621073cb2606e0b07b477a71a9bbae756f1739dc85d5e96c2f982fa57b3"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/src/main.rs",
+      "bytes": 618,
+      "sha256": "190312390fa5dddfdf65f647f132252b73e4fa3168f76b9b79bf9da391d4de66"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/tests/visual.rs",
+      "bytes": 3649,
+      "sha256": "249e3ccdbba22070db4bab724255931c22cf207a092fd41fea1973abe7c2e9d8"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/ui/results.slint",
+      "bytes": 12906,
+      "sha256": "614816206ea047e929e302638ea0ceb0f70bc0a03b1b2f21dd37eeb63d61f0d9"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/ui/tokens.slint",
+      "bytes": 935,
+      "sha256": "a1f53fda3b277d2d48fb503f7eb88eab9caec9a80c7579027e99d76b1c1eb6f1"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/ui/fonts/IBMPlexMono-Regular.ttf",
+      "bytes": 155940,
+      "sha256": "fe11304a5fe956d5744e9b6a246cc83d90425245e75a62230044966ca96a7f50"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/ui/fonts/IBMPlexMono-SemiBold.ttf",
+      "bytes": 157552,
+      "sha256": "c9417148ce13f8fa7d2d5c9180bbc141f72aa0d814ffeb280f6904dc2b1bbd7a"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/ui/fonts/IBMPlexSans-Bold.ttf",
+      "bytes": 200872,
+      "sha256": "9e6c74a889a700d707613d24548fe4ffa6bc59559a0689d2cf9e133bdcdafb2f"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/ui/fonts/IBMPlexSans-Regular.ttf",
+      "bytes": 200500,
+      "sha256": "975dcda37d80f038dcd143c22e33ca2d97a0cc5a929aace1c749153b0fe1afa5"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/ui/fonts/IBMPlexSans-SemiBold.ttf",
+      "bytes": 202632,
+      "sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+    },
+    {
+      "path": "lintra-ui-Rust_slint/ui/fonts/README.txt",
+      "bytes": 335,
+      "sha256": "b4cfb7457ccb63942ad4cf051b1d3e1f4bc38006a752f8e98794450215422e04"
+    }
+  ],
+  "excluded_from_content_review": [
+    "target build cache (inventoried only)",
+    "git metadata",
+    "node_modules"
+  ],
+  "source_folder_inventory": [
+    {
+      "path": ".",
+      "files": 1,
+      "children": 3
+    },
+    {
+      "path": "architecture",
+      "files": 1,
+      "children": 0
+    },
+    {
+      "path": "lintra_ui_html",
+      "files": 2,
+      "children": 0
+    },
+    {
+      "path": "lintra-ui-Rust_slint",
+      "files": 4,
+      "children": 4
+    },
+    {
+      "path": "lintra-ui-Rust_slint/src",
+      "files": 2,
+      "children": 0
+    },
+    {
+      "path": "lintra-ui-Rust_slint/tests",
+      "files": 1,
+      "children": 0
+    },
+    {
+      "path": "lintra-ui-Rust_slint/ui",
+      "files": 2,
+      "children": 1
+    },
+    {
+      "path": "lintra-ui-Rust_slint/ui/fonts",
+      "files": 6,
+      "children": 0
+    }
+  ],
+  "build_or_dependency_folder_count": 1180
+}

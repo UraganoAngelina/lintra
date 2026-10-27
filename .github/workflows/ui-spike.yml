@@ -1,0 +1,85 @@
+name: UI prototype qualification
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ui-spike-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    name: Slint software (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - os: windows-2025
+            target: x86_64-pc-windows-msvc
+    env:
+      CARGO_TARGET_DIR: target/ui-prototype
+      CARGO_PROFILE_RELEASE_DEBUG: '0'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - name: Test raw pixel comparator boundaries
+        run: python -m unittest discover -s spikes/ui-prototype -p test_*.py -v
+      - name: Check pinned Rust toolchain
+        run: rustup show active-toolchain
+      - name: Format prototype
+        run: cargo fmt --manifest-path spikes/ui-prototype/Cargo.toml -- --check
+      - name: Clippy prototype
+        run: cargo clippy --manifest-path spikes/ui-prototype/Cargo.toml --all-targets --release --target ${{ matrix.target }} --locked -- -D warnings
+      - name: Capture native software pixels and measure lazy table
+        run: cargo test --manifest-path spikes/ui-prototype/Cargo.toml --release --target ${{ matrix.target }} --locked --test qualification -- --nocapture
+      - name: Upload actual native pixels
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ui-pixels-${{ matrix.target }}
+          path: target/ui-prototype-visual/*.rgb
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload visual and scroll evidence
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ui-evidence-${{ matrix.target }}
+          path: |
+            target/ui-prototype-visual/*.png
+            target/ui-prototype-visual/scroll.tsv
+            target/ui-prototype-visual/mockup-geometry.tsv
+          if-no-files-found: error
+          retention-days: 7
+
+  compare:
+    name: Compare native UI pixels
+    needs: render
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ui-pixels-x86_64-unknown-linux-gnu
+          path: target/ui-linux
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ui-pixels-x86_64-pc-windows-msvc
+          path: target/ui-windows
+      - name: Compare raw pixels without tolerance between runners
+        run: python spikes/ui-prototype/compare_pixels.py --left target/ui-linux --right target/ui-windows

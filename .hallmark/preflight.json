@@ -1,0 +1,19 @@
+{
+  "scanned": "2026-10-27",
+  "scope": "native app prototype audit",
+  "findings": {
+    "fonts": "IBM Plex Sans/Mono, source ui/tokens.slint:1-5",
+    "palette": "source ui/tokens.slint:9-21, authoritative light theme",
+    "framework": "Slint1.18.1 pinned from supplied Cargo.lock",
+    "reference": "mockup_slint_UI/lintra_ui_html/Risultati.png,2560x1560"
+  },
+  "preserve": [
+    "supplied light palette and font files",
+    "results table and inline detail",
+    "synthetic demo labels remain explicit"
+  ],
+  "introduce": [
+    "headless qualification and native cross-OS pixel comparison"
+  ],
+  "native_adaptation": "No HTML/CSS produced. sloplint reports no web source files; native renderer captures are the verification evidence. Review in-thread, no delegation."
+}

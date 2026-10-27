@@ -1,0 +1,38 @@
+import "fonts/IBMPlexSans-Regular.ttf";
+import "fonts/IBMPlexSans-SemiBold.ttf";
+import "fonts/IBMPlexSans-Bold.ttf";
+import "fonts/IBMPlexMono-Regular.ttf";
+import "fonts/IBMPlexMono-SemiBold.ttf";
+
+// Unica fonte dei valori di design, derivati dal mockup.
+export global Tok {
+    out property <color> bg: #F4F6F8;
+    out property <color> surface: #FFFFFF;
+    out property <color> ink: #14202B;
+    out property <color> muted: #4A5B6B;
+    out property <color> muted-on-dark: #9FB0C0;
+    out property <color> border: #D9DEE5;
+    out property <color> row-line: #E4E9EE;
+    out property <color> header-bg: #EEF1F4;
+    out property <color> accent: #0F766E;
+    out property <color> accent-tint: #E6F4F1;
+    out property <color> error: #B42318;
+    out property <color> error-tint: #FEE4E2;
+    out property <color> warn: #B54708;
+    // Measured from the supplied 1280×780 canvas (2× source PNG).
+    out property <length> table-width: 800px;
+    out property <length> detail-width: 416px;
+    out property <length> filter-code-width: 92px;
+    out property <length> filter-field-width: 172px;
+    out property <length> filter-record-width: 150px;
+    out property <length> filter-fiscal-width: 172px;
+    out property <length> filter-line-width: 100px;
+    // Supplied IBM Plex hhea: (1025 - (-275))/1000 = 1.3em.
+    // The mockup paragraph is 1.5em; Slint's factor multiplies the natural
+    // line height, not font-size: 1.5 / 1.3, preserving the 14px glyph size.
+    out property <float> detail-line-height-factor: 1.153846;
+    out property <length> detail-meta-spacing: 7.1px;
+    out property <length> detail-section-spacing: 9.5px;
+    out property <string> sans: "IBM Plex Sans";
+    out property <string> mono: "IBM Plex Mono";
+}
