@@ -1,0 +1,34 @@
+{
+  "task": "T-P15-07",
+  "done": false,
+  "native_ci": "pending",
+  "checks": {
+    "fmt": true,
+    "clippy_default": true,
+    "clippy_all_features": true,
+    "python_tests_passed": 16,
+    "actionlint": "1.7.12 pass; external shellcheck/pyflakes unavailable",
+    "diff_check": true,
+    "linux_published_binary_bundle_probe": true,
+    "local_comparator_self_check": true
+  },
+  "rust_tests": {
+    "default": {
+      "passed": 681,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 79
+    },
+    "all_features": {
+      "passed": 689,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 79
+    }
+  },
+  "limits": [
+    "Local producer uses verified published Linux executable and data ZIP; cross-OS comparison requires new CI.",
+    "Bundler local Cargo invocation failed on missing goblin/cache and restricted network; qualified CI-produced ZIP used for local producer instead."
+  ],
+  "contracts_changed": false
+}

@@ -65,6 +65,14 @@ HANDOFF → PROSSIMA TASK READY → RIPETI.
   istruzioni successive dell'autore e le regole della piattaforma mantengono la
   propria priorità. Verificare override reali durante ogni ripresa.
 
+## Mandato successivo dell’autore — 2026-10-27
+
+Autorizzato l’avvio delle task dopo la recovery: eseguire il workflow concordato,
+avviare autonomamente CI e task successive con prerequisiti verificati e senza
+conflitti contrattuali. Richiedere aiuto solo quando effettivamente necessario.
+Superato l’arresto di recovery dopo15-05/06; restano gate reali, scope, invarianti,
+un solo agente e divieto Superpowers/subagenti/background.
+
 ## Registro storico e ratifiche precedenti
 
 Mandato dell'autore aggiornato il 2026-10-19:

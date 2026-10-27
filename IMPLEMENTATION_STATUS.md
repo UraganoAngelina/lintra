@@ -3,6 +3,24 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P15-07 IN_PROGRESS
+
+2026-10-27: autore autorizza sviluppo autonomo, CI e prosecuzione verso le task
+successive pronte; superato arresto di recovery15-05/06. Preflight15-07:15-03 DONE
+CI40339655671 e15-05 DONE CI40349711927/release40352109303 verificati.
+Aggiunti probe sul binario nativo feature-enabled e bundle ZIP reale, estrazione
+accanto all’eseguibile in path con spazi, cwd diversa, fallback embedded,
+precedenza esterna dimostrata con vincolo sintetico aggiornato e rifiuto del
+bundle esterno corrotto. Workflow con upload JSONL dei due OS e job di confronto
+byte/inventario/UTF-8 LF senza normalizzazione. Nessuna modifica runtime/crate.
+16 test Python positivi; probe reale su binario Linux e ZIP dati pubblicati passa.
+Fmt/Clippy default/all-features positivi; regressione681/689 pass,79suite,0fail,
+2ignored; actionlint positivo. CI nuova ancora da completare.
+95/140 DONE=67,9%,2 IN_PROGRESS (2-03 parziale,15-07),43 NOT_STARTED; M5 aperta.
+AUTO_CONTINUE: gate locali, commit/push/CI, poi prossima task indipendente pronta.
+
+## Registro storico — chiusura della recovery15-05/06
+
 ## Frontiera corrente — T-P15-05 e T-P15-06 DONE
 
 Recovery del 27 ottobre2026: verificati direttamente gli esiti delle pubblicazioni
@@ -4336,3 +4354,19 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
 - NEXT: T-P15-07 candidata pronta, richiede15-03/15-05 ora DONE; nessuna attività
   avviata. Arresto richiesto dal prompt corrente dopo task aperte concluse;
   nuova autorizzazione necessaria per iniziare la candidata successiva.
+
+## HANDOFF §15.3 — T-P15-07 gate locale, 2026-10-27 Europe/Rome
+
+- STATO: IN_PROGRESS. Preflight15-03/15-05 verificato, mandato autonomo attivo.
+- FILE/API: workflow CI, producer nativo tests/packaging_probe.py e quattro test
+  Python di boundary; AGENTS/indice/status e dossier15-07/local-gates JSON.
+  Nessuna modifica runtime o dipendenza; contratti ARCH39C/43 e DET A.4 preservati.
+- TEST: fmt/Clippy default/all-features --all-targets --offline --locked positivi;
+  cargo test default681/all-features689,79suite,0fail,2ignored; Python16/16;
+  actionlint1.7.12 e diff check positivi. Probe reale Linux su asset pubblicati
+  verificati positivo; confronto locale positivo non equivale al gate cross-OS.
+- RESIDUI: commit/push e CI Linux/MSVC più job compare-jsonl; nessun DONE/M5.
+  Prodotto invariato: nessuna nuova prerelease necessaria per i soli test.
+- NEXT: P16-00 non pronta, prototipo/PNG1×/2× non reperiti nel workspace.
+  P17-01 indipendente pronta su13-08; preflight dettagliato prima di implementare.
+  AUTO_CONTINUE: pubblicare gate15-07, poi attività indipendente pronta in sequenza.
