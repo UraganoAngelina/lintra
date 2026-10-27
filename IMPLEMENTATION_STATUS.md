@@ -3,6 +3,18 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-P2-03 residuo in verifica, T-P16-01 WAITING_GATE
+
+2026-10-27: riletta CNF-DOMAIN-01 e verificata presenza di tutti i payload reali.
+Completata categoria Context(ContextError) applicativa e conversioni typed dai
+percorsi Trace/Full/Cross, nessun errore normativo dentro ValidationRunError.
+Due test nuovi positivi; fmt/Clippy e regressione estesa in verifica, non DONE/M1.
+101/140 DONE=72,1%,2 IN_PROGRESS (2-03,16-01),37 NOT_STARTED.
+UI16-01 CI40513168784: seconda lettura Linux success, MSVC Clippy tooling.
+Next16-02 dopo quel gate; PERSIST-02 richiede anche chiusura2-03. AUTO_CONTINUE.
+
+## Registro storico — runbook chiuso
+
 ## Frontiera corrente — T-P18-02 DONE, T-P16-01 WAITING_GATE
 
 2026-10-27: runbook dati18-02 e script dry-run completi. Due prove Linux con
@@ -4679,3 +4691,20 @@ Evidenza hash/librerie in local-gates16-01. Nessun DONE o CI16-01 anticipato.
 - Nessun Windows dry-run o release remota presunti, nessun gate mancante task.
 - UI16-01 run40513168784 attiva; fonte e5b00b2, prossimo16-02 dopo CI positiva.
 - Nessun consenso ordinario, AUTO_CONTINUE. Cartelle utente non tracciate preservate.
+
+## HANDOFF §15.3 — ripresa del residuo T-P2-03,2026-10-27
+
+- Fonte autorizzante CNF-DOMAIN-01; payload P7/P11/P13 ora reali e qualificati.
+- Mancava Context nel boundary applicativo: aggiunto typed ContextError e
+  conversioni dei soli errori store riconosciuti, preservati gli altri wrapper.
+- File service.rs, tests/run_context_errors.rs e dossier completion2-03;
+  due test mirati pass, regressione completa in corso. Nessun DONE2-03/M1.
+- Prossimo gate nativo sul nuovo codice da avviare senza cancellare CI16-01.
+- UI16-01 seconda lettura Linux success/MSVC tooling;16-02 dopo gate positivo.
+- Nessuna nuova norma o dipendenza, nessun PHI; AUTO_CONTINUE.
+
+### Gate locale finale residuo2-03
+
+701/709test,83suite,0fail/2ignored,11doctest, fmt/Clippy/guard tutti pass.
+Nessun golden riscritto, nessun cambiamento normativo. Residuo2-03 ora codice
+completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.

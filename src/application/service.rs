@@ -115,6 +115,10 @@ pub fn preflight<'schema, 'input>(
 
 /// Technical run failures with concrete module payloads. ReferenceData retains
 /// real preparation causes; no normative ValidationError is wrapped.
+/// ```compile_fail
+/// fn normative_is_not_a_technical_failure(error: lintra::ValidationError)
+///     -> lintra::ValidationRunError { error.into() }
+/// ```
 #[derive(Debug)]
 #[non_exhaustive]
 pub enum ValidationRunError {
@@ -128,6 +132,7 @@ pub enum ValidationRunError {
     Summary(crate::SummaryBuildError),
     Report(crate::ReportError),
     ReferenceData(crate::ReferencePreparationError),
+    Context(crate::ContextError),
     Flow(crate::FlowValidationError),
 }
 impl fmt::Display for ValidationRunError {
@@ -144,6 +149,7 @@ impl fmt::Display for ValidationRunError {
             Self::Report(_) => "run report failed",
             Self::Flow(_) => "run Full execution failed",
             Self::ReferenceData(_) => "run reference preparation failed",
+            Self::Context(_) => "run context storage failed",
         })
     }
 }
@@ -160,6 +166,7 @@ impl Error for ValidationRunError {
             Self::Summary(e) => e,
             Self::Report(e) => e,
             Self::ReferenceData(e) => e,
+            Self::Context(e) => e,
             Self::Flow(e) => e,
         })
     }
@@ -171,6 +178,11 @@ impl From<crate::SchemaResolutionError> for ValidationRunError {
             crate::SchemaResolutionError::Compilation(e) => Self::SchemaCompilation(e),
             crate::SchemaResolutionError::Canonical(e) => Self::SchemaCanonical(e),
         }
+    }
+}
+impl From<crate::ContextError> for ValidationRunError {
+    fn from(error: crate::ContextError) -> Self {
+        Self::Context(error)
     }
 }
 impl From<crate::TraceValidationError> for ValidationRunError {
@@ -190,7 +202,14 @@ impl From<crate::TraceValidationError> for ValidationRunError {
                 Self::Summary(e)
             }
             Trace::Record(e) => Self::Record(e),
-            e @ (Trace::PreviousFailure | Trace::Collection(_)) => Self::Trace(e),
+            // Full's collection port carries heterogeneous technical failures.
+            // Recover only an actual store error; preserve every unrelated box
+            // unchanged instead of converting it to a string or losing its cause.
+            Trace::Collection(error) => match error.downcast::<crate::ContextError>() {
+                Ok(context) => Self::Context(*context),
+                Err(other) => Self::Trace(Trace::Collection(other)),
+            },
+            e @ Trace::PreviousFailure => Self::Trace(e),
         }
     }
 }
@@ -202,6 +221,10 @@ impl From<crate::FlowValidationError> for ValidationRunError {
             Flow::Trace(error) => error.into(),
             Flow::Summary(error) => Self::Summary(error),
             Flow::Cross(crate::CrossRecordValidationError::Report(error)) => Self::Report(error),
+            Flow::Cross(crate::CrossRecordValidationError::Context(
+                crate::RelatedContextError::Store(error),
+            ))
+            | Flow::Inputs(crate::RelatedContextError::Store(error)) => Self::Context(error),
             Flow::MissingTrace(trace) => {
                 Self::InvalidRequest(InvalidRequestError::MissingRequiredTrace(trace))
             }

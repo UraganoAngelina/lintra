@@ -1,0 +1,25 @@
+{
+  "task": "T-P2-03",
+  "done": false,
+  "fmt": true,
+  "clippy_workspace_default": true,
+  "clippy_workspace_all_features": true,
+  "rust_tests": {
+    "default": {
+      "passed": 701,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 83
+    },
+    "all_features": {
+      "passed": 709,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 83
+    }
+  },
+  "new_tests": 2,
+  "new_compile_fail_doctest": 1,
+  "native_ci": "pending",
+  "M1_reached": false
+}
