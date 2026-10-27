@@ -167,3 +167,12 @@ Linux, non nuova dipendenza CLI né promessa di UI già distribuibile.
 Riutilizzata serde_json1.0.151/arbitrary_precision già qualificata nel core,
 solo dev-dependency UI per fixture/schema reali dei test. Nessuna nuova versione
 o libreria di dialogo/OS; browser costruito con Slint e metadata std::fs.
+
+## T-P16-04 — spool temporaneo del worker UI
+
+Promossa tempfile=3.27.0 (default-features=false) da dev-dependency a runtime
+nel solo adapter UI: directory nuova per JSONL atomico, cleanup con ownership,
+nessun filename paziente o path condiviso fisso. Package/versione/checksum già
+qualificati nel core e nei test UI, MIT/Apache-2.0, implementazione Rust con API
+filesystem native. Nessun nuovo crate/versione o dipendenza GUI nel core.
+La protezione della persistenza storica resta PERSIST04, non questa spool report.

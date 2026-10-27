@@ -82,3 +82,21 @@ palette blu non applicabili al mockup vincolante; nessuna sostituzione del desig
 approvato. Applicati focus indipendente dal valore nei checkbox, verifica reale
 puntatore/Space e testi/stati senza claim di esecuzione. Guide web/375px non
 attestano supporto nativo: il contratto desktop resta640×480 minimo.
+
+## Worker16-04
+
+Stesso layout/token/font e due temi, nessuna palette sostitutiva dal generatore
+ui-ux-pro-max. Avvia/Annulla nello stesso punto, annullamento nei token error
+rosso; form bloccato durante l’analisi, temi/Informazioni ancora utilizzabili.
+Fasi e contatori sono eventi reali, senza percentuale o totale inventati.
+«Annullamento richiesto» non diventa Cancelled prima del risultato del servizio.
+Violazioni e errore tecnico hanno testi distinti; completezza parziale resta
+visibile, nessun verde implicito per un risultato non conclusivo. Un errore
+invalida la descrizione del precedente campione e indica come ripetere il controllo.
+
+no-ai-slop applicata ai messaggi aderenti agli esiti; Impeccable Operate e craft
+floor a feedback/cancel/focus, ui-ux-pro-max a progress/error recovery. Riferimenti
+visivi forniti prevalgono su suggerimenti generici landing/font/palette.
+Capture native di running/errore/cancel sono diagnostiche, non nuove baseline
+approvate. Test Slint con proxy event-loop headless e barriera controllano il worker
+senza eseguire validazione sul thread UI né usare numeri dimostrativi.

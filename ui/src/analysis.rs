@@ -366,6 +366,7 @@ impl AnalysisSelection {
 }
 /// Prepared intent only. The dedicated worker introduced by T-P16-04 executes
 /// ValidationService; preparing a request never starts record validation.
+#[derive(Clone)]
 pub struct PreparedAnalysis {
     pub request: ValidationRequest,
     pub service: Arc<ValidationService>,

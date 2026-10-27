@@ -4,13 +4,14 @@ import { Tok } from "tokens.slint";
 export component ActionButton inherits Rectangle {
     in property <string> label;
     in property <bool> selected: false;
+    in property <bool> danger: false;
     in property <bool> enabled: true;
     callback activated();
     height: Tok.control-height;
     background: !root.enabled ? Tok.disabled-bg : root.selected ? Tok.accent-tint : pointer.has-hover ? Tok.header-bg : Tok.surface;
     border-radius: Tok.control-radius;
     border-width: key.has-focus ? Tok.focus-width : Tok.border-width;
-    border-color: key.has-focus || root.selected ? Tok.accent : Tok.border;
+    border-color: root.danger ? Tok.error : key.has-focus || root.selected ? Tok.accent : Tok.border;
     accessible-role: button;
     accessible-label: root.label;
     accessible-enabled: root.enabled;
@@ -18,7 +19,7 @@ export component ActionButton inherits Rectangle {
     forward-focus: key;
     Text {
         text: root.label;
-        color: !root.enabled ? Tok.disabled-ink : root.selected ? Tok.accent : Tok.ink;
+        color: !root.enabled ? Tok.disabled-ink : root.danger ? Tok.error : root.selected ? Tok.accent : Tok.ink;
         font-family: Tok.sans;
         font-size: Tok.body-size;
         font-weight: Tok.semibold-weight;

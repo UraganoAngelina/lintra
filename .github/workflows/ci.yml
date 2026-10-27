@@ -85,6 +85,7 @@ jobs:
           path: |
             target/ui-bootstrap-visual/*.png
             target/ui-bootstrap-visual/contrast.tsv
+            target/ui-worker-visual/*.png
           if-no-files-found: error
           retention-days: 7
       - name: Smoke synthetic benchmark and verify expected validation counts

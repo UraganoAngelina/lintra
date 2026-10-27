@@ -21,6 +21,10 @@ export component AnalysisForm inherits Rectangle {
     in property <bool> configuration-error: false;
     in property <bool> bundle-ready: false;
     in property <bool> ready: false;
+    in property <string> execution-label: "Analisi non avviata";
+    in property <string> execution-detail;
+    in property <bool> validation-invalid: false;
+    in property <bool> execution-partial: false;
     in property <bool> busy: false;
     in property <bool> worker-available: false;
     callback file-edited(string);
@@ -32,6 +36,7 @@ export component AnalysisForm inherits Rectangle {
     callback choose-encoding(int);
     callback reports-changed();
     callback start-analysis();
+    callback cancel-analysis();
     property <bool> narrow: root.width < Tok.form-breakpoint;
     property <length> column-width: root.narrow ? root.width - Tok.page-padding * 2 : (root.width - Tok.page-padding * 3) / 2;
     background: Tok.bg;
@@ -141,6 +146,15 @@ export component AnalysisForm inherits Rectangle {
                     background: Tok.surface;
                     Text { text: "Report"; color: Tok.ink; font-weight: Tok.semibold-weight; }
                 }
+                Text {
+                    x: Tok.reports-width + Tok.field-padding * 2;
+                    width: parent.width - self.x - Tok.field-padding;
+                    height: parent.height;
+                    text: "Export non disponibile";
+                    color: Tok.muted; font-size: Tok.caption-size;
+                    vertical-alignment: center; wrap: word-wrap;
+                    accessible-label: "Formati richiesti conservati; esportazione non disponibile.";
+                }
                 HorizontalLayout {
                     x: Tok.field-padding; y: Tok.picker-gap;
                     height: Tok.control-height;
@@ -168,7 +182,7 @@ export component AnalysisForm inherits Rectangle {
                 x: Tok.card-padding; y: Tok.execution-note-y;
                 width: parent.width - Tok.card-padding * 2;
                 text: root.status-note;
-                color: root.configuration-error ? Tok.error : root.ready ? Tok.accent : Tok.muted;
+                color: root.configuration-error || root.validation-invalid ? Tok.error : root.execution-partial ? Tok.warn : root.ready ? Tok.accent : Tok.muted;
                 wrap: word-wrap;
             }
             Text {
@@ -181,20 +195,22 @@ export component AnalysisForm inherits Rectangle {
             Text {
                 x: Tok.card-padding; y: Tok.execution-status-y;
                 width: parent.width - Tok.card-padding * 2;
-                text: "Analisi non avviata"; color: Tok.ink;
+                text: root.execution-label; color: root.configuration-error || root.validation-invalid ? Tok.error : root.execution-partial ? Tok.warn : Tok.ink;
                 font-weight: Tok.semibold-weight;
             }
             Text {
                 x: Tok.card-padding; y: Tok.execution-help-y;
                 width: parent.width - Tok.card-padding * 2;
-                text: root.worker-available ? "Avvia l’analisi quando la configurazione è pronta." : "L’avvio dell’analisi non è disponibile in questa build.";
+                text: root.execution-detail != "" ? root.execution-detail : root.worker-available ? "Avvia l’analisi quando la configurazione è pronta." : "L’avvio dell’analisi non è disponibile in questa build.";
                 color: Tok.muted; wrap: word-wrap;
             }
             ActionButton {
                 x: Tok.card-padding; y: parent.height - Tok.card-padding - Tok.control-height;
-                width: Tok.primary-action-width; label: "Avvia analisi";
-                enabled: root.ready && root.worker-available && !root.busy;
-                activated => { root.start-analysis(); }
+                width: Tok.primary-action-width;
+                label: root.busy ? "Annulla analisi" : "Avvia analisi";
+                danger: root.busy;
+                enabled: root.busy || (root.ready && root.worker-available);
+                activated => { if (root.busy) { root.cancel-analysis(); } else { root.start-analysis(); } }
             }
         }
     }

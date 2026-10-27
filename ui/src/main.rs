@@ -13,6 +13,9 @@ fn main() -> Result<(), slint::PlatformError> {
                 &exe,
             )
         });
-    let _configuration = lintra_ui::controller::install_configuration(&window, bundle);
-    window.run()
+    let configuration = lintra_ui::controller::install_configuration(&window, bundle);
+    let worker = lintra_ui::worker_controller::install_worker(&window, configuration);
+    let result = window.run();
+    worker.borrow_mut().shutdown();
+    result
 }

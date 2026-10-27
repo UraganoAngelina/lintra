@@ -33,5 +33,16 @@
     "native_evidence": "model/controller tests and software captures; browser detector not applicable",
     "additional_user_skill": "ui-ux-pro-max; supplied palette/font/layout override generic search recommendations",
     "review_refinement": "visible checkbox focus independent of value; actual pointer/Space tests"
+  },
+  "worker_16_04": {
+    "mode": "Operate, native Slint",
+    "skills": [
+      "no-ai-slop",
+      "impeccable",
+      "ui-ux-pro-max"
+    ],
+    "preserve": "approved palette/fonts/card geometry, black/red-orange dark theme",
+    "truth": "actual phases/counts only; no fabricated percentage or completed cancellation",
+    "evidence": "real service thread, bounded-channel tests, Slint headless dispatch and paused-worker responsive render"
   }
 }

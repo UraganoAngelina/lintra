@@ -12,9 +12,20 @@ Sfoglia apre il selettore integrato (cartelle prima dei file). La sorgente dati
 poi bundle incorporato. Un bundle esterno incompleto o errato non consente fallback.
 
 L’ambito attuale è LocalOnly sul tracciato selezionato, dichiarato nella schermata.
-La configurazione prepara una ValidationRequest e un vero ValidationService;
-non esegue validazione. Avvia resta disabilitato fino alla task worker16-04.
-Risultati ed export appartengono alle task successive: nessun esito simulato.
+T-P16-04 collega Avvia al vero ValidationService su un thread dedicato. Il
+progresso attraversa due canali da un solo elemento (progresso ed esito separati)
+e Slint upgrade_in_event_loop, con throttling50ms dei contatori. Annulla imposta
+il CancellationToken; lo stato resta «richiesto» finché arriva l’esito reale.
+Violazioni, Err tecnico, Cancelled e completezza parziale restano distinti.
+Non sono inventati totali o percentuali quando il servizio non li fornisce.
+
+Gli errori fluiscono nel JsonlSink del core verso una directory temporanea nuova;
+solo un run completo pubblica lo spool atomico. Nessun Vec globale di errori,
+export fittizio o aggiornamento diretto di widget dal worker. La directory resta
+owned finché il consumer usa il report; chiusura/cancel joinano il thread. La
+finestra continua a processare eventi mentre la validazione è in corso.
+Risultati ed export appartengono alle task successive: le scelte formato sono
+intenzioni, non file già esportati. Il JSONL interno serve alla futura tabella.
 
 ```sh
 cargo run --package lintra-ui --locked

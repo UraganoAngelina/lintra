@@ -27,6 +27,10 @@ export component MainWindow inherits Window {
     in property <bool> configuration-error: false;
     in property <bool> bundle-ready: false;
     in property <bool> analysis-ready: false;
+    in property <string> execution-label: "Analisi non avviata";
+    in property <string> execution-detail;
+    in property <bool> validation-invalid: false;
+    in property <bool> execution-partial: false;
     in property <bool> busy: false;
     in property <bool> worker-available: false;
     in-out property <bool> browser-open: false;
@@ -43,6 +47,8 @@ export component MainWindow inherits Window {
     callback choose-encoding(int);
     callback reports-changed();
     callback start-analysis();
+    callback cancel-analysis();
+    callback worker-poll();
     callback browser-directory-chosen(string);
     callback browser-activate(int);
     callback browser-parent();
@@ -133,6 +139,8 @@ export component MainWindow inherits Window {
                 origin-label: root.origin-label; configuration-error: root.configuration-error;
                 bundle-ready: root.bundle-ready; ready: root.analysis-ready;
                 busy: root.busy; worker-available: root.worker-available;
+                execution-label: root.execution-label; execution-detail: root.execution-detail;
+                validation-invalid: root.validation-invalid; execution-partial: root.execution-partial;
                 file-edited(value) => { root.file-edited(value); }
                 file-confirmed(value) => { root.file-confirmed(value); }
                 browse => { root.browse(); }
@@ -142,6 +150,7 @@ export component MainWindow inherits Window {
                 choose-encoding(index) => { root.choose-encoding(index); }
                 reports-changed => { root.reports-changed(); }
                 start-analysis => { root.start-analysis(); }
+                cancel-analysis => { root.cancel-analysis(); }
             }
             if !root.show-info && root.browser-open: FileBrowser {
                 directory <=> root.browser-directory;

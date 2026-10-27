@@ -12,6 +12,7 @@ embedded-bundle = ["lintra/embedded-bundle"]
 [dependencies]
 # This direction is enforced by the resolved-graph guard in native CI.
 lintra = { path = "..", default-features = false }
+tempfile = { version = "=3.27.0", default-features = false }
 slint = { version = "=1.18.1", default-features = false, features = ["std", "compat-1-2", "renderer-software", "backend-winit-x11"] }
 
 [build-dependencies]
@@ -20,4 +21,3 @@ slint-build = "=1.18.1"
 [dev-dependencies]
 serde_json = { version = "1.0.151", features = ["arbitrary_precision"] }
 png = "=0.17.16"
-tempfile = { version = "=3.27.0", default-features = false }

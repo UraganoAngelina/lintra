@@ -1,0 +1,212 @@
+{
+  "task": "T-P16-04",
+  "local_gates_complete": true,
+  "done": false,
+  "native_ci": null,
+  "base_head": "cbe00bd",
+  "pipeline": [
+    {
+      "gate": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.35
+    },
+    {
+      "gate": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 7.02
+    },
+    {
+      "gate": "clippy-all",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 7.06
+    },
+    {
+      "gate": "tests",
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 81.31
+    },
+    {
+      "gate": "tests-all",
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 746.63
+    },
+    {
+      "gate": "graph",
+      "command": [
+        "python",
+        "scripts/check_workspace.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.14
+    },
+    {
+      "gate": "font",
+      "command": [
+        "python",
+        "ui/check_missing_font.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 6.1
+    }
+  ],
+  "final_review": [
+    {
+      "gate": "fmt-final",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.39
+    },
+    {
+      "gate": "clippy-final",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 10.75
+    },
+    {
+      "gate": "clippy-all-final",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 7.95
+    },
+    {
+      "gate": "ui-final",
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "lintra-ui",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 548.37
+    },
+    {
+      "gate": "actionlint",
+      "command": [
+        "/tmp/lintra-task18-tools/actionlint",
+        "-shellcheck=",
+        "-pyflakes=",
+        ".github/workflows/ci.yml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.03
+    }
+  ],
+  "copy_review": "6 focused tests pass; end-user copy, no worker/thread jargon",
+  "tests": {
+    "tests": {
+      "passed": 741,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 92
+    },
+    "tests-all": {
+      "passed": 741,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 92
+    },
+    "ui-final": {
+      "passed": 16,
+      "failed": 0,
+      "ignored": 0,
+      "suites": 8
+    },
+    "copy-review": {
+      "passed": 6,
+      "failed": 0,
+      "ignored": 0,
+      "suites": 3
+    }
+  },
+  "skills": [
+    "no-ai-slop",
+    "impeccable",
+    "ui-ux-pro-max",
+    "hallmark"
+  ],
+  "privacy": "synthetic only; owned temporary JSONL, no historical persistence, raw errors never in channels",
+  "captures": "diagnostic native software renders, not approved replacement goldens",
+  "capture_sha256": {
+    "cancel-requested-dark.png": "d863b2191ec2f9eb94d15767a503fdb6600a1f1faacc5055303c73b66720a23c",
+    "cancelled-dark.png": "56882130c4555cdec873712b00a1a6f94dd91a06f0fdd5eb6637066f2c0b5b36",
+    "running-dark.png": "0ac8032140719ccf5cd41bfe6be4c76a7fb7937a81df9b34efad77b542103641",
+    "running-light.png": "7423a65d9235af21c9137336e3997932e128ef55a2718f80088cd7a632ab16a1",
+    "technical-error-light.png": "dfa625ab7c60390db037810a51a8f18a8c9f12babd27d4073a07c6a27d4a497b"
+  },
+  "source_sha256": {
+    "ui/src/worker.rs": "ca28616486c5d5fa038c804213dc563fc8045ec324f853091579254914b59190",
+    "ui/src/worker_controller.rs": "78e3ab1fe6aa50781fa9b58a6fb69b4ee0805784b193a6a8d968f9b950226b19",
+    "ui/src/main.rs": "305c20893eb8f1724c5a236e8d04364a62df9d27aa95638ec1b3b22ff4f958f8",
+    "ui/ui/analysis.slint": "4c7efa3d66021af8d4df12977af38a9732fbe336cb7e0201277a1d1eb421a626",
+    "ui/ui/controls.slint": "44071c8de78e3ed5d4be60a23be6001c278f273c61756858b028a79447d51a1f",
+    "ui/tests/worker.rs": "2bcdf3d4e927627cb5ce3d77fcb23928d8e2468f7db1c052dd279a076eca5014",
+    "ui/tests/worker_window.rs": "0fda5097581f57adfcc4a1ea7c76ec88c7d09fccc67f4f1b8e056b3e6e60a348"
+  }
+}

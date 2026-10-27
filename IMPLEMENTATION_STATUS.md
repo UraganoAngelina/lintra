@@ -15,6 +15,15 @@ graph/font e rifinitura finale export-intent ancora da completare. NonDONE04/M8.
 UI03 giàDONE/0a2121b/CI40577920052. Next16-05 dopo gate04; PERSIST04 pronta per
 preflight sicurezza dopo03. Skills UI aggiornate eAUTO_CONTINUE single-agent.
 
+## T-P16-04 locale completata —2026-10-27
+
+741/741test workspace/92suite,0fail/2ignored;16UI finali e6copy-review pass.
+Fmt/Clippy default/allfeatures/graph/fontnegative/actionlint tutti positivi.
+WorkerService/JSONL atomico, canali bounded, SlintWeak dispatch, cancellazione
+richiesta/esito eErr/violazioni/partial distinti provati.5capture docs/ui/worker.
+Formati richiesti conservati; captionexport indisponibileesplicita, nienteoutput
+fittizio oBacklogerrori. Nessun conflitto; residuo commit/push/CI per04, nonDONE/M8.
+
 ## T-P18-01 avviata indipendente —2026-10-27
 
 M5 MVP generico qualificato30d82fba/CI40475046094; T-P15-05/06 release verificate.
@@ -5069,3 +5078,19 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
   testmirati eClippy positivi; pipeline completa eultima rifinitura report-intent
   da finalizzare prima di commit/CI. NonDONE04/M8. Next05 dopo04, PERSIST04 ora
   prereq03qualificata perpreflight. AUTO_CONTINUE, nessuna domanda ordinaria.
+
+## HANDOFF §15.3 — T-P16-04 gate locali completi,2026-10-27
+
+- Basecbe00bd, PERSIST03 e18-01 giàDONE/40581933176; UI03DONE/40577920052.
+-741/741workspace/92suite,0fail/2ignored;16UI e6copy-review pass, fmt/Clippy
+  default/allfeatures/graph/fontnegative/actionlint positivi. Lentezza locale
+  compilazione non convertita in pass: verifiche effettivamente concluse.
+- Worker01slotprogress+01terminal,50ms, realValidationService/AtomicJSONL,
+  SlintWeak eventloop,cancel/Err/invalid/partial distinti,TempDirowned/join.
+- Capture native reali5scene in docs/ui/worker, JSON gate/hash e reportWorker.
+  Palette/font approvati invariati, scuro nero/rosso-arancione; tre skills UI
+  richieste applicate insiemeaHallmarkadattato. NoPHI, nuove norme o crate.
+- Requestedreports conservati, exportUI non simulato/captionesplicita;05tabella
+  e06export rinviati. Mainchiude thread dopo eventloop, nessun daemon.
+- Residuo: commit/push eCI nuova, nonDONE04/M8. Next05 solo dopo gate04;
+  PERSIST04 indipendente ora pronta perpreflight sicurezza. AUTO_CONTINUE.

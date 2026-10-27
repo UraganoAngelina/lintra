@@ -13,3 +13,7 @@ pub fn select_native_software_renderer() -> Result<(), slint::PlatformError> {
 pub mod analysis;
 
 pub mod controller;
+
+pub mod worker;
+
+pub mod worker_controller;
