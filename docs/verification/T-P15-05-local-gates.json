@@ -1,8 +1,8 @@
 {
   "task": "T-P15-05",
-  "done": false,
-  "native_ci_verified": false,
-  "release_verified": false,
+  "done": true,
+  "native_ci_verified": true,
+  "release_verified": true,
   "ratification": "DEC-RELEASE-SETUP-01 A",
   "version": "0.1.1-rc.1",
   "repositories_private_verified": [
@@ -155,7 +155,9 @@
   "actionlint": "1.7.12 pass (syntax/expressions; external shellcheck/pyflakes unavailable)",
   "governance_audit": "pass",
   "golden_changes": "validator_version only in three expected summaries",
-  "native_ci": "not started",
-  "publication": "not attempted",
-  "actionlint_exit": 0
+  "native_ci": "40349711927 Linux/MSVC success, all18steps each",
+  "publication": "CI40352109303 success; immutable private v0.1.1-rc.1 and all downloaded assets verified 2026-10-27",
+  "actionlint_exit": 0,
+  "source_sha": "bbfdb93243e8f316940b73d9aec8920a625ce7ee",
+  "published_release_evidence": "T-P15-05-published-release.json"
 }

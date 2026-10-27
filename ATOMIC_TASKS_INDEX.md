@@ -5,15 +5,15 @@ Lo stato autorevole corrente è IMPLEMENTATION_STATUS.md; nessun ordine o prereq
 è modificato. I140 ID restano quelli del piano; i prompt delle task già DONE
 restano nel kit storico. Nessuna conclusione di task impone lo stop della sessione.
 
-| Task | Stato alla migrazione | Prompt |
+| Task | Stato operativo (aggiornato alla recovery) | Prompt |
 |---|---|---|
 | T-P2-03 | IN_PROGRESS | [prompt](TASK_PROMPTS/T-P2-03.md) |
-| T-P15-01 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P15-01.md) |
-| T-P15-02 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P15-02.md) |
-| T-P15-03 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P15-03.md) |
-| T-P15-04 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P15-04.md) |
-| T-P15-05 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P15-05.md) |
-| T-P15-06 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P15-06.md) |
+| T-P15-01 | DONE | [prompt](TASK_PROMPTS/T-P15-01.md) |
+| T-P15-02 | DONE | [prompt](TASK_PROMPTS/T-P15-02.md) |
+| T-P15-03 | DONE | [prompt](TASK_PROMPTS/T-P15-03.md) |
+| T-P15-04 | DONE | [prompt](TASK_PROMPTS/T-P15-04.md) |
+| T-P15-05 | DONE | [prompt](TASK_PROMPTS/T-P15-05.md) |
+| T-P15-06 | DONE | [prompt](TASK_PROMPTS/T-P15-06.md) |
 | T-P15-07 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P15-07.md) |
 | T-P16-00 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P16-00.md) |
 | T-P16-01 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P16-01.md) |

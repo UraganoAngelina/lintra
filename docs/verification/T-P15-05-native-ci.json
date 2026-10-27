@@ -1,0 +1,24 @@
+{
+  "run": 40349711927,
+  "source_sha": "bbfdb93243e8f316940b73d9aec8920a625ce7ee",
+  "verified_at_utc": "2026-10-26T15:43:17Z",
+  "all_steps_success": true,
+  "jobs": [
+    {
+      "id": 121666661423,
+      "name": "Verify (x86_64-pc-windows-msvc)",
+      "head_sha": "bbfdb93243e8f316940b73d9aec8920a625ce7ee",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/UraganoAngelina/lintra/actions/runs/40349711927/job/121666661423"
+    },
+    {
+      "id": 121666661900,
+      "name": "Verify (x86_64-unknown-linux-gnu)",
+      "head_sha": "bbfdb93243e8f316940b73d9aec8920a625ce7ee",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/UraganoAngelina/lintra/actions/runs/40349711927/job/121666661900"
+    }
+  ]
+}

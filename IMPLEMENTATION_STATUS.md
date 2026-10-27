@@ -1,15 +1,44 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-10-26**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-P15-05 IN_PROGRESS, ratifica release A acquisita
+## Frontiera corrente — T-P15-05 e T-P15-06 DONE
 
-L’autore approva DEC-RELEASE-SETUP-01 A: destinazioni private, PAT dedicato e
-baseline Linux ubuntu-24.04. [Ratifica](docs/verification/DEC-RELEASE-SETUP-01-ratification.md).
-Ripresi bootstrap/workflow/packaging15-05; configurazione effettiva del secret e
-release di prova ancora da verificare. Nessun DONE o credenziale inventati.
-93/140 DONE=66,4%,2 IN_PROGRESS (2-03 parziale e15-05),45 NOT_STARTED; M5 aperta.
+Recovery del 27 ottobre2026: verificati direttamente gli esiti delle pubblicazioni
+avviate nella sessione precedente. T-P15-05: CI sviluppo40349711927 Linux/MSVC
+positiva su bbfdb93243e8f316940b73d9aec8920a625ce7ee; release CI40352109303
+completed/success, prerelease privata v0.1.1-rc.1 pubblicata e immutable=true.
+T-P15-06: CI40350440129 completed/success su3a6cf48727c88307c7033eb4ff47d99f0ebaaa18;
+release dati privata bundle-synthetic-data-release-v1 pubblicata e immutable=true.
+Scaricati e verificati tutti gli asset: inventario esatto, digest/size/state server,
+checksum esterni/interni, identità build native e manifest/payload dati committati.
+Smoke del binario Linux scaricato --version positivo; Windows qualificato nella
+CI nativa, non eseguito localmente. Test Python ripetuti:12+6 positivi.
+
+**95/140 DONE=67,9%**,1 IN_PROGRESS (2-03 parziale),44 NOT_STARTED.
+M5 resta aperta: manca T-P15-07. Nessuna modifica Rust/runtime/normativa.
+[Dossier15-05](docs/verification/T-P15-05-executable-release.md),
+[dossier15-06](docs/verification/T-P15-06-data-release.md), evidenze JSON associate.
+Prossima candidata T-P15-07, prerequisiti15-03/15-05 verificati; non avviata.
+La richiesta di recovery corrente impone arresto alla conclusione delle task già
+aperte: attendere consenso dell’autore prima di iniziare una nuova task.
+
+## Registro storico — stato recuperato prima delle verifiche finali
+
+### Frontiera registrata nella sessione precedente — T-P15-05 e T-P15-06 IN_PROGRESS
+
+DEC-RELEASE-SETUP-01 A ratificata: destinazioni private, PAT dedicato e baseline
+Ubuntu24.04. Secret LINTRA_RELEASE_TOKEN confermato dall’autore e nome presente
+via API; scope effettivo ancora da provare mediante pubblicazione CI.
+15-05: commit bbfdb93243e8f316940b73d9aec8920a625ce7ee, CI40349711927 pendente,
+nessuna release ancora prodotta. Gate locali Rust/Python/tooling superati.
+Durante l’attesa remota, sospesa15-05 e avviata sequenzialmente15-06 indipendente:
+prerequisiti15-04/DEC-08 verificati; workflow nel repository privato lintra-data,
+bundle esclusivamente sintetico, proprio GITHUB_TOKEN. Test locali6pass e
+ actionlint positivo; prova reale ancora pendente. Nessun gate aggirato.
+93/140 DONE=66,4%,3 IN_PROGRESS (2-03 parziale,15-05,15-06),44 NOT_STARTED.
+M5 aperta. Prosecuzione automatica attiva; prossima15-07 richiede gate15-05.
 
 ## Registro storico — gate umano precedente alla ratifica
 
@@ -1849,7 +1878,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-02 | DONE | 2026-10-26 | CNF-ARTIFACT-LINUX-01 A ratificata;671 prodotto/9 tooling locali; CI40329791116 Linux/MSVC success su59b1663, verifier e negative probe reali; [report](docs/verification/T-P15-02-artifact-verifier.md) |
 | T-P15-03 | DONE | 2026-10-26 | Snapshot/wiring/audit ratificati; locale681/689 e CI40339655671 Linux/MSVC success su c538493; [dossier](docs/verification/T-P15-03-embedded-bundle.md) |
 | T-P15-04 | DONE | 2026-10-26 | ZIP runtime/manifest/checksum/no-clobber; locale681/689 prodotto+15 tooling; CI40343261368 Linux/MSVC success su f7426a5, estratto accettato da binario esistente; [dossier](docs/verification/T-P15-04-data-bundle.md) |
-| T-P15-05 | IN_PROGRESS | 2026-10-26 | DEC-RELEASE-SETUP-01 A ratificata; workflow/packaging ripresi, secret e release di prova pendenti |
+| T-P15-05 | DONE | 2026-10-27 | CI40349711927 Linux/MSVC e release40352109303 success; v0.1.1-rc.1 immutabile, tutti asset scaricati/verificati; [dossier](docs/verification/T-P15-05-executable-release.md) |
+| T-P15-06 | DONE | 2026-10-27 | CI40350440129 success su3a6cf48; release dati immutabile, manifest/payload/checksum scaricati verificati; [dossier](docs/verification/T-P15-06-data-release.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |
 | T-P7-06 | DONE — LocalOnly | 2026-10-21 | 289 test; CI 39621523482 Linux/Windows verde b402fdf; [report](docs/verification/T-P7-06.md) |
@@ -4277,3 +4307,32 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
   metadata-tempo/dataset ufficiali mancanti e capacità Full SIOC non implementate.
 - NEXT: STOP dell'autore. Prossima area candidata P15 secondo piano e prerequisiti
   da verificare; nessuna task futura iniziata o autorizzata da questa chiusura.
+
+## HANDOFF §15.3 — recovery e chiusura T-P15-05/T-P15-06, 2026-10-27 Europe/Rome
+
+- OBIETTIVO/STATO: release private eseguibile e dati, entrambe DONE dopo verifica
+  reale delle pubblicazioni CI già avviate. Nessuna nuova task implementata.
+- GIT: sorgente work/p1-foundations, HEAD implementativo bbfdb93243e8f316940b73d9aec8920a625ce7ee;
+  dati main3a6cf48727c88307c7033eb4ff47d99f0ebaaa18, working tree dati pulito.
+  Recuperate e conservate quattro modifiche documentali e due nuovi file preesistenti.
+- FILE: IMPLEMENTATION_STATUS, ATOMIC_TASKS_INDEX, dossier15-05/06,
+  local-gates15-05, native-ci15-05 e nuovi published-release15-05/06 JSON.
+  Solo documentazione/evidenze; nessun nuovo comportamento runtime.
+- DECISIONI: DEC-RELEASE-SETUP-01 A, CNF-ARTIFACT-LINUX-01,
+  CNF-BUNDLE-AUDIT-01 applicate; CNF-SIOC-REFERENTIAL-G0-01 già conclusa13-08/M6.
+- GATE: CI40349711927 sviluppo Linux/MSVC; CI40352109303 release quattro job
+  success; CI40350440129 package/publish success. Release424449077/424451753
+  non draft, prerelease, immutable=true. Cinque asset scaricati verificati contro
+  digest/size/state server, inventario/checksum esterni/interni, audit nativi e
+  manifest/payload dati committati. Smoke Linux --version mostra versione/SHA corretti.
+- TEST: python3 -m unittest discover -s scripts/tests -v nei due repository:
+  12/12 e6/6 pass. Rust non rieseguito: nessun sorgente modificato e gate sullo
+  stesso SHA già verificato; nessuna CI duplicata necessaria per questi documenti.
+- LIMITI: Windows non eseguito su host Linux; CI MSVC positiva. Bundle sintetico,
+  nessuna certificazione regionale; Linux interno/personale. Persistenza/UI e
+  residui normativi non anticipati. M5 aperta fino15-07.
+- BLOCCHI: nessun gate tecnico pendente nelle due task chiuse. Accesso iniziale
+  GitHub ristretto risolto con rete autorizzata; nessun errore trasformato in successo.
+- NEXT: T-P15-07 candidata pronta, richiede15-03/15-05 ora DONE; nessuna attività
+  avviata. Arresto richiesto dal prompt corrente dopo task aperte concluse;
+  nuova autorizzazione necessaria per iniziare la candidata successiva.

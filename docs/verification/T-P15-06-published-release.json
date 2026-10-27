@@ -1,0 +1,239 @@
+{
+  "task": "T-P15-06",
+  "verified_at_utc": "2026-10-27T08:19:02.885033+00:00",
+  "release": {
+    "id": 424451753,
+    "tag_name": "bundle-synthetic-data-release-v1",
+    "draft": false,
+    "prerelease": true,
+    "immutable": true,
+    "published_at": "2026-10-26T15:52:13Z",
+    "html_url": "https://github.com/UraganoAngelina/lintra-data/releases/tag/bundle-synthetic-data-release-v1"
+  },
+  "assets": [
+    {
+      "name": "schemas-synthetic-data-release-v1.zip",
+      "size": 4074,
+      "digest": "sha256:a8ed7da00d6de35ba430e2dae8f6ab85a73a9a42229d186a58c59dd82e4a799f",
+      "state": "uploaded"
+    },
+    {
+      "name": "SHA256SUMS",
+      "size": 104,
+      "digest": "sha256:c72f146db162dfb3db0778a25e6e10ac2607a8c06ecbcce8289ab9a3f73271bf",
+      "state": "uploaded"
+    }
+  ],
+  "checks": {
+    "server_digests_sizes_states": true,
+    "exact_inventory": true,
+    "external_checksums": true,
+    "committed_manifest_payloads_inventory_inner_checksums": true
+  },
+  "build_audits": {},
+  "ci": {
+    "conclusion": "success",
+    "databaseId": 40350440129,
+    "headSha": "3a6cf48727c88307c7033eb4ff47d99f0ebaaa18",
+    "jobs": [
+      {
+        "completedAt": "2026-10-26T15:51:57Z",
+        "conclusion": "success",
+        "databaseId": 121679054212,
+        "name": "package",
+        "startedAt": "2026-10-26T15:50:56Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-26T15:50:59Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-26T15:50:57Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:51:01Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-10-26T15:50:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:51:02Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 3,
+            "startedAt": "2026-10-26T15:51:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:51:04Z",
+            "conclusion": "success",
+            "name": "Test data release protocol",
+            "number": 4,
+            "startedAt": "2026-10-26T15:51:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:51:05Z",
+            "conclusion": "success",
+            "name": "Check explicit unused version and private destination",
+            "number": 5,
+            "startedAt": "2026-10-26T15:51:04Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:51:07Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 6,
+            "startedAt": "2026-10-26T15:51:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:51:53Z",
+            "conclusion": "success",
+            "name": "Package using qualified source bundler",
+            "number": 7,
+            "startedAt": "2026-10-26T15:51:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:51:53Z",
+            "conclusion": "success",
+            "name": "Verify complete packaged inventory against committed input",
+            "number": 8,
+            "startedAt": "2026-10-26T15:51:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:51:54Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+            "number": 9,
+            "startedAt": "2026-10-26T15:51:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:51:54Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 16,
+            "startedAt": "2026-10-26T15:51:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:51:55Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 17,
+            "startedAt": "2026-10-26T15:51:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:51:55Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 18,
+            "startedAt": "2026-10-26T15:51:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:51:55Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 19,
+            "startedAt": "2026-10-26T15:51:55Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/UraganoAngelina/lintra-data/actions/runs/40350440129/job/121679054212"
+      },
+      {
+        "completedAt": "2026-10-26T15:52:17Z",
+        "conclusion": "success",
+        "databaseId": 121679672719,
+        "name": "publish",
+        "startedAt": "2026-10-26T15:52:00Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-26T15:52:03Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-26T15:52:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:52:05Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-10-26T15:52:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:52:05Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 3,
+            "startedAt": "2026-10-26T15:52:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:52:06Z",
+            "conclusion": "success",
+            "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+            "number": 4,
+            "startedAt": "2026-10-26T15:52:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:52:14Z",
+            "conclusion": "success",
+            "name": "Publish complete immutable private data prerelease",
+            "number": 5,
+            "startedAt": "2026-10-26T15:52:06Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:52:14Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 9,
+            "startedAt": "2026-10-26T15:52:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:52:14Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 10,
+            "startedAt": "2026-10-26T15:52:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-26T15:52:14Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 11,
+            "startedAt": "2026-10-26T15:52:14Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/UraganoAngelina/lintra-data/actions/runs/40350440129/job/121679672719"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/UraganoAngelina/lintra-data/actions/runs/40350440129"
+  },
+  "verification_method": "Read-only GitHub API, downloaded published assets, existing archive inspectors; no publication or simulated CI context.",
+  "repository": {
+    "archived": false,
+    "full_name": "UraganoAngelina/lintra-data",
+    "private": true
+  }
+}

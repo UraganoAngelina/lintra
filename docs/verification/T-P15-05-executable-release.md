@@ -83,3 +83,24 @@ Gate locali Rust/tooling dopo bump tutti superati: 681 test default, 689 con
 feature, 15 tooling; fmt/clippy e actionlint superati. Il secret dedicato è
 confermato dall’autore e il nome risulta presente via API Actions, senza lettura
 del valore. Restano CI Linux/MSVC sul commit finale e prova release solo CI. Nessun DONE15-05 o M5 presunto.
+
+## Gate nativo verificato
+
+2026-10-26 15:43:17UTC: CI40349711927 sul commit
+bbfdb93243e8f316940b73d9aec8920a625ce7ee completed/success,
+Linux121666661900 e MSVC121666661423, tutti18step per job success.
+Evidenza strutturata T-P15-05-native-ci.json. Avviata la prerelease0.1.1-rc.1
+via release.yml; pubblicazione effettiva ancora pendente, quindi task non DONE.
+
+## Chiusura verificata — recovery 2026-10-27
+
+Stato **DONE**. Evidenza strutturata: [T-P15-05-published-release.json](T-P15-05-published-release.json).
+Pubblicazione CI completata con successo, release privata non draft e immutable=true.
+Scaricati tutti gli asset pubblicati; inventario esatto, digest SHA256, dimensioni
+e stato uploaded confrontati con API GitHub. SHA256SUMS esterno verificato;
+entrambi gli archivi nativi verificati con inspect_archive: inventario, checksum interni, versione/SHA/target/audit; binario Linux scaricato eseguito con --version e risultato corretto. Windows qualificato in CI MSVC, non eseguito su host Linux.
+Test protocollo ripetuti: 12/12 positivi. Nessun codice modificato;
+Rust non rieseguito, gate già disponibili sugli SHA implementativi invariati.
+Nessun gate pendente della task. M5 resta aperta fino a T-P15-07.
+Handoff completo in IMPLEMENTATION_STATUS.md; candidata15-07 non avviata,
+secondo arresto alla conclusione delle attività aperte richiesto nella recovery.
