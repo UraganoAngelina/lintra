@@ -337,3 +337,11 @@ pub use schema::authoring::{
     SchemaAuthoringError, TypeAlias, TypeNormalization, normalize_import_profile,
     review_imported_note,
 };
+
+// Persistence data contracts, never an executable historical-validation proof.
+pub use domain::{
+    Fingerprint, HistoricalChange, HistoricalDiff, HistoryDiff, NamespaceValue,
+    PersistenceNamespace, PersistenceSchemaScope, PersistenceTypeError, PersistentRecordIdentity,
+    RecordFingerprint, SessionState, SnapshotRevision, SourceSubmission, SourceSubmissionParts,
+    SubmissionTrace, TracePresence,
+};

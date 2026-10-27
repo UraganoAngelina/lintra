@@ -9,7 +9,7 @@ use std::{
 };
 
 /// Flow schema identity; a trace selection is deliberately outside this key.
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
 pub struct SchemaKey {
     pub flow_id: FlowId,
     pub version: SchemaVersion,
@@ -32,7 +32,8 @@ pub enum ValidationMode {
 }
 
 /// A completed validation or a controlled cancellation, never a technical error.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum RunStatus {
     CompletedValid,
     CompletedInvalid,

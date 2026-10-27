@@ -31,3 +31,6 @@ pub use reference::*;
 
 mod full_validation;
 pub use full_validation::*;
+
+mod persistence;
+pub use persistence::*;

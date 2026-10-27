@@ -8,6 +8,23 @@ impl serde::Serialize for Sha256Digest {
         serializer.serialize_str(&self.to_string())
     }
 }
+/// Decode only the fixed-size audit representation; no lossy parsing/default.
+impl<'de> serde::Deserialize<'de> for Sha256Digest {
+    fn deserialize<D: serde::Deserializer<'de>>(decoder: D) -> Result<Self, D::Error> {
+        let text = <String as serde::Deserialize>::deserialize(decoder)?;
+        if text.len() != 64 || !text.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+            return Err(serde::de::Error::custom(
+                "expected a 64-character SHA256 digest",
+            ));
+        }
+        let mut bytes = [0; 32];
+        for (index, byte) in bytes.iter_mut().enumerate() {
+            *byte = u8::from_str_radix(&text[index * 2..index * 2 + 2], 16)
+                .map_err(|_| serde::de::Error::custom("invalid SHA256 digest"))?;
+        }
+        Ok(Self(bytes))
+    }
+}
 impl fmt::Display for Sha256Digest {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for byte in self.0 {

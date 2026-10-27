@@ -1,0 +1,28 @@
+{
+  "task": "T-PERSIST-02",
+  "done": false,
+  "fmt": true,
+  "clippy_workspace_default": true,
+  "clippy_workspace_all_features": true,
+  "rust_tests": {
+    "default": {
+      "passed": 711,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 88
+    },
+    "all_features": {
+      "passed": 719,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 88
+    }
+  },
+  "new_integration_tests": 8,
+  "independent_metadata_golden": true,
+  "absent_with_record_count_rejected": true,
+  "runtime_backend_enabled": false,
+  "crypto_implemented": false,
+  "new_dependencies": false,
+  "native_ci": "pending"
+}

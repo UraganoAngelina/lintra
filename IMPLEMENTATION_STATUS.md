@@ -4851,3 +4851,15 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
 - PERSIST02:8test mirati pass, nuovo decode Presence strict valido, regression
   default/all-features in esecuzione. Nessun backend/securityproof inventato.
 - AUTO_CONTINUE, un solo agente; file utente .agents/.codex/skills-lock intatti.
+
+## HANDOFF §15.3 — T-PERSIST-02 locale verificata,2026-10-27
+
+- Code domain tipi metadata+serde,8integration e golden tecnico indipendente.
+- Campo modo/esito run esplicito nell’audit sorgente; Timestamp UTC canonico,
+  presenze file vuoto/assente distinte e decoderstrict, scope namespace protetto
+  da confronti impliciti. Fingerprint opaco non prova/implementazione crypto.
+- Fmt/Clippy default/all-features positivi;711/719test,88suite,0fail/2ignored,
+  golden esistenti invariati. Nessun nuovo crate, algoritmo o backend scelto.
+- Residuo: commit/push/CI nuova, non DONE02. UI16-02 CI40522626495 già DONE.
+- Next16-03 Nuova analisi pronta (DEC18/T14-05 e16-02 reali), da iniziare durante
+  gate indipendente02. PERSIST-03 solo dopo gate02, AUTO_CONTINUE.
