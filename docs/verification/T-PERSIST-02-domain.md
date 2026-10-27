@@ -112,3 +112,11 @@ metadata indipendente aggiornato con modo/esito reali. Test strictPresence
 ripassato: absent con record_count è errore, output Absent invariato.
 Nessun nuovo crate/feature Cargo o backend/crypto; interfacce engine invariate.
 File e payload sintetici pronti alla pubblicazione; attende CI, non DONE.
+
+## Chiusura nativa
+
+CI40528607856/e9f477b completed/success: Linux/MSVC, confronto JSONL e pixel
+UI tutti pass. Golden metadata e decoder presenza strict qualificati sui dueOS.
+T-PERSIST-02 DONE, nessun residuo. Nessuna esecuzione storica/crypto/backend
+abilitata implicitamente. PERSIST-03 ora pronta, UI16-03 già in sviluppo
+sequenziale e indipendente; prossima consegna corrente UI.

@@ -3,6 +3,20 @@
 Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — T-PERSIST-02 DONE, T-P16-03 IN_PROGRESS
+
+2026-10-27: CI40528607856/e9f477b completed/success Linux/MSVC/JSONL/RGB,
+PERSIST-02 DONE.105/140 DONE=75,0%,1 IN_PROGRESS (16-03),34 NOT_STARTED.
+UI16-03 avviata con16-02 CI40522626495 eT14-05/DEC18 verificati: modello
+catalogo reale/versione esplicita, selettori/filebrowser Slint, preflightBOM/
+terminatori65536byte e form mockup. Resolver/manifest CLI condivisi tramite
+API adapter-support, nessuna politica duplicata o nuova regola normativa.
+Preparazione sola richiesta: esecuzione worker resta16-04, avvio disabilitato
+finché collegato. UI/gate completi in lavorazione, nessun DONE16-03/M8.
+Next16-04 dopo16-03, PERSIST-03 indipendente pronta. AUTO_CONTINUE.
+
+## Registro storico — bootstrap chiuso e tipi in verifica
+
 ## Frontiera corrente — T-P16-02 DONE, T-PERSIST-02 locale in verifica
 
 2026-10-27: UI bootstrap9832d85 +fixUTF8216e662, CI40522626495 completata
@@ -2108,6 +2122,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P16-00 | DONE | 2026-10-27 | CI40485215039 positiva, riferimento chiaro approvato dall’autore; [report](docs/ui/SPIKE_REPORT.md) |
 | T-P16-01 | DONE | 2026-10-27 | CI40513168784 Linux/MSVC/compare pass, workspace e QG-5 reali; [dossier](docs/verification/T-P16-01-workspace.md) |
 | T-P16-02 | DONE | 2026-10-27 | CI40522626495 Linux/MSVC/JSONL/RGB temi tutti pass; [report](docs/verification/T-P16-02-bootstrap.md) |
+| T-P16-03 | IN_PROGRESS | 2026-10-27 | Schermata Nuova analisi, catalogo/versioni esplicite e preflight tecnici in implementazione |
 | T-P18-02 | DONE | 2026-10-27 | Due dry-run dati Linux, binario invariato e v1 golden preservato; [runbook](docs/RUNBOOK_SCHEMA_UPDATE.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P17-06 | DONE | 2026-10-27 | CI40486090209 Linux/MSVC/compare success; [dossier](docs/verification/T-P17-06-robustness.md) |
@@ -2152,7 +2167,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P13-07 | DONE | 2026-10-25 | 602 test/70 suite; CI 40183843102 Linux/MSVC success su 5dbb92c; [report](docs/verification/T-P13-07-full-service.md) |
 | T-P13-08 | DONE | 2026-10-25 | 611/72 suite, golden referenziale reale e memoria; CI40192491629 Linux/MSVC success su52762c8, letta alla ripresa; [report](docs/verification/T-P13-08-goldens-memory.md) |
 | T-PERSIST-01 | DONE | 2026-10-27 | CI40510757138 Linux/MSVC/compare JSONL pass, profilo dichiarativo senza runtime; [report](docs/verification/T-PERSIST-01-profile.md) |
-| T-PERSIST-02 | IN_PROGRESS | 2026-10-27 | Tipi domain,8test mirati e golden metadata pass, gate completi in corso; [dossier](docs/verification/T-PERSIST-02-domain.md) |
+| T-PERSIST-02 | DONE | 2026-10-27 | CI40528607856 Linux/MSVC/JSONL/RGB tutti pass; [dossier](docs/verification/T-PERSIST-02-domain.md) |
 | T-PERSIST-03..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -4863,3 +4878,17 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
 - Residuo: commit/push/CI nuova, non DONE02. UI16-02 CI40522626495 già DONE.
 - Next16-03 Nuova analisi pronta (DEC18/T14-05 e16-02 reali), da iniziare durante
   gate indipendente02. PERSIST-03 solo dopo gate02, AUTO_CONTINUE.
+
+## HANDOFF §15.3 — T-PERSIST-02 DONE / UI16-03 corrente,2026-10-27
+
+- Codee9f477b/CI40528607856 tutti4job success;711/719test/88suite locali,
+  serde/golden/strictPresence coerenti e qualificati sui dueOS, nessun residuo.
+- Tipi/codec soltanto, nessun backend/crypto/state mutation, scope ADR rispettato.
+- UI16-03 in progress: src/bundle_resolution.rs (estrazione senza cambio policy),
+  wrapperCLI/pubgetters manifest/audit, ui/src/analysis/controller, Slint controls/
+  form/browser, default UIembedded. Nessun nuovo crate o regola normativa.
+- Source mockup Nuova analisi1280×720 letto, palette/font ereditati; Windows1252
+  illustrativo non offerto, solo UTF8 realmente supportato. Nessun numero fittizio.
+- Modello preparazione compilato in verifica, form/controller da qualificare,
+  test eCI nuovi non ancora passati. Worker non anticipato, start disabilitato.
+- Next16-04 dopo03; PERSIST-03 pronta indipendente. AUTO_CONTINUE, fileutenteintatti.

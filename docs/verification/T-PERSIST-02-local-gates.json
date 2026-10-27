@@ -1,6 +1,6 @@
 {
   "task": "T-PERSIST-02",
-  "done": false,
+  "done": true,
   "fmt": true,
   "clippy_workspace_default": true,
   "clippy_workspace_all_features": true,
@@ -24,5 +24,5 @@
   "runtime_backend_enabled": false,
   "crypto_implemented": false,
   "new_dependencies": false,
-  "native_ci": "pending"
+  "native_ci": 40528607856
 }
