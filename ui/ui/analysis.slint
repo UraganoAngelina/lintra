@@ -1,0 +1,262 @@
+import { Tok } from "tokens.slint";
+import { ActionButton, FieldEdit, ChoiceBox, ReportCheck } from "controls.slint";
+
+export struct BrowserItem { label: string, directory: bool, selectable: bool }
+
+export component AnalysisForm inherits Rectangle {
+    in property <[string]> flows;
+    in property <[string]> versions;
+    in property <[string]> traces;
+    in-out property <int> flow-index: -1;
+    in-out property <int> version-index: -1;
+    in-out property <int> trace-index: -1;
+    in-out property <int> encoding-index: -1;
+    in-out property <string> file-path;
+    in-out property <bool> report-jsonl: true;
+    in-out property <bool> report-xlsx: true;
+    in-out property <bool> report-csv: false;
+    in property <string> preview-note: "Seleziona un file per il controllo preliminare.";
+    in property <string> status-note: "Scegli file, flusso, versione, tracciato ed encoding.";
+    in property <string> origin-label;
+    in property <bool> configuration-error: false;
+    in property <bool> bundle-ready: false;
+    in property <bool> ready: false;
+    in property <bool> busy: false;
+    in property <bool> worker-available: false;
+    callback file-edited(string);
+    callback file-confirmed(string);
+    callback browse();
+    callback choose-flow(int);
+    callback choose-version(int);
+    callback choose-trace(int);
+    callback choose-encoding(int);
+    callback reports-changed();
+    callback start-analysis();
+    property <bool> narrow: root.width < Tok.form-breakpoint;
+    property <length> column-width: root.narrow ? root.width - Tok.page-padding * 2 : (root.width - Tok.page-padding * 3) / 2;
+    background: Tok.bg;
+    Flickable {
+        content-width: root.width;
+        content-height: root.narrow ? Tok.configuration-height + Tok.execution-height + Tok.page-padding * 3 : Tok.execution-height + Tok.page-padding * 2;
+        Rectangle {
+            x: Tok.page-padding;
+            y: Tok.page-padding;
+            width: root.column-width;
+            height: Tok.configuration-height;
+            background: Tok.surface;
+            border-width: Tok.border-width;
+            border-color: Tok.border;
+            border-radius: Tok.card-radius;
+            Text {
+                x: Tok.card-padding; y: Tok.card-padding;
+                text: "Configurazione";
+                color: Tok.ink;
+                font-size: Tok.section-size;
+                font-weight: Tok.bold-weight;
+            }
+            Text {
+                x: Tok.card-padding; y: Tok.form-file-label-y;
+                text: "File di input (fixed-width)";
+                color: Tok.ink; font-weight: Tok.semibold-weight;
+            }
+            FieldEdit {
+                x: Tok.card-padding; y: Tok.form-file-input-y;
+                width: parent.width - Tok.card-padding * 2 - Tok.chooser-width - Tok.picker-gap;
+                text <=> root.file-path;
+                placeholder: "Percorso del file (Invio per verificare)";
+                enabled: !root.busy;
+                monospace: true;
+                edited(value) => { root.file-edited(value); }
+                confirmed(value) => { root.file-confirmed(value); }
+            }
+            ActionButton {
+                x: parent.width - Tok.card-padding - Tok.chooser-width; y: Tok.form-file-input-y;
+                width: Tok.chooser-width;
+                label: "Sfoglia"; enabled: !root.busy;
+                activated => { root.browse(); }
+            }
+            Text {
+                x: Tok.card-padding; y: Tok.form-preview-y;
+                width: parent.width - Tok.card-padding * 2;
+                text: root.preview-note; color: Tok.muted;
+                font-family: Tok.mono; font-size: Tok.caption-size;
+                overflow: elide;
+                accessible-label: root.preview-note;
+            }
+            HorizontalLayout {
+                x: Tok.card-padding; y: Tok.form-selection-label-y;
+                width: parent.width - Tok.card-padding * 2;
+                spacing: Tok.field-gap;
+                Text { text: "Flusso"; color: Tok.ink; font-weight: Tok.semibold-weight; width: (parent.width - Tok.field-gap * 2) / 3; }
+                Text { text: "Tracciato"; color: Tok.ink; font-weight: Tok.semibold-weight; width: (parent.width - Tok.field-gap * 2) / 3; }
+                Text { text: "Versione schema"; color: Tok.ink; font-weight: Tok.semibold-weight; width: (parent.width - Tok.field-gap * 2) / 3; }
+            }
+            HorizontalLayout {
+                x: Tok.card-padding; y: Tok.form-selection-input-y;
+                width: parent.width - Tok.card-padding * 2;
+                spacing: Tok.field-gap;
+                ChoiceBox {
+                    options: root.flows; current-index <=> root.flow-index;
+                    placeholder: "Scegli flusso"; enabled: root.bundle-ready && !root.busy;
+                    selected(index) => { root.choose-flow(index); }
+                }
+                ChoiceBox {
+                    options: root.traces; current-index <=> root.trace-index;
+                    placeholder: "Scegli tracciato"; enabled: root.version-index >= 0 && !root.busy;
+                    selected(index) => { root.choose-trace(index); }
+                }
+                ChoiceBox {
+                    options: root.versions; current-index <=> root.version-index;
+                    placeholder: "Scegli versione"; enabled: root.flow-index >= 0 && !root.busy;
+                    selected(index) => { root.choose-version(index); }
+                }
+            }
+            Text {
+                x: Tok.card-padding; y: Tok.form-version-note-y;
+                width: parent.width - Tok.card-padding * 2;
+                text: "Versione esplicita. Ambito: controlli locali sul tracciato scelto.";
+                color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap;
+            }
+            Text {
+                x: Tok.card-padding; y: Tok.form-encoding-label-y;
+                text: "Encoding del file";
+                color: Tok.ink; font-weight: Tok.semibold-weight;
+            }
+            ChoiceBox {
+                x: Tok.card-padding; y: Tok.form-encoding-input-y;
+                width: parent.width - Tok.card-padding * 2;
+                options: ["UTF-8"]; current-index <=> root.encoding-index;
+                placeholder: "Scegli encoding"; enabled: !root.busy;
+                selected(index) => { root.choose-encoding(index); }
+            }
+            Rectangle {
+                x: Tok.card-padding; y: Tok.form-reports-y;
+                width: parent.width - Tok.card-padding * 2;
+                height: Tok.reports-height;
+                border-width: Tok.border-width; border-color: Tok.border;
+                border-radius: Tok.control-radius;
+                Rectangle {
+                    x: Tok.field-padding; y: Tok.legend-offset;
+                    width: Tok.legend-width; height: Tok.body-size * 1.5;
+                    background: Tok.surface;
+                    Text { text: "Report"; color: Tok.ink; font-weight: Tok.semibold-weight; }
+                }
+                HorizontalLayout {
+                    x: Tok.field-padding; y: Tok.picker-gap;
+                    height: Tok.control-height;
+                    width: Tok.reports-width;
+                    spacing: Tok.control-gap;
+                    ReportCheck { label: "XLSX"; checked <=> root.report-xlsx; enabled: !root.busy; toggled(value) => { root.reports-changed(); } }
+                    ReportCheck { label: "JSONL"; checked <=> root.report-jsonl; enabled: !root.busy; toggled(value) => { root.reports-changed(); } }
+                    ReportCheck { label: "CSV"; checked <=> root.report-csv; enabled: !root.busy; toggled(value) => { root.reports-changed(); } }
+                }
+            }
+        }
+        Rectangle {
+            x: root.narrow ? Tok.page-padding : Tok.page-padding * 2 + root.column-width;
+            y: root.narrow ? Tok.configuration-height + Tok.page-padding * 2 : Tok.page-padding;
+            width: root.column-width;
+            height: Tok.execution-height;
+            background: Tok.surface; border-width: Tok.border-width;
+            border-color: Tok.border; border-radius: Tok.card-radius;
+            Text {
+                x: Tok.card-padding; y: Tok.card-padding;
+                text: "Esecuzione"; color: Tok.ink;
+                font-size: Tok.section-size; font-weight: Tok.bold-weight;
+            }
+            Text {
+                x: Tok.card-padding; y: Tok.execution-note-y;
+                width: parent.width - Tok.card-padding * 2;
+                text: root.status-note;
+                color: root.configuration-error ? Tok.error : root.ready ? Tok.accent : Tok.muted;
+                wrap: word-wrap;
+            }
+            Text {
+                x: Tok.card-padding; y: Tok.execution-origin-y;
+                width: parent.width - Tok.card-padding * 2;
+                text: root.origin-label;
+                color: Tok.muted; font-family: Tok.mono;
+                font-size: Tok.caption-size; wrap: word-wrap;
+            }
+            Text {
+                x: Tok.card-padding; y: Tok.execution-status-y;
+                width: parent.width - Tok.card-padding * 2;
+                text: "Analisi non avviata"; color: Tok.ink;
+                font-weight: Tok.semibold-weight;
+            }
+            Text {
+                x: Tok.card-padding; y: Tok.execution-help-y;
+                width: parent.width - Tok.card-padding * 2;
+                text: root.worker-available ? "Avvia l’analisi quando la configurazione è pronta." : "L’avvio dell’analisi non è disponibile in questa build.";
+                color: Tok.muted; wrap: word-wrap;
+            }
+            ActionButton {
+                x: Tok.card-padding; y: parent.height - Tok.card-padding - Tok.control-height;
+                width: Tok.primary-action-width; label: "Avvia analisi";
+                enabled: root.ready && root.worker-available && !root.busy;
+                activated => { root.start-analysis(); }
+            }
+        }
+    }
+}
+
+export component FileBrowser inherits Rectangle {
+    in-out property <string> directory;
+    in property <[BrowserItem]> entries;
+    in property <string> error-note;
+    in-out property <int> current-index: -1;
+    callback open-directory(string);
+    callback activate(int);
+    callback parent-directory();
+    callback cancel();
+    background: Tok.bg;
+    changed current-index => {
+        if (root.current-index >= 0) {
+            if (root.current-index * Tok.item-height + files.content-y < 0px) { files.content-y = -root.current-index * Tok.item-height; }
+            if ((root.current-index + 1) * Tok.item-height + files.content-y > files.height) { files.content-y = files.height - (root.current-index + 1) * Tok.item-height; }
+        }
+    }
+    VerticalLayout {
+        padding: Tok.page-padding; spacing: Tok.control-gap;
+        Text { text: "Seleziona file di input"; color: Tok.ink; font-size: Tok.section-size; font-weight: Tok.bold-weight; }
+        HorizontalLayout {
+            height: Tok.control-height; spacing: Tok.picker-gap;
+            FieldEdit { text <=> root.directory; placeholder: "Cartella"; monospace: true; confirmed(value) => { root.open-directory(value); } }
+            ActionButton { width: Tok.secondary-action-width; label: "Apri cartella"; activated => { root.open-directory(root.directory); } }
+            ActionButton { width: Tok.browser-type-column; label: "Superiore"; activated => { root.parent-directory(); } }
+        }
+        Text { text: root.error-note; color: Tok.error; height: Tok.control-height; }
+        Rectangle {
+            background: Tok.surface; border-width: Tok.border-width; border-color: Tok.border;
+            files := Flickable {
+                content-height: root.entries.length * Tok.item-height;
+                content-width: self.width;
+                for entry[index] in root.entries: Rectangle {
+                    y: index * Tok.item-height;
+                    width: files.width;
+                    height: Tok.item-height;
+                    background: root.current-index == index ? Tok.accent-tint : row-touch.has-hover ? Tok.header-bg : Tok.surface;
+                    Text { x: Tok.field-padding; width: parent.width - Tok.secondary-action-width; height: parent.height; text: entry.label; color: entry.selectable ? Tok.ink : Tok.disabled-ink; font-family: Tok.mono; vertical-alignment: center; overflow: elide; }
+                    Text { x: parent.width - Tok.browser-type-column; width: Tok.browser-type-width; height: parent.height; text: !entry.selectable ? "Non disponibile" : entry.directory ? "Cartella" : "File"; color: Tok.muted; font-size: Tok.caption-size; vertical-alignment: center; }
+                    row-touch := TouchArea { enabled: entry.selectable; clicked => { key.focus(); root.current-index = index; } }
+                }
+            }
+            key := FocusScope {
+                width: 0px;
+                key-pressed(event) => {
+                    if (event.text == Key.DownArrow && root.entries.length > 0) { root.current-index = min(root.entries.length - 1, root.current-index + 1); return accept; }
+                    if (event.text == Key.UpArrow && root.entries.length > 0) { root.current-index = max(0, root.current-index - 1); return accept; }
+                    if (event.text == Key.Return && root.current-index >= 0) { root.activate(root.current-index); return accept; }
+                    if (event.text == Key.Escape) { root.cancel(); return accept; }
+                    return reject;
+                }
+            }
+        }
+        HorizontalLayout {
+            height: Tok.control-height; spacing: Tok.control-gap;
+            Rectangle { horizontal-stretch: 1; }
+            ActionButton { width: Tok.secondary-action-width; label: "Annulla"; activated => { root.cancel(); } }
+            ActionButton { width: Tok.primary-action-width; label: "Apri selezionato"; enabled: root.current-index >= 0 && root.current-index < root.entries.length && root.entries[root.current-index].selectable; activated => { root.activate(root.current-index); } }
+        }
+    }
+}

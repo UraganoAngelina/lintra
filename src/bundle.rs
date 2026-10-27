@@ -165,6 +165,16 @@ pub struct BundleAudit {
     bundle_manifest_status: &'static str,
 }
 impl BundleAudit {
+    pub fn source(&self) -> &str {
+        self.bundle_source
+    }
+    pub fn bundle_version(&self) -> Option<&str> {
+        self.bundle_version.as_deref()
+    }
+    pub fn manifest_status(&self) -> &str {
+        self.bundle_manifest_status
+    }
+
     pub fn external(manifest: Option<&BundleManifest>) -> Self {
         Self {
             bundle_source: "external",
@@ -287,4 +297,40 @@ impl crate::ReferenceDataPreparer for ManifestReferenceDataPreparer {
         }
         self.preparer.prepare(dependencies, policy)
     }
+}
+
+/// Adapter manifest discovery shared by CLI/UI. No per-file fallback, symlink
+/// acceptance or inference of a version from a directory. Absent implicit
+/// metadata alone is optional; explicit/present invalid metadata is an error.
+pub fn external_bundle_manifest_path(
+    configured: Option<&std::path::Path>,
+    schema: &std::path::Path,
+    reference: &std::path::Path,
+) -> Result<Option<std::path::PathBuf>, std::io::Error> {
+    let explicit = configured.is_some();
+    let candidate = if explicit {
+        configured.map(std::path::Path::to_path_buf)
+    } else if schema.file_name() == Some(std::ffi::OsStr::new("schemas"))
+        && reference.file_name() == Some(std::ffi::OsStr::new("reference-data"))
+        && schema.parent() == reference.parent()
+    {
+        schema.parent().map(|p| p.join("MANIFEST.json"))
+    } else {
+        None
+    };
+    let Some(path) = candidate else {
+        return Ok(None);
+    };
+    let metadata = match std::fs::symlink_metadata(&path) {
+        Ok(value) => value,
+        Err(error) if !explicit && error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
+        Err(error) => return Err(error),
+    };
+    if !metadata.is_file() || metadata.file_type().is_symlink() {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "bundle manifest must be a regular file, not a symlink",
+        ));
+    }
+    Ok(Some(std::fs::canonicalize(path)?))
 }

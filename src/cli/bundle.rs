@@ -21,33 +21,8 @@ fn manifest_path(
     schema: &std::path::Path,
     reference: &std::path::Path,
 ) -> Result<Option<PathBuf>, Failure> {
-    let explicit = args.bundle_manifest.is_some();
-    let candidate = if explicit {
-        args.bundle_manifest.clone()
-    } else if schema.file_name() == Some(std::ffi::OsStr::new("schemas"))
-        && reference.file_name() == Some(std::ffi::OsStr::new("reference-data"))
-        && schema.parent() == reference.parent()
-    {
-        schema.parent().map(|p| p.join("MANIFEST.json"))
-    } else {
-        None
-    };
-    let Some(path) = candidate else {
-        return Ok(None);
-    };
-    let metadata = match fs::symlink_metadata(&path) {
-        Ok(value) => value,
-        Err(error) if !explicit && error.kind() == io::ErrorKind::NotFound => return Ok(None),
-        Err(error) => return Err(error.into()),
-    };
-    if !metadata.is_file() || metadata.file_type().is_symlink() {
-        return Err(io::Error::new(
-            io::ErrorKind::InvalidInput,
-            "bundle manifest must be a regular file, not a symlink",
-        )
-        .into());
-    }
-    Ok(Some(fs::canonicalize(path)?))
+    external_bundle_manifest_path(args.bundle_manifest.as_deref(), schema, reference)
+        .map_err(Into::into)
 }
 
 pub(super) fn compose(

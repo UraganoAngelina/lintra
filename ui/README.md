@@ -3,8 +3,18 @@
 Il membro `lintra-ui` dipende dall’API pubblica `lintra`; core e CLI restano
 nel package originale e non dipendono da Slint. Bootstrap T-P16-02: finestra
 base, selettore chiaro/scuro e Informazioni con il vero widget AboutSlint.
-Le schermate di analisi, risultati, worker ed export appartengono alle task
-successive. Questa finestra non presenta risultati o validazioni simulate.
+T-P16-03 aggiunge Nuova analisi: catalogo reale, versione sempre esplicita,
+tracciato, file, UTF-8 e formati di report. Il controllo preliminare legge al
+massimo64KiB, rifiuta BOM tramite il core e descrive soltanto il campione di
+terminatori, senza modificare il file. Invio conferma un percorso digitato;
+Sfoglia apre il selettore integrato (cartelle prima dei file). La sorgente dati
+è visibile: stessa risoluzione CLI per directory esterne/ambiente/eseguibile,
+poi bundle incorporato. Un bundle esterno incompleto o errato non consente fallback.
+
+L’ambito attuale è LocalOnly sul tracciato selezionato, dichiarato nella schermata.
+La configurazione prepara una ValidationRequest e un vero ValidationService;
+non esegue validazione. Avvia resta disabilitato fino alla task worker16-04.
+Risultati ed export appartengono alle task successive: nessun esito simulato.
 
 ```sh
 cargo run --package lintra-ui --locked

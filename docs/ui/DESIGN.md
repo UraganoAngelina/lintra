@@ -49,3 +49,27 @@ AboutSlint ufficiale riservato a Informazioni per l’attribuzione richiesta.
 Finestra vuota di base: nessuna nuova gerarchia dei risultati introdotta.
 Confronto corpo/secondario/selezionato minimo4.84:1 nei due temi e scale.
 Capture diagnostiche in bootstrap, non sostituiscono i riferimenti approvati.
+
+## Nuova analisi16-03
+
+Fonte visiva: `lintra_ui_html/Nuova analisi (in esecuzione).png`,2×,
+canvas1280×720. Card configurazione (24,80,604,420), esecuzione
+(652,80,604,516), padding24/gap24. Il layout sotto1100px impila i pannelli
+in un’area scorrevole; minimo640×480. Cinque font e palette del prototipo
+restano la fonte; header#16232E ereditato dal sorgente Slint, mentre il PNG
+HTML mostra#14202B. Nessun nuovo riferimento approvato sostituito.
+
+Il PNG rappresenta un’esecuzione con numeri illustrativi. In16-03 il pannello
+mostra stato reale della configurazione e avvio indisponibile: non riproduce
+percentuali, contatori o animazioni fittizie. Anche Windows1252 illustrativo
+non è proposto: il motore corrente espone UTF8. File, schema e encoding
+rimangono selezioni esplicite. La scelta del flusso azzera versione/tracciato;
+quella della versione azzera il tracciato. Editing del percorso invalida il
+vecchio campione. Nessuna etichetta «ultima versione» o certificazione implicita.
+I checkbox sono intenzioni di export, non file già prodotti.
+
+Controlli nativi personalizzati con focus, tastiera e semantica accessibile;
+selettore cartelle integrato senza runtime GTK/portal o dipendenze nuove.
+Impeccable Operate applicata alla gerarchia fornita, Hallmark in-thread a
+palette/token/focus/contrasto e capture native; no-ai-slop ai testi aderenti
+alle capacità. I detector HTML non costituiscono un gate Slint.

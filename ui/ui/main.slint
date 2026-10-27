@@ -1,60 +1,55 @@
 import { Tok } from "tokens.slint";
 import { AboutSlint, Palette } from "std-widgets.slint";
-export { Tok }
+import { AnalysisForm, FileBrowser, BrowserItem } from "analysis.slint";
+export { Tok, BrowserItem }
 
-// Primitive controls keep the supplied visual language. Focus, pointer and
-// accessibility activation all invoke the same action; no decorative toggles.
-component ActionButton inherits Rectangle {
-    in property <string> label;
-    in property <bool> selected: false;
-    callback activated();
-    height: Tok.control-height;
-    background: root.selected ? Tok.accent-tint : pointer.has-hover ? Tok.header-bg : Tok.surface;
-    border-radius: Tok.control-radius;
-    border-width: key.has-focus ? Tok.focus-width : Tok.border-width;
-    border-color: key.has-focus || root.selected ? Tok.accent : Tok.border;
-    accessible-role: button;
-    accessible-label: root.label;
-    accessible-action-default => { root.activated(); }
-    forward-focus: key;
-    Text {
-        text: root.label;
-        color: root.selected ? Tok.accent : Tok.ink;
-        font-family: Tok.sans;
-        font-size: Tok.body-size;
-        font-weight: Tok.semibold-weight;
-        horizontal-alignment: center;
-        vertical-alignment: center;
-    }
-    pointer := TouchArea {
-        width: parent.width;
-        height: parent.height;
-        clicked => { key.focus(); root.activated(); }
-    }
-    key := FocusScope {
-        width: 0px;
-        key-pressed(event) => {
-            if (event.text == Key.Space || event.text == Key.Return) {
-                root.activated();
-                return accept;
-            }
-            return reject;
-        }
-    }
-}
-
-component ThemeChoice inherits ActionButton {
-    accessible-role: radio-button;
-    accessible-checked: root.selected;
-}
+import { ActionButton, ThemeChoice } from "controls.slint";
 
 export component MainWindow inherits Window {
     in-out property <bool> dark-mode <=> Tok.dark-mode;
     in-out property <bool> show-info: false;
     in property <string> version;
+    in property <[string]> flows;
+    in property <[string]> versions;
+    in property <[string]> traces;
+    in-out property <int> flow-index: -1;
+    in-out property <int> version-index: -1;
+    in-out property <int> trace-index: -1;
+    in-out property <int> encoding-index: -1;
+    in-out property <string> file-path;
+    in-out property <bool> report-jsonl: true;
+    in-out property <bool> report-xlsx: true;
+    in-out property <bool> report-csv: false;
+    in property <string> preview-note: "Seleziona un file per il controllo preliminare.";
+    in property <string> status-note: "Scegli file, flusso, versione, tracciato ed encoding.";
+    in property <string> origin-label: "Dati non disponibili";
+    in property <string> schema-label: "Nessuno schema selezionato";
+    in property <bool> configuration-error: false;
+    in property <bool> bundle-ready: false;
+    in property <bool> analysis-ready: false;
+    in property <bool> busy: false;
+    in property <bool> worker-available: false;
+    in-out property <bool> browser-open: false;
+    in-out property <string> browser-directory;
+    in property <[BrowserItem]> browser-entries;
+    in property <string> browser-error;
+    in-out property <int> browser-index: -1;
+    callback file-edited(string);
+    callback file-confirmed(string);
+    callback browse();
+    callback choose-flow(int);
+    callback choose-version(int);
+    callback choose-trace(int);
+    callback choose-encoding(int);
+    callback reports-changed();
+    callback start-analysis();
+    callback browser-directory-chosen(string);
+    callback browser-activate(int);
+    callback browser-parent();
+    callback browser-cancel();
     title: "Lintra";
     preferred-width: Tok.canvas-width;
-    preferred-height: Tok.canvas-height;
+    preferred-height: Tok.analysis-height;
     min-width: Tok.min-width;
     min-height: Tok.min-height;
     background: Tok.bg;
@@ -84,7 +79,19 @@ export component MainWindow inherits Window {
                     font-size: Tok.brand-size;
                     font-weight: Tok.bold-weight;
                     vertical-alignment: center;
-                    horizontal-stretch: 1;
+                    horizontal-stretch: 0;
+                }
+                if root.width >= Tok.header-breakpoint: Text {
+                    text: "Validatore di flussi regionali";
+                    color: Tok.nav-muted; vertical-alignment: center;
+                }
+                Rectangle { horizontal-stretch: 1; }
+                if root.width >= Tok.header-breakpoint: Text {
+                    text: root.origin-label;
+                    width: Tok.origin-width;
+                    font-family: Tok.mono; font-size: Tok.caption-size;
+                    color: Tok.nav-muted; overflow: elide; vertical-alignment: center;
+                    accessible-label: root.origin-label;
                 }
                 Text {
                     text: "Tema";
@@ -115,6 +122,36 @@ export component MainWindow inherits Window {
         Rectangle {
             vertical-stretch: 1;
             background: Tok.bg;
+            if !root.show-info && !root.browser-open: AnalysisForm {
+                flows: root.flows; versions: root.versions; traces: root.traces;
+                flow-index <=> root.flow-index; version-index <=> root.version-index;
+                trace-index <=> root.trace-index; encoding-index <=> root.encoding-index;
+                file-path <=> root.file-path;
+                report-jsonl <=> root.report-jsonl; report-xlsx <=> root.report-xlsx;
+                report-csv <=> root.report-csv;
+                preview-note: root.preview-note; status-note: root.status-note;
+                origin-label: root.origin-label; configuration-error: root.configuration-error;
+                bundle-ready: root.bundle-ready; ready: root.analysis-ready;
+                busy: root.busy; worker-available: root.worker-available;
+                file-edited(value) => { root.file-edited(value); }
+                file-confirmed(value) => { root.file-confirmed(value); }
+                browse => { root.browse(); }
+                choose-flow(index) => { root.choose-flow(index); }
+                choose-version(index) => { root.choose-version(index); }
+                choose-trace(index) => { root.choose-trace(index); }
+                choose-encoding(index) => { root.choose-encoding(index); }
+                reports-changed => { root.reports-changed(); }
+                start-analysis => { root.start-analysis(); }
+            }
+            if !root.show-info && root.browser-open: FileBrowser {
+                directory <=> root.browser-directory;
+                entries: root.browser-entries; current-index <=> root.browser-index;
+                error-note: root.browser-error;
+                open-directory(path) => { root.browser-directory-chosen(path); }
+                activate(index) => { root.browser-activate(index); }
+                parent-directory => { root.browser-parent(); }
+                cancel => { root.browser-cancel(); }
+            }
             if root.show-info: Rectangle {
                 x: (parent.width - self.width) / 2;
                 y: Tok.page-padding;
@@ -127,6 +164,8 @@ export component MainWindow inherits Window {
                 VerticalLayout {
                     padding: Tok.page-padding;
                     Text { text: "Lintra " + root.version; color: Tok.ink; font-weight: Tok.semibold-weight; }
+                    Text { text: root.schema-label; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
+                    Text { text: root.origin-label; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
                     // Actual licensed widget, reachable from the top-level control.
                     AboutSlint { }
                 }

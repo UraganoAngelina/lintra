@@ -23,5 +23,13 @@
     "introduced": "black/red-orange theme, keyboard/pointer selector, licensed AboutSlint",
     "render_evidence": "native software RGB/PNG 1x/2x; no supported web files for sloplint",
     "claims": "base window only; no simulated validation or results"
+  },
+  "analysis_16_03": {
+    "target": "ui/ui/analysis.slint and controls.slint",
+    "mode": "Operate; inherited supplied reference",
+    "reference": "Nuova analisi (in esecuzione).png, 2560x1440, 2x",
+    "preserved": "light palette/fonts, configuration and execution card geometry",
+    "claims": "real catalog and bounded byte probe; no running counters, implicit latest version, clinical rules or execution",
+    "native_evidence": "model/controller tests and software captures; browser detector not applicable"
   }
 }

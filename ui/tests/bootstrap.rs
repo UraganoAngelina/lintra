@@ -1,4 +1,5 @@
 //! Native headless software pixels; one platform/test per process.
+#![cfg(feature = "embedded-bundle")]
 use lintra_ui::{MainWindow, Tok};
 use slint::platform::software_renderer::{MinimalSoftwareWindow, RepaintBufferType};
 use slint::platform::{Platform, PointerEventButton, WindowAdapter, WindowEvent};
@@ -47,7 +48,7 @@ fn capture(
         renderer.render(buffer.make_mut_slice(), width as usize);
     }));
     let bytes = buffer.as_bytes();
-    let index = ((400 * scale * width + 100 * scale) * 3) as usize;
+    let index = ((400 * scale * width + 10 * scale) * 3) as usize;
     assert_eq!(&bytes[index..index + 3], background);
     fs::write(output.join(format!("{name}-{scale}x.rgb")), bytes).unwrap();
     let mut writer = png::Encoder::new(
@@ -89,6 +90,16 @@ fn native_software_bootstrap_has_real_theme_controls_fonts_and_attribution() {
     ui.show().unwrap();
     let output = Path::new(env!("CARGO_MANIFEST_DIR")).join("../target/ui-bootstrap-visual");
     fs::create_dir_all(&output).unwrap();
+    // Resolve a real embedded catalog. Nothing is selected implicitly, and
+    // these portable empty-form captures contain no machine-specific paths.
+    let controller = lintra_ui::controller::install_configuration(
+        &ui,
+        lintra_ui::analysis::AnalysisBundle::builtin(),
+    );
+    assert!(ui.get_bundle_ready());
+    assert_eq!(ui.get_version_index(), -1);
+    assert_eq!(ui.get_trace_index(), -1);
+    assert!(!ui.get_analysis_ready());
     assert!(!ui.get_dark_mode());
     let tokens = ui.global::<Tok>();
     assert_eq!(tokens.get_sans().as_str(), "IBM Plex Sans");
@@ -160,6 +171,81 @@ fn native_software_bootstrap_has_real_theme_controls_fonts_and_attribution() {
         }
         ui.set_show_info(false);
         ui.set_dark_mode(false);
+    }
+    // Actual controller callbacks exercise dependent selection, bounded probing,
+    // invalidation and the filesystem browser without executing validation.
+    let directory = tempfile::tempdir().unwrap();
+    let input = directory.path().join("input-sintetico.txt");
+    fs::write(&input, b"001A  \r\n").unwrap();
+    // Exercise the actual dropdown popup with pointer and keyboard. A list
+    // selection must reach the controller, not merely repaint the placeholder.
+    click(&window, 80.0, 280.0);
+    // Use Slint's published key codes instead of backend-specific scancodes.
+    for key in [
+        slint::platform::Key::DownArrow,
+        slint::platform::Key::Return,
+    ] {
+        let text: slint::SharedString = key.into();
+        window.dispatch_event(WindowEvent::KeyPressed { text: text.clone() });
+        window.dispatch_event(WindowEvent::KeyReleased { text });
+    }
+    assert_eq!(ui.get_flow_index(), 0);
+    assert_eq!(ui.get_version_index(), -1);
+    assert_eq!(ui.get_trace_index(), -1);
+    ui.invoke_choose_version(0);
+    ui.invoke_choose_trace(0);
+    ui.invoke_choose_encoding(0);
+    ui.invoke_file_confirmed(input.to_str().unwrap().into());
+    assert!(ui.get_analysis_ready(), "{}", ui.get_status_note());
+    assert!(ui.get_preview_note().contains("CRLF"));
+    assert!(controller.borrow().prepared().is_some());
+    assert!(!ui.get_worker_available());
+    ui.set_report_csv(true);
+    ui.invoke_reports_changed();
+    assert!(controller.borrow().prepared().unwrap().reports.csv);
+    ui.invoke_file_edited("altro-file.txt".into());
+    assert!(!ui.get_analysis_ready());
+    assert!(!ui.get_preview_note().contains("CRLF"));
+    assert!(controller.borrow().prepared().is_none());
+    controller.borrow_mut().open_browser(directory.path());
+    assert!(ui.get_browser_open());
+    ui.invoke_browser_activate(0);
+    assert!(!ui.get_browser_open());
+    assert!(ui.get_analysis_ready());
+    ui.invoke_choose_flow(0);
+    assert_eq!(ui.get_version_index(), -1);
+    assert_eq!(ui.get_trace_index(), -1);
+    assert!(!ui.get_analysis_ready());
+    // Clear machine-specific paths before persisting diagnostic PNGs.
+    ui.invoke_file_edited("".into());
+    ui.invoke_choose_flow(-1);
+    ui.invoke_choose_encoding(-1);
+    ui.set_report_csv(false);
+    ui.invoke_reports_changed();
+    // Native render at the reference's logical size, with explicit palette
+    // and geometry anchors. These are diagnostic captures, not a new approval.
+    window.dispatch_event(WindowEvent::ScaleFactorChanged { scale_factor: 1.0 });
+    window.set_size(PhysicalSize::new(1280, 720));
+    for (dark, name) in [(false, "light"), (true, "dark")] {
+        ui.set_dark_mode(dark);
+        let mut image = SharedPixelBuffer::<Rgb8Pixel>::new(1280, 720);
+        window.request_redraw();
+        assert!(window.draw_if_needed(|r| {
+            r.render(image.make_mut_slice(), 1280);
+        }));
+        let surface = if dark { [20, 24, 28] } else { [255, 255, 255] };
+        for (x, y) in [(30, 90), (660, 90), (30, 490), (660, 585)] {
+            let i = (y * 1280 + x) * 3;
+            assert_eq!(&image.as_bytes()[i..i + 3], surface);
+        }
+        let path = output.join(format!("analysis-{name}-reference-size.png"));
+        let mut encoder = png::Encoder::new(fs::File::create(path).unwrap(), 1280, 720);
+        encoder.set_color(png::ColorType::Rgb);
+        encoder
+            .write_header()
+            .unwrap()
+            .write_image_data(image.as_bytes())
+            .unwrap();
     }
     // Smallest supported viewport: controls remain reachable after native resize.
     window.dispatch_event(WindowEvent::ScaleFactorChanged { scale_factor: 1.0 });

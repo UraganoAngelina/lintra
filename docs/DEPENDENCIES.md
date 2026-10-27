@@ -161,3 +161,9 @@ font, package già presente nel core, senza nuova versione. Palette chiara
 originale e scuro nero/rosso/arancione. Nessuna dipendenza GUI nel core/CLI.
 La allowlist di packaging UI rimane16-08; libfontconfig1-dev è setup runner
 Linux, non nuova dipendenza CLI né promessa di UI già distribuibile.
+
+## T-P16-03 — test metadata
+
+Riutilizzata serde_json1.0.151/arbitrary_precision già qualificata nel core,
+solo dev-dependency UI per fixture/schema reali dei test. Nessuna nuova versione
+o libreria di dialogo/OS; browser costruito con Slint e metadata std::fs.

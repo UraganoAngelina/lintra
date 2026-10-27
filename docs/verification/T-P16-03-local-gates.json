@@ -1,0 +1,45 @@
+{
+  "task": "T-P16-03",
+  "local_gates_complete": false,
+  "native_ci": null,
+  "fmt": true,
+  "clippy_workspace_default": true,
+  "clippy_workspace_all_features": true,
+  "core_graph_without_slint": true,
+  "python_tests": 21,
+  "actionlint": "1.7.12 pass; external shellcheck/pyflakes unavailable",
+  "missing_font_actual_build_rejected": true,
+  "original_approved_results_unchanged": true,
+  "captures": "diagnostic, not a newly approved visual baseline",
+  "rust_tests": {
+    "workspace_default": {
+      "passed": 727,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 89
+    },
+    "workspace_all_features": {
+      "passed": 727,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 89
+    },
+    "core_no_default_features": {
+      "passed": 709,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 83
+    }
+  },
+  "raw_capture_sha256": {
+    "dark-1x.rgb": "30748d556079677164a3142935684b3f56da261d60b4c74077025b7261a20513",
+    "dark-2x.rgb": "9664d74ce97c754d76c7905af2b91213bbe70eb9e04c2e9f90970f38255e99da",
+    "light-1x.rgb": "2890b69305cf45fa9ff0250994c6b6b69b76d361d67d008767af80a16c35c004",
+    "light-2x.rgb": "84b65b9e2ec457e5f0f5d62f5a99fcad27fdefe488f670fc6748291cf53e09a5"
+  },
+  "diagnostic_capture_sha256": {
+    "dark-1280x720.png": "4c6b63367ff1454395511bb3ade70c54b7446be3f4f1e3db541e760225a40c0a",
+    "light-1280x720.png": "a56c5c476cfe83ffcb5a4100f9a3b74e7db6401bc691192812514217fa52f159"
+  },
+  "contrast_tsv": "scale\ttheme\tbody_contrast\tmuted_contrast\tselected_contrast\n1\tlight\t15.24849555806192\t6.46165504951419\t4.8412322676696276\n1\tdark\t17.970189404083907\t9.99705752006253\t6.457922104537495\n2\tlight\t15.24849555806192\t6.46165504951419\t4.8412322676696276\n2\tdark\t17.970189404083907\t9.99705752006253\t6.457922104537495\n"
+}

@@ -61,6 +61,10 @@ jobs:
         run: cargo clippy --workspace --all-targets --all-features --target ${{ matrix.target }} --locked -- -D warnings
       - name: Test all features
         run: cargo test --workspace --all-features --target ${{ matrix.target }} --locked
+      # UI's embedded feature is additive. Verify the independent core build
+      # too: workspace feature unification must not hide a no-bundle regression.
+      - name: Test core without embedded bundle
+        run: cargo test -p lintra --no-default-features --target ${{ matrix.target }} --locked
       - name: Verify workspace and core dependency boundary
         run: python scripts/check_workspace.py
       - name: Verify actual build rejects missing embedded font

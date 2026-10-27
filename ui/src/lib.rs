@@ -1,4 +1,4 @@
-//! Desktop bootstrap only; no validation, fabricated results or storage here.
+//! Desktop configuration adapter; execution is delegated to ValidationService.
 slint::include_modules!();
 
 /// Select the actual native software renderer explicitly. An environment
@@ -9,3 +9,7 @@ pub fn select_native_software_renderer() -> Result<(), slint::PlatformError> {
         .renderer_name("software".into())
         .select()
 }
+
+pub mod analysis;
+
+pub mod controller;

@@ -15,6 +15,15 @@ Preparazione sola richiesta: esecuzione worker resta16-04, avvio disabilitato
 finché collegato. UI/gate completi in lavorazione, nessun DONE16-03/M8.
 Next16-04 dopo16-03, PERSIST-03 indipendente pronta. AUTO_CONTINUE.
 
+## Aggiornamento locale16-03 —2026-10-27
+
+Modello/configurazione e form implementati,8test modello e test Slint/controller
+positivi; regressioni workspace default/all-features727test/89suite,0fail/2ignored.
+Clippy default/all-features e21Python/guard/actionlint positivi. In completamento:
+core senza embedded, prova dropdown puntatore/tastiera e rendering finale dopo
+allineamento etichette, font-negative su build reale. Nessuna CI nuova ancora;
+16-03 resta IN_PROGRESS, non DONE/M8. Report docs/verification/T-P16-03-analysis.md.
+
 ## Registro storico — bootstrap chiuso e tipi in verifica
 
 ## Frontiera corrente — T-P16-02 DONE, T-PERSIST-02 locale in verifica
@@ -4892,3 +4901,19 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
 - Modello preparazione compilato in verifica, form/controller da qualificare,
   test eCI nuovi non ancora passati. Worker non anticipato, start disabilitato.
 - Next16-04 dopo03; PERSIST-03 pronta indipendente. AUTO_CONTINUE, fileutenteintatti.
+
+## HANDOFF §15.3 — T-P16-03 regressioni workspace positive,2026-10-27
+
+- HEAD55f73c3, modifiche03 non committate; PERSIST-02 già DONE e9f477b/CI40528607856.
+- Resolver/manifest CLI estratti per uso adapter senza cambio priorità; auditgetter,
+  AnalysisBundle/Selection/Preview/Controller, Slint form/browser/controls e token.
+-8test modello, Slint software/controller,727test default e727all-features/89suite,
+ 0fail/2ignored. Clippy pre-rifiniture/21Python/guard/actionlint pass.
+- Ultima rifinitura: etichette allineate ai campi, probe IO distinto da BOM,
+  dropdown keyboard/scroll e invalidazione anteprima. Gate UI/Clippy finali in coda
+  dopo il core no-default-features; font-negative potrebbe esaurire timeout locale
+  se attende lockCargo: ripetere senza contesa, non considerare errore come pass.
+- Tutti i log target/verification-16-03-*.log; capture native target/ui-bootstrap-visual.
+- Residuo: gate locali finali, capture/report/evidence, commit/push eCI Linux/MSVC/RGB.
+  Nessuna esecuzione/report simulati, avvio16-04 ancora disabilitato. No backend/PHI.
+- Next16-04 dopo gate03; PERSIST-03 indipendente pronta duranteCI. AUTO_CONTINUE.
