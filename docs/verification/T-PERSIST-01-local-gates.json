@@ -1,0 +1,26 @@
+{
+  "task": "T-PERSIST-01",
+  "done": false,
+  "fmt": true,
+  "clippy_default_all_targets": true,
+  "clippy_all_features_all_targets": true,
+  "rust_tests": {
+    "default": {
+      "passed": 698,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 81
+    },
+    "all_features": {
+      "passed": 706,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 81
+    }
+  },
+  "new_tests": 8,
+  "new_compile_fail_doctest": 1,
+  "new_dependencies": false,
+  "runtime_persistence_enabled": false,
+  "native_ci": "pending"
+}

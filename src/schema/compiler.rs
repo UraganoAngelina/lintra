@@ -8,10 +8,13 @@ use crate::schema::{
 };
 #[path = "joins.rs"]
 mod joins;
+#[path = "persistence_profile.rs"]
+mod persistence_profile;
 #[path = "projection.rs"]
 mod projection;
 #[path = "reference.rs"]
 mod reference;
+pub use persistence_profile::CompiledPersistenceProfile;
 
 /// DEC-18 tooling validates only reference declarations. No CompiledFlowSchema
 /// is produced, so this cannot make an unsupported schema executable.

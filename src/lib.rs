@@ -129,7 +129,9 @@ pub use schema::repository::{
     read_raw_schema_file,
 };
 
+pub use schema::compiled::compiler::CompiledPersistenceProfile;
 pub use schema::compiled::compiler::{ReferenceDeclarationError, compile_reference_dependencies};
+pub use schema::compiled::{PersistencePolicy, PolicyKey, VersionCompatibility};
 pub use schema::linter::{SchemaIssue, SchemaIssueCode, SchemaIssueSeverity, lint_raw_schema};
 
 pub use schema::{SchemaCompilationError, SchemaCompiler};

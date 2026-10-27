@@ -4583,3 +4583,12 @@ Nessuna14-05/P15. Source utente e baseline protetti inalterati.
   e test default/all-features positivi. Nessun backend, sicurezza o audit simulati.
 - Residuo PERSIST-01: report, commit/push e CI. Next16-01 pronta dopo questo
   lavoro sequenziale; temi in16-02, nessun consenso ordinario richiesto.
+
+## HANDOFF §15.3 — T-PERSIST-01 locale verificata,2026-10-27
+
+- Prerequisiti P3/P10 verificati, ADR-PERSIST-001 applicata; API dichiarativa
+  separata SchemaCompiler::compile_persistence_profile, runtime gate invariato.
+- File: src/schema/persistence_profile.rs, compiler/lib export, otto test, dossier.
+- Fmt/Clippy default/all-features pass;698/706test,81suite,0fail/2ignored.
+- Nessun backend/algoritmo protezione scelto o PHI; nessun JSON FROZEN modificato.
+- Residuo: CI nativa dopo pubblicazione, non DONE. Next16-01 indipendente pronta.
