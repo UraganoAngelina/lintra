@@ -37,6 +37,11 @@ jobs:
         run: python -m unittest discover -s spikes/ui-prototype -p test_*.py -v
       - name: Check pinned Rust toolchain
         run: rustup show active-toolchain
+      - name: Install Linux fontconfig build dependency
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes libfontconfig1-dev
       - name: Format prototype
         run: cargo fmt --manifest-path spikes/ui-prototype/Cargo.toml -- --check
       - name: Clippy prototype

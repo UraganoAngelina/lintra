@@ -109,3 +109,14 @@ fluent-light e controlli filtro/export del prototipo (non ancora azioni
 applicative). Nessun pass della UI di produzione o16-01 implicito.
 Skill application dettagliata in SKILL_APPLICATION.md; selector/dark theme
 richiesti sono registrati e pianificati nel bootstrap successivo, non ignorati.
+
+## Prima CI e correzione del runner Linux
+
+Commit32c30afb7026d88e73bba157e80cd59bced762b1 pubblicato, run40483413398.
+MSVC122119115916 success; Linux122119115803 fallito in Clippy perché
+yeslogic-fontconfig-sys6.0.1 richiede fontconfig.pc, assente dal runnerUbuntu.
+Il confronto finale è skipped: non è prova di identità cross-OS. Log acquisito
+direttamente; aggiunta la sola dipendenza di build libfontconfig1-dev nel job
+Linux, senza modificare il codice, i pixel, le tolleranze o i gate. Nessun
+package installato sul computer dell’autore. Non è una nuova allowlist runtime
+UI approvata: il packaging e le sue dipendenze restano task16-08.
