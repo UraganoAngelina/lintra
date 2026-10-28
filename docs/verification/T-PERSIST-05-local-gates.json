@@ -1,0 +1,49 @@
+{
+  "task": "T-PERSIST-05",
+  "code_commit": "66aafa413c82a13a2e111a6b2bdedb7e46e74d90",
+  "done": false,
+  "native_windows_pending": true,
+  "logs": {
+    "all_features": {
+      "main_suites": 95,
+      "passed": 769,
+      "failed": 0,
+      "ignored": 3,
+      "helper_summaries": 2,
+      "sha256": "c78d2d3b9e0533e2f468c9921c2f4c2dd512c44a447ab932fead73d73a77d069"
+    },
+    "default": {
+      "main_suites": 95,
+      "passed": 769,
+      "failed": 0,
+      "ignored": 3,
+      "helper_summaries": 2,
+      "sha256": "e13867c321d6e0dc89d7d01cf5912b35c5443360b0fe7e9b1ebbd063f8611355"
+    },
+    "clippy_default": {
+      "sha256": "8ac2632e04f35215e2a90eb4525f03b4d672849c05e6b9e8e43549fad27f1cdf",
+      "finished": true,
+      "has_error": false
+    },
+    "clippy_all_features": {
+      "sha256": "056af58631ad5eb509edcf0299f428aab38255391d8eedf747cb4ad3e7768df2",
+      "finished": true,
+      "has_error": false
+    },
+    "tooling_clippy": {
+      "sha256": "7d69e3483a4287e8311d2cf2987e1a033647a87cc9cc23a69db69a47563685b9",
+      "finished": true,
+      "has_error": false
+    },
+    "tooling_test": {
+      "sha256": "04fe78181dfc54a21580c90a8f01c5b70add3c0fdbef4b2e6d03f00fba56467c",
+      "finished": true,
+      "has_error": false
+    },
+    "python": {
+      "sha256": "3aa1d252e628735920b68266dc76b35b1d822caa535e026b5db3cf2e21a55ff9",
+      "finished": true,
+      "has_error": false
+    }
+  }
+}

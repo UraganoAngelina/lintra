@@ -1,0 +1,23 @@
+name: Windows SQLite boundary diagnostics
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: windows-2025
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install pinned native toolchain
+        run: rustup show active-toolchain
+      - name: Install native target
+        run: rustup target add x86_64-pc-windows-msvc
+      # Diagnostic only. This does not replace CI or the release/volume gate.
+      - name: Exercise real Windows boundaries and transaction recovery
+        run: cargo test -p lintra --lib persistence::sqlite --target x86_64-pc-windows-msvc --locked -- --nocapture

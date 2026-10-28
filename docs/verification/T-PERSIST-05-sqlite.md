@@ -193,3 +193,15 @@ verifica TLS integra, token passato solo su stdin e rimosso sui redirect fra hos
 Nessuna modifica DNS del sistema, credenziale scritta in file o controllo TLS
 indebolito. I file di rete temporanei restano fuori Git; nessun URL firmato nel
 report versionato. Il download gh ordinario aveva errori DNS/handshake transitori.
+
+Misura locale finale66aafa4 terminata exit0 e hash before/after uguali: artefatto
+concreto/JSON in T-PERSIST-05-local-benchmark.json. Working tree dirty dichiarato:
+qualificatore aggiornato poi versionato in fb6281e; codice Linux produttivo66aafa4.
+Btrfs reale, gcc16.2.1, sourceID amalgamation atteso confermato. Volumi10k/100k/300k;
+lookup p95 rispettivamente0,266/6,392/0,186ms; commit61,131/284,290/370,532s;
+picco processo20,0/137,8/400,3MB decimali. Processo riapertura~9,2MB,3identità
+recuperate per volume. Misura eseguita durante gli altri gate locali: contesa I/O
+non isolata, non un nuovo SLA. Cache2MiB, DELETE/EXTRA, indici SEARCH verificati;
+confronto senza indice e prova busy/retry nel JSON. Nessuna SQLite runtime di
+sistema negli import dell'eseguibile misurato. Il candidato materializzato spiega
+il costo O(n) della preparazione: nessuna promessa di staging streaming.

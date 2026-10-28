@@ -173,7 +173,22 @@ pub(super) fn check_private(
     }
     let _owned = Local(descriptor);
     // SAFETY: both owner and user SID are valid while their owners remain alive.
-    if owner.is_null() || dacl.is_null() || unsafe { EqualSid(owner, user.sid()) } == 0 {
+    if owner.is_null() || dacl.is_null() {
+        return Err(bad());
+    }
+    // SAFETY: both SIDs borrow live OS-validated buffers.
+    let owner_is_self = unsafe { EqualSid(owner, user.sid()) } != 0;
+    if !owner_is_self {
+        #[cfg(test)]
+        {
+            // SAFETY: the owner SID belongs to the live security descriptor.
+            let owner_is_system = unsafe { IsWellKnownSid(owner, WinLocalSystemSid) } != 0;
+            // SAFETY: same validated SID; only a boolean is reported.
+            let owner_is_admin = unsafe { IsWellKnownSid(owner, WinBuiltinAdministratorsSid) } != 0;
+            eprintln!(
+                "SQLite file ACL owner classification: self={owner_is_self}, system={owner_is_system}, builtin_admin={owner_is_admin}, directory={dir}"
+            );
+        }
         return Err(bad());
     }
     let (mut control, mut revision) = (0, 0);
