@@ -3,26 +3,26 @@
 Consuntivo aggiornato al **2026-10-28**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — PERSIST04 gate correttivo, UI05 in sviluppo
+## Frontiera corrente — PERSIST04 DONE, UI05 in qualificazione
 
-2026-10-28: ripresa da dd7135e (`inter session staging commit`), branch
-work/p1-foundations; remoto iniziale identico e working tree pulito.
-109/140 DONE = 77,9%; PERSIST04 IN_PROGRESS, UI04 DONE/CI40589848698.
+2026-10-28:110/140 DONE =78,6%; UI05 IN_PROGRESS,29 NOT_STARTED.
+PERSIST04 codedd7135e +fixc475f0d, CI40658672940 tutti4job completed/success:
+Linux/MSVC, JSONLbyte-identico e pixel nativi tutti positivi. PrimaCI40656244960
+fallita per solo lock tooling; correzione preserva ogni pin/checksum precedente.
+750/750test workspace e14tooling, fmt/Clippy/oraclePython/governance pass.
+Nessun backend reale, provider OS, default secret o modalità storica attivati.
 
-PERSIST04:750/750 test workspace default/all-features,0failed/2ignored,93suite;
-fmt/Clippy core/workspace/all-features, oracle Python HMAC e governance pass.
-CI40656244960 Linux supera anche core senza feature, font/pixel e benchmark;
-poi fallisce Clippy tooling perché il lock separato xtask non include HMAC.
-Correzione lock preserva tutti i pin/checksum e aggiunge solo i quattro crate
-qualificati nel salvataggio. Clippy tooling locked/offline pass; test in verifica.
-Windows/primaCI ancora aperti, niente DONE04 prima della CI corretta.
+UI05 implementata: JSONL offset index/cache128/filtri esatti/worker cancellabile,
+Slint tabella/dettaglio e selezione per offset. Sei reader test e primo test
+release nativo pass; capture chiare/scure ispezionate e overlap corretto.
+300k/1M offset2,4/8MB, cache128; primo P95release17–23ms1×,28–33ms2×.
+Review ownership rafforza anche il candidato nel canale; gate release finale
+in ripetizione, regressioni workspace default/all-features in corso.
+Non DONE05/M8 prima di gate locali e CI completa/scrolling release nativo.
 
-UI16-05 avviata indipendente: indice offset/cache128/filtri/thread candidati,
-Slint tabella/dettaglio in preparazione. Nuovi file non ancora collegati o
-compilati; nessun gate05 dichiarato passato, nessuna baseline approvata cambiata.
-Report docs/verification/T-P16-05-results.md; single-agent, no delega/daemon.
-AUTO_CONTINUE: pubblicare correzione04 dopo test, poi UI05/gate; PERSIST05
-richiederà gate04 e decisione esplicita sul backend, nessuna scelta implicita.
+PERSIST05 ora pronta al preflight dell'ADR: confronto filesystem/SQLite e scelta
+backend esplicitamente approvata prima dell'implementazione, come da prompt.
+AUTO_CONTINUE single-agent; niente delega/background daemon o norme inventate.
 
 ## T-P16-04 locale completata —2026-10-27
 
@@ -2176,6 +2176,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P16-01 | DONE | 2026-10-27 | CI40513168784 Linux/MSVC/compare pass, workspace e QG-5 reali; [dossier](docs/verification/T-P16-01-workspace.md) |
 | T-P16-02 | DONE | 2026-10-27 | CI40522626495 Linux/MSVC/JSONL/RGB temi tutti pass; [report](docs/verification/T-P16-02-bootstrap.md) |
 | T-P16-03 | DONE | 2026-10-27 | Code0a2121b, CI40577920052 Linux/MSVC/JSONL/RGB success; catalogo e versione espliciti, preflight tecnico e form nativi |
+| T-P16-04 | DONE | 2026-10-27 | Code311dcc6+357400e, CI40589848698 tutti4job success; worker bounded e cancellazione nativa qualificati |
+| T-P16-05 | IN_PROGRESS | 2026-10-28 | Indice JSONL/cache128/filtri e dettaglio;6test reader e primo test nativo pass; correzioni capture/release/regressioni in verifica |
 | T-P18-02 | DONE | 2026-10-27 | Due dry-run dati Linux, binario invariato e v1 golden preservato; [runbook](docs/RUNBOOK_SCHEMA_UPDATE.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P17-06 | DONE | 2026-10-27 | CI40486090209 Linux/MSVC/compare success; [dossier](docs/verification/T-P17-06-robustness.md) |
@@ -2222,7 +2224,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-PERSIST-01 | DONE | 2026-10-27 | CI40510757138 Linux/MSVC/compare JSONL pass, profilo dichiarativo senza runtime; [report](docs/verification/T-PERSIST-01-profile.md) |
 | T-PERSIST-02 | DONE | 2026-10-27 | CI40528607856 Linux/MSVC/JSONL/RGB tutti pass; [dossier](docs/verification/T-PERSIST-02-domain.md) |
 | T-PERSIST-03 | DONE | 2026-10-27 | Code49a3f4e, CI40581933176 su5bc8402 tutti4job success; snapshot/trait/CAS/abort/reopen fake qualificati |
-| T-PERSIST-04 | IN_PROGRESS | 2026-10-27 | Protezione PK/provider chiavi e audit: protocollo04 documentato, implementazione in avvio |
+| T-PERSIST-04 | DONE | 2026-10-28 | Code dd7135e+fixc475f0d, CI40658672940 tutti4job success;750/750 locali+14tooling, HMAC/provider/audit senza storage reale |
 | T-PERSIST-05..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -5149,3 +5151,41 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
 - AUTO_CONTINUE, single-agent; prossimo gate04 dopo fine primaCI Windows.
 
 Gate tooling completato: Clippy/fmt e test standalone locked/offline PASS; 14 test positivi, 1 ignored (probe release separati in CI). Residuo04: CI corretta, non DONE.
+
+## HANDOFF §15.3 — UI05 implementata, qualificazione in corso, 2026-10-28
+
+- Base c475f0d pubblicata dopo retry HTTP/1.1, TLS/credenziali invariati.
+- CI correttiva PERSIST04:40658672940 su c475f0d; prima lettura Linux ha superato
+  lock tooling e sta verificando release, Windows testallfeatures; non DONE.
+- UI05: DTO decoder/offset index/Model lazy con cache128 e job cancellabile,
+  controller Timer/Weak/selection by offset, report Arc owned e pannelli Slint.
+- Sei reader test e prima integrazione reale Slint positivi: index2,4MB/8MB,
+ 78decoded per300k/1M, cache bounded. Le capture hanno rivelato x implicita
+  centrata: fix x0 e layout dettaglio, da riqualificare. Clippy UI dopo fix
+  collapsible_if pass; check/golden/vecchi font/palette preservati.
+- Test aggiunti per puntatore/tastiera/rotella, buffer reused a1×/2×;
+  release test in compilazione. Nessun PASS di fluidità dedotto dal debug.
+- Nuovo workflow ui-results.yml qualifica il modello reale ottimizzato sui dueOS;
+  CI ordinaria conserva regressioni/grafo/RGB e allega capture diagnostiche05.
+- Skills tre richieste applicate, Hallmark adattato nativo: Impeccable detect[]
+  e sloplint exit2/no web files non costituiscono prove di rendering Slint.
+- Rimossi solo8vecchi temporanei linker e cacheincrementali anteriori27/10,
+  nessun sorgente/lock/font/riferimento utente cancellato. Spazio libero14GB.
+- Residui05: test dopo ultime correzioni, capture finali, regressioni, release
+  locale/native, commit/push/CI. M8 aperta; nessun nuovo contratto normativo.
+- AUTO_CONTINUE, un solo agente; PERSIST05 richiede gate04 e backend approvato.
+
+## HANDOFF §15.3 — T-PERSIST-04 DONE, 2026-10-28
+
+- Code dd7135e utente e fixc475f0d; CI40658672940 su c475f0d tutti4job success.
+- Linux e MSVC: fmt/Clippy/test workspace default/all-features/core, font/grafo,
+  tooling14test piùprobe release, release riproducibile e smoke README positivi.
+  Compare JSONL/RGB effettivamente completed/success, nessun gate presunto.
+-750/750test locali93suite,0fail/2ignored;14tooling/1ignored, oraclePython HMAC
+  e governance pass. Protezione/config/audit descritti nel report consultabile.
+- File ripresi src/persistence/protection.rs, export, Cargo/rootlock e test/golden;
+  fix xtask/Cargo.lock, report/oracle/evidenze. PHI/secret reali mai usati.
+- Nessun backend, plugin storico, provider OS o regola clinica attivata.
+- Next indipendente UI05 già in qualificazione; PERSIST05 preflight ADR pronta
+  ma backend non scelto implicitamente.110/140DONE=78,6%, M8 ancora aperta.
+- AUTO_CONTINUE, un solo agente; non fermarsi al solo handoff.

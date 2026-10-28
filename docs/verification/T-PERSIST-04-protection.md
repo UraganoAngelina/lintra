@@ -170,3 +170,13 @@ correzione e CI nuova, senza cancellare la prima mentre Windows termina.
 Nessun DONE o milestone prima del gate nativo completo sulla correzione.
 
 Gate tooling completato: Clippy/fmt e test standalone locked/offline PASS; 14 test positivi, 1 ignored (probe release separati in CI). Residuo04: CI corretta, non DONE.
+
+## Chiusura — 2026-10-28
+
+Code `dd7135e` e correzione `c475f0d`, [CI40658672940](https://github.com/UraganoAngelina/lintra/actions/runs/40658672940)
+completed/success su tutti quattro i job Linux, MSVC, confronto JSONL e pixel.
+Qualificati anche tooling locked, release riproducibile e README smoke nativi.
+Dossier strutturato in T-PERSIST-04-native-ci.json; task DONE, nessun residuo04.
+Non abilita storico/storage reale, provider OS, rotazione/migrazione o normative.
+La prossima05 deve confrontare filesystem/SQLite e ottenere la scelta backend
+richiesta dal suo prompt; UI05 indipendente resta in verifica dei propri gate.

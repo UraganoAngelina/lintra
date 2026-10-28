@@ -123,9 +123,8 @@
     "tests/fixtures/persistence/protected-projection.json": "2e9347b50a6d8e9a2fe1523e430d6de2beaae03a998806076f65b336610ffa91",
     "xtask/Cargo.lock": "f43166318826d3f107380185d1b2eb7a0cbab264df764f33ee753196cd189506"
   },
-  "native_ci": 40656244960,
-  "native_ci_complete": false,
-  "native_linux_tooling_failure": "standalone xtask lock not updated; corrective lock preserves all previous pins/checksums",
+  "native_ci": 40658672940,
+  "native_ci_complete": true,
   "native_linux_core_and_workspace_tests": "PASS",
   "local_interrupted_attempt": {
     "command": "cargo test --workspace --all-features --locked",
@@ -133,5 +132,7 @@
     "reason": "explicit stop after sustained linker I/O contention; repeated with two jobs and passed"
   },
   "privacy": "Synthetic/RFC fixtures only; no production key/default storage or clinical rule activated",
-  "done": false
+  "done": true,
+  "initial_ci": 40656244960,
+  "initial_native_linux_tooling_failure": "standalone xtask lock not updated; corrective lock preserves all previous pins/checksums"
 }
