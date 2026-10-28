@@ -34,3 +34,5 @@ pub use full_validation::*;
 
 mod persistence;
 pub use persistence::*;
+
+pub(crate) use persistence::ProtectionEvidence;

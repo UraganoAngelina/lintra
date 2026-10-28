@@ -1,0 +1,45 @@
+name: SQLite local backend qualification
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sqlite-qualification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    name: SQLite release (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - os: windows-2025
+            target: x86_64-pc-windows-msvc
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - name: Install pinned native toolchain
+        run: rustup show active-toolchain
+      - name: Install target
+        run: rustup target add ${{ matrix.target }}
+      - name: Measure actual SQLite at 10k, 100k and 300k with static linking gate
+        run: python scripts/qualify_sqlite.py --target ${{ matrix.target }} --output target/sqlite-qualification.json
+      - name: Upload measured native evidence
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sqlite-qualification-${{ matrix.target }}
+          path: target/sqlite-qualification.json
+          if-no-files-found: error
+          retention-days: 7

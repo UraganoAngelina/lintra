@@ -8,6 +8,26 @@ use chrono::{DateTime, SecondsFormat, Utc};
 use serde::{Deserialize, Serialize};
 use std::{error::Error, fmt};
 
+/// Private provenance capability, not part of a metadata value's Eq/Hash or
+/// public wire representation. Authentication MUST use the protector's MAC
+/// verification, never this deliberately value-neutral equality implementation.
+#[derive(Clone, Default)]
+pub(crate) struct ProtectionEvidence(pub(crate) Option<[u8; 32]>);
+impl PartialEq for ProtectionEvidence {
+    fn eq(&self, _other: &Self) -> bool {
+        true
+    }
+}
+impl Eq for ProtectionEvidence {}
+impl std::hash::Hash for ProtectionEvidence {
+    fn hash<H: std::hash::Hasher>(&self, _state: &mut H) {}
+}
+impl fmt::Debug for ProtectionEvidence {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str("ProtectionEvidence([redacted])")
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum PersistenceTypeError {
@@ -224,6 +244,8 @@ pub struct PersistentRecordIdentity {
     trace_id: TraceId,
     key_kind: String,
     key_fingerprint: Fingerprint,
+    #[serde(skip)]
+    pub(crate) protection_evidence: ProtectionEvidence,
 }
 impl PersistentRecordIdentity {
     pub fn new(
@@ -248,6 +270,7 @@ impl PersistentRecordIdentity {
             trace_id,
             key_kind,
             key_fingerprint,
+            protection_evidence: ProtectionEvidence::default(),
         })
     }
     pub fn namespace(&self) -> &PersistenceNamespace {
@@ -381,6 +404,8 @@ pub struct SourceSubmission {
     traces: Vec<SubmissionTrace>,
     fingerprint: Fingerprint,
     state: SessionState,
+    #[serde(skip)]
+    pub(crate) protection_evidence: ProtectionEvidence,
 }
 impl SourceSubmission {
     pub fn new(mut p: SourceSubmissionParts) -> Result<Self, PersistenceTypeError> {
@@ -428,7 +453,14 @@ impl SourceSubmission {
             traces: p.traces,
             fingerprint: p.fingerprint,
             state: p.state,
+            protection_evidence: ProtectionEvidence::default(),
         })
+    }
+    /// Only the protection layer may replace the opaque preparation fingerprint
+    /// with its keyed representation. An old provenance seal is invalidated.
+    pub(crate) fn set_protected_fingerprint(&mut self, value: Fingerprint) {
+        self.fingerprint = value;
+        self.protection_evidence = ProtectionEvidence::default();
     }
     pub fn namespace(&self) -> &PersistenceNamespace {
         &self.namespace

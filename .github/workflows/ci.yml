@@ -92,6 +92,8 @@ jobs:
           retention-days: 7
       - name: Smoke synthetic benchmark and verify expected validation counts
         run: cargo test --bench validation --target ${{ matrix.target }} --locked -- --output target/benchmark-smoke.json --smoke
+      - name: Smoke the real SQLite adapter with indexed lookups and process restart
+        run: cargo test --bench persistence --target ${{ matrix.target }} --locked -- --output target/sqlite-smoke.json --smoke
       - name: Check tooling formatting
         run: cargo fmt --manifest-path xtask/Cargo.toml -- --check
       - name: Clippy tooling

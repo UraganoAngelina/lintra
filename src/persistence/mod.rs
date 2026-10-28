@@ -31,6 +31,21 @@ pub enum PersistenceError {
     },
     NothingStaged,
     StorageUnavailable,
+    StorageUninitialized,
+    StorageAlreadyExists,
+    UnsupportedStorageVersion {
+        found: i64,
+    },
+    UnrecognizedStorage,
+    CorruptStorage,
+    UnsafeStorageLocation,
+    UnsupportedStorageFilesystem,
+    UnsupportedStorageConfiguration,
+    StorageBusy,
+    Protection(ProtectionError),
+    CommitOutcomeUnknown {
+        revision: SnapshotRevision,
+    },
 }
 impl fmt::Display for PersistenceError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -43,6 +58,23 @@ impl fmt::Display for PersistenceError {
             Self::GenerationConflict { .. } => "persistence generation conflict",
             Self::NothingStaged => "no snapshot staged",
             Self::StorageUnavailable => "persistence storage unavailable",
+            Self::StorageUninitialized => "local persistence storage is not initialized",
+            Self::StorageAlreadyExists => "local persistence storage already exists",
+            Self::UnsupportedStorageVersion { .. } => "unsupported persistence storage version",
+            Self::UnrecognizedStorage => "unrecognized local persistence storage",
+            Self::CorruptStorage => "local persistence storage is corrupt or inconsistent",
+            Self::UnsafeStorageLocation => {
+                "unsafe persistence root, permissions, or filesystem boundary"
+            }
+            Self::UnsupportedStorageFilesystem => "unsupported local persistence filesystem",
+            Self::UnsupportedStorageConfiguration => {
+                "required persistence durability configuration is unavailable"
+            }
+            Self::StorageBusy => "local persistence storage is busy",
+            Self::Protection(_) => "persistence protection preflight or provenance failed",
+            Self::CommitOutcomeUnknown { .. } => {
+                "commit outcome requires verification; rollback is not confirmed"
+            }
         })
     }
 }
@@ -54,12 +86,14 @@ impl Error for PersistenceError {}
 pub struct StoredIdentity {
     identity: PersistentRecordIdentity,
     record_fingerprint: Fingerprint,
+    pub(crate) protection_evidence: crate::domain::ProtectionEvidence,
 }
 impl StoredIdentity {
     pub fn new(identity: PersistentRecordIdentity, record_fingerprint: Fingerprint) -> Self {
         Self {
             identity,
             record_fingerprint,
+            protection_evidence: crate::domain::ProtectionEvidence::default(),
         }
     }
     pub fn identity(&self) -> &PersistentRecordIdentity {
@@ -150,6 +184,30 @@ pub trait PersistentContextRepository: Send + Sync {
         namespace: &PersistenceNamespace,
         submission_id: &str,
     ) -> Result<Option<SourceSubmission>, PersistenceError>;
+    /// A lost commit response is not evidence of rollback. Resolve by immutable
+    /// submission identity and exact snapshot value; never retry as a new run.
+    /// The rare successful recovery may materialize one snapshot, not history.
+    fn resolve_commit(
+        &self,
+        candidate: &HistoricalSnapshot,
+    ) -> Result<CommitResolution, PersistenceError> {
+        let Some(source) =
+            self.load_submission(candidate.namespace(), candidate.source().submission_id())?
+        else {
+            return Ok(CommitResolution::NotPublished);
+        };
+        if source != *candidate.source() {
+            return Ok(CommitResolution::ConflictingSubmission);
+        }
+        match self.load_snapshot(candidate.namespace(), candidate.revision())? {
+            Some(snapshot) if snapshot == *candidate => {
+                Ok(CommitResolution::Published(CommitReceipt {
+                    revision: candidate.revision(),
+                }))
+            }
+            _ => Ok(CommitResolution::ConflictingSubmission),
+        }
+    }
     /// None is an empty namespace; no sentinel snapshot/revision is fabricated.
     /// expected_generation=None means exactly no previously committed snapshot.
     fn begin_transaction(
@@ -168,3 +226,15 @@ pub trait PersistenceTransaction: Send {
     fn commit(self: Box<Self>) -> Result<CommitReceipt, PersistenceError>;
     fn abort(self: Box<Self>) -> Result<(), PersistenceError>;
 }
+
+/// Read-only resolution of an attempt with a known immutable submission and
+/// candidate revision. It never reapplies staging or interprets CAD approval.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum CommitResolution {
+    Published(CommitReceipt),
+    NotPublished,
+    ConflictingSubmission,
+}
+
+mod sqlite;
+pub use sqlite::{SQLitePersistenceAdapter, SQLiteStorageSettings};

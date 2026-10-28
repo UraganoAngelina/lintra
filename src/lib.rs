@@ -365,3 +365,5 @@ pub use persistence::{
     IdentityProtectionScope, IdentityProtector, PersistenceKey, PersistenceKeyProvider,
     ProtectionAudit, ProtectionError,
 };
+
+pub use persistence::{CommitResolution, SQLitePersistenceAdapter, SQLiteStorageSettings};

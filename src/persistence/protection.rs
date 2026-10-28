@@ -2,7 +2,8 @@
 //! proves schema compatibility, writes storage, or discovers/generates a key.
 use crate::{
     Fingerprint, FlowId, JoinKey, NamespaceValue, PersistenceNamespace, PersistenceSchemaScope,
-    PersistenceTypeError, PersistentRecordIdentity, Sha256Digest, StoredIdentity, TraceId,
+    PersistenceTypeError, PersistentRecordIdentity, Sha256Digest, SourceSubmission, StoredIdentity,
+    TraceId,
 };
 use hmac::{Hmac, KeyInit, Mac};
 use serde::{Deserialize, Serialize};
@@ -25,6 +26,8 @@ pub enum ProtectionError {
     InvalidContext,
     InvalidAudit,
     KeyMismatch,
+    Unattested,
+    InvalidAttestation,
     LengthOverflow,
     Metadata(PersistenceTypeError),
 }
@@ -37,6 +40,8 @@ impl fmt::Display for ProtectionError {
             Self::InvalidContext => "invalid persistence protection metadata",
             Self::InvalidAudit => "invalid persistence protection audit",
             Self::KeyMismatch => "persistence protection key differs from historical context",
+            Self::Unattested => "persistence value has no verified protection provenance",
+            Self::InvalidAttestation => "persistence protection provenance is invalid",
             Self::LengthOverflow => "persistence protection component is too large",
             Self::Metadata(_) => "invalid protected identity metadata",
         })
@@ -269,7 +274,7 @@ impl IdentityProtector {
             mac.finalize().into_bytes().to_vec(),
         )
         .map_err(ProtectionError::Metadata)?;
-        PersistentRecordIdentity::new(
+        let mut identity = PersistentRecordIdentity::new(
             scope.namespace.clone(),
             scope.flow.clone(),
             scope.schema.clone(),
@@ -277,7 +282,14 @@ impl IdentityProtector {
             scope.key_kind.clone(),
             fingerprint,
         )
-        .map_err(ProtectionError::Metadata)
+        .map_err(ProtectionError::Metadata)?;
+        identity.protection_evidence.0 = Some(
+            self.value_mac(b"identity-proof", &identity)?
+                .finalize()
+                .into_bytes()
+                .into(),
+        );
+        Ok(identity)
     }
     /// The caller supplies the canonical selected projection and an explicit
     /// definition digest. Neither field selection nor cross-version equivalence
@@ -301,7 +313,124 @@ impl IdentityProtector {
             mac.finalize().into_bytes().to_vec(),
         )
         .map_err(ProtectionError::Metadata)?;
-        Ok(StoredIdentity::new(identity, fingerprint))
+        let mut stored = StoredIdentity::new(identity, fingerprint);
+        stored.protection_evidence.0 =
+            Some(self.record_mac(&stored)?.finalize().into_bytes().into());
+        Ok(stored)
+    }
+    /// Separate purpose protects metadata/provenance without altering the v1
+    /// key/record fingerprints. Public DTO serialization omits private evidence.
+    fn value_mac<T: serde::Serialize>(
+        &self,
+        purpose: &[u8],
+        value: &T,
+    ) -> Result<HmacSha256, ProtectionError> {
+        let bytes = serde_json::to_vec(value).map_err(|_| ProtectionError::InvalidContext)?;
+        let mut mac = self.mac(purpose)?;
+        component(&mut mac, &bytes)?;
+        Ok(mac)
+    }
+    fn record_mac(&self, value: &StoredIdentity) -> Result<HmacSha256, ProtectionError> {
+        let mut mac = self.value_mac(b"record-proof", value.identity())?;
+        component(
+            &mut mac,
+            &serde_json::to_vec(value.record_fingerprint())
+                .map_err(|_| ProtectionError::InvalidContext)?,
+        )?;
+        Ok(mac)
+    }
+    pub fn verify_identity(
+        &self,
+        identity: &PersistentRecordIdentity,
+    ) -> Result<(), ProtectionError> {
+        let fp = identity.key_fingerprint();
+        if fp.key_id() != self.key_id
+            || fp.protection_scheme() != KEY_SCHEME
+            || fp.as_bytes().len() != 32
+        {
+            return Err(ProtectionError::InvalidAttestation);
+        }
+        let tag = identity
+            .protection_evidence
+            .0
+            .as_ref()
+            .ok_or(ProtectionError::Unattested)?;
+        self.value_mac(b"identity-proof", identity)?
+            .verify_slice(tag)
+            .map_err(|_| ProtectionError::InvalidAttestation)
+    }
+    pub fn verify_stored_identity(&self, value: &StoredIdentity) -> Result<(), ProtectionError> {
+        self.verify_identity(value.identity())?;
+        let fp = value.record_fingerprint();
+        let definition = fp
+            .protection_scheme()
+            .strip_prefix("lintra.hmac-sha256.record.v1:")
+            .filter(|s| {
+                s.len() == 64
+                    && s.bytes()
+                        .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+            })
+            .ok_or(ProtectionError::InvalidAttestation)?;
+        let _ = definition;
+        if fp.key_id() != self.key_id || fp.as_bytes().len() != 32 {
+            return Err(ProtectionError::InvalidAttestation);
+        }
+        let tag = value
+            .protection_evidence
+            .0
+            .as_ref()
+            .ok_or(ProtectionError::Unattested)?;
+        self.record_mac(value)?
+            .verify_slice(tag)
+            .map_err(|_| ProtectionError::InvalidAttestation)
+    }
+    /// Explicit preparation step for an invio. The existing opaque preparation
+    /// fingerprint is wrapped together with all metadata, never stored verbatim
+    /// through this API. Repeating preparation on an attested value is idempotent.
+    pub fn protect_submission(
+        &self,
+        source: &SourceSubmission,
+    ) -> Result<SourceSubmission, ProtectionError> {
+        if source.protection_evidence.0.is_some() {
+            self.verify_submission(source)?;
+            return Ok(source.clone());
+        }
+        if source.fingerprint().protection_scheme() == "lintra.hmac-sha256.submission.v1" {
+            return Err(ProtectionError::Unattested);
+        }
+        let mac = self.value_mac(b"submission", source)?;
+        let fp = Fingerprint::new(
+            "lintra.hmac-sha256.submission.v1".into(),
+            self.key_id.clone(),
+            mac.finalize().into_bytes().to_vec(),
+        )
+        .map_err(ProtectionError::Metadata)?;
+        let mut protected = source.clone();
+        protected.set_protected_fingerprint(fp);
+        protected.protection_evidence.0 = Some(
+            self.value_mac(b"submission-proof", &protected)?
+                .finalize()
+                .into_bytes()
+                .into(),
+        );
+        Ok(protected)
+    }
+    pub fn verify_submission(&self, source: &SourceSubmission) -> Result<(), ProtectionError> {
+        let fp = source.fingerprint();
+        if fp.key_id() != self.key_id
+            || fp.protection_scheme() != "lintra.hmac-sha256.submission.v1"
+            || fp.as_bytes().len() != 32
+        {
+            return Err(ProtectionError::InvalidAttestation);
+        }
+        let tag = source
+            .protection_evidence
+            .0
+            .as_ref()
+            .ok_or(ProtectionError::Unattested)?;
+        self.value_mac(b"submission-proof", source)?
+            .verify_slice(tag)
+            .map_err(|_| ProtectionError::InvalidAttestation)
     }
 }
 

@@ -200,3 +200,28 @@ nel solo adapter UI per decodificare le righe JSONL richieste dalla tabella.
 serde_json passa da dev a runtime; serde derive riusa il package esistente.
 Nessun nuovo crate/versione/driver o libreria di cache; offset, cache bounded,
 thread e file usano std. Licenze MIT/Apache-2.0, stessa toolchain qualificata.
+
+## T-PERSIST-05 — SQLite, qualificazione prima dell’integrazione
+
+ADR-PERSIST-002 ratificata28/10, eccezione N-20 circoscritta a SQLite C statico.
+Verificati prima dei manifest prodotto: rusqlite=0.41.0 MIT/MSRV1.89, default
+off/bundled+cache+hooks; libsqlite3-sys0.39.1 MIT/MSRV1.88 e amalgamation
+SQLite3.54.1 in pubblico dominio; hashlink0.12.2 MIT/Apache2/MSRV1.85,
+fallible-iterator0.3.0 e fallible-streaming-iterator0.1.9 MIT/Apache2,
+vcpkg0.2.15 MIT/Apache2 (metadati build, non motore di sistema).
+Solo6package aggiunti nella risoluzione isolata; pin/checksum precedenti
+preservati. Provenienza/hash C e H in T-PERSIST-05-dependencies.json;
+toolchain1.99.1 compatibile. hooks serve al fault test nel commit SQLite,
+non abilita trace/log SQL con dati e non carica estensioni applicative.
+
+cc1.6.0 già qualificato compila il C fornito dal crate: niente bindgen/libclang,
+OpenSSL/SQLCipher o SQLite di sistema. CC Linux e MSVC nativi; CRT statico già
+configurato, allowlist DLL OS preservata. Nessun compiler/server/SQLite da
+installare sulla postazione finale. libc0.2.191 e windows-sys0.61.2 diventano
+dipendenze dirette mirate, con stessi pin/checksum già qualificati: owner/mode/
+filesystem Linux e ACL/volume/working-set Windows. Advapi32/kernel32 sono
+API OS già ammesse. Licenze/manifests/header letti nei package verificati da
+Cargo; sourceID SQLite e feature effettive conservati nel dossier. Cache
+statement8 e cache SQLite2MiB da impostare/verificare; nessuna cache globale
+applicativa. Fonti: docs.rs/rusqlite/0.41.0, sorgenti libsqlite3-sys0.39.1,
+documenti SQLite PRAGMA/atomiccommit/howtocompile e ratifica dell’autore.
