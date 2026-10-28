@@ -173,3 +173,11 @@ Stato locale completo, task IN_PROGRESS/WAITING_GATE fino a CI ordinaria e
 scrolling release nativi Linux/MSVC. M8 e distribuzione UI rimangono aperte.
 Next UI06 soltanto dopo gate05; il preflight backend05 ha ADR separata da
 approvare, non una dipendenza nuova della UI.
+
+## Chiusura nativa
+
+DONE: code d17fe02/head4f7acb9, CI40668541764 tutti4job success e
+release-scrolling40668592173 entrambi i job success. Misure/capture native
+scaricate e archiviate in T-P16-05-native-ci.json. Nessun confronto byte dei
+tempi dinamici fraOS; confronto bootstrap/JSONL effettivo positivo. M8 non
+completa, export06 e packaging08 ancora futuri.

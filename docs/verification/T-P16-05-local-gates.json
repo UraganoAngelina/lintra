@@ -173,9 +173,9 @@
   },
   "last_ui_clippy": "PASS; all targets after final test assertion",
   "bootstrap_rgb_unchanged": true,
-  "native_ci": null,
-  "native_scrolling_ci": null,
-  "done": false,
+  "native_ci": 40668541764,
+  "native_scrolling_ci": 40668592173,
+  "done": true,
   "approved_reference_changed": false,
   "dependencies": "same qualified serde/serde_json versions, no new packages",
   "captures_sha256": {
