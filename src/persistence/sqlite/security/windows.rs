@@ -318,4 +318,33 @@ mod tests {
             PersistenceError::UnsafeStorageLocation
         );
     }
+    #[test]
+    fn file_and_volume_boundaries_on_native_windows() {
+        // Exercise each boundary independently. Diagnostics contain only static
+        // stage labels/results, never paths, SIDs, keys or persisted values.
+        let base = std::env::current_dir()
+            .unwrap()
+            .join("target/sqlite-stage-probe");
+        fs::create_dir_all(&base).unwrap();
+        let parent = tempfile::tempdir_in(base).unwrap();
+        let path = parent.path().join("archive");
+        create_directory(&path).unwrap();
+        check_private(&path, &fs::metadata(&path).unwrap(), true).expect("private directory ACL");
+        let raw_volume = check_filesystem(&path);
+        let canonical = fs::canonicalize(&path).unwrap();
+        let canonical_volume = check_filesystem(&canonical);
+        let database = super::super::database(&path, true);
+        let root = super::super::root(&path, false);
+        eprintln!(
+            "SQLite boundary stages: raw_volume={:?}, canonical_volume={:?}, database={:?}, root={:?}",
+            raw_volume,
+            canonical_volume,
+            database.as_ref().map(|_| ()).map_err(Clone::clone),
+            root.as_ref().map(|_| ()).map_err(Clone::clone)
+        );
+        raw_volume.expect("volume check on explicit root");
+        canonical_volume.expect("volume check on canonical root");
+        database.expect("private database file ACL");
+        root.expect("root and ancestor boundaries");
+    }
 }

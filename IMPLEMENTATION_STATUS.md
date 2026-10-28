@@ -36,6 +36,35 @@ Fonte ratifica05: docs/verification/ADR-PERSIST-002-ratification.md; nessun
 blocco di scelta residuo. Proseguire05 secondo prescrizioni, poi prossimaREADY.
 AUTO_CONTINUE single-agent, nessuna norma o baseline modificata.
 
+## Checkpoint PERSIST05 — correzione nativa in qualificazione
+
+Implementazione9f2bdd3, correzione66aafa4 pubblicata. Port generici invariati
+nel merito, resolve_commit additivo, DTO02/golden04 preservati. SQLite reale
+con codec verificato/HMAC esterni, DELETE/EXTRA, CAS, versionamento e root
+protetta; nessuna integrazione servizio storico/UI/lifecycle approvazioni.
+
+Primi gate40678981538/40678986539: Windows fallito per mismatch u8/u32 nei
+flag ACL; conversione u32 non troncante corretta. Linux remoto non ancora
+letto definitivamente, nessuna assunzione di successo. Nuove run su66aafa4:
+CI40701606305 e SQLite release40701610627; gate pendenti, PERSIST05 non DONE.
+11test mirati finali passano (restart/crash con pagine flushate, contesa processi,
+ambiguità, connessione non-autocommit, privacy/versioni/root); helper escluso
+da run diretta e invocato dai parent. Il precedente all-features ha trovato
+un errore nell'allowlist: il volume locale è Btrfs, verificato con statfs/stat,
+non ext4. Ripristinato Btrfs; XFS non provato resta escluso. Ripetizione dei
+gate completi in corso sulla fonte corretta, non nascondere il primo fallimento.
+
+Primo workspace:768test principali più2helper restart,0fail/3ignored;
+Clippy default eall-features,14tooling/1ignored,21Python e oracle HMAC positivi.
+La prima misura10k/100k/300k è intermedia perché i sorgenti erano cambiati
+dopo il build: non vale come gate finale; nuova misura include hash prima/dopo,
+sourceID e compile_options SQLite. Nessuna soglia DEC14 o prova power-loss inventata.
+
+Problemi DNS/TLS transitori e limite uso nel controllo automatico hanno ritardato
+lettura log, recuperata poi via endpoint job con ANSI salvato e ripulito. Nessuna
+modifica rete/TLS o nuova autorizzazione richiesta. Next PERSIST06 soltanto dopo
+05effettivamente qualificata; nessun nuovo gate umano ordinario. AUTO_CONTINUE.
+
 ## T-P16-04 locale completata —2026-10-27
 
 741/741test workspace/92suite,0fail/2ignored;16UI finali e6copy-review pass.
@@ -5259,3 +5288,18 @@ Proseguire05 secondo ratifica; gate UI saranno chiusi sulle evidenze reali.
 -111/140DONE79,3%. Ora PERSIST05 in sviluppo sulla ratifica appena ricevuta;
   UI06 pronta ma l’autore ha esplicitamente richiesto prima il backend05.
 - AUTO_CONTINUE, un solo agente; nessun nuovo stop ordinario dopo05.
+
+## PERSIST05 — 66aafa4 qualificata Linux, diagnosi Windows
+
+Gate locale finale:769test principali/95suite,0fail/3ignored in entrambi gli
+assetti default/all-features (+2helper restart per run); Clippy workspace nei
+due assetti positivo. LinuxCI40701606305 completed/success. Windows stesso
+commit superaClippy, fallisce11test con UnsafeStorageLocation durante create;
+DACL directory positiva. Nessun DONE e nessuna attenuazione sicurezza.
+Aggiunto probe Windows per distinguere volume raw/canonico, ACL file e root,
+soli risultati tipizzati redatti; qualificazione SQLite testa ora i confini
+prima di compilare il benchmark. Connettività log recuperata con singola richiesta
+DNS-over-HTTPS/TLS integro, senza mutare la rete del PC né scrivere credenziali.
+Misura finale locale source-hash prima/dopo registrata; controllare il file e
+l'exit effettivo prima di usarla come evidenza. Nessuna nuova task dipendente
+avviata; PERSIST06 attende05. AUTO_CONTINUE sulla diagnosi native Windows.

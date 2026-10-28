@@ -179,3 +179,17 @@ run non basta a identificarne la fonte: non usarla come gate finale. Harness
 corretto per fissare commit iniziale e hash di tutti gli input prima/dopo;
 una variazione durante la run ora invalida la qualificazione. CI lavora su clone
 immutabile; anche lì verranno registrati gli hash. Nessuna soglia DEC14 dedotta.
+
+SecondaCI40701606305: Linux completed/success; Windows supera Clippy ma fallisce
+11test al create con UnsafeStorageLocation. La prova DACL diretta passa. Nessuna
+policy rilassata per tentativi: aggiunto probe nativo che separa volume raw/
+canonico, ACL file e confini root con soli risultati tipizzati, senza path/SID.
+Il gate SQLite esegue prima i test core nativi, così eventuali errori di confine
+sono diagnosticati prima del benchmark release. Diagnosi successiva guidata da
+queste evidenze; PERSIST05 resta IN_PROGRESS.
+
+Recupero log riuscito tramite curl con DNS-over-HTTPS per la sola richiesta,
+verifica TLS integra, token passato solo su stdin e rimosso sui redirect fra host.
+Nessuna modifica DNS del sistema, credenziale scritta in file o controllo TLS
+indebolito. I file di rete temporanei restano fuori Git; nessun URL firmato nel
+report versionato. Il download gh ordinario aveva errori DNS/handshake transitori.

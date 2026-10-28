@@ -17,6 +17,8 @@ def source_hash(repo):
         ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"], cwd=repo,
     ).split(b"\0")
     digest = hashlib.sha256()
+    # build.rs embeds HEAD, so a commit during the run changes a build input.
+    digest.update(subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo).strip() + b"\0")
     for encoded in sorted(set(paths)):
         if not encoded:
             continue
@@ -92,6 +94,16 @@ def main():
         raise RuntimeError("compilation inputs changed during qualification; repeat on stable source")
     report = json.loads(output.read_text(encoding="utf-8"))
     report["target"] = args.target
+    report["rustc"] = subprocess.check_output(["rustc", "-Vv"], cwd=repo,
+                                               encoding="utf-8").strip()
+    if args.target.endswith("linux-gnu"):
+        report["filesystem"] = subprocess.check_output(
+            ["stat", "--file-system", "--format=%T", str(repo)], encoding="utf-8",
+        ).strip()
+    elif args.target.endswith("msvc"):
+        # The measured adapter has actually enforced fixed local NTFS via
+        # GetVolumeInformationW; this is not inferred just from the OS name.
+        report["filesystem"] = "NTFS (verified by adapter)"
     report["artifact_gate"] = gate.stdout.strip()
     report["executable_sha256"] = hashlib.sha256(Path(executable).read_bytes()).hexdigest()
     report["commit"] = commit

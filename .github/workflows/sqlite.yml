@@ -34,6 +34,8 @@ jobs:
         run: rustup show active-toolchain
       - name: Install target
         run: rustup target add ${{ matrix.target }}
+      - name: Exercise repository, crash recovery and native filesystem boundaries
+        run: cargo test -p lintra --lib persistence::sqlite --target ${{ matrix.target }} --locked -- --nocapture
       - name: Measure actual SQLite at 10k, 100k and 300k with static linking gate
         run: python scripts/qualify_sqlite.py --target ${{ matrix.target }} --output target/sqlite-qualification.json
       - name: Upload measured native evidence
