@@ -5,7 +5,7 @@ Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
 ## Frontiera corrente — PERSIST04 DONE, UI05 in qualificazione
 
-2026-10-28:110/140 DONE =78,6%; UI05 IN_PROGRESS,29 NOT_STARTED.
+2026-10-28:110/140 DONE =78,6%; UI05 IN_PROGRESS, PERSIST05 BLOCKED sulla scelta backend,28 NOT_STARTED.
 PERSIST04 codedd7135e +fixc475f0d, CI40658672940 tutti4job completed/success:
 Linux/MSVC, JSONLbyte-identico e pixel nativi tutti positivi. PrimaCI40656244960
 fallita per solo lock tooling; correzione preserva ogni pin/checksum precedente.
@@ -23,8 +23,13 @@ in header/Informazioni. I4RGB form restano identici a UI04 qualificata.
 Residuo05: commit/push e due gate nativi (CI ordinaria +scrolling release),
 non DONE05/M8 prima degli esiti effettivi.
 
-PERSIST05 ora pronta al preflight dell'ADR: confronto filesystem/SQLite e scelta
-backend esplicitamente approvata prima dell'implementazione, come da prompt.
+PERSIST05: prerequisiti03/04 qualificati. ADR-PERSIST-002 pronta in
+`docs/proposals/ADR-PERSIST-002-backend.md`, stato PROPOSTA. Confronto filesystem
+atomico/SQLite e fonti primarie verificate; proposta SQLite incorporato/statico
+con eccezione C esplicita N-20, da qualificare prima del manifest. Richiesta
+all'autore la scelta tramite domanda asincrona, risposta non ancora ricevuta.
+BLOCKED solo l'implementazione05: nessun consenso implicito, driver o nuova
+semantica di commit aggiunti. UI05/gate indipendenti proseguono.
 AUTO_CONTINUE single-agent; niente delega/background daemon o norme inventate.
 
 ## T-P16-04 locale completata —2026-10-27
@@ -2228,7 +2233,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-PERSIST-02 | DONE | 2026-10-27 | CI40528607856 Linux/MSVC/JSONL/RGB tutti pass; [dossier](docs/verification/T-PERSIST-02-domain.md) |
 | T-PERSIST-03 | DONE | 2026-10-27 | Code49a3f4e, CI40581933176 su5bc8402 tutti4job success; snapshot/trait/CAS/abort/reopen fake qualificati |
 | T-PERSIST-04 | DONE | 2026-10-28 | Code dd7135e+fixc475f0d, CI40658672940 tutti4job success;750/750 locali+14tooling, HMAC/provider/audit senza storage reale |
-| T-PERSIST-05..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
+| T-PERSIST-05 | BLOCKED | 2026-10-28 | ADR-PERSIST-002 proposta pronta, attesa scelta esplicita backend/C exception; nessuna implementazione o dipendenza nuova |
+| T-PERSIST-06..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — Linux locale
@@ -5208,3 +5214,18 @@ Gate tooling completato: Clippy/fmt e test standalone locked/offline PASS; 14 te
 - Residuo: pubblicazione e gate nativi ordinario/scrolling release. Non DONE05/M8.
 - Next06 dopo gate05; PERSIST05 preflight ADR separata richiede scelta backend.
 - AUTO_CONTINUE/WAITING_GATE, nessuna conferma Git/CI ordinaria richiesta.
+
+## HANDOFF §15.3 — T-PERSIST-05 preflight/decisione backend, 2026-10-28
+
+- Prereq03/CI40581933176 e04/CI40658672940 realmente DONE.
+- ADR-PERSIST-002 in docs/proposals: confronto filesystem/SQLite per build,
+  crash/atomicità, indici/memoria e backup; fonti primarie Rust/SQLite consultate.
+- Nessun benchmark comparativo inventato, crate/versione scelta o manifest
+  modificato per un database. Proposta SQLite statico richiede eccezione C N-20;
+  alternativa filesystem pure-Rust richiede protocollo/indici da qualificare.
+- Fonte del gate umano: prompt05 «implementa il backend approvato», ADR001§1
+  e N-20; l'autonomia Git/CI non sceglie un backend. Domanda asincrona aperta,
+  nessuna risposta/approvazione ancora ricevuta e nessun timeout vale consenso.
+- Stato05 BLOCKED sulla sola decisione; nessuna norma/contratto modificati.
+- UI05 coded17fe02 locale completa e pubblicazione/CI in corso di preparazione;
+  prossimo06 dopo gate05UI. AUTO_CONTINUE attività indipendenti, single-agent.
