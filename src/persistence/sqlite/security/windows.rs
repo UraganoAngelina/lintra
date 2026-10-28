@@ -178,17 +178,17 @@ pub(super) fn check_private(
     }
     // SAFETY: both SIDs borrow live OS-validated buffers.
     let owner_is_self = unsafe { EqualSid(owner, user.sid()) } != 0;
-    if !owner_is_self {
-        #[cfg(test)]
-        {
-            // SAFETY: the owner SID belongs to the live security descriptor.
-            let owner_is_system = unsafe { IsWellKnownSid(owner, WinLocalSystemSid) } != 0;
-            // SAFETY: same validated SID; only a boolean is reported.
-            let owner_is_admin = unsafe { IsWellKnownSid(owner, WinBuiltinAdministratorsSid) } != 0;
-            eprintln!(
-                "SQLite file ACL owner classification: self={owner_is_self}, system={owner_is_system}, builtin_admin={owner_is_admin}, directory={dir}"
-            );
-        }
+    // Windows administrator tokens can create files owned by the builtin
+    // Administrators group. Ownership and content-access DACL are independent.
+    // OS administrators/System already sit outside this local-user threat model.
+    // Keep the root owned by this user; accept only these OS-privileged owners
+    // for files, then enforce exactly the same user/System-only DACL below.
+    // This changes neither SQLite's file creation nor its journal protocol.
+    // SAFETY: owner is an OS-validated SID in the live security descriptor.
+    let owner_is_privileged = unsafe{IsWellKnownSid(owner,WinLocalSystemSid)}!=0
+        // SAFETY: same valid SID, checked against a fixed builtin OS identity.
+        || unsafe{IsWellKnownSid(owner,WinBuiltinAdministratorsSid)}!=0;
+    if !owner_is_self && (dir || !owner_is_privileged) {
         return Err(bad());
     }
     let (mut control, mut revision) = (0, 0);
@@ -275,18 +275,7 @@ pub(super) fn check_filesystem(path: &Path) -> Result<(), PersistenceError> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[test]
-    fn inherited_private_acl_is_required_and_world_access_is_rejected() {
-        let base = std::env::current_dir()
-            .unwrap()
-            .join("target/sqlite-acl-tests");
-        fs::create_dir_all(&base).unwrap();
-        let parent = tempfile::tempdir_in(base).unwrap();
-        let root = parent.path().join("archive");
-        create_directory(&root).unwrap();
-        let file = open_directory(&root).unwrap();
-        check_private(&root, &file.metadata().unwrap(), true).unwrap();
-        drop(file);
+    fn set_world_acl(path: &Path) {
         let mut sddl: Vec<u16> = "D:P(A;OICI;FA;;;WD)".encode_utf16().collect();
         sddl.push(0);
         let mut descriptor = ptr::null_mut();
@@ -311,9 +300,9 @@ mod tests {
             },
             0
         );
-        let root_wide = wide(&root).unwrap();
+        let root_wide = wide(path).unwrap();
         // SAFETY: the ACL borrows the still-live descriptor and applies only to
-        // this test's owned directory; owner is preserved, no external ACL touched.
+        // this test's owned fixture object; owner is preserved, no external ACL touched.
         assert_eq!(
             unsafe {
                 SetNamedSecurityInfoW(
@@ -328,6 +317,20 @@ mod tests {
             },
             ERROR_SUCCESS
         );
+    }
+    #[test]
+    fn inherited_private_acl_is_required_and_world_access_is_rejected() {
+        let base = std::env::current_dir()
+            .unwrap()
+            .join("target/sqlite-acl-tests");
+        fs::create_dir_all(&base).unwrap();
+        let parent = tempfile::tempdir_in(base).unwrap();
+        let root = parent.path().join("archive");
+        create_directory(&root).unwrap();
+        let file = open_directory(&root).unwrap();
+        check_private(&root, &file.metadata().unwrap(), true).unwrap();
+        drop(file);
+        set_world_acl(&root);
         assert_eq!(
             check_private(&root, &fs::metadata(&root).unwrap(), true).unwrap_err(),
             PersistenceError::UnsafeStorageLocation
@@ -361,5 +364,12 @@ mod tests {
         canonical_volume.expect("volume check on canonical root");
         database.expect("private database file ACL");
         root.expect("root and ancestor boundaries");
+        // A privileged file owner must not make a broad DACL acceptable.
+        let file_path = path.join("lintra.db");
+        set_world_acl(&file_path);
+        assert_eq!(
+            check_private(&file_path, &fs::metadata(&file_path).unwrap(), false).unwrap_err(),
+            PersistenceError::UnsafeStorageLocation
+        );
     }
 }

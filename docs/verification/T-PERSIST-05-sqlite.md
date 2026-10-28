@@ -205,3 +205,28 @@ non isolata, non un nuovo SLA. Cache2MiB, DELETE/EXTRA, indici SEARCH verificati
 confronto senza indice e prova busy/retry nel JSON. Nessuna SQLite runtime di
 sistema negli import dell'eseguibile misurato. Il candidato materializzato spiega
 il costo O(n) della preparazione: nessuna promessa di staging streaming.
+
+Definizione dei tempi: `commit_seconds` misura la pubblicazione completa
+`begin_transaction → stage_snapshot` (verifica prove inclusa) `→ commit`, non
+soltanto la syscall di sincronizzazione o il COMMIT SQL finale. La preparazione
+del candidato è misurata separatamente. Il picco RSS/working set comprende C,
+Rust, fixture e overhead, non la cache globale del filesystem del sistema operativo.
+
+## Correzione Windows basata sul probe nativo
+
+Probe40731347905/0fc0242: volume raw/canonico e root OK; file rifiutato perché
+owner_self=false, owner_system=false, owner_builtin_admin=true, directory=false.
+Il token amministrativo Windows crea file posseduti dal gruppo builtin
+Administrators. Owner e DACL sono proprietà distinte; il modello dichiarato non
+pretende isolamento da amministratori OS/System, che possono già assumere il
+controllo degli oggetti. Il controllo precedente imponeva un vincolo non richiesto
+ai file, incompatibile con questa policy ordinaria del sistema.
+
+Correzione minima: root tuttora owned dall'utente corrente; file owned da utente,
+System o builtin Administrators soltanto. Ogni altra identità owner è rifiutata.
+Per TUTTI i file la DACL rimane verificata integralmente: sole ACE allow per
+utente corrente/System, pieni diritti necessari; nessuna ACE Administrators o
+World viene introdotta o ammessa. Prova negativa ora anche sul file con owner
+amministrativo e DACL World: deve restare rifiutato. Nessun VFS personalizzato,
+precreazione journal o cambiamento di durabilità/transazioni SQLite per aggirare
+l'owner di Windows. Root/namespace/HMAC invariati; errore generico redatto.
