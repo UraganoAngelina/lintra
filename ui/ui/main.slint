@@ -1,7 +1,8 @@
 import { Tok } from "tokens.slint";
 import { AboutSlint, Palette } from "std-widgets.slint";
 import { AnalysisForm, FileBrowser, BrowserItem } from "analysis.slint";
-export { Tok, BrowserItem }
+import { ResultsView, ErrorRow } from "results.slint";
+export { Tok, BrowserItem, ErrorRow }
 
 import { ActionButton, ThemeChoice } from "controls.slint";
 
@@ -38,6 +39,27 @@ export component MainWindow inherits Window {
     in property <[BrowserItem]> browser-entries;
     in property <string> browser-error;
     in-out property <int> browser-index: -1;
+    in property <bool> results-available: false;
+    in-out property <bool> show-results: false;
+    in property <[ErrorRow]> result-rows;
+    in property <ErrorRow> result-detail;
+    in property <int> selected-result: -1;
+    in property <string> results-heading;
+    in property <string> results-summary;
+    in property <string> results-scope;
+    in property <string> results-note;
+    in property <bool> results-loading: false;
+    in property <bool> results-error: false;
+    in property <bool> results-invalid: false;
+    in-out property <string> filter-code;
+    in-out property <string> filter-field;
+    in-out property <string> filter-record;
+    in-out property <string> filter-fiscal;
+    in-out property <string> filter-line;
+    in-out property <length> results-scroll-y;
+    callback open-results();
+    callback apply-results-filter();
+    callback select-result(int);
     callback file-edited(string);
     callback file-confirmed(string);
     callback browse();
@@ -93,11 +115,17 @@ export component MainWindow inherits Window {
                 }
                 Rectangle { horizontal-stretch: 1; }
                 if root.width >= Tok.header-breakpoint: Text {
-                    text: root.origin-label;
+                    text: root.show-results ? root.results-scope : root.origin-label;
                     width: Tok.origin-width;
                     font-family: Tok.mono; font-size: Tok.caption-size;
                     color: Tok.nav-muted; overflow: elide; vertical-alignment: center;
-                    accessible-label: root.origin-label;
+                    accessible-label: root.show-results ? root.results-scope : root.origin-label;
+                }
+                if root.results-available && !root.busy: ActionButton {
+                    width: Tok.secondary-action-width;
+                    label: "Risultati";
+                    selected: root.show-results;
+                    activated => { root.open-results(); }
                 }
                 Text {
                     text: "Tema";
@@ -128,7 +156,7 @@ export component MainWindow inherits Window {
         Rectangle {
             vertical-stretch: 1;
             background: Tok.bg;
-            if !root.show-info && !root.browser-open: AnalysisForm {
+            if !root.show-info && !root.show-results && !root.browser-open: AnalysisForm {
                 flows: root.flows; versions: root.versions; traces: root.traces;
                 flow-index <=> root.flow-index; version-index <=> root.version-index;
                 trace-index <=> root.trace-index; encoding-index <=> root.encoding-index;
@@ -152,7 +180,7 @@ export component MainWindow inherits Window {
                 start-analysis => { root.start-analysis(); }
                 cancel-analysis => { root.cancel-analysis(); }
             }
-            if !root.show-info && root.browser-open: FileBrowser {
+            if !root.show-info && !root.show-results && root.browser-open: FileBrowser {
                 directory <=> root.browser-directory;
                 entries: root.browser-entries; current-index <=> root.browser-index;
                 error-note: root.browser-error;
@@ -160,6 +188,20 @@ export component MainWindow inherits Window {
                 activate(index) => { root.browser-activate(index); }
                 parent-directory => { root.browser-parent(); }
                 cancel => { root.browser-cancel(); }
+            }
+            if !root.show-info && root.show-results: ResultsView {
+                rows: root.result-rows; detail: root.result-detail;
+                selected: root.selected-result;
+                heading: root.results-heading; summary: root.results-summary;
+                scope: root.results-scope; note: root.results-note;
+                loading: root.results-loading; error: root.results-error;
+                invalid: root.results-invalid;
+                filter-code <=> root.filter-code; filter-field <=> root.filter-field;
+                filter-record <=> root.filter-record; filter-fiscal <=> root.filter-fiscal;
+                filter-line <=> root.filter-line; scroll-y <=> root.results-scroll-y;
+                apply-filter => { root.apply-results-filter(); }
+                select-row(index) => { root.select-result(index); }
+                new-analysis => { root.show-results = false; }
             }
             if root.show-info: Rectangle {
                 x: (parent.width - self.width) / 2;
@@ -173,7 +215,7 @@ export component MainWindow inherits Window {
                 VerticalLayout {
                     padding: Tok.page-padding;
                     Text { text: "Lintra " + root.version; color: Tok.ink; font-weight: Tok.semibold-weight; }
-                    Text { text: root.schema-label; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
+                    Text { text: root.show-results ? root.results-scope : root.schema-label; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
                     Text { text: root.origin-label; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
                     // Actual licensed widget, reachable from the top-level control.
                     AboutSlint { }

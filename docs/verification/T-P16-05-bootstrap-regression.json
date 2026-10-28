@@ -1,0 +1,12 @@
+{
+  "task": "T-P16-05",
+  "comparison": "current local captures versus T-P16-04 native CI40589848698",
+  "all_four_rgb_identical": true,
+  "sha256": {
+    "dark-1x.rgb": "0414aafb1bd18bf754627a49d56805b803872421152924be2a74ee10c1232fbe",
+    "dark-2x.rgb": "cc4bcfaba2634a197da3eb585c511dbcc9c2a20e89d2fc342a0340b28b032294",
+    "light-1x.rgb": "019292276a26f8c23cde4f352a5a191e41827ba8a82aa3acd20848678d7fc0de",
+    "light-2x.rgb": "4824077ee369e78813641b38ed429d8dca9b1b95abd7176541ea9b5f8173aff4"
+  },
+  "approved_results_reference_changed": false
+}

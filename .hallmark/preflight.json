@@ -44,5 +44,15 @@
     "preserve": "approved palette/fonts/card geometry, black/red-orange dark theme",
     "truth": "actual phases/counts only; no fabricated percentage or completed cancellation",
     "evidence": "real service thread, bounded-channel tests, Slint headless dispatch and paused-worker responsive render"
+  },
+  "results_16_05": {
+    "date": "2026-10-28",
+    "mode": "Operate; existing native design",
+    "target": "ui/ui/results.slint",
+    "preserve": "approved light palette, supplied five font files, black/red-orange dark theme",
+    "introduced": "real atomic JSONL offset index, bounded cache, exact filters and independent detail",
+    "truth": "run-owned scope/summary; no demo diagnostics or simulated exports",
+    "detectors": "Impeccable []; Hallmark no supported web files, exit2; neither proves Slint rendering",
+    "evidence": "758/758 tests, release final-source test300k/1M at1x/2x, four unchanged bootstrap RGB and reviewed native captures; native CI pending"
   }
 }

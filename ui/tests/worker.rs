@@ -129,3 +129,31 @@ fn actual_service_runs_on_the_worker_without_a_ui_progress_consumer() {
     assert_eq!(completed.outcome.status, RunStatus::CompletedValid);
     assert_ne!(observed.lock().unwrap().unwrap(), caller);
 }
+
+#[test]
+fn lazy_model_keeps_the_report_alive_after_the_completed_analysis_is_released() {
+    let (_root, prepared) = prepare(b"001Z  \n");
+    let completed = WorkerHandle::start(prepared, CancellationToken::default(), Arc::new(|| {}))
+        .unwrap()
+        .wait()
+        .unwrap();
+    let report = completed.report.as_ref().unwrap().clone();
+    let path = report.jsonl_path();
+    let index = lintra_ui::results::ReportIndex::scan(
+        fs::File::open(&path).unwrap(),
+        &completed.outcome.summary,
+        &lintra_ui::results::ResultsFilter::default(),
+        &std::sync::atomic::AtomicBool::new(false),
+    )
+    .unwrap();
+    let mut model = lintra_ui::results::JsonlModel::new(index);
+    model.retain_report(report);
+    drop(completed);
+    assert!(path.exists());
+    assert!(model.read_row(0).unwrap().unwrap().code.starts_with("E_"));
+    drop(model);
+    assert!(
+        !path.exists(),
+        "readers close before the final report owner on both OSes"
+    );
+}

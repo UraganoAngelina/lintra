@@ -59,6 +59,7 @@ impl WorkerController {
                 ui.set_validation_invalid(false);
                 ui.set_execution_partial(false);
                 ui.set_busy(true);
+                ui.set_results_available(false);
                 ui.set_analysis_ready(false);
                 ui.set_configuration_error(false);
                 ui.set_execution_label("Analisi avviata".into());
@@ -80,6 +81,7 @@ impl WorkerController {
     }
     fn show_error(&mut self, ui: &MainWindow, error: WorkerError) {
         self.last_outcome = None;
+        ui.set_results_available(false);
         ui.set_validation_invalid(false);
         ui.set_execution_partial(false);
         ui.set_busy(false);
@@ -184,6 +186,7 @@ impl WorkerController {
                     .into(),
                 );
                 self.last_outcome = Some(outcome.clone());
+                ui.set_results_available(completed.report.is_some());
                 if completed.report.is_some() {
                     self.last_completed = Some(completed);
                 }

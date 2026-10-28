@@ -86,7 +86,7 @@ pub struct CompletedAnalysis {
     pub requested_reports: crate::analysis::ReportSelection,
     pub outcome: ValidationRunOutcome,
     /// None for Cancelled/truncated; no partial file is a complete report.
-    pub report: Option<AnalysisReport>,
+    pub report: Option<Arc<AnalysisReport>>,
 }
 pub type WorkerResult = Result<CompletedAnalysis, WorkerError>;
 type Notify = Arc<dyn Fn() + Send + Sync>;
@@ -199,10 +199,10 @@ fn execute(
     };
     let published = pending.complete(completion).map_err(WorkerError::Report)?;
     let report = match published {
-        AtomicOutputOutcome::Published => Some(AnalysisReport {
+        AtomicOutputOutcome::Published => Some(Arc::new(AnalysisReport {
             directory,
             audit: prepared.audit,
-        }),
+        })),
         AtomicOutputOutcome::Unpublished { .. } => None,
     };
     Ok(CompletedAnalysis {

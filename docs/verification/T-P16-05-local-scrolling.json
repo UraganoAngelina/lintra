@@ -1,0 +1,89 @@
+{
+  "profile": "release",
+  "source_unchanged_during_gate": true,
+  "measurements": [
+    {
+      "cache_rows": 128,
+      "decoded_rows": 377,
+      "full_redraw_jump_ms": [
+        10.52434,
+        19.866561,
+        20.427252,
+        19.422097,
+        19.622789,
+        19.371101000000003,
+        20.773316
+      ],
+      "highest_requested_row": 299990,
+      "offset_bytes": 2400000,
+      "rows": 300000,
+      "scale": 1,
+      "wheel_frames": 30,
+      "wheel_median_ms": 13.803384,
+      "wheel_p95_ms": 15.990692000000001
+    },
+    {
+      "cache_rows": 128,
+      "decoded_rows": 743,
+      "full_redraw_jump_ms": [
+        39.606411,
+        46.731165999999995,
+        45.195923,
+        50.504385,
+        46.904109,
+        45.188736999999996,
+        47.820156000000004
+      ],
+      "highest_requested_row": 299990,
+      "offset_bytes": 2400000,
+      "rows": 300000,
+      "scale": 2,
+      "wheel_frames": 30,
+      "wheel_median_ms": 19.719127,
+      "wheel_p95_ms": 22.745548
+    },
+    {
+      "cache_rows": 128,
+      "decoded_rows": 377,
+      "full_redraw_jump_ms": [
+        12.441396000000001,
+        22.489745,
+        21.180636,
+        21.199679,
+        20.02791,
+        21.071856999999998,
+        20.318973
+      ],
+      "highest_requested_row": 999990,
+      "offset_bytes": 8000000,
+      "rows": 1000000,
+      "scale": 1,
+      "wheel_frames": 30,
+      "wheel_median_ms": 13.584437,
+      "wheel_p95_ms": 14.645581
+    },
+    {
+      "cache_rows": 128,
+      "decoded_rows": 743,
+      "full_redraw_jump_ms": [
+        34.57893,
+        44.170781,
+        42.899721,
+        43.421063000000004,
+        45.451377,
+        45.046975,
+        45.193016
+      ],
+      "highest_requested_row": 999990,
+      "offset_bytes": 8000000,
+      "rows": 1000000,
+      "scale": 2,
+      "wheel_frames": 30,
+      "wheel_median_ms": 19.318912,
+      "wheel_p95_ms": 21.428406
+    }
+  ],
+  "rss_measured": false,
+  "offset_bytes_are_payload_only": true,
+  "product_performance_threshold_introduced": false
+}

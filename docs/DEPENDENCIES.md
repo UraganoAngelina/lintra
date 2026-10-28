@@ -192,3 +192,11 @@ Prima della modifica manifest, risolte e lette le fonti originali:
 MetadataCargo isolata in /tmp/lintra-protection-deps prima del prodotto,
 manifest ufficialehmac tag verificato. Protocollo e fonti nel report04.
 Nessuna scelta di backend o storage reale/dati paziente in questa task.
+
+## T-P16-05 — lettura canonica nel client desktop
+
+serde/serde_json già qualificati nel core (stessi pin/checksum) diventano runtime
+nel solo adapter UI per decodificare le righe JSONL richieste dalla tabella.
+serde_json passa da dev a runtime; serde derive riusa il package esistente.
+Nessun nuovo crate/versione/driver o libreria di cache; offset, cache bounded,
+thread e file usano std. Licenze MIT/Apache-2.0, stessa toolchain qualificata.

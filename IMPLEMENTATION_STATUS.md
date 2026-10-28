@@ -12,13 +12,16 @@ fallita per solo lock tooling; correzione preserva ogni pin/checksum precedente.
 750/750test workspace e14tooling, fmt/Clippy/oraclePython/governance pass.
 Nessun backend reale, provider OS, default secret o modalità storica attivati.
 
-UI05 implementata: JSONL offset index/cache128/filtri esatti/worker cancellabile,
-Slint tabella/dettaglio e selezione per offset. Sei reader test e primo test
-release nativo pass; capture chiare/scure ispezionate e overlap corretto.
-300k/1M offset2,4/8MB, cache128; primo P95release17–23ms1×,28–33ms2×.
-Review ownership rafforza anche il candidato nel canale; gate release finale
-in ripetizione, regressioni workspace default/all-features in corso.
-Non DONE05/M8 prima di gate locali e CI completa/scrolling release nativo.
+UI05 locale completa: JSONL offset index/cache128/filtri esatti/worker
+cancellabile, tabella/dettaglio e selezione per offset, report/candidato owned.
+758/758test workspace95suite,0fail/2ignored; fmt/Clippy nei due assetti/grafo/
+21Python/font-negative e release finale con hash sorgenti invariati positivi.
+Rotella e salti reali300k/1M a1×/2×, offset payload2,4/8MB, cache128; misure
+versionate senza soglia prodotto inventata. Capture finali chiare/scure viste;
+pannelli allineati a y124 del mockup, modo locale esplicito e scope del run
+in header/Informazioni. I4RGB form restano identici a UI04 qualificata.
+Residuo05: commit/push e due gate nativi (CI ordinaria +scrolling release),
+non DONE05/M8 prima degli esiti effettivi.
 
 PERSIST05 ora pronta al preflight dell'ADR: confronto filesystem/SQLite e scelta
 backend esplicitamente approvata prima dell'implementazione, come da prompt.
@@ -5189,3 +5192,19 @@ Gate tooling completato: Clippy/fmt e test standalone locked/offline PASS; 14 te
 - Next indipendente UI05 già in qualificazione; PERSIST05 preflight ADR pronta
   ma backend non scelto implicitamente.110/140DONE=78,6%, M8 ancora aperta.
 - AUTO_CONTINUE, un solo agente; non fermarsi al solo handoff.
+
+## HANDOFF §15.3 — UI05 gate locali completi, 2026-10-28
+
+- Base a71931f, PERSIST04 DONE/CI40658672940; UI04 DONE/40589848698.
+-758/758test95suite,0fail/2ignored; fmt/Clippy due assetti/coregraph/21Python/
+  font-negative reale tutti pass. Release finale exit0, sorgenti hash invariati.
+- Reader/filtri/corruzione/cache su300k/1M e vero Slint/servizio, mouse/tastiera/
+  rotella1×/2× e min640×480 verificati; payload offset2,4/8MB, cache128.
+- Rapporto/candidato tengono TempDir owned, reader chiusi prima dell'ultimoArc;
+  nessun Vec globale, scelta normativa, SQLite o backend storico introdotti.
+- Palette/font intatti;4RGBform identici aUI04; PNG diagnostiche docs/ui/results,
+  riferimenti approvati intatti. LocalOnly esplicito, niente export simulati.
+- File UI/src/results/*,UI/Slint/wiring/test/manifest, workflow e dossier05.
+- Residuo: pubblicazione e gate nativi ordinario/scrolling release. Non DONE05/M8.
+- Next06 dopo gate05; PERSIST05 preflight ADR separata richiede scelta backend.
+- AUTO_CONTINUE/WAITING_GATE, nessuna conferma Git/CI ordinaria richiesta.

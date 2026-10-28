@@ -100,3 +100,28 @@ visivi forniti prevalgono su suggerimenti generici landing/font/palette.
 Capture native di running/errore/cancel sono diagnostiche, non nuove baseline
 approvate. Test Slint con proxy event-loop headless e barriera controllano il worker
 senza eseguire validazione sul thread UI né usare numeri dimostrativi.
+
+## Risultati16-05
+
+Tabella800px e dettaglio416px con gap16 a1280px; sotto1100px pannelli impilati
+nella page ScrollView. Header, cinque font e tutti i colori approvati invariati.
+Le colonne contengono codici simbolici E_* reali:180px al codice, nessun alias
+E003/E005 del mockup. Righe34px come il riferimento; conteggi/stato/ambito e
+completezza dal run, filtri esatti da JSONL atomico. Mostrare controlli locali
+non equivale a certificazione complessiva. Provenienza recuperata dal report,
+non dalle selezioni successivamente modificate nella configurazione.
+
+FieldEdit/Applica e Invio per i cinque filtri; valori testuali mai normalizzati.
+Selezione distinta da hover, focus tastiera; dettaglio con actual/raw e contesto
+conservato fuori viewport. Errori di lettura, caricamento e nessuna corrispondenza
+hanno testi/azioni propri. Placeholder elide ai minimi spazi, senza sovrapporsi.
+Nessun export simulato, nuova baseline o palette generata dalle skill.
+Impeccable/no-ai-slop/ui-ux-pro-max applicate in-thread; font/palette mockup
+prevalgono sulle proposte generiche. Detector web non attestano il nativo:
+Impeccable restituisce[], Hallmark nessun file web supportato. Si verificano
+capture software, interazioni e misure del reader/renderer reale.
+
+Rifinitura05: pannelli da y124px come il riferimento a1280px, con riepilogo
+compatto da72px. Provenienza del run nell'header accessibile e in Informazioni;
+modo locale sempre esplicito nel riepilogo. Le capture diagnostiche reali a
+1×/2× sono in results/, senza sostituire review/results-* approvate.

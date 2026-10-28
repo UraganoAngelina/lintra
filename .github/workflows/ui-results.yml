@@ -1,0 +1,50 @@
+name: UI disk-backed scrolling
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ui-results-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    name: Release scrolling (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - os: windows-2025
+            target: x86_64-pc-windows-msvc
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install Linux desktop build prerequisite
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends --yes libfontconfig1-dev
+      - name: Install pinned native toolchain
+        run: rustup show active-toolchain
+      - name: Install native target
+        run: rustup target add ${{ matrix.target }}
+      # Debug functional tests do not attest release scrolling latency. This
+      # separate, explicit gate measures the actual disk-backed model optimized,
+      # without extending/cancelling the ordinary release/core verification run.
+      - name: Exercise real JSONL model and release software renderer at 300k and 1M
+        run: cargo test -p lintra-ui --release --test results_window --target ${{ matrix.target }} --locked -- --nocapture
+      - name: Upload native release scrolling and diagnostic captures
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: results-scrolling-${{ matrix.target }}
+          path: |
+            target/ui-results-release-visual/scrolling.json
+            target/ui-results-release-visual/*.png
+          if-no-files-found: error
+          retention-days: 7

@@ -24,8 +24,18 @@ solo un run completo pubblica lo spool atomico. Nessun Vec globale di errori,
 export fittizio o aggiornamento diretto di widget dal worker. La directory resta
 owned finché il consumer usa il report; chiusura/cancel joinano il thread. La
 finestra continua a processare eventi mentre la validazione è in corso.
-Risultati ed export appartengono alle task successive: le scelte formato sono
-intenzioni, non file già esportati. Il JSONL interno serve alla futura tabella.
+T-P16-05 collega Risultati al JSONL completo: indice degli offset, lettura lazy
+e cache massima di128 righe. I cinque filtri (codice, field ID, ID record, CF,
+riga) usano confronti esatti combinati: Invio o Applica filtri avviano la ricerca
+su un worker owned. Il riepilogo conserva conteggi, ambito e completezza del run;
+il dettaglio resta stabile mentre la riga selezionata esce dalla viewport.
+Una riga filtrata via cancella la selezione; errore di lettura e nessuna
+corrispondenza hanno messaggi distinti. Puntatore e frecce/Home/End/PageUp/PageDown
+permettono di navigare la tabella. Il report resta owned anche durante scansione
+e lettura lazy, con cleanup dei reader prima della directory temporanea.
+
+L’export rimane T-P16-06: le scelte formato sono intenzioni, non file già
+esportati. Nessuna modalità storica o norma è introdotta nel client.
 
 ```sh
 cargo run --package lintra-ui --locked
@@ -54,3 +64,10 @@ CI Linux/MSVC esegue test software a1×/2× e confronta RGB byte per byte per
 entrambi i temi. Le capture bootstrap sono diagnostiche: i riferimenti approvati
 della schermata Risultati restano in docs/ui/review, senza sovrascritture.
 La verifica/distribuzione dell’artefatto UI completo rimane T-P16-08.
+
+Per qualificare lo scorrimento sul modello JSONL reale (300k/1M,1×/2×), eseguire
+`cargo test -p lintra-ui --release --test results_window --locked`. Il test usa
+dati sintetici dichiarati e salva tempi/offset/cache e capture diagnostiche in
+`target/ui-results-release-visual` (`ui-results-visual` per debug); la versione debug verifica le funzioni e non prova
+fluidità release. Workflow nativo esplicito: `UI disk-backed scrolling`.
+La distribuzione del binario UI rimane16-08, nessuna baseline approvata cambia.

@@ -1,0 +1,210 @@
+import { ListView, ScrollView } from "std-widgets.slint";
+import { Tok } from "tokens.slint";
+import { ActionButton, FieldEdit } from "controls.slint";
+
+export struct ErrorRow {
+    line: string, record: string, field: string, field-name: string,
+    code: string, position: string, actual: string, expected: string,
+    context: string, message: string,
+}
+component DetailValue inherits VerticalLayout {
+    in property <string> label;
+    in property <string> value;
+    spacing: Tok.detail-meta-spacing;
+    alignment: start;
+    vertical-stretch: 0;
+    Text { text: root.label; color: Tok.muted; font-size: Tok.caption-size; }
+    Text { text: root.value; color: Tok.ink; font-family: Tok.mono; font-size: Tok.caption-size; wrap: word-wrap; }
+}
+export component ResultsView inherits Rectangle {
+    in property <[ErrorRow]> rows;
+    in property <ErrorRow> detail;
+    in property <int> selected: -1;
+    in property <string> heading;
+    in property <string> summary;
+    in property <string> scope;
+    in property <string> note;
+    in property <bool> loading;
+    in property <bool> error;
+    in property <bool> invalid;
+    in-out property <string> filter-code;
+    in-out property <string> filter-field;
+    in-out property <string> filter-record;
+    in-out property <string> filter-fiscal;
+    in-out property <string> filter-line;
+    in-out property <length> scroll-y;
+    callback apply-filter();
+    callback select-row(int);
+    callback new-analysis();
+    background: Tok.bg;
+    property <bool> narrow: root.width < Tok.form-breakpoint;
+    function move-selection(index: int) {
+        if root.rows.length > 0 && !root.loading {
+            root.select-row(max(0, min(root.rows.length - 1, index)));
+        }
+    }
+    changed selected => {
+        if root.selected >= 0 {
+            if root.selected * Tok.result-row-height < -list.content-y {
+                list.content-y = -root.selected * Tok.result-row-height;
+            } else if (root.selected + 1) * Tok.result-row-height > -list.content-y + list.visible-height {
+                list.content-y = list.visible-height - (root.selected + 1) * Tok.result-row-height;
+            }
+        }
+    }
+    ScrollView {
+        width: parent.width;
+        height: parent.height;
+        content-width: self.visible-width;
+        VerticalLayout {
+            width: parent.width;
+            padding: Tok.page-padding;
+            padding-top: Tok.result-padding;
+            spacing: Tok.result-panel-gap;
+            Rectangle {
+                height: root.narrow ? Tok.result-summary-narrow-height : Tok.control-height;
+                background: Tok.bg;
+                Rectangle {
+                    x: 0px; y: 0px;
+                    width: root.narrow ? parent.width - Tok.primary-action-width - Tok.control-gap : Tok.result-status-width;
+                    height: Tok.control-height;
+                    background: root.invalid ? Tok.error-tint : Tok.header-bg;
+                    border-radius: Tok.control-radius;
+                    Text {
+                        x: Tok.picker-gap;
+                        width: parent.width - Tok.picker-gap * 2;
+                        height: parent.height;
+                        text: root.heading; color: root.invalid ? Tok.error : Tok.ink;
+                        font-size: Tok.body-size; font-weight: Tok.semibold-weight;
+                        vertical-alignment: center; wrap: word-wrap;
+                    }
+                }
+                Text {
+                    x: root.narrow ? 0px : Tok.result-status-width + Tok.control-gap;
+                    y: root.narrow ? Tok.control-height + Tok.control-gap : 0px;
+                    width: root.narrow ? parent.width : parent.width - Tok.result-status-width - Tok.primary-action-width - Tok.control-gap * 2;
+                    height: root.narrow ? Tok.result-summary-narrow-height - Tok.control-height - Tok.control-gap : Tok.control-height;
+                    text: root.summary; color: Tok.ink; font-family: Tok.mono;
+                    font-size: Tok.caption-size; wrap: word-wrap; vertical-alignment: center;
+                }
+                ActionButton {
+                    x: parent.width - Tok.primary-action-width; y: 0px;
+                    width: Tok.primary-action-width; label: "Nuova analisi";
+                    activated => { root.new-analysis(); }
+                }
+            }
+            Rectangle {
+                height: root.narrow ? table.height + Tok.panel-gap + details.height : max(table.height, details.height);
+                background: Tok.bg;
+                table := Rectangle {
+                    x: 0px; y: 0px;
+                    width: root.narrow ? parent.width : max(0px, parent.width - Tok.detail-width - Tok.result-panel-gap);
+                    height: Tok.result-filter-height + min(Tok.result-list-height, max(Tok.result-empty-height, root.rows.length * Tok.result-row-height)) + Tok.result-table-footer-height;
+                    background: Tok.surface;
+                    border-width: table-key.has-focus ? Tok.focus-width : Tok.border-width;
+                    border-color: table-key.has-focus ? Tok.accent : Tok.border;
+                    border-radius: Tok.card-radius;
+                    VerticalLayout {
+                        padding: Tok.result-padding;
+                        spacing: Tok.control-gap;
+                        HorizontalLayout {
+                            spacing: Tok.picker-gap;
+                            FieldEdit { text <=> root.filter-code; placeholder: "Codice"; enabled: !root.loading; confirmed(_) => { root.apply-filter(); } }
+                            FieldEdit { text <=> root.filter-field; placeholder: "Field ID"; enabled: !root.loading; confirmed(_) => { root.apply-filter(); } }
+                            FieldEdit { text <=> root.filter-record; placeholder: "ID record"; enabled: !root.loading; confirmed(_) => { root.apply-filter(); } }
+                            FieldEdit { text <=> root.filter-fiscal; placeholder: "Codice fiscale"; enabled: !root.loading; confirmed(_) => { root.apply-filter(); } }
+                            FieldEdit { text <=> root.filter-line; placeholder: "Riga"; enabled: !root.loading; confirmed(_) => { root.apply-filter(); } }
+                        }
+                        VerticalLayout {
+                            spacing: 0px;
+                            Rectangle {
+                                height: Tok.result-row-height;
+                                background: Tok.header-bg;
+                                HorizontalLayout {
+                                    padding-left: Tok.picker-gap; padding-right: Tok.picker-gap; spacing: Tok.picker-gap;
+                                    Text { width: Tok.result-line-width; text: "Riga"; color: Tok.ink; font-size: Tok.caption-size; vertical-alignment: center; }
+                                    Text { width: Tok.result-record-width; text: "ID record"; color: Tok.ink; font-size: Tok.caption-size; vertical-alignment: center; }
+                                    Text { width: Tok.result-field-width; text: "Campo"; color: Tok.ink; font-size: Tok.caption-size; vertical-alignment: center; }
+                                    Text { width: Tok.result-code-width; text: "Codice"; color: Tok.ink; font-size: Tok.caption-size; vertical-alignment: center; }
+                                    Text { text: "Messaggio"; color: Tok.ink; font-size: Tok.caption-size; vertical-alignment: center; }
+                                }
+                            }
+                            list := ListView {
+                                content-y <=> root.scroll-y;
+                                min-height: Tok.result-empty-height;
+                                preferred-height: min(Tok.result-list-height, max(Tok.result-empty-height, root.rows.length * Tok.result-row-height));
+                                for row[index] in root.rows: Rectangle {
+                                    height: Tok.result-row-height;
+                                    background: index == root.selected ? Tok.accent-tint : touch.has-hover ? Tok.header-bg : Tok.surface;
+                                    accessible-role: list-item;
+                                    accessible-label: "Riga " + row.line + ", campo " + row.field + ", " + row.code + ": " + row.message;
+                                    accessible-action-default => { root.select-row(index); }
+                                    Rectangle { y: parent.height - Tok.border-width; height: Tok.border-width; background: Tok.row-line; }
+                                    HorizontalLayout {
+                                        padding-left: Tok.picker-gap; padding-right: Tok.picker-gap; spacing: Tok.picker-gap;
+                                        Text { width: Tok.result-line-width; text: row.line; color: Tok.ink; font-family: Tok.mono; font-size: Tok.caption-size; vertical-alignment: center; overflow: elide; }
+                                        Text { width: Tok.result-record-width; text: row.record; color: Tok.ink; font-family: Tok.mono; font-size: Tok.caption-size; vertical-alignment: center; overflow: elide; }
+                                        Text { width: Tok.result-field-width; text: row.field; color: Tok.ink; font-family: Tok.mono; font-size: Tok.caption-size; vertical-alignment: center; overflow: elide; }
+                                        Text { width: Tok.result-code-width; text: row.code; color: Tok.error; font-family: Tok.mono; font-size: Tok.caption-size; vertical-alignment: center; overflow: elide; }
+                                        Text { text: row.message; color: Tok.ink; font-size: Tok.caption-size; vertical-alignment: center; overflow: elide; }
+                                    }
+                                    touch := TouchArea { enabled: !root.loading; clicked => { table-key.focus(); root.select-row(index); } }
+                                }
+                            }
+                        }
+                        HorizontalLayout {
+                            Text { text: root.loading ? "Lettura in corso…" : "Filtri esatti; Invio per applicare"; color: Tok.muted; font-size: Tok.caption-size; vertical-alignment: center; overflow: elide; }
+                            ActionButton { width: Tok.primary-action-width; label: "Applica filtri"; enabled: !root.loading; activated => { root.apply-filter(); } }
+                        }
+                    }
+                    table-key := FocusScope {
+                        width: 0px;
+                        enabled: !root.loading;
+                        key-pressed(event) => {
+                            if event.text == Key.DownArrow { root.move-selection(root.selected + 1); return accept; }
+                            if event.text == Key.UpArrow { root.move-selection(root.selected - 1); return accept; }
+                            if event.text == Key.Home { root.move-selection(0); return accept; }
+                            if event.text == Key.End { root.move-selection(root.rows.length - 1); return accept; }
+                            if event.text == Key.PageDown { root.move-selection(root.selected + max(1, floor(list.visible-height / Tok.result-row-height))); return accept; }
+                            if event.text == Key.PageUp { root.move-selection(root.selected - max(1, floor(list.visible-height / Tok.result-row-height))); return accept; }
+                            return reject;
+                        }
+                    }
+                }
+                details := Rectangle {
+                    x: root.narrow ? 0px : table.width + Tok.result-panel-gap;
+                    y: root.narrow ? table.height + Tok.panel-gap : 0px;
+                    width: root.narrow ? parent.width : Tok.detail-width;
+                    height: Tok.result-detail-height;
+                    background: Tok.surface;
+                    border-width: Tok.border-width; border-color: Tok.border; border-radius: Tok.card-radius;
+                    ScrollView {
+                        x: Tok.result-padding; y: Tok.result-padding;
+                        width: parent.width - Tok.result-padding * 2;
+                        height: parent.height - Tok.result-padding * 2;
+                        content-width: self.visible-width;
+                        VerticalLayout {
+                            width: parent.width;
+                            spacing: Tok.detail-section-spacing;
+                            alignment: start;
+                            Text { text: "Dettaglio errore"; color: Tok.ink; font-weight: Tok.semibold-weight; font-size: Tok.section-size; }
+                            if root.selected < 0: Text { text: "Seleziona una diagnostica nella tabella per leggere valori e contesto."; color: Tok.muted; wrap: word-wrap; }
+                            if root.selected >= 0: VerticalLayout {
+                                spacing: Tok.detail-section-spacing;
+                                alignment: start;
+                                DetailValue { label: "Codice"; value: root.detail.code; }
+                                DetailValue { label: "Riga / ID record"; value: root.detail.line + " / " + root.detail.record; }
+                                DetailValue { label: "Campo / posizione"; value: root.detail.field + " / " + root.detail.position + " / " + root.detail.field-name; }
+                                DetailValue { label: "Letto"; value: root.detail.actual; }
+                                DetailValue { label: "Atteso"; value: root.detail.expected; }
+                                DetailValue { label: "Contesto"; value: root.detail.context; }
+                                Text { text: root.detail.message; color: Tok.ink; wrap: word-wrap; line-height-factor: Tok.detail-line-height-factor; }
+                            }
+                        }
+                    }
+                }
+            }
+            Text { text: root.note; color: root.error ? Tok.error : Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
+        }
+    }
+}

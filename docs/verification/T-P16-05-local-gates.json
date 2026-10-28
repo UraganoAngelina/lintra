@@ -1,0 +1,187 @@
+{
+  "task": "T-P16-05",
+  "date": "2026-10-28",
+  "base_head": "a71931f",
+  "local_gates_complete": true,
+  "pipeline": [
+    {
+      "gate": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.45
+    },
+    {
+      "gate": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "-j",
+        "2",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 23.82
+    },
+    {
+      "gate": "clippy-all",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "-j",
+        "2",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 15.75
+    },
+    {
+      "gate": "tests",
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked",
+        "--offline",
+        "-j",
+        "2"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 561.9
+    },
+    {
+      "gate": "tests-all",
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "-j",
+        "2"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 646.15
+    },
+    {
+      "gate": "graph",
+      "command": [
+        "python3",
+        "scripts/check_workspace.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.97
+    },
+    {
+      "gate": "python",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.53
+    },
+    {
+      "gate": "font-negative",
+      "command": [
+        "python3",
+        "ui/check_missing_font.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 3.7
+    }
+  ],
+  "tests": {
+    "tests": {
+      "passed": 758,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 95
+    },
+    "tests-all": {
+      "passed": 758,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 95
+    }
+  },
+  "release_gate": {
+    "task": "T-P16-05",
+    "gate": "release-final-source",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "lintra-ui",
+      "--test",
+      "results_window",
+      "--release",
+      "--locked",
+      "--offline",
+      "-j",
+      "2"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 408.18,
+    "source_unchanged_during_gate": true,
+    "source_sha256": {
+      "Cargo.lock": "814ec0c6f56a31a7f9bfd206bd66f7dad37531efb63ef1dca8654363b6ce61ab",
+      "Cargo.toml": "0dac4a7da142520b24ac10f1e924519d0702d7bdc5bd8741ed2f78e1c1f1d720",
+      "build.rs": "3e2ee052c871f133350951c106240ce0cd93973fcd87b03e8fec30f446f4de8b",
+      "ui/Cargo.toml": "4831009b6511830f6ae86d2a86cb1d91b4cae5c597611bf75a9ef9ffedf85365",
+      "ui/build.rs": "e4d2f2294b81d97d84dce88043b565e5ab9b1f3e076836a505e6f8485d26fe6c",
+      "ui/src/analysis.rs": "aa1e59e53fdebaa395799acc55983707110e6039b32a601b50692ba06d8cbf88",
+      "ui/src/controller.rs": "57da2669b8adf1d0ccea0d913c7b8592089002dac601496539e3ca1146fbb322",
+      "ui/src/lib.rs": "58189cda3e4032b1e001b0d5f5b398926ff9a92b3412b41cf41b04d130627314",
+      "ui/src/main.rs": "beecf3426db07f2ec21ef9f5ef7c0ae550b00a9cd948d09cbef6baaa87a6bade",
+      "ui/src/results/controller.rs": "840a450dd79f689baabdc31e045bcdcdb4c75653281a5e21928055f9a59e9b06",
+      "ui/src/results/diagnostic.rs": "b9df93319cb09fffdb1eda909dc28390b62ac182f31fd19f8f6ec1a8c823d2c5",
+      "ui/src/results/mod.rs": "1e6b69231b7bb094c48cdae442e39229f3b99bb127b78d1181c218ec9666ad1f",
+      "ui/src/worker.rs": "63977a8a26fadf431a2416692b55a138ecc3b5efe7e7bf5a5bb2eeee92ea7613",
+      "ui/src/worker_controller.rs": "ac9d22652a4b6e21ab479eb5c90780e4ece5e92cf846c909f3ce6d8fb7424ee5",
+      "ui/tests/results_window.rs": "d40ed8de78a74b144c519dde512f864311dd49c7111238dffc4138e3525db949",
+      "ui/ui/analysis.slint": "4c7efa3d66021af8d4df12977af38a9732fbe336cb7e0201277a1d1eb421a626",
+      "ui/ui/controls.slint": "b9fae4520ef38c7680fb206acda2de3e15741f1cc2d9f707b32c620a590081b4",
+      "ui/ui/main.slint": "789dfb8fb4122ff4045b28b7406f4b8992030d98b2e3410afac38f5d85c913af",
+      "ui/ui/results.slint": "39bb8a31a030091be70e6cdf7d0490c718c475fb4e0505fac15b04d77ce1f91f",
+      "ui/ui/tokens.slint": "6e6c8e2b07f07e351425a7e746ac51974baee0faac1aba0b8cdd1f66b9cafe74"
+    }
+  },
+  "last_ui_clippy": "PASS; all targets after final test assertion",
+  "bootstrap_rgb_unchanged": true,
+  "native_ci": null,
+  "native_scrolling_ci": null,
+  "done": false,
+  "approved_reference_changed": false,
+  "dependencies": "same qualified serde/serde_json versions, no new packages",
+  "captures_sha256": {
+    "docs/ui/results/dark-1x.png": "e424853a096eb7f16b3f1a9d5ca49a1e5c74ecff0becc7c3abee4beedfc320b5",
+    "docs/ui/results/dark-2x.png": "826e40ad2e55efcee0ef316a29171ead772068df335a62d19898bff9e7fac517",
+    "docs/ui/results/light-1x.png": "a206885b2c3f31b1966236a30f9bc5af64eb8065e0646f847b497d984d37bc01",
+    "docs/ui/results/light-2x.png": "93c1b85bf5d14bfb438246708c5fdf07e6d1675dd3b79589b45549a750f4acca"
+  }
+}

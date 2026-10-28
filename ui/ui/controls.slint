@@ -74,6 +74,7 @@ export component FieldEdit inherits Rectangle {
         width: parent.width - Tok.field-padding * 2;
         height: parent.height;
         text: root.text == "" ? root.placeholder : "";
+        overflow: elide;
         color: root.enabled ? Tok.muted : Tok.disabled-ink;
         font-size: Tok.body-size;
         font-family: root.monospace ? Tok.mono : Tok.sans;
