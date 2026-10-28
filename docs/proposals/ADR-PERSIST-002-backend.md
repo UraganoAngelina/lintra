@@ -1,6 +1,9 @@
 # ADR-PERSIST-002 — scelta del backend persistente locale
 
-Stato: PROPOSTA, da approvare dall’autore. Data:2026-10-28.
+Stato: RATIFICATA dall’autore il2026-10-28, con prescrizioni vincolanti in
+[registro di ratifica](../verification/ADR-PERSIST-002-ratification.md).
+Il testo proposto sotto resta storico: EXTRA sostituisce FULL come impostazione
+ratificata; i limiti e le prescrizioni della ratifica prevalgono.
 Task: T-PERSIST-05, preflight dopo PERSIST03/04 DONE e CI40658672940 positiva.
 Nessun backend o nuovo driver è stato aggiunto.
 

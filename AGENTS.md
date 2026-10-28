@@ -319,3 +319,14 @@ Per le task T-P16-* usare no-ai-slop, Impeccable e ui-ux-pro-max
 approvati e adattamento Slint nativo, con governance single-agent. Il commit
 utente ae348af salva il lavoro parziale e il contesto remoto; non è una chiusura
 implicita dei gate o di T-P16-03. Proseguire dal residuo verificato.
+
+## Ratifica ADR-PERSIST-002 —2026-10-28
+
+L’autore approva SQLite incorporato/statico per T-PERSIST-05, eccezione N-20
+circoscritta al motore C e dipendenze qualificate DEC-15. Vincolante il registro
+`docs/verification/ADR-PERSIST-002-ratification.md`: port SQL-free, protezione
+prima dello storage, DELETE/EXTRA effettivi, commit ambiguo verificabile,
+versionamento storage indipendente, indici/query e memoria misurati, archivio
+solo locale e controlli privacy/permessi/ACL. Nessuna nuova norma, servizio
+storico/UI/lifecycle/backup completo o migrazione anticipati. Implementare05,
+poi proseguire alle READY dopo gate; nessun nuovo stop ordinario a fine task.

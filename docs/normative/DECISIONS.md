@@ -186,3 +186,23 @@ proseguire a partire da T-P3-01 dopo la verifica della parte autonoma.
 T-P2-03 e M1 non sono complete finché il residuo non è verificato.
 Nessuna modifica retroattiva di ARCH/DET/Piano o schemi FROZEN; nessuna
 semantica normativa aggiunta e nessuna implementazione storage anticipata.
+
+
+## ADR-PERSIST-002 — SQLITE LOCALE RATIFICATA, 2026-10-28
+
+L’autore approva SQLite incorporato/statico dietro i port generici03, con
+eccezione N-20 limitata al motore C e dipendenze qualificate DEC-15/N-26.
+Il repository è il contratto del core; SQLitePersistenceAdapter gestisce schema,
+indici, transazioni e storage locale. Preparazione/minimizzazione e HMAC04
+precedono la scrittura. Nessun accesso SQL dal motore né norma CAD/SIOC nuova.
+DELETE/EXTRA impostati e riletti, CAS/staging privato/snapshot immutabili, esito
+commit ambiguo esplicito; formato storage indipendente e nessun reset implicito.
+Query puntuali/cache limitata, load_snapshot O(n) riconosciuto, benchmark reali
+fino300k e gate Linux/MSVC necessari. Nessuna fonte organizzativa condivisa,
+sincronizzazione Git/share o database server. Restano aperti cifratura a riposo,
+retention, provisioning/rotazione chiavi, backup sicuro e DEC-14 quantitativa;
+non autorizzati dati sanitari reali. Binding rusqlite0.41.0 bundled con SQLite
+3.54.1/libsqlite3-sys0.39.1, dettaglio e checksum nel dossier dipendenze.
+
+[Prescrizioni vincolanti e tracciabilità ADR001/03/04](../verification/ADR-PERSIST-002-ratification.md).
+Questa registrazione non riscrive le decisioni storiche né le baseline normative.

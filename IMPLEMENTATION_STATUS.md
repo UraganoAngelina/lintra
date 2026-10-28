@@ -3,9 +3,9 @@
 Consuntivo aggiornato al **2026-10-28**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — PERSIST04 DONE, UI05 in qualificazione
+## Frontiera corrente — PERSIST04/UI05 DONE, PERSIST05 in sviluppo
 
-2026-10-28:110/140 DONE =78,6%; UI05 IN_PROGRESS, PERSIST05 BLOCKED sulla scelta backend,28 NOT_STARTED.
+2026-10-28:111/140 DONE =79,3%; PERSIST05 IN_PROGRESS,28 NOT_STARTED.
 PERSIST04 codedd7135e +fixc475f0d, CI40658672940 tutti4job completed/success:
 Linux/MSVC, JSONLbyte-identico e pixel nativi tutti positivi. PrimaCI40656244960
 fallita per solo lock tooling; correzione preserva ogni pin/checksum precedente.
@@ -20,17 +20,21 @@ Rotella e salti reali300k/1M a1×/2×, offset payload2,4/8MB, cache128; misure
 versionate senza soglia prodotto inventata. Capture finali chiare/scure viste;
 pannelli allineati a y124 del mockup, modo locale esplicito e scope del run
 in header/Informazioni. I4RGB form restano identici a UI04 qualificata.
-Residuo05: commit/push e due gate nativi (CI ordinaria +scrolling release),
-non DONE05/M8 prima degli esiti effettivi.
+UI05 qualificata: CI40668541764 e scrolling release40668592173, tutti i job
+positivi sui due OS; evidenze archiviate. M8 richiede ancora le task successive.
 
-PERSIST05: prerequisiti03/04 qualificati. ADR-PERSIST-002 pronta in
-`docs/proposals/ADR-PERSIST-002-backend.md`, stato PROPOSTA. Confronto filesystem
-atomico/SQLite e fonti primarie verificate; proposta SQLite incorporato/statico
-con eccezione C esplicita N-20, da qualificare prima del manifest. Richiesta
-all'autore la scelta tramite domanda asincrona, risposta non ancora ricevuta.
-BLOCKED solo l'implementazione05: nessun consenso implicito, driver o nuova
-semantica di commit aggiunti. UI05/gate indipendenti proseguono.
-AUTO_CONTINUE single-agent; niente delega/background daemon o norme inventate.
+PERSIST05 autorizzata: ratifica dell’autore ADR-PERSIST-002 con SQLite statico,
+DELETE/EXTRA effettivi, port generici, prove di protezione prima della scrittura,
+versione storage distinta, query/indici/cache e memoria reale, solo archivio locale.
+Binding rusqlite0.41.0/libsqlite3-sys0.39.1/SQLite3.54.1 qualificati prima dei
+manifest, sei nuovi package e pin/checksum precedenti preservati; integrazione
+in corso con capability MAC private che non cambiano wire/Eq/Hash02. Nessun
+backend dichiarato funzionante prima di implementazione e test reali.
+UI05 DONE: code d17fe02/head4f7acb9, CI40668541764 e scrolling40668592173 tutti
+job completed/success. Artifact dueOS scaricati e misure300k/1M a1×/2× archiviate.
+Fonte ratifica05: docs/verification/ADR-PERSIST-002-ratification.md; nessun
+blocco di scelta residuo. Proseguire05 secondo prescrizioni, poi prossimaREADY.
+AUTO_CONTINUE single-agent, nessuna norma o baseline modificata.
 
 ## T-P16-04 locale completata —2026-10-27
 
@@ -2185,7 +2189,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P16-02 | DONE | 2026-10-27 | CI40522626495 Linux/MSVC/JSONL/RGB temi tutti pass; [report](docs/verification/T-P16-02-bootstrap.md) |
 | T-P16-03 | DONE | 2026-10-27 | Code0a2121b, CI40577920052 Linux/MSVC/JSONL/RGB success; catalogo e versione espliciti, preflight tecnico e form nativi |
 | T-P16-04 | DONE | 2026-10-27 | Code311dcc6+357400e, CI40589848698 tutti4job success; worker bounded e cancellazione nativa qualificati |
-| T-P16-05 | IN_PROGRESS | 2026-10-28 | Indice JSONL/cache128/filtri e dettaglio;6test reader e primo test nativo pass; correzioni capture/release/regressioni in verifica |
+| T-P16-05 | DONE | 2026-10-28 | d17fe02/head4f7acb9, CI40668541764 e release-scrolling40668592173 tutti job success;758/758 locali, indice disco300k/1M reale, cache128, artefatti dueOS verificati |
 | T-P18-02 | DONE | 2026-10-27 | Due dry-run dati Linux, binario invariato e v1 golden preservato; [runbook](docs/RUNBOOK_SCHEMA_UPDATE.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P17-06 | DONE | 2026-10-27 | CI40486090209 Linux/MSVC/compare success; [dossier](docs/verification/T-P17-06-robustness.md) |
@@ -2233,7 +2237,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-PERSIST-02 | DONE | 2026-10-27 | CI40528607856 Linux/MSVC/JSONL/RGB tutti pass; [dossier](docs/verification/T-PERSIST-02-domain.md) |
 | T-PERSIST-03 | DONE | 2026-10-27 | Code49a3f4e, CI40581933176 su5bc8402 tutti4job success; snapshot/trait/CAS/abort/reopen fake qualificati |
 | T-PERSIST-04 | DONE | 2026-10-28 | Code dd7135e+fixc475f0d, CI40658672940 tutti4job success;750/750 locali+14tooling, HMAC/provider/audit senza storage reale |
-| T-PERSIST-05 | BLOCKED | 2026-10-28 | ADR-PERSIST-002 proposta pronta, attesa scelta esplicita backend/C exception; nessuna implementazione o dipendenza nuova |
+| T-PERSIST-05 | IN_PROGRESS | 2026-10-28 | ADR-PERSIST-002 ratificata con prescrizioni DELETE/EXTRA/protezione/versioni/memoria; qualificazione binding prima dell’integrazione |
 | T-PERSIST-06..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -5229,3 +5233,29 @@ Gate tooling completato: Clippy/fmt e test standalone locked/offline PASS; 14 te
 - Stato05 BLOCKED sulla sola decisione; nessuna norma/contratto modificati.
 - UI05 coded17fe02 locale completa e pubblicazione/CI in corso di preparazione;
   prossimo06 dopo gate05UI. AUTO_CONTINUE attività indipendenti, single-agent.
+
+## Ratifica ADR-PERSIST-002 e ripresa T-PERSIST-05 —2026-10-28
+
+L’autore approva SQLite incorporato/statico e l’eccezione C N-20. Registrate
+quattro prescrizioni e tutti i confini in ADR-PERSIST-002-ratification.md:
+DELETE/EXTRA effettivi, esito ambiguo, protezione/app-minimizzazione prima del
+DB, versione storage distinta e controlli tipizzati, query/indici/cache e
+misure reali, archivio esclusivamente locale. Nessun driver ancora integrato;
+qualificazione DEC-15 prima dei manifest. Superato solo il blocco di scelta05.
+UI05 code d17fe02 e head4f7acb9: CI40668541764 e scrolling40668592173 in corso,
+nessun DONE05UI/M8 presunto. Nessuna17 avviata oltre consultazione preflight.
+Proseguire05 secondo ratifica; gate UI saranno chiusi sulle evidenze reali.
+
+## HANDOFF §15.3 — T-P16-05 DONE,2026-10-28
+
+- Code d17fe02/head4f7acb9; CI40668541764 tutti4job success e scrolling
+  release40668592173 entrambi jobLinux/MSVC success. Artifact scaricati eJSON
+  di misura/capture verificati;750precedenti+8nuovi=758/758 locali95suite.
+- Reader reale disk-backed, filtri, selezione, valori/context e ownership
+  qualificati;300k/1M a1×/2× con rotella/salti reali e cache128. Nessun timing
+  identico inventato fraOS o performance prodotto/DEC14 ratificate implicitamente.
+- PNG diagnostiche archiviate,4RGB form invariati e font/palette conservati;
+  nessuna baseline Risultati autoaggiornata. ExportUI06/distribuzioneM8 aperti.
+-111/140DONE79,3%. Ora PERSIST05 in sviluppo sulla ratifica appena ricevuta;
+  UI06 pronta ma l’autore ha esplicitamente richiesto prima il backend05.
+- AUTO_CONTINUE, un solo agente; nessun nuovo stop ordinario dopo05.
