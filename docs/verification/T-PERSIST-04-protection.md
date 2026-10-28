@@ -1,4 +1,4 @@
-# T-PERSIST-04 — protocollo di protezione v1 (pre-implementazione)
+# T-PERSIST-04 — protezione delle identità e audit v1
 
 Prereq02/e9f477b e03/49a3f4e qualificatiCI40528607856/40581933176.
 Scope autorizzato: digest keyed stabile, proiezione minima protetta per PK,
@@ -86,3 +86,87 @@ mancanti/corte/diverse e audit corrotto/mismatch; Secret debug/no raw inoutput.
 Aggiunta al caso reale UTF8 la proiezioneÉ con stessaPK e fingerprint diverso.
 Guard lock: tutti i pin/checksum precedenti intatti, sole4aggiunte già qualificate.
 Gate completi in esecuzione, nonDONE04 prima della nuovaCI nativa.
+
+## Ripresa dal commit utente dd7135e — 2026-10-28
+
+Il commit `inter session staging commit` conserva implementazione e primi test,
+non la chiusura della task. Working tree iniziale pulito; branch
+`work/p1-foundations`, remoto sullo stesso SHA. Ultima CI40589848698 positiva
+riguarda UI04, non le aggiunte di protezione. Prerequisiti02/03 confermati dai
+rispettivi dossier e gate nativi, nessun lavoro DONE rieseguito.
+
+La pipeline locale salvata documenta fmt, Clippy core/workspace/all-features e
+750 test workspace positivi (93 suite, due ignored). Il log all-features
+precedente termina durante la compilazione: non vale come gate positivo.
+La ripresa completa quel comando e il core senza feature prima della nuova CI.
+
+### Spiegazione delle funzioni e delle condizioni
+
+`PersistenceKey::new` trasferisce il buffer in `Zeroizing` prima di verificarne
+la lunghezza. Anche un candidato rifiutato viene quindi gestito dal contenitore
+che azzera il buffer al rilascio. L'assenza di Clone/Serialize e il Debug redatto
+limitano le copie e gli output accidentali; il provider condivide un Arc senza
+esporre un accessore ai byte. Nessuna fonte segreta viene scelta implicitamente.
+
+`label` rifiuta metadati vuoti o con caratteri di controllo, conservando il
+valore originale valido. `IdentityProtectionScope::new` controlla identificativi
+e variante schema prima di possedere lo scope; il namespace è già validato dal
+tipo02. Non modifica padding, maiuscole o tipi dei parametri.
+
+`component` antepone una lunghezza u64 big endian verificata: concatenazioni di
+componenti differenti non diventano lo stesso messaggio. `mac` inizializza la
+primitiva qualificata e separa dominio, purpose e ID chiave. `scoped_mac`
+aggiunge numero e componenti canonici del namespace, tag di tipo, flow,
+versione/gruppo, trace e key_kind. Ogni differenza nello scope entra dunque nel
+messaggio autenticato, anche quando i byte della PK sono gli stessi.
+
+`preflight` rifiuta ID assente/vuoto e propaga errori typed del provider senza
+fallback. Se esiste audit storico chiama `verify_audit` prima di restituire
+l'handle. `audit` produce esclusivamente policy/ID e conferma keyed separata.
+`verify_audit` rifiuta policy/scheme/lunghezza inattesi, poi ID differente,
+infine confronta il MAC con la verifica constant-time della libreria. Un cambio
+di materiale sotto lo stesso ID non può passare come continuità dello storico.
+
+`protect_key` autentica scope e PK canonica, costruendo solo identità protetta.
+`protect_projection` riusa quell'identità e autentica separatamente PK,
+definizione della proiezione e valore canonico selezionato. Anche lo scheme del
+fingerprint include la definizione, così il confronto di contesto non nasconde
+un cambio della selezione. Non conserva dati raw né sceglie campi normativi.
+
+`ProtectionError::Display` usa messaggi statici; `source` espone soltanto errori
+metadata già redatti. Gli altri Debug pubblici omettono chiavi/scope/audit.
+I test usano esclusivamente materiale RFC e fixture sintetiche dichiarate.
+
+Oracle riproducibile: `python3 docs/verification/T-PERSIST-04-golden-check.py`,
+PASS nella ripresa. Il programma ricostruisce header, scope e JoinKey logical
+con struct/hmac/hashlib standard, senza importare il codice Rust o rigenerare il
+golden. Un disaccordo fallisce invece di aggiornare automaticamente l'atteso.
+
+La prima ripresa all-features è stata interrotta esplicitamente (exit130):
+linker concorrenti in attesa I/O da oltre dieci minuti. Nuovo tentativo con
+`-j 2`, stessi test/feature/lock; nessuna modifica della configurazione globale.
+Rimossi solo otto temporanei linker di ieri, non i file della build corrente.
+CI sul salvataggio originale dd7135e avviata:40656244960, ancora non qualificata.
+
+## Gate della ripresa e correzione del tooling
+
+All-features con due job terminato exit0:750passed,0failed,2ignored,93suite.
+I gate precedenti default/Clippy/fmt restano validi per il codice protezione
+immutato. L'oracle indipendente e l'audit governance sono positivi.
+
+Prima letturaCI40656244960: Linux supera fmt/Clippy/test default/all-features,
+core senza feature, grafo/font/pixel e benchmark. Fallisce poi Clippy tooling:
+`cannot update the lock file .../xtask/Cargo.lock because --locked was passed`.
+Nessun test fallito e nessuna eccezione ai gate: il lock separato non includeva
+le nuove dipendenze del core. Allineato con risoluzione offline, aggiungendo solo
+i quattro package già qualificati. Audit tomllib: ogni pin/checksum precedente
+preservato; nessuna versione nuova o rimozione. Metadata locked offline native
+positiva. La prima metadata non filtrata chiedeva block2 per Apple: non è un
+nuovo requisito desktop Linux; ripetuta con filter-platform reale e passata.
+
+`cargo clippy --manifest-path xtask/Cargo.toml --all-targets --locked --offline
+-j 2 -- -D warnings`:PASS. Test tooling in verifica, poi commit/push della
+correzione e CI nuova, senza cancellare la prima mentre Windows termina.
+Nessun DONE o milestone prima del gate nativo completo sulla correzione.
+
+Gate tooling completato: Clippy/fmt e test standalone locked/offline PASS; 14 test positivi, 1 ignored (probe release separati in CI). Residuo04: CI corretta, non DONE.

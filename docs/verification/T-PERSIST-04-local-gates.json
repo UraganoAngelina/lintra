@@ -1,0 +1,137 @@
+{
+  "task": "T-PERSIST-04",
+  "date": "2026-10-28",
+  "base_head": "dd7135e07304598b01f01bbafd4073688104d5d2",
+  "local_gates_complete": true,
+  "pipeline": [
+    {
+      "gate": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.35
+    },
+    {
+      "gate": "clippy-core",
+      "command": [
+        "cargo",
+        "clippy",
+        "-p",
+        "lintra",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 14.61
+    },
+    {
+      "gate": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 18.52
+    },
+    {
+      "gate": "clippy-all",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 7.46
+    },
+    {
+      "gate": "tests",
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 520.91
+    },
+    {
+      "gate": "tests-all-recovery",
+      "command": "cargo test --workspace --all-features --locked -j 2",
+      "exit_code": 0,
+      "log": "target/verification-persist-04-tests-all-recovery-j2.log"
+    },
+    {
+      "gate": "clippy-tooling",
+      "command": "cargo clippy --manifest-path xtask/Cargo.toml --all-targets --locked --offline -j 2 -- -D warnings",
+      "exit_code": 0
+    },
+    {
+      "gate": "test-tooling",
+      "command": "cargo test --manifest-path xtask/Cargo.toml --locked --offline -j 2",
+      "exit_code": 0
+    }
+  ],
+  "tests": {
+    "workspace-default": {
+      "passed": 750,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 93
+    },
+    "workspace-all-features": {
+      "passed": 750,
+      "failed": 0,
+      "ignored": 2,
+      "suites": 93
+    },
+    "tooling": {
+      "passed": 14,
+      "failed": 0,
+      "ignored": 1,
+      "suites": 1
+    }
+  },
+  "independent_python_oracle": "PASS",
+  "governance_audit": "PASS",
+  "source_sha256": {
+    "Cargo.toml": "0dac4a7da142520b24ac10f1e924519d0702d7bdc5bd8741ed2f78e1c1f1d720",
+    "Cargo.lock": "205fa87323ff1c27012dd9a48d208ddc687f9eb2eff4c2557abbbd43cbebb005",
+    "src/persistence/protection.rs": "2157b0a518f4210214b7df55ef9e7c9ea7818af4680893a7b89b7ef621511bfc",
+    "src/persistence/mod.rs": "0f35cc1ffe81db1fd5ebe27ee92fc37cd36f08a8932a0945d9fce3bd4fae1654",
+    "src/lib.rs": "cbac109e1322a54f659b362bface0d0084b0e83495ec0056a9d3ab587ce03bfd",
+    "tests/persistence_protection.rs": "df8d1bafa663d159714c946536461480f736304b677381af92cbab668d953b03",
+    "tests/fixtures/persistence/protected-projection.json": "2e9347b50a6d8e9a2fe1523e430d6de2beaae03a998806076f65b336610ffa91",
+    "xtask/Cargo.lock": "f43166318826d3f107380185d1b2eb7a0cbab264df764f33ee753196cd189506"
+  },
+  "native_ci": 40656244960,
+  "native_ci_complete": false,
+  "native_linux_tooling_failure": "standalone xtask lock not updated; corrective lock preserves all previous pins/checksums",
+  "native_linux_core_and_workspace_tests": "PASS",
+  "local_interrupted_attempt": {
+    "command": "cargo test --workspace --all-features --locked",
+    "exit_code": 130,
+    "reason": "explicit stop after sustained linker I/O contention; repeated with two jobs and passed"
+  },
+  "privacy": "Synthetic/RFC fixtures only; no production key/default storage or clinical rule activated",
+  "done": false
+}

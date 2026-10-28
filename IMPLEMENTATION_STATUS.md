@@ -1,18 +1,28 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-10-27**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-10-28**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — PERSIST04 IN_PROGRESS, UI04 DONE
+## Frontiera corrente — PERSIST04 gate correttivo, UI05 in sviluppo
 
-109/140DONE=77,9%,1IN_PROGRESS (PERSIST04),30NOT_STARTED.
-UI04/311dcc6+fmt357400e qualificataCI40589848698 tutti4job success.
-4RGBstatici dei runner/localidentici,5scene worker presenti entrambiOS.
-Nessun residuo04/M8ancoraaperta; UI05 pronta dopo la consegna correntePERSIST04.
-PERSIST04 moduloHMAC/provider/audit/proiezioniprotette compila;7integration e
-unitRFCvettoreindipendente pass,UTF8codec aggiunto; gate completi in esecuzione.
-Rootlock preserva tutti pin/checksum e aggiunge solo4crate qualificati.
-No storage reale, nuova norma o chiave predefinita. AUTO_CONTINUE single-agent.
+2026-10-28: ripresa da dd7135e (`inter session staging commit`), branch
+work/p1-foundations; remoto iniziale identico e working tree pulito.
+109/140 DONE = 77,9%; PERSIST04 IN_PROGRESS, UI04 DONE/CI40589848698.
+
+PERSIST04:750/750 test workspace default/all-features,0failed/2ignored,93suite;
+fmt/Clippy core/workspace/all-features, oracle Python HMAC e governance pass.
+CI40656244960 Linux supera anche core senza feature, font/pixel e benchmark;
+poi fallisce Clippy tooling perché il lock separato xtask non include HMAC.
+Correzione lock preserva tutti i pin/checksum e aggiunge solo i quattro crate
+qualificati nel salvataggio. Clippy tooling locked/offline pass; test in verifica.
+Windows/primaCI ancora aperti, niente DONE04 prima della CI corretta.
+
+UI16-05 avviata indipendente: indice offset/cache128/filtri/thread candidati,
+Slint tabella/dettaglio in preparazione. Nuovi file non ancora collegati o
+compilati; nessun gate05 dichiarato passato, nessuna baseline approvata cambiata.
+Report docs/verification/T-P16-05-results.md; single-agent, no delega/daemon.
+AUTO_CONTINUE: pubblicare correzione04 dopo test, poi UI05/gate; PERSIST05
+richiederà gate04 e decisione esplicita sul backend, nessuna scelta implicita.
 
 ## T-P16-04 locale completata —2026-10-27
 
@@ -5112,3 +5122,30 @@ completo, attende CI nativa. M1 rimane aperta fino alla verifica effettiva.
   PERSIST04 attualmente in gate locale. ReportP4protocollo/fonti/deps giàregistrati,
  7integration+unitRFC pass, nessuna capacità storicaattiva/storage reale.
 - AUTO_CONTINUE, un solo agente/no daemon/subagenti; skills UI mantenute per05.
+
+## HANDOFF §15.3 — ripresa PERSIST04, 2026-10-28
+
+- Base dd7135e utente, remoto identico; gate precedente UI04 confermato remoto.
+- Nessuna task DONE riaperta; codice protezione conservato e revisionato.
+- Pipeline precedente: fmt/tre Clippy/workspace default positivi, 750 test.
+  All-features precedente interrotto, ora in esecuzione foreground: non PASS.
+- Aggiunto oracle Python indipendente riproducibile e spiegazione API/condizioni.
+- Nessun nuovo backend, chiave reale, dato paziente o schema modificato.
+- Residuo: all-features/core, report gate, commit/push/CI; non DONE04.
+- Next UI16-05 pronta dopo sospensione del gate remoto04; PERSIST05 richiede
+  gate04 e ADR tecnica con scelta backend approvata, nessuna scelta implicita.
+- AUTO_CONTINUE, nessuna conferma ordinaria necessaria.
+
+## HANDOFF §15.3 — PERSIST04 gate locale positivo e fix lock, 2026-10-28
+
+- Base dd7135e, nessuna implementazione di protezione duplicata o modificata.
+-750/750test/93suite,0fail/2ignored; fmt/Clippy/oraclePython/governance pass.
+- PrimaCI40656244960: Linux runtime/core/grafo/font/pixel positivi, tooling
+  fallisce esclusivamente per xtask/Cargo.lock non aggiornato. Lock corretto,
+  vecchi pin/checksum preservati; Clippy tooling pass, test tooling in corso.
+- Nessun backend, PHI o norma aggiunti. Residuo04 commit/push/CI corretta.
+- UI05 indipendente in sviluppo: nuovi file candidati non ancora compilati,
+  nessun DONE05/M8 o verifica grafica attribuita a questa implementazione.
+- AUTO_CONTINUE, single-agent; prossimo gate04 dopo fine primaCI Windows.
+
+Gate tooling completato: Clippy/fmt e test standalone locked/offline PASS; 14 test positivi, 1 ignored (probe release separati in CI). Residuo04: CI corretta, non DONE.
