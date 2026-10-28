@@ -209,7 +209,7 @@ pub(super) fn check_private(
             return Err(bad());
         }
         if dir
-            && (header.AceFlags & (OBJECT_INHERIT_ACE | CONTAINER_INHERIT_ACE))
+            && (u32::from(header.AceFlags) & (OBJECT_INHERIT_ACE | CONTAINER_INHERIT_ACE))
                 != (OBJECT_INHERIT_ACE | CONTAINER_INHERIT_ACE)
         {
             return Err(bad());

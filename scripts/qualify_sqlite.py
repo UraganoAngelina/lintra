@@ -11,6 +11,25 @@ from pathlib import Path
 import subprocess
 
 
+def source_hash(repo):
+    """Bind measurements to stable compilation inputs, including a dirty tree."""
+    paths = subprocess.check_output(
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"], cwd=repo,
+    ).split(b"\0")
+    digest = hashlib.sha256()
+    for encoded in sorted(set(paths)):
+        if not encoded:
+            continue
+        name = os.fsdecode(encoded)
+        if (name in {"Cargo.toml", "Cargo.lock", "build.rs", "rust-toolchain.toml",
+                     ".cargo/config.toml", "scripts/qualify_sqlite.py",
+                     "xtask/Cargo.toml", "xtask/Cargo.lock"}
+                or name.startswith(("src/", "benches/", "bundles/embedded/", "xtask/src/"))):
+            digest.update(encoded + b"\0")
+            digest.update(hashlib.sha256((repo / name).read_bytes()).digest())
+    return digest.hexdigest()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--target", required=True)
@@ -21,6 +40,10 @@ def main():
     repo = Path(__file__).resolve().parent.parent
     output = args.output.resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
+    before = source_hash(repo)
+    commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo,
+                                     encoding="utf-8").strip()
+    dirty = bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=repo))
     build_env = os.environ.copy()
     encoded = build_env.get("CARGO_ENCODED_RUSTFLAGS")
     if encoded is not None:
@@ -64,12 +87,17 @@ def main():
     if args.smoke:
         command.append("--smoke")
     subprocess.run(command, cwd=repo, check=True)
+    after = source_hash(repo)
+    if after != before:
+        raise RuntimeError("compilation inputs changed during qualification; repeat on stable source")
     report = json.loads(output.read_text(encoding="utf-8"))
     report["target"] = args.target
     report["artifact_gate"] = gate.stdout.strip()
     report["executable_sha256"] = hashlib.sha256(Path(executable).read_bytes()).hexdigest()
-    report["commit"] = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo,
-                                               encoding="utf-8").strip()
+    report["commit"] = commit
+    report["working_tree_dirty"] = dirty
+    report["source_sha256_before"] = before
+    report["source_sha256_after"] = after
     output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
 
 

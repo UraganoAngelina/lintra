@@ -505,6 +505,24 @@ fn unsafe_paths_permissions_and_foreign_sidecars_fail_closed() {
         Err(PersistenceError::UnsafeStorageLocation)
     ));
     fs::remove_file(root.join("lintra.db-wal")).unwrap();
+    #[cfg(windows)]
+    {
+        // Native MSVC runner already grants symlink creation for the existing
+        // reference-filesystem suite; this exercises the SQLite boundary itself.
+        let alias = dir.path().join("alias");
+        std::os::windows::fs::symlink_dir(&root, &alias).unwrap();
+        assert!(matches!(
+            SQLitePersistenceAdapter::open(&alias, Some("synthetic-key"), &Provider(0xaa)),
+            Err(PersistenceError::UnsafeStorageLocation)
+        ));
+        let backup = dir.path().join("original-db");
+        fs::rename(root.join("lintra.db"), &backup).unwrap();
+        std::os::windows::fs::symlink_file(&backup, root.join("lintra.db")).unwrap();
+        assert!(matches!(
+            SQLitePersistenceAdapter::open(&root, Some("synthetic-key"), &Provider(0xaa)),
+            Err(PersistenceError::UnsafeStorageLocation)
+        ));
+    }
     #[cfg(unix)]
     {
         use std::os::unix::fs::{PermissionsExt, symlink};

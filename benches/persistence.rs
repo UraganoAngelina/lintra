@@ -284,6 +284,16 @@ fn measure(count: usize, output: &Path) {
         plan.iter()
             .all(|p| p.contains("SEARCH") && !p.contains("SCAN"))
     );
+    let compile_options: Vec<String> = c
+        .prepare("PRAGMA compile_options")
+        .unwrap()
+        .query_map([], |r| r.get(0))
+        .unwrap()
+        .collect::<Result<_, _>>()
+        .unwrap();
+    let source_id: String = c
+        .query_row("SELECT sqlite_source_id()", [], |r| r.get(0))
+        .unwrap();
     c.execute_batch("DROP TABLE qualification_unindexed")
         .unwrap();
     drop(c);
@@ -305,7 +315,7 @@ fn measure(count: usize, output: &Path) {
     publish(&repo, &next).unwrap();
     let contention_retry_commit_seconds = start.elapsed().as_secs_f64();
 
-    let report = json!({"identities":count,"contention_reject_seconds":contention_reject_seconds,"contention_retry_commit_seconds":contention_retry_commit_seconds,"prepare_seconds":prepare_seconds,"commit_seconds":commit_seconds,"lookup_samples":1000,"lookup_p50_ns":times[500],"lookup_p95_ns":times[950],"lookup_max_ns":times[999],"peak_bytes_pre_restart":before_reopen_peak,"peak_bytes_total":peak_bytes(),"restart":restart,"database_bytes":bytes,"index_comparison_samples":10,"indexed_sql_mean_seconds":indexed/10.,"unindexed_sql_mean_seconds":unindexed/10.,"index_fixture_seconds":index_fixture_seconds,"lookup_plan":plan,"sqlite":settings.sqlite_version,"journal_mode":settings.journal_mode,"synchronous":settings.synchronous,"cache_kib":settings.cache_kib,"mmap_bytes":settings.mmap_bytes,"profile":if cfg!(debug_assertions){"debug-smoke"}else{"release"},"os":std::env::consts::OS,"memory_scope":"process peak includes C/Rust/fixtures; restart measured in fresh child"});
+    let report = json!({"sqlite_source_id":source_id,"sqlite_compile_options":compile_options,"identities":count,"contention_reject_seconds":contention_reject_seconds,"contention_retry_commit_seconds":contention_retry_commit_seconds,"prepare_seconds":prepare_seconds,"commit_seconds":commit_seconds,"lookup_samples":1000,"lookup_p50_ns":times[500],"lookup_p95_ns":times[950],"lookup_max_ns":times[999],"peak_bytes_pre_restart":before_reopen_peak,"peak_bytes_total":peak_bytes(),"restart":restart,"database_bytes":bytes,"index_comparison_samples":10,"indexed_sql_mean_seconds":indexed/10.,"unindexed_sql_mean_seconds":unindexed/10.,"index_fixture_seconds":index_fixture_seconds,"lookup_plan":plan,"sqlite":settings.sqlite_version,"journal_mode":settings.journal_mode,"synchronous":settings.synchronous,"cache_kib":settings.cache_kib,"mmap_bytes":settings.mmap_bytes,"profile":if cfg!(debug_assertions){"debug-smoke"}else{"release"},"os":std::env::consts::OS,"memory_scope":"process peak includes C/Rust/fixtures; restart measured in fresh child"});
     fs::write(output, serde_json::to_vec_pretty(&report).unwrap()).unwrap();
     println!(
         "identities={count} commit_seconds={commit_seconds:.3} lookup_p95_ns={} peak_bytes={}",

@@ -113,9 +113,10 @@ tecnici, mai riutilizzati per infilare identificativi paziente in campi liberi.
 ## Sicurezza e limiti operativi iniziali
 
 Root assoluta esplicita e archivio per singola installazione. Primo perimetro
-filesystem qualificato: ext4 locale Linux e NTFS locale Windows; altri filesystem,
+filesystem da qualificare: ext4 (runner Linux), Btrfs (volume locale misurato)
+e NTFS locale Windows; altri filesystem,
 volumi remoti, tmpfs e sidecar WAL/SHM rifiutati. Nessuna promessa su SMB/NFS,
-XFS/Btrfs non collaudati o condivisione fra postazioni. Linux owner effettivo,
+XFS non collaudato o condivisione fra postazioni. Linux owner effettivo,
 0700/0600, file non hardlinked, no symlink, antenati scrivibili da altri ammessi
 solo sticky. Windows directory con DACL protetta ereditabile solo utente/System,
 owner verificato, file con ACL ereditate verificate, reparse rifiutati e handle
@@ -154,3 +155,27 @@ positivo, golden originali invariati. Aggiunti poi flush delle pagine nel test
 crash, guard non-autocommit e test ACL Windows: gate finali ancora in corso.
 Commit implementativo pubblicato per eseguire CI nativa/benchmark; NON chiusura
 della task. Evidenze finali verranno registrate dopo gli esiti effettivi.
+
+
+## Diagnosi dei primi gate — 2026-10-28
+
+CI09f2bdd3: i due job Windows falliscono nella compilazione Rust della maschera
+ACL: AceFlags è u8, i flag SDK sono u32. Correzione non troncante u32::from
+prima dell'AND; nessuna ACL allargata. Nuove prove symlink directory/file anche
+nel backend Windows, oltre al test DACL negativa. Il DNS locale ha temporaneamente
+impedito il recupero log; nessun TLS disabilitato o configurazione di rete mutata.
+
+Primo workspace default:768test principali +2esecuzioni helper restart,95suite
+principali +2helper,0fallimenti/3ignorati (helper incluso). Quello all-features
+finale fallisce11test perché il filesystem locale è Btrfs, non ext4: rilevato
+con statfs/stat, rimosso per errore dalla prima allowlist. Ripristinato solo Btrfs
+che è il volume effettivo dei test/benchmark; XFS resta non supportato/non provato.
+Non è un indebolimento dei PRAGMA. Il precedente ciclo default era passato sul
+Btrfs con l'allowlist iniziale. Ripetere ora i gate sulla fonte corretta.
+
+La prima misura locale10k/100k/300k è una baseline intermedia: durante lo sviluppo
+i sorgenti erano cambiati dopo la compilazione. Il campo commit scritto a fine
+run non basta a identificarne la fonte: non usarla come gate finale. Harness
+corretto per fissare commit iniziale e hash di tutti gli input prima/dopo;
+una variazione durante la run ora invalida la qualificazione. CI lavora su clone
+immutabile; anche lì verranno registrati gli hash. Nessuna soglia DEC14 dedotta.

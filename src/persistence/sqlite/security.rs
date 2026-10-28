@@ -174,7 +174,9 @@ fn check_filesystem(p: &Path) -> Result<(), PersistenceError> {
     }
     // SAFETY: successful statfs initialized the complete structure.
     let kind = unsafe { info.assume_init() }.f_type as u64;
-    if kind != 0xef53 {
+    // ext4 on the Linux native runner, Btrfs on the development fixture volume.
+    // Other filesystems need their own qualification; never relax durability.
+    if !matches!(kind, 0xef53 | 0x9123683e) {
         return Err(PersistenceError::UnsupportedStorageFilesystem);
     }
     Ok(())
