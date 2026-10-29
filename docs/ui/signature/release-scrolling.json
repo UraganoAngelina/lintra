@@ -1,0 +1,87 @@
+{
+  "profile": "release",
+  "source_commit": "5720748",
+  "source_unchanged": true,
+  "measurements": [
+    {
+      "cache_rows": 128,
+      "decoded_rows": 297,
+      "full_redraw_jump_ms": [
+        12.799112,
+        23.446851000000002,
+        23.173266,
+        22.879345999999998,
+        22.036514,
+        22.005541,
+        22.063312000000003
+      ],
+      "highest_requested_row": 299987,
+      "offset_bytes": 2400000,
+      "rows": 300000,
+      "scale": 1,
+      "wheel_frames": 30,
+      "wheel_median_ms": 14.694242999999998,
+      "wheel_p95_ms": 15.614567
+    },
+    {
+      "cache_rows": 128,
+      "decoded_rows": 580,
+      "full_redraw_jump_ms": [
+        36.072565,
+        46.159164000000004,
+        44.839141999999995,
+        43.418122000000004,
+        43.571107,
+        47.194423,
+        44.371739
+      ],
+      "highest_requested_row": 299987,
+      "offset_bytes": 2400000,
+      "rows": 300000,
+      "scale": 2,
+      "wheel_frames": 30,
+      "wheel_median_ms": 18.946879,
+      "wheel_p95_ms": 19.932995
+    },
+    {
+      "cache_rows": 128,
+      "decoded_rows": 297,
+      "full_redraw_jump_ms": [
+        12.869569,
+        22.665127000000002,
+        20.860747999999997,
+        21.558613,
+        22.027309,
+        22.233871999999998,
+        21.930775
+      ],
+      "highest_requested_row": 999987,
+      "offset_bytes": 8000000,
+      "rows": 1000000,
+      "scale": 1,
+      "wheel_frames": 30,
+      "wheel_median_ms": 14.662338,
+      "wheel_p95_ms": 15.030988
+    },
+    {
+      "cache_rows": 128,
+      "decoded_rows": 580,
+      "full_redraw_jump_ms": [
+        32.909544,
+        43.422495999999995,
+        42.627908999999995,
+        44.371543,
+        45.213459,
+        45.294097,
+        45.970417
+      ],
+      "highest_requested_row": 999987,
+      "offset_bytes": 8000000,
+      "rows": 1000000,
+      "scale": 2,
+      "wheel_frames": 30,
+      "wheel_median_ms": 18.878392,
+      "wheel_p95_ms": 19.348322
+    }
+  ]
+}

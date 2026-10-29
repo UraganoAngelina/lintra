@@ -1,0 +1,20 @@
+{
+  "workspace-default.log": {
+    "reported_summaries": 106,
+    "passed_including_nested_helpers_and_doctests": 815,
+    "failed": 0,
+    "ignored": 4
+  },
+  "gate-4.log": {
+    "reported_summaries": 106,
+    "passed_including_nested_helpers_and_doctests": 815,
+    "failed": 0,
+    "ignored": 4
+  },
+  "gate-5.log": {
+    "reported_summaries": 90,
+    "passed_including_nested_helpers_and_doctests": 773,
+    "failed": 0,
+    "ignored": 4
+  }
+}

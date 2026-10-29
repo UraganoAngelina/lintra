@@ -1,0 +1,12 @@
+{
+  "run_id": 40958452017,
+  "head": "5720748",
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/40958452017",
+  "state": "completed",
+  "ordinary_reads": 3,
+  "dispatch_confirmed": true,
+  "conclusion": "success",
+  "final_required_reads": 1,
+  "final_read": "native-ci-final.json",
+  "jobs_passed": 5
+}

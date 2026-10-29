@@ -57,6 +57,72 @@
       "exit_code": 0,
       "elapsed_seconds": 47.925,
       "log": "gate-3.log"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 539.681,
+      "log": "gate-4.log"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "lintra",
+        "--no-default-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 94.41,
+      "log": "gate-5.log"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check_workspace.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.013,
+      "log": "gate-6.log"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "-p",
+        "lintra-ui",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 437.268,
+      "log": "gate-7.log"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "lintra-ui",
+        "--release",
+        "--test",
+        "results_window",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 232.979,
+      "log": "gate-8.log"
     }
   ]
 }

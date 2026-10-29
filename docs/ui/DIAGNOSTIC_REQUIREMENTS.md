@@ -1,7 +1,9 @@
 # Chiarezza dei diagnostici — requisito dell'autore, 2026-10-29
 
-Stato corrente: implementato in T-P16-07 e verificato con prove mirate core/UI;
-regressione completa e gate nativi in qualificazione, requisito non ancora chiuso.
+Stato corrente: requisito chiuso in T-P16-07. Implementazione core/UI verificata
+con regressione completa e CI40908321779; redesign Signature successivo qualificato
+su5720748 dalla CI40958452017, tutti5job Linux/MSVC/pixel/JSONL positivi.
+Codici, semantica raw/logical e domini preservati nel refactoring UI.
 Evidenze: docs/verification/T-P16-07-diagnostics.md e local-gates.json.
 Integra la qualità della schermata Risultati; non modifica le norme degli schemi,
 le decisioni di CNF-ALIGNMENT-01 né lo stato delle consegne16-00…05 già qualificate.

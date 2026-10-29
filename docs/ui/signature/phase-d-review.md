@@ -69,3 +69,26 @@ Il verdetto è una review diretta dell'agente, non una ratifica dell'autore né 
 prova su ogni dispositivo. Qualifica tecnica all-features/release e CI restano
 aperte fino ai rispettivi risultati; la task non è dichiarata DONE da questo
 verdetto. Nessun'altra iterazione estetica avviata senza un nuovo difetto concreto.
+
+
+## Chiusura locale
+
+Tutti i nove comandi registrati in local-gates.json hanno exit0; sorgenti UI e
+lock invariati. Release con rotella30frame/300k/1M a1×/2× passata: p95 fra15,03
+e19,93ms, cache128 in tutti i casi. Ispezionate anche le cinque tavole di
+contatto (tutte80le capture after): nessun frame nero/vuoto o vista errata;
+le tavole ridotte verificano l'inventario, la leggibilità è stata valutata nelle
+capture singole dichiarate sopra. CI ancora pendente alla terza lettura.
+
+Tradeoff documentato: a1366×768 i nuovi titoli e le etichette permanenti riducono
+le righe intere da10a7; le finestre alte recuperano spazio (a1920×1200 tutte18le
+diagnostiche della fixture sono visibili). Non si nasconde questo costo nella
+valutazione di efficienza e non si dichiara un miglioramento universale.
+
+
+## Gate nativo finale
+
+CI40958452017 su5720748 completed/success in tutti5job: Linux/MSVC, pixel
+produzione, pixel temi e JSONL. Confronti RGB nativi senza tolleranza positivi.
+La qualifica tecnica della consegna è chiusa; i limiti percettivi e il tradeoff
+di densità dichiarati sopra restano validi. Nessun nuovo criterio attenuato.

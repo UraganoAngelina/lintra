@@ -1,8 +1,8 @@
 # LINTRA SIGNATURE UI OVERHAUL REPORT
 
 2026-10-29 · single-agent · branch `work/p1-foundations`.
-**Stato: Fasi A/B/C realizzate, review visiva D conclusa; gate nativi e release in corso.**
-Questa intestazione sarà aggiornata solo con gli esiti effettivi.
+**Stato: DONE. Implementazione, review visiva, gate locali e CI Linux/Windows superati sul commit5720748.**
+Consegna qualificata dalla CI40958452017, cinque job completed/success.
 
 ## A. Utilizzo verificato delle skill
 
@@ -107,8 +107,11 @@ Gate già superati sul nuovo codice: fmt, Clippy workspace all-targets nei due
 assetti default/all-features, test workspace default (815 esiti positivi nei
 riepiloghi, inclusi helper/doctest;0fail,4ignored). Capture80/80 e regressione
 geometrica1×/2× passate; fonte immutata verificata con hash. Evidenze in
-[local-gates.json](signature/local-gates.json) e log relativi. Test all-features,
-core-no-bundle, release e CI del redesign ancora in corso.
+[local-gates.json](signature/local-gates.json) e log relativi. Anche test workspace all-features (815 esiti positivi,0fail/4ignored), core-no-bundle
+(773 esiti positivi,0fail/4ignored), controllo del grafo, build release UI e test
+results_window release sono passati. I conteggi includono helper annidati e
+doctest, non sono presentati come numero di test unici. Sorgenti UI invariati
+verificati da hash durante tutti i gate. [Riepilogo](signature/test-summary.json).
 
 Contrasto misurato: corpo13,76/17,18:1, secondario5,76/9,67:1,
 selezione5,67/6,68:1, primaria6,52/7,36:1, disabilitato4,67/7,29:1
@@ -119,23 +122,50 @@ La [review D](signature/phase-d-review.md) assegna ship alle correzioni visuali
 elencate, con i limiti dichiarati. La CI precedente40908321779 è verde sui
 cinque job, ma non sostituisce il gate del redesign.
 
+CI finale: [40958452017](https://github.com/UraganoAngelina/lintra/actions/runs/40958452017),
+commit5720748, **tutti5job completed/success**: Verify Linux, Verify MSVC,
+confronto dei pixel di produzione, confronto dei temi bootstrap e JSONL identico.
+Tre letture ordinarie distanziate, poi la lettura finale mancante autorizzata
+quando i job erano ancora pendenti. Un timeout della revisione automatica della
+lettura finale è stato risolto al retry, senza attenuare TLS o gate. Evidenza
+[native-ci-final.json](signature/native-ci-final.json).
+
+Misura release reale,1280×780, eventi rotella30frame per caso; cache sempre128:
+
+| Righe | Scala | Mediana ms | p95 ms |
+|---|---|---|---|
+|300.000|1×|14,69|15,61|
+|300.000|2×|18,95|19,93|
+|1.000.000|1×|14,66|15,03|
+|1.000.000|2×|18,88|19,35|
+
+[Misure complete](signature/release-scrolling.json). Nessuna soglia prodotto
+inventata o promessa di FPS universale; i riferimenti storici hanno un layout e
+messaggi diversi e non provano un miglioramento causale. Binario locale release
+22.595.600byte, hash in [release-build.json](signature/release-build.json).
+La distribuzione confezionata resta UI08, distinta da questa build.
+
 ## E. Valutazione critica
 
 | Dimensione | Evidenza da valutare | Limite da conservare |
 |---|---|---|
 | Identità estetica | Marchio geometrico, grafite/avorio/rame, scala dei titoli, stessa grammatica fra viste | Giudizio di review dell'agente; non si attribuisce una nuova ratifica visiva all'autore |
 | Qualità esecutiva | Componenti condivisi, focus, contrasto misurato, render1×/2× e più dimensioni | Test software headless; non prova percettiva su ogni monitor o lettore di schermo |
-| Efficienza esperti | Più righe sulle finestre alte, causa subito leggibile, filtri etichettati, memoria della selezione | Al minimo il dettaglio richiede scorrimento; i messaggi contrattuali lunghi restano integrali |
+| Efficienza esperti | Più righe sulle finestre alte, causa subito leggibile, filtri etichettati, memoria della selezione | A1366×768 circa7righe intere rispetto alle10precedenti: più spazio a contesto e filtri etichettati; a1920×1200 tutte18le righe della fixture sono visibili. Al minimo il dettaglio richiede scorrimento |
 | Estensibilità | Liste e nomi dai modelli reali, nessun ramo SIOC/CAD o numero di tracciati hardcoded | Nuove capability richiederanno task funzionali; lo storico non è simulato |
 
-La revisione finale deve motivare il verdetto sulle capture effettive e sulle
-prove, senza punteggi estetici inventati o dichiarazioni di assenza assoluta di
-problemi. Il solo compilatore non soddisfa il requisito visuale.
+Review diretta conclusa sulle capture effettive: le correzioni materiali elencate
+sono risolte. Il limite di densità alle finestre basse è dichiarato, senza
+punteggi estetici o affermazioni di assenza assoluta di problemi. Le verifiche
+su software renderer non equivalgono a prove su ogni monitor o dispositivo assistivo.
 
 ## F. Handoff
 
 Fonte canonica futura: [DESIGN.md](DESIGN.md), specifica completa in
 LINTRA_DESIGN_DIRECTION.md, token eseguibili in Tok. Lo storico originale è
 conservato in signature/DESIGN-before.md e docs/ui/review senza sovrascritture.
-Stato e prossimo prerequisito reale in IMPLEMENTATION_STATUS.md; UI08 attende il
-gate del nuovo assetto. PERSIST08 resta successiva al perimetro UI autorizzato.
+UI07 chiusa con tutti i gate reali;116/140task DONE=82,9%, M8 ancora aperta.
+UI08 è la prossima task del workflow (packaging, distinta dal redesign).
+PERSIST08 resta successiva al perimetro UI autorizzato. Stato e handoff in
+IMPLEMENTATION_STATUS.md. Codice e immagini qualificati nel commit5720748;
+questa registrazione finale non modifica sorgenti, dipendenze o riferimenti.

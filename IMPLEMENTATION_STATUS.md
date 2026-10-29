@@ -3,6 +3,33 @@
 Consuntivo aggiornato al **2026-10-29**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — Signature/UI07 DONE, packaging UI08 READY
+
+2026-10-29:116/140 DONE=82,9%. Redesign Signature code5720748 qualificato dalla
+CI40958452017: tutti5job completed/success, Linux/MSVC, pixel produzione e temi,
+JSONL. UI06 già qualificata dalla base5197a98/CI40908321779; UI07 e requisito
+diagnostici ora chiusi. Nessuna milestoneM8 prima del packaging08.
+
+Fasi ui-ux-pro-max→Impeccable→no-ai-slop→reviewD eseguite in successione;
+design canonico Copper Ledger,80coppie prima/dopo e manifest/hash consultabili.
+Tutti9comandi locali passati, sorgenti invariati: fmt/Clippy due assetti,
+workspace815 esiti perassetto, core-no-bundle773 (conteggi includono helper e
+doctest;0fail/4ignored), grafo, release e rotella300k/1M a1×/2×. Cache128,
+p95fra15,03e19,93ms. Contrasto minimo4,67:1. Nessuna norma/dipendenza cambiata.
+Report completo docs/ui/LINTRA_SIGNATURE_UI_OVERHAUL_REPORT.md, con tradeoff
+di densità/limiti della verifica dichiarati. Font e PNG storici preservati.
+
+## HANDOFF §15.3 — Signature UI consegnata
+
+Code5720748 pubblicato sul branch concordato. CI nativa positiva verificata,
+nessun gate dedotto dal timeout. Lettura finale mancante eseguita secondo GOV;
+revisione automatica scaduta al primo tentativo, retry positivo, nessun TLS
+attenuato o approvazione ordinaria richiesta. Evidenze native/locali in signature/.
+UI16-08 prossima READY: prereq07 e15-05 verificati; preflight packaging nello
+stesso flusso, single-agent. PERSIST08 non anticipata. AUTO_CONTINUE.
+
+## Registro storico — qualifica Signature in corso
+
 ## Frontiera corrente — Signature UI in qualifica, base UI06 verificata
 
 2026-10-29: mandato Signature esplicito dell'autore, prompt conservato in
@@ -22,16 +49,23 @@ cache≤128,138,68s debug. Fase D/capture finali/Clippy/test completi/CI del red
 ancora in corso. Nessun DONE dedotto da una build o da capture di presentazione.
 Documentazione tecnica in docs/ui/signature/IMPLEMENTATION_NOTES.md.
 
-## HANDOFF §15.3 — Signature: pubblicazione della qualifica
+## HANDOFF §15.3 — Signature: tutti i gate locali passati, CI pendente
 
-Fasi A/B/C e review visiva D concluse, font/token/callback e confini preservati.
-Test workspace default passati (815 esiti positivi nei riepiloghi,0fail,4ignored;
-include helper/doctest), fmt e Clippy workspace default/all-features passati.
-80coppie di render comparabili; riferimenti Signature espliciti e test di bordo
-negativo, nessuna sovrascrittura dei PNG storici. Contrasto minimo misurato4,67:1.
-All-features/core-no-bundle/release ancora in corso; nuova CI richiesta sul
-commit della consegna. Report Signature e source-hashes consultabili.
-Nessuna08 prima del gate07: WAITING_GATE single-agent; nessun nuovo stop umano.
+Code5720748 pubblicato. Fasi A/B/C e review visiva D concluse;80coppie di render
+1×/2× e dimensioni richieste, font/token/callback/confini preservati. Riferimenti
+Signature espliciti, PNG storici invariati. Contrasto minimo misurato4,67:1.
+
+Nove comandi locali exit0: fmt, Clippy default/allfeatures, test workspace nei
+due assetti (815 esiti positivi/106riepiloghi ciascuno,0fail/4ignored, include
+helper/doctest), core-no-bundle773 esiti/90riepiloghi, grafo, release UI e rotella
+release300k/1M a1×/2×. Cache128, p95fra15,03e19,93ms. Hash sorgenti invariati.
+Log/JSON/report Signature consultabili; binario locale22.595.600byte con hash.
+
+CI40958452017 su5720748: terza lettura ordinaria, Linux alla release riproducibile,
+Windows in test allfeatures; nessuna conclusione presunta. Lettura finale mancante
+ancora necessaria dopo attesa adeguata, già autorizzata da GOVcorrente. UI07 resta
+IN_PROGRESS;115/140DONE82,1%. UI08 attende gate07, PERSIST08 rinviata.
+WAITING_GATE single-agent; nessun nuovo stop umano o pipeline duplicata.
 
 ## Registro storico — frontiera prima del mandato Signature
 
