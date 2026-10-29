@@ -1,9 +1,0 @@
-{
-  "binary": "target/release/lintra-ui",
-  "bytes": 22595600,
-  "sha256": "beb1e8f3bd4aa06a749318e621348dbcf73763dda82e18c20a5c8431bea87632",
-  "command": "cargo build -p lintra-ui --release --locked --offline",
-  "exit_code": 0,
-  "source_commit": "5720748",
-  "native_execution": "headless software tests; no physical desktop launch claimed"
-}
