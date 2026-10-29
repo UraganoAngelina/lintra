@@ -88,3 +88,11 @@ Test mirati:5integration metadata,7protezione e8tipi positivi;16unit SQLite e
 ancora da completare, nessun DONE06 prima di CI Linux/MSVC. Vedere i log target/
 verification-persist-06-* e il preflight. Hash/consenso non sono anonimizzazione;
 cifratura/retention/provisioning chiavi/backup prima dei dati reali restano aperti.
+
+## Chiusura verificata — 2026-10-29
+
+Code3e8fae4: CI40853726275 tutti4job completed/success, Linux eWindows/MSVC,
+JSONL e pixel.779test principali/96suite più3helper per assetto locale,0fail/
+4ignored; Clippy workspace default/all-features positivo. Evidenze native-ci.json
+e local-gates.json con hash dei log.06 DONE; prossima07 macchina a stati,
+AUTO_CONTINUE single-agent. La sezione precedente descrive il checkpoint iniziale.

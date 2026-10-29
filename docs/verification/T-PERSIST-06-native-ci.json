@@ -1,0 +1,694 @@
+{
+  "task": "T-PERSIST-06",
+  "run_id": 40853726275,
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/40853726275",
+  "conclusion": "success",
+  "headSha": "3e8fae424dfa5c47f9bc78444fc4576e2e746a95",
+  "jobs": [
+    {
+      "completedAt": "2026-10-29T10:24:52Z",
+      "conclusion": "success",
+      "databaseId": 123379336521,
+      "name": "Verify (x86_64-pc-windows-msvc)",
+      "startedAt": "2026-10-29T09:57:49Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-29T09:57:51Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-29T09:57:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:58:00Z",
+          "conclusion": "success",
+          "name": "Check out source",
+          "number": 2,
+          "startedAt": "2026-10-29T09:57:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:58:00Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "number": 3,
+          "startedAt": "2026-10-29T09:58:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:58:03Z",
+          "conclusion": "success",
+          "name": "Test release tooling without credentials",
+          "number": 4,
+          "startedAt": "2026-10-29T09:58:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:58:03Z",
+          "conclusion": "skipped",
+          "name": "Install Linux desktop build prerequisite",
+          "number": 5,
+          "startedAt": "2026-10-29T09:58:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:58:16Z",
+          "conclusion": "success",
+          "name": "Install pinned Rust toolchain",
+          "number": 6,
+          "startedAt": "2026-10-29T09:58:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:58:17Z",
+          "conclusion": "success",
+          "name": "Install native target",
+          "number": 7,
+          "startedAt": "2026-10-29T09:58:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:58:19Z",
+          "conclusion": "success",
+          "name": "Check formatting",
+          "number": 8,
+          "startedAt": "2026-10-29T09:58:17Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:01:42Z",
+          "conclusion": "success",
+          "name": "Clippy",
+          "number": 9,
+          "startedAt": "2026-10-29T09:58:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:08:12Z",
+          "conclusion": "success",
+          "name": "Test",
+          "number": 10,
+          "startedAt": "2026-10-29T10:01:42Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:08:36Z",
+          "conclusion": "success",
+          "name": "Clippy all features",
+          "number": 11,
+          "startedAt": "2026-10-29T10:08:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:13:14Z",
+          "conclusion": "success",
+          "name": "Test all features",
+          "number": 12,
+          "startedAt": "2026-10-29T10:08:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:16:09Z",
+          "conclusion": "success",
+          "name": "Test core without embedded bundle",
+          "number": 13,
+          "startedAt": "2026-10-29T10:13:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:16:11Z",
+          "conclusion": "success",
+          "name": "Verify workspace and core dependency boundary",
+          "number": 14,
+          "startedAt": "2026-10-29T10:16:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:16:20Z",
+          "conclusion": "success",
+          "name": "Verify actual build rejects missing embedded font",
+          "number": 15,
+          "startedAt": "2026-10-29T10:16:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:16:22Z",
+          "conclusion": "success",
+          "name": "Upload native desktop pixels",
+          "number": 16,
+          "startedAt": "2026-10-29T10:16:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:16:24Z",
+          "conclusion": "success",
+          "name": "Upload desktop captures and contrast evidence",
+          "number": 17,
+          "startedAt": "2026-10-29T10:16:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:16:45Z",
+          "conclusion": "success",
+          "name": "Smoke synthetic benchmark and verify expected validation counts",
+          "number": 18,
+          "startedAt": "2026-10-29T10:16:24Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:17:08Z",
+          "conclusion": "success",
+          "name": "Smoke the real SQLite adapter with indexed lookups and process restart",
+          "number": 19,
+          "startedAt": "2026-10-29T10:16:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:17:08Z",
+          "conclusion": "success",
+          "name": "Check tooling formatting",
+          "number": 20,
+          "startedAt": "2026-10-29T10:17:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:17:36Z",
+          "conclusion": "success",
+          "name": "Clippy tooling",
+          "number": 21,
+          "startedAt": "2026-10-29T10:17:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:18:22Z",
+          "conclusion": "success",
+          "name": "Test tooling and extracted data bundle",
+          "number": 22,
+          "startedAt": "2026-10-29T10:17:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:24:24Z",
+          "conclusion": "success",
+          "name": "Build reproducible release and verify artifact",
+          "number": 23,
+          "startedAt": "2026-10-29T10:18:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:24:27Z",
+          "conclusion": "success",
+          "name": "Execute README quickstart in native shell from a fresh install",
+          "number": 24,
+          "startedAt": "2026-10-29T10:24:24Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:24:28Z",
+          "conclusion": "success",
+          "name": "Upload native README acceptance evidence",
+          "number": 25,
+          "startedAt": "2026-10-29T10:24:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:24:46Z",
+          "conclusion": "success",
+          "name": "Package synthetic data for native bundle probe",
+          "number": 26,
+          "startedAt": "2026-10-29T10:24:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:24:47Z",
+          "conclusion": "success",
+          "name": "Exercise native release and executable-relative bundle resolution",
+          "number": 27,
+          "startedAt": "2026-10-29T10:24:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:24:48Z",
+          "conclusion": "success",
+          "name": "Upload raw JSONL from native runner",
+          "number": 28,
+          "startedAt": "2026-10-29T10:24:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:24:48Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "number": 55,
+          "startedAt": "2026-10-29T10:24:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:24:50Z",
+          "conclusion": "success",
+          "name": "Post Check out source",
+          "number": 56,
+          "startedAt": "2026-10-29T10:24:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:24:51Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 57,
+          "startedAt": "2026-10-29T10:24:50Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/40853726275/job/123379336521"
+    },
+    {
+      "completedAt": "2026-10-29T10:14:29Z",
+      "conclusion": "success",
+      "databaseId": 123379336861,
+      "name": "Verify (x86_64-unknown-linux-gnu)",
+      "startedAt": "2026-10-29T09:57:49Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-29T09:57:51Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-29T09:57:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:57:52Z",
+          "conclusion": "success",
+          "name": "Check out source",
+          "number": 2,
+          "startedAt": "2026-10-29T09:57:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:57:52Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "number": 3,
+          "startedAt": "2026-10-29T09:57:52Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:57:53Z",
+          "conclusion": "success",
+          "name": "Test release tooling without credentials",
+          "number": 4,
+          "startedAt": "2026-10-29T09:57:52Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:58:04Z",
+          "conclusion": "success",
+          "name": "Install Linux desktop build prerequisite",
+          "number": 5,
+          "startedAt": "2026-10-29T09:57:53Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:58:15Z",
+          "conclusion": "success",
+          "name": "Install pinned Rust toolchain",
+          "number": 6,
+          "startedAt": "2026-10-29T09:58:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:58:15Z",
+          "conclusion": "success",
+          "name": "Install native target",
+          "number": 7,
+          "startedAt": "2026-10-29T09:58:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:58:15Z",
+          "conclusion": "success",
+          "name": "Check formatting",
+          "number": 8,
+          "startedAt": "2026-10-29T09:58:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:00:12Z",
+          "conclusion": "success",
+          "name": "Clippy",
+          "number": 9,
+          "startedAt": "2026-10-29T09:58:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:03:59Z",
+          "conclusion": "success",
+          "name": "Test",
+          "number": 10,
+          "startedAt": "2026-10-29T10:00:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:04:11Z",
+          "conclusion": "success",
+          "name": "Clippy all features",
+          "number": 11,
+          "startedAt": "2026-10-29T10:03:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:06:49Z",
+          "conclusion": "success",
+          "name": "Test all features",
+          "number": 12,
+          "startedAt": "2026-10-29T10:04:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:08:08Z",
+          "conclusion": "success",
+          "name": "Test core without embedded bundle",
+          "number": 13,
+          "startedAt": "2026-10-29T10:06:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:08:08Z",
+          "conclusion": "success",
+          "name": "Verify workspace and core dependency boundary",
+          "number": 14,
+          "startedAt": "2026-10-29T10:08:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:08:13Z",
+          "conclusion": "success",
+          "name": "Verify actual build rejects missing embedded font",
+          "number": 15,
+          "startedAt": "2026-10-29T10:08:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:08:15Z",
+          "conclusion": "success",
+          "name": "Upload native desktop pixels",
+          "number": 16,
+          "startedAt": "2026-10-29T10:08:13Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:08:16Z",
+          "conclusion": "success",
+          "name": "Upload desktop captures and contrast evidence",
+          "number": 17,
+          "startedAt": "2026-10-29T10:08:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:08:27Z",
+          "conclusion": "success",
+          "name": "Smoke synthetic benchmark and verify expected validation counts",
+          "number": 18,
+          "startedAt": "2026-10-29T10:08:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:08:40Z",
+          "conclusion": "success",
+          "name": "Smoke the real SQLite adapter with indexed lookups and process restart",
+          "number": 19,
+          "startedAt": "2026-10-29T10:08:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:08:40Z",
+          "conclusion": "success",
+          "name": "Check tooling formatting",
+          "number": 20,
+          "startedAt": "2026-10-29T10:08:40Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:09:02Z",
+          "conclusion": "success",
+          "name": "Clippy tooling",
+          "number": 21,
+          "startedAt": "2026-10-29T10:08:40Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:09:37Z",
+          "conclusion": "success",
+          "name": "Test tooling and extracted data bundle",
+          "number": 22,
+          "startedAt": "2026-10-29T10:09:02Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:14:14Z",
+          "conclusion": "success",
+          "name": "Build reproducible release and verify artifact",
+          "number": 23,
+          "startedAt": "2026-10-29T10:09:37Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:14:14Z",
+          "conclusion": "success",
+          "name": "Execute README quickstart in native shell from a fresh install",
+          "number": 24,
+          "startedAt": "2026-10-29T10:14:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:14:15Z",
+          "conclusion": "success",
+          "name": "Upload native README acceptance evidence",
+          "number": 25,
+          "startedAt": "2026-10-29T10:14:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:14:26Z",
+          "conclusion": "success",
+          "name": "Package synthetic data for native bundle probe",
+          "number": 26,
+          "startedAt": "2026-10-29T10:14:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:14:26Z",
+          "conclusion": "success",
+          "name": "Exercise native release and executable-relative bundle resolution",
+          "number": 27,
+          "startedAt": "2026-10-29T10:14:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:14:27Z",
+          "conclusion": "success",
+          "name": "Upload raw JSONL from native runner",
+          "number": 28,
+          "startedAt": "2026-10-29T10:14:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:14:27Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "number": 55,
+          "startedAt": "2026-10-29T10:14:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:14:27Z",
+          "conclusion": "success",
+          "name": "Post Check out source",
+          "number": 56,
+          "startedAt": "2026-10-29T10:14:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:14:28Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 57,
+          "startedAt": "2026-10-29T10:14:27Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/40853726275/job/123379336861"
+    },
+    {
+      "completedAt": "2026-10-29T10:25:03Z",
+      "conclusion": "success",
+      "databaseId": 123391587902,
+      "name": "Compare Linux and Windows JSONL bytes",
+      "startedAt": "2026-10-29T10:24:55Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-29T10:24:57Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-29T10:24:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:24:59Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 2,
+          "startedAt": "2026-10-29T10:24:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:24:59Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "number": 3,
+          "startedAt": "2026-10-29T10:24:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:24:59Z",
+          "conclusion": "success",
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "number": 4,
+          "startedAt": "2026-10-29T10:24:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:00Z",
+          "conclusion": "success",
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "number": 5,
+          "startedAt": "2026-10-29T10:24:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:00Z",
+          "conclusion": "success",
+          "name": "Compare exact inventory, UTF-8 LF and unmodified bytes",
+          "number": 6,
+          "startedAt": "2026-10-29T10:25:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:01Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "number": 11,
+          "startedAt": "2026-10-29T10:25:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:01Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 12,
+          "startedAt": "2026-10-29T10:25:01Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:01Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 13,
+          "startedAt": "2026-10-29T10:25:01Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/40853726275/job/123391587902"
+    },
+    {
+      "completedAt": "2026-10-29T10:25:06Z",
+      "conclusion": "success",
+      "databaseId": 123391588134,
+      "name": "Compare native desktop theme pixels",
+      "startedAt": "2026-10-29T10:24:55Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-29T10:24:58Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-29T10:24:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:00Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 2,
+          "startedAt": "2026-10-29T10:24:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:00Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "number": 3,
+          "startedAt": "2026-10-29T10:25:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:01Z",
+          "conclusion": "success",
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "number": 4,
+          "startedAt": "2026-10-29T10:25:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:02Z",
+          "conclusion": "success",
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "number": 5,
+          "startedAt": "2026-10-29T10:25:01Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:03Z",
+          "conclusion": "success",
+          "name": "Compare both themes at 1x and 2x without tolerance",
+          "number": 6,
+          "startedAt": "2026-10-29T10:25:02Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:03Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "number": 11,
+          "startedAt": "2026-10-29T10:25:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:03Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 12,
+          "startedAt": "2026-10-29T10:25:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T10:25:03Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 13,
+          "startedAt": "2026-10-29T10:25:03Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/40853726275/job/123391588134"
+    }
+  ],
+  "status": "completed"
+}

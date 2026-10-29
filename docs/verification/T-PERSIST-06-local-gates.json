@@ -1,0 +1,40 @@
+{
+  "task": "T-PERSIST-06",
+  "code_commit": "3e8fae424dfa5c47f9bc78444fc4576e2e746a95",
+  "logs": {
+    "workspace-default": {
+      "sha256": "88feef23615376a1730959759308b2e9f1896b41dd12b109d1834e38d1c196c3",
+      "has_error": false,
+      "summaries": 99,
+      "passed": 782,
+      "failed": 0,
+      "ignored": 4,
+      "main_suites": 96,
+      "main_passed": 779,
+      "helper_summaries": 3
+    },
+    "workspace-all": {
+      "sha256": "011188d38a62c7de0aa12524d949bc56591dac491574154f08e6e86ccf8bb798",
+      "has_error": false,
+      "summaries": 99,
+      "passed": 782,
+      "failed": 0,
+      "ignored": 4,
+      "main_suites": 96,
+      "main_passed": 779,
+      "helper_summaries": 3
+    },
+    "clippy-default": {
+      "sha256": "8aefbb65deb3b532e0aeb0afff89ee9fb8217d5e279b58da7b41c905b12f4489",
+      "has_error": false,
+      "finished": true
+    },
+    "clippy-all": {
+      "sha256": "7fd59320169d3520ad6e1634bff796631b3e8521dcb8315e82f58da554693d71",
+      "has_error": false,
+      "finished": true
+    }
+  },
+  "done": true,
+  "native_ci": 40853726275
+}

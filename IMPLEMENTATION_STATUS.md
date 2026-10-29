@@ -1,7 +1,44 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-10-28**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-10-29**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
+
+## Frontiera corrente — PERSIST06 DONE, PERSIST07 avviata
+
+2026-10-29:113/140 DONE=80,7%; PERSIST07 IN_PROGRESS,26 NOT_STARTED.
+06 code3e8fae4: CI40853726275 completed/success in tutti4job: Linux/MSVC,
+confronto JSONL e pixel nativi.779test principali/96suite locali per assetto
+(default/all-features),3helper aggiuntivi,0fail/4ignored; Clippy entrambi pass.
+Metadati/consenso dichiarato durevoli, wire/MAC legacy preservati, storage1/2
+con upgrade esplicito non distruttivo, crash/restart/contesa verificati. Nessuna
+approvazione automatica o nuova norma; dossier T-PERSIST-06 e gate JSON consultabili.
+
+Pulizia autorizzata:31,6GB effettivi recuperati,59,8GB disponibili dopo check.
+Cache incrementali disabilitate, UI/CLI e sorgenti/fixture/evidenze preservati;
+check locked/offline positivo. Report BUILD_CACHE_CLEANUP_2026-10-29.
+
+07 prereq06 eP7 DONE: preflight macchina a stati generica, preview/approvazione/
+cancel/idempotenza. Nessuna UI o policy CAD hardcoded. Rischi prima dei dati reali
+invariati: cifratura, retention, provider/rotazione chiavi e backup sicuro.
+Archivio locale per installazione, nessuna condivisione fra operatori.
+AUTO_CONTINUE single-agent, nessun gate umano ordinario.
+
+## HANDOFF §15.3 — T-PERSIST-06 DONE, 2026-10-29
+
+- Base05 qualificata3712ed6; fixturelegacy b335bca prodotta prima del nuovo wire.
+- Implementazione3e8fae4: dominio consent/sourcewire, port errori e adapter/test
+  upgrade; zero dipendenze nuove, Parts pubblico e baseline normative invariati.
+- Source/state/reference/hash/presence0/Absent/consenso verificati dopo restart;
+  vecchi byte/MAC preservati e alterazione consenso rifiutata. UpgradeEXCLUSIVE
+  cambia solo versione; fallimenti prima/durante/dopo commit provati con processi.
+- Gate locali e CI40853726275 tutti positivi, packaging nativo incluso; nessuna
+  prova di perdita alimentazione hardware dedotta dai crash di processo.
+- Prossima07 avviata dal prompt con scope applicativo e schema-driven;
+  cancellazione/reportIO non devono committare.113/140DONE80,7%.
+- PHI/segreti reali assenti. Privacy e ambito locale della ratifica05 invariati.
+- Git code pubblicato, stato/handoff nel commit di chiusura; AUTO_CONTINUE.
+
+## Registro storico — frontiera precedente
 
 ## Frontiera corrente — PERSIST05 DONE, PERSIST06 avviata
 
