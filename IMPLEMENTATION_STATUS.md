@@ -3,7 +3,7 @@
 Consuntivo aggiornato al **2026-10-29**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — Signature/UI07 DONE, packaging UI08 READY
+## Frontiera corrente — Signature/UI07 DONE, packaging UI08 in preflight
 
 2026-10-29:116/140 DONE=82,9%. Redesign Signature code5720748 qualificato dalla
 CI40958452017: tutti5job completed/success, Linux/MSVC, pixel produzione e temi,
@@ -25,8 +25,10 @@ Code5720748 pubblicato sul branch concordato. CI nativa positiva verificata,
 nessun gate dedotto dal timeout. Lettura finale mancante eseguita secondo GOV;
 revisione automatica scaduta al primo tentativo, retry positivo, nessun TLS
 attenuato o approvazione ordinaria richiesta. Evidenze native/locali in signature/.
-UI16-08 prossima READY: prereq07 e15-05 verificati; preflight packaging nello
-stesso flusso, single-agent. PERSIST08 non anticipata. AUTO_CONTINUE.
+UI16-08 avviata in preflight nello stesso flusso: prereq07 e15-05 verificati,
+fonti/ricetta/allowlist/archivi ispezionati. Dossier T-P16-08-preflight.md;
+implementazione e gate packaging ancora da eseguire. PERSIST08 non anticipata.
+AUTO_CONTINUE single-agent, nessun blocco estetico o nuovo consenso inventato.
 
 ## Registro storico — qualifica Signature in corso
 
