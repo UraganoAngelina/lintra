@@ -1,8 +1,8 @@
 {
   "task": "T-PERSIST-07",
   "code_commit": "1e92b1f0ad0a2d2f8adbde80ad8ddb90a1b2352d",
-  "done": false,
-  "native_pending": true,
+  "done": true,
+  "native_pending": false,
   "native_run": 40877202683,
   "logs": {
     "workspace-default": {
@@ -72,5 +72,6 @@
     ]
   },
   "formatting": "cargo fmt --all -- --check: exit 0",
-  "dependency_boundary": "scripts/check_workspace.py: exit 0"
+  "dependency_boundary": "scripts/check_workspace.py: exit 0",
+  "native_conclusion": "success"
 }

@@ -238,3 +238,10 @@ conteggi/hash in local-gates.json. Sorgenti identici al commit pubblicato.
 CI40877202683 su1e92b1f in corso, prima lettura entrambi superano test/default/
 all-features/core-no-bundle; Linux release, Windows tooling. Nessun DONE prima
 della conclusione dei job e dei confronti finali.
+
+## Chiusura verificata
+
+CI40877202683 su1e92b1f completed/success in tutti4job, Linux/MSVC e confronti
+JSONL/RGB. Gate locali795/97suite per assetto, core763, Clippy/fmt positivi;
+evidenze JSON archiviate.07 DONE, UI16-06 avviata come richiesto; poi07/08UI.
+I checkpoint precedenti restano storici. Nessun nuovo gate umano ordinario.

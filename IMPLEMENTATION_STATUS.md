@@ -3,6 +3,40 @@
 Consuntivo aggiornato al **2026-10-29**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — PERSIST07 DONE, UI16-06 avviata
+
+2026-10-29:114/140 DONE=81,4%; UI16-06 IN_PROGRESS,25 NOT_STARTED.
+PERSIST07 code4c03608 +fix1e92b1f: CI40877202683 tutti4job completed/success,
+Linux/MSVC, pixel e JSONL.795test principali/97suite per assetto locale più3helper,
+0fail/4ignored; Clippy default/all-features e core-no-bundle763test positivi.
+15test sessioni,16doctest; clock estremo rifiutato senza panic. Metadati paginati,
+immutabilità, consenso e reportIO/CAS/retry/commit ambiguo verificati. Nessuna
+integrazione clinica automatica, modifica normativa o nuova dipendenza.
+
+Priorità autore: UI16-06→07→08, includendo diagnostici chiari/range consultabili.
+PERSIST08 rinviata. Preflight06: export tramite writer core e Informazioni,
+prereq16-05 e12-04 DONE. Nessun riferimento visivo autoaggiornato.
+Privacy/ambito locale05 invariati; cifratura/retention/chiavi/backup prima dei dati
+reali rimangono aperti. AUTO_CONTINUE single-agent.
+
+## HANDOFF §15.3 — PERSIST07 DONE,2026-10-29
+
+- Gate nativo40877202683 su1e92b1f tutti positivi; dossier T-PERSIST-07 e JSON
+  locali/nativi con esiti e hash. Primo gate4c03608 intermedio cancellato dopo
+  riproduzione locale del panic clock; corretto e verificato, non occultato.
+- API nuove in application/session, lowererSnapshotPlan e port metadati/cursor;
+  SQL solo adapter. Repo vincolato per lifetime al candidato. Source wire, format2,
+  Cargo lock, schema normativo e golden precedenti preservati.
+- Sessioni approvate immutabili anche cambiando periodo/schema; preview privata,
+  report/cancel/fallimento senza pubblicazione, idempotenza e ambiguità esplicite.
+- Fake solo per fault applicativi, SQLite reale per restart/proiezioni/queryplan.
+  Nessuna prova hardware power-loss né benchmark nuovo inventati.
+- Next UI16-06 avviata secondo ordine richiesto, poi07/08;114/140DONE81,4%.
+- Git: codice pubblicato sul branch concordato, stato/evidenze nel commit chiusura.
+  Nessun PHI/secret reale, nessun subagente. AUTO_CONTINUE.
+
+## Registro storico — frontiera precedente
+
 ## Frontiera corrente — PERSIST06 DONE, PERSIST07 avviata
 
 2026-10-29:113/140 DONE=80,7%; PERSIST07 IN_PROGRESS,26 NOT_STARTED.
@@ -2396,7 +2430,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-PERSIST-04 | DONE | 2026-10-28 | Code dd7135e+fixc475f0d, CI40658672940 tutti4job success;750/750 locali+14tooling, HMAC/provider/audit senza storage reale |
 | T-PERSIST-05 | DONE | 2026-10-29 | Code3712ed6, CI40844540287/release40844543949/probe40844049209 success; backend SQLite qualificato, dossier T-PERSIST-05 |
 | T-PERSIST-06 | DONE | 2026-10-29 | Code3e8fae4, CI40853726275 tutti4job success; metadati, consenso dichiarato e compatibilità verificati |
-| T-PERSIST-07 | IN_PROGRESS | 2026-10-29 | Coordinatore sessioni, binding compilato e cursor metadati in sviluppo; gate pendenti |
+| T-PERSIST-07 | DONE | 2026-10-29 | Code1e92b1f, CI40877202683 tutti4job success;795test locali/97suite, coordinator e cursor SQLite verificati |
 | T-PERSIST-08..12 | NOT_STARTED | — | Dopo07 priorità alle tre UI16-06→07→08 secondo mandato29/10 |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
