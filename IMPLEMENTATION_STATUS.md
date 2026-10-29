@@ -37,6 +37,16 @@ finali e CI ancora pendenti, nessun DONE07 presunto. Rapporti T-PERSIST-07
 consultabili, codec/identità/protezioni05/06 preservati. AUTO_CONTINUE.
 Next dopo07 realmente verificata: UI16-06→07→08 come richiesto dall'autore.
 
+## PERSIST07 — correzione di confine timestamp prima della chiusura
+
+Code4c03608 pubblicato, CI40875525923 avviata; prima lettura LinuxTest/Windows
+Clippy in corso. Nuovo test locale riproduce panic per SystemTime fuori range
+chrono; corretta conversione con aritmetica checked, nessun nuovo default o
+mutazione DB. Richiesta cancellazione del gate intermedio e nuova qualifica
+sulla correzione.15test mirati07 all-features positivi, due aggiuntivi perclock
+estremo/frazionepre-epoch. Regressione finale/default/Clippy aggiornati ancora
+in corso;07nonDONE. Priorità UI16-06→07→08 dopo gate07 realmente positivo.
+
 ## Richiesta diagnostici/UI —2026-10-29
 
 UI16-00…05 DONE,16-06/07 NOT_STARTED ma pronte,16-08 attende07;M8 aperta.

@@ -406,6 +406,28 @@ fn source(
         None => SourceSubmission::new(parts),
     }
 }
+/// Convert from the already validated chrono value with checked SystemTime
+/// arithmetic. From<SystemTime> for chrono can panic for representable Unix
+/// instants outside its calendar range; an external summary must never trigger
+/// that panic. Before-epoch fractions use floor seconds plus positive nanos.
+fn same_validation_start(
+    created: &chrono::DateTime<chrono::Utc>,
+    actual: std::time::SystemTime,
+) -> bool {
+    use std::time::{Duration, UNIX_EPOCH};
+    let seconds = created.timestamp();
+    let nanos = created.timestamp_subsec_nanos();
+    // SystemTime clocks do not represent chrono's leap-second nanosecond form.
+    if nanos >= 1_000_000_000 {
+        return false;
+    }
+    let base = if seconds >= 0 {
+        UNIX_EPOCH.checked_add(Duration::from_secs(seconds as u64))
+    } else {
+        UNIX_EPOCH.checked_sub(Duration::from_secs(seconds.unsigned_abs()))
+    };
+    base.and_then(|base| base.checked_add(Duration::from_nanos(u64::from(nanos)))) == Some(actual)
+}
 fn verify_outcome(
     draft: &ApprovalDraft,
     outcome: &ValidationRunOutcome,
@@ -431,7 +453,7 @@ fn verify_outcome(
         || draft.parts.schema_key != s.schema_key
         || s.schema_hash != draft.parts.schema_hash.to_string()
         || s.validator_version != draft.parts.validator_version
-        || chrono::DateTime::<chrono::Utc>::from(s.started_at) != draft.parts.created_at
+        || !same_validation_start(&draft.parts.created_at, s.started_at)
         || draft
             .parts
             .reference_data_versions

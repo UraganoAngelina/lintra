@@ -207,3 +207,23 @@ non è presentata come esecuzione Full del profilo storico.13test mirati07 e
 8profile,13doctest e Clippy workspace nei due assetti positivi prima del push.
 La regressione completa precedente alla correzione di firma è intermedia;
 quella finale e CI sono ancora da verificare.
+
+## Correzione timestamp esterni — qualifica finale
+
+Il test foreign_clock_values_outside_chrono_range ha riprodotto un panic nella
+conversione From<SystemTime> di chrono0.4.45 (sorgente locale datetime/mod.rs1931,
+Utc.timestamp_opt(...).unwrap()). Un istante Unix rappresentabile può essere
+fuori dal calendario chrono. Questo era un bug del coordinatore, non del DB o
+della fixture; nessuna approvazione veniva committata ma l'API non doveva panicare.
+
+`same_validation_start` confronta invece l'UTC del dominio con SystemTime tramite
+checked_add/checked_sub. Usa secondi floor e nanos positivi anche prima dell'epoch,
+rifiuta forme leap-second non rappresentabili dal clock e restituisce mismatch
+per valori non rappresentabili: nessuna conversione panicking di dati esterni.
+Due test coprono l'istante estremo (dove SystemTime può rappresentarlo) e la
+frazione pre-epoch con differenza di1ms.15test07 nella run all-features corrente
+sono positivi, inclusi questi due; il gate completo sta ancora terminando.
+La CI40875525923 sul commit4c03608 è intermedia: richiesta cancellazione per
+qualificare la correzione su un nuovo head, senza dichiarare DONE o rollback
+fittizi. Il test che riproduce il panic resta in clock-boundary.log locale;
+le evidenze finali distingueranno questo primo fallimento dalla successiva prova.

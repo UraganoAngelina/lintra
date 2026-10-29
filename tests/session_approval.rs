@@ -947,3 +947,50 @@ fn nonempty_candidate_requires_declared_verified_identities_before_sqlite_sees_i
             .any(|w| w == record)
     );
 }
+
+#[test]
+fn foreign_clock_values_outside_chrono_range_are_rejected_without_panicking() {
+    let p = profile();
+    let params = parameters("UNIT-A", 1);
+    let s = parts(&p, "UNIT-A", "clock", false);
+    let mut result = outcome(&s, &params);
+    // Unix can represent instants much farther than chrono; on platforms whose
+    // SystemTime rejects this instant, that invalid value cannot enter the API.
+    if let Some(extreme) =
+        std::time::UNIX_EPOCH.checked_add(Duration::from_secs(9_000_000_000_000_000))
+    {
+        result.summary.started_at = extreme;
+        assert!(matches!(
+            ApprovalDraft::new(&p, params, s, None).unwrap().validated(
+                &result,
+                vec![],
+                &protector()
+            ),
+            Err(SessionApprovalError::InvalidValidationEvidence)
+        ));
+    }
+}
+
+#[test]
+fn fractional_pre_epoch_clock_is_compared_exactly_without_calendar_conversion() {
+    let p = profile();
+    let params = parameters("UNIT-A", 1);
+    let mut s = parts(&p, "UNIT-A", "pre-epoch", false);
+    s.created_at = Utc.timestamp_opt(-1, 500_000_000).unwrap();
+    let mut result = outcome(&s, &params);
+    assert!(
+        ApprovalDraft::new(&p, params.clone(), s.clone(), None)
+            .unwrap()
+            .validated(&result, vec![], &protector())
+            .is_ok()
+    );
+    result.summary.started_at = std::time::UNIX_EPOCH
+        .checked_sub(Duration::from_millis(499))
+        .unwrap();
+    assert!(matches!(
+        ApprovalDraft::new(&p, params, s, None)
+            .unwrap()
+            .validated(&result, vec![], &protector()),
+        Err(SessionApprovalError::InvalidValidationEvidence)
+    ));
+}
