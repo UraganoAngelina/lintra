@@ -36,6 +36,11 @@ pub enum PersistenceError {
     UnsupportedStorageVersion {
         found: i64,
     },
+    StorageUpgradeRequired {
+        found: i64,
+        required: i64,
+    },
+    StorageUpgradeOutcomeUnknown,
     UnrecognizedStorage,
     CorruptStorage,
     UnsafeStorageLocation,
@@ -61,6 +66,12 @@ impl fmt::Display for PersistenceError {
             Self::StorageUninitialized => "local persistence storage is not initialized",
             Self::StorageAlreadyExists => "local persistence storage already exists",
             Self::UnsupportedStorageVersion { .. } => "unsupported persistence storage version",
+            Self::StorageUpgradeRequired { .. } => {
+                "explicit storage upgrade is required for these metadata"
+            }
+            Self::StorageUpgradeOutcomeUnknown => {
+                "storage upgrade outcome requires reopening and verification"
+            }
             Self::UnrecognizedStorage => "unrecognized local persistence storage",
             Self::CorruptStorage => "local persistence storage is corrupt or inconsistent",
             Self::UnsafeStorageLocation => {

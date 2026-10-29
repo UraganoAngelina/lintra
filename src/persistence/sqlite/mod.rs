@@ -11,7 +11,8 @@ use std::{
 };
 mod codec;
 mod security;
-const FORMAT: i64 = 1;
+// Format2 adds explicit omission-consent metadata; legacy payloads/MACs stay valid.
+const FORMAT: i64 = 2;
 const APPLICATION: i64 = 0x4c4e5452;
 const SCHEMA: &str = r#"
 CREATE TABLE storage_meta(singleton INTEGER PRIMARY KEY CHECK(singleton=1),audit BLOB NOT NULL);
@@ -83,7 +84,7 @@ fn header(file: &File) -> Result<(), PersistenceError> {
     if word(68) != APPLICATION {
         return Err(PersistenceError::UnrecognizedStorage);
     }
-    if word(60) != FORMAT {
+    if !matches!(word(60), 1 | FORMAT) {
         return Err(PersistenceError::UnsupportedStorageVersion { found: word(60) });
     }
     if bytes[18] != 1 || bytes[19] != 1 {
@@ -193,7 +194,7 @@ impl SQLitePersistenceAdapter {
         let version: i64 = connection
             .pragma_query_value(None, "user_version", |r| r.get(0))
             .map_err(sql)?;
-        if version != FORMAT {
+        if !matches!(version, 1 | FORMAT) {
             return Err(PersistenceError::UnsupportedStorageVersion { found: version });
         }
         let integrity: String = connection
@@ -257,12 +258,13 @@ impl SQLitePersistenceAdapter {
         if !connection.is_autocommit() {
             return Err(PersistenceError::StorageUnavailable);
         }
+        storage_version(&connection)?;
         Ok(connection)
     }
     pub fn settings(&self) -> Result<SQLiteStorageSettings, PersistenceError> {
         let c = self.lock()?;
         Ok(SQLiteStorageSettings {
-            format_version: FORMAT as u32,
+            format_version: storage_version(&c)? as u32,
             sqlite_version: rusqlite::version().into(),
             journal_mode: c
                 .pragma_query_value(None, "journal_mode", |r| r.get(0))
@@ -276,11 +278,65 @@ impl SQLitePersistenceAdapter {
                 .map_err(sql)?,
         })
     }
+    /// Explicit, non-destructive capability upgrade. Open never calls this.
+    /// Close older application instances before updating this local archive.
+    /// No source, signature, snapshot, generation or index is rewritten.
+    pub fn upgrade_storage_v1_to_v2(&self) -> Result<(), PersistenceError> {
+        let mut c = self.lock()?;
+        if storage_version(&c)? == FORMAT {
+            return Ok(());
+        }
+        #[cfg(test)]
+        self.configure_commit_fault(&mut c);
+        let tx = c
+            .transaction_with_behavior(TransactionBehavior::Exclusive)
+            .map_err(sql)?;
+        // Another compatible process may have upgraded before this lock.
+        if storage_version(&tx)? == 1 {
+            tx.pragma_update(None, "user_version", FORMAT)
+                .map_err(sql)?;
+        }
+        #[cfg(test)]
+        self.before_commit(&tx)?;
+        tx.commit()
+            .map_err(|_| PersistenceError::StorageUpgradeOutcomeUnknown)?;
+        if !c.is_autocommit() {
+            return Err(PersistenceError::StorageUpgradeOutcomeUnknown);
+        }
+        #[cfg(test)]
+        match self.inner.fault.lock().unwrap().take() {
+            Some(TestFault::AfterLost) => {
+                return Err(PersistenceError::StorageUpgradeOutcomeUnknown);
+            }
+            Some(TestFault::AfterExit) => std::process::exit(87),
+            _ => {}
+        }
+        Ok(())
+    }
     /// Read-only access to the configured producer, already checked against the
     /// archive audit. Services still select fields via compiled profiles.
     pub fn protector(&self) -> &IdentityProtector {
         &self.inner.protector
     }
+}
+fn storage_version(c: &Connection) -> Result<i64, PersistenceError> {
+    let version = c
+        .pragma_query_value(None, "user_version", |r| r.get::<_, i64>(0))
+        .map_err(sql)?;
+    if !matches!(version, 1 | FORMAT) {
+        return Err(PersistenceError::UnsupportedStorageVersion { found: version });
+    }
+    Ok(version)
+}
+fn allow_source_version(c: &Connection, source: &SourceSubmission) -> Result<(), PersistenceError> {
+    let version = storage_version(c)?;
+    if version == 1 && source.missing_trace_consent().is_some() {
+        return Err(PersistenceError::StorageUpgradeRequired {
+            found: 1,
+            required: FORMAT,
+        });
+    }
+    Ok(())
 }
 fn generation(c: &Connection, ns: &[u8]) -> Result<Option<SnapshotRevision>, PersistenceError> {
     let value: Option<i64> = c
@@ -475,6 +531,7 @@ impl PersistenceTransaction for SQLiteTransaction {
                 .verify_stored_identity(record)
                 .map_err(PersistenceError::Protection)?;
         }
+        allow_source_version(&*self.adapter.lock()?, snapshot.source())?;
         self.staged = Some(snapshot.clone());
         Ok(())
     }
@@ -488,6 +545,7 @@ impl PersistenceTransaction for SQLiteTransaction {
             .transaction_with_behavior(TransactionBehavior::Immediate)
             .map_err(sql)?;
         check(self.expected, generation(&tx, &encoded)?)?;
+        allow_source_version(&tx, snapshot.source())?;
         if tx
             .prepare("SELECT 1 FROM snapshots WHERE ns=?1 AND submission=?2")
             .map_err(sql)?

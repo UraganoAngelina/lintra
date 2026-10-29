@@ -411,8 +411,8 @@ fn unknown_unsupported_corrupt_and_uninitialized_are_distinct_without_reinitiali
     for (offset, value, expected) in [
         (
             60,
-            2,
-            PersistenceError::UnsupportedStorageVersion { found: 2 },
+            99,
+            PersistenceError::UnsupportedStorageVersion { found: 99 },
         ),
         (68, 7, PersistenceError::UnrecognizedStorage),
     ] {
@@ -777,3 +777,5 @@ fn an_unfinished_transaction_view_cannot_be_mistaken_for_publication() {
             .is_none()
     );
 }
+
+mod metadata;

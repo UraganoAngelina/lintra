@@ -34,6 +34,19 @@ ADR001, compatibilità vecchi payload/prove HMAC e formato storage da preservare
 Nessuna migrazione/reset impliciti. Preflight in docs/verification/T-PERSIST-06-preflight.md.
 AUTO_CONTINUE single-agent, nessun nuovo gate umano ordinario.
 
+## PERSIST06 — implementazione locale in verifica
+
+Compatibilità legacy congelata prima delle modifiche tramite adapter05 reale;
+nessun package/versione nuovo. Ricevuta PROCEED per scope di trace assenti e UTC,
+nessun default da ApprovedImmutable, nessuna rappresentazione durevole di ABORT.
+Parts pubblico invariato; nuovo wire omette None, preservando byte/firme legacy.
+Formato2 per nuova capacità, lettura1/2, nessuna migrazione in open; upgrade
+esplicito/idempotente EXCLUSIVE cambia solo versione, non snapshot/proof/audit.
+16unit SQLite (con crash/restart/rollback/ack perduto) e5test nuovi metadata
+positivi, golden02 e7protezione/8tipi invariati. Clippy/gate completi in corso.
+Rapporto docs/verification/T-PERSIST-06-metadata.md,06 non DONE prima di CI.
+112/140DONE80,0%,06IN_PROGRESS,27NOT_STARTED. AUTO_CONTINUE single-agent.
+
 ## Registro storico — avanzamento precedente
 
 ## Frontiera corrente — PERSIST04/UI05 DONE, PERSIST05 in sviluppo

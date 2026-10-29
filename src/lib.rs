@@ -340,10 +340,10 @@ pub use schema::authoring::{
 
 // Persistence data contracts, never an executable historical-validation proof.
 pub use domain::{
-    Fingerprint, HistoricalChange, HistoricalDiff, HistoryDiff, NamespaceValue,
-    PersistenceNamespace, PersistenceSchemaScope, PersistenceTypeError, PersistentRecordIdentity,
-    RecordFingerprint, SessionState, SnapshotRevision, SourceSubmission, SourceSubmissionParts,
-    SubmissionTrace, TracePresence,
+    Fingerprint, HistoricalChange, HistoricalDiff, HistoryDiff, MissingTraceProceedConsent,
+    NamespaceValue, PersistenceNamespace, PersistenceSchemaScope, PersistenceTypeError,
+    PersistentRecordIdentity, RecordFingerprint, SessionState, SnapshotRevision, SourceSubmission,
+    SourceSubmissionParts, SubmissionTrace, TracePresence,
 };
 
 // Adapter support only: engine/service still receive explicit repositories/paths.

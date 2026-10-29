@@ -8,6 +8,11 @@ use chrono::{DateTime, SecondsFormat, Utc};
 use serde::{Deserialize, Serialize};
 use std::{error::Error, fmt};
 
+mod consent;
+mod source_wire;
+pub use consent::MissingTraceProceedConsent;
+use source_wire::SourceSubmissionWire;
+
 /// Private provenance capability, not part of a metadata value's Eq/Hash or
 /// public wire representation. Authentication MUST use the protector's MAC
 /// verification, never this deliberately value-neutral equality implementation.
@@ -41,6 +46,7 @@ pub enum PersistenceTypeError {
     DuplicateReferenceVersion,
     RevisionOverflow,
     InconsistentDiff,
+    InvalidOmissionConsent,
 }
 impl fmt::Display for PersistenceTypeError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -56,6 +62,7 @@ impl fmt::Display for PersistenceTypeError {
             Self::DuplicateReferenceVersion => "submission dataset version is duplicated",
             Self::RevisionOverflow => "snapshot revision overflows",
             Self::InconsistentDiff => "historical diff payload contradicts its declared change",
+            Self::InvalidOmissionConsent => "invalid recorded consent for absent traces",
         })
     }
 }
@@ -388,7 +395,7 @@ pub struct SourceSubmissionParts {
     pub state: SessionState,
 }
 #[derive(Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(try_from = "SourceSubmissionParts")]
+#[serde(try_from = "SourceSubmissionWire")]
 pub struct SourceSubmission {
     namespace: PersistenceNamespace,
     submission_id: String,
@@ -406,6 +413,9 @@ pub struct SourceSubmission {
     state: SessionState,
     #[serde(skip)]
     pub(crate) protection_evidence: ProtectionEvidence,
+    // Omission preserves the exact legacy serialized bytes and their MACs.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    missing_trace_consent: Option<MissingTraceProceedConsent>,
 }
 impl SourceSubmission {
     pub fn new(mut p: SourceSubmissionParts) -> Result<Self, PersistenceTypeError> {
@@ -454,7 +464,23 @@ impl SourceSubmission {
             fingerprint: p.fingerprint,
             state: p.state,
             protection_evidence: ProtectionEvidence::default(),
+            missing_trace_consent: None,
         })
+    }
+    /// Construct declared audit data before protection. This does not approve a
+    /// run or mutate a restored immutable source; lifecycle remains application-owned.
+    pub fn new_with_missing_trace_consent(
+        parts: SourceSubmissionParts,
+        consent: MissingTraceProceedConsent,
+    ) -> Result<Self, PersistenceTypeError> {
+        let mut source = Self::new(parts)?;
+        consent.validate_inventory(&source.traces)?;
+        source.missing_trace_consent = Some(consent);
+        Ok(source)
+    }
+    /// None is unavailable legacy evidence, never implicit consent.
+    pub fn missing_trace_consent(&self) -> Option<&MissingTraceProceedConsent> {
+        self.missing_trace_consent.as_ref()
     }
     /// Only the protection layer may replace the opaque preparation fingerprint
     /// with its keyed representation. An old provenance seal is invalidated.
