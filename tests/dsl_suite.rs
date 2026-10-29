@@ -105,7 +105,35 @@ fn equivalent_physical_field_orders_preserve_rule_decisions_messages_and_context
             assert_eq!(left.actual, right.actual);
             assert_eq!(left.context, right.context);
             assert_eq!(left.message, right.message);
-            assert_eq!(left.expected, right.expected);
+            assert_eq!(left.field.is_some(), right.field.is_some());
+            if left.field.is_some() {
+                let guide = |schema: &CompiledFlowSchema, error: &ValidationError| {
+                    let field = schema
+                        .trace(&error.trace_id)
+                        .unwrap()
+                        .field(&error.field.as_ref().unwrap().id)
+                        .unwrap();
+                    lintra::field_format_guide(field, schema.encoding())
+                };
+                let left_guide = guide(&first, left);
+                let right_guide = guide(&second, right);
+                assert!(left.expected.as_deref().unwrap().contains(&left_guide));
+                assert!(right.expected.as_deref().unwrap().contains(&right_guide));
+                assert_eq!(
+                    left.expected
+                        .as_deref()
+                        .unwrap()
+                        .replacen(&left_guide, "[physical guide]", 1),
+                    right.expected.as_deref().unwrap().replacen(
+                        &right_guide,
+                        "[physical guide]",
+                        1
+                    )
+                );
+            } else {
+                // Record-level assertions have no physical field guide.
+                assert_eq!(left.expected, right.expected);
+            }
             if let (Some(left), Some(right)) = (&left.field, &right.field) {
                 assert_eq!(left.id, right.id);
                 assert_eq!(left.start_one_based, 1);

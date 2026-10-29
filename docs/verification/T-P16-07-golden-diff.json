@@ -1,0 +1,27 @@
+{
+  "allowed_diagnostic_changes": [
+    "message",
+    "expected"
+  ],
+  "all_other_values_unchanged": true,
+  "files": [
+    {
+      "path": "tests/golden/derived/v1/invalid/expected.errors.jsonl",
+      "diagnostics": 3,
+      "previous_sha256": "b9f7c7f5d3f1f7ebecd29f58a98e5dd247a00529590d68c1d0a9ee4bcb466469",
+      "new_sha256": "dc4fad771c96cb86c6812d2f4b80b26708a75689e87d7aac7313dad04f05cfeb"
+    },
+    {
+      "path": "tests/golden/dsl/v1/invalid/expected.errors.jsonl",
+      "diagnostics": 2,
+      "previous_sha256": "fe0a0e2254cc4ecba08d20d212ac7e8583577b961cc98374b83a13793cb862db",
+      "new_sha256": "82af92fcec93aa40513751115a322b1fa1b896a662bf1e613181bd5f88e438d0"
+    },
+    {
+      "path": "tests/golden/semantic/v1/invalid/expected.errors.jsonl",
+      "diagnostics": 7,
+      "previous_sha256": "92b429645dc2d1487c3de13fecbdde6203498302ffad77eff7c2d2116ab83c37",
+      "new_sha256": "8de494759b8ea8b4f6ccc2e7e5546c682752a6cf33dc271c59a3cf319f0c03f1"
+    }
+  ]
+}

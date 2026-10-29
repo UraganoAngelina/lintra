@@ -78,6 +78,13 @@ jobs:
           path: target/ui-bootstrap-visual/*.rgb
           if-no-files-found: error
           retention-days: 7
+      - name: Upload production visual regression pixels
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: regression-pixels-${{ matrix.target }}
+          path: target/ui-regression/*.rgb
+          if-no-files-found: error
+          retention-days: 7
       - name: Upload desktop captures and contrast evidence
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -89,6 +96,7 @@ jobs:
             target/ui-results-visual/*.png
             target/ui-results-visual/scrolling.json
             target/ui-exports/*.png
+            target/ui-regression/*.png
           if-no-files-found: error
           retention-days: 7
       - name: Smoke synthetic benchmark and verify expected validation counts
@@ -154,6 +162,29 @@ jobs:
           path: target/bootstrap-windows
       - name: Compare both themes at 1x and 2x without tolerance
         run: python ui/compare_pixels.py --left target/bootstrap-linux --right target/bootstrap-windows
+
+  compare-ui-regression:
+    name: Compare production UI regression pixels
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: regression-pixels-x86_64-unknown-linux-gnu
+          path: target/regression-linux
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: regression-pixels-x86_64-pc-windows-msvc
+          path: target/regression-windows
+      - name: Compare actual production pixels in both themes and scales
+        run: python ui/compare_pixels.py --left target/regression-linux --right target/regression-windows
 
   compare-jsonl:
     name: Compare Linux and Windows JSONL bytes

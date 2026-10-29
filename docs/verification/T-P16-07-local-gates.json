@@ -1,0 +1,57 @@
+{
+  "task": "T-P16-07",
+  "done": false,
+  "native_pending": true,
+  "full_workspace_final_pending": true,
+  "verified_logs": {
+    "verification-ui07-clippy-final-binding.log": {
+      "sha256": "420df3c3c41aa78899aa2f3bd7e06bcb8fef615482955fb90196ce1ecead13bb",
+      "failed_test_summary": false
+    },
+    "verification-ui07-diagnostic-final.log": {
+      "sha256": "f56619605c4128c559442699e518e193646f7c83ed07fa24ea97eb1694429ab2",
+      "failed_test_summary": false
+    },
+    "verification-ui07-schema-binding.log": {
+      "sha256": "ee831b4607e2b590fe958ff7961d22170c580bec036a817b6c0a29baae57ce34",
+      "failed_test_summary": false
+    },
+    "verification-ui07-copy-tests.log": {
+      "sha256": "aa9aea21994bedbfed75f1020de8703902755728a9a888d4678fbe8ed1e910c9",
+      "failed_test_summary": false
+    },
+    "verification-ui07-visual-final.log": {
+      "sha256": "eccbab17cc5391c7737c05d260e54b3de13ddc447a47964ec2d84643496e2847",
+      "failed_test_summary": false
+    },
+    "verification-ui06-contention-regression.log": {
+      "sha256": "5e9a352ea15ec5e731e23cf4e013320cf83546f31174aae44262e068638613d7",
+      "failed_test_summary": false
+    },
+    "verification-ui07-ui-final.log": {
+      "sha256": "a2f53ad4716a31a8e801bb9074aef8065e0cfaf540e824d14a1c6f48e5082aac",
+      "failed_test_summary": false
+    },
+    "verification-ui07-boundary.log": {
+      "sha256": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f",
+      "failed_test_summary": false
+    },
+    "verification-ui07-clippy-final.log": {
+      "sha256": "00eaef34a5ab579990c8d089b0ad7cc7ad3e6893ea0ae35ac964f9efc98d17e6",
+      "failed_test_summary": false
+    },
+    "verification-ui07-final-targets.log": {
+      "sha256": "ec63d308a9af87b71cb007c3fc033498af9b1162c39d55c38d6b2b56fcdd3675",
+      "failed_test_summary": false
+    },
+    "verification-ui07-guide-final.log": {
+      "sha256": "4d56579266dc2b0a01ef7839c6bf25a8a07443f13ab4cadfdce265f3bcff9e09",
+      "failed_test_summary": false
+    },
+    "verification-ui07-dsl-final.log": {
+      "sha256": "e7123697520474898321675e1a605d19af3f6abb349ec2af1cef9d6f83ab346b",
+      "failed_test_summary": false
+    }
+  },
+  "core_regression_note": "Complete core run had one DSL test helper failure; all other targets passed. Corrected DSL suite passes 4/4 in diagnostic-final. Full workspace run planned on the committed revision."
+}

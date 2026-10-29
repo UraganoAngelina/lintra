@@ -237,7 +237,7 @@ pub use schema::compiled::{
 pub use engine::rule_diagnostics::RuleDiagnosticError;
 
 pub use reference_data::{
-    dataset::{DatasetKey, LookupSet, PreparedReferenceData, prepare_reference_data},
+    dataset::{DatasetKey, LookupPage, LookupSet, PreparedReferenceData, prepare_reference_data},
     evidence::{
         DatasetAnomaly, DatasetAvailability, DatasetEvidence, DatasetFileTypeIssue,
         DatasetIoOperation, DatasetObservation, DatasetPreparationPolicy, MembershipFormatIssue,
@@ -375,3 +375,9 @@ pub use application::session::{
 
 // Post-analysis adapters reuse the canonical decoder and existing sinks.
 pub use report::replay::{CanonicalReplayError, replay_canonical_report};
+
+/// Schema-derived diagnostic guidance and bounded domain enumeration.
+pub use engine::field_guide::{
+    DeclaredDomain, DomainPage, DomainPosition, constraint_comparison_guide, declared_domain,
+    declared_domain_page, domain_literal, field_format_guide,
+};

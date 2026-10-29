@@ -50,6 +50,19 @@ impl IntegerLiteral {
     }
 }
 
+/// Canonical decimal text for diagnostics; no narrowing to a machine integer.
+impl fmt::Display for IntegerLiteral {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        if self.negative {
+            f.write_str("-")?;
+        }
+        for digit in self.magnitude.iter() {
+            write!(f, "{}", char::from(*digit))?;
+        }
+        Ok(())
+    }
+}
+
 impl Ord for IntegerLiteral {
     fn cmp(&self, other: &Self) -> Ordering {
         if self.negative != other.negative {

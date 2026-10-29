@@ -3,9 +3,9 @@
 Consuntivo aggiornato al **2026-10-29**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — PERSIST07 DONE, UI16-06 avviata
+## Frontiera corrente — PERSIST07 DONE, UI16-06/07 in qualificazione
 
-2026-10-29:114/140 DONE=81,4%; UI16-06 IN_PROGRESS,25 NOT_STARTED.
+2026-10-29:114/140 DONE=81,4%; UI16-06 IN_PROGRESS (attesa remota), UI16-07 IN_PROGRESS (attiva),24 NOT_STARTED.
 PERSIST07 code4c03608 +fix1e92b1f: CI40877202683 tutti4job completed/success,
 Linux/MSVC, pixel e JSONL.795test principali/97suite per assetto locale più3helper,
 0fail/4ignored; Clippy default/all-features e core-no-bundle763test positivi.
@@ -19,6 +19,20 @@ prereq16-05 e12-04 DONE. Nessun riferimento visivo autoaggiornato.
 Privacy/ambito locale05 invariati; cifratura/retention/chiavi/backup prima dei dati
 reali rimangono aperti. AUTO_CONTINUE single-agent.
 
+## UI16-07 — diagnostici e regressione visiva in sviluppo
+
+Preflight indipendente da06, prereq05 verificata. Guida schema-derived nel core,
+range esatti, enum e range consultabili a pagine64 con cursori oltre-u128;
+schema readonly del run conservato con lo spool e hash verificato. Test core3
+positivi, check UI all-targets positivo, test export4 positivi. Dataset Verified conservati dall'esatto contesto del servizio e consultabili a
+pagine in un worker; Degraded/Unavailable distinti. Test reale con modifica del
+file dopo analisi positivo, nuovo schema_binding negativo positivo. Clippy e
+prove mirate locali passati; qualificazione completa/nativa ancora aperta.
+Confronto visivo stretto ha rilevato due derive pregresse del bootstrap rispetto
+alla reference approvata (sfondo navbar e tracking marchio): ripristino valori
+originari invece di aumentare la tolleranza. PNG ratificati invariati.
+Report consultabile T-P16-07-diagnostics.md. Nessuna08 prima del gate07.
+
 ## UI16-06 — export e Informazioni implementate, gate in corso
 
 Writer core condivisi, replay streaming CSV/JSONL e stesso XLSX della CLI;
@@ -29,7 +43,14 @@ Export/Info legati alla vista effettiva, non al worker più recente o ai filtri.
 4test export reali,1unitcancel e1test nativo Slint positivi (piùunit precedente);
 XLSX byte-identico al writer CLI su medesimo spool/summary.8PNG1×/2× due temi,
 render verificato; nessuna baseline visiva autoaggiornata. Clippyallfeatures pass.
-Regressione workspace default/allfeatures e CI ancora da completare,06nonDONE.
+CI40897488097 Windows fallita sul confronto path dello spool: fix isolato9ba2470,
+gate40900252019 fallito in un vecchio test di contesa SQLite dopo il superamento
+dell'export Windows. Harness corretto in d7a2167: risoluzione esplicita da nuova
+connessione dell'esito ambiguo, nessun cambiamento all'adapter o retry di commit.
+17test SQLite e4DSL positivi; prossima CI completa sul commit UI07 coprirà
+entrambe le consegne.06nonDONE. Tutti i test runtime locali precedenti
+passati, rustdoc finale invalidato da sorgenti07 cambiate (dettagli nel dossier),
+nessuna dichiarazione di gate completo verde.
 Nessuna nuova dipendenza, norme/palette/font invariate. Diagnostici concordati
 ancora aperti prima della chiusura UI07. AUTO_CONTINUE single-agent.
 

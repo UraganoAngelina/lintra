@@ -27,7 +27,31 @@ impl ErrorFactory<'_> {
         raw_value: &[u8],
         violation: FieldViolation,
     ) -> ValidationError {
-        let message = field_message(field, &violation);
+        let mut message = field_message(field, &violation);
+        let guide = super::field_guide::field_format_guide(field, self.encoding);
+        message.push(' ');
+        message.push_str(&guide);
+        let mut expected = violation.expected.clone().unwrap_or_default();
+        // Include small literal domains in every consumer (CLI and exports too).
+        // A bounded preview avoids copying a large enum into every failed row;
+        // the UI enumerates the complete declaration separately from this text.
+        for constraint in field.constraints() {
+            if let Some(mut domain) = super::field_guide::declared_domain(constraint, self.encoding)
+            {
+                let values: Vec<_> = domain.by_ref().take(16).collect();
+                if !expected.is_empty() {
+                    expected.push_str(". ");
+                }
+                expected.push_str(super::field_guide::constraint_comparison_guide(constraint));
+                expected.push_str(" Dominio dichiarato: ");
+                expected.push_str(&values.join(", "));
+                if domain.next().is_some() {
+                    expected.push_str(
+                        " … (anteprima; elenco completo consultabile nel dettaglio del campo)",
+                    );
+                }
+            }
+        }
         ValidationError {
             code: violation.code,
             flow_id: self.flow_id.clone(),
@@ -41,7 +65,7 @@ impl ErrorFactory<'_> {
                 field.range(),
             )),
             actual: Some(render_diagnostic_value(raw_value, self.encoding)),
-            expected: violation.expected,
+            expected: (!expected.is_empty()).then_some(expected),
             context: violation.diagnostic_context,
             message,
         }

@@ -128,6 +128,9 @@ fn presence_violation_integrates_with_the_existing_error_factory() {
     );
     assert_eq!(
         error.message,
-        "Campo F1 (Synthetic field): valore obbligatorio mancante."
+        format!(
+            "Campo F1 (Synthetic field): valore obbligatorio mancante. {}",
+            lintra::field_format_guide(&schema.traces()[0].fields()[0], schema.encoding())
+        )
     );
 }

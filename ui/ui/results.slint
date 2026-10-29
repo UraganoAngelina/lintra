@@ -3,7 +3,7 @@ import { Tok } from "tokens.slint";
 import { ActionButton, FieldEdit } from "controls.slint";
 
 export struct ErrorRow {
-    line: string, record: string, field: string, field-name: string,
+    trace: string, line: string, record: string, field: string, field-name: string,
     code: string, position: string, actual: string, expected: string,
     context: string, message: string,
 }
@@ -19,6 +19,10 @@ component DetailValue inherits VerticalLayout {
 export component ResultsView inherits Rectangle {
     in property <[ErrorRow]> rows;
     in property <ErrorRow> detail;
+    in property <string> domain-text;
+    in property <bool> domain-more;
+    callback next-domain-page();
+    callback restart-domain();
     in property <int> selected: -1;
     in property <string> heading;
     in property <string> summary;
@@ -194,10 +198,16 @@ export component ResultsView inherits Rectangle {
                                 spacing: Tok.detail-section-spacing;
                                 alignment: start;
                                 DetailValue { label: "Codice"; value: root.detail.code; }
+                                DetailValue { label: "Tracciato"; value: root.detail.trace; }
                                 DetailValue { label: "Riga / ID record"; value: root.detail.line + " / " + root.detail.record; }
                                 DetailValue { label: "Campo / posizione"; value: root.detail.field + " / " + root.detail.position + " / " + root.detail.field-name; }
-                                DetailValue { label: "Letto"; value: root.detail.actual; }
+                                DetailValue { label: "Letto (␠ = spazio)"; value: root.detail.actual; }
                                 DetailValue { label: "Atteso"; value: root.detail.expected; }
+                                DetailValue { label: "Dominio completo — consultazione a pagine"; value: root.domain-text; }
+                                HorizontalLayout {
+                                    ActionButton { label: "Dall’inizio"; activated => { root.restart-domain(); } }
+                                    ActionButton { label: "Valori successivi"; enabled: root.domain-more; activated => { root.next-domain-page(); } }
+                                }
                                 DetailValue { label: "Contesto"; value: root.detail.context; }
                                 Text { text: root.detail.message; color: Tok.ink; wrap: word-wrap; line-height-factor: Tok.detail-line-height-factor; }
                             }

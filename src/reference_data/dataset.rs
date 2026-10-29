@@ -2,8 +2,11 @@
 use super::provider::{ReferenceDataError, ReferenceDataProvider, validate_key};
 pub use crate::schema::compiled::DatasetKey;
 use std::{
-    collections::{HashMap, HashSet},
-    sync::Arc,
+    collections::{BTreeSet, HashMap, HashSet},
+    sync::{
+        Arc,
+        atomic::{AtomicBool, Ordering},
+    },
 };
 
 /// Versioned membership over exact bytes. Implementations must not silently
@@ -11,6 +14,17 @@ use std::{
 pub trait LookupSet: Send + Sync {
     fn contains(&self, value: &[u8]) -> bool;
     fn key(&self) -> &DatasetKey;
+    /// Optional read-only diagnostic enumeration. Third-party providers retain
+    /// an explicit unsupported state instead of pretending their domain is empty.
+    fn page_after(&self, _after: Option<&[u8]>, _cancelled: &AtomicBool) -> Option<LookupPage> {
+        None
+    }
+}
+/// Lexicographically ordered exact dataset bytes; no normalization or labels.
+/// At most64 values, plus a continuation, are copied from the existing lookup.
+pub struct LookupPage {
+    pub values: Vec<Vec<u8>>,
+    pub next: Option<Vec<u8>>,
 }
 
 /// Shared immutable storage, not a trust decision. Only preparation exposes it.
@@ -29,6 +43,31 @@ impl LookupSet for ByteLookupSet {
     }
     fn key(&self) -> &DatasetKey {
         &self.key
+    }
+    fn page_after(&self, after: Option<&[u8]>, cancelled: &AtomicBool) -> Option<LookupPage> {
+        // Bounded ordered selection: O(N log64) per explicit browser page,
+        // O(64) scratch references, no second permanent dataset index/copy.
+        // UI callers execute this on a worker, never on the event-loop thread.
+        let mut selected = BTreeSet::new();
+        for value in &self.values {
+            if cancelled.load(Ordering::Relaxed) {
+                return None;
+            }
+            if after.is_some_and(|cursor| value.as_slice() <= cursor) {
+                continue;
+            }
+            selected.insert(value);
+            if selected.len() > 65 {
+                selected.pop_last();
+            }
+        }
+        let more = selected.len() > 64;
+        if more {
+            selected.pop_last();
+        }
+        let values: Vec<Vec<u8>> = selected.into_iter().cloned().collect();
+        let next = if more { values.last().cloned() } else { None };
+        Some(LookupPage { values, next })
     }
 }
 
@@ -83,4 +122,45 @@ pub fn prepare_reference_data(
         keys.push(key.clone());
     }
     Ok(PreparedReferenceData { sets, keys })
+}
+
+#[cfg(test)]
+mod diagnostic_tests {
+    use super::*;
+    #[test]
+    fn bounded_dataset_pages_cover_exact_keys_and_cancel_without_fake_empty() {
+        let values: HashSet<_> = (0..300)
+            .rev()
+            .map(|i| format!("{i:04}").into_bytes())
+            .collect();
+        let set = ByteLookupSet::new(
+            DatasetKey {
+                id: crate::DatasetId("synthetic".into()),
+                version: crate::DatasetVersion("v1".into()),
+            },
+            values,
+        );
+        let cancelled = AtomicBool::new(false);
+        let mut cursor = None;
+        let mut all = Vec::new();
+        loop {
+            let page = set.page_after(cursor.as_deref(), &cancelled).unwrap();
+            assert!(page.values.len() <= 64);
+            all.extend(page.values);
+            cursor = page.next;
+            if cursor.is_none() {
+                break;
+            }
+        }
+        assert_eq!(
+            all,
+            (0..300)
+                .map(|i| format!("{i:04}").into_bytes())
+                .collect::<Vec<_>>()
+        );
+        assert!(set.contains(b"0001"));
+        assert!(!set.contains(b"1"));
+        cancelled.store(true, Ordering::Relaxed);
+        assert!(set.page_after(None, &cancelled).is_none());
+    }
 }

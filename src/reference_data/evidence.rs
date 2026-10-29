@@ -95,6 +95,7 @@ impl DatasetObservation<'_> {
 
 /// Immutable snapshot. No provider/root/file handle survives into the lookup
 /// loop; source diagnostics are retained once per dependency, not per record.
+#[derive(Clone)]
 pub struct PreparedReferenceEvidence {
     pub(super) sets: HashMap<DatasetKey, Arc<dyn LookupSet>>,
     pub(super) evidence: Vec<DatasetEvidence>,
@@ -102,6 +103,19 @@ pub struct PreparedReferenceEvidence {
     pub(super) policy: DatasetPreparationPolicy,
 }
 impl PreparedReferenceEvidence {
+    /// Enumerate only evidence verified during the run. Missing, degraded or
+    /// non-enumerable datasets are never displayed as an empty valid domain.
+    pub fn domain_page(
+        &self,
+        key: &DatasetKey,
+        after: Option<&[u8]>,
+        cancelled: &std::sync::atomic::AtomicBool,
+    ) -> Option<super::dataset::LookupPage> {
+        if self.evidence(key)?.availability() != DatasetAvailability::Verified {
+            return None;
+        }
+        self.sets.get(key)?.page_after(after, cancelled)
+    }
     pub fn policy(&self) -> DatasetPreparationPolicy {
         self.policy
     }

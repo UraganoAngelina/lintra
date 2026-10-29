@@ -5,7 +5,7 @@ use lintra::{
 };
 use serde_json::json;
 
-fn schema() -> CompiledFlowSchema {
+fn raw_schema() -> RawFlowSchema {
     let mut raw: RawFlowSchema = serde_json::from_value(json!({
         "schema_format_version":1,"flow_id":"SYNTHETIC","schema_version":"v1","regulatory_version":"synthetic",
         "source":{},"encoding":{"mode":"runtime_required","position_unit":"byte"},"required_capabilities":["local.v1"],
@@ -18,7 +18,10 @@ fn schema() -> CompiledFlowSchema {
             "joins":[],"identity":[],"named_conditions":{},"derived_values":{},"repeated_groups":[],"rules":[],"documented_non_executable_rules":[]}]
     })).unwrap();
     raw.encoding.resolved = Some(RawResolvedEncoding::Utf8);
-    SchemaCompiler.compile(raw).unwrap()
+    raw
+}
+fn schema() -> CompiledFlowSchema {
+    SchemaCompiler.compile(raw_schema()).unwrap()
 }
 fn factory(encoding: &EncodingSpec) -> ErrorFactory<'_> {
     // Static metadata only; no environmental defaults or source-file paths.
@@ -154,10 +157,14 @@ fn rendering_uses_explicit_encoding_and_empty_reasons_need_no_message_parsing() 
         failure,
     );
     assert_eq!(error.actual.unwrap().display, "\u{20ac}  ");
-    assert_eq!(
-        error.message,
-        "Campo F1 (Campo sintetico): valore fuori dominio."
+    assert!(
+        error
+            .message
+            .starts_with("Campo F1 (Campo sintetico): valore fuori dominio.")
     );
+    assert!(error.message.contains("le cifre non sono vietate"));
+    assert!(error.message.contains("byte 4–6 inclusi (3 byte)"));
+    assert!(error.message.contains("Larghezza esatta"));
     assert_eq!(error.expected, None);
     assert_eq!(error.code, ValidationCode::InvalidDomain);
 }
@@ -189,4 +196,79 @@ fn record_length_errors_keep_machine_data_without_inventing_field_or_identity() 
             .record_identity,
         identity
     );
+}
+
+#[test]
+fn physical_guides_use_the_declared_side_fill_and_extraction_without_inventing_rules() {
+    for (alignment, expected) in [
+        (
+            json!({"kind":"left_pad","fill_byte":48,"content_policy":"strip_leading_fill"}),
+            "Contenuto a destra; posizioni residue a sinistra riempite con \"0\" (0x30); il valore logico esclude il riempimento iniziale",
+        ),
+        (
+            json!({"kind":"right_pad","fill_byte":32,"content_policy":"strip_trailing_fill"}),
+            "Contenuto a sinistra; posizioni residue a destra riempite con \"␠\" (0x20); il valore logico esclude il riempimento finale",
+        ),
+        (
+            json!({"kind":"left_pad","fill_byte":48,"content_policy":"preserve_width"}),
+            "il valore logico conserva l'intera larghezza",
+        ),
+        (
+            json!({"kind":"exact"}),
+            "Larghezza esatta: nessuna rimozione di riempimento",
+        ),
+    ] {
+        let mut value = serde_json::to_value(raw_schema()).unwrap();
+        value["traces"][0]["fields"][1]["physical"]["alignment"] = alignment;
+        let mut raw: RawFlowSchema = serde_json::from_value(value).unwrap();
+        raw.encoding.resolved = Some(RawResolvedEncoding::Utf8);
+        let compiled = SchemaCompiler.compile(raw).unwrap();
+        let field = &compiled.traces()[0].fields()[1];
+        let guide = lintra::field_format_guide(field, &EncodingSpec::Utf8);
+        assert!(guide.contains(expected), "{guide}");
+        assert!(guide.contains("byte 4–6 inclusi (3 byte)"));
+        assert!(guide.contains("le cifre non sono vietate"));
+        assert_eq!(
+            lintra::validate_datatype(
+                field,
+                lintra::FieldSlice { raw: b"123" },
+                &EncodingSpec::Utf8
+            )
+            .unwrap(),
+            lintra::DatatypeValidationResult::Valid
+        );
+    }
+}
+
+#[test]
+fn numeric_failure_explains_ascii_digits_and_keeps_the_read_value() {
+    let mut value = serde_json::to_value(raw_schema()).unwrap();
+    value["traces"][0]["fields"][1]["physical"]["type"] = json!("numeric");
+    let mut raw: RawFlowSchema = serde_json::from_value(value).unwrap();
+    raw.encoding.resolved = Some(RawResolvedEncoding::Utf8);
+    let compiled = SchemaCompiler.compile(raw).unwrap();
+    let field = &compiled.traces()[0].fields()[1];
+    let lintra::DatatypeValidationResult::Invalid(violation) = lintra::validate_datatype(
+        field,
+        lintra::FieldSlice { raw: b"A01" },
+        &EncodingSpec::Utf8,
+    )
+    .unwrap() else {
+        panic!("a letter cannot be Numeric");
+    };
+    let error = factory(&EncodingSpec::Utf8).field_error(
+        1,
+        &RecordIdentity::default(),
+        field,
+        b"A01",
+        violation,
+    );
+    assert_eq!(error.code, ValidationCode::InvalidType);
+    assert_eq!(error.actual.unwrap().display, "A01");
+    assert!(
+        error
+            .message
+            .contains("cifre ASCII da 0 a 9, senza segno né separatori")
+    );
+    assert!(error.message.contains("byte 4–6 inclusi (3 byte)"));
 }

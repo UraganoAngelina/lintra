@@ -32,7 +32,7 @@ pub(crate) fn validate_numeric_range(
     } else {
         Err(FieldViolation {
             code: ValidationCode::OutOfRange,
-            expected: Some("un intero nell'intervallo dichiarato, estremi inclusi".into()),
+            expected: Some(format!("un intero da {min} a {max}, estremi inclusi")),
             reason: String::new(),
             diagnostic_context: vec![],
         })

@@ -447,7 +447,30 @@ fn derived_rules_resolve_by_id_across_reversed_physical_layouts() {
                     assert_eq!(a.code, b.code);
                     assert_eq!(a.context, b.context);
                     assert_eq!(a.actual, b.actual);
-                    assert_eq!(a.expected, b.expected);
+                    // The rule semantics remain identical; physical guidance
+                    // must follow each layout instead of retaining stale offsets.
+                    let guide = |schema: &CompiledFlowSchema, error: &ValidationError| {
+                        let field = schema
+                            .trace(&error.trace_id)
+                            .unwrap()
+                            .field(&error.field.as_ref().unwrap().id)
+                            .unwrap();
+                        lintra::field_format_guide(field, schema.encoding())
+                    };
+                    let a_guide = guide(&first, a);
+                    let b_guide = guide(&second, b);
+                    assert_eq!(
+                        a.expected
+                            .as_deref()
+                            .unwrap()
+                            .strip_suffix(&a_guide)
+                            .expect("original layout guide"),
+                        b.expected
+                            .as_deref()
+                            .unwrap()
+                            .strip_suffix(&b_guide)
+                            .expect("reordered layout guide")
+                    );
                     assert_eq!(a.message, b.message);
                     assert_eq!(a.field.as_ref().unwrap().start_one_based, 1);
                     assert_eq!(b.field.as_ref().unwrap().start_one_based, 25);

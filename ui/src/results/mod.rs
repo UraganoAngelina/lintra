@@ -299,8 +299,8 @@ impl Model for JsonlModel {
 }
 fn diagnostic_value(value: &lintra::DiagnosticValue) -> String {
     match &value.raw_hex {
-        Some(raw) => format!("{} (hex: {raw})", value.display),
-        None => value.display.clone(),
+        Some(raw) => format!("{} (hex: {raw})", value.display.replace(' ', "␠")),
+        None => value.display.replace(' ', "␠"),
     }
 }
 fn project(error: ValidationError) -> Result<crate::ErrorRow, ResultsError> {
@@ -330,6 +330,7 @@ fn project(error: ValidationError) -> Result<crate::ErrorRow, ResultsError> {
             .map(|(k, v)| format!("{k}: {v}")),
     );
     Ok(crate::ErrorRow {
+        trace: error.trace_id.0.into(),
         line: error.line_number.to_string().into(),
         record: error
             .record_identity

@@ -7,7 +7,7 @@ use std::{
     fmt, fs,
     io::{self, Read},
     path::{Path, PathBuf},
-    sync::Arc,
+    sync::{Arc, Mutex},
 };
 type Failure = Box<dyn Error + Send + Sync>;
 
@@ -350,8 +350,12 @@ impl AnalysisSelection {
                 max_errors: None,
             },
         };
+        let captured_references = Arc::new(Mutex::new(None));
         let service = ValidationService::new(registry).with_reference_data(
-            bundle.references.clone(),
+            Arc::new(CapturingReferences {
+                inner: bundle.references.clone(),
+                captured: captured_references.clone(),
+            }),
             DatasetPreparationPolicy::ContinueWithAvailableEvidence,
         );
         Ok(PreparedAnalysis {
@@ -359,8 +363,10 @@ impl AnalysisSelection {
             service: Arc::new(service),
             audit: bundle.audit.clone(),
             schema_hash: resolved.schema_hash().clone(),
+            schema: resolved.schema().clone(),
             preview,
             reports: self.reports,
+            captured_references,
         })
     }
 }
@@ -372,8 +378,11 @@ pub struct PreparedAnalysis {
     pub service: Arc<ValidationService>,
     pub audit: BundleAudit,
     pub schema_hash: Sha256Digest,
+    /// Read-only schema resolved by the same registry used by this request.
+    pub schema: Arc<CompiledFlowSchema>,
     pub preview: InputPreview,
     pub reports: ReportSelection,
+    pub captured_references: Arc<Mutex<Option<Arc<PreparedReferenceEvidence>>>>,
 }
 
 #[derive(Debug, Clone)]
@@ -415,4 +424,26 @@ pub fn browse_directory(path: &Path) -> io::Result<Vec<BrowserEntry>> {
             .then_with(|| a.label.cmp(&b.label))
     });
     Ok(result)
+}
+
+/// Captures precisely the immutable evidence supplied to ValidationService.
+/// Clone shares lookup Arc handles, never rereads a possibly changed dataset.
+struct CapturingReferences {
+    inner: Arc<dyn ReferenceDataPreparer>,
+    captured: Arc<Mutex<Option<Arc<PreparedReferenceEvidence>>>>,
+}
+impl ReferenceDataPreparer for CapturingReferences {
+    fn prepare(
+        &self,
+        dependencies: &[ReferenceDependency],
+        policy: DatasetPreparationPolicy,
+    ) -> Result<PreparedReferenceEvidence, ReferencePreparationError> {
+        let prepared = self.inner.prepare(dependencies, policy)?;
+        let shared = Arc::new(prepared.clone());
+        *self
+            .captured
+            .lock()
+            .map_err(|_| ReferencePreparationError::InconsistentEvidence)? = Some(shared);
+        Ok(prepared)
+    }
 }

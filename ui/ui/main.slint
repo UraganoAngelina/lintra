@@ -44,6 +44,10 @@ export component MainWindow inherits Window {
     in-out property <bool> show-results: false;
     in property <[ErrorRow]> result-rows;
     in property <ErrorRow> result-detail;
+    in property <string> domain-text;
+    in property <bool> domain-more;
+    callback next-domain-page();
+    callback restart-domain();
     in property <int> selected-result: -1;
     in property <string> results-heading;
     in property <string> results-summary;
@@ -127,6 +131,7 @@ export component MainWindow inherits Window {
                     text: "Lintra";
                     color: Tok.nav-ink;
                     font-size: Tok.brand-size;
+                    letter-spacing: Tok.brand-letter-spacing;
                     font-weight: Tok.bold-weight;
                     vertical-alignment: center;
                     horizontal-stretch: 0;
@@ -215,6 +220,9 @@ export component MainWindow inherits Window {
             }
             if !root.export-open && !root.show-info && root.show-results: ResultsView {
                 rows: root.result-rows; detail: root.result-detail;
+                domain-text: root.domain-text; domain-more: root.domain-more;
+                next-domain-page => { root.next-domain-page(); }
+                restart-domain => { root.restart-domain(); }
                 selected: root.selected-result;
                 heading: root.results-heading; summary: root.results-summary;
                 scope: root.results-scope; note: root.results-note;

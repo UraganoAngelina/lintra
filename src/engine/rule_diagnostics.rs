@@ -90,6 +90,33 @@ impl ErrorFactory<'_> {
                     .map(|value| render_diagnostic_value(value.raw, self.encoding))
             })
             .transpose()?;
+        // Preserve the schema-authored message verbatim; enrich the shared
+        // expected value with the actual assertion domain and physical guide.
+        let mut expected = violation.expected.clone();
+        if let Some(spec) = primary {
+            let mut explanation = super::field_guide::field_format_guide(spec, self.encoding);
+            if let CompiledAssertion::Constraint { constraint, .. } = assertion
+                && let Some(mut domain) =
+                    super::field_guide::declared_domain(constraint, self.encoding)
+            {
+                let values: Vec<_> = domain.by_ref().take(16).collect();
+                explanation.push(' ');
+                explanation.push_str(super::field_guide::constraint_comparison_guide(constraint));
+                explanation.push_str(&format!(
+                    " Dominio della regola {}: {}",
+                    rule.id,
+                    values.join(", ")
+                ));
+                if domain.next().is_some() {
+                    explanation
+                        .push_str(" … (anteprima; dominio completo consultabile nel dettaglio)");
+                }
+            }
+            expected = Some(match expected {
+                Some(value) => format!("{value}. {explanation}"),
+                None => explanation,
+            });
+        }
         Ok(ValidationError {
             code: violation.code,
             flow_id: self.flow_id.clone(),
@@ -101,7 +128,7 @@ impl ErrorFactory<'_> {
                 FieldDiagnostic::from_range(spec.id().clone(), spec.name().into(), spec.range())
             }),
             actual,
-            expected: violation.expected,
+            expected,
             context,
             message,
         })

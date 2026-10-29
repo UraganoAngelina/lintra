@@ -102,6 +102,12 @@ fn real_results_filter_selection_large_disk_scrolling_and_rendering_are_qualifie
     assert!(ui.get_results_scope().contains("Controlli locali"));
     assert!(ui.get_results_summary().starts_with("Controlli locali."));
     ui.invoke_select_result(0);
+    assert!(ui.get_domain_text().contains("\"A\""));
+    assert!(ui.get_domain_text().contains("\"É\""));
+    assert!(!ui.get_domain_more());
+    let page = ui.get_domain_text();
+    ui.invoke_restart_domain();
+    assert_eq!(ui.get_domain_text(), page);
     let first = ui.get_result_detail();
     assert_eq!(first.line, "1");
     assert!(first.code.starts_with("E_"));

@@ -25,6 +25,7 @@ pub enum WorkerError {
         original: Box<WorkerError>,
         cleanup: ReportError,
     },
+    SchemaChanged,
     Panicked,
     Disconnected,
 }
@@ -38,6 +39,7 @@ impl fmt::Display for WorkerError {
             Self::Cleanup { .. } => {
                 "Errore tecnico con pulizia del report incompleto non riuscita."
             }
+            Self::SchemaChanged => "Lo schema è cambiato dopo la preparazione: riprepara l’analisi per ottenere diagnostici coerenti.",
             Self::Panicked => "L’analisi si è interrotta senza un esito completo.",
             Self::Disconnected => "Impossibile ricevere l’esito dell’analisi.",
         })
@@ -50,7 +52,7 @@ impl Error for WorkerError {
             Self::Validation(e) => Some(e),
             Self::Report(e) => Some(e),
             Self::Cleanup { original, .. } => Some(original.as_ref()),
-            Self::Panicked | Self::Disconnected => None,
+            Self::SchemaChanged | Self::Panicked | Self::Disconnected => None,
         }
     }
 }
@@ -69,8 +71,16 @@ pub struct AnalysisReport {
     directory: tempfile::TempDir,
     audit: BundleAudit,
     input_path: std::path::PathBuf,
+    schema: Arc<CompiledFlowSchema>,
+    references: Option<Arc<PreparedReferenceEvidence>>,
 }
 impl AnalysisReport {
+    pub fn references(&self) -> Option<&Arc<PreparedReferenceEvidence>> {
+        self.references.as_ref()
+    }
+    pub fn schema(&self) -> &Arc<CompiledFlowSchema> {
+        &self.schema
+    }
     /// Captured from the validated run, never from the currently edited form.
     pub fn input_path(&self) -> &Path {
         &self.input_path
@@ -215,6 +225,39 @@ fn execute(
             };
         }
     };
+    if outcome.summary.schema_hash != prepared.schema_hash.to_string()
+        || outcome.summary.schema_key != *prepared.schema.key()
+    {
+        return match pending.abort() {
+            Ok(_) => Err(WorkerError::SchemaChanged),
+            Err(cleanup) => Err(WorkerError::Cleanup {
+                original: Box::new(WorkerError::SchemaChanged),
+                cleanup,
+            }),
+        };
+    }
+    let references = prepared
+        .captured_references
+        .lock()
+        .map_err(|_| WorkerError::Panicked)?
+        .take()
+        .filter(|captured| {
+            outcome
+                .summary
+                .reference_validation
+                .as_ref()
+                .is_some_and(|audit| {
+                    audit.datasets.len() == captured.datasets().len()
+                        && audit.datasets.iter().all(|item| {
+                            captured.evidence(&item.requested).is_some_and(|e| {
+                                e.expected_sha256() == &item.expected_sha256
+                                    && e.actual_sha256() == item.actual_sha256.as_ref()
+                                    && e.availability() == item.availability
+                                    && e.declared_key() == item.declared.as_ref()
+                            })
+                        })
+                })
+        });
     let completion = ReportCompletion {
         run_status: outcome.status,
         truncated: outcome.summary.truncated,
@@ -225,6 +268,8 @@ fn execute(
             directory,
             audit: prepared.audit,
             input_path,
+            schema: prepared.schema,
+            references,
         })),
         AtomicOutputOutcome::Unpublished { .. } => None,
     };
