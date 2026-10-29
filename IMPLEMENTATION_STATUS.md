@@ -21,7 +21,21 @@ check locked/offline positivo. Report BUILD_CACHE_CLEANUP_2026-10-29.
 cancel/idempotenza. Nessuna UI o policy CAD hardcoded. Rischi prima dei dati reali
 invariati: cifratura, retention, provider/rotazione chiavi e backup sicuro.
 Archivio locale per installazione, nessuna condivisione fra operatori.
-AUTO_CONTINUE single-agent, nessun gate umano ordinario.
+Priorità autore29/10: terminare07, poi UI16-06→07→08 con diagnostici chiari;
+PERSIST08 rinviata dopo questo perimetro. AUTO_CONTINUE single-agent.
+
+## PERSIST07 — implementazione pronta per qualificazione nativa
+
+Coordinatore ApprovalDraft/ValidatedApproval/ApprovalPreview, binding generico
+schema-driven protetto nel periodo opaco dei nuovi draft, cursor128 metadati
+su PK SQLite e CAS. Nessun cambio wire/storage/dependency, SQL solo nell'adapter.
+Preview legata per lifetime allo stesso repository; reportIO/cancel senza commit,
+immutabilità anche retrodatando un invio approvato e retry/ambiguità espliciti.
+13test mirati +8profile,13doctest eClippy workspace default/allfeatures pass.
+Gate completi precedenti alla correzione della firma sono intermedi: quelli
+finali e CI ancora pendenti, nessun DONE07 presunto. Rapporti T-PERSIST-07
+consultabili, codec/identità/protezioni05/06 preservati. AUTO_CONTINUE.
+Next dopo07 realmente verificata: UI16-06→07→08 come richiesto dall'autore.
 
 ## Richiesta diagnostici/UI —2026-10-29
 
@@ -30,7 +44,8 @@ L'autore richiede dominio completo/range consultabili e spiegazione precisa
 per tipo/allineamento/fill. Gap dei messaggi core generici confermato, requisito
 registrato in docs/ui/DIAGNOSTIC_REQUIREMENTS.md eAGENTS; implementazione non
 ancora dichiarata fatta. Nessuna norma o controllo fisico implicito introdotto.
-PERSIST07 preflight attivo, nessun codice lifecycle o gate07 ancora eseguiti.
+PERSIST07 implementata in verifica:13test mirati e8profile,13doctest, Clippy
+workspace entrambi gli assetti pass. Regressione finale e CI ancora pendenti.
 
 ## HANDOFF §15.3 — T-PERSIST-06 DONE, 2026-10-29
 
@@ -2359,8 +2374,10 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-PERSIST-02 | DONE | 2026-10-27 | CI40528607856 Linux/MSVC/JSONL/RGB tutti pass; [dossier](docs/verification/T-PERSIST-02-domain.md) |
 | T-PERSIST-03 | DONE | 2026-10-27 | Code49a3f4e, CI40581933176 su5bc8402 tutti4job success; snapshot/trait/CAS/abort/reopen fake qualificati |
 | T-PERSIST-04 | DONE | 2026-10-28 | Code dd7135e+fixc475f0d, CI40658672940 tutti4job success;750/750 locali+14tooling, HMAC/provider/audit senza storage reale |
-| T-PERSIST-05 | IN_PROGRESS | 2026-10-28 | ADR-PERSIST-002 ratificata con prescrizioni DELETE/EXTRA/protezione/versioni/memoria; qualificazione binding prima dell’integrazione |
-| T-PERSIST-06..12 | NOT_STARTED | — | Contratto core ADR-PERSIST-001 ratificato; nessun backend implementato |
+| T-PERSIST-05 | DONE | 2026-10-29 | Code3712ed6, CI40844540287/release40844543949/probe40844049209 success; backend SQLite qualificato, dossier T-PERSIST-05 |
+| T-PERSIST-06 | DONE | 2026-10-29 | Code3e8fae4, CI40853726275 tutti4job success; metadati, consenso dichiarato e compatibilità verificati |
+| T-PERSIST-07 | IN_PROGRESS | 2026-10-29 | Coordinatore sessioni, binding compilato e cursor metadati in sviluppo; gate pendenti |
+| T-PERSIST-08..12 | NOT_STARTED | — | Dopo07 priorità alle tre UI16-06→07→08 secondo mandato29/10 |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — Linux locale

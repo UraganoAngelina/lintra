@@ -124,6 +124,33 @@ impl PersistentContextRepository for InMemoryPersistenceRepository {
             .and_then(|s| s.submissions.get(submission_id))
             .cloned())
     }
+    fn current_generation(
+        &self,
+        ns: &PersistenceNamespace,
+    ) -> Result<Option<SnapshotRevision>, PersistenceError> {
+        Ok(generation(&*self.image.lock()?, ns))
+    }
+    fn load_submission_page(
+        &self,
+        ns: &PersistenceNamespace,
+        after: Option<SnapshotRevision>,
+    ) -> Result<Vec<(SnapshotRevision, SourceSubmission)>, PersistenceError> {
+        Ok(self
+            .image
+            .lock()?
+            .namespaces
+            .get(ns)
+            .map(|state| {
+                state
+                    .snapshots
+                    .iter()
+                    .filter(|s| after.is_none_or(|r| s.revision() > r))
+                    .take(128)
+                    .map(|s| (s.revision(), s.source().clone()))
+                    .collect()
+            })
+            .unwrap_or_default())
+    }
     fn begin_transaction(
         &self,
         namespace: &PersistenceNamespace,

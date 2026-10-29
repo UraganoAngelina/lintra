@@ -445,6 +445,63 @@ impl PersistentContextRepository for SQLitePersistenceAdapter {
             })
             .transpose()
     }
+    fn current_generation(
+        &self,
+        ns: &PersistenceNamespace,
+    ) -> Result<Option<SnapshotRevision>, PersistenceError> {
+        let encoded = codec::encode(ns)?;
+        let c = self.lock()?;
+        let current = generation(&c, &encoded)?;
+        // A missing/stale head cannot make existing history look empty. MAX
+        // seeks the same (ns,revision) primary key and does not load records.
+        let latest: Option<i64> = c
+            .query_row(
+                "SELECT MAX(revision) FROM snapshots WHERE ns=?1",
+                [&encoded],
+                |r| r.get(0),
+            )
+            .map_err(sql)?;
+        if latest != current.map(|r| number(r.value())).transpose()? {
+            return Err(PersistenceError::CorruptStorage);
+        }
+        Ok(current)
+    }
+    fn load_submission_page(
+        &self,
+        ns: &PersistenceNamespace,
+        after: Option<SnapshotRevision>,
+    ) -> Result<Vec<(SnapshotRevision, SourceSubmission)>, PersistenceError> {
+        let encoded = codec::encode(ns)?;
+        let c = self.lock()?;
+        // The primary key (ns,revision) provides a bounded cursor seek. This
+        // query never joins records or materializes any snapshot identities.
+        let mut statement = c.prepare_cached("SELECT revision,submission,source,proof FROM snapshots WHERE ns=?1 AND revision>?2 ORDER BY revision LIMIT 128").map_err(sql)?;
+        let mut rows = statement
+            .query(params![
+                encoded,
+                after.map(|r| number(r.value())).transpose()?.unwrap_or(0)
+            ])
+            .map_err(sql)?;
+        let mut result = Vec::new();
+        while let Some(row) = rows.next().map_err(sql)? {
+            let revision: i64 = row.get(0).map_err(sql)?;
+            if revision <= 0 {
+                return Err(PersistenceError::CorruptStorage);
+            }
+            let source = codec::read_source(
+                &row.get::<_, Vec<u8>>(2).map_err(sql)?,
+                &row.get::<_, Vec<u8>>(3).map_err(sql)?,
+                &self.inner.protector,
+            )?;
+            if source.namespace() != ns
+                || source.submission_id() != row.get::<_, String>(1).map_err(sql)?
+            {
+                return Err(PersistenceError::CorruptStorage);
+            }
+            result.push((SnapshotRevision::new(revision as u64), source));
+        }
+        Ok(result)
+    }
     fn begin_transaction(
         &self,
         ns: &PersistenceNamespace,

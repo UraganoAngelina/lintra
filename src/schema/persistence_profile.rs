@@ -2,7 +2,9 @@
 //! No repository, historical query, mutation or new runtime capability is enabled.
 use super::{SchemaCompilationError, SchemaCompiler, joins};
 use crate::schema::{
-    compiled::{ParameterDefinition, PersistencePolicy, PolicyKey, VersionCompatibility},
+    compiled::{
+        ParameterDefinition, PersistencePolicy, PolicyKey, SnapshotPlan, VersionCompatibility,
+    },
     linter::{SchemaIssue, SchemaIssueCode as Code, SchemaIssueSeverity, lint_raw_schema},
     raw::*,
 };
@@ -25,8 +27,13 @@ pub struct CompiledPersistenceProfile {
     policy: Option<PersistencePolicy>,
     record_keys: BTreeMap<usize, Vec<usize>>,
     compatible_schemas: Vec<(SchemaVersion, Sha256Digest)>,
+    trace_ids: Vec<crate::TraceId>,
 }
 impl CompiledPersistenceProfile {
+    /// Complete trace inventory, including traces absent from a particular run.
+    pub fn trace_ids(&self) -> &[crate::TraceId] {
+        &self.trace_ids
+    }
     pub fn schema_key(&self) -> &SchemaKey {
         &self.key
     }
@@ -297,12 +304,79 @@ fn compatibility(
     }
 }
 
+/// Lower only the already specified immutable/explicit/atomic contract. Bool
+/// flags are checked even for callers constructing RawSnapshot directly.
+fn compile_snapshot(
+    raw: &RawFlowSchema,
+    policy: &RawPersistence,
+) -> Result<Option<SnapshotPlan>, Failure> {
+    let Some(snapshot) = &policy.snapshot else {
+        return Ok(None);
+    };
+    if !snapshot.approved_immutable
+        || !snapshot.require_explicit_approval
+        || !snapshot.missing_trace_policy.present_trace_is_complete
+    {
+        return Err(invalid(
+            "snapshot requires immutable explicit approval and complete present traces",
+        ));
+    }
+    if !raw
+        .required_capabilities
+        .contains(&RawFlowSchemaRequiredCapabilitiesItem::PersistenceSnapshotV1)
+    {
+        return Err((
+            Code::MissingCapability,
+            "snapshot declarations require persistence.snapshot.v1".into(),
+        ));
+    }
+    let scope_parameters = namespace(raw, &snapshot.scope_parameters)?;
+    let find_integer = |id: &str| -> Result<usize, Failure> {
+        raw.parameters
+            .iter()
+            .position(|p| parameter_id(p) == id && matches!(p, RawParameter::Integer { .. }))
+            .ok_or((
+                Code::MissingParameterReference,
+                "snapshot period requires declared integer parameters".into(),
+            ))
+    };
+    let year_parameter = find_integer(&snapshot.period.year_parameter)?;
+    let quarter_parameter = find_integer(&snapshot.period.quarter_parameter)?;
+    if year_parameter == quarter_parameter
+        || scope_parameters.contains(&year_parameter)
+        || scope_parameters.contains(&quarter_parameter)
+    {
+        return Err(invalid(
+            "snapshot scope and period parameters must be distinct",
+        ));
+    }
+    let warning = &snapshot.missing_trace_policy.warning_code;
+    if !warning.starts_with("W_")
+        || !warning
+            .bytes()
+            .all(|c| c.is_ascii_uppercase() || c.is_ascii_digit() || c == b'_')
+        || warning.len() <= 2
+    {
+        return Err((
+            Code::InvalidDiagnosticCode,
+            "invalid snapshot warning code".into(),
+        ));
+    }
+    Ok(Some(SnapshotPlan {
+        scope_parameters,
+        year_parameter,
+        quarter_parameter,
+        missing_trace_warning_code: warning.as_str().into(),
+    }))
+}
+
 impl SchemaCompiler {
     /// Compile namespace, intra-run key and cross-run audit declarations using
     /// actual PKs and explicit sources for other group versions. The existing
     /// runtime `compile` gate continues to reject active persistence until its
     /// execution/storage prerequisites are implemented. No profile is runnable.
-    /// Snapshot/history/temporal plans are rejected explicitly at this stage.
+    /// Snapshot declarations support the approval coordinator. Historical identity
+    /// and temporal execution remain explicitly rejected; no Full capability added.
     pub fn compile_persistence_profile(
         &self,
         raw: &RawFlowSchema,
@@ -327,6 +401,11 @@ impl SchemaCompiler {
                 policy: None,
                 record_keys: BTreeMap::new(),
                 compatible_schemas: vec![],
+                trace_ids: raw
+                    .traces
+                    .iter()
+                    .map(|t| crate::TraceId(t.id.clone()))
+                    .collect(),
             };
             let Some(policy) = &raw.persistence_policy else {
                 if !other_versions.is_empty() {
@@ -336,11 +415,8 @@ impl SchemaCompiler {
                 }
                 return Ok(profile);
             };
-            if policy.snapshot.is_some()
-                || !policy.history_identity_invariants.is_empty()
-                || !policy.temporal_rules.is_empty()
-            {
-                return Err((Code::UnsupportedConstruct, "snapshot, historical identity and temporal persistence plans require their later implementation tasks".into()));
+            if !policy.history_identity_invariants.is_empty() || !policy.temporal_rules.is_empty() {
+                return Err((Code::UnsupportedConstruct, "historical identity and temporal persistence plans require their later implementation tasks".into()));
             }
             if !policy.cross_run_audit.is_empty()
                 && !raw
@@ -364,7 +440,7 @@ impl SchemaCompiler {
                 run_uniqueness,
                 cross_run_audit,
                 history_identity_invariants: vec![],
-                snapshot: None,
+                snapshot: compile_snapshot(raw, policy)?,
                 temporal_rules: vec![],
             });
             Ok(profile)

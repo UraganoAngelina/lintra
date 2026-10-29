@@ -28,3 +28,17 @@ report/IO fallito senza commit; errore E_APPROVED_SESSION_IMMUTABLE su modifica;
 retry esatto/ack perduto; CAS concorrente e transazione doppia; scope e policy
 cambiati; riapertura SQLite. Solo fixture sintetiche. Gate fmt/Clippy/test e
 Linux/MSVC reali prima di DONE07.
+
+## Scelte implementative precisate
+
+Binding tecnico versionato nella stringa periodo opaca dei soli nuovi draft,
+protetto insieme alla Source dal contrattoHMAC04/05; nessun nuovo campo wire o
+schema SQL. Periodi legacy non vengono reinterpretati o migrati: un'approvazione
+non associabile in modo verificabile ferma il nuovo lifecycle con errore esplicito.
+Query repository additive: generazione e cursor128 per soli metadati Source,
+con autenticazione e PK(ns,revision). Costo O(invii) per preview, non O(identità)
+né per record; limite trasparente nel rapporto, nessun indice sessione implicito.
+Tipo/DOMINI e consenso derivano dal profilo compilato, non da flow hardcoded.
+Coordinatore standalone verificato con outcome sintetici di componente;
+integrazione09 e diff08 restano separati. Il risultato pubblico non è un certificato
+crittografico di Full. Dopo i gate07, priorità UI16-06→07→08 autorizzata29/10.

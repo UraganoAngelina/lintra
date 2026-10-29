@@ -367,3 +367,8 @@ pub use persistence::{
 };
 
 pub use persistence::{CommitResolution, SQLitePersistenceAdapter, SQLiteStorageSettings};
+
+// Explicit application approval lifecycle, separate from technical transactions.
+pub use application::session::{
+    ApprovalDraft, ApprovalPreview, SessionApprovalError, SessionRejection, ValidatedApproval,
+};

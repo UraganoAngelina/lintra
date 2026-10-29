@@ -7,3 +7,5 @@ pub(crate) mod service;
 pub(crate) mod reference_audit;
 
 pub(crate) mod full;
+
+pub(crate) mod session;

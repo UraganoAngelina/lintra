@@ -154,6 +154,22 @@ impl HistoricalSnapshot {
     pub fn source(&self) -> &SourceSubmission {
         &self.source
     }
+    /// Application-only rebinding of the publication metadata/revision. The
+    /// immutable protected identities remain shared; no O(n) record copy.
+    pub(crate) fn with_source(
+        &self,
+        revision: SnapshotRevision,
+        source: SourceSubmission,
+    ) -> Result<Self, PersistenceError> {
+        if source.namespace() != self.namespace() {
+            return Err(PersistenceError::NamespaceMismatch);
+        }
+        Ok(Self {
+            revision,
+            source,
+            identities: self.identities.clone(),
+        })
+    }
     pub fn identities(&self) -> &[StoredIdentity] {
         &self.identities
     }
@@ -218,6 +234,24 @@ pub trait PersistentContextRepository: Send + Sync {
             }
             _ => Ok(CommitResolution::ConflictingSubmission),
         }
+    }
+    /// Exact committed generation without materializing records. Implementations
+    /// may override this compatibility default with a metadata-only query.
+    fn current_generation(
+        &self,
+        namespace: &PersistenceNamespace,
+    ) -> Result<Option<SnapshotRevision>, PersistenceError> {
+        Ok(self.load_current_snapshot(namespace)?.map(|s| s.revision()))
+    }
+    /// At most 128 source metadata entries after an exclusive revision cursor,
+    /// in ascending revision order. No identity payloads are loaded. A default
+    /// fails closed so existing third-party ports never invent an empty history.
+    fn load_submission_page(
+        &self,
+        _namespace: &PersistenceNamespace,
+        _after: Option<SnapshotRevision>,
+    ) -> Result<Vec<(SnapshotRevision, SourceSubmission)>, PersistenceError> {
+        Err(PersistenceError::StorageUnavailable)
     }
     /// None is an empty namespace; no sentinel snapshot/revision is fabricated.
     /// expected_generation=None means exactly no previously committed snapshot.

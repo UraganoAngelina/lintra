@@ -338,3 +338,10 @@ anche per range discreti), tipo, posizioni, larghezza, allineamento e riempiment
 secondo lo schema effettivo. Requisiti e test in docs/ui/DIAGNOSTIC_REQUIREMENTS.md;
 implementazione ancora aperta. Numeri in AN non sono vietati implicitamente;
 nessuna nuova norma o validator fisico dedotto da questa richiesta di chiarezza.
+
+## Priorità dell'autore —2026-10-29
+
+Terminare la task attiva T-PERSIST-07 con tutti i gate, poi concentrarsi sulle
+tre task UI restanti T-P16-06→07→08, includendo il requisito diagnostici
+concordato. Non avviare PERSIST08 prima di questo perimetro UI. Restano single
+agent, evidenze reali e prosecuzione automatica senza stop ordinari.
