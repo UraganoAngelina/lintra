@@ -126,3 +126,13 @@ Correzione verificata: worker5test, export4, finestra nativa1 eunit2 positivi,
 Clippy workspace default/all-features pass. Viste anche Informazioni scuro2× ed
 export chiaro2×; layout/colori/font preservati, nessun riferimento autoaggiornato.
 Gate completi corretti ancora in esecuzione, CI finale da avviare sul fix.
+
+### Correzione nativa Windows — gate40897488097
+
+Il job123530502473 ha individuato un difetto reale nel confronto dei percorsi
+protetti: canonicalize della destinazione Windows introduce il prefisso extended
+length, mentre il percorso TempDir dello spool non lo possedeva. Il test dello
+spool (exports.rs) ha correttamente rifiutato il falso successo dell'esportazione.
+La protezione dell'input era già canonica; la root privata va canonicalizzata
+anch'essa prima del confronto. Nessuna modifica al test di accettazione per
+mascherare il difetto. Gate06 resta aperto fino alla correzione e nuova CI.

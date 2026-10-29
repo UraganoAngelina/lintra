@@ -192,6 +192,9 @@ fn preflight(
     if path.extension().and_then(|e| e.to_str()) != Some(format.extension()) {
         return Err(ExportError::InvalidExtension);
     }
+    // Compare like representations on Windows too (extended-length prefixes).
+    // Protect the entire private report root, including future sidecars.
+    let protected_root = fs::canonicalize(report.directory()).map_err(ExportError::Io)?;
     let paths = vec![path.to_owned(), summary_path(path)];
     for destination in &paths {
         let parent = destination.parent().ok_or(ExportError::InvalidPath)?;
@@ -207,10 +210,7 @@ fn preflight(
             Err(e) if e.kind() == io::ErrorKind::NotFound => normalized,
             Err(e) => return Err(ExportError::Io(e)),
         };
-        if canonical == report.input_path()
-            || canonical == report.jsonl_path()
-            || canonical.starts_with(report.directory())
-        {
+        if canonical == report.input_path() || canonical.starts_with(&protected_root) {
             return Err(ExportError::ProtectedSource);
         }
         if destination.exists() && !overwrite {
