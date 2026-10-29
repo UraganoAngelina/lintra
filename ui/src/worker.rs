@@ -170,7 +170,12 @@ fn execute(
             )));
         }
     };
-    let input_path = std::fs::canonicalize(input_path).map_err(WorkerError::TemporaryOutput)?;
+    // Do not preempt the service's typed input error if the source disappeared
+    // after preflight. A successful run normally has a canonical path; retain
+    // an absolute lexical path as the non-reading fallback for this snapshot.
+    let input_path = std::fs::canonicalize(&input_path)
+        .or_else(|_| std::path::absolute(&input_path))
+        .unwrap_or(input_path);
     // tempfile supplies a new owned install-independent directory. No input
     // pathname or patient identifier is used in report names or technical logs.
     let directory = tempfile::Builder::new()

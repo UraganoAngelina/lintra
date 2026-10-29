@@ -111,3 +111,18 @@ Impeccable context/operate/craft-floor applicati, detector[] sulle estensioni Sl
 non costituisce prova di rendering web o nativo. ui-ux-pro-max interrogato senza
 sostituire il mondo già ratificato con il suo suggerimento web; no-ai-slop applicato
 ai testi e verificato con eval. Single-agent, nessun Superpowers o subagente.
+
+## Correzione della regressione input
+
+La regressione completa ha rilevato che la prima canonicalizzazione anticipava
+l'errore tecnico del servizio quando l'input era rimosso dopo il preflight.
+Il path di protezione usa ora canonicalizzazione oppure path assoluto lessicale,
+senza sostituire la successiva lettura/diagnostica autorevole di ValidationService.
+Il test worker precedente resta invariato; non è stato cambiato per accettare una
+classificazione sbagliata. CI40895114689 su ff600d3 intermedia, richiesta cancellazione
+per qualificare la correzione. Nessun DONE06 su un gate pendente o fallito.
+
+Correzione verificata: worker5test, export4, finestra nativa1 eunit2 positivi,
+Clippy workspace default/all-features pass. Viste anche Informazioni scuro2× ed
+export chiaro2×; layout/colori/font preservati, nessun riferimento autoaggiornato.
+Gate completi corretti ancora in esecuzione, CI finale da avviare sul fix.
