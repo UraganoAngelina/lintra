@@ -199,8 +199,8 @@ il lifecycle non inventa un archivio nuovo o una policy di migrazione/recovery.
 I primi gate completi sono intermedi rispetto a questa correzione di firma;
 la qualifica finale ripete i controlli sulla versione con repository vincolato.
 
-Il test nonempty_candidate verifica un caso SQLite con una identità reale
-prodotta da IdentityProtector/build_join_key e riletta dopo reopen; nega flow,
+Il test nonempty_candidate verifica un caso SQLite con una identità sintetica
+prodotta con le API reali IdentityProtector/build_join_key e riletta dopo reopen; nega flow,
 trace o key-kind non dichiarati e valori non attestati prima dello storage.
 L'estrazione della chiave usa gli stessi campi della fixture compilati localmente,
 non è presentata come esecuzione Full del profilo storico.13test mirati07 e
@@ -227,3 +227,14 @@ La CI40875525923 sul commit4c03608 è intermedia: richiesta cancellazione per
 qualificare la correzione su un nuovo head, senza dichiarare DONE o rollback
 fittizi. Il test che riproduce il panic resta in clock-boundary.log locale;
 le evidenze finali distingueranno questo primo fallimento dalla successiva prova.
+
+## Gate locali finali sul codice1e92b1f
+
+Workspace default/all-features:795test principali/97suite per assetto, più3helper
+riavviati dai parent,0fail/4ignored. Clippy workspace nei due assetti e fmt
+positivi.15test di componente07, con correzione clock verificata in entrambi gli
+assetti. Doctest separati:3merged+13altri=16positivi. Core senza bundle positivo,
+conteggi/hash in local-gates.json. Sorgenti identici al commit pubblicato.
+CI40877202683 su1e92b1f in corso, prima lettura entrambi superano test/default/
+all-features/core-no-bundle; Linux release, Windows tooling. Nessun DONE prima
+della conclusione dei job e dei confronti finali.

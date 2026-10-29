@@ -47,6 +47,16 @@ sulla correzione.15test mirati07 all-features positivi, due aggiuntivi perclock
 estremo/frazionepre-epoch. Regressione finale/default/Clippy aggiornati ancora
 in corso;07nonDONE. Priorità UI16-06→07→08 dopo gate07 realmente positivo.
 
+## PERSIST07 — gate locali finali positivi, CI finale pendente
+
+Fix1e92b1f pubblicato; CI40877202683 attiva sullo stesso codice.795test principali/
+97suite per assetto,3helper,0fail/4ignored;15test07 compresi quelli clock e
+protezione nonempty, fmt/Clippy entrambi assetti/core-no-bundle positivi.
+Evidenze e hash in T-PERSIST-07-local-gates.json; nessuna nuova dipendenza o
+modifica wire/storage. Prima lettura CI: Linuxrelease, Windowstooling, test
+nativi già positivi ma job/confronti non ancora conclusi.07IN_PROGRESS,113/140
+DONE80,7%. Dopo chiusura effettiva dare priorità UI16-06→07→08 e diagnostici.
+
 ## Richiesta diagnostici/UI —2026-10-29
 
 UI16-00…05 DONE,16-06/07 NOT_STARTED ma pronte,16-08 attende07;M8 aperta.

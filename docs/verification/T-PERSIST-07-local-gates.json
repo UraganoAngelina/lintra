@@ -1,0 +1,76 @@
+{
+  "task": "T-PERSIST-07",
+  "code_commit": "1e92b1f0ad0a2d2f8adbde80ad8ddb90a1b2352d",
+  "done": false,
+  "native_pending": true,
+  "native_run": 40877202683,
+  "logs": {
+    "workspace-default": {
+      "sha256": "b81dbcb064dc1cefa23a5121226e79eabdfc3e3320dee57608f60b04b2ed29c9",
+      "has_error": false,
+      "main_suites": 97,
+      "main_passed": 795,
+      "failed": 0,
+      "ignored": 4,
+      "helper_summaries": 3,
+      "helper_passed": 3
+    },
+    "workspace-all": {
+      "sha256": "06947679ac00b977cc79bfd56339a699b746f33ccc1fc6aeb52742d29a0e1c6d",
+      "has_error": false,
+      "main_suites": 97,
+      "main_passed": 795,
+      "failed": 0,
+      "ignored": 4,
+      "helper_summaries": 3,
+      "helper_passed": 3
+    },
+    "clippy-default": {
+      "sha256": "b1e90bed3286ac136f2e604fa0ddabcbf19285fd711e368d969d966ab0e6a51a",
+      "has_error": false,
+      "finished": true
+    },
+    "clippy-all": {
+      "sha256": "59d13b955f31b94946443b9b5b82164fe2b14b5dac088c620cd5380a7e344f97",
+      "has_error": false,
+      "finished": true
+    },
+    "doc-tests": {
+      "sha256": "8d9fbb32ee9f8a4c983e48bd21e2a9c84e26106d44f2c767e10ab4f36dd484f0",
+      "has_error": false,
+      "main_suites": 2,
+      "main_passed": 16,
+      "failed": 0,
+      "ignored": 0,
+      "helper_summaries": 0,
+      "helper_passed": 0
+    },
+    "core-no-default": {
+      "sha256": "2545c33b2ba70eaaaceb54833f15ebd2a0f99314f93fc26c1c570d2080387a6b",
+      "main_suites": 87,
+      "main_passed": 763,
+      "failed": 0,
+      "ignored": 4,
+      "helper_summaries": 3,
+      "has_error": false
+    }
+  },
+  "source_sha256": {
+    "src/application/session.rs": "65ab56552a4754e897708382aff4b99487388577b4bca2e0accbc140ebdfd919",
+    "src/persistence/mod.rs": "a4c3872c2d4082952a236efdd2d35ed9ca8be5316e9ed1fb9f928e3b3b6232cb",
+    "src/persistence/memory.rs": "7eeaa614356123233bfce08d97dc1c82b6ba5eb20cfac3b236b4f8b1fd6dbc5a",
+    "src/persistence/sqlite/mod.rs": "e20300aabba27792edfe40d07fca1be104b69389a71a5d98796bfb9097522cc5",
+    "src/schema/persistence_profile.rs": "e5d5af8a3524d6cd56c4080c40ab9b6cd3606094e17971e9f232b1a99c11ff5f",
+    "tests/session_approval.rs": "7c0962d576789db1c1d4726a6fa20531390f0d1b115c3c08b33522acf719f3d9"
+  },
+  "clock_regression": {
+    "failure_before_fix_reproduced": true,
+    "failure_log_sha256": "ee5c5c4ae5441775a111614321b5fb91275d4548ec98c6811dfd5c5eec46531e",
+    "positive_test_names": [
+      "foreign_clock_values_outside_chrono_range_are_rejected_without_panicking",
+      "fractional_pre_epoch_clock_is_compared_exactly_without_calendar_conversion"
+    ]
+  },
+  "formatting": "cargo fmt --all -- --check: exit 0",
+  "dependency_boundary": "scripts/check_workspace.py: exit 0"
+}
