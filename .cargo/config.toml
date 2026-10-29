@@ -1,3 +1,10 @@
+# Keep local development storage bounded. Reuse compiled dependencies, but do
+# not retain per-session incremental code-generation databases for each variant.
+# This does not change optimization, debug symbols, tests or release linking.
+# Opt in for a focused experiment with CARGO_INCREMENTAL=1 if needed.
+[build]
+incremental = false
+
 # Local Arch development only; CI builds Windows with the native MSVC target.
 [target.x86_64-pc-windows-gnu]
 linker = "x86_64-w64-mingw32-gcc"

@@ -1,0 +1,28 @@
+{
+  "before_free_bytes": 28135350272,
+  "after_free_bytes": 59746897920,
+  "reclaimed_bytes": 31611547648,
+  "removed_generated_directories": [
+    "target/debug/incremental",
+    "xtask/target/debug/incremental",
+    "target/ui-prototype",
+    "target/verification-p14-02/debug",
+    "target/verification-p14-02/release",
+    "target/verification-p14-05/debug",
+    "target/verification-p14-05/release",
+    "target/verification-p15-03/debug",
+    "target/release-profile",
+    "target/release",
+    "target/x86_64-pc-windows-gnu",
+    "target/x86_64-unknown-linux-gnu"
+  ],
+  "removed_test_executables": 145,
+  "kept_current_ui_cli": true,
+  "sources_fixtures_logs_evidence_preserved": true,
+  "after_check_free_bytes": 59775143936,
+  "ui_executable_preserved": true,
+  "cli_executable_preserved": true,
+  "incremental_disabled": true,
+  "incremental_cache_bytes_after_check": 0,
+  "verification": "cargo check -p lintra --locked --offline -j2: exit 0"
+}
