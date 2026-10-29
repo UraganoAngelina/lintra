@@ -136,3 +136,21 @@ spool (exports.rs) ha correttamente rifiutato il falso successo dell'esportazion
 La protezione dell'input era già canonica; la root privata va canonicalizzata
 anch'essa prima del confronto. Nessuna modifica al test di accettazione per
 mascherare il difetto. Gate06 resta aperto fino alla correzione e nuova CI.
+
+### Seconda diagnosi nativa —40900252019
+
+La protezione dello spool passa Windows. Il nuovo gate ha poi trovato un limite
+del vecchio harness dei processi SQLite: assumeva che ogni contesa producesse
+solo StorageBusy/CAS prima di COMMIT. Con un lettore concorrente il COMMIT può
+invece fallire mentre la transazione resta attiva; il prodotto conserva già
+correttamente CommitOutcomeUnknown. Fonte primaria: SQLite Transaction §2.3,
+https://www.sqlite.org/lang_transaction.html.
+
+La correzione è nel solo test: chiudere il tentativo e risolvere il candidato
+immutabile da una nuova connessione. Exit0 richiede Published con revisione
+esatta, exit3 richiede NotPublished o errore precommit già definito; ogni
+conflitto o errore diverso fallisce. Ripetizioni limitate alle letture occupate,
+nessun retry di staging/COMMIT. L'assertion finale resta un vincitore, un perdente
+e una sola generazione pubblicata. Nuovo caso deterministico con SHARED reader
+riproduce il COMMIT incerto e verifica entrambi gli esiti della risoluzione.
+Nessuna modifica dell'adapter, della durabilità, di CAS o del contratto ambiguo.

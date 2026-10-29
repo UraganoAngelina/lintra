@@ -632,6 +632,15 @@ fn process_worker() {
         Err(PersistenceError::StorageBusy | PersistenceError::GenerationConflict { .. }) => {
             std::process::exit(3)
         }
+        Err(PersistenceError::CommitOutcomeUnknown { revision }) => {
+            assert_eq!(revision, candidate.revision());
+            // COMMIT can meet another process's read lock. The adapter keeps
+            // its conservative unknown outcome; never relabel it as rollback.
+            // Close the finished attempt and resolve its immutable candidate
+            // through a fresh connection, without replaying any write.
+            drop(repo);
+            std::process::exit(resolve_finished_contender(&root, &candidate));
+        }
         Err(e) => panic!("unexpected contender error: {e}"),
     }
 }
@@ -779,3 +788,65 @@ fn an_unfinished_transaction_view_cannot_be_mistaken_for_publication() {
 }
 
 mod metadata;
+
+/// Test harness resolution only. Retrying read/open under a transient lock is
+/// bounded; neither staging nor COMMIT is retried. Parent assertions still require
+/// exactly one published contender, one unpublished contender and generation2.
+fn resolve_finished_contender(root: &Path, candidate: &HistoricalSnapshot) -> i32 {
+    let started = Instant::now();
+    loop {
+        let result = SQLitePersistenceAdapter::open(root, Some("synthetic-key"), &Provider(0xaa))
+            .and_then(|repo| repo.resolve_commit(candidate));
+        match result {
+            Ok(CommitResolution::Published(receipt)) => {
+                assert_eq!(receipt.revision, candidate.revision());
+                return 0;
+            }
+            Ok(CommitResolution::NotPublished) => return 3,
+            Ok(CommitResolution::ConflictingSubmission) => {
+                panic!("contender candidate conflicts with published history")
+            }
+            Err(PersistenceError::StorageBusy) if started.elapsed() < Duration::from_secs(20) => {
+                std::thread::sleep(Duration::from_millis(10))
+            }
+            Err(error) => panic!("contender resolution failed: {error}"),
+        }
+    }
+}
+
+#[test]
+fn busy_at_commit_is_unknown_until_a_fresh_connection_resolves_the_candidate() {
+    let dir = parent();
+    let root = dir.path().join("archive");
+    let repo = create(&root);
+    publish(&repo, &snapshot(&repo, "A", 1, "first", vec![])).unwrap();
+    let candidate = snapshot(&repo, "A", 2, "contender", vec![]);
+    // An explicit read transaction holds SHARED while the writer can still
+    // acquire RESERVED. The conflict therefore occurs at publication, not BEGIN.
+    let reader = Connection::open(root.join("lintra.db")).unwrap();
+    reader.execute_batch("BEGIN").unwrap();
+    reader
+        .query_row("SELECT COUNT(*) FROM snapshots", [], |row| {
+            row.get::<_, i64>(0)
+        })
+        .unwrap();
+    assert_eq!(
+        publish(&repo, &candidate).unwrap_err(),
+        PersistenceError::CommitOutcomeUnknown {
+            revision: candidate.revision()
+        }
+    );
+    drop(repo);
+    reader.execute_batch("ROLLBACK").unwrap();
+    drop(reader);
+    assert_eq!(resolve_finished_contender(&root, &candidate), 3);
+    let repo = open(&root);
+    assert_eq!(
+        repo.current_generation(&namespace("A")).unwrap(),
+        Some(SnapshotRevision::new(1))
+    );
+    // A new, explicit write is permitted only after NotPublished was established.
+    publish(&repo, &candidate).unwrap();
+    drop(repo);
+    assert_eq!(resolve_finished_contender(&root, &candidate), 0);
+}
