@@ -330,3 +330,11 @@ versionamento storage indipendente, indici/query e memoria misurati, archivio
 solo locale e controlli privacy/permessi/ACL. Nessuna nuova norma, servizio
 storico/UI/lifecycle/backup completo o migrazione anticipati. Implementare05,
 poi proseguire alle READY dopo gate; nessun nuovo stop ordinario a fine task.
+
+## Requisito dell'autore — diagnostici chiari, 2026-10-29
+
+Gli errori mostrati devono spiegare dominio ammesso (tutti i valori consultabili
+anche per range discreti), tipo, posizioni, larghezza, allineamento e riempimento
+secondo lo schema effettivo. Requisiti e test in docs/ui/DIAGNOSTIC_REQUIREMENTS.md;
+implementazione ancora aperta. Numeri in AN non sono vietati implicitamente;
+nessuna nuova norma o validator fisico dedotto da questa richiesta di chiarezza.

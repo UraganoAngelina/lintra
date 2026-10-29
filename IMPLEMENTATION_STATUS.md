@@ -23,6 +23,15 @@ invariati: cifratura, retention, provider/rotazione chiavi e backup sicuro.
 Archivio locale per installazione, nessuna condivisione fra operatori.
 AUTO_CONTINUE single-agent, nessun gate umano ordinario.
 
+## Richiesta diagnostici/UI —2026-10-29
+
+UI16-00…05 DONE,16-06/07 NOT_STARTED ma pronte,16-08 attende07;M8 aperta.
+L'autore richiede dominio completo/range consultabili e spiegazione precisa
+per tipo/allineamento/fill. Gap dei messaggi core generici confermato, requisito
+registrato in docs/ui/DIAGNOSTIC_REQUIREMENTS.md eAGENTS; implementazione non
+ancora dichiarata fatta. Nessuna norma o controllo fisico implicito introdotto.
+PERSIST07 preflight attivo, nessun codice lifecycle o gate07 ancora eseguiti.
+
 ## HANDOFF §15.3 — T-PERSIST-06 DONE, 2026-10-29
 
 - Base05 qualificata3712ed6; fixturelegacy b335bca prodotta prima del nuovo wire.
