@@ -1,8 +1,8 @@
 # T-PERSIST-05 — tracciabilità accettazione
 
-Stato: verifica finale del commit66aafa4 in corso. Questa matrice collega i
-requisiti ai test; non costituisce di per sé un esito positivo Windows/MSVC.
-Run: CI40701606305 e SQLite release40701610627. Stato/handoff nel registro.
+Stato: DONE sul commit3712ed6, CI40844540287 tutti4job success; release
+SQLite40844543949 entrambi job success; probeWindows40844049209 success.
+Misure ed esiti grezzi nel dossier native-ci e nei JSON benchmark Linux/Windows.
 
 | Requisito | Prova automatizzata reale |
 |---|---|

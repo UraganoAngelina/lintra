@@ -225,3 +225,10 @@ Cargo; sourceID SQLite e feature effettive conservati nel dossier. Cache
 statement8 e cache SQLite2MiB da impostare/verificare; nessuna cache globale
 applicativa. Fonti: docs.rs/rusqlite/0.41.0, sorgenti libsqlite3-sys0.39.1,
 documenti SQLite PRAGMA/atomiccommit/howtocompile e ratifica dell’autore.
+
+Qualificazione effettiva SQLite: codice3712ed6, CI40844540287 e release
+40844543949 tutti job success. SQLite3.54.1/sourceID atteso misurato sui due OS;
+compiler C gcc13.3.0 Linux/MSVC1951 Windows (locale Btrfs gcc16.2.1). Feature C
+runtime e checksum eseguibili nei JSON benchmark. Allowlist ELF/PE esistente
+superata dall'harness realmente collegato SQLite, nessuna SQLite di sistema/
+OpenSSL/CRT dinamica introdotta. Packaging CLI riproducibile e smoke nativi pass.

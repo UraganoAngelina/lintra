@@ -3,6 +3,39 @@
 Consuntivo aggiornato al **2026-10-28**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — PERSIST05 DONE, PERSIST06 avviata
+
+2026-10-29:112/140 DONE=80,0%; PERSIST06 IN_PROGRESS,27 NOT_STARTED.
+T-PERSIST05 qualificata su3712ed6: CI40844540287 tutti4job completed/success
+(Linux/MSVC, JSONL e pixel), releaseSQLite40844543949 entrambi job success,
+probeWindows40844049209 success. Binding bundled/statico e allowlist native
+invariata verificati sull'eseguibile che usa SQLite, oltre al packaging CLI.
+
+769test principali/95suite locali in entrambi assetti,0fail/3ignored; Clippy
+workspace default/all-features e tooling,14tooling/21Python/oracleHMAC positivi.
+Nuovo fix Windows:11test Linux mirati e Clippy all-targets/all-features pass;
+probe/CI native verificano anche ACL file, symlink, recovery e contesa reali.
+Crea/apri espliciti, DELETE/EXTRA verificati, staging privato/CAS/commit ambiguo,
+immutabilità, versioni/corruzione e protezione prima della scrittura qualificati.
+
+Misure sintetiche native10k/100k/300k archiviate con hash sorgenti stabili e
+compiler/sourceID reali. A300k: commit completo19,246s Linux/39,090s Windows;
+lookup p95 0,091/0,254ms; picco processo400,4/383,1MB include candidato O(n).
+Riapertura in processo fresco e indici verificati; nessuna soglia DEC14 inventata.
+Local Btrfs e runner ext-family/NTFS testati, nessuna prova power-loss hardware.
+
+Rischi/decisioni aperte: cifratura, retention, provisioning/rotazione chiavi e
+backup sicuro prima di dati reali; archivio locale per installazione, non condiviso
+fra operatori. Nessuna integrazione servizio storico, approvazione clinica o UI
+anticipata. CAD/SIOC/ARCH/DET/FROZEN e golden02/04 invariati.
+
+PERSIST06 READY dopo05: presenza tracciati e audit/consenso dichiarato secondo
+ADR001, compatibilità vecchi payload/prove HMAC e formato storage da preservare.
+Nessuna migrazione/reset impliciti. Preflight in docs/verification/T-PERSIST-06-preflight.md.
+AUTO_CONTINUE single-agent, nessun nuovo gate umano ordinario.
+
+## Registro storico — avanzamento precedente
+
 ## Frontiera corrente — PERSIST04/UI05 DONE, PERSIST05 in sviluppo
 
 2026-10-28:111/140 DONE =79,3%; PERSIST05 IN_PROGRESS,28 NOT_STARTED.
@@ -64,6 +97,7 @@ Problemi DNS/TLS transitori e limite uso nel controllo automatico hanno ritardat
 lettura log, recuperata poi via endpoint job con ANSI salvato e ripulito. Nessuna
 modifica rete/TLS o nuova autorizzazione richiesta. Next PERSIST06 soltanto dopo
 05effettivamente qualificata; nessun nuovo gate umano ordinario. AUTO_CONTINUE.
+
 
 ## T-P16-04 locale completata —2026-10-27
 

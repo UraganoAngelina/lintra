@@ -1,8 +1,8 @@
 {
   "task": "T-PERSIST-05",
   "code_commit": "66aafa413c82a13a2e111a6b2bdedb7e46e74d90",
-  "done": false,
-  "native_windows_pending": true,
+  "done": true,
+  "native_windows_pending": false,
   "logs": {
     "all_features": {
       "main_suites": 95,
@@ -45,5 +45,18 @@
       "finished": true,
       "has_error": false
     }
-  }
+  },
+  "owner_fix_verification": {
+    "code_commit": "3712ed6ed42cd50f3a878912e50cd275b9e5da75",
+    "fmt": "passed",
+    "clippy_all_targets_all_features_sha256": "c86f7af1936977ec1c36920bdd8c849df85ebd3208a95aaff20d8cbb42f6a646",
+    "sqlite_unit_passed": 11,
+    "sqlite_unit_ignored_helper": 1,
+    "sqlite_test_log_sha256": "04efc30f5f0365887c502a7afeea9c9c0941177230bcb66f8427329d143efc46",
+    "windows_probe": 40844049209,
+    "windows_probe_conclusion": "success"
+  },
+  "final_native_code_commit": "3712ed6ed42cd50f3a878912e50cd275b9e5da75",
+  "final_native_ci": 40844540287,
+  "final_native_release": 40844543949
 }

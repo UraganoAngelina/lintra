@@ -113,7 +113,8 @@ tecnici, mai riutilizzati per infilare identificativi paziente in campi liberi.
 ## Sicurezza e limiti operativi iniziali
 
 Root assoluta esplicita e archivio per singola installazione. Primo perimetro
-filesystem da qualificare: ext4 (runner Linux), Btrfs (volume locale misurato)
+filesystem da qualificare: famiglia ext locale (magic0xef53, runner Linux),
+Btrfs (volume locale misurato)
 e NTFS locale Windows; altri filesystem,
 volumi remoti, tmpfs e sidecar WAL/SHM rifiutati. Nessuna promessa su SMB/NFS,
 XFS non collaudato o condivisione fra postazioni. Linux owner effettivo,
@@ -230,3 +231,43 @@ World viene introdotta o ammessa. Prova negativa ora anche sul file con owner
 amministrativo e DACL World: deve restare rifiutato. Nessun VFS personalizzato,
 precreazione journal o cambiamento di durabilità/transazioni SQLite per aggirare
 l'owner di Windows. Root/namespace/HMAC invariati; errore generico redatto.
+
+Fonti primarie Windows per la diagnosi: [owner del nuovo oggetto](https://learn.microsoft.com/en-us/windows/win32/secauthz/owner-of-a-new-object)
+e [costruzione della DACL](https://learn.microsoft.com/en-us/windows/win32/secauthz/dacl-for-a-new-object).
+La prima distingue il default owner del token e i diritti impliciti di controllo;
+la seconda documenta l'eredità delle ACE. Il valore builtin_admin osservato è
+un risultato del probe nativo, non un'inferenza dalla sola documentazione.
+
+29/10: probe40844049209 sul fix3712ed6 completed/success; verificati confini
+file/volume/root e DACL World negativa oltre alle transazioni/recovery reali.
+Avviati gate finali CI40844540287 e SQLite release40844543949 sullo stesso codice.
+Clippy workspace all-targets/all-features e11test mirati Linux positivi sul fix.
+La chiusura05 richiede ancora gli esiti finali; la preparazione documentale06
+non aggira questo prerequisito.
+
+## Chiusura effettiva — 2026-10-29
+
+T-PERSIST05 DONE su3712ed6: CI40844540287 tutti4job success (Linux/MSVC,
+JSONL byte-identico e pixel invariati), release40844543949 entrambi success;
+probe40844049209 success. Snapshot/index/audit, restart, crash journal reale,
+commit ambiguo, CAS processi, privacy, versioni, ACL/symlink e staticità verificati.
+Fonte dettagliata: T-PERSIST-05-native-ci.json e T-PERSIST-05-acceptance.md.
+
+Misure native Linux gcc13.3 e Windows MSVC1951, stesso sourceID SQLite3.54.1:
+
+| Identità | Commit Linux/Windows s | Lookup p95 Linux/Windows ms | Picco Linux/Windows MB |
+|---:|---:|---:|---:|
+|10.000|0,371 /0,787|0,077 /0,174|20,0 /20,2|
+|100.000|5,704 /14,326|0,085 /0,198|137,5 /132,6|
+|300.000|19,246 /39,090|0,091 /0,254|400,4 /383,1|
+
+Commit è l'intera pubblicazione verificata; i picchi includono il candidato
+materializzato. Dati grezzi con reopen, memoria processo fresco, indici e busy/
+retry in T-PERSIST-05-native-{linux,windows}-benchmark.json. Fonti/working tree
+stabili prima/dopo, nessuna SQLite di sistema negli import. Misure descrittive,
+nessuna nuova soglia DEC14. Decisioni su dati reali rimangono aperte come ratifica.
+
+Handoff: nessun blocker05. Prossima PERSIST06 ora READY e avviata, metadati e
+presenza/consenso senza nuova semantica di approvazione o modifica normative.
+Compatibilità vecchi MAC/versioni richiesta; backup completo/lifecycle/servizio
+storico/UI restano nelle task proprie. AUTO_CONTINUE single-agent.
