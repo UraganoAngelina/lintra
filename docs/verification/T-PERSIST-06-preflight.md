@@ -30,3 +30,33 @@ contratto di migrazione approvato.
 File previsti: dominio metadati/wire dedicato, protezione/verifica del payload,
 codec/config storage solo dove strettamente necessario e test di roundtrip,
 compatibilità e restart. Nessuna norma CAD/SIOC hardcoded o dati reali.
+
+## Perimetro scelto dopo il gate05
+
+05DONE su3712ed6, CI40844540287/release40844543949 tutti success.06 avviata.
+Prima di cambiare il modello generata legacy-storage-v1.json usando realmente
+l'adapter05, source/proof/audit dal DB; helper e comando nel dossier. Solo chiave
+pubblica0xaa×64 e metadati SYNTHETIC. Risoluzione helper verificata contro tutti
+pin/checksum qualificati; un primo lock rigenerato latest è stato rifiutato prima
+di generare fixture, nessun manifest/lock prodotto alterato.
+
+Implementazione: consenso PROCEED tipizzato con scope non vuoto di trace assenti
+e UTC; nessun default implicito, ABORT non rappresentabile come consenso durevole.
+Validazione dei metadati separata dalla decisione applicativa di approvazione.
+Nuovo costruttore SourceSubmission con consenso; SourceSubmissionParts invariato.
+Wire esteso additivo con campo assente per dati legacy, per preservare byte/MAC.
+
+Formato storage2 dichiara la nuova capacità: nuovi DB2, lettura1/2; il vecchio
+reader05 deve rifiutare2 come versione non supportata. Su1 nessuna scrittura del
+nuovo consenso senza upgrade esplicito. Upgrade1→2 soltanto su richiesta,
+transazione esclusiva che cambia la versione fisica, senza riscrivere snapshot,
+indici, source/proof o audit e senza ri-firmare dati. Richiede istanze precedenti
+chiuse; non è una sincronizzazione fra versioni/postazioni. Open non migra.
+Commit con esito upgrade ambiguo è tecnico esplicito e richiede riapertura.
+Migrazioni ulteriori e backup/restore completo rimangono nelle task competenti.
+
+Test: payload/mac legacy congelati, presenza0/assente/nonzero dopo processo
+restart, UTC/hash/reference/namespace/periodo/stato, consenso valido/invalido/
+ABORT, vecchie revisioni immutabili, nuova versione/upgrade idempotente e rollback.
+File: src/domain/persistence{.rs,/consent.rs,/source_wire.rs}, port errori,
+protezione esistente (nessun algoritmo nuovo), adapter SQLite e test metadata.

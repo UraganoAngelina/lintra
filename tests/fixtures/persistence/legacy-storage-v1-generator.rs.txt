@@ -1,0 +1,17 @@
+use lintra::*;
+use std::{sync::Arc,fs,path::Path};
+struct Provider;
+impl PersistenceKeyProvider for Provider {
+ fn resolve(&self,id:&str)->Result<Arc<PersistenceKey>,ProtectionError>{if id!="legacy-fixture-key"{return Err(ProtectionError::KeyUnavailable);} Ok(Arc::new(PersistenceKey::new(vec![0xaa;64])?))}
+}
+fn hex(bytes:&[u8])->String {bytes.iter().map(|b|format!("{b:02x}")).collect()}
+fn main(){
+ let argument=std::env::args_os().nth(1).expect("repository checkout path");let repo=Path::new(&argument);let base=repo.join("target/legacy-fixture");fs::create_dir_all(&base).unwrap();let parent=tempfile::tempdir_in(base).unwrap();let root=parent.path().join("archive");
+ let backend=SQLitePersistenceAdapter::create(&root,Some("legacy-fixture-key"),&Provider).unwrap();
+ assert_eq!(backend.settings().unwrap().format_version,1,"Use the product-code 3712ed6 checkout");
+ let original:SourceSubmission=serde_json::from_slice(&fs::read(repo.join("tests/fixtures/persistence/source-submission.json")).unwrap()).unwrap();
+ let protected=backend.protector().protect_submission(&original).unwrap();let snapshot=HistoricalSnapshot::new(SnapshotRevision::new(1),protected,vec![]).unwrap();let mut tx=backend.begin_transaction(snapshot.namespace(),None).unwrap();tx.stage_snapshot(&snapshot).unwrap();tx.commit().unwrap();drop(backend);
+ let c=rusqlite::Connection::open(root.join("lintra.db")).unwrap();let(source,proof):(Vec<u8>,Vec<u8>)=c.query_row("SELECT source,proof FROM snapshots",[],|r|Ok((r.get(0)?,r.get(1)?))).unwrap();let audit:Vec<u8>=c.query_row("SELECT audit FROM storage_meta",[],|r|r.get(0)).unwrap();
+ let output=serde_json::json!({"generated_by_product_code":"3712ed6ed42cd50f3a878912e50cd275b9e5da75","storage_format":1,"key_id":"legacy-fixture-key","test_key":"PUBLIC 0xaa repeated 64 bytes, not a production secret","source_utf8":String::from_utf8(source).unwrap(),"source_proof_hex":hex(&proof),"protection_audit_utf8":String::from_utf8(audit).unwrap()});
+ fs::write(repo.join("tests/fixtures/persistence/legacy-storage-v1.json"),serde_json::to_vec_pretty(&output).unwrap()).unwrap();
+}
