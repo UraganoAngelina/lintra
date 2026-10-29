@@ -1,3 +1,4 @@
+import { ScrollView } from "std-widgets.slint";
 import { Tok } from "tokens.slint";
 import { ActionButton, FieldEdit, ChoiceBox, ReportCheck } from "controls.slint";
 
@@ -18,6 +19,7 @@ export component AnalysisForm inherits Rectangle {
     in property <string> preview-note: "Seleziona un file per il controllo preliminare.";
     in property <string> status-note: "Scegli file, flusso, versione, tracciato ed encoding.";
     in property <string> origin-label;
+    in property <string> schema-label;
     in property <bool> configuration-error: false;
     in property <bool> bundle-ready: false;
     in property <bool> ready: false;
@@ -37,178 +39,124 @@ export component AnalysisForm inherits Rectangle {
     callback reports-changed();
     callback start-analysis();
     callback cancel-analysis();
+    // Compact windows stack the same panels; no separate flow-specific UI.
     property <bool> narrow: root.width < Tok.form-breakpoint;
-    property <length> column-width: root.narrow ? root.width - Tok.page-padding * 2 : (root.width - Tok.page-padding * 3) / 2;
+    property <length> content-width: root.width - Tok.page-padding * 2;
+    property <length> configuration-width: root.narrow ? root.content-width : (root.content-width - Tok.panel-gap) * 0.60;
     background: Tok.bg;
     Flickable {
         content-width: root.width;
-        content-height: root.narrow ? Tok.configuration-height + Tok.execution-height + Tok.page-padding * 3 : Tok.execution-height + Tok.page-padding * 2;
-        Rectangle {
-            x: Tok.page-padding;
-            y: Tok.page-padding;
-            width: root.column-width;
-            height: Tok.configuration-height;
-            background: Tok.surface;
-            border-width: Tok.border-width;
-            border-color: Tok.border;
-            border-radius: Tok.card-radius;
-            Text {
-                x: Tok.card-padding; y: Tok.card-padding;
-                text: "Configurazione";
-                color: Tok.ink;
-                font-size: Tok.section-size;
-                font-weight: Tok.bold-weight;
-            }
-            Text {
-                x: Tok.card-padding; y: Tok.form-file-label-y;
-                text: "File di input (fixed-width)";
-                color: Tok.ink; font-weight: Tok.semibold-weight;
-            }
+        content-height: root.narrow ? Tok.analysis-intro-height + config.height + run.height + Tok.page-padding * 2 : Tok.analysis-intro-height + max(config.height, run.height) + Tok.page-padding;
+        Text {
+            x: Tok.page-padding; y: Tok.page-padding;
+            text: "Nuova analisi"; color: Tok.ink;
+            font-size: Tok.title-size; font-weight: Tok.semibold-weight;
+        }
+        Text {
+            x: Tok.page-padding; y: 66px;
+            width: root.content-width;
+            text: "Prepara il file e scegli lo schema per la validazione.";
+            color: Tok.muted; wrap: word-wrap;
+        }
+        config := Rectangle {
+            x: Tok.page-padding; y: Tok.analysis-intro-height;
+            width: root.configuration-width; height: Tok.configuration-height;
+            background: Tok.surface; border-width: Tok.border-width;
+            border-color: Tok.border; border-radius: Tok.card-radius;
+            Text { x: Tok.card-padding; y: Tok.card-padding; text: "Configurazione"; color: Tok.ink; font-size: Tok.section-size; font-weight: Tok.semibold-weight; }
+            Text { x: Tok.card-padding; y: 64px; text: "File di input · larghezza fissa"; color: Tok.ink; font-weight: Tok.semibold-weight; }
             FieldEdit {
-                x: Tok.card-padding; y: Tok.form-file-input-y;
+                x: Tok.card-padding; y: 88px;
                 width: parent.width - Tok.card-padding * 2 - Tok.chooser-width - Tok.picker-gap;
-                text <=> root.file-path;
-                placeholder: "Percorso del file (Invio per verificare)";
-                enabled: !root.busy;
-                monospace: true;
+                text <=> root.file-path; placeholder: "Percorso del file · Invio per verificare";
+                enabled: !root.busy; monospace: true;
                 edited(value) => { root.file-edited(value); }
                 confirmed(value) => { root.file-confirmed(value); }
             }
             ActionButton {
-                x: parent.width - Tok.card-padding - Tok.chooser-width; y: Tok.form-file-input-y;
-                width: Tok.chooser-width;
-                label: "Sfoglia"; enabled: !root.busy;
+                x: parent.width - Tok.card-padding - Tok.chooser-width; y: 88px;
+                width: Tok.chooser-width; label: "Sfoglia"; enabled: !root.busy;
                 activated => { root.browse(); }
             }
             Text {
-                x: Tok.card-padding; y: Tok.form-preview-y;
-                width: parent.width - Tok.card-padding * 2;
-                text: root.preview-note; color: Tok.muted;
-                font-family: Tok.mono; font-size: Tok.caption-size;
-                overflow: elide;
+                x: Tok.card-padding; y: 132px;
+                width: parent.width - Tok.card-padding * 2; height: 36px;
+                text: root.preview-note; color: root.configuration-error ? Tok.error : Tok.muted;
+                font-size: Tok.caption-size; wrap: word-wrap;
                 accessible-label: root.preview-note;
             }
+            Rectangle { x: Tok.card-padding; y: 180px; width: parent.width - Tok.card-padding * 2; height: Tok.border-width; background: Tok.row-line; }
+            // Match the real dependency order: flow, then version, then trace.
             HorizontalLayout {
-                x: Tok.card-padding; y: Tok.form-selection-label-y;
-                width: parent.width - Tok.card-padding * 2;
-                spacing: Tok.field-gap;
-                Text { text: "Flusso"; color: Tok.ink; font-weight: Tok.semibold-weight; width: (parent.width - Tok.field-gap * 2) / 3; }
-                Text { text: "Tracciato"; color: Tok.ink; font-weight: Tok.semibold-weight; width: (parent.width - Tok.field-gap * 2) / 3; }
-                Text { text: "Versione schema"; color: Tok.ink; font-weight: Tok.semibold-weight; width: (parent.width - Tok.field-gap * 2) / 3; }
+                x: Tok.card-padding; y: 200px; width: parent.width - Tok.card-padding * 2; spacing: Tok.field-gap;
+                Text { text: "Flusso"; color: Tok.ink; font-weight: Tok.semibold-weight; }
+                Text { text: "Versione schema"; color: Tok.ink; font-weight: Tok.semibold-weight; }
+                Text { text: "Tracciato"; color: Tok.ink; font-weight: Tok.semibold-weight; }
             }
             HorizontalLayout {
-                x: Tok.card-padding; y: Tok.form-selection-input-y;
-                width: parent.width - Tok.card-padding * 2;
-                spacing: Tok.field-gap;
-                ChoiceBox {
-                    options: root.flows; current-index <=> root.flow-index;
-                    placeholder: "Scegli flusso"; enabled: root.bundle-ready && !root.busy;
-                    selected(index) => { root.choose-flow(index); }
-                }
-                ChoiceBox {
-                    options: root.traces; current-index <=> root.trace-index;
-                    placeholder: "Scegli tracciato"; enabled: root.version-index >= 0 && !root.busy;
-                    selected(index) => { root.choose-trace(index); }
-                }
-                ChoiceBox {
-                    options: root.versions; current-index <=> root.version-index;
-                    placeholder: "Scegli versione"; enabled: root.flow-index >= 0 && !root.busy;
-                    selected(index) => { root.choose-version(index); }
-                }
+                x: Tok.card-padding; y: 224px; width: parent.width - Tok.card-padding * 2; spacing: Tok.field-gap;
+                ChoiceBox { options: root.flows; current-index <=> root.flow-index; placeholder: "Scegli flusso"; enabled: root.bundle-ready && !root.busy; selected(index) => { root.choose-flow(index); } }
+                ChoiceBox { options: root.versions; current-index <=> root.version-index; placeholder: "Scegli versione"; enabled: root.flow-index >= 0 && !root.busy; selected(index) => { root.choose-version(index); } }
+                ChoiceBox { options: root.traces; current-index <=> root.trace-index; placeholder: "Scegli tracciato"; enabled: root.version-index >= 0 && !root.busy; selected(index) => { root.choose-trace(index); } }
             }
             Text {
-                x: Tok.card-padding; y: Tok.form-version-note-y;
-                width: parent.width - Tok.card-padding * 2;
-                text: "Versione esplicita. Ambito: controlli locali sul tracciato scelto.";
+                x: Tok.card-padding; y: 272px; width: parent.width - Tok.card-padding * 2;
+                text: "Controlli locali sul tracciato selezionato. La versione va scelta esplicitamente.";
                 color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap;
             }
-            Text {
-                x: Tok.card-padding; y: Tok.form-encoding-label-y;
-                text: "Encoding del file";
-                color: Tok.ink; font-weight: Tok.semibold-weight;
-            }
+            Text { x: Tok.card-padding; y: 318px; text: "Encoding del file"; color: Tok.ink; font-weight: Tok.semibold-weight; }
             ChoiceBox {
-                x: Tok.card-padding; y: Tok.form-encoding-input-y;
-                width: parent.width - Tok.card-padding * 2;
-                options: ["UTF-8"]; current-index <=> root.encoding-index;
-                placeholder: "Scegli encoding"; enabled: !root.busy;
+                x: Tok.card-padding; y: 342px; width: parent.width - Tok.card-padding * 2;
+                options: ["UTF-8"]; current-index <=> root.encoding-index; placeholder: "Scegli encoding"; enabled: !root.busy;
                 selected(index) => { root.choose-encoding(index); }
             }
-            Rectangle {
-                x: Tok.card-padding; y: Tok.form-reports-y;
-                width: parent.width - Tok.card-padding * 2;
-                height: Tok.reports-height;
-                border-width: Tok.border-width; border-color: Tok.border;
-                border-radius: Tok.control-radius;
-                Rectangle {
-                    x: Tok.field-padding; y: Tok.legend-offset;
-                    width: Tok.legend-width; height: Tok.body-size * 1.5;
-                    background: Tok.surface;
-                    Text { text: "Report"; color: Tok.ink; font-weight: Tok.semibold-weight; }
-                }
-                Text {
-                    x: Tok.reports-width + Tok.field-padding * 2;
-                    width: parent.width - self.x - Tok.field-padding;
-                    height: parent.height;
-                    text: "Export non disponibile";
-                    color: Tok.muted; font-size: Tok.caption-size;
-                    vertical-alignment: center; wrap: word-wrap;
-                    accessible-label: "Formati richiesti conservati; esportazione non disponibile.";
-                }
-                HorizontalLayout {
-                    x: Tok.field-padding; y: Tok.picker-gap;
-                    height: Tok.control-height;
-                    width: Tok.reports-width;
-                    spacing: Tok.control-gap;
-                    ReportCheck { label: "XLSX"; checked <=> root.report-xlsx; enabled: !root.busy; toggled(value) => { root.reports-changed(); } }
-                    ReportCheck { label: "JSONL"; checked <=> root.report-jsonl; enabled: !root.busy; toggled(value) => { root.reports-changed(); } }
-                    ReportCheck { label: "CSV"; checked <=> root.report-csv; enabled: !root.busy; toggled(value) => { root.reports-changed(); } }
-                }
+            Rectangle { x: Tok.card-padding; y: 402px; width: parent.width - Tok.card-padding * 2; height: Tok.border-width; background: Tok.row-line; }
+            Text { x: Tok.card-padding; y: 418px; text: "Formati del report"; color: Tok.ink; font-weight: Tok.semibold-weight; }
+            HorizontalLayout {
+                x: Tok.card-padding; y: 440px; width: Tok.reports-width; height: Tok.control-height; spacing: Tok.control-gap;
+                ReportCheck { label: "XLSX"; checked <=> root.report-xlsx; enabled: !root.busy; toggled(value) => { root.reports-changed(); } }
+                ReportCheck { label: "JSONL"; checked <=> root.report-jsonl; enabled: !root.busy; toggled(value) => { root.reports-changed(); } }
+                ReportCheck { label: "CSV"; checked <=> root.report-csv; enabled: !root.busy; toggled(value) => { root.reports-changed(); } }
             }
         }
-        Rectangle {
-            x: root.narrow ? Tok.page-padding : Tok.page-padding * 2 + root.column-width;
-            y: root.narrow ? Tok.configuration-height + Tok.page-padding * 2 : Tok.page-padding;
-            width: root.column-width;
-            height: Tok.execution-height;
+        run := Rectangle {
+            x: root.narrow ? Tok.page-padding : Tok.page-padding + config.width + Tok.panel-gap;
+            y: root.narrow ? config.y + config.height + Tok.panel-gap : config.y;
+            width: root.narrow ? root.content-width : root.content-width - config.width - Tok.panel-gap;
+            height: config.height;
             background: Tok.surface; border-width: Tok.border-width;
             border-color: Tok.border; border-radius: Tok.card-radius;
-            Text {
-                x: Tok.card-padding; y: Tok.card-padding;
-                text: "Esecuzione"; color: Tok.ink;
-                font-size: Tok.section-size; font-weight: Tok.bold-weight;
+            Rectangle { x: Tok.border-width; y: Tok.border-width; width: parent.width - Tok.border-width * 2; height: 4px; background: root.configuration-error || root.validation-invalid ? Tok.error : root.execution-partial ? Tok.warn : Tok.accent; }
+            ScrollView {
+                x: 0px; y: 4px; width: parent.width; height: parent.height - 104px;
+                content-width: self.visible-width;
+                VerticalLayout {
+                width: parent.width; padding: Tok.card-padding; spacing: Tok.field-gap; alignment: start;
+                Text { text: "Esecuzione"; color: Tok.ink; font-size: Tok.section-size; font-weight: Tok.semibold-weight; }
+                Text {
+                    text: root.execution-label; color: root.configuration-error || root.validation-invalid ? Tok.error : root.execution-partial ? Tok.warn : Tok.ink;
+                    font-size: 24px; font-weight: Tok.semibold-weight; wrap: word-wrap;
+                }
+                Text { text: root.status-note; color: root.configuration-error || root.validation-invalid ? Tok.error : root.execution-partial ? Tok.warn : Tok.muted; wrap: word-wrap; }
+                Rectangle { height: Tok.border-width; background: Tok.row-line; }
+                Text { text: "Schema selezionato"; color: Tok.muted; font-size: Tok.caption-size; }
+                Text { text: root.schema-label; color: Tok.ink; font-family: Tok.mono; font-size: Tok.caption-size; wrap: word-wrap; }
+                Text { text: root.origin-label; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
+                Text {
+                    text: root.execution-detail != "" ? root.execution-detail : root.worker-available ? "Completa la configurazione, poi avvia l’analisi." : "L’avvio dell’analisi non è disponibile in questa build.";
+                    color: Tok.muted; wrap: word-wrap;
+                }
             }
-            Text {
-                x: Tok.card-padding; y: Tok.execution-note-y;
-                width: parent.width - Tok.card-padding * 2;
-                text: root.status-note;
-                color: root.configuration-error || root.validation-invalid ? Tok.error : root.execution-partial ? Tok.warn : root.ready ? Tok.accent : Tok.muted;
-                wrap: word-wrap;
             }
-            Text {
-                x: Tok.card-padding; y: Tok.execution-origin-y;
-                width: parent.width - Tok.card-padding * 2;
-                text: root.origin-label;
-                color: Tok.muted; font-family: Tok.mono;
-                font-size: Tok.caption-size; wrap: word-wrap;
-            }
-            Text {
-                x: Tok.card-padding; y: Tok.execution-status-y;
-                width: parent.width - Tok.card-padding * 2;
-                text: root.execution-label; color: root.configuration-error || root.validation-invalid ? Tok.error : root.execution-partial ? Tok.warn : Tok.ink;
-                font-weight: Tok.semibold-weight;
-            }
-            Text {
-                x: Tok.card-padding; y: Tok.execution-help-y;
-                width: parent.width - Tok.card-padding * 2;
-                text: root.execution-detail != "" ? root.execution-detail : root.worker-available ? "Avvia l’analisi quando la configurazione è pronta." : "L’avvio dell’analisi non è disponibile in questa build.";
-                color: Tok.muted; wrap: word-wrap;
+            Rectangle {
+                x: Tok.card-padding; y: parent.height - 92px;
+                width: parent.width - Tok.card-padding * 2; height: Tok.border-width; background: Tok.row-line;
             }
             ActionButton {
                 x: Tok.card-padding; y: parent.height - Tok.card-padding - Tok.control-height;
-                width: Tok.primary-action-width;
+                width: parent.width - Tok.card-padding * 2;
+                primary: !root.busy; danger: root.busy;
                 label: root.busy ? "Annulla analisi" : "Avvia analisi";
-                danger: root.busy;
                 enabled: root.busy || (root.ready && root.worker-available);
                 activated => { if (root.busy) { root.cancel-analysis(); } else { root.start-analysis(); } }
             }
@@ -234,16 +182,16 @@ export component FileBrowser inherits Rectangle {
     }
     VerticalLayout {
         padding: Tok.page-padding; spacing: Tok.control-gap;
-        Text { text: "Seleziona file di input"; color: Tok.ink; font-size: Tok.section-size; font-weight: Tok.bold-weight; }
+        Text { text: "Seleziona il file di input"; color: Tok.ink; font-size: Tok.title-size; font-weight: Tok.bold-weight; }
         HorizontalLayout {
             height: Tok.control-height; spacing: Tok.picker-gap;
             FieldEdit { text <=> root.directory; placeholder: "Cartella"; monospace: true; confirmed(value) => { root.open-directory(value); } }
             ActionButton { width: Tok.secondary-action-width; label: "Apri cartella"; activated => { root.open-directory(root.directory); } }
-            ActionButton { width: Tok.browser-type-column; label: "Superiore"; activated => { root.parent-directory(); } }
+            ActionButton { width: Tok.secondary-action-width; label: "Cartella padre"; activated => { root.parent-directory(); } }
         }
         Text { text: root.error-note; color: Tok.error; height: Tok.control-height; }
         Rectangle {
-            background: Tok.surface; border-width: Tok.border-width; border-color: Tok.border;
+            background: Tok.surface; border-width: key.has-focus ? Tok.focus-width : Tok.border-width; border-color: key.has-focus ? Tok.accent : Tok.border;
             files := Flickable {
                 content-height: root.entries.length * Tok.item-height;
                 content-width: self.width;
@@ -272,7 +220,7 @@ export component FileBrowser inherits Rectangle {
             height: Tok.control-height; spacing: Tok.control-gap;
             Rectangle { horizontal-stretch: 1; }
             ActionButton { width: Tok.secondary-action-width; label: "Annulla"; activated => { root.cancel(); } }
-            ActionButton { width: Tok.primary-action-width; label: "Apri selezionato"; enabled: root.current-index >= 0 && root.current-index < root.entries.length && root.entries[root.current-index].selectable; activated => { root.activate(root.current-index); } }
+            ActionButton { width: Tok.primary-action-width; label: "Apri selezione"; primary: true; enabled: root.current-index >= 0 && root.current-index < root.entries.length && root.entries[root.current-index].selectable; activated => { root.activate(root.current-index); } }
         }
     }
 }

@@ -34,8 +34,8 @@ corrispondenza hanno messaggi distinti. Puntatore e frecce/Home/End/PageUp/PageD
 permettono di navigare la tabella. Il report resta owned anche durante scansione
 e lettura lazy, con cleanup dei reader prima della directory temporanea.
 
-L’export rimane T-P16-06: le scelte formato sono intenzioni, non file già
-esportati. Nessuna modalità storica o norma è introdotta nel client.
+Export XLSX/JSONL/CSV tramite writer del core: le scelte formato sono
+intenzioni, il salvataggio è esplicito dalla schermata Risultati. Nessuna modalità storica o norma è introdotta nel client.
 
 ```sh
 cargo run --package lintra-ui --locked
@@ -54,8 +54,9 @@ La build fallisce se manca una qualsiasi delle cinque facce o se un asset non
 rimuovere font o modificare il lock del repository. I font non si caricano da
 un percorso della macchina dell’operatore.
 
-Palette chiara identica ai token del mockup approvato; scura nera con accenti
-rosso/arancione. Il selettore risponde a puntatore e tastiera, con focus visibile
+Redesign Signature autorizzato il29/10: direzione Copper Ledger, chiaro
+avorio/grafite/rame e scuro nero/rame. Il riferimento canonico è
+`docs/ui/DESIGN.md`; il mockup precedente resta storico. Il selettore risponde a puntatore e tastiera, con focus visibile
 e nomi/stati accessibili. La preferenza resta nello stato della finestra:
 nessun file di impostazioni o persistenza implicita introdotto.
 
@@ -71,3 +72,23 @@ dati sintetici dichiarati e salva tempi/offset/cache e capture diagnostiche in
 `target/ui-results-release-visual` (`ui-results-visual` per debug); la versione debug verifica le funzioni e non prova
 fluidità release. Workflow nativo esplicito: `UI disk-backed scrolling`.
 La distribuzione del binario UI rimane16-08, nessuna baseline approvata cambia.
+
+
+Il refactoring Signature mantiene callback e controller: navigazione stabile,
+form60/40 con ordine flusso/versione/tracciato, tabella e ispettore ad altezza
+variabile, filtri con etichette permanenti. Il minimo resta640×480; sotto1100px
+le colonne si impilano e la tabella conserva uno scorrimento orizzontale.
+Per ripetere le80capture di presentazione sintetiche (due temi, otto viste,
+1366×768/1920×1080/1920×1200,1366×768a2× e minimo640×480):
+
+```sh
+cargo test -p lintra-ui --test signature --locked
+```
+
+Output predefinito `target/ui-signature`; `LINTRA_SIGNATURE_OUTPUT` permette una
+directory esplicita (preferire un percorso assoluto, il test ha cwd ui/).
+Queste sono capture di componenti di produzione con fixture di presentazione,
+non evidenza di un run. I test worker/results/export usano il servizio reale.
+Il test visual legge i riferimenti Signature revisionati, senza aggiornarli;
+lo storico docs/ui/review resta intatto. Report e confronto prima/dopo in
+`docs/ui/LINTRA_SIGNATURE_UI_OVERHAUL_REPORT.md`.

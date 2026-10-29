@@ -86,7 +86,7 @@ impl ExportController {
             )
             .into(),
         );
-        ui.set_export_note("Verranno salvati il report e un riepilogo JSON con versioni e provenienza. I filtri della tabella non limitano l’esportazione.".into());
+        ui.set_export_note("Il salvataggio include report e riepilogo JSON con versioni e provenienza. I filtri della tabella non limitano l’esportazione.".into());
         ui.set_export_error(false);
         ui.set_export_overwrite(false);
         ui.set_export_confirmation_required(false);

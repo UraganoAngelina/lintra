@@ -4,71 +4,73 @@ import "fonts/IBMPlexSans-Bold.ttf";
 import "fonts/IBMPlexMono-Regular.ttf";
 import "fonts/IBMPlexMono-SemiBold.ttf";
 
-// Unica fonte dei valori di design, derivati dal mockup.
+// Copper Ledger: single executable source for both themes.
+// Geometry and colors implement docs/ui/LINTRA_DESIGN_DIRECTION.md; historic
+// mockup values remain documented under docs/ui/signature/DESIGN-before.md.
 export global Tok {
     in-out property <bool> dark-mode: false;
-    out property <color> bg: root.dark-mode ? #0B0D0F : #F4F6F8;
-    out property <color> surface: root.dark-mode ? #14181C : #FFFFFF;
-    out property <color> ink: root.dark-mode ? #F4F6F8 : #14202B;
-    out property <color> muted: root.dark-mode ? #B1BBC5 : #4A5B6B;
-    out property <color> muted-on-dark: root.dark-mode ? #B1BBC5 : #9FB0C0;
-    out property <color> border: root.dark-mode ? #64717D : #D9DEE5;
-    out property <color> row-line: root.dark-mode ? #2B3239 : #E4E9EE;
-    out property <color> header-bg: root.dark-mode ? #1D2329 : #EEF1F4;
-    out property <color> accent: root.dark-mode ? #FF8A4C : #0F766E;
-    out property <color> accent-tint: root.dark-mode ? #372117 : #E6F4F1;
-    out property <color> error: root.dark-mode ? #FF7F70 : #B42318;
-    out property <color> error-tint: root.dark-mode ? #3B1C1A : #FEE4E2;
-    out property <color> warn: root.dark-mode ? #FFBA69 : #B54708;
-    // Measured from the supplied 1280×780 canvas (2× source PNG).
-    out property <length> table-width: 800px;
-    out property <length> detail-width: 416px;
-    out property <length> filter-code-width: 92px;
-    out property <length> filter-field-width: 172px;
-    out property <length> filter-record-width: 150px;
-    out property <length> filter-fiscal-width: 172px;
-    out property <length> filter-line-width: 100px;
+    out property <color> bg: root.dark-mode ? #101112 : #F5F4F0;
+    out property <color> surface: root.dark-mode ? #1B1D1F : #FFFFFF;
+    out property <color> ink: root.dark-mode ? #F5F4F0 : #20272B;
+    out property <color> muted: root.dark-mode ? #B6BABC : #56616A;
+    out property <color> muted-on-dark: root.dark-mode ? #B6BABC : #9FB0C0;
+    out property <color> border: root.dark-mode ? #60676B : #CBCFCF;
+    out property <color> row-line: root.dark-mode ? #34383A : #E3E5E2;
+    out property <color> header-bg: root.dark-mode ? #25282B : #ECECE7;
+    out property <color> accent: root.dark-mode ? #FF9C66 : #A13E1A;
+    out property <color> accent-tint: root.dark-mode ? #392A21 : #F9EDE4;
+    out property <color> error: root.dark-mode ? #FF9288 : #AE2925;
+    out property <color> error-tint: root.dark-mode ? #3B2423 : #FCEDEA;
+    out property <color> warn: root.dark-mode ? #EFC177 : #855408;
+    out property <length> detail-width: 404px;
     // Supplied IBM Plex hhea: (1025 - (-275))/1000 = 1.3em.
-    // The mockup paragraph is 1.5em; Slint's factor multiplies the natural
+    // The diagnostic paragraph is 1.5em; Slint's factor multiplies the natural
     // line height, not font-size: 1.5 / 1.3, preserving the 14px glyph size.
     out property <float> detail-line-height-factor: 1.153846;
     out property <length> detail-meta-spacing: 7.1px;
-    out property <length> detail-section-spacing: 9.5px;
+    out property <length> title-size: 28px;
+    out property <length> space-small: 4px;
+    out property <length> inspector-min-height: 480px;
+    out property <length> results-title-height: 100px;
+    out property <length> table-min-width: 704px;
+    out property <color> on-accent: root.dark-mode ? #20272B : #FFFFFF;
+    out property <color> accent-hover: root.dark-mode ? #FFB68C : #843115;
+    out property <color> nav-selected: #363D40;
+    out property <color> nav-focus: #FFB68C;
     out property <string> sans: "IBM Plex Sans";
     out property <string> mono: "IBM Plex Mono";
-    out property <color> nav-bg: root.dark-mode ? #0B0D0F : #14202B;
+    out property <color> nav-bg: root.dark-mode ? #101112 : #20272B;
     out property <color> nav-ink: #FFFFFF;
-    out property <color> nav-muted: root.dark-mode ? #B1BBC5 : #9FB0C0;
-    out property <length> canvas-width: 1280px;
-    out property <length> canvas-height: 780px;
+    out property <color> nav-muted: root.dark-mode ? #B6BABC : #9FB0C0;
+    out property <length> canvas-width: 1366px;
     out property <length> min-width: 640px;
     out property <length> min-height: 480px;
     out property <length> page-padding: 24px;
-    out property <length> header-height: 56px;
-    out property <length> footer-height: 40px;
+    out property <length> header-height: 64px;
+    out property <length> footer-height: 28px;
     out property <length> control-height: 36px;
     out property <length> choice-width: 80px;
     out property <length> info-width: 120px;
     out property <length> control-gap: 12px;
     out property <length> border-width: 1px;
     out property <length> focus-width: 2px;
-    out property <length> control-radius: 6px;
+    out property <length> control-radius: 4px;
     out property <length> body-size: 14px;
     out property <length> caption-size: 12px;
-    out property <length> brand-size: 20px;
-    out property <length> brand-letter-spacing: 0.5px;
+    out property <length> brand-size: 22px;
+    out property <length> brand-letter-spacing: -0.4px;
     out property <int> regular-weight: 400;
     out property <int> semibold-weight: 600;
     out property <int> bold-weight: 700;
-    out property <length> about-width: 480px;
-    out property <length> about-height: 240px;
-    // New analysis geometry measured from the supplied 1280×720 canvas.
-    out property <length> analysis-height: 720px;
+    out property <length> about-width: 600px;
+    out property <length> about-height: 340px;
+    // Shared desktop geometry; page-specific field positions stay in the form.
+    out property <length> analysis-height: 768px;
     out property <length> panel-gap: 24px;
     out property <length> card-padding: 24px;
-    out property <length> card-radius: 8px;
-    out property <length> configuration-height: 420px;
-    out property <length> execution-height: 516px;
+    out property <length> card-radius: 6px;
+    out property <length> analysis-intro-height: 112px;
+    out property <length> configuration-height: 492px;
     out property <length> section-size: 18px;
     out property <length> field-padding: 10px;
     out property <length> field-gap: 16px;
@@ -79,47 +81,22 @@ export global Tok {
     out property <length> icon-stroke: 1.5px;
     out property <length> item-height: 36px;
     out property <length> popup-max-height: 216px;
-    out property <length> browser-width: 720px;
-    out property <length> browser-height: 480px;
     out property <length> form-breakpoint: 1100px;
-    out property <length> header-breakpoint: 1100px;
     out property <length> origin-width: 320px;
-    out property <color> disabled-bg: root.dark-mode ? #14181C : #F4F4F4;
-    out property <color> disabled-ink: root.dark-mode ? #8B969F : #A3A3A3;
-    out property <length> form-file-label-y: 64px;
-    out property <length> form-file-input-y: 86px;
-    out property <length> form-preview-y: 130px;
-    out property <length> form-selection-label-y: 162px;
-    out property <length> form-selection-input-y: 184px;
-    out property <length> form-version-note-y: 236px;
-    out property <length> form-encoding-label-y: 268px;
-    out property <length> form-encoding-input-y: 290px;
-    out property <length> form-reports-y: 350px;
-    out property <length> reports-height: 48px;
+    out property <color> disabled-bg: root.dark-mode ? #1B1D1F : #ECECE7;
+    out property <color> disabled-ink: root.dark-mode ? #A6ABAE : #606A70;
     out property <length> reports-width: 260px;
-    out property <length> legend-offset: -8px;
-    out property <length> legend-width: 54px;
-    out property <length> execution-note-y: 66px;
-    out property <length> execution-origin-y: 144px;
-    out property <length> execution-status-y: 206px;
-    out property <length> execution-help-y: 240px;
     out property <length> primary-action-width: 160px;
     out property <length> secondary-action-width: 120px;
     out property <length> browser-type-width: 90px;
     out property <length> browser-type-column: 100px;
-    // Results: inherited palette/fonts, bounded virtual viewport, no demo data.
-    out property <length> result-row-height: 34px;
+    // Results: bounded virtual viewport, no production demo data.
+    out property <length> result-row-height: 36px;
     out property <length> result-panel-gap: 16px;
     out property <length> result-padding: 16px;
-    out property <length> result-filter-height: 82px;
-    out property <length> result-table-footer-height: 86px;
-    out property <length> result-list-height: 340px;
     out property <length> result-empty-height: 102px;
-    out property <length> result-detail-height: 508px;
     out property <length> result-line-width: 56px;
     out property <length> result-record-width: 90px;
     out property <length> result-field-width: 55px;
     out property <length> result-code-width: 180px;
-    out property <length> result-status-width: 200px;
-    out property <length> result-summary-narrow-height: 120px;
 }

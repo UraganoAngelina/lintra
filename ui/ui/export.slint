@@ -19,10 +19,12 @@ export component ExportPanel inherits Rectangle {
         width: parent.width; height: parent.height;
         content-width: self.visible-width;
         VerticalLayout {
-            width: parent.width; padding: Tok.page-padding; spacing: Tok.panel-gap;
+            width: min(920px, parent.width); padding: Tok.page-padding; spacing: Tok.panel-gap;
             alignment: start;
-            Text { text: "Esporta report"; color: Tok.ink; font-size: Tok.section-size; font-weight: Tok.semibold-weight; }
+            Text { text: "Esporta report"; color: Tok.ink; font-size: Tok.title-size; font-weight: Tok.semibold-weight; }
             Text { text: root.run-label; color: Tok.muted; wrap: word-wrap; }
+            Rectangle { height: Tok.border-width; background: Tok.border; }
+            Text { text: "Formato del report"; color: Tok.ink; font-weight: Tok.semibold-weight; }
             HorizontalLayout {
                 height: Tok.control-height; spacing: Tok.control-gap;
                 ActionButton { label: "XLSX"; selected: root.format == 0; enabled: !root.busy; activated => { root.choose-format(0); } }
@@ -32,8 +34,8 @@ export component ExportPanel inherits Rectangle {
             VerticalLayout {
                 spacing: Tok.detail-meta-spacing;
                 Text { text: "File di destinazione"; color: Tok.ink; }
-                FieldEdit { text <=> root.destination; enabled: !root.busy; placeholder: "Percorso completo del file"; edited(value) => { root.path-edited(); } confirmed(value) => { if !root.busy && (!root.confirmation-required || root.overwrite) { root.save(); } } }
-                Text { text: "Il riepilogo verrà salvato accanto al report, aggiungendo .summary.json al nome."; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
+                FieldEdit { text <=> root.destination; enabled: !root.busy; placeholder: "Percorso completo del file"; monospace: true; edited(value) => { root.path-edited(); } confirmed(value) => { if !root.busy && (!root.confirmation-required || root.overwrite) { root.save(); } } }
+                Text { text: "Il riepilogo usa il percorso del report con suffisso .summary.json."; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
             }
             if root.confirmation-required: ReportCheck { label: "Confermo la sostituzione dei file esistenti"; checked <=> root.overwrite; enabled: !root.busy; }
             Text { text: root.note; color: root.error ? Tok.error : Tok.ink; wrap: word-wrap; }
@@ -41,7 +43,7 @@ export component ExportPanel inherits Rectangle {
                 height: Tok.control-height; spacing: Tok.control-gap;
                 Rectangle { horizontal-stretch: 1; }
                 ActionButton { width: Tok.secondary-action-width; label: root.busy ? "Annulla" : "Chiudi"; activated => { root.close(); } }
-                ActionButton { width: Tok.primary-action-width; label: "Salva report"; enabled: !root.busy && root.destination != "" && (!root.confirmation-required || root.overwrite); activated => { root.save(); } }
+                ActionButton { width: Tok.primary-action-width; label: "Salva report"; primary: true; enabled: !root.busy && root.destination != "" && (!root.confirmation-required || root.overwrite); activated => { root.save(); } }
             }
         }
     }

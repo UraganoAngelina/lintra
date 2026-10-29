@@ -1,17 +1,19 @@
 import { Tok } from "tokens.slint";
-// Primitive controls keep the supplied visual language. Focus, pointer and
+// Shared native controls implement Copper Ledger. Focus, pointer and
 // accessibility activation all invoke the same action; no decorative toggles.
 export component ActionButton inherits Rectangle {
     in property <string> label;
     in property <bool> selected: false;
     in property <bool> danger: false;
+    in property <bool> primary: false;
+    in property <bool> navigation: false;
     in property <bool> enabled: true;
     callback activated();
     height: Tok.control-height;
-    background: !root.enabled ? Tok.disabled-bg : root.selected ? Tok.accent-tint : pointer.has-hover ? Tok.header-bg : Tok.surface;
+    background: root.navigation ? (root.selected || button-touch.has-hover ? Tok.nav-selected : Tok.nav-bg) : !root.enabled ? Tok.disabled-bg : root.primary ? (button-touch.has-hover ? Tok.accent-hover : Tok.accent) : root.selected ? Tok.accent-tint : button-touch.has-hover ? Tok.header-bg : Tok.surface;
     border-radius: Tok.control-radius;
     border-width: key.has-focus ? Tok.focus-width : Tok.border-width;
-    border-color: root.danger ? Tok.error : key.has-focus || root.selected ? Tok.accent : Tok.border;
+    border-color: root.navigation ? (key.has-focus ? Tok.nav-focus : Tok.nav-bg) : root.danger ? Tok.error : key.has-focus || root.selected || root.primary ? Tok.accent : Tok.border;
     accessible-role: button;
     accessible-label: root.label;
     accessible-enabled: root.enabled;
@@ -19,15 +21,17 @@ export component ActionButton inherits Rectangle {
     forward-focus: key;
     Text {
         text: root.label;
-        color: !root.enabled ? Tok.disabled-ink : root.danger ? Tok.error : root.selected ? Tok.accent : Tok.ink;
+        overflow: elide;
+        color: root.navigation ? (!root.enabled ? Tok.nav-muted : Tok.nav-ink) : !root.enabled ? Tok.disabled-ink : root.danger ? Tok.error : root.primary ? Tok.on-accent : root.selected ? Tok.accent : Tok.ink;
         font-family: Tok.sans;
         font-size: Tok.body-size;
         font-weight: Tok.semibold-weight;
         horizontal-alignment: center;
         vertical-alignment: center;
     }
-    pointer := TouchArea {
+    button-touch := TouchArea {
         enabled: root.enabled;
+        mouse-cursor: pointer;
         width: parent.width;
         height: parent.height;
         clicked => { key.focus(); root.activated(); }
@@ -247,7 +251,7 @@ export component ReportCheck inherits Rectangle {
             viewbox-width: 14;
             viewbox-height: 14;
             commands: "M 3 7 L 6 10 L 11 4";
-            stroke: Tok.surface;
+            stroke: Tok.on-accent;
             stroke-width: Tok.icon-stroke;
         }
     }

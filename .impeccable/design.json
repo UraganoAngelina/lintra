@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-29",
+  "title": "Lintra Copper Ledger",
+  "extensions": {
+    "breakpoints": [
+      {
+        "name": "stacked-panels",
+        "value": "1100px"
+      },
+      {
+        "name": "minimum-window",
+        "value": "640px"
+      }
+    ],
+    "shadows": [],
+    "motion": []
+  },
+  "components": [],
+  "narrative": {
+    "northStar": "Copper Ledger",
+    "overview": "Banco di lavoro nativo; griglia leggibile, contesto del run e dettaglio diagnostico.",
+    "keyCharacteristics": [
+      "Grafite, avorio e rame",
+      "IBM Plex incorporato",
+      "Tabella e ispettore ridimensionabili"
+    ],
+    "rules": [],
+    "dos": [
+      "Usare token e callback esistenti."
+    ],
+    "donts": [
+      "Non introdurre norme nel renderer."
+    ]
+  },
+  "nativeSource": "ui/ui/tokens.slint",
+  "canonicalDesign": "docs/ui/DESIGN.md",
+  "adaptation": "Slint desktop: no HTML/CSS component previews; runtime tokens remain authoritative."
+}

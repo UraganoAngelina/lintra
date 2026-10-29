@@ -75,7 +75,7 @@ impl WorkerController {
             self.cancel_requested = true;
             if let Some(ui) = self.window.upgrade() {
                 ui.set_execution_label("Annullamento richiesto".into());
-                ui.set_status_note("Attendere l’esito dell’analisi.".into());
+                ui.set_status_note("Attendi l’esito dell’analisi.".into());
             }
         }
     }

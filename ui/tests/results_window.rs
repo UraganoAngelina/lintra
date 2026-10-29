@@ -108,6 +108,27 @@ fn real_results_filter_selection_large_disk_scrolling_and_rendering_are_qualifie
     let page = ui.get_domain_text();
     ui.invoke_restart_domain();
     assert_eq!(ui.get_domain_text(), page);
+    // Stable product navigation must return to the same immutable report.
+    // These are actual pointer events through MainWindow, not setter-only checks.
+    for (x, expected_results) in [(190.0, false), (345.0, true)] {
+        let position = slint::LogicalPosition::new(x, 32.0);
+        for event in [
+            slint::platform::WindowEvent::PointerMoved { position },
+            slint::platform::WindowEvent::PointerPressed {
+                position,
+                button: slint::platform::PointerEventButton::Left,
+            },
+            slint::platform::WindowEvent::PointerReleased {
+                position,
+                button: slint::platform::PointerEventButton::Left,
+            },
+        ] {
+            window.dispatch_event(event);
+        }
+        assert_eq!(ui.get_show_results(), expected_results);
+        assert_eq!(ui.get_selected_result(), 0);
+        assert_eq!(ui.get_result_rows().row_count(), 1000);
+    }
     let first = ui.get_result_detail();
     assert_eq!(first.line, "1");
     assert!(first.code.starts_with("E_"));
@@ -135,7 +156,7 @@ fn real_results_filter_selection_large_disk_scrolling_and_rendering_are_qualifie
     window.dispatch_event(slint::platform::WindowEvent::ScaleFactorChanged { scale_factor: 1.0 });
     window.set_size(PhysicalSize::new(1280, 780));
     render(&window, 1280, 780);
-    let position = slint::LogicalPosition::new(60.0, 273.0);
+    let position = slint::LogicalPosition::new(60.0, 418.0);
     for event in [
         slint::platform::WindowEvent::PointerMoved { position },
         slint::platform::WindowEvent::PointerPressed {
@@ -239,7 +260,7 @@ fn real_results_filter_selection_large_disk_scrolling_and_rendering_are_qualifie
             let mut jumps = Vec::new();
             for n in [1usize, 100, 250, 500, 1000, count / 2, count - 20] {
                 let started = Instant::now();
-                ui.set_results_scroll_y(-(n as f32) * 34.0);
+                ui.set_results_scroll_y(-(n as f32) * 36.0);
                 render(&window, width, height);
                 jumps.push(started.elapsed().as_secs_f64() * 1000.0);
             }
@@ -263,7 +284,7 @@ fn real_results_filter_selection_large_disk_scrolling_and_rendering_are_qualifie
             for _ in 0..30 {
                 let start = Instant::now();
                 window.dispatch_event(slint::platform::WindowEvent::PointerScrolled {
-                    position: slint::LogicalPosition::new(350.0, 300.0),
+                    position: slint::LogicalPosition::new(350.0, 450.0),
                     delta_x: 0.0,
                     delta_y: -340.0,
                 });

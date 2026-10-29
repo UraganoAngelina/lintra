@@ -104,8 +104,9 @@ fn native_software_bootstrap_has_real_theme_controls_fonts_and_attribution() {
     let tokens = ui.global::<Tok>();
     assert_eq!(tokens.get_sans().as_str(), "IBM Plex Sans");
     assert_eq!(tokens.get_mono().as_str(), "IBM Plex Mono");
-    let mut measurements =
-        String::from("scale\ttheme\tbody_contrast\tmuted_contrast\tselected_contrast\n");
+    let mut measurements = String::from(
+        "scale\ttheme\tbody_contrast\tmuted_contrast\tselected_contrast\tprimary_contrast\tdisabled_contrast\n",
+    );
     for scale in [1u32, 2] {
         window.dispatch_event(WindowEvent::ScaleFactorChanged {
             scale_factor: scale as f32,
@@ -117,8 +118,8 @@ fn native_software_bootstrap_has_real_theme_controls_fonts_and_attribution() {
         let dark_x = 1280.0 - 24.0 - 120.0 - 12.0 - 40.0;
         let light_x = dark_x - 80.0 - 12.0;
         for (dark, name, color, x) in [
-            (false, "light", [244, 246, 248], light_x),
-            (true, "dark", [11, 13, 15], dark_x),
+            (false, "light", [245, 244, 240], light_x),
+            (true, "dark", [16, 17, 18], dark_x),
         ] {
             click(&window, x, 28.0);
             assert_eq!(ui.get_dark_mode(), dark);
@@ -126,14 +127,16 @@ fn native_software_bootstrap_has_real_theme_controls_fonts_and_attribution() {
                 contrast(tokens.get_ink(), tokens.get_bg()),
                 contrast(tokens.get_muted(), tokens.get_bg()),
                 contrast(tokens.get_accent(), tokens.get_accent_tint()),
+                contrast(tokens.get_on_accent(), tokens.get_accent()),
+                contrast(tokens.get_disabled_ink(), tokens.get_disabled_bg()),
             ];
             assert!(
                 ratios.iter().all(|ratio| *ratio >= 4.5),
                 "{name}: {ratios:?}"
             );
             measurements.push_str(&format!(
-                "{scale}\t{name}\t{}\t{}\t{}\n",
-                ratios[0], ratios[1], ratios[2]
+                "{scale}\t{name}\t{}\t{}\t{}\t{}\t{}\n",
+                ratios[0], ratios[1], ratios[2], ratios[3], ratios[4]
             ));
             capture(&window, &output, name, scale, color);
         }
@@ -165,8 +168,8 @@ fn native_software_bootstrap_has_real_theme_controls_fonts_and_attribution() {
             assert!(window.draw_if_needed(|r| {
                 r.render(about.make_mut_slice(), width as usize);
             }));
-            let index = ((100 * scale * width + 410 * scale) * 3) as usize;
-            let surface = if dark { [20, 24, 28] } else { [255, 255, 255] };
+            let index = ((165 * scale * width + 40 * scale) * 3) as usize;
+            let surface = if dark { [27, 29, 31] } else { [255, 255, 255] };
             assert_eq!(&about.as_bytes()[index..index + 3], surface);
         }
         ui.set_show_info(false);
@@ -179,7 +182,7 @@ fn native_software_bootstrap_has_real_theme_controls_fonts_and_attribution() {
     fs::write(&input, b"001A  \r\n").unwrap();
     // Exercise the actual dropdown popup with pointer and keyboard. A list
     // selection must reach the controller, not merely repaint the placeholder.
-    click(&window, 80.0, 280.0);
+    click(&window, 80.0, 418.0);
     // Use Slint's published key codes instead of backend-specific scancodes.
     for key in [
         slint::platform::Key::DownArrow,
@@ -202,12 +205,12 @@ fn native_software_bootstrap_has_real_theme_controls_fonts_and_attribution() {
     assert!(!ui.get_worker_available());
     // Real checkbox pointer/key activation must update export intent. Focus
     // is independent of checked state, so Space can restore the prior value.
-    click(&window, 65.0, 456.0);
+    click(&window, 65.0, 634.0);
     assert!(!ui.get_report_xlsx());
     window.dispatch_event(WindowEvent::KeyPressed { text: " ".into() });
     window.dispatch_event(WindowEvent::KeyReleased { text: " ".into() });
     assert!(ui.get_report_xlsx());
-    click(&window, 245.0, 456.0);
+    click(&window, 245.0, 634.0);
     assert!(ui.get_report_csv());
     assert!(controller.borrow().prepared().unwrap().reports.csv);
     ui.invoke_file_edited("altro-file.txt".into());
@@ -240,8 +243,8 @@ fn native_software_bootstrap_has_real_theme_controls_fonts_and_attribution() {
         assert!(window.draw_if_needed(|r| {
             r.render(image.make_mut_slice(), 1280);
         }));
-        let surface = if dark { [20, 24, 28] } else { [255, 255, 255] };
-        for (x, y) in [(30, 90), (660, 90), (30, 490), (660, 585)] {
+        let surface = if dark { [27, 29, 31] } else { [255, 255, 255] };
+        for (x, y) in [(30, 190), (780, 190), (30, 650), (780, 650)] {
             let i = (y * 1280 + x) * 3;
             assert_eq!(&image.as_bytes()[i..i + 3], surface);
         }

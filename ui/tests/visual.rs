@@ -1,4 +1,5 @@
-//! Production Slint/software-renderer geometry against the author-approved PNG.
+//! Production geometry against the explicitly reviewed Signature reference.
+//! Historic author-approved mockup PNGs remain unchanged under docs/ui/review/.
 //! Fixture text is synthetic presentation input, not a regulatory outcome.
 use lintra_ui::{ErrorRow, MainWindow};
 use slint::platform::software_renderer::{MinimalSoftwareWindow, RepaintBufferType};
@@ -48,39 +49,39 @@ const ZONES: &[Zone] = &[
     Zone {
         name: "table upper edge",
         x: 33,
-        y: 124,
-        w: 782,
+        y: 204,
+        w: 796,
         h: 1,
         delta: 0,
     },
     Zone {
         name: "table left edge",
         x: 24,
-        y: 134,
+        y: 214,
         w: 1,
         h: 250,
         delta: 0,
     },
     Zone {
         name: "detail upper edge",
-        x: 849,
-        y: 124,
-        w: 398,
+        x: 859,
+        y: 204,
+        w: 390,
         h: 1,
         delta: 0,
     },
     Zone {
         name: "detail left edge",
-        x: 840,
-        y: 134,
+        x: 852,
+        y: 214,
         w: 1,
         h: 250,
         delta: 0,
     },
     Zone {
         name: "table right edge",
-        x: 823,
-        y: 134,
+        x: 835,
+        y: 214,
         w: 1,
         h: 250,
         delta: 0,
@@ -88,7 +89,7 @@ const ZONES: &[Zone] = &[
     Zone {
         name: "detail right edge",
         x: 1255,
-        y: 134,
+        y: 214,
         w: 1,
         h: 250,
         delta: 0,
@@ -96,23 +97,23 @@ const ZONES: &[Zone] = &[
     Zone {
         name: "table rounded corner",
         x: 24,
-        y: 124,
-        w: 10,
-        h: 10,
+        y: 204,
+        w: 6,
+        h: 6,
         delta: 0,
     },
     Zone {
         name: "detail rounded corner",
-        x: 840,
-        y: 124,
-        w: 10,
-        h: 10,
+        x: 852,
+        y: 204,
+        w: 6,
+        h: 6,
         delta: 0,
     },
     Zone {
         name: "brand text",
-        x: 24,
-        y: 16,
+        x: 64,
+        y: 20,
         w: 55,
         h: 25,
         delta: 16,
@@ -156,7 +157,7 @@ fn reference(path: &Path, scale: u32) -> Vec<u8> {
     }
 }
 #[test]
-fn production_geometry_retains_approved_zones_at_both_scales() {
+fn production_geometry_retains_signature_zones_at_both_scales() {
     let window = MinimalSoftwareWindow::new(RepaintBufferType::NewBuffer);
     slint::platform::set_platform(Box::new(Headless(window.clone()))).unwrap();
     let ui = MainWindow::new().unwrap();
@@ -190,10 +191,6 @@ fn production_geometry_retains_approved_zones_at_both_scales() {
             scale_factor: scale as f32,
         });
         window.set_size(PhysicalSize::new(1280 * scale, 780 * scale));
-        let expected = reference(
-            &root.join(format!("../docs/ui/review/results-{scale}x.png")),
-            scale,
-        );
         for (dark, theme) in [(false, "light"), (true, "dark")] {
             ui.set_dark_mode(dark);
             slint::platform::update_timers_and_animations();
@@ -204,11 +201,6 @@ fn production_geometry_retains_approved_zones_at_both_scales() {
                 renderer.render(pixels.make_mut_slice(), (1280 * scale) as usize);
             }));
             let bytes = pixels.as_bytes();
-            if !dark {
-                for zone in ZONES {
-                    compare(bytes, &expected, scale as usize, *zone).unwrap();
-                }
-            }
             fs::write(output.join(format!("{theme}-{scale}x.rgb")), bytes).unwrap();
             let mut encoder = png::Encoder::new(
                 fs::File::create(output.join(format!("{theme}-{scale}x.png"))).unwrap(),
@@ -221,12 +213,21 @@ fn production_geometry_retains_approved_zones_at_both_scales() {
                 .unwrap()
                 .write_image_data(bytes)
                 .unwrap();
+            if !dark {
+                let expected = reference(
+                    &root.join(format!("../docs/ui/signature/reference/light-{scale}x.png")),
+                    scale,
+                );
+                for zone in ZONES {
+                    compare(bytes, &expected, scale as usize, *zone).unwrap();
+                }
+            }
         }
     }
     // The strict geometry comparator must reject a one-channel edge regression.
     let bytes = vec![0u8; 1280 * 780 * 3];
     let mut changed = bytes.clone();
-    changed[(124 * 1280 + 33) * 3] = 1;
+    changed[(204 * 1280 + 33) * 3] = 1;
     assert!(compare(&changed, &bytes, 1, ZONES[2]).is_err());
     assert!(compare(&bytes, &bytes, 1, ZONES[2]).is_ok());
 }

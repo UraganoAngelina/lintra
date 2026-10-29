@@ -1,5 +1,5 @@
 import { Tok } from "tokens.slint";
-import { AboutSlint, Palette } from "std-widgets.slint";
+import { AboutSlint, Palette, ScrollView } from "std-widgets.slint";
 import { AnalysisForm, FileBrowser, BrowserItem } from "analysis.slint";
 import { ExportPanel } from "export.slint";
 import { ResultsView, ErrorRow } from "results.slint";
@@ -127,56 +127,59 @@ export component MainWindow inherits Window {
                 padding-left: Tok.page-padding;
                 padding-right: Tok.page-padding;
                 spacing: Tok.control-gap;
-                Text {
-                    text: "Lintra";
-                    color: Tok.nav-ink;
-                    font-size: Tok.brand-size;
-                    letter-spacing: Tok.brand-letter-spacing;
-                    font-weight: Tok.bold-weight;
-                    vertical-alignment: center;
+                // The mark is native geometry, not a bitmap or an external font.
+                Rectangle {
+                    width: 28px; horizontal-stretch: 0;
+                    background: Tok.nav-bg;
+                    Path {
+                        y: 5px; width: 26px; height: 26px;
+                        viewbox-width: 26; viewbox-height: 26;
+                        commands: "M 3 3 L 3 23 L 23 23 M 10 3 L 10 16 L 23 16 M 17 3 L 17 9 L 23 9";
+                        stroke: Tok.nav-focus; stroke-width: 2px;
+                    }
+                }
+                if root.width >= 760px: Text {
+                    text: "Lintra"; color: Tok.nav-ink;
+                    font-size: Tok.brand-size; letter-spacing: Tok.brand-letter-spacing;
+                    font-weight: Tok.semibold-weight; vertical-alignment: center;
                     horizontal-stretch: 0;
                 }
-                if root.width >= Tok.header-breakpoint: Text {
-                    text: "Validatore di flussi regionali";
-                    color: Tok.nav-muted; vertical-alignment: center;
+                ActionButton {
+                    width: root.width >= 900px ? 140px : 88px;
+                    label: root.width >= 900px ? "01   Nuova analisi" : "Analisi";
+                    navigation: true;
+                    selected: !root.show-results && !root.show-info;
+                    enabled: !root.export-open;
+                    activated => { root.show-info = false; root.show-results = false; }
+                }
+                ActionButton {
+                    width: root.width >= 900px ? 120px : 88px;
+                    label: root.width >= 900px ? "02   Risultati" : "Risultati";
+                    navigation: true; selected: root.show-results && !root.show-info;
+                    enabled: root.results-available && !root.busy && !root.export-open;
+                    activated => { root.show-info = false; root.open-results(); }
                 }
                 Rectangle { horizontal-stretch: 1; }
-                if root.width >= Tok.header-breakpoint: Text {
-                    text: root.show-results ? root.results-scope : root.origin-label;
-                    width: Tok.origin-width;
+                if root.width >= 1250px: Text {
+                    text: root.show-results ? root.results-scope : root.schema-label;
+                    width: min(Tok.origin-width, root.width - 1040px);
                     font-family: Tok.mono; font-size: Tok.caption-size;
                     color: Tok.nav-muted; overflow: elide; vertical-alignment: center;
-                    accessible-label: root.show-results ? root.results-scope : root.origin-label;
-                }
-                if root.results-available && !root.busy: ActionButton {
-                    width: Tok.secondary-action-width;
-                    label: "Risultati";
-                    enabled: !root.export-open;
-                    selected: root.show-results;
-                    activated => { root.open-results(); }
-                }
-                Text {
-                    text: "Tema";
-                    color: Tok.nav-muted;
-                    vertical-alignment: center;
-                    horizontal-stretch: 0;
+                    accessible-label: root.show-results ? root.results-scope : root.schema-label;
                 }
                 light := ThemeChoice {
-                    width: Tok.choice-width;
-                    label: "Chiaro";
+                    width: Tok.choice-width; label: "Chiaro";
                     selected: !root.dark-mode;
                     activated => { root.dark-mode = false; }
                 }
                 dark := ThemeChoice {
-                    width: Tok.choice-width;
-                    label: "Scuro";
+                    width: Tok.choice-width; label: "Scuro";
                     selected: root.dark-mode;
                     activated => { root.dark-mode = true; }
                 }
                 ActionButton {
-                    width: Tok.info-width;
-                    label: "Informazioni";
-                    enabled: !root.export-open;
+                    width: Tok.info-width; label: "Informazioni";
+                    navigation: true; enabled: !root.export-open;
                     selected: root.show-info;
                     activated => { root.toggle-information(); }
                 }
@@ -193,7 +196,7 @@ export component MainWindow inherits Window {
                 report-jsonl <=> root.report-jsonl; report-xlsx <=> root.report-xlsx;
                 report-csv <=> root.report-csv;
                 preview-note: root.preview-note; status-note: root.status-note;
-                origin-label: root.origin-label; configuration-error: root.configuration-error;
+                origin-label: root.origin-label; schema-label: root.schema-label; configuration-error: root.configuration-error;
                 bundle-ready: root.bundle-ready; ready: root.analysis-ready;
                 busy: root.busy; worker-available: root.worker-available;
                 execution-label: root.execution-label; execution-detail: root.execution-detail;
@@ -247,33 +250,44 @@ export component MainWindow inherits Window {
                 save => { root.confirm-export(); }
                 close => { root.close-export(); }
             }
-            if !root.export-open && root.show-info: Rectangle {
-                x: (parent.width - self.width) / 2;
-                y: Tok.page-padding;
-                width: Tok.about-width;
-                height: Tok.about-height;
-                background: Tok.surface;
-                border-color: Tok.border;
-                border-width: Tok.border-width;
-                border-radius: Tok.control-radius;
+            if !root.export-open && root.show-info: ScrollView {
+                content-width: self.visible-width;
                 VerticalLayout {
-                    padding: Tok.page-padding;
-                    Text { text: "Lintra " + root.version; color: Tok.ink; font-weight: Tok.semibold-weight; }
-                    Text { text: root.info-schema; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
-                    Text { text: root.info-bundle; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
-                    // Actual licensed widget, reachable from the top-level control.
-                    AboutSlint { }
+                    width: parent.width; padding: Tok.page-padding;
+                    spacing: Tok.panel-gap; alignment: start;
+                    Text { text: "Informazioni"; color: Tok.ink; font-size: Tok.title-size; font-weight: Tok.semibold-weight; }
+                    Rectangle {
+                        width: min(Tok.about-width, parent.width - Tok.page-padding * 2);
+                        height: max(Tok.about-height, about-content.preferred-height + Tok.card-padding * 2);
+                        background: Tok.surface; border-color: Tok.border;
+                        border-width: Tok.border-width; border-radius: Tok.card-radius;
+                        about-content := VerticalLayout {
+                            padding: Tok.card-padding; spacing: Tok.field-gap; alignment: start;
+                            Text { text: "Lintra " + root.version; color: Tok.ink; font-size: Tok.brand-size; font-weight: Tok.semibold-weight; }
+                            Text { text: "Validazione di flussi regionali"; color: Tok.muted; }
+                            Rectangle { height: Tok.border-width; background: Tok.row-line; }
+                            Text { text: "Schema dell’analisi"; color: Tok.muted; font-size: Tok.caption-size; }
+                            Text { text: root.info-schema; color: Tok.ink; font-family: Tok.mono; font-size: Tok.caption-size; wrap: word-wrap; }
+                            Text { text: "Origine dei dati di configurazione"; color: Tok.muted; font-size: Tok.caption-size; }
+                            Text { text: root.info-bundle; color: Tok.ink; font-family: Tok.mono; font-size: Tok.caption-size; wrap: word-wrap; }
+                            Rectangle { height: Tok.border-width; background: Tok.row-line; }
+                            // Actual licensed widget remains visible and scrollable.
+                            AboutSlint { width: 280px; height: 156px; horizontal-stretch: 0; vertical-stretch: 0; }
+                        }
+                    }
                 }
             }
         }
         Rectangle {
             height: Tok.footer-height;
-            background: Tok.bg;
+            background: Tok.surface;
+            Rectangle { height: Tok.border-width; background: Tok.row-line; }
             Text {
                 x: Tok.page-padding;
                 width: parent.width - Tok.page-padding * 2;
                 height: parent.height;
-                text: "Lintra " + root.version;
+                text: "Lintra " + root.version + "   /   Controlli locali sul tracciato selezionato";
+                overflow: elide;
                 color: Tok.muted;
                 font-size: Tok.caption-size;
                 vertical-alignment: center;

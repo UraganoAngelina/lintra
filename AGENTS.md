@@ -345,3 +345,15 @@ Terminare la task attiva T-PERSIST-07 con tutti i gate, poi concentrarsi sulle
 tre task UI restanti T-P16-06→07→08, includendo il requisito diagnostici
 concordato. Non avviare PERSIST08 prima di questo perimetro UI. Restano single
 agent, evidenze reali e prosecuzione automatica senza stop ordinari.
+
+## Mandato Signature UI —2026-10-29
+
+L'autore autorizza il redesign integrale Slint e sostituisce le indicazioni
+estetiche precedenti incompatibili (palette/geometrie/gerarchie), preservando
+norme, architettura, sicurezza e funzionalità. Prompt integrale conservato in
+`docs/ui/signature/REQUEST.md`. Sequenza vincolante single-agent:
+ui-ux-pro-max del repository → Impeccable → no-ai-slop → revisione integrata.
+Decisioni stilistiche ordinarie delegate; nessun nuovo checkpoint estetico.
+Riferimenti precedenti conservati come storia, senza sovrascriverli. Direzione
+corrente e design system in `docs/ui/LINTRA_DESIGN_DIRECTION.md` e `DESIGN.md`.
+Non introdurre funzionalità storiche o capability future per il redesign.

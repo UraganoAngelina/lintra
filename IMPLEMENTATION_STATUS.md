@@ -3,6 +3,38 @@
 Consuntivo aggiornato al **2026-10-29**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
+## Frontiera corrente — Signature UI in qualifica, base UI06 verificata
+
+2026-10-29: mandato Signature esplicito dell'autore, prompt conservato in
+`docs/ui/signature/REQUEST.md`. UI06 qualificata dalla CI40908321779 su5197a98:
+Linux/MSVC, confronto JSONL, pixel bootstrap e produzione, tutti5job success.
+UI07 sullo stesso commit aveva gate positivo; il nuovo redesign estende la
+consegna visiva e resta IN_PROGRESS fino alla qualifica del nuovo assetto.
+115/140 DONE=82,1%; Signature IN_PROGRESS, UI08 non avviata prima del gate07.
+PERSIST08 resta rinviata come richiesto dall'autore.
+
+Fasi A→B→C eseguite in sequenza single-agent: direzione Copper Ledger,
+refactoring dei sei Slint, revisione microcopy. Baseline80PNG dal codice5197a98;
+nessun dato reale, nuovo motore o capability simulata. Design canonico in
+LINTRA_DESIGN_DIRECTION e DESIGN; riferimenti27/10 conservati come storia.
+Bootstrap ed export nativi passati; results_window300k/1M a1×/2× PASS con
+cache≤128,138,68s debug. Fase D/capture finali/Clippy/test completi/CI del redesign
+ancora in corso. Nessun DONE dedotto da una build o da capture di presentazione.
+Documentazione tecnica in docs/ui/signature/IMPLEMENTATION_NOTES.md.
+
+## HANDOFF §15.3 — Signature: pubblicazione della qualifica
+
+Fasi A/B/C e review visiva D concluse, font/token/callback e confini preservati.
+Test workspace default passati (815 esiti positivi nei riepiloghi,0fail,4ignored;
+include helper/doctest), fmt e Clippy workspace default/all-features passati.
+80coppie di render comparabili; riferimenti Signature espliciti e test di bordo
+negativo, nessuna sovrascrittura dei PNG storici. Contrasto minimo misurato4,67:1.
+All-features/core-no-bundle/release ancora in corso; nuova CI richiesta sul
+commit della consegna. Report Signature e source-hashes consultabili.
+Nessuna08 prima del gate07: WAITING_GATE single-agent; nessun nuovo stop umano.
+
+## Registro storico — frontiera prima del mandato Signature
+
 ## Frontiera corrente — PERSIST07 DONE, UI16-06/07 in qualificazione
 
 2026-10-29:114/140 DONE=81,4%; UI16-06 IN_PROGRESS (attesa remota), UI16-07 IN_PROGRESS (attiva),24 NOT_STARTED.
