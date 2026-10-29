@@ -19,6 +19,20 @@ prereq16-05 e12-04 DONE. Nessun riferimento visivo autoaggiornato.
 Privacy/ambito locale05 invariati; cifratura/retention/chiavi/backup prima dei dati
 reali rimangono aperti. AUTO_CONTINUE single-agent.
 
+## UI16-06 — export e Informazioni implementate, gate in corso
+
+Writer core condivisi, replay streaming CSV/JSONL e stesso XLSX della CLI;
+riepilogo JSON con audit del run, doppio output con pubblicazione perfile e
+fallimenti parziali espliciti. Input protetto, overwrite confermato, cleanup
+owned, thread joinable/cancel e Timer Slint attivo soltanto mentre salva.
+Export/Info legati alla vista effettiva, non al worker più recente o ai filtri.
+4test export reali,1unitcancel e1test nativo Slint positivi (piùunit precedente);
+XLSX byte-identico al writer CLI su medesimo spool/summary.8PNG1×/2× due temi,
+render verificato; nessuna baseline visiva autoaggiornata. Clippyallfeatures pass.
+Regressione workspace default/allfeatures e CI ancora da completare,06nonDONE.
+Nessuna nuova dipendenza, norme/palette/font invariate. Diagnostici concordati
+ancora aperti prima della chiusura UI07. AUTO_CONTINUE single-agent.
+
 ## HANDOFF §15.3 — PERSIST07 DONE,2026-10-29
 
 - Gate nativo40877202683 su1e92b1f tutti positivi; dossier T-PERSIST-07 e JSON

@@ -1,6 +1,7 @@
 import { Tok } from "tokens.slint";
 import { AboutSlint, Palette } from "std-widgets.slint";
 import { AnalysisForm, FileBrowser, BrowserItem } from "analysis.slint";
+import { ExportPanel } from "export.slint";
 import { ResultsView, ErrorRow } from "results.slint";
 export { Tok, BrowserItem, ErrorRow }
 
@@ -57,6 +58,27 @@ export component MainWindow inherits Window {
     in-out property <string> filter-fiscal;
     in-out property <string> filter-line;
     in-out property <length> results-scroll-y;
+    in-out property <bool> export-open: false;
+    in property <bool> export-busy: false;
+    in property <bool> export-error: false;
+    in property <bool> export-confirmation-required: false;
+    in-out property <bool> export-overwrite: false;
+    in property <int> export-format;
+    in-out property <string> export-path;
+    in property <string> export-run;
+    in property <string> export-note;
+    in property <string> info-schema: root.schema-label;
+    in property <string> info-bundle: root.origin-label;
+    callback request-export();
+    callback choose-export-format(int);
+    callback export-path-edited();
+    callback confirm-export();
+    callback close-export();
+    callback export-poll();
+    callback refresh-information();
+    callback toggle-information();
+    toggle-information => { root.show-info = !root.show-info; if root.show-info { root.refresh-information(); } }
+    changed show-info => { if root.show-info { root.refresh-information(); } }
     callback open-results();
     callback apply-results-filter();
     callback select-result(int);
@@ -124,6 +146,7 @@ export component MainWindow inherits Window {
                 if root.results-available && !root.busy: ActionButton {
                     width: Tok.secondary-action-width;
                     label: "Risultati";
+                    enabled: !root.export-open;
                     selected: root.show-results;
                     activated => { root.open-results(); }
                 }
@@ -148,15 +171,16 @@ export component MainWindow inherits Window {
                 ActionButton {
                     width: Tok.info-width;
                     label: "Informazioni";
+                    enabled: !root.export-open;
                     selected: root.show-info;
-                    activated => { root.show-info = !root.show-info; }
+                    activated => { root.toggle-information(); }
                 }
             }
         }
         Rectangle {
             vertical-stretch: 1;
             background: Tok.bg;
-            if !root.show-info && !root.show-results && !root.browser-open: AnalysisForm {
+            if !root.export-open && !root.show-info && !root.show-results && !root.browser-open: AnalysisForm {
                 flows: root.flows; versions: root.versions; traces: root.traces;
                 flow-index <=> root.flow-index; version-index <=> root.version-index;
                 trace-index <=> root.trace-index; encoding-index <=> root.encoding-index;
@@ -180,7 +204,7 @@ export component MainWindow inherits Window {
                 start-analysis => { root.start-analysis(); }
                 cancel-analysis => { root.cancel-analysis(); }
             }
-            if !root.show-info && !root.show-results && root.browser-open: FileBrowser {
+            if !root.export-open && !root.show-info && !root.show-results && root.browser-open: FileBrowser {
                 directory <=> root.browser-directory;
                 entries: root.browser-entries; current-index <=> root.browser-index;
                 error-note: root.browser-error;
@@ -189,7 +213,7 @@ export component MainWindow inherits Window {
                 parent-directory => { root.browser-parent(); }
                 cancel => { root.browser-cancel(); }
             }
-            if !root.show-info && root.show-results: ResultsView {
+            if !root.export-open && !root.show-info && root.show-results: ResultsView {
                 rows: root.result-rows; detail: root.result-detail;
                 selected: root.selected-result;
                 heading: root.results-heading; summary: root.results-summary;
@@ -202,8 +226,20 @@ export component MainWindow inherits Window {
                 apply-filter => { root.apply-results-filter(); }
                 select-row(index) => { root.select-result(index); }
                 new-analysis => { root.show-results = false; }
+                export-report => { root.request-export(); }
             }
-            if root.show-info: Rectangle {
+            if root.export-open: ExportPanel {
+                run-label: root.export-run; format: root.export-format;
+                destination <=> root.export-path; note: root.export-note;
+                busy: root.export-busy; error: root.export-error;
+                confirmation-required: root.export-confirmation-required;
+                overwrite <=> root.export-overwrite;
+                choose-format(index) => { root.choose-export-format(index); }
+                path-edited => { root.export-path-edited(); }
+                save => { root.confirm-export(); }
+                close => { root.close-export(); }
+            }
+            if !root.export-open && root.show-info: Rectangle {
                 x: (parent.width - self.width) / 2;
                 y: Tok.page-padding;
                 width: Tok.about-width;
@@ -215,8 +251,8 @@ export component MainWindow inherits Window {
                 VerticalLayout {
                     padding: Tok.page-padding;
                     Text { text: "Lintra " + root.version; color: Tok.ink; font-weight: Tok.semibold-weight; }
-                    Text { text: root.show-results ? root.results-scope : root.schema-label; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
-                    Text { text: root.origin-label; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
+                    Text { text: root.info-schema; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
+                    Text { text: root.info-bundle; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
                     // Actual licensed widget, reachable from the top-level control.
                     AboutSlint { }
                 }

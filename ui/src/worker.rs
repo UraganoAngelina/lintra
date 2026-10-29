@@ -68,8 +68,13 @@ pub struct WorkerProgress {
 pub struct AnalysisReport {
     directory: tempfile::TempDir,
     audit: BundleAudit,
+    input_path: std::path::PathBuf,
 }
 impl AnalysisReport {
+    /// Captured from the validated run, never from the currently edited form.
+    pub fn input_path(&self) -> &Path {
+        &self.input_path
+    }
     pub fn jsonl_path(&self) -> std::path::PathBuf {
         self.directory.path().join("errors.jsonl")
     }
@@ -154,6 +159,18 @@ fn execute(
     progress: &mut dyn ProgressObserver,
     cancellation: &CancellationToken,
 ) -> WorkerResult {
+    let input_path = match &prepared.request.scope {
+        ValidationScope::Trace(input) => match &input.source {
+            InputSource::Path(path) => path.clone(),
+        },
+        ValidationScope::Flow(_) => {
+            return Err(WorkerError::TemporaryOutput(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "desktop worker requires trace scope",
+            )));
+        }
+    };
+    let input_path = std::fs::canonicalize(input_path).map_err(WorkerError::TemporaryOutput)?;
     // tempfile supplies a new owned install-independent directory. No input
     // pathname or patient identifier is used in report names or technical logs.
     let directory = tempfile::Builder::new()
@@ -202,6 +219,7 @@ fn execute(
         AtomicOutputOutcome::Published => Some(Arc::new(AnalysisReport {
             directory,
             audit: prepared.audit,
+            input_path,
         })),
         AtomicOutputOutcome::Unpublished { .. } => None,
     };

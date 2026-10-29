@@ -67,11 +67,27 @@ pub struct ResultsController {
     model: Option<Rc<JsonlModel>>,
     report: Option<Arc<AnalysisReport>>,
     summary: Option<ValidationSummary>,
+    reports: crate::analysis::ReportSelection,
     selected_offset: Option<u64>,
     job: Option<IndexJob>,
     timer: Timer,
 }
 impl ResultsController {
+    /// Snapshot of the run actually displayed, independent of the latest
+    /// worker/form selection. Export and About must use this same provenance.
+    pub fn displayed_analysis(
+        &self,
+    ) -> Option<(
+        Arc<AnalysisReport>,
+        ValidationSummary,
+        crate::analysis::ReportSelection,
+    )> {
+        Some((
+            self.report.as_ref()?.clone(),
+            self.summary.as_ref()?.clone(),
+            self.reports,
+        ))
+    }
     pub fn model(&self) -> Option<&Rc<JsonlModel>> {
         self.model.as_ref()
     }
@@ -98,6 +114,7 @@ impl ResultsController {
         };
         let report = report.clone();
         let summary = completed.outcome.summary.clone();
+        let reports = completed.requested_reports;
         drop(worker);
         ui.set_show_results(true);
         // Reopening the same immutable analysis preserves its filters, viewport
@@ -166,6 +183,7 @@ impl ResultsController {
         );
         self.report = Some(report);
         self.summary = Some(summary);
+        self.reports = reports;
         self.apply();
     }
     pub fn apply(&mut self) {
@@ -314,6 +332,7 @@ pub fn install_results(
         model: None,
         report: None,
         summary: None,
+        reports: crate::analysis::ReportSelection::default(),
         selected_offset: None,
         job: None,
         timer: Timer::default(),

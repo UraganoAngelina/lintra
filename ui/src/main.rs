@@ -16,7 +16,9 @@ fn main() -> Result<(), slint::PlatformError> {
     let configuration = lintra_ui::controller::install_configuration(&window, bundle);
     let worker = lintra_ui::worker_controller::install_worker(&window, configuration);
     let results = lintra_ui::results::controller::install_results(&window, worker.clone());
+    let exports = lintra_ui::export_controller::install_exports(&window, results.clone());
     let result = window.run();
+    exports.borrow_mut().shutdown();
     results.borrow_mut().shutdown();
     worker.borrow_mut().shutdown();
     result

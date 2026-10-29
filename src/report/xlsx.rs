@@ -157,9 +157,7 @@ impl XlsxReportWriter {
                 .ok_or(XlsxReportError::CounterOverflow)?;
             // serde_json rejects BOM, blank lines, trailing garbage, duplicate
             // known properties and invalid UTF-8; no permissive repair/skip.
-            let diagnostic: JsonDiagnostic = serde_json::from_slice(&buffer)
-                .map_err(|source| XlsxReportError::JsonLine { line, source })?;
-            let error = diagnostic.into_error(line)?;
+            let error = read_canonical_diagnostic(&buffer, line)?;
             let in_scope = match &summary.scope_summary {
                 crate::ScopeSummary::Trace { trace_id } => trace_id == &error.trace_id,
                 crate::ScopeSummary::Flow { trace_ids } => trace_ids.contains(&error.trace_id),
@@ -277,6 +275,17 @@ fn summary_values(
         }
     }
     Ok(())
+}
+
+/// One canonical decoder shared by XLSX and post-analysis CSV/JSONL replay.
+/// Domain checks and exact wire names remain in this one implementation.
+pub(crate) fn read_canonical_diagnostic(
+    bytes: &[u8],
+    line: u64,
+) -> Result<ValidationError, XlsxReportError> {
+    let diagnostic: JsonDiagnostic = serde_json::from_slice(bytes)
+        .map_err(|source| XlsxReportError::JsonLine { line, source })?;
+    diagnostic.into_error(line)
 }
 
 #[derive(Deserialize)]

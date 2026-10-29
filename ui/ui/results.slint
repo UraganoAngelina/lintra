@@ -36,6 +36,7 @@ export component ResultsView inherits Rectangle {
     callback apply-filter();
     callback select-row(int);
     callback new-analysis();
+    callback export-report();
     background: Tok.bg;
     property <bool> narrow: root.width < Tok.form-breakpoint;
     function move-selection(index: int) {
@@ -203,6 +204,11 @@ export component ResultsView inherits Rectangle {
                         }
                     }
                 }
+            }
+            HorizontalLayout {
+                height: Tok.control-height;
+                ActionButton { width: Tok.primary-action-width; label: "Esporta report"; activated => { root.export-report(); } }
+                Rectangle { horizontal-stretch: 1; }
             }
             Text { text: root.note; color: root.error ? Tok.error : Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
         }

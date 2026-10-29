@@ -372,3 +372,6 @@ pub use persistence::{CommitResolution, SQLitePersistenceAdapter, SQLiteStorageS
 pub use application::session::{
     ApprovalDraft, ApprovalPreview, SessionApprovalError, SessionRejection, ValidatedApproval,
 };
+
+// Post-analysis adapters reuse the canonical decoder and existing sinks.
+pub use report::replay::{CanonicalReplayError, replay_canonical_report};
