@@ -1,7 +1,7 @@
 {
   "task": "T-P16-08",
-  "done": false,
-  "native_packaging_pending": true,
+  "done": true,
+  "native_packaging_pending": false,
   "local": {
     "verification-ui08-python-final.log": {
       "sha256": "d4bf9155d0a69314718d0ad46aa5cd7046074a11ff5d1f7a6ef66b716a7f1dec"
@@ -97,5 +97,11 @@
       "Linux X11 protocol literal mistaken for build path",
       "MSVC OS Common Controls absent from UI allowlist"
     ]
+  },
+  "final_native_gate": {
+    "run": 41036453232,
+    "source_sha": "aa7be4f2fc76cf78d0f03fdcaf6d2b653c130829",
+    "all_seven_jobs_success": true,
+    "archives_independently_inspected": true
   }
 }

@@ -1,0 +1,71 @@
+{
+  "status": "completed",
+  "conclusion": "success",
+  "headSha": "aa7be4f2fc76cf78d0f03fdcaf6d2b653c130829",
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41036453232",
+  "jobs": [
+    {
+      "databaseId": 123998467834,
+      "name": "Verify (x86_64-unknown-linux-gnu)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-30T09:51:37Z",
+      "completedAt": "2026-10-30T10:04:51Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41036453232/job/123998467834"
+    },
+    {
+      "databaseId": 123998468257,
+      "name": "Verify (x86_64-pc-windows-msvc)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-30T09:51:38Z",
+      "completedAt": "2026-10-30T10:21:27Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41036453232/job/123998468257"
+    },
+    {
+      "databaseId": 123998468330,
+      "name": "Qualify UI archives / package (ubuntu-24.04, x86_64-unknown-linux-gnu)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-30T09:51:37Z",
+      "completedAt": "2026-10-30T10:03:37Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41036453232/job/123998468330"
+    },
+    {
+      "databaseId": 123998468372,
+      "name": "Qualify UI archives / package (windows-2025, x86_64-pc-windows-msvc)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-30T09:51:37Z",
+      "completedAt": "2026-10-30T10:10:29Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41036453232/job/123998468372"
+    },
+    {
+      "databaseId": 124010636680,
+      "name": "Compare Linux and Windows JSONL bytes",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-30T10:21:30Z",
+      "completedAt": "2026-10-30T10:21:40Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41036453232/job/124010636680"
+    },
+    {
+      "databaseId": 124010636758,
+      "name": "Compare native desktop theme pixels",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-30T10:21:29Z",
+      "completedAt": "2026-10-30T10:21:36Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41036453232/job/124010636758"
+    },
+    {
+      "databaseId": 124010636786,
+      "name": "Compare production UI regression pixels",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-30T10:21:29Z",
+      "completedAt": "2026-10-30T10:21:37Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41036453232/job/124010636786"
+    }
+  ]
+}

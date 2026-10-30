@@ -1,0 +1,14 @@
+[
+  {
+    "path": "ui/ui/fonts/OFL.md",
+    "bytes": 4363,
+    "sha256": "37784b44044a4ffd9256702b7c0982c37e5c8887ba90c6dca0479aea93dc898d",
+    "byte_identical_with_autocrlf_true": true
+  },
+  {
+    "path": "ui/licenses/SLINT-ROYALTY-FREE-2.0.md",
+    "bytes": 3620,
+    "sha256": "5167f5056e850419106ab6265efbdca7cba4d99c849d1445ca0bbf6a1e2315fe",
+    "byte_identical_with_autocrlf_true": true
+  }
+]

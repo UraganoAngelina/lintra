@@ -94,7 +94,7 @@ lo storico è consultabile nella cronologia precedente a ee33d64. Report in
 `docs/ui-design-documentation/LINTRA_SIGNATURE_UI_OVERHAUL_REPORT.md`.
 
 
-Packaging UI (tooling T-P16-08, qualifica nativa in corso):
+Packaging UI qualificato (T-P16-08, CI41036453232 su aa7be4f):
 
 ```sh
 cargo xtask build-release --product ui --target x86_64-unknown-linux-gnu --verify-reproducible --verify-artifact
@@ -106,5 +106,7 @@ archivi con eseguibile, provenienza, checksum e licenze dei font/Slint, verifica
 su installazione temporanea. Non pubblica release né sovrascrive tag esistenti.
 Il binario estratto non richiede Rust, Cargo, Git, SQLite o font separati.
 Richiede il runtime desktop OS documentato: X11/input/Fontconfig su Linux, DLL OS
-su Windows. Il gate su queste dipendenze deve essere realmente superato prima
-che la task oM8 siano dichiarate completate.
+su Windows. Gate nativi e ispezione degli archivi superati su entrambi gli OS. Ambienti
+verificati: Ubuntu24.04/glibc2.39 e Windows2025/MSVC. Metadati e checksum
+in docs/verification/T-P16-08-qualified-archives.json; nessuna nuova release
+pubblica o sovrascrittura di tag effettuata.

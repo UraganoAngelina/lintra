@@ -1,0 +1,9 @@
+{
+  "source_native_binary_ci": 41033360461,
+  "source_sha": "8695b72e2686281ff1b4ce069ff558fb66c77105",
+  "binary_sha256": "905b806fd40effd02c33d11c42806d94ffbc4b3ca2cc4409e497202720d768e6",
+  "local_windows_archive_protocol_pass": true,
+  "native_execution_repeated_locally": false,
+  "exact_license_byte_check_unchanged": true,
+  "native_aa7be4f_archive_gate": "pending"
+}

@@ -3,7 +3,38 @@
 Consuntivo aggiornato al **2026-10-30**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Ripresa2026-10-30 — preflight autore e packaging UI08
+## Frontiera corrente — UI completata, T-PERSIST-08 prossima READY
+
+2026-10-30: **117/140 DONE = 83,6%**, UI **9/9 DONE**, **M8 REACHED** nello
+scope UI implementato. CI41036453232 su aa7be4f: tutti i 7 job completed/success
+(Linux/MSVC, packaging UI su entrambi gli OS, JSONL, pixel temi e produzione).
+Archivi finali scaricati e ispezionati indipendentemente, licenze LF identiche,
+checksum e provenance esatti; probe software e avvio nativo da archivio con
+PATH vuoto verificati su entrambi i runner. Nessun nuovo tag/release pubblicato.
+
+Preflight richiesto dall'autore superato; stile/font di ee33d64 preservati,
+organizzazione docs/ui-design-documentation mantenuta e sole due reference
+eseguibili ricollocate byte-identiche. Correzioni tecniche del packaging e del
+test di contesa documentate senza attenuare i checker né cambiare l'adapter.
+Matrice [T-P16-08](docs/verification/T-P16-08-acceptance.md), evidenze native e
+manifest archivi nel medesimo dossier. M8 non certifica integrazione storica,
+nuove norme o sistemi operativi non collaudati.
+
+## HANDOFF §15.3 — T-P16-08 DONE, prosecuzione automatica
+
+File: xtask main/artifact, scripts release/ui_package e test, workflow packaging,
+UI provenance/probe/build e test, licenze/attributi Git, reference e documenti.
+Contratti: ARCH39D/DET AddendumB, prodotto UI separato, policy CLI preservata,
+nessuna nuova crate o modifica normativa. Fonte codice aa7be4f pubblicata su
+work/p1-foundations; questo aggiornamento contiene sole evidenze/documenti.
+Gate: tutti i 7 job41036453232 reali success; entrambi gli archivi ispezionati.
+Residui propri della task: nessuno. Release pubblica nuova non effettuata.
+Next READY: T-PERSIST-08, prerequisiti PERSIST07 (CI40877202683) e P13
+(CI40192491629) verificati; priorità UI richiesta ora soddisfatta. AUTO_CONTINUE,
+un solo agente, nessun nuovo checkpoint umano. Avviare il preflight08 nello
+stesso flusso e registrare separatamente la nuova implementazione.
+
+## Registro storico — preflight autore e packaging UI08
 
 Commit utente ee33d64 preservato: documenti stilistici ora in
 `docs/ui-design-documentation`, vecchie capture/log rimossi. Preflight d5b0940
@@ -25,7 +56,8 @@ corretto senza cambiare adapter, con scenario forzato SHARED e ripetizione
 esplicita soltanto dopo assenza verificata.17test SQLite e Clippy passano;
 nuovo gate MSVC necessario. Entrambi i job packaging8695b72 sono poi passati,
 ma l'ispezione indipendente del ZIP Windows rileva licenze convertite in CRLF:
-aggiunte due regole eol=lf, gate completo da ripetere senza attenuare il checker.
+aggiunte due regole eol=lf. Gate completo41036453232 in corso suaa7be4f,
+senza attenuare il checker.
 Nessun DONE o milestone anticipato.
 
 
@@ -2437,7 +2469,8 @@ contratti approvati e rinvii secondo la procedura di T-P0-09.
 | M6 | REACHED — scope referenziale ratificato | DET§152: due passate/projection/join/policy/report, golden cross-trace reale e memoria; CI40192491629 Linux/MSVC success. Non certifica Full SIOC/G0 residuo |
 | M7 | REACHED — tooling DEC-18 | P14 cinque task DONE; importer/lint/canonical/hash/diff/cataloghi/CLI verificati, CI40298536590 Linux/MSVC success; nessuna certificazione normativa implicita |
 | M5 | REACHED — MVP generico | CI40475046094 Linux/MSVC e confronto byte JSONL; release immutabili verificate, M4 nel perimetro registrato; rinvii G0/persistenza/runtime completo invariati |
-| M8–M9 | NOT_REACHED | Restano UI e hardening |
+| M8 | REACHED — scope UI | UI 9/9, Signature/stile preservato e packaging separato; CI41036453232 tutti 7 job success, archivi Linux/MSVC scaricati e ispezionati |
+| M9 | NOT_REACHED | Restano hardening e capacità persistenti/storiche del piano |
 
 `DONE` riguarda i criteri e lo scope ratificato della singola task; non
 chiude automaticamente milestone o capacità future. G0 è approvato con rinvii.
@@ -2504,12 +2537,15 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P15-05 | DONE | 2026-10-27 | CI40349711927 Linux/MSVC e release40352109303 success; v0.1.1-rc.1 immutabile, tutti asset scaricati/verificati; [dossier](docs/verification/T-P15-05-executable-release.md) |
 | T-P15-06 | DONE | 2026-10-27 | CI40350440129 success su3a6cf48; release dati immutabile, manifest/payload/checksum scaricati verificati; [dossier](docs/verification/T-P15-06-data-release.md) |
 | T-P15-07 | DONE | 2026-10-27 | CI40475046094 su30d82fb Linux/MSVC e confronto JSONL success; [dossier](docs/verification/T-P15-07-cross-os-bundle.md) |
-| T-P16-00 | DONE | 2026-10-27 | CI40485215039 positiva, riferimento chiaro approvato dall’autore; [report](docs/ui/SPIKE_REPORT.md) |
+| T-P16-00 | DONE | 2026-10-27 | CI40485215039 positiva, riferimento chiaro approvato dall’autore; [report](docs/ui-design-documentation/SPIKE_REPORT.md) |
 | T-P16-01 | DONE | 2026-10-27 | CI40513168784 Linux/MSVC/compare pass, workspace e QG-5 reali; [dossier](docs/verification/T-P16-01-workspace.md) |
 | T-P16-02 | DONE | 2026-10-27 | CI40522626495 Linux/MSVC/JSONL/RGB temi tutti pass; [report](docs/verification/T-P16-02-bootstrap.md) |
 | T-P16-03 | DONE | 2026-10-27 | Code0a2121b, CI40577920052 Linux/MSVC/JSONL/RGB success; catalogo e versione espliciti, preflight tecnico e form nativi |
 | T-P16-04 | DONE | 2026-10-27 | Code311dcc6+357400e, CI40589848698 tutti4job success; worker bounded e cancellazione nativa qualificati |
 | T-P16-05 | DONE | 2026-10-28 | d17fe02/head4f7acb9, CI40668541764 e release-scrolling40668592173 tutti job success;758/758 locali, indice disco300k/1M reale, cache128, artefatti dueOS verificati |
+| T-P16-06 | DONE | 2026-10-29 | Export core e Informazioni, CI40908321779 su5197a98 tutti5job success; regressioni41036453232 positive |
+| T-P16-07 | DONE | 2026-10-29 | Diagnostici/range/provenance e Signature, CI40908321779/40958452017; stile autore ee33d64 preservato, regressioni41036453232 positive |
+| T-P16-08 | DONE | 2026-10-30 | aa7be4f, CI41036453232 tutti7job success; archivi Linux/MSVC realmente scaricati/ispezionati, M8; dossier T-P16-08-acceptance.md |
 | T-P18-02 | DONE | 2026-10-27 | Due dry-run dati Linux, binario invariato e v1 golden preservato; [runbook](docs/RUNBOOK_SCHEMA_UPDATE.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
 | T-P17-06 | DONE | 2026-10-27 | CI40486090209 Linux/MSVC/compare success; [dossier](docs/verification/T-P17-06-robustness.md) |

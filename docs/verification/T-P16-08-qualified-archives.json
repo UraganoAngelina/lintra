@@ -1,15 +1,14 @@
 {
   "linux": {
-    "ci_run": 41033360461,
-    "job_id": 123988163320,
+    "ci_run": 41036453232,
+    "job_id": 123998468330,
     "job_conclusion": "success",
-    "source_sha": "8695b72e2686281ff1b4ce069ff558fb66c77105",
     "archive": "lintra-ui-0.1.1-rc.1-x86_64-unknown-linux-gnu.tar.gz",
-    "archive_sha256": "21571030967637efdf42fc5e004dd05c1704459ae930862e4113f3cf37a6e622",
+    "archive_sha256": "ffc7655ce8b656a3840d6c91d01c2cdd4ba50c3ab655d835f4da9a3848b3206c",
     "inspection_pass": true,
     "metadata": {
       "artifact_verified": true,
-      "binary_sha256": "708a2e2bf17ca7672f5dc39c03272f88f6d5a0eec0d3356d964a8c6c0ea1f965",
+      "binary_sha256": "37ed4b2849b94f0b341a175a92d7e084789a054b33032ae4e55c3e76f7597f28",
       "glibc": [
         "glibc",
         "2.39"
@@ -24,19 +23,86 @@
       "runner_os": "Linux",
       "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
       "slint": "1.18.1",
-      "source_sha": "8695b72e2686281ff1b4ce069ff558fb66c77105",
+      "source_sha": "aa7be4f2fc76cf78d0f03fdcaf6d2b653c130829",
       "target": "x86_64-unknown-linux-gnu",
       "version": "0.1.1-rc.1"
     },
-    "windows_packaging": "pending",
-    "regression_gate": "Windows test correction 4e44703 requires new native CI"
+    "install_probe": {
+      "version": "lintra-ui 0.1.1-rc.1 (commit aa7be4f2fc76cf78d0f03fdcaf6d2b653c130829)",
+      "check": "ui_self_check=ok schemas=1 pixels=307200",
+      "path_empty": true
+    },
+    "native_loaded_libraries": [
+      "ld-linux-x86-64.so.2",
+      "libX11-xcb.so.1",
+      "libX11.so.6",
+      "libXau.so.6",
+      "libXcursor.so.1",
+      "libXdmcp.so.6",
+      "libXext.so.6",
+      "libXfixes.so.3",
+      "libXi.so.6",
+      "libXrender.so.1",
+      "libbrotlicommon.so.1",
+      "libbrotlidec.so.1",
+      "libbsd.so.0",
+      "libbz2.so.1.0",
+      "libc.so.6",
+      "libexpat.so.1",
+      "libfontconfig.so.1",
+      "libfreetype.so.6",
+      "libgcc_s.so.1",
+      "libm.so.6",
+      "libmd.so.0",
+      "libpng16.so.16",
+      "libxcb-xkb.so.1",
+      "libxcb.so.1",
+      "libxkbcommon-x11.so.0",
+      "libxkbcommon.so.0",
+      "libz.so.1"
+    ],
+    "native_startup_pass": true,
+    "native_startup_evidence": "successful package script requires exit0 and ui_native_startup=ok from installed executable"
   },
   "windows": {
-    "ci_run": 41033360461,
-    "job_id": 123988163156,
+    "ci_run": 41036453232,
+    "job_id": 123998468372,
     "job_conclusion": "success",
-    "independent_inspection_pass": false,
-    "reason": "Git checkout CRLF conversion of bundled licenses; contents equal after LF normalization, exact-byte verifier correctly rejects",
-    "next_gate": "both licenses pinned eol=lf; full qualification required"
+    "archive": "lintra-ui-0.1.1-rc.1-x86_64-pc-windows-msvc.zip",
+    "archive_sha256": "ac265cc3d84781e81054d1a8014238de7dfb03d8fed78c2285cd69ed285e6ebf",
+    "inspection_pass": true,
+    "metadata": {
+      "artifact_verified": true,
+      "binary_sha256": "e329efdae4a53c5a1bc59d9c9a13566d3c4ebb3eb5b386d33806c9194ca576ba",
+      "glibc": null,
+      "native_os": "win32",
+      "product": "ui",
+      "python": "3.13.16",
+      "renderer": "software",
+      "reproducible": true,
+      "runner_image": "win25-vs2026",
+      "runner_image_version": "20261021.278.1",
+      "runner_os": "Windows",
+      "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+      "slint": "1.18.1",
+      "source_sha": "aa7be4f2fc76cf78d0f03fdcaf6d2b653c130829",
+      "target": "x86_64-pc-windows-msvc",
+      "version": "0.1.1-rc.1"
+    },
+    "install_probe": {
+      "version": "lintra-ui 0.1.1-rc.1 (commit aa7be4f2fc76cf78d0f03fdcaf6d2b653c130829)",
+      "check": "ui_self_check=ok schemas=1 pixels=307200",
+      "path_empty": true
+    },
+    "native_loaded_libraries": [],
+    "native_startup_pass": true,
+    "native_startup_evidence": "successful package script requires exit0 and ui_native_startup=ok from installed executable"
+  },
+  "regression_gate": {
+    "ci_run": 41036453232,
+    "source_sha": "aa7be4f2fc76cf78d0f03fdcaf6d2b653c130829",
+    "status": "completed",
+    "conclusion": "success",
+    "all_seven_jobs_success": true
   }
 }

@@ -1,4 +1,13 @@
-# T-P16-08 — packaging UI (in corso)
+# T-P16-08 — packaging UI (DONE)
+
+Chiusura 2026-10-30: CI41036453232 su aa7be4f, tutti i 7 job success.
+Entrambi gli archivi finali scaricati e ispezionati da Linux con il checker
+esatto: inventario, licenze LF, checksum e provenance corretti. Native startup,
+frame software, PATH vuoto e riproducibilità verificati sui rispettivi runner.
+M8 raggiunta; 117/140 DONE (83,6%), UI 9/9. Nessuna release/tag pubblicata.
+Matrice T-P16-08-acceptance.md, native-ci.json e qualified-archives.json.
+Le sezioni seguenti conservano cronologia e diagnosi dei gate intermedi.
+
 
 Preflight UI dell'autore ee33d64 qualificato da check e visual1×/2×; baseline
 eseguibili ricollocate senza cambiare pixel. Design/documentazione utente
@@ -163,3 +172,15 @@ regole text eol=lf in .gitattributes per i testi distribuiti: nessuna modifica
 ai testi, font, renderer o schemi. Un nuovo gate completo include anche4e44703
 e sostituisce la run di sole regressioni41036244477, resa superata dal difetto
 concreto individuato nell'archivio.
+
+## Gate corrente —41036453232 suaa7be4f
+
+La CI completa corrente include la prova deterministica di contesa e i due
+checkout licenza LF. La run di sole regressioni41036244477 è stata superata
+dalla correzione concreta dell'archivio prima della chiusura; non trattata come
+gate positivo. Alla prima lettura i4job nativi sono in corso, nessun esito
+finale presunto. Check locale Git core.autocrlf=true conserva byte originali
+per entrambi i testi (T-P16-08-license-checkout.json). Prova locale ZIP usando
+il vero PE8695b72 e licenze LF supera il checker invariato, senza presentarsi
+come esecuzione nativa Windows (T-P16-08-windows-license-protocol.json).
+Manifest preservazione stile riconfermato per tutti12file suaa7be4f.

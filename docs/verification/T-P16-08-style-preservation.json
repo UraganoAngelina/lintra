@@ -75,5 +75,7 @@
       "current_sha256": "d3847381138274d3c8072ea2ac367711dc233e9db87ee627ada2c5e18636f4f7",
       "comments_only_change": true
     }
-  ]
+  ],
+  "subsequent_verified_commit": "aa7be4f",
+  "subsequent_tracked_style_and_font_bytes_identical_to_qualified_manifest": true
 }
