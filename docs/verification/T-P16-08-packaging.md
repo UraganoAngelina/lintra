@@ -53,3 +53,34 @@ il percorso risolto delle librerie osservate sotto root OS /lib*/usr/lib*, non
 solo il basename. Una libreria dal nome ammesso ma caricata da /tmp è rifiutata.
 23test Python passati, compresi trace assente/libreria extra/root non OS; nessun
 trace vuoto viene considerato prova di autosufficienza.
+
+## Diagnosi del primo gate —41025660338 su d073c4b
+
+Linux sviluppo: tutte le suite passano; negative-font fallisce prima del controllo
+perché il fixture isolato non copiava il nuovo ../build.rs condiviso. Corretto il
+fixture mantenendo invariato il marker di errore richiesto e i font originali.
+
+Linux release: due build reali, stessa dimensione22999840byte, primo scarto0x32c;
+riproducibilità NON superata. La ricetta mappava solo la directory padre
+release-profile, lasciando il nome univoco first/second nei path del codice
+Slint generato sotto OUT_DIR. Aggiunto remapping del singolo build root allo
+stesso alias prima della compilazione. Prova locale con rustc su directory diverse
+conferma che il remapping può produrre byte identici; conferma sull'app completa
+ancora richiesta dal nuovo runner. Confronto binario integrale invariato: nessuna
+normalizzazione degli header/build-id o accettazione di byte diversi.
+
+Aggiunto upload separato dei soli eseguibili di build fallite per diagnosi;
+questi artifact non sono archivi qualificati e non soddisfano M8. Le build
+fallite non pubblicano l'artifact finale ui-package-TARGET.
+
+Conferma aggiuntiva locale: anche un progetto Cargo minimo con build.rs e
+include! di codice generato sotto OUT_DIR produce metadati e binari identici
+su due target directory rimappate; non solo rustc diretto. Non sostituisce il
+gate dell'app completa. Windows del primo run mostra la stessa classe di errore:
+21744128byte per build, primo scarto0xf8. Entrambi i negative-font falliscono
+sul modulo condiviso mancante nel fixture, non sullo stile o sul renderer.
+
+Regressioni locali sul codice prodotto d073c4b:816esiti positivi/107riepiloghi
+per ciascuno degli assetti workspace default/all-features (includono helper e
+doctest),0fail/4ignored. Nuovo fixture negative-font effettivo positivo, test
+remapping/tooling e Clippy positivi. Nuova qualifica nativa ancora richiesta.

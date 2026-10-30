@@ -18,6 +18,9 @@ with tempfile.TemporaryDirectory(prefix="lintra-missing-font-") as scratch:
     for name in ("src", "ui", "build_support"):
         shutil.copytree(ui / name, target / name)
     shutil.copyfile(ui / "build.rs", target / "build.rs")
+    # The UI now shares the parent's provenance script. Preserve that source
+    # relationship so failure still demonstrates the missing face, not a module.
+    shutil.copyfile(repo / "build.rs", Path(scratch) / "build.rs")
     shutil.copyfile(repo / "Cargo.lock", target / "Cargo.lock")
     manifest = (ui / "Cargo.toml").read_text()
     manifest = manifest.replace('path = ".."', 'path = ' + json.dumps(str(repo)))

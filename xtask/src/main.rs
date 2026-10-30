@@ -171,9 +171,16 @@ fn build(
     if options.offline {
         cargo.arg("--offline");
     }
+    let mut compile_flags = flags.to_vec();
+    if options.product == Product::Ui {
+        // Slint emits Rust under OUT_DIR. Mapping only release-profile leaves
+        // the unique first/second directory in panic/source locations. Both
+        // actual build roots must have the same logical alias before compilation.
+        add_remap(&mut compile_flags, directory, "/lintra-build")?;
+    }
     cargo
         .env("CARGO_TARGET_DIR", directory)
-        .env("CARGO_ENCODED_RUSTFLAGS", flags.join("\x1f"));
+        .env("CARGO_ENCODED_RUSTFLAGS", compile_flags.join("\x1f"));
     command(cargo)?;
     let binary = options.product.binary(&options.target);
     let artifact = directory.join(&options.target).join("release").join(binary);
@@ -202,7 +209,8 @@ fn run(options: Options) -> Result<(), Failure> {
     let first = base.join(format!("{}-{nonce}-first", std::process::id()));
     let second = base.join(format!("{}-{nonce}-second", std::process::id()));
     // create_dir, never remove/reuse another build's tree; failures remain in
-    // ignored target/ for diagnosis. Both builds use exactly the same flags.
+    // ignored target/ for diagnosis. Both builds use the same compilation settings;
+    // UI-generated source roots receive equivalent per-directory path aliases.
     fs::create_dir(&first)?;
     let mut flags = inherited_flags(&options.target)?;
     for (source, replacement) in [

@@ -20,6 +20,54 @@
     },
     "verification-ui08-boundary.log": {
       "sha256": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f"
+    },
+    "verification-ui08-workspace-default.log": {
+      "sha256": "1fcda9dde68c1f42d4e3c6d58d5e4adb6a843185d0feba1f10958269f07364ad",
+      "summaries": 107,
+      "passed_including_helpers_and_doctests": 816,
+      "failed": 0,
+      "ignored": 4
+    },
+    "verification-ui08-workspace-all.log": {
+      "sha256": "a2c24d8e57767af05065cb7cfb24d7ff3e792717926d5c6b818c316f1f3b0e63",
+      "summaries": 107,
+      "passed_including_helpers_and_doctests": 816,
+      "failed": 0,
+      "ignored": 4
+    },
+    "verification-ui08-font-negative-fixed.log": {
+      "sha256": "09e2965ce50df785f99cea5a6e102a418febd1bc89ca285215edab44a25ba1af"
+    },
+    "verification-ui08-remap-tests.log": {
+      "sha256": "268c2fc8751b9d2e1671c1791ade7eecd1c799a547d7879238040c5a0b0e981f",
+      "summaries": 1,
+      "passed_including_helpers_and_doctests": 16,
+      "failed": 0,
+      "ignored": 1
+    },
+    "verification-ui08-boundary-final.log": {
+      "sha256": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f"
+    },
+    "verification-ui08-remap-clippy.log": {
+      "sha256": "3a087ff2406b1bb2581bb3d7d377e55db25b9e1c86c8c4d24e3032e336a30469"
+    },
+    "verification-ui08-python-fixed.log": {
+      "sha256": "49b1d1c7449c447438678aa2317e1c195a1dfa01b946fd72cf56e161bcc32d57"
     }
+  },
+  "first_native_run": {
+    "id": 41025660338,
+    "status": "completed",
+    "conclusion": "failure",
+    "causes": [
+      "isolated font fixture missing shared provenance module",
+      "UI clean builds differ; per-directory generated-source remapping under qualification"
+    ]
+  },
+  "generated_source_probe": {
+    "rustc_distinct_roots_identical_bytes": true,
+    "cargo_distinct_roots_identical_metadata": true,
+    "cargo_distinct_roots_identical_bytes": true,
+    "actual_ui_native_reproducibility_still_pending": true
   }
 }
