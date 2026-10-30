@@ -12,8 +12,39 @@ use std::{
 };
 type Failure = Box<dyn Error>;
 
+/// Product selection is explicit; CLI remains the backward-compatible default.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum Product {
+    Cli,
+    Ui,
+}
+impl Product {
+    fn parse(value: &str) -> Result<Self, Failure> {
+        match value {
+            "cli" => Ok(Self::Cli),
+            "ui" => Ok(Self::Ui),
+            _ => Err(invalid("product must be cli or ui").into()),
+        }
+    }
+    fn package(self) -> &'static str {
+        match self {
+            Self::Cli => "lintra",
+            Self::Ui => "lintra-ui",
+        }
+    }
+    fn binary(self, target: &str) -> &'static str {
+        match (self, target.ends_with("msvc")) {
+            (Self::Cli, false) => "lintra",
+            (Self::Cli, true) => "lintra.exe",
+            (Self::Ui, false) => "lintra-ui",
+            (Self::Ui, true) => "lintra-ui.exe",
+        }
+    }
+}
+
 #[derive(Debug, PartialEq, Eq)]
 struct Options {
+    product: Product,
     target: String,
     offline: bool,
     reproducible: bool,
@@ -31,12 +62,18 @@ fn options(args: impl IntoIterator<Item = String>) -> Result<Options, Failure> {
         )
         .into());
     }
+    let mut product = None;
     let mut target = None;
     let mut offline = false;
     let mut reproducible = false;
     let mut verify_artifact = false;
     while let Some(arg) = args.next() {
         match arg.as_str() {
+            "--product" if product.is_none() => {
+                product = Some(Product::parse(
+                    &args.next().ok_or_else(|| invalid("missing product"))?,
+                )?);
+            }
             "--target" if target.is_none() => {
                 target = Some(args.next().ok_or_else(|| invalid("missing target"))?)
             }
@@ -54,6 +91,7 @@ fn options(args: impl IntoIterator<Item = String>) -> Result<Options, Failure> {
         return Err(invalid("release target must be native Linux GNU or Windows MSVC").into());
     }
     Ok(Options {
+        product: product.unwrap_or(Product::Cli),
         target,
         offline,
         reproducible,
@@ -124,6 +162,12 @@ fn build(
         "--target",
         &options.target,
     ]);
+    cargo.args([
+        "-p",
+        options.product.package(),
+        "--bin",
+        options.product.package(),
+    ]);
     if options.offline {
         cargo.arg("--offline");
     }
@@ -131,11 +175,7 @@ fn build(
         .env("CARGO_TARGET_DIR", directory)
         .env("CARGO_ENCODED_RUSTFLAGS", flags.join("\x1f"));
     command(cargo)?;
-    let binary = if options.target.ends_with("msvc") {
-        "lintra.exe"
-    } else {
-        "lintra"
-    };
+    let binary = options.product.binary(&options.target);
     let artifact = directory.join(&options.target).join("release").join(binary);
     if !artifact.is_file() {
         return Err(invalid("cargo did not produce the requested executable").into());
@@ -206,8 +246,14 @@ fn run(options: Options) -> Result<(), Failure> {
     }
     println!("artifact={}", artifact.display());
     if options.verify_artifact {
-        artifact::verify(repo, &artifact, &options.target, options.offline)?;
-        artifact::negative_probe(&artifact, &options.target, options.offline)?;
+        artifact::verify_product(
+            repo,
+            &artifact,
+            &options.target,
+            options.offline,
+            options.product,
+        )?;
+        artifact::negative_probe(&artifact, &options.target, options.offline, options.product)?;
     }
     Ok(())
 }
@@ -262,6 +308,7 @@ mod tests {
             )
             .unwrap(),
             Options {
+                product: Product::Cli,
                 target: "x86_64-pc-windows-msvc".into(),
                 offline: true,
                 reproducible: true,
@@ -283,5 +330,47 @@ mod tests {
             ["--remap-path-prefix=absent build directory with spaces=/lintra"]
         );
         assert_eq!(flags.join("\x1f").split('\x1f').collect::<Vec<_>>(), flags);
+    }
+}
+
+#[cfg(test)]
+mod desktop_selector_tests {
+    use super::*;
+    #[test]
+    fn desktop_product_is_explicit_and_unknown_or_duplicate_products_fail() {
+        let args = [
+            "build-release",
+            "--product",
+            "ui",
+            "--target",
+            "x86_64-unknown-linux-gnu",
+        ];
+        let parsed = options(args.map(str::to_owned)).unwrap();
+        assert_eq!(parsed.product, Product::Ui);
+        assert_eq!(parsed.product.binary(&parsed.target), "lintra-ui");
+        assert_eq!(
+            Product::Ui.binary("x86_64-pc-windows-msvc"),
+            "lintra-ui.exe"
+        );
+        for args in [
+            vec![
+                "build-release",
+                "--product",
+                "gui",
+                "--target",
+                "x86_64-unknown-linux-gnu",
+            ],
+            vec![
+                "build-release",
+                "--product",
+                "ui",
+                "--product",
+                "cli",
+                "--target",
+                "x86_64-unknown-linux-gnu",
+            ],
+        ] {
+            assert!(options(args.into_iter().map(str::to_owned)).is_err());
+        }
     }
 }

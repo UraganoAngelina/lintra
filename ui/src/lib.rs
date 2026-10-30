@@ -23,3 +23,6 @@ pub mod results;
 pub mod export;
 
 pub mod export_controller;
+
+#[cfg(feature = "embedded-bundle")]
+pub mod packaging;

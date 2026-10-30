@@ -1,5 +1,5 @@
 //! Release checks only: parse bytes, never execute or resolve an imported library.
-use crate::{Failure, invalid};
+use crate::{Failure, Product, invalid};
 use goblin::{elf, pe};
 use std::{collections::BTreeSet, env, fs, path::Path, process::Command};
 
@@ -71,12 +71,37 @@ fn windows_library(name: &str) -> bool {
             && name.ends_with(".dll"))
 }
 
+#[cfg(test)]
 fn check_libraries(target: &str, libraries: &[&str]) -> Result<(), Failure> {
+    check_product_libraries(target, libraries, Product::Cli)
+}
+/// Desktop policy is separate from CLI: no wildcard or arbitrary build-host library.
+const UI_WINDOWS_LIBRARIES: &[&str] = &[
+    "dwmapi.dll",
+    "imm32.dll",
+    "uxtheme.dll",
+    "dwrite.dll",
+    "shcore.dll",
+    "msimg32.dll",
+];
+const UI_GNU_LIBRARIES: &[&str] = &["libfontconfig.so.1"];
+fn check_product_libraries(
+    target: &str,
+    libraries: &[&str],
+    product: Product,
+) -> Result<(), Failure> {
     for name in libraries.iter().copied().collect::<BTreeSet<_>>() {
         let allowed = match target {
-            "x86_64-unknown-linux-gnu" => GNU_LIBRARIES.contains(&name),
+            "x86_64-unknown-linux-gnu" => {
+                GNU_LIBRARIES.contains(&name)
+                    || (product == Product::Ui && UI_GNU_LIBRARIES.contains(&name))
+            }
             "x86_64-unknown-linux-musl" => false,
-            "x86_64-pc-windows-msvc" => windows_library(name),
+            "x86_64-pc-windows-msvc" => {
+                windows_library(name)
+                    || (product == Product::Ui
+                        && UI_WINDOWS_LIBRARIES.contains(&name.to_ascii_lowercase().as_str()))
+            }
             _ => return Err(invalid("unsupported verification target").into()),
         };
         if !allowed {
@@ -167,9 +192,18 @@ fn check_paths(bytes: &[u8], paths: &[String]) -> Result<(), Failure> {
     Ok(())
 }
 
+#[cfg(test)]
 pub fn inspect(bytes: &[u8], target: &str, paths: &[String]) -> Result<Vec<String>, Failure> {
-    if !supported(target) {
-        return Err(invalid("unsupported verification target").into());
+    inspect_product(bytes, target, paths, Product::Cli)
+}
+fn inspect_product(
+    bytes: &[u8],
+    target: &str,
+    paths: &[String],
+    product: Product,
+) -> Result<Vec<String>, Failure> {
+    if !supported(target) || (product == Product::Ui && target.ends_with("musl")) {
+        return Err(invalid("unsupported verification target for selected product").into());
     }
     let libraries = if target.ends_with("msvc") {
         let image = pe::PE::parse(bytes)?;
@@ -224,7 +258,7 @@ pub fn inspect(bytes: &[u8], target: &str, paths: &[String]) -> Result<Vec<Strin
         }
         image.libraries
     };
-    check_libraries(target, &libraries)?;
+    check_product_libraries(target, &libraries, product)?;
     check_paths(bytes, paths)?;
     Ok(libraries
         .into_iter()
@@ -244,9 +278,15 @@ fn check_tree(text: &str) -> Result<(), Failure> {
     Ok(())
 }
 
-pub fn verify(repo: &Path, artifact: &Path, target: &str, offline: bool) -> Result<(), Failure> {
+pub fn verify_product(
+    repo: &Path,
+    artifact: &Path,
+    target: &str,
+    offline: bool,
+    product: Product,
+) -> Result<(), Failure> {
     let bytes = fs::read(artifact)?;
-    let libraries = inspect(&bytes, target, &host_paths(repo)?)?;
+    let libraries = inspect_product(&bytes, target, &host_paths(repo)?, product)?;
     // Enumerate with a fixed unprefixed format first: cargo tree -i ABSENT
     // returns an error, which must not be confused with an I/O/lock failure.
     let mut cargo = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
@@ -261,6 +301,7 @@ pub fn verify(repo: &Path, artifact: &Path, target: &str, offline: bool) -> Resu
         "--format",
         "{p}",
     ]);
+    cargo.args(["-p", product.package()]);
     if offline {
         cargo.arg("--offline");
     }
@@ -279,8 +320,14 @@ pub fn cli(repo: &Path, args: impl IntoIterator<Item = String>) -> Result<(), Fa
         return Err(invalid("expected verify-artifact").into());
     }
     let (mut target, mut artifact, mut offline) = (None, None, false);
+    let mut product = None;
     while let Some(arg) = args.next() {
         match arg.as_str() {
+            "--product" if product.is_none() => {
+                product = Some(Product::parse(
+                    &args.next().ok_or_else(|| invalid("missing product"))?,
+                )?)
+            }
             "--target" if target.is_none() => {
                 target = Some(args.next().ok_or_else(|| invalid("missing target"))?)
             }
@@ -296,12 +343,23 @@ pub fn cli(repo: &Path, args: impl IntoIterator<Item = String>) -> Result<(), Fa
         return Err(invalid("unsupported verification target").into());
     }
     let artifact = artifact.ok_or_else(|| invalid("explicit artifact required"))?;
-    verify(repo, Path::new(&artifact), &target, offline)
+    verify_product(
+        repo,
+        Path::new(&artifact),
+        &target,
+        offline,
+        product.unwrap_or(Product::Cli),
+    )
 }
 
 /// Test the actual command's failure on a corrupted copy of a valid artifact.
 /// Retain both files for diagnosis; do not modify the original executable.
-pub fn negative_probe(artifact: &Path, target: &str, offline: bool) -> Result<(), Failure> {
+pub fn negative_probe(
+    artifact: &Path,
+    target: &str,
+    offline: bool,
+    product: Product,
+) -> Result<(), Failure> {
     let mut bytes = fs::read(artifact)?;
     bytes.extend_from_slice(b"\0/home/lintra-verifier-negative-probe/source.rs\0");
     let bad = artifact.with_file_name("deliberately-invalid-artifact.bin");
@@ -314,6 +372,8 @@ pub fn negative_probe(artifact: &Path, target: &str, offline: bool) -> Result<()
     let mut probe = Command::new(env::current_exe()?);
     probe
         .arg("verify-artifact")
+        .arg("--product")
+        .arg(if product == Product::Ui { "ui" } else { "cli" })
         .arg("--target")
         .arg(target)
         .arg("--artifact")
@@ -522,5 +582,49 @@ mod tests {
         ] {
             assert!(cli(Path::new("."), args.into_iter().map(str::to_owned)).is_err());
         }
+    }
+}
+
+#[cfg(test)]
+mod desktop_policy_tests {
+    use super::*;
+    #[test]
+    fn desktop_libraries_do_not_relax_cli_or_allow_non_system_dependencies() {
+        assert!(
+            check_product_libraries(
+                "x86_64-unknown-linux-gnu",
+                &["libfontconfig.so.1"],
+                Product::Ui
+            )
+            .is_ok()
+        );
+        assert!(
+            check_product_libraries(
+                "x86_64-unknown-linux-gnu",
+                &["libfontconfig.so.1"],
+                Product::Cli
+            )
+            .is_err()
+        );
+        for product in [Product::Cli, Product::Ui] {
+            for library in [
+                "libsqlite3.so.0",
+                "libssl.so.3",
+                "/tmp/libc.so.6",
+                "libmadeup.so.1",
+            ] {
+                assert!(
+                    check_product_libraries("x86_64-unknown-linux-gnu", &[library], product)
+                        .is_err()
+                );
+            }
+            assert!(
+                check_product_libraries("x86_64-pc-windows-msvc", &["vcruntime140.dll"], product)
+                    .is_err()
+            );
+        }
+        assert!(
+            check_product_libraries("x86_64-pc-windows-msvc", &["DWRITE.dll"], Product::Ui).is_ok()
+        );
     }
 }

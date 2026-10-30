@@ -1,0 +1,25 @@
+{
+  "task": "T-P16-08",
+  "done": false,
+  "native_packaging_pending": true,
+  "local": {
+    "verification-ui08-python-final.log": {
+      "sha256": "d4bf9155d0a69314718d0ad46aa5cd7046074a11ff5d1f7a6ef66b716a7f1dec"
+    },
+    "verification-ui08-tooling-final.log": {
+      "sha256": "f934668c32d7a67be0822b4859a8932d70cdbda1cf797a94b6970801ff1e0886"
+    },
+    "verification-ui08-executable-test.log": {
+      "sha256": "48c710de6aa3c3692f57607c50c2e7d8c36f7f4e001cc0a7a615a2f0e8f25181"
+    },
+    "verification-ui08-clippy-workspace.log": {
+      "sha256": "64fc2a2822ef8de12eaecb0ef5e43d7e1b2f019f83534fe76725a160c754a5c3"
+    },
+    "verification-ui08-clippy-tooling-final.log": {
+      "sha256": "a8fa93a314f1b4cd46eaf5df9f61d857fa183f6f618a4c3e2baa52e1380c85cc"
+    },
+    "verification-ui08-boundary.log": {
+      "sha256": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f"
+    }
+  }
+}

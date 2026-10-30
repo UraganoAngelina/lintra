@@ -1,7 +1,10 @@
+#[path = "../build.rs"]
+mod build_provenance;
 #[path = "build_support/fonts.rs"]
 mod fonts;
 
 fn main() {
+    build_provenance::main();
     let root = std::path::Path::new("ui/fonts");
     for name in fonts::FONT_FILES {
         println!("cargo:rerun-if-changed={}", root.join(name).display());

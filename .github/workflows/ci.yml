@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+    inputs:
+      ui_packaging:
+        description: Qualify native UI release archives too
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -209,3 +214,8 @@ jobs:
           path: target/jsonl-windows
       - name: Compare exact inventory, UTF-8 LF and unmodified bytes
         run: python tests/packaging_probe.py compare --left target/jsonl-linux --right target/jsonl-windows
+
+  ui-native-package:
+    name: Qualify UI archives
+    if: github.event_name == 'workflow_dispatch' && inputs.ui_packaging
+    uses: ./.github/workflows/ui-package.yml

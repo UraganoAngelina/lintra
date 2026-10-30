@@ -1,7 +1,22 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-10-29**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-10-30**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
+
+## Ripresa2026-10-30 — preflight autore e packaging UI08
+
+Commit utente ee33d64 preservato: documenti stilistici ora in
+`docs/ui-design-documentation`, vecchie capture/log rimossi. Preflight d5b0940
+positivo: check UI all-targets e visual1×/2×; solo2 reference essenziali ricollocate
+con byte/hash identici, nessun ritorno al vecchio stile o ripristino bulk di docs/ui.
+116/140DONE=82,9%, UI08 IN_PROGRESS; M8 ancora aperta.
+
+Tooling UI08 implementato: prodotto esplicito, policy import UI separata da CLI,
+licenze nell'archivio, versione/provenienza senza strumenti runtime, probe software
+e startup nativo su eseguibile estratto.23test Python,16Rust tooling e1probe
+eseguibile locali positivi, Clippy workspace/tooling pass. CI completa e packaging
+nativo Linux/MSVC da avviare: nessun archivio release dichiarato qualificato.
+Report T-P16-08-packaging.md. Nessuna nuova dipendenza o norma, PERSIST08 rinviata.
 
 ## Frontiera corrente — Signature/UI07 DONE, packaging UI08 in preflight
 

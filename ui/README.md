@@ -92,3 +92,19 @@ non evidenza di un run. I test worker/results/export usano il servizio reale.
 Il test visual legge i riferimenti Signature revisionati, senza aggiornarli;
 lo storico è consultabile nella cronologia precedente a ee33d64. Report in
 `docs/ui-design-documentation/LINTRA_SIGNATURE_UI_OVERHAUL_REPORT.md`.
+
+
+Packaging UI (tooling T-P16-08, qualifica nativa in corso):
+
+```sh
+cargo xtask build-release --product ui --target x86_64-unknown-linux-gnu --verify-reproducible --verify-artifact
+```
+
+Il prodotto predefinito resta la CLI. La UI ha una policy di librerie propria;
+non usare il gate CLI per certificarla. Il workflow `UI native packaging` produce
+archivi con eseguibile, provenienza, checksum e licenze dei font/Slint, verificati
+su installazione temporanea. Non pubblica release né sovrascrive tag esistenti.
+Il binario estratto non richiede Rust, Cargo, Git, SQLite o font separati.
+Richiede il runtime desktop OS documentato: X11/input/Fontconfig su Linux, DLL OS
+su Windows. Il gate su queste dipendenze deve essere realmente superato prima
+che la task oM8 siano dichiarate completate.

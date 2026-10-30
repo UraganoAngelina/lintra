@@ -3,7 +3,7 @@ use std::process::Command;
 
 /// Git-free source archives explicitly report unavailable provenance. Release
 /// builders may supply a full hexadecimal commit without requiring Git at runtime.
-fn main() {
+pub fn main() {
     println!("cargo:rerun-if-env-changed=LINTRA_BUILD_COMMIT");
     let git = |args: &[&str]| {
         Command::new("git")

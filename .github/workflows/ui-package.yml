@@ -1,0 +1,52 @@
+name: UI native packaging
+on:
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+concurrency:
+  group: lintra-ui-package-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - os: windows-2025
+            target: x86_64-pc-windows-msvc
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    env:
+      CARGO_BUILD_JOBS: 2
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.13'
+      - name: Install Linux window and build prerequisites
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libfontconfig1-dev libxkbcommon-dev libxkbcommon-x11-0 libx11-6 libx11-xcb1 libxcursor1 libxrandr2 libxi6 xvfb xauth
+      - name: Install native target
+        run: rustup target add ${{ matrix.target }}
+      - name: Test archive policy and release tooling
+        shell: bash
+        run: |
+          python -m unittest discover -s scripts/tests
+          cargo test --manifest-path xtask/Cargo.toml --locked
+      - name: Qualify and archive native UI (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a python scripts/ui_package.py --version 0.1.1-rc.1 --source-sha ${{ github.sha }} --target ${{ matrix.target }} --directory ui-package-output
+      - name: Qualify and archive native UI (Windows)
+        if: runner.os == 'Windows'
+        run: python scripts/ui_package.py --version 0.1.1-rc.1 --source-sha ${{ github.sha }} --target ${{ matrix.target }} --directory ui-package-output
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: ui-package-${{ matrix.target }}
+          path: ui-package-output/*
+          if-no-files-found: error
+          retention-days: 7

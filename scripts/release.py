@@ -111,21 +111,38 @@ def preflight(api, source_api, version, sha):
         raise ValueError("native development CI has not passed for this exact source SHA")
 
 
-def archive_name(version, target):
+def product_files(product, target):
+    if product not in ("cli", "ui") or target not in TARGETS:
+        raise ValueError("unsupported product or native target")
+    return TARGETS[target] if product == "cli" else ("lintra-ui.exe" if target.endswith("msvc") else "lintra-ui")
+
+
+def ui_licenses():
+    return {"LICENSE-IBM-PLEX-OFL.txt": (ROOT / "ui/ui/fonts/OFL.md").read_bytes(),
+            "LICENSE-SLINT-ROYALTY-FREE-2.0.md": (ROOT / "ui/licenses/SLINT-ROYALTY-FREE-2.0.md").read_bytes()}
+
+
+def archive_name(version, target, product="cli"):
     if target not in TARGETS:
         raise ValueError("unsupported native release target")
-    return f"lintra-{version}-{target}" + (".zip" if target.endswith("msvc") else ".tar.gz")
+    product_files(product, target)
+    prefix = "lintra" if product == "cli" else "lintra-ui"
+    return f"{prefix}-{version}-{target}" + (".zip" if target.endswith("msvc") else ".tar.gz")
 
 
-def pack(binary, output_dir, version, sha, target, audit):
+def pack(binary, output_dir, version, sha, target, audit, product="cli"):
     """Package already verified bytes with fixed archive metadata, no overwrite."""
-    filename = TARGETS[target]
+    filename = product_files(product, target)
     data = binary.read_bytes()
     metadata = canonical(dict(audit, version=version, source_sha=sha, target=target, binary_sha256=digest(data)))
+    if product == "ui":
+        metadata = canonical(dict(audit, product="ui", version=version, source_sha=sha, target=target, binary_sha256=digest(data)))
     files = {filename: data, "BUILD.json": metadata}
+    if product == "ui":
+        files.update(ui_licenses())
     files["SHA256SUMS"] = "".join(f"{digest(value)}  {name}\n" for name, value in sorted(files.items())).encode()
     output_dir.mkdir(parents=True, exist_ok=False)
-    destination = output_dir / archive_name(version, target)
+    destination = output_dir / archive_name(version, target, product)
     # This directory belongs to this invocation. Incomplete output is never
     # uploaded by the workflow because the step must succeed before artifact upload.
     with destination.open("xb") as raw:
@@ -146,27 +163,32 @@ def pack(binary, output_dir, version, sha, target, audit):
     return destination
 
 
-def inspect_archive(path, version, sha, target):
-    """Check the exact three-entry inventory, checksums and source/target identity."""
+def inspect_archive(path, version, sha, target, product="cli"):
+    """Check exact product inventory, checksums and source/target identity."""
     if path.is_symlink() or not path.is_file():
         raise ValueError("release archive must be a regular file")
-    expected = {TARGETS[target], "BUILD.json", "SHA256SUMS"}
+    filename = product_files(product, target)
+    expected = {filename, "BUILD.json", "SHA256SUMS"}
+    if product == "ui":
+        expected.update(ui_licenses())
     files = {}
     if target.endswith("msvc"):
         with zipfile.ZipFile(path) as archive:
             entries = archive.infolist()
-            if len(entries) != 3 or {e.filename for e in entries} != expected or any(e.is_dir() or stat.S_IFMT(e.external_attr >> 16) not in (0, stat.S_IFREG) or e.file_size > 256 * 1024 * 1024 for e in entries):
+            if len(entries) != len(expected) or {e.filename for e in entries} != expected or any(e.is_dir() or stat.S_IFMT(e.external_attr >> 16) not in (0, stat.S_IFREG) or e.file_size > 256 * 1024 * 1024 for e in entries):
                 raise ValueError("unexpected ZIP inventory or size")
             files = {e.filename: archive.read(e) for e in entries}
     else:
         with tarfile.open(path, "r:gz") as archive:
             entries = archive.getmembers()
-            if len(entries) != 3 or {e.name for e in entries} != expected or any(not e.isfile() or e.size > 256 * 1024 * 1024 for e in entries):
+            if len(entries) != len(expected) or {e.name for e in entries} != expected or any(not e.isfile() or e.size > 256 * 1024 * 1024 for e in entries):
                 raise ValueError("unexpected tar inventory or size")
             files = {e.name: archive.extractfile(e).read() for e in entries}
     audit = json.loads(files["BUILD.json"])
-    if any(audit.get(k) != v for k, v in {"version": version, "source_sha": sha, "target": target, "binary_sha256": digest(files[TARGETS[target]])}.items()):
+    if any(audit.get(k) != v for k, v in {"version": version, "source_sha": sha, "target": target, "binary_sha256": digest(files[filename])}.items()):
         raise ValueError("archive build identity or binary digest differs")
+    if product == "ui" and (audit.get("product") != "ui" or any(files[name] != data for name, data in ui_licenses().items())):
+        raise ValueError("UI product identity or bundled license differs")
     sums = "".join(f"{digest(files[name])}  {name}\n" for name in sorted(expected - {"SHA256SUMS"})).encode()
     if files["SHA256SUMS"] != sums:
         raise ValueError("archive checksums differ")

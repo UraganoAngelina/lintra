@@ -232,3 +232,13 @@ compiler C gcc13.3.0 Linux/MSVC1951 Windows (locale Btrfs gcc16.2.1). Feature C
 runtime e checksum eseguibili nei JSON benchmark. Allowlist ELF/PE esistente
 superata dall'harness realmente collegato SQLite, nessuna SQLite di sistema/
 OpenSSL/CRT dinamica introdotta. Packaging CLI riproducibile e smoke nativi pass.
+
+## T-P16-08 — policy runtime UI separata
+
+Nessuna nuova crate. Linux ELF UI ammette Fontconfig oltre al runtime GNU base;
+CLI resta invariata. Caricamenti runtime X11/input e dipendenze Fontconfig sono
+elencati esplicitamente in ui/linux-runtime-libraries.list e sottoposti al probe
+nativo. Windows solo DLL OS, con elenco UI distinto per DWrite/DWM/IME/temi.
+Licenze IBM Plex OFL e Slint royalty-free2.0 già qualificate accompagnano l'archivio
+UI; testi integri e inclusi nei checksum. Gate ancora in corso, nessuna dipendenza
+extra implicitamente ammessa per la presenza sulla macchina di build.
