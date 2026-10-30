@@ -1,7 +1,7 @@
 {
   "task": "T-PERSIST-08",
-  "done": false,
-  "native_gate": "pending_dispatch",
+  "done": true,
+  "native_gate": "completed/success",
   "corrected_retained_trace_contract": true,
   "source_sha256": {
     "src/application/history_audit.rs": "defa6da97b637df55c7f9ac863a1f4244ba5800d3f27be8c288f60dd1a252113",
@@ -50,5 +50,7 @@
     "verification-persist08-clippy-default.log": "432ce228a995fa0cc5574f1421650d5d9ede85c9cd80d0d9aad36a7794c1dbc4",
     "verification-persist08-clippy-all.log": "3a05276c739503ebf5c988c3998fd05163015a3cc55dfb8e619244c8abb5101f",
     "verification-persist08-boundary.log": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f"
-  }
+  },
+  "native_ci_run": 41069605562,
+  "qualified_source_sha": "bc7c4485b1f19d91685b0cecdede7aee61a6c5a1"
 }

@@ -1,0 +1,65 @@
+{
+  "status": "completed",
+  "conclusion": "success",
+  "headSha": "bc7c4485b1f19d91685b0cecdede7aee61a6c5a1",
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41069605562",
+  "task": "T-PERSIST-08",
+  "jobs": [
+    {
+      "databaseId": 124109927411,
+      "name": "Verify (x86_64-unknown-linux-gnu)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-30T14:11:08Z",
+      "completedAt": "2026-10-30T14:29:31Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41069605562/job/124109927411"
+    },
+    {
+      "databaseId": 124109928080,
+      "name": "Verify (x86_64-pc-windows-msvc)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-30T14:11:08Z",
+      "completedAt": "2026-10-30T14:42:45Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41069605562/job/124109928080"
+    },
+    {
+      "databaseId": 124109930054,
+      "name": "Qualify UI archives",
+      "status": "completed",
+      "conclusion": "skipped",
+      "startedAt": "2026-10-30T14:11:06Z",
+      "completedAt": "2026-10-30T14:11:06Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41069605562/job/124109930054"
+    },
+    {
+      "databaseId": 124125345792,
+      "name": "Compare Linux and Windows JSONL bytes",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-30T14:42:47Z",
+      "completedAt": "2026-10-30T14:42:55Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41069605562/job/124125345792"
+    },
+    {
+      "databaseId": 124125345836,
+      "name": "Compare production UI regression pixels",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-30T14:42:47Z",
+      "completedAt": "2026-10-30T14:42:58Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41069605562/job/124125345836"
+    },
+    {
+      "databaseId": 124125346023,
+      "name": "Compare native desktop theme pixels",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-30T14:42:47Z",
+      "completedAt": "2026-10-30T14:42:55Z",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41069605562/job/124125346023"
+    }
+  ],
+  "required_jobs_success": 5,
+  "ui_packaging_optional": "skipped as requested; UI packaging already qualified separately, no new archive claimed"
+}

@@ -1,4 +1,11 @@
-# T-PERSIST-08 — audit storico generico (in qualificazione)
+# T-PERSIST-08 — audit storico generico (DONE)
+
+Chiusura30/10/2026: codice bc7c448, CI41069605562 completed/success, tutti i
+5job richiesti success. Native Linux/MSVC, JSONL e pixel confermati. Sorgenti
+invariati durante la qualifica; nessun nuovo archivio UI dichiarato. Metadati
+in T-PERSIST-08-native-ci.json; gate locali/hash in local-gates.json.
+119/140DONE=85%, considerando anche T-P17-03 documentale completata durante
+l'attesa. Le sezioni seguenti conservano implementazione e cronologia dei gate.
 
 Base UI fe5ada8: UI 9/9 e M8 verificate. Prerequisiti PERSIST07/P13 effettivi
 nel preflight. Nessuna modifica normativa, a UI, dipendenze, schema fisico SQLite

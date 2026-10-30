@@ -3,7 +3,39 @@
 Consuntivo aggiornato al **2026-10-30**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — PERSIST08 WAITING_GATE, T-P17-03 DONE
+## Frontiera corrente — PERSIST08 DONE, integrazione SIOC prossima READY
+
+30 ottobre2026: **119/140 DONE = 85%**; UI9/9 e M8 confermate. Audit generico
+PERSIST08 verificato sul codice bc7c448: CI41069605562 completed/success,
+5job richiesti success (Linux/MSVC, JSONL, pixel temi/produzione). L'archivio UI
+opzionale è skipped come richiesto, già qualificato in16-08. Il commit documentale
+9f44e74 non modifica codice rispetto a bc7c448; nessuna qualifica fittizia.
+
+API read-only con scope/versioni/hash verificati, generazione fissata e baseline
+presenti per trace; identità/source protette, lookup puntuale con provenienza,
+ordine deterministico e summary solo al successo. Identità conservate sotto
+file assenti ammesse; assenza di baseline presente dichiarata tecnicamente,
+mai un falso nuovo evento. Nessuna nuova norma SIOC/CAD, mutazione o migrazione.
+Locali:14test audit,18SQLite; workspace831esiti/108riepiloghi perassetto e
+core-no-bundle788/91,0fail/4ignored, inclusi helper/doctest; fmt/Clippy/boundary
+positivi. Dossier T-PERSIST-08-audit.md, local-gates.json e native-ci.json.
+T-P17-03 DONE: soglie non definite con motivo; DEC-14 aperta. M9 ancora aperta.
+
+## HANDOFF §15.3 — T-PERSIST-08 DONE, AUTO_CONTINUE
+
+File: application/history_audit, port/type occurrence, adapter SQLite/fake,
+lib re-export, test audit/query plan e dossier. Contratti ADR001/ARCH45/DET166–174
+rispettati: nessun SQL nel core applicativo, motore non accede al DB; no PHI,
+nuova dipendenza o modifica UI. Scelte e limiti owned/cursor in report consultabile.
+Gate: codice bc7c448 pubblicato, CI41069605562 tutti5job richiesti success;
+nessuna voce pending trattata come passata. Residui propri08: nessuno. Budget
+prestazionale non inventato, NoComparableBaseline resta esito tecnico esplicito.
+Git work/p1-foundations, materiale esterno docs/migration preservato. Next READY:
+T-PERSIST-09 (08 ora DONE,6-07/P13 verificati nello stato), integrazione SIOC
+synthetic e audit-only senza divieto inter-run DEC-SIOC-HIST-01. Avviare subito
+preflight09; un solo agente, nessuna conferma ordinaria, AUTO_CONTINUE.
+
+## Registro precedente — PERSIST08 WAITING_GATE, T-P17-03 DONE
 
 30 ottobre2026: **118/140 DONE = 84,3%**; UI9/9 e M8 confermate. PERSIST08
 IN_PROGRESS/WAITING_GATE sul codice bc7c448 pubblicato. CI41069605562 in corso:
@@ -2643,7 +2675,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-PERSIST-05 | DONE | 2026-10-29 | Code3712ed6, CI40844540287/release40844543949/probe40844049209 success; backend SQLite qualificato, dossier T-PERSIST-05 |
 | T-PERSIST-06 | DONE | 2026-10-29 | Code3e8fae4, CI40853726275 tutti4job success; metadati, consenso dichiarato e compatibilità verificati |
 | T-PERSIST-07 | DONE | 2026-10-29 | Code1e92b1f, CI40877202683 tutti4job success;795test locali/97suite, coordinator e cursor SQLite verificati |
-| T-PERSIST-08 | IN_PROGRESS | 2026-10-30 | Prerequisiti07/P13 verificati; UI 9/9 chiusa, preflight audit generico con letture puntuali/provenance |
+| T-PERSIST-08 | DONE | 2026-10-30 | bc7c448, CI41069605562 tutti5job richiesti success; audit deterministico/HMAC/CAS read-only,14test audit/18SQLite,831esiti locali perassetto; dossier08 |
 | T-PERSIST-09..12 | NOT_STARTED | — | Dopo08 e rispettive dipendenze |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
