@@ -3,7 +3,34 @@
 Consuntivo aggiornato al **2026-10-30**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — UI completata, T-PERSIST-08 IN_PROGRESS
+## Frontiera corrente — PERSIST08 WAITING_GATE, T-P17-03 DONE
+
+30 ottobre2026: **118/140 DONE = 84,3%**; UI9/9 e M8 confermate. PERSIST08
+IN_PROGRESS/WAITING_GATE sul codice bc7c448 pubblicato. CI41069605562 in corso:
+prima lettura Linux ai test, Windows a Clippy; nessun esito nativo presunto.
+Locali completi: workspace default/allfeatures831esiti/108riepiloghi ciascuno,
+core-no-bundle788/91,0fail/4ignored;14test audit e18SQLite, fmt/Clippy/boundary
+positivi, hash sorgenti invariati. Riferimenti nei dossier T-PERSIST-08.
+
+Durante l'attesa completata la task indipendente T-P17-03 nell'alternativa
+esplicita del piano: **soglie non definite con motivo**. DEC-14 resta aperta;
+nessun valore numerico proposto o approvato. docs/PERFORMANCE.md descrive scope,
+metriche, evidenze e aggregati mancanti. Verifica documentale positiva:10link,
+2dataset da9scenari e CI17-01 reale. Nessun cambio Rust o nuovo gate dichiarato.
+
+## HANDOFF §15.3 — T-P17-03 DONE, ripresa del gate PERSIST08
+
+Task documentale pronta nel percorso alternativo previsto dal piano §10/DoD P17,
+indipendente dal gate08; prerequisito17-01/CI40476599897 effettivamente positivo.
+File PERFORMANCE.md, T-P17-03-thresholds.md/documentation-check.json, indice/status.
+Test: controllo link e metadata/hash delle misure; nessun test Rust necessario.
+DEC-14 rimane aperta sui valori; M9 non raggiunta. Nessun blocker aggiuntivo
+per la registrazione autorizzata. Git work/p1-foundations, sorgenti prodotto bc7c448
+invariati; commit documentale separato senza dispatch CI duplicato. docs/migration
+è lavoro esterno preservato. Next: completare lettura/gate PERSIST08, poi PERSIST09
+soltanto con08 realmente DONE. WAITING_GATE single-agent, nessuna conferma ordinaria.
+
+## Registro precedente — UI completata e avvio T-PERSIST-08
 
 2026-10-30: **117/140 DONE = 83,6%**, UI **9/9 DONE**, **M8 REACHED** nello
 scope UI implementato. CI41036453232 su aa7be4f: tutti i 7 job completed/success
@@ -2567,6 +2594,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-P16-08 | DONE | 2026-10-30 | aa7be4f, CI41036453232 tutti7job success; archivi Linux/MSVC realmente scaricati/ispezionati, M8; dossier T-P16-08-acceptance.md |
 | T-P18-02 | DONE | 2026-10-27 | Due dry-run dati Linux, binario invariato e v1 golden preservato; [runbook](docs/RUNBOOK_SCHEMA_UPDATE.md) |
 | T-P17-01 | DONE | 2026-10-27 | Due run ottimizzate9scenari/gate locali e CI40476599897 su485c98f Linux/MSVC smoke e compare-jsonl success; [dossier](docs/verification/T-P17-01-benchmark.md) |
+| T-P17-03 | DONE | 2026-10-30 | Alternativa prevista: soglie non definite con motivo, DEC-14 aperta; PERFORMANCE.md,10link e2dataset/CI17-01 verificati; nessun cambio runtime |
 | T-P17-06 | DONE | 2026-10-27 | CI40486090209 Linux/MSVC/compare success; [dossier](docs/verification/T-P17-06-robustness.md) |
 | T-P7-04 | DONE — LocalOnly | 2026-10-21 | Servizio LocalOnly/clock/mode, 280 locali; CI 39587379476 Linux/Windows verde dcb8c59; [report](docs/verification/T-P7-04.md) |
 | T-P7-05 | DONE — LocalOnly API scope approved by CNF-SERVICE-DI-01 | 2026-10-21 | 285 test locali, [CI Linux/Windows verde](https://github.com/UraganoAngelina/lintra/actions/runs/39601419396) su 074bbfe; [audit API/ledger](docs/verification/T-P7-05.md); stop successivamente revocato |

@@ -1,0 +1,24 @@
+{
+  "task": "T-P17-03",
+  "status": "DONE",
+  "accepted_outcome": "thresholds_not_defined_with_reason",
+  "DEC-14": "open; no numeric thresholds approved",
+  "prerequisite_native_ci": 40476599897,
+  "local_links_checked": 10,
+  "benchmark_sources": [
+    {
+      "path": "docs/verification/T-P17-01-benchmark-run1.json",
+      "sha256": "5e8d168547274569d2ac9c33f3c0da3b774d7a28eb97cb8bf91de2893ef7baa0",
+      "scenarios": 9,
+      "thresholds": null
+    },
+    {
+      "path": "docs/verification/T-P17-01-benchmark-run2.json",
+      "sha256": "9ed8e882d8167f339b4f4aaa2f824a1bc2c98c74b756a00b54b563a379ef62dc",
+      "scenarios": 9,
+      "thresholds": null
+    }
+  ],
+  "rust_runtime_changed": false,
+  "runtime_tests": "not rerun for documentation-only task; no native gate newly claimed"
+}
