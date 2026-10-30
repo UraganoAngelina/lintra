@@ -1,5 +1,5 @@
 //! Production geometry against the explicitly reviewed Signature reference.
-//! Historic author-approved mockup PNGs remain unchanged under docs/ui/review/.
+//! Reference pixels are relocated byte-for-byte after the author’s docs refactor.
 //! Fixture text is synthetic presentation input, not a regulatory outcome.
 use lintra_ui::{ErrorRow, MainWindow};
 use slint::platform::software_renderer::{MinimalSoftwareWindow, RepaintBufferType};
@@ -215,7 +215,7 @@ fn production_geometry_retains_signature_zones_at_both_scales() {
                 .unwrap();
             if !dark {
                 let expected = reference(
-                    &root.join(format!("../docs/ui/signature/reference/light-{scale}x.png")),
+                    &root.join(format!("tests/reference/light-{scale}x.png")),
                     scale,
                 );
                 for zone in ZONES {

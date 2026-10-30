@@ -357,3 +357,14 @@ Decisioni stilistiche ordinarie delegate; nessun nuovo checkpoint estetico.
 Riferimenti precedenti conservati come storia, senza sovrascriverli. Direzione
 corrente e design system in `docs/ui/LINTRA_DESIGN_DIRECTION.md` e `DESIGN.md`.
 Non introdurre funzionalità storiche o capability future per il redesign.
+
+## Assetto documentale UI dell'autore —2026-10-30
+
+Il commit ee33d64 sposta i documenti stilistici in docs/ui-design-documentation
+ed elimina le vecchie cartelle di capture/log. Preservare questa organizzazione:
+DESIGN.md, PRODUCT.md e LINTRA_DESIGN_DIRECTION.md in tale directory sono le
+fonti correnti. Le evidenze rimosse restano nella cronologia Git. Le sole2
+reference necessarie a visual.rs sono mantenute in ui/tests/reference, con
+provenienza/hash e senza rigenerazione implicita. Il refactoring non cambia
+sorgenti, palette o comportamento UI. Prima di riprendere08 eseguire il preflight
+richiesto, poi continuare il workflow già autorizzato senza regressioni.

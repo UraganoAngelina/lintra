@@ -1,0 +1,27 @@
+{
+  "user_commit": "ee33d64772ed7e82b41d35f34efca7ccf214a387",
+  "runtime_ui_changes_in_user_commit": false,
+  "reference_source_commit": "5720748",
+  "references": [
+    {
+      "path": "ui/tests/reference/light-1x.png",
+      "previous_path": "docs/ui/signature/reference/light-1x.png",
+      "sha256": "05563bb32ac5d647563e775fc7ce46b85dc7c37b38dd5ee8da0988febd70859f"
+    },
+    {
+      "path": "ui/tests/reference/light-2x.png",
+      "previous_path": "docs/ui/signature/reference/light-2x.png",
+      "sha256": "06f4a1efb32d96826daee4c72d9bc542017943bff2b42e2fb59100b28efa1f51"
+    }
+  ],
+  "local_gates": {
+    "ui-refactor-preflight-check.log": {
+      "sha256": "7d6c5b34c780f45b1874c62475f488efe81cfb025a7e219af28c53057dd5d5cc",
+      "passed": true
+    },
+    "ui-refactor-preflight-visual.log": {
+      "sha256": "4b328019b0aab81f6747d6d103288078cd0fbd8bb0ca05584c9f553a72e3c594",
+      "passed": true
+    }
+  }
+}

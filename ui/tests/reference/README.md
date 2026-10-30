@@ -1,15 +1,14 @@
-# Riferimenti visivi
+# Baseline visiva eseguibile — Copper Ledger
 
-I PNG autorevoli restano `docs/ui/review/results-{1x,2x}.png`, ratificati
-il 27/10/2026: nessuna copia rigenerata implicitamente dai test.
+`light-1x.png` e `light-2x.png` sono le due reference Signature del commit5720748,
+qualificato dalla CI40958452017. Spostate senza cambiare alcun byte dopo il
+refactoring documentale dell'autore ee33d64; SHA256 e percorsi originali in
+`docs/verification/UI_REFACTOR_PREFLIGHT_2026-10-30.json`.
 
-La UI operativa aggiunge controlli, virtualizzazione e dettagli consultabili.
-Il confronto conserva le zone geometriche comuni del riferimento ratificato:
-header, sfondo, bordi superiori e laterali dei due pannelli. Le altezze correnti
-sono verificate separatamente (508px, T-P16-05), senza confrontarle con il pannello
-illustrativo corto del prototipo. Non sono immagini dello stesso contenuto.
+Nessuna nuova acquisizione o modifica di tolleranza. Il test legge le reference,
+non le rigenera. I vecchi mockup e le capture storiche restano nella cronologia
+Git; non viene ripristinata la cartella documentale rimossa dall'autore.
 
-Le zone testo del marchio hanno tolleranza per canale dichiarata nel test; i
-bordi e le superfici hanno tolleranza zero. I nuovi contenuti e controlli vengono
-renderizzati nei due temi e scale e confrontati tra Linux e Windows senza
-alcuna tolleranza. Questo non equivale ad approvare un nuovo PNG di riferimento.
+Design corrente: docs/ui-design-documentation/DESIGN.md e
+LINTRA_DESIGN_DIRECTION.md. Renderer software, IBM Plex incorporati, due scale;
+CI confronta anche l'intero RGB fra Linux/MSVC senza tolleranza.

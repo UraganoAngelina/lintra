@@ -56,14 +56,14 @@ un percorso della macchina dell’operatore.
 
 Redesign Signature autorizzato il29/10: direzione Copper Ledger, chiaro
 avorio/grafite/rame e scuro nero/rame. Il riferimento canonico è
-`docs/ui/DESIGN.md`; il mockup precedente resta storico. Il selettore risponde a puntatore e tastiera, con focus visibile
+`docs/ui-design-documentation/DESIGN.md`; il mockup precedente resta storico. Il selettore risponde a puntatore e tastiera, con focus visibile
 e nomi/stati accessibili. La preferenza resta nello stato della finestra:
 nessun file di impostazioni o persistenza implicita introdotto.
 
 `cargo build` continua a costruire la CLI; `--workspace` verifica anche la UI.
 CI Linux/MSVC esegue test software a1×/2× e confronta RGB byte per byte per
 entrambi i temi. Le capture bootstrap sono diagnostiche: i riferimenti approvati
-della schermata Risultati restano in docs/ui/review, senza sovrascritture.
+della schermata Risultati restano nella cronologia Git precedente al refactoring ee33d64.
 La verifica/distribuzione dell’artefatto UI completo rimane T-P16-08.
 
 Per qualificare lo scorrimento sul modello JSONL reale (300k/1M,1×/2×), eseguire
@@ -90,5 +90,5 @@ directory esplicita (preferire un percorso assoluto, il test ha cwd ui/).
 Queste sono capture di componenti di produzione con fixture di presentazione,
 non evidenza di un run. I test worker/results/export usano il servizio reale.
 Il test visual legge i riferimenti Signature revisionati, senza aggiornarli;
-lo storico docs/ui/review resta intatto. Report e confronto prima/dopo in
-`docs/ui/LINTRA_SIGNATURE_UI_OVERHAUL_REPORT.md`.
+lo storico è consultabile nella cronologia precedente a ee33d64. Report in
+`docs/ui-design-documentation/LINTRA_SIGNATURE_UI_OVERHAUL_REPORT.md`.
