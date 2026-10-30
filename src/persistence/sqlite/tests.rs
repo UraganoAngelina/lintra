@@ -699,7 +699,13 @@ fn process_restart_and_abrupt_exit_inside_or_after_commit_recover_coherently() {
     }
 }
 #[test]
-fn two_process_contenders_publish_exactly_one_generation() {
+fn two_process_contenders_preserve_cas_and_resolved_retry_publishes_one_generation() {
+    exercise_contenders(false);
+    // A real SHARED lock forces both initial publications to fail, exercising
+    // the zero-winner branch deterministically rather than relying on timing.
+    exercise_contenders(true);
+}
+fn exercise_contenders(hold_reader: bool) {
     let dir = parent();
     let root = dir.path().join("archive");
     let repo = create(&root);
@@ -716,11 +722,52 @@ fn two_process_contenders_publish_exactly_one_generation() {
         }
         std::thread::sleep(Duration::from_millis(10));
     }
+    let reader = hold_reader.then(|| {
+        let reader = Connection::open(root.join("lintra.db")).unwrap();
+        reader.execute_batch("BEGIN").unwrap();
+        reader
+            .query_row("SELECT COUNT(*) FROM snapshots", [], |row| {
+                row.get::<_, i64>(0)
+            })
+            .unwrap();
+        reader
+    });
     fs::write(dir.path().join("go"), []).unwrap();
     let mut codes = [a.wait().unwrap().code(), b.wait().unwrap().code()];
     codes.sort();
-    assert_eq!(codes, [Some(0), Some(3)]);
+    drop(reader);
+    if hold_reader {
+        assert_eq!(codes, [Some(3), Some(3)]);
+    }
+    // With a zero busy timeout, safety does not imply that one racing attempt
+    // must make progress. A resolver's short read lock may prevent the other
+    // contender's COMMIT too. Both attempts can legitimately be NotPublished.
+    // Unknown outcomes have already been resolved by each worker; no write is
+    // replayed while its publication status remains uncertain.
+    assert!(
+        codes == [Some(0), Some(3)] || codes == [Some(3), Some(3)],
+        "unexpected contender outcomes: {codes:?}"
+    );
     let repo = open(&root);
+    if codes == [Some(3), Some(3)] {
+        assert_eq!(
+            repo.current_generation(&namespace("A")).unwrap(),
+            Some(SnapshotRevision::new(1))
+        );
+        for id in ["a", "b"] {
+            assert!(repo.load_submission(&namespace("A"), id).unwrap().is_none());
+        }
+        assert!(
+            repo.load_snapshot(&namespace("A"), SnapshotRevision::new(2))
+                .unwrap()
+                .is_none()
+        );
+        // All child connections have closed, and absence was checked afresh.
+        // This is a single explicit new transaction after resolution, not an
+        // automatic retry added to the adapter or to the racing workers.
+        let candidate = snapshot(&repo, "A", 2, "a", vec![row(repo.protector(), "A", 2, "B")]);
+        publish(&repo, &candidate).unwrap();
+    }
     assert_eq!(
         repo.load_current_snapshot(&namespace("A"))
             .unwrap()
@@ -790,8 +837,9 @@ fn an_unfinished_transaction_view_cannot_be_mistaken_for_publication() {
 mod metadata;
 
 /// Test harness resolution only. Retrying read/open under a transient lock is
-/// bounded; neither staging nor COMMIT is retried. Parent assertions still require
-/// exactly one published contender, one unpublished contender and generation2.
+/// bounded; neither staging nor COMMIT is retried here. Parent assertions permit
+/// at most one initial publication and require generation2 with one submission
+/// after a possible explicit new transaction, only once absence is established.
 fn resolve_finished_contender(root: &Path, candidate: &HistoricalSnapshot) -> i32 {
     let started = Instant::now();
     loop {

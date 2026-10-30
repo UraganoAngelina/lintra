@@ -13,10 +13,18 @@ con byte/hash identici, nessun ritorno al vecchio stile o ripristino bulk di doc
 
 Tooling UI08 implementato: prodotto esplicito, policy import UI separata da CLI,
 licenze nell'archivio, versione/provenienza senza strumenti runtime, probe software
-e startup nativo su eseguibile estratto.23test Python,16Rust tooling e1probe
+e startup nativo su eseguibile estratto.23test Python,17Rust tooling e1probe
 eseguibile locali positivi, Clippy workspace/tooling pass. CI completa e packaging
-nativo Linux/MSVC da avviare: nessun archivio release dichiarato qualificato.
+nativo Linux/MSVC in corso sul run41033360461 (8695b72): nessun archivio release
+dichiarato qualificato. Due build identiche su entrambi i runner già dimostrate
+su eaf221b; corretti due falsi positivi del verifier (socket X11 e Common Controls).
 Report T-P16-08-packaging.md. Nessuna nuova dipendenza o norma, PERSIST08 rinviata.
+Packaging Linux41033360461 positivo e archivio reale ispezionato. Suite Windows
+ferma sull'assunzione di liveness del test SQLite a due processi ([3,3]); test
+corretto senza cambiare adapter, con scenario forzato SHARED e ripetizione
+esplicita soltanto dopo assenza verificata.17test SQLite e Clippy passano;
+nuovo gate MSVC necessario. Nessun DONE o milestone anticipato.
+
 
 ## Frontiera corrente — Signature/UI07 DONE, packaging UI08 in preflight
 

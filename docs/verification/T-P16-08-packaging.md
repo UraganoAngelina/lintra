@@ -35,7 +35,7 @@ probe nativo e LD_DEBUG=libs per verificare i basename caricati dinamicamente
 contro ui/linux-runtime-libraries.list. La lista include solo runtime OS X11/input,
 Fontconfig e dipendenze di sistema. Windows richiede runner MSVC nativo.
 
-## Verifiche attuali e limiti
+## Verifiche iniziali e limiti al primo avvio della qualifica
 
 Preflight e test dell'eseguibile debug su host Linux passati con PATH vuoto;
 22test Python positivi, Clippy tooling positivo. Test completi/sicurezza nuova
@@ -115,3 +115,37 @@ Prova in T-P16-08-native-local-probe.json; nessun dato reale o archivio storico
 letto/modificato. Font/stile12file preservati contro il commit dell'autore ee33d64,
 manifest in T-P16-08-style-preservation.json. Qualifica completa archive CI ancora
 necessaria prima di M8; nessuna nuova release/tag pubblicata.
+
+## Terzo gate —41033360461 su8695b72
+
+Qualifica nativa completa riavviata dopo i due correttivi del verifier. Alla
+prima lettura ordinaria tutti4job nativi sono in corso; nessun esito finale
+presunto. I precedenti eseguibili Linux/MSVC restano prova di riproducibilità
+su eaf221b, non sostituiscono il gate della revisione corrente.
+
+Prova aggiuntiva del protocollo archive locale: il vero eseguibile Linux eaf221b
+è stato impacchettato, ispezionato ed estratto in una directory temporanea.
+Inventario esatto5entry, digest, versione/source e frame software con PATH vuoto
+positivi; dossier T-P16-08-local-archive-probe.json. La prova non pubblica un
+archivio e non è presentata come qualifica nativa finale della revisione8695b72.
+
+### Regressione del test di contesa su MSVC
+
+Nel run41033360461 il packaging Linux è completed/success e l'archivio reale
+è stato scaricato e ispezionato (inventario, licenze, digest e provenance esatti).
+La suite Windows fallisce invece nel test SQLite a due processi: esiti[3,3],
+nessuna pubblicazione, contro l'assunzione del test di un vincitore obbligatorio.
+Con busy_timeout=0 il lock di lettura della risoluzione può impedire anche
+il COMMIT del secondo writer: la sicurezza CAS non garantisce la liveness
+del singolo tentativo. Non è una modifica al contratto dell'adapter.
+
+Corretto solo il test: ammessi zero o un vincitore iniziale, mai due. Nel caso
+zero si verificano generazione1, assenza di entrambi gli invii e snapshot2
+assente, prima di una sola nuova transazione esplicita. Gli esiti ambigui
+restano risolti dai figli tramite connessione nuova prima di restituire3.
+Aggiunta una seconda esecuzione con vero lock SHARED che forza deterministicamente
+il caso[3,3] e verifica la successiva pubblicazione coerente. Nessun retry
+automatico nel runtime né nelle scritture dei contendenti.17test SQLite passati
+(2helper ignored, sottoprocessi eseguiti); fmt e Clippy workspace/allfeatures
+positivi. Necessario nuovo gate regressioni MSVC; packaging Windows ancora
+in corso alla terza lettura del run, senza qualifica presunta.
