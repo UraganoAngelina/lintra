@@ -9,7 +9,7 @@ Misure ed esiti grezzi nel dossier native-ci e nei JSON benchmark Linux/Windows.
 | DELETE/EXTRA impostati e riletti, cache/mmap/versione | `roundtrip_restart_immutable_snapshots_omission_namespace_and_settings` |
 | Snapshot/indici/provenienza coerenti, immutabilità, omissioni conservate, namespace | stesso test con due revisioni e due namespace, più `process_restart_and_abrupt_exit_inside_or_after_commit_recover_coherently` |
 | Stage invisibile, abort/drop, errore prima di COMMIT, CAS obsoleto | `abort_drop_stale_generation_and_failure_before_commit_do_not_publish` |
-| Contesa processi, una sola generazione vincente | `two_process_contenders_publish_exactly_one_generation` |
+| Contesa processi, al massimo una pubblicazione concorrente; nuova transazione esplicita solo dopo assenza risolta | `two_process_contenders_preserve_cas_and_resolved_retry_publishes_one_generation` (nome aggiornato il30/10; include lock SHARED deterministico) |
 | COMMIT rifiutato o riuscito senza risposta: nessun falso rollback | `ambiguous_commit_is_resolved_by_exact_immutable_candidate` |
 | Connessione con transazione privata non leggibile come pubblicata | `an_unfinished_transaction_view_cannot_be_mistaken_for_publication` |
 | Restart di processo, crash durante COMMIT con journal e dopo pubblicazione | `process_restart_and_abrupt_exit_inside_or_after_commit_recover_coherently` e helper `process_worker` |
@@ -47,3 +47,8 @@ per contratto; la riapertura/lookup in processo fresco non possiede il candidato
 precedente. Nessuna soglia DEC14 dedotta dai risultati. Solo dati sintetici e
 metadati tecnici; cifratura/retention/chiavi/backup prima dei dati reali restano
 fuori dalla ratifica di implementazione05.
+
+Aggiornamento tracciabilità30/10: il nome attuale del test riflette la distinzione
+fra sicurezza CAS e progresso del singolo tentativo con busy_timeout=0. Le prove
+storiche sopra rimangono quelle dei commit indicati; correzione del solo harness
+nel commit4e44703, qualifica MSVC corrente nel dossier T-P16-08-packaging.md.

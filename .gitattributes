@@ -17,3 +17,7 @@ tests/golden/cross-trace/**/*.dat -whitespace
 # UI source visual truth and embedded fonts retain their original bytes.
 spikes/ui-prototype/tests/reference/*.png -text
 spikes/ui-prototype/ui/fonts/*.ttf -text
+# UI archives carry these exact repository bytes on both native runners.
+# Prevent core.autocrlf from changing their digests on a Windows checkout.
+ui/ui/fonts/OFL.md text eol=lf
+ui/licenses/SLINT-ROYALTY-FREE-2.0.md text eol=lf

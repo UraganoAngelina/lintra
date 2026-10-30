@@ -23,7 +23,10 @@ Packaging Linux41033360461 positivo e archivio reale ispezionato. Suite Windows
 ferma sull'assunzione di liveness del test SQLite a due processi ([3,3]); test
 corretto senza cambiare adapter, con scenario forzato SHARED e ripetizione
 esplicita soltanto dopo assenza verificata.17test SQLite e Clippy passano;
-nuovo gate MSVC necessario. Nessun DONE o milestone anticipato.
+nuovo gate MSVC necessario. Entrambi i job packaging8695b72 sono poi passati,
+ma l'ispezione indipendente del ZIP Windows rileva licenze convertite in CRLF:
+aggiunte due regole eol=lf, gate completo da ripetere senza attenuare il checker.
+Nessun DONE o milestone anticipato.
 
 
 ## Frontiera corrente — Signature/UI07 DONE, packaging UI08 in preflight

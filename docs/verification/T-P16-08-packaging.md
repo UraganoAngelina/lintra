@@ -149,3 +149,17 @@ automatico nel runtime né nelle scritture dei contendenti.17test SQLite passati
 (2helper ignored, sottoprocessi eseguiti); fmt e Clippy workspace/allfeatures
 positivi. Necessario nuovo gate regressioni MSVC; packaging Windows ancora
 in corso alla terza lettura del run, senza qualifica presunta.
+
+### Ispezione indipendente degli archivi scaricati
+
+Entrambi i job packaging8695b72 sono completed/success: build riproducibili e
+probe installati software/nativi con PATH vuoto effettivamente passati anche
+su Windows. L'ispezione Linux dell'archivio Windows trova però i testi licenza
+convertiti da Git in CRLF: IBM4456byte contro4363LF, Slint3663 contro3620LF;
+il solo cambio CRLF→LF produce byte identici. I digest interni sono corretti,
+ma l'archivio Windows non supera il confronto licenze rispetto al checkout Linux.
+Non dichiarato pienamente qualificato né attenuato il checker. Aggiunte due sole
+regole text eol=lf in .gitattributes per i testi distribuiti: nessuna modifica
+ai testi, font, renderer o schemi. Un nuovo gate completo include anche4e44703
+e sostituisce la run di sole regressioni41036244477, resa superata dal difetto
+concreto individuato nell'archivio.
