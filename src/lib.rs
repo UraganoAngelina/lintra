@@ -357,8 +357,9 @@ pub use bundle_resolution::{
 
 /// Persistent history ports and explicit in-memory transaction test adapter.
 pub use persistence::{
-    CommitReceipt, HistoricalSnapshot, InMemoryPersistenceImage, InMemoryPersistenceRepository,
-    PersistenceError, PersistenceTransaction, PersistentContextRepository, StoredIdentity,
+    CommitReceipt, HistoricalIdentityOccurrence, HistoricalSnapshot, InMemoryPersistenceImage,
+    InMemoryPersistenceRepository, PersistenceError, PersistenceTransaction,
+    PersistentContextRepository, StoredIdentity,
 };
 
 pub use persistence::{
@@ -369,6 +370,10 @@ pub use persistence::{
 pub use persistence::{CommitResolution, SQLitePersistenceAdapter, SQLiteStorageSettings};
 
 // Explicit application approval lifecycle, separate from technical transactions.
+pub use application::history_audit::{
+    HistoricalAuditCounts, HistoricalAuditCoverage, HistoricalAuditError, HistoricalAuditMetadata,
+    HistoricalAuditService, HistoricalAuditSummary, PreparedHistoricalAudit, TraceAuditBaseline,
+};
 pub use application::session::{
     ApprovalDraft, ApprovalPreview, SessionApprovalError, SessionRejection, ValidatedApproval,
 };

@@ -3,7 +3,7 @@
 Consuntivo aggiornato al **2026-10-30**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — UI completata, T-PERSIST-08 prossima READY
+## Frontiera corrente — UI completata, T-PERSIST-08 IN_PROGRESS
 
 2026-10-30: **117/140 DONE = 83,6%**, UI **9/9 DONE**, **M8 REACHED** nello
 scope UI implementato. CI41036453232 su aa7be4f: tutti i 7 job completed/success
@@ -19,6 +19,25 @@ test di contesa documentate senza attenuare i checker né cambiare l'adapter.
 Matrice [T-P16-08](docs/verification/T-P16-08-acceptance.md), evidenze native e
 manifest archivi nel medesimo dossier. M8 non certifica integrazione storica,
 nuove norme o sistemi operativi non collaudati.
+
+T-PERSIST-08 avviata dopo la chiusura UI: preflight dei contratti e query storiche.
+Letture puntuali con provenienza/revisione, generazione fissata, confronto ordinato
+in streaming; nessuna mutazione, nuova norma, migrazione storage o modifica UI.
+Dossier T-PERSIST-08-preflight.md. Stato nuovo IN_PROGRESS, conteggio DONE117.
+Implementazione audit read-only completata localmente: port additivo di occorrenza
+con source/revisione, query SQLite sulle PK esistenti e servizio applicativo
+con generazione fissata, baseline presenti per trace e output ordinato un diff
+alla volta. Corretto prima del commit il trattamento delle identità conservate
+sotto file assenti; NoComparableBaseline evita falsi inserimenti quando esiste
+storico conservato senza baseline presente.14test audit/18SQLite e Clippy passati;
+suite workspace default/allfeatures positive:831esiti/108riepiloghi ciascuna,
+0fail/4ignored (inclusi helper/doctest); core-no-bundle positivo788esiti/91riepiloghi,
+0fail/4ignored; fmt/Clippy e boundary positivi. Source hash invariati; CI da avviare.
+Non DONE. Dossier T-PERSIST-08-audit.md/local-gates.json.
+Nessuna modifica UI/norme/storage format/dependency; fonte codice ancora nella
+working tree, HEAD fe5ada8. La catena locale precedente è stata interrotta
+intenzionalmente per correggere questa compatibilità; log conservati separati.
+
 
 ## HANDOFF §15.3 — T-P16-08 DONE, prosecuzione automatica
 
@@ -2596,7 +2615,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-PERSIST-05 | DONE | 2026-10-29 | Code3712ed6, CI40844540287/release40844543949/probe40844049209 success; backend SQLite qualificato, dossier T-PERSIST-05 |
 | T-PERSIST-06 | DONE | 2026-10-29 | Code3e8fae4, CI40853726275 tutti4job success; metadati, consenso dichiarato e compatibilità verificati |
 | T-PERSIST-07 | DONE | 2026-10-29 | Code1e92b1f, CI40877202683 tutti4job success;795test locali/97suite, coordinator e cursor SQLite verificati |
-| T-PERSIST-08..12 | NOT_STARTED | — | Dopo07 priorità alle tre UI16-06→07→08 secondo mandato29/10 |
+| T-PERSIST-08 | IN_PROGRESS | 2026-10-30 | Prerequisiti07/P13 verificati; UI 9/9 chiusa, preflight audit generico con letture puntuali/provenance |
+| T-PERSIST-09..12 | NOT_STARTED | — | Dopo08 e rispettive dipendenze |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — Linux locale

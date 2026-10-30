@@ -1,0 +1,54 @@
+{
+  "task": "T-PERSIST-08",
+  "done": false,
+  "native_gate": "pending_dispatch",
+  "corrected_retained_trace_contract": true,
+  "source_sha256": {
+    "src/application/history_audit.rs": "defa6da97b637df55c7f9ac863a1f4244ba5800d3f27be8c288f60dd1a252113",
+    "src/persistence/mod.rs": "b895f6c78f19304eb6b20b019e606a7acda89a9964674dac78c3d56ff1e27e52",
+    "src/persistence/memory.rs": "975e1f60c4c1f256cdc9c83e1c44976743dba170affc203c4692d3e84f48a752",
+    "src/persistence/sqlite/mod.rs": "9c51b4a5398f27c5211ff4b120c321ecc9760aab23cb6b64cf880bfed5dcc795",
+    "src/persistence/sqlite/tests.rs": "2d0f214144fcad69f85173fa93fb45a0938d8d80e2be835fad453d8ba1012f5e",
+    "src/lib.rs": "edfbf6d9d8f71b61759f1df9d71ba2cd042ba26c1fac16d3b6f4977285998766",
+    "src/application/mod.rs": "8c3160c5e8d10385b1f3ac572e436c230c5ec7ef3ce32cfcedeef392c30b5de4",
+    "tests/history_audit.rs": "6d0fdcef01c84face64c9a8fbe1d4188c3c263201eaad5b93906d9083cd89073"
+  },
+  "targeted_logs": {
+    "verification-persist08-audit.log": "9883ec7c1f041c1157a3f8e06c355c3009eae3dee4aead41bbf30c2abc309ae1",
+    "verification-persist08-sqlite.log": "fba604f041b30859a4719a4404e1d04c1be65f804ea037596fd12ef8ed5a4e1f",
+    "verification-persist08-clippy.log": "2569424406121439c882abdd0320637e72b253de516cf5669a74930132b52d07"
+  },
+  "audit_tests_passed": 14,
+  "sqlite_tests_passed": 18,
+  "sqlite_helpers_ignored_in_parent": 2,
+  "complete_local_suites": "passed; fmt/Clippy default+allfeatures, workspace both, core-no-bundle, boundary; source hashes unchanged",
+  "workspace_default": {
+    "sha256": "da3dea32c4dada2764fd5ccc34ae9e0a83f2acc94d737af47d3b3b05755cd045",
+    "summaries": 108,
+    "passed_including_helpers_and_doctests": 831,
+    "failed": 0,
+    "ignored": 4,
+    "complete": true
+  },
+  "workspace_all_features": {
+    "sha256": "c461fc084afecf69ccf576552deedf7bf57f4f9dc985d3ebe1e941afcb7cd927",
+    "summaries": 108,
+    "passed_including_helpers_and_doctests": 831,
+    "failed": 0,
+    "ignored": 4,
+    "complete": true
+  },
+  "core_no_bundle": {
+    "sha256": "e537f2d6b75b00aa6b3dbe520eb6cad73b12f377cd51422c3ae130dcf4c5d840",
+    "summaries": 91,
+    "passed_including_helpers_and_doctests": 788,
+    "failed": 0,
+    "ignored": 4,
+    "complete": true
+  },
+  "complete_local_gate_logs": {
+    "verification-persist08-clippy-default.log": "432ce228a995fa0cc5574f1421650d5d9ede85c9cd80d0d9aad36a7794c1dbc4",
+    "verification-persist08-clippy-all.log": "3a05276c739503ebf5c988c3998fd05163015a3cc55dfb8e619244c8abb5101f",
+    "verification-persist08-boundary.log": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f"
+  }
+}

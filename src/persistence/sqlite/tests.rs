@@ -836,6 +836,88 @@ fn an_unfinished_transaction_view_cannot_be_mistaken_for_publication() {
 
 mod metadata;
 
+#[test]
+fn occurrence_query_uses_existing_indexes_and_rejects_incoherent_provenance() {
+    let dir = parent();
+    let repo = create(&dir.path().join("archive"));
+    let record = row(repo.protector(), "A", 1, "A");
+    let mut value = serde_json::to_value(source("A", "occurrence")).unwrap();
+    value["traces"][0]["presence"] = serde_json::json!({"kind":"present","record_count":1});
+    value["traces"][0]["input_sha256"] = serde_json::to_value(Sha256Digest([1; 32])).unwrap();
+    let raw: SourceSubmission = serde_json::from_value(value.clone()).unwrap();
+    let protected = repo.protector().protect_submission(&raw).unwrap();
+    let snapshot = HistoricalSnapshot::new(
+        SnapshotRevision::new(1),
+        protected.clone(),
+        vec![record.clone()],
+    )
+    .unwrap();
+    publish(&repo, &snapshot).unwrap();
+    let occurrence = repo
+        .lookup_identity_occurrence(&namespace("A"), record.identity())
+        .unwrap()
+        .unwrap();
+    assert_eq!(occurrence.record(), &record);
+    assert_eq!(occurrence.source(), &protected);
+    assert_eq!(occurrence.revision(), SnapshotRevision::new(1));
+    let ns = codec::encode(&namespace("A")).unwrap();
+    let id = codec::encode(record.identity()).unwrap();
+    {
+        let c = repo.lock().unwrap();
+        let plans: Vec<String> = c
+            .prepare(&format!("EXPLAIN QUERY PLAN {OCCURRENCE_SQL}"))
+            .unwrap()
+            .query_map(params![ns, id], |row| row.get(3))
+            .unwrap()
+            .collect::<Result<_, _>>()
+            .unwrap();
+        assert!(plans.len() >= 3, "{plans:?}");
+        assert!(
+            plans
+                .iter()
+                .all(|p| p.contains("SEARCH") && !p.contains("SCAN")),
+            "{plans:?}"
+        );
+        // A valid MAC for another flow is still invalid provenance for this key.
+        value["schema_key"]["flow_id"] = serde_json::json!("OTHER");
+        let wrong = repo
+            .protector()
+            .protect_submission(&serde_json::from_value(value).unwrap())
+            .unwrap();
+        c.execute(
+            "UPDATE snapshots SET source=?1,proof=?2",
+            params![
+                codec::encode(&wrong).unwrap(),
+                wrong.protection_evidence.0.unwrap().as_slice()
+            ],
+        )
+        .unwrap();
+    }
+    assert_eq!(
+        repo.lookup_identity_occurrence(&namespace("A"), record.identity()),
+        Err(PersistenceError::CorruptStorage)
+    );
+    {
+        let c = repo.lock().unwrap();
+        c.execute(
+            "UPDATE snapshots SET source=?1,proof=?2",
+            params![
+                codec::encode(&protected).unwrap(),
+                protected.protection_evidence.0.unwrap().as_slice()
+            ],
+        )
+        .unwrap();
+        // Simulate external corruption while this connection is open. A dangling
+        // latest pointer must not become a successful absence through an INNER join.
+        c.execute_batch("PRAGMA foreign_keys=OFF; DELETE FROM records;")
+            .unwrap();
+    }
+    assert_eq!(
+        repo.lookup_identity_occurrence(&namespace("A"), record.identity()),
+        Err(PersistenceError::CorruptStorage)
+    );
+}
+
 /// Test harness resolution only. Retrying read/open under a transient lock is
 /// bounded; neither staging nor COMMIT is retried here. Parent assertions permit
 /// at most one initial publication and require generation2 with one submission

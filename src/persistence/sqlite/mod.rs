@@ -21,6 +21,12 @@ CREATE TABLE snapshots(ns BLOB NOT NULL,revision INTEGER NOT NULL CHECK(revision
 CREATE TABLE records(ns BLOB NOT NULL,revision INTEGER NOT NULL,ordinal INTEGER NOT NULL,identity BLOB NOT NULL,payload BLOB NOT NULL,key_proof BLOB NOT NULL CHECK(length(key_proof)=32),record_proof BLOB NOT NULL CHECK(length(record_proof)=32),PRIMARY KEY(ns,revision,ordinal),UNIQUE(ns,revision,identity),FOREIGN KEY(ns,revision) REFERENCES snapshots(ns,revision)) WITHOUT ROWID;
 CREATE TABLE latest(ns BLOB NOT NULL,identity BLOB NOT NULL,revision INTEGER NOT NULL,ordinal INTEGER NOT NULL,PRIMARY KEY(ns,identity),FOREIGN KEY(ns,revision,ordinal) REFERENCES records(ns,revision,ordinal)) WITHOUT ROWID;
 "#;
+// LEFT joins retain a corrupt/dangling latest entry so decoding fails rather
+// than misreporting a known identity as absent. Existing PKs serve every seek.
+const OCCURRENCE_SQL: &str = "SELECT l.revision,r.payload,r.key_proof,r.record_proof,s.source,s.proof \
+    FROM latest l LEFT JOIN records r ON r.ns=l.ns AND r.revision=l.revision AND r.ordinal=l.ordinal \
+    LEFT JOIN snapshots s ON s.ns=l.ns AND s.revision=l.revision \
+    WHERE l.ns=?1 AND l.identity=?2";
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SQLiteStorageSettings {
     pub format_version: u32,
@@ -366,6 +372,49 @@ fn check(
     }
 }
 impl PersistentContextRepository for SQLitePersistenceAdapter {
+    fn lookup_identity_occurrence(
+        &self,
+        ns: &PersistenceNamespace,
+        id: &PersistentRecordIdentity,
+    ) -> Result<Option<HistoricalIdentityOccurrence>, PersistenceError> {
+        if id.namespace() != ns {
+            return Err(PersistenceError::NamespaceMismatch);
+        }
+        self.inner
+            .protector
+            .verify_identity(id)
+            .map_err(PersistenceError::Protection)?;
+        let encoded_ns = codec::encode(ns)?;
+        let encoded_id = codec::encode(id)?;
+        let c = self.lock()?;
+        // All joins seek existing primary keys: one latest identity, one record,
+        // one source. A single SQLite statement sees one consistent read view;
+        // no storage migration, historical scan, or materialized snapshot needed.
+        let mut statement = c.prepare_cached(OCCURRENCE_SQL).map_err(sql)?;
+        let mut rows = statement
+            .query(params![encoded_ns, encoded_id])
+            .map_err(sql)?;
+        let Some(row) = rows.next().map_err(sql)? else {
+            return Ok(None);
+        };
+        let revision: i64 = row.get(0).map_err(sql)?;
+        if revision <= 0 {
+            return Err(PersistenceError::CorruptStorage);
+        }
+        // These columns must be non-null BLOBs in a coherent archive. A failed
+        // decode includes dangling joins, not an ordinary "not found" result.
+        let blob = |index| {
+            row.get::<_, Vec<u8>>(index)
+                .map_err(|_| PersistenceError::CorruptStorage)
+        };
+        let record = codec::read_record(&blob(1)?, &blob(2)?, &blob(3)?, &self.inner.protector)?;
+        let source = codec::read_source(&blob(4)?, &blob(5)?, &self.inner.protector)?;
+        if record.identity() != id {
+            return Err(PersistenceError::CorruptStorage);
+        }
+        HistoricalIdentityOccurrence::new(SnapshotRevision::new(revision as u64), source, record)
+            .map(Some)
+    }
     fn lookup_identity(
         &self,
         ns: &PersistenceNamespace,

@@ -115,6 +115,56 @@ impl StoredIdentity {
     }
 }
 
+/// A single committed occurrence with its exact publication provenance. This
+/// carries no raw record and does not declare an identity active or revoked.
+/// Authentication remains the adapter/protector's responsibility; construction
+/// checks only the generic relationship between identity and submission.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct HistoricalIdentityOccurrence {
+    revision: SnapshotRevision,
+    source: SourceSubmission,
+    record: StoredIdentity,
+}
+impl HistoricalIdentityOccurrence {
+    pub fn new(
+        revision: SnapshotRevision,
+        source: SourceSubmission,
+        record: StoredIdentity,
+    ) -> Result<Self, PersistenceError> {
+        let identity = record.identity();
+        let version_matches = match identity.schema_scope() {
+            crate::PersistenceSchemaScope::SchemaVersion { version } => {
+                version == &source.schema_key().version
+            }
+            // The compiled profile, not storage, qualifies a declared group.
+            crate::PersistenceSchemaScope::CompatibilityGroup { .. } => true,
+        };
+        if revision.value() == 0
+            || identity.namespace() != source.namespace()
+            || identity.flow_id() != &source.schema_key().flow_id
+            || !version_matches
+            // A cumulative snapshot may retain rows for an absent input trace.
+            || !source.traces().iter().any(|trace| &trace.trace_id == identity.trace_id())
+        {
+            return Err(PersistenceError::CorruptStorage);
+        }
+        Ok(Self {
+            revision,
+            source,
+            record,
+        })
+    }
+    pub fn revision(&self) -> SnapshotRevision {
+        self.revision
+    }
+    pub fn source(&self) -> &SourceSubmission {
+        &self.source
+    }
+    pub fn record(&self) -> &StoredIdentity {
+        &self.record
+    }
+}
+
 /// An immutable supplied snapshot, not an algorithm that computes a cumulative
 /// state. The future history service owns reconciliation and approval policy.
 /// Record order is retained; index iteration never determines report ordering.
@@ -190,6 +240,16 @@ impl CommitReceipt {
 /// Generic application port. No engine ContextStore dependency and no filesystem
 /// discovery. All lookups are exact, namespace-scoped and read only.
 pub trait PersistentContextRepository: Send + Sync {
+    /// Latest exact occurrence and its source, including omitted identities.
+    /// A default fails closed: unsupported provenance is never an empty history.
+    /// The caller pins/checks generation when combining several historical reads.
+    fn lookup_identity_occurrence(
+        &self,
+        _namespace: &PersistenceNamespace,
+        _identity: &PersistentRecordIdentity,
+    ) -> Result<Option<HistoricalIdentityOccurrence>, PersistenceError> {
+        Err(PersistenceError::StorageUnavailable)
+    }
     /// Latest committed occurrence, including identities no longer present in
     /// the current snapshot. Omission does not erase history or imply revocation.
     fn lookup_identity(

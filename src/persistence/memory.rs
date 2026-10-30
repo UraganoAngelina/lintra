@@ -9,7 +9,7 @@ use std::{
 #[derive(Default)]
 struct NamespaceState {
     snapshots: Vec<HistoricalSnapshot>,
-    latest: HashMap<PersistentRecordIdentity, StoredIdentity>,
+    latest: HashMap<PersistentRecordIdentity, (SnapshotRevision, StoredIdentity)>,
     submissions: HashMap<String, SourceSubmission>,
 }
 impl NamespaceState {
@@ -66,6 +66,38 @@ fn check_generation(
     Ok(())
 }
 impl PersistentContextRepository for InMemoryPersistenceRepository {
+    fn lookup_identity_occurrence(
+        &self,
+        namespace: &PersistenceNamespace,
+        identity: &PersistentRecordIdentity,
+    ) -> Result<Option<HistoricalIdentityOccurrence>, PersistenceError> {
+        if identity.namespace() != namespace {
+            return Err(PersistenceError::NamespaceMismatch);
+        }
+        let image = self.image.lock()?;
+        let Some(state) = image.namespaces.get(namespace) else {
+            return Ok(None);
+        };
+        let Some((revision, record)) = state.latest.get(identity) else {
+            return Ok(None);
+        };
+        // Fake generations start at1 and append contiguously. This indexed read
+        // loads one source; it never searches historical identity collections.
+        let index = revision
+            .value()
+            .checked_sub(1)
+            .and_then(|value| usize::try_from(value).ok())
+            .ok_or(PersistenceError::CorruptStorage)?;
+        let snapshot = state
+            .snapshots
+            .get(index)
+            .ok_or(PersistenceError::CorruptStorage)?;
+        if snapshot.revision() != *revision {
+            return Err(PersistenceError::CorruptStorage);
+        }
+        HistoricalIdentityOccurrence::new(*revision, snapshot.source().clone(), record.clone())
+            .map(Some)
+    }
     fn lookup_identity(
         &self,
         namespace: &PersistenceNamespace,
@@ -80,7 +112,7 @@ impl PersistentContextRepository for InMemoryPersistenceRepository {
             .namespaces
             .get(namespace)
             .and_then(|s| s.latest.get(identity))
-            .cloned())
+            .map(|(_, record)| record.clone()))
     }
     fn load_current_snapshot(
         &self,
@@ -216,9 +248,10 @@ impl PersistenceTransaction for MemoryTransaction {
             submissions: old.map(|s| s.submissions.clone()).unwrap_or_default(),
         };
         for record in snapshot.identities() {
-            replacement
-                .latest
-                .insert(record.identity().clone(), record.clone());
+            replacement.latest.insert(
+                record.identity().clone(),
+                (snapshot.revision(), record.clone()),
+            );
         }
         replacement.submissions.insert(
             snapshot.source().submission_id().to_owned(),
