@@ -1,0 +1,79 @@
+{
+  "baseline_author_commit": "ee33d64",
+  "packaging_code_under_qualification": "eaf221b",
+  "runtime_style_and_font_bytes_preserved": true,
+  "files": [
+    {
+      "path": "ui/ui/analysis.slint",
+      "baseline_sha256": "3c5c8a900b8e68a7830e78cd2f376649928468f2fedc87ebbbe6f2db1c0e5d48",
+      "current_sha256": "3c5c8a900b8e68a7830e78cd2f376649928468f2fedc87ebbbe6f2db1c0e5d48",
+      "comments_only_change": false
+    },
+    {
+      "path": "ui/ui/controls.slint",
+      "baseline_sha256": "9422d71ca0068fec855b65103ce8f13907c638bd792b69cb23df63957478f432",
+      "current_sha256": "9422d71ca0068fec855b65103ce8f13907c638bd792b69cb23df63957478f432",
+      "comments_only_change": false
+    },
+    {
+      "path": "ui/ui/export.slint",
+      "baseline_sha256": "930970ec0fb01c82a06194d6ad6e4074e45c69f3588254f992d4d39072edd8f9",
+      "current_sha256": "930970ec0fb01c82a06194d6ad6e4074e45c69f3588254f992d4d39072edd8f9",
+      "comments_only_change": false
+    },
+    {
+      "path": "ui/ui/fonts/IBMPlexMono-Regular.ttf",
+      "baseline_sha256": "fe11304a5fe956d5744e9b6a246cc83d90425245e75a62230044966ca96a7f50",
+      "current_sha256": "fe11304a5fe956d5744e9b6a246cc83d90425245e75a62230044966ca96a7f50",
+      "comments_only_change": false
+    },
+    {
+      "path": "ui/ui/fonts/IBMPlexMono-SemiBold.ttf",
+      "baseline_sha256": "c9417148ce13f8fa7d2d5c9180bbc141f72aa0d814ffeb280f6904dc2b1bbd7a",
+      "current_sha256": "c9417148ce13f8fa7d2d5c9180bbc141f72aa0d814ffeb280f6904dc2b1bbd7a",
+      "comments_only_change": false
+    },
+    {
+      "path": "ui/ui/fonts/IBMPlexSans-Bold.ttf",
+      "baseline_sha256": "9e6c74a889a700d707613d24548fe4ffa6bc59559a0689d2cf9e133bdcdafb2f",
+      "current_sha256": "9e6c74a889a700d707613d24548fe4ffa6bc59559a0689d2cf9e133bdcdafb2f",
+      "comments_only_change": false
+    },
+    {
+      "path": "ui/ui/fonts/IBMPlexSans-Regular.ttf",
+      "baseline_sha256": "975dcda37d80f038dcd143c22e33ca2d97a0cc5a929aace1c749153b0fe1afa5",
+      "current_sha256": "975dcda37d80f038dcd143c22e33ca2d97a0cc5a929aace1c749153b0fe1afa5",
+      "comments_only_change": false
+    },
+    {
+      "path": "ui/ui/fonts/IBMPlexSans-SemiBold.ttf",
+      "baseline_sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "current_sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "comments_only_change": false
+    },
+    {
+      "path": "ui/ui/fonts/OFL.md",
+      "baseline_sha256": "37784b44044a4ffd9256702b7c0982c37e5c8887ba90c6dca0479aea93dc898d",
+      "current_sha256": "37784b44044a4ffd9256702b7c0982c37e5c8887ba90c6dca0479aea93dc898d",
+      "comments_only_change": false
+    },
+    {
+      "path": "ui/ui/main.slint",
+      "baseline_sha256": "e10890ea338c47876c92dc4a9de1804e6a4fd87f1a93b64282039786084f447c",
+      "current_sha256": "e10890ea338c47876c92dc4a9de1804e6a4fd87f1a93b64282039786084f447c",
+      "comments_only_change": false
+    },
+    {
+      "path": "ui/ui/results.slint",
+      "baseline_sha256": "189d8a3381361dde156304ee1d2f1902bad4d09c4c6fbbcb26fcb81621d62dba",
+      "current_sha256": "189d8a3381361dde156304ee1d2f1902bad4d09c4c6fbbcb26fcb81621d62dba",
+      "comments_only_change": false
+    },
+    {
+      "path": "ui/ui/tokens.slint",
+      "baseline_sha256": "8282a46405cc6fbd6fc2d1f233953bb1eedae369e06d0e00c894d8b301cddd2c",
+      "current_sha256": "d3847381138274d3c8072ea2ac367711dc233e9db87ee627ada2c5e18636f4f7",
+      "comments_only_change": true
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "source_code": "eaf221b",
+  "linux": {
+    "reproducible_full_bytes": true,
+    "size": 22999840,
+    "sha256": "1121742a03da0a5465d66769c10197415aba839fb3e8d5c98dec6b35d98bbe88",
+    "artifact_verifier_updated_policy": "pass"
+  },
+  "windows": {
+    "inspection_host": "Linux",
+    "native_execution": "pending Windows runner",
+    "reproducible_full_bytes": true,
+    "size": 21744128,
+    "sha256": "a79df085653c91262289bbd60a34a588b21462dd997f725690f91825abbac711",
+    "imports": [
+      "KERNEL32.dll",
+      "USER32.dll",
+      "advapi32.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "api-ms-win-core-winrt-error-l1-1-0.dll",
+      "bcryptprimitives.dll",
+      "combase.dll",
+      "comctl32.dll",
+      "dwmapi.dll",
+      "dwrite.dll",
+      "gdi32.dll",
+      "imm32.dll",
+      "kernel32.dll",
+      "ntdll.dll",
+      "ole32.dll",
+      "oleaut32.dll",
+      "shell32.dll",
+      "shlwapi.dll",
+      "user32.dll",
+      "uxtheme.dll"
+    ],
+    "local_verifier": "PE imports and host paths accepted; cargo tree offline unavailable, native verification pending"
+  }
+}

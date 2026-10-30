@@ -77,6 +77,7 @@ fn check_libraries(target: &str, libraries: &[&str]) -> Result<(), Failure> {
 }
 /// Desktop policy is separate from CLI: no wildcard or arbitrary build-host library.
 const UI_WINDOWS_LIBRARIES: &[&str] = &[
+    "comctl32.dll",
     "dwmapi.dll",
     "imm32.dll",
     "uxtheme.dll",
@@ -168,7 +169,25 @@ fn normalized(bytes: &[u8]) -> Vec<u8> {
         .collect()
 }
 
+#[cfg(test)]
 fn check_paths(bytes: &[u8], paths: &[String]) -> Result<(), Failure> {
+    check_product_paths(bytes, paths, Product::Cli, "x86_64-unknown-linux-gnu")
+}
+
+/// x11rb-protocol0.13.2 formats the OS socket from this fixed prefix. It is
+/// not a build-host directory. Only the bounded UTF-8 literal is admissible;
+/// explicit build roots, other /tmp paths and appended path text still fail.
+fn x11_socket_literal(bytes: &[u8], offset: usize) -> bool {
+    let prefix = b"/tmp/.x11-unix/x";
+    bytes.get(offset..offset + prefix.len()) == Some(prefix)
+        && matches!(bytes.get(offset + prefix.len()), None | Some(0 | 0xc0))
+}
+fn check_product_paths(
+    bytes: &[u8],
+    paths: &[String],
+    product: Product,
+    target: &str,
+) -> Result<(), Failure> {
     let bytes = normalized(bytes);
     for path in paths {
         let path = path.replace('\\', "/").to_ascii_lowercase();
@@ -179,9 +198,21 @@ fn check_paths(bytes: &[u8], paths: &[String]) -> Result<(), Failure> {
             wide.iter().flat_map(|v| v.to_be_bytes()).collect(),
         ] {
             let needle = normalized(&needle);
-            if !needle.is_empty()
-                && let Some(offset) = bytes.windows(needle.len()).position(|w| w == needle)
-            {
+            if needle.is_empty() {
+                continue;
+            }
+            for (offset, window) in bytes.windows(needle.len()).enumerate() {
+                if window != needle {
+                    continue;
+                }
+                if product == Product::Ui
+                    && target == "x86_64-unknown-linux-gnu"
+                    && path == "/tmp/"
+                    && needle == b"/tmp/"
+                    && x11_socket_literal(&bytes, offset)
+                {
+                    continue;
+                }
                 return Err(invalid(&format!(
                     "host path detected in artifact: pattern {path:?}, offset {offset:#x}"
                 ))
@@ -259,7 +290,7 @@ fn inspect_product(
         image.libraries
     };
     check_product_libraries(target, &libraries, product)?;
-    check_paths(bytes, paths)?;
+    check_product_paths(bytes, paths, product, target)?;
     Ok(libraries
         .into_iter()
         .map(str::to_owned)
@@ -591,6 +622,10 @@ mod desktop_policy_tests {
     #[test]
     fn desktop_libraries_do_not_relax_cli_or_allow_non_system_dependencies() {
         assert!(
+            check_product_libraries("x86_64-pc-windows-msvc", &["comctl32.dll"], Product::Cli)
+                .is_err()
+        );
+        assert!(
             check_product_libraries(
                 "x86_64-unknown-linux-gnu",
                 &["libfontconfig.so.1"],
@@ -625,6 +660,40 @@ mod desktop_policy_tests {
         }
         assert!(
             check_product_libraries("x86_64-pc-windows-msvc", &["DWRITE.dll"], Product::Ui).is_ok()
+        );
+    }
+}
+
+#[cfg(test)]
+mod x11_runtime_path_tests {
+    use super::*;
+    #[test]
+    fn only_the_bounded_x11_protocol_literal_is_allowed_and_all_matches_are_scanned() {
+        let paths = vec!["/tmp/".into()];
+        let literal = b"/tmp/.X11-unix/X\xc0\0";
+        assert!(
+            check_product_paths(literal, &paths, Product::Ui, "x86_64-unknown-linux-gnu").is_ok()
+        );
+        assert!(check_paths(literal, &paths).is_err());
+        for invalid in [
+            b"/tmp/.X11-unix/X/source.rs\0".as_slice(),
+            b"/tmp/.X11-unix/Xmalicious\0",
+            b"/tmp/build/project.rs\0",
+            b"/tmp/.X11-unix/X\0/tmp/build/source.rs\0",
+        ] {
+            assert!(
+                check_product_paths(invalid, &paths, Product::Ui, "x86_64-unknown-linux-gnu")
+                    .is_err()
+            );
+        }
+        assert!(
+            check_product_paths(
+                literal,
+                &["/tmp/.X11-unix/X".into()],
+                Product::Ui,
+                "x86_64-unknown-linux-gnu"
+            )
+            .is_err()
         );
     }
 }

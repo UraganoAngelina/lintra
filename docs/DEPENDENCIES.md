@@ -242,3 +242,9 @@ nativo. Windows solo DLL OS, con elenco UI distinto per DWrite/DWM/IME/temi.
 Licenze IBM Plex OFL e Slint royalty-free2.0 già qualificate accompagnano l'archivio
 UI; testi integri e inclusi nei checksum. Gate ancora in corso, nessuna dipendenza
 extra implicitamente ammessa per la presenza sulla macchina di build.
+
+Qualifica UI08 successiva: comctl32.dll (Common Controls OS, API SetWindowSubclass
+Microsoft) ammessa solo per UI, rilevata nell'import table MSVC reale.
+Il prefisso runtime socket X11 /tmp/.X11-unix/X è distinto dai percorsi privati
+con eccezione strettamente delimitata UI GNU; scanner CLI e radici di build
+esplicite restano invariati. Nessuna nuova libreria introdotta nel binario.

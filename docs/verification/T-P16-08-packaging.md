@@ -84,3 +84,34 @@ Regressioni locali sul codice prodotto d073c4b:816esiti positivi/107riepiloghi
 per ciascuno degli assetti workspace default/all-features (includono helper e
 doctest),0fail/4ignored. Nuovo fixture negative-font effettivo positivo, test
 remapping/tooling e Clippy positivi. Nuova qualifica nativa ancora richiesta.
+
+## Secondo gate —41028902538 su eaf221b
+
+Riproducibilità superata su ENTRAMBI i runner: confronto integrale e nuova
+verifica indipendente sui due eseguibili scaricati, SHA/dimensioni in
+T-P16-08-reproducibility-eaf221b.json. Linux sviluppo positivo, Windows ancora
+in corso alla terza lettura ordinaria. Nessun archive finale qualificato.
+
+Il checker Linux intercettava /tmp/.X11-unix/X: è il prefisso del socket OS
+formattato da x11rb-protocol0.13.2 (src/parse_display/connect_instruction.rs:42),
+non un percorso di build. La policy UI GNU ora ammette solo quel letterale UTF-8
+terminato/bounded, mai continuazioni di path, UTF16, altre directory /tmp,
+radici di build esplicite o policy CLI. Tutte le occorrenze sono controllate,
+anche dopo il letterale ammesso. Test positivi/negativi e17test tooling passano;
+il verifier aggiornato passa sul vero binario Linux scaricato, OpenSSL assente.
+
+Windows si fermava sull'import comctl32.dll, OS Common Controls richiesto dal
+backend: qualificato nella sola allowlist UI. Fonte Microsoft primaria:
+https://learn.microsoft.com/en-us/windows/win32/api/commctrl/nf-commctrl-setwindowsubclass
+Import table completo registrato; nessuna DLL esterna o CRT dinamica ammessa.
+La lettura PE e dei path su Linux non sostituisce l'esecuzione Windows; cargo tree
+MSVC offline non disponibile sullo stesso host, quindi il gate resta nativo.
+
+Sul PC Linux, il vero binario CI eaf221b è stato copiato in un'installazione
+provvisoria con PATH vuoto: versione e frame software positivi. Il display non
+è accessibile dalla sandbox; fuori sandbox la finestra nativa si apre/chiude
+correttamente (500ms), tutte le librerie osservate soddisfano la policy OS.
+Prova in T-P16-08-native-local-probe.json; nessun dato reale o archivio storico
+letto/modificato. Font/stile12file preservati contro il commit dell'autore ee33d64,
+manifest in T-P16-08-style-preservation.json. Qualifica completa archive CI ancora
+necessaria prima di M8; nessuna nuova release/tag pubblicata.

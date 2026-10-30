@@ -53,6 +53,24 @@
     },
     "verification-ui08-python-fixed.log": {
       "sha256": "49b1d1c7449c447438678aa2317e1c195a1dfa01b946fd72cf56e161bcc32d57"
+    },
+    "verification-ui08-x11-literal-tests.log": {
+      "sha256": "2d3adc0e867d8fb8444851775a990df140da6fb3ad5113fe10e207f157bdcf74"
+    },
+    "verification-ui08-x11-literal-clippy.log": {
+      "sha256": "0fd000918b154cc62bbaed18e1e77276337cf4e2bf348ec38189181730807fe2"
+    },
+    "verification-ui08-os-policy-tests.log": {
+      "sha256": "e2075441022cd78af185c42dfda553519195b609ffccf476d562f73ffbf69f70"
+    },
+    "verification-ui08-ui-dll-policy-test.log": {
+      "sha256": "6859373f478730500ba37e5e0cc7f2315c5a54ba62d05e24d20270aa42fe7d8c"
+    },
+    "verification-ui08-os-policy-clippy.log": {
+      "sha256": "2cd82855b0753fc776377ac31f94c4e32c34f07af05209830b5e39c746c0806a"
+    },
+    "verification-ui08-native-linux-inspect.log": {
+      "sha256": "8d5e5f33cd4901c6db8ac780411f6209f0ed16805d69dc2edfe11c326e023d18"
     }
   },
   "first_native_run": {
@@ -69,5 +87,15 @@
     "cargo_distinct_roots_identical_metadata": true,
     "cargo_distinct_roots_identical_bytes": true,
     "actual_ui_native_reproducibility_still_pending": true
+  },
+  "second_native_run": {
+    "id": 41028902538,
+    "linux_reproducible": true,
+    "msvc_reproducible": true,
+    "archives_qualified": false,
+    "remaining_policy_findings": [
+      "Linux X11 protocol literal mistaken for build path",
+      "MSVC OS Common Controls absent from UI allowlist"
+    ]
   }
 }
