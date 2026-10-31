@@ -246,8 +246,8 @@ impl From<crate::FlowValidationError> for ValidationRunError {
 
 /// Application orchestrator with explicit schema/reference DI and per-run context.
 pub struct ValidationService {
-    schema_registry: std::sync::Arc<crate::SchemaRegistry>,
-    clock: std::sync::Arc<dyn crate::Clock>,
+    pub(super) schema_registry: std::sync::Arc<crate::SchemaRegistry>,
+    pub(super) clock: std::sync::Arc<dyn crate::Clock>,
     reference_data: Option<(
         std::sync::Arc<dyn crate::ReferenceDataPreparer>,
         crate::DatasetPreparationPolicy,
@@ -331,11 +331,40 @@ impl ValidationService {
         progress: &mut dyn crate::ProgressObserver,
         cancellation: &crate::CancellationToken,
     ) -> Result<crate::ValidationRunOutcome, ValidationRunError> {
-        use crate::{ProgressEvent as Event, ValidationPhase as Phase};
         let started_at = self.clock.now();
         let resolved = self
             .schema_registry
             .resolve_with_hash(&request.schema_key)?;
+        self.validate_resolved_with_parameters(
+            request,
+            parameters,
+            super::full::FullServicePorts {
+                sink,
+                progress,
+                cancellation,
+                started_at,
+                resolved: &resolved,
+                record_observer: None,
+            },
+        )
+    }
+    /// Historical wiring supplies one checked resolution and a synchronous
+    /// producer; the ordinary API always resolves through its original compiler.
+    pub(crate) fn validate_resolved_with_parameters(
+        &self,
+        request: ValidationRequest,
+        parameters: std::collections::BTreeMap<String, String>,
+        ports: super::full::FullServicePorts<'_>,
+    ) -> Result<crate::ValidationRunOutcome, ValidationRunError> {
+        use crate::{ProgressEvent as Event, ValidationPhase as Phase};
+        let super::full::FullServicePorts {
+            sink,
+            progress,
+            cancellation,
+            started_at,
+            resolved,
+            record_observer,
+        } = ports;
         let schema = resolved.schema();
         if request.mode == ValidationMode::Full {
             return self.validate_full(
@@ -346,7 +375,8 @@ impl ValidationService {
                     progress,
                     cancellation,
                     started_at,
-                    resolved: &resolved,
+                    resolved,
+                    record_observer,
                 },
             );
         }
@@ -582,7 +612,7 @@ impl ValidationService {
                 )?,
                 None => FlowValidator::new(schema, request.options.newline_policy)?,
             };
-            validator.validate(
+            validator.validate_with_record_observer(
                 &inputs,
                 &parameters,
                 FlowExecutionPorts {
@@ -595,6 +625,7 @@ impl ValidationService {
                         .map(|r| r as &mut dyn FlowReferenceObservers),
                     cross_observer: None,
                 },
+                ports.record_observer,
             )?
         };
         ports.progress.on_event(ProgressEvent::PhaseStarted(

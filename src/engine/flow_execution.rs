@@ -14,6 +14,17 @@ use std::{
 
 type TechnicalError = Box<dyn Error + Send + Sync>;
 
+/// Borrowed pass-one evidence for an explicit application producer. No storage,
+/// cryptography or regulatory decision is owned by this neutral engine hook.
+pub(crate) trait FlowRecordObserver {
+    fn on_record(
+        &mut self,
+        trace: &CompiledRecordSchema,
+        record: &RawRecord<'_>,
+        key: &JoinKey,
+    ) -> Result<(), TechnicalError>;
+}
+
 pub struct FlowTraceInput<'a> {
     pub trace_id: &'a TraceId,
     pub path: &'a Path,
@@ -177,7 +188,16 @@ impl<'a> FlowValidator<'a> {
         &self,
         inputs: &[FlowTraceInput<'_>],
         parameters: &BTreeMap<String, JoinParameterValue>,
+        ports: FlowExecutionPorts<'_, '_>,
+    ) -> Result<FlowValidationArtifacts, FlowValidationError> {
+        self.validate_with_record_observer(inputs, parameters, ports, None)
+    }
+    pub(crate) fn validate_with_record_observer(
+        &self,
+        inputs: &[FlowTraceInput<'_>],
+        parameters: &BTreeMap<String, JoinParameterValue>,
         mut ports: FlowExecutionPorts<'_, '_>,
+        mut record_observer: Option<&mut dyn FlowRecordObserver>,
     ) -> Result<FlowValidationArtifacts, FlowValidationError> {
         let prepared = prepare_flow(self.schema, inputs, parameters)?;
         let available = prepared
@@ -229,6 +249,7 @@ impl<'a> FlowValidator<'a> {
                 trace_index: index,
                 state: &mut state,
                 keys: HashMap::new(),
+                record_observer: &mut record_observer,
             };
             let mut on_event = |event| (ports.control.on_event)(FlowEvent::Trace(event));
             let mut control = TraceControl {
@@ -416,13 +437,14 @@ impl FlowState {
     }
 }
 
-struct ProjectionCollector<'a, 'schema> {
+struct ProjectionCollector<'a, 'schema, 'observer> {
     flow: &'schema CompiledFlowSchema,
     trace_index: usize,
     state: &'a mut FlowState,
     keys: HashMap<JoinKey, u64>,
+    record_observer: &'a mut Option<&'observer mut dyn FlowRecordObserver>,
 }
-impl FullRecordCollector for ProjectionCollector<'_, '_> {
+impl FullRecordCollector for ProjectionCollector<'_, '_, '_> {
     fn collect(
         &mut self,
         record: RawRecord<'_>,
@@ -450,6 +472,11 @@ impl FullRecordCollector for ProjectionCollector<'_, '_> {
         match build_join_key(&view, &trace.record_key().field_indexes, trace) {
             Ok(key) => {
                 key_evidence.checked += 1;
+                // The exact PK already extracted for uniqueness is borrowed;
+                // the producer must finish before this row buffer is reused.
+                if let Some(observer) = self.record_observer.as_deref_mut() {
+                    observer.on_record(trace, &record, &key)?;
+                }
                 if let Some(first) = self.keys.get(&key) {
                     key_evidence.duplicates += 1;
                     let factory = super::error_factory::ErrorFactory {

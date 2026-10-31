@@ -837,6 +837,34 @@ fn an_unfinished_transaction_view_cannot_be_mistaken_for_publication() {
 mod metadata;
 
 #[test]
+fn protection_audit_is_loaded_from_an_empty_archive_without_silent_reinitialization() {
+    let dir = parent();
+    let repo = create(&dir.path().join("archive"));
+    let audit = repo.load_protection_audit().unwrap();
+    repo.protector().verify_audit(&audit).unwrap();
+    assert_eq!(repo.current_generation(&namespace("A")).unwrap(), None);
+    let wrong = IdentityProtector::preflight(Some("synthetic-key"), &Provider(0xbb), None).unwrap();
+    assert!(matches!(
+        wrong.verify_audit(&audit),
+        Err(ProtectionError::KeyMismatch)
+    ));
+    repo.lock()
+        .unwrap()
+        .execute("DELETE FROM storage_meta", [])
+        .unwrap();
+    assert!(matches!(
+        repo.load_protection_audit(),
+        Err(PersistenceError::CorruptStorage)
+    ));
+    let count: i64 = repo
+        .lock()
+        .unwrap()
+        .query_row("SELECT COUNT(*) FROM storage_meta", [], |r| r.get(0))
+        .unwrap();
+    assert_eq!(count, 0);
+}
+
+#[test]
 fn occurrence_query_uses_existing_indexes_and_rejects_incoherent_provenance() {
     let dir = parent();
     let repo = create(&dir.path().join("archive"));

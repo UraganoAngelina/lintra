@@ -372,6 +372,24 @@ fn check(
     }
 }
 impl PersistentContextRepository for SQLitePersistenceAdapter {
+    fn load_protection_audit(&self) -> Result<ProtectionAudit, PersistenceError> {
+        let c = self.lock()?;
+        let bytes: Vec<u8> = c
+            .query_row(
+                "SELECT audit FROM storage_meta WHERE singleton=1",
+                [],
+                |row| row.get(0),
+            )
+            .optional()
+            .map_err(sql)?
+            .ok_or(PersistenceError::CorruptStorage)?;
+        let audit = codec::decode(&bytes)?;
+        self.inner
+            .protector
+            .verify_audit(&audit)
+            .map_err(PersistenceError::Protection)?;
+        Ok(audit)
+    }
     fn lookup_identity_occurrence(
         &self,
         ns: &PersistenceNamespace,

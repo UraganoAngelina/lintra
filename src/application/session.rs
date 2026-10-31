@@ -14,6 +14,7 @@ use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, error::Error, fmt};
 
 const PERIOD_PREFIX: &str = "lintra-session-v1:";
+const AUDIT_PERIOD_PREFIX: &str = "lintra-audit-session-v1:";
 
 /// Normative rejection is distinct from a storage/report failure. No PHI appears
 /// in Display or Debug; the approved-session symbol comes from ADR001, not a
@@ -131,6 +132,79 @@ impl SessionBinding {
         Ok(binding)
     }
 }
+/// Audit archives use submission identity, with no inferred calendar session.
+/// A separate prefix keeps every existing quarterly wire/MAC byte unchanged.
+#[derive(Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct AuditBinding {
+    flow: crate::FlowId,
+    scope: PersistenceNamespace,
+    submission_id: String,
+}
+#[derive(Clone, PartialEq, Eq)]
+enum ApprovalBinding {
+    Snapshot(SessionBinding),
+    Audit(AuditBinding),
+}
+impl ApprovalBinding {
+    fn flow(&self) -> &crate::FlowId {
+        match self {
+            Self::Snapshot(v) => &v.flow,
+            Self::Audit(v) => &v.flow,
+        }
+    }
+    fn requires_missing_consent(&self) -> bool {
+        matches!(self, Self::Snapshot(_))
+    }
+    fn encode(&self) -> Result<String, SessionApprovalError> {
+        match self {
+            Self::Snapshot(v) => v.encode(),
+            Self::Audit(v) => Ok(format!(
+                "{AUDIT_PERIOD_PREFIX}{}",
+                serde_json::to_string(v).map_err(|_| SessionApprovalError::InvalidBinding)?
+            )),
+        }
+    }
+    fn decode(value: Option<&str>) -> Result<Self, SessionApprovalError> {
+        if let Some(encoded) = value.and_then(|v| v.strip_prefix(AUDIT_PERIOD_PREFIX)) {
+            let data: AuditBinding = serde_json::from_str(encoded)
+                .map_err(|_| SessionApprovalError::UnboundApprovedHistory)?;
+            let result = Self::Audit(data);
+            if result.encode()?.strip_prefix(AUDIT_PERIOD_PREFIX) != Some(encoded) {
+                return Err(SessionApprovalError::UnboundApprovedHistory);
+            }
+            Ok(result)
+        } else {
+            SessionBinding::decode(value).map(Self::Snapshot)
+        }
+    }
+    fn matches_source(&self, source: &SourceSubmission) -> bool {
+        match self {
+            Self::Snapshot(v) => v.flow == source.schema_key().flow_id,
+            Self::Audit(v) => {
+                v.flow == source.schema_key().flow_id
+                    && &v.scope == source.namespace()
+                    && v.submission_id == source.submission_id()
+            }
+        }
+    }
+    fn same_definition(&self, other: &Self) -> bool {
+        match (self, other) {
+            (Self::Snapshot(a), Self::Snapshot(b)) => a.same_definition(b),
+            (Self::Audit(a), Self::Audit(b)) => {
+                a.flow == b.flow
+                    && a.scope
+                        .parameters()
+                        .map(|(id, v)| (id, std::mem::discriminant(v)))
+                        .eq(b
+                            .scope
+                            .parameters()
+                            .map(|(id, v)| (id, std::mem::discriminant(v))))
+            }
+            _ => false,
+        }
+    }
+}
 fn parameter_id(definition: &ParameterDefinition) -> &str {
     match definition {
         ParameterDefinition::String { id, .. } | ParameterDefinition::Integer { id, .. } => id,
@@ -139,14 +213,15 @@ fn parameter_id(definition: &ParameterDefinition) -> &str {
 fn bind(
     profile: &CompiledPersistenceProfile,
     values: &BTreeMap<String, NamespaceValue>,
-) -> Result<(PersistenceNamespace, SessionBinding), SessionApprovalError> {
+    submission_id: &str,
+) -> Result<(PersistenceNamespace, ApprovalBinding), SessionApprovalError> {
     let policy = profile
         .policy()
         .ok_or(SessionApprovalError::UnsupportedSessionPolicy)?;
-    let plan = policy
-        .snapshot
-        .as_ref()
-        .ok_or(SessionApprovalError::UnsupportedSessionPolicy)?;
+    let plan = policy.snapshot.as_ref();
+    if plan.is_none() && policy.cross_run_audit.is_empty() {
+        return Err(SessionApprovalError::UnsupportedSessionPolicy);
+    }
     // Validate every supplied parameter, including otherwise unused ones. No
     // defaults, numeric coercion or silently ignored unknown bindings.
     for (id, value) in values {
@@ -199,6 +274,16 @@ fn bind(
             .map(|&i| get(i))
             .collect::<Result<_, _>>()?,
     )?;
+    let Some(plan) = plan else {
+        return Ok((
+            namespace.clone(),
+            ApprovalBinding::Audit(AuditBinding {
+                flow: profile.schema_key().flow_id.clone(),
+                scope: namespace,
+                submission_id: submission_id.into(),
+            }),
+        ));
+    };
     let scope = PersistenceNamespace::new(
         plan.scope_parameters
             .iter()
@@ -213,13 +298,27 @@ fn bind(
     };
     Ok((
         namespace,
-        SessionBinding {
+        ApprovalBinding::Snapshot(SessionBinding {
             flow: profile.schema_key().flow_id.clone(),
             scope,
             year: integer(plan.year_parameter)?,
             quarter: integer(plan.quarter_parameter)?,
-        },
+        }),
     ))
+}
+
+/// Share the exact typed parameter/namespace checks with historical preflight,
+/// before any record can be opened. Calendar policies cannot enter audit wiring.
+pub(super) fn bind_audit_namespace(
+    profile: &CompiledPersistenceProfile,
+    values: &BTreeMap<String, NamespaceValue>,
+    submission_id: &str,
+) -> Result<PersistenceNamespace, SessionApprovalError> {
+    let (namespace, binding) = bind(profile, values, submission_id)?;
+    if !matches!(binding, ApprovalBinding::Audit(_)) {
+        return Err(SessionApprovalError::UnsupportedSessionPolicy);
+    }
+    Ok(namespace)
 }
 
 /// A private preparation only. Replacing/dropping a draft has no repository
@@ -229,7 +328,7 @@ pub struct ApprovalDraft {
     parameters: BTreeMap<String, NamespaceValue>,
     parts: SourceSubmissionParts,
     consent: Option<MissingTraceProceedConsent>,
-    binding: SessionBinding,
+    binding: ApprovalBinding,
 }
 impl fmt::Debug for ApprovalDraft {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -246,7 +345,10 @@ impl ApprovalDraft {
         mut parts: SourceSubmissionParts,
         consent: Option<MissingTraceProceedConsent>,
     ) -> Result<Self, SessionApprovalError> {
-        let (namespace, binding) = bind(profile, &parameters)?;
+        let (namespace, binding) = bind(profile, &parameters, &parts.submission_id)?;
+        if !binding.requires_missing_consent() && consent.is_some() {
+            return Err(SessionApprovalError::UnsupportedSessionPolicy);
+        }
         let period = binding.encode()?;
         if parts.state != SessionState::Draft
             || parts.namespace != namespace
@@ -305,6 +407,9 @@ impl ApprovalDraft {
         mut self,
         consent: MissingTraceProceedConsent,
     ) -> Result<Self, SessionApprovalError> {
+        if !self.binding.requires_missing_consent() {
+            return Err(SessionApprovalError::UnsupportedSessionPolicy);
+        }
         SourceSubmission::new_with_missing_trace_consent(self.parts.clone(), consent.clone())?;
         self.consent = Some(consent);
         Ok(self)
@@ -327,7 +432,8 @@ impl ApprovalDraft {
             .filter(|t| t.presence == TracePresence::Absent)
             .map(|t| t.trace_id.clone())
             .collect();
-        if !absent.is_empty()
+        if self.binding.requires_missing_consent()
+            && !absent.is_empty()
             && !self
                 .consent
                 .as_ref()
@@ -517,7 +623,7 @@ fn verify_outcome(
 pub struct ValidatedApproval {
     snapshot: HistoricalSnapshot,
     approved: SourceSubmission,
-    binding: SessionBinding,
+    binding: ApprovalBinding,
     warning: Option<String>,
 }
 impl fmt::Debug for ValidatedApproval {
@@ -607,7 +713,7 @@ impl ValidatedApproval {
 fn find_approval(
     repository: &dyn PersistentContextRepository,
     candidate: &HistoricalSnapshot,
-    binding: &SessionBinding,
+    binding: &ApprovalBinding,
     upper: Option<SnapshotRevision>,
     cancellation: &CancellationToken,
 ) -> Result<Option<CommitReceipt>, SessionApprovalError> {
@@ -643,10 +749,10 @@ fn find_approval(
                     // failure. A collision with another flow/unapproved source
                     // remains the repository's technical duplicate-ID error.
                     if source.state() == SessionState::ApprovedImmutable
-                        && source.schema_key().flow_id == binding.flow
+                        && &source.schema_key().flow_id == binding.flow()
                     {
-                        let previous = SessionBinding::decode(source.period())?;
-                        if previous.flow != binding.flow {
+                        let previous = ApprovalBinding::decode(source.period())?;
+                        if !previous.matches_source(&source) {
                             return Err(SessionApprovalError::UnboundApprovedHistory);
                         }
                         return Err(SessionApprovalError::Rejected(
@@ -664,12 +770,12 @@ fn find_approval(
                 };
             }
             if source.state() != SessionState::ApprovedImmutable
-                || source.schema_key().flow_id != binding.flow
+                || &source.schema_key().flow_id != binding.flow()
             {
                 continue;
             }
-            let previous = SessionBinding::decode(source.period())?;
-            if previous.flow != source.schema_key().flow_id {
+            let previous = ApprovalBinding::decode(source.period())?;
+            if !previous.matches_source(&source) {
                 return Err(SessionApprovalError::UnboundApprovedHistory);
             }
             if !previous.same_definition(binding) {

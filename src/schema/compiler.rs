@@ -501,6 +501,15 @@ impl SchemaCompiler {
         &self,
         raw: RawFlowSchema,
     ) -> Result<CompiledFlowSchema, SchemaCompilationError> {
+        self.compile_scoped(raw, None)
+    }
+    /// Only the checked historical compiler supplies this authorization. The
+    /// public ordinary path retains its existing fail-closed capability checks.
+    pub(crate) fn compile_scoped(
+        &self,
+        raw: RawFlowSchema,
+        audit_policy: Option<PersistencePolicy>,
+    ) -> Result<CompiledFlowSchema, SchemaCompilationError> {
         let mut checks = Checks {
             raw: &raw,
             issues: lint_raw_schema(&raw),
@@ -561,7 +570,9 @@ impl SchemaCompiler {
                     | RawFlowSchemaRequiredCapabilitiesItem::DerivedSubstringV1
                     | RawFlowSchemaRequiredCapabilitiesItem::DerivedAgeInCompletedYearsV1
                     | RawFlowSchemaRequiredCapabilitiesItem::DerivedCalendarYearDeltaV1
-            ) {
+            ) && !(audit_policy.is_some()
+                && *capability == RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1)
+            {
                 checks.error(
                     Code::UnsupportedCapability,
                     None,
@@ -571,7 +582,7 @@ impl SchemaCompiler {
             }
         }
         checks.unsupported(
-            raw.persistence_policy.is_some(),
+            raw.persistence_policy.is_some() && audit_policy.is_none(),
             None,
             None,
             "persistence_policy",
@@ -800,6 +811,11 @@ impl SchemaCompiler {
                         RawFlowSchemaRequiredCapabilitiesItem::DerivedCalendarYearDeltaV1 => {
                             Capability::DerivedCalendarYearDeltaV1
                         }
+                        RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1
+                            if audit_policy.is_some() =>
+                        {
+                            Capability::PersistenceAuditV1
+                        }
                         _ => {
                             return Err(fail(
                                 None,
@@ -811,7 +827,7 @@ impl SchemaCompiler {
                     })
                 })
                 .collect::<Result<Vec<_>, SchemaCompilationError>>()?,
-            persistence_policy: None,
+            persistence_policy: audit_policy,
         })
         .map_err(|error| {
             fail(

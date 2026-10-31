@@ -213,4 +213,5 @@ pub(crate) struct FullServicePorts<'a> {
     pub cancellation: &'a CancellationToken,
     pub started_at: std::time::SystemTime,
     pub resolved: &'a ResolvedSchema,
+    pub record_observer: Option<&'a mut dyn crate::engine::flow_execution::FlowRecordObserver>,
 }

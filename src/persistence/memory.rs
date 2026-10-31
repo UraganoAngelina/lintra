@@ -20,6 +20,7 @@ impl NamespaceState {
 #[derive(Default)]
 struct CommittedImage {
     namespaces: HashMap<PersistenceNamespace, NamespaceState>,
+    protection_audit: Option<ProtectionAudit>,
 }
 /// Explicit in-process backing for tests. Uncommitted staging is never part of
 /// this image. Clone/reopen preserves committed facts without claiming a WAL.
@@ -39,6 +40,16 @@ pub struct InMemoryPersistenceRepository {
     image: InMemoryPersistenceImage,
 }
 impl InMemoryPersistenceRepository {
+    /// Explicit empty fake with public protection metadata. Default remains the
+    /// unqualified transaction fake; no key/audit is silently manufactured.
+    pub fn with_protection_audit(audit: ProtectionAudit) -> Self {
+        Self {
+            image: InMemoryPersistenceImage(Arc::new(Mutex::new(CommittedImage {
+                namespaces: HashMap::new(),
+                protection_audit: Some(audit),
+            }))),
+        }
+    }
     pub fn open(image: InMemoryPersistenceImage) -> Self {
         Self { image }
     }
@@ -66,6 +77,13 @@ fn check_generation(
     Ok(())
 }
 impl PersistentContextRepository for InMemoryPersistenceRepository {
+    fn load_protection_audit(&self) -> Result<ProtectionAudit, PersistenceError> {
+        self.image
+            .lock()?
+            .protection_audit
+            .clone()
+            .ok_or(PersistenceError::StorageUnavailable)
+    }
     fn lookup_identity_occurrence(
         &self,
         namespace: &PersistenceNamespace,

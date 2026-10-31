@@ -40,6 +40,11 @@ fn ordered(value: Value) -> Value {
 /// serialization contract, like other run options; no source JSON is modified.
 pub fn canonical_schema_bytes(raw: &RawFlowSchema) -> Result<Vec<u8>, CanonicalSchemaError> {
     let value = serde_json::to_value(raw).map_err(CanonicalSchemaError)?;
+    canonical_value_bytes(value)
+}
+/// Reuse the same deterministic ordering for compiler-owned metadata such as
+/// fingerprint definitions. This does not change the normative schema codec.
+pub(crate) fn canonical_value_bytes(value: Value) -> Result<Vec<u8>, CanonicalSchemaError> {
     serde_json::to_vec(&ordered(value)).map_err(CanonicalSchemaError)
 }
 /// Hash exactly the canonical model bytes using the already approved SHA-256

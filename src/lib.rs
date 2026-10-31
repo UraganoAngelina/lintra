@@ -206,7 +206,7 @@ pub use schema::diff::{
     SchemaChange, SchemaChangeKind, SchemaDiff, SchemaDiffError, SchemaDiffRevision,
     SchemaDiffSide, diff_schemas,
 };
-pub use schema::registry::ResolvedSchema;
+pub use schema::registry::{ResolvedHistoricalSchema, ResolvedSchema};
 
 pub use application::clock::{Clock, SystemClock};
 pub use application::service::{
@@ -339,12 +339,17 @@ pub use schema::authoring::{
 };
 
 // Persistence data contracts, never an executable historical-validation proof.
+pub use application::historical_validation::{
+    HistoricalAuditSink, HistoricalValidationError, HistoricalValidationOutcome,
+    HistoricalValidationPreview, HistoricalValidationRequest, HistoricalValidationService,
+};
 pub use domain::{
     Fingerprint, HistoricalChange, HistoricalDiff, HistoryDiff, MissingTraceProceedConsent,
     NamespaceValue, PersistenceNamespace, PersistenceSchemaScope, PersistenceTypeError,
     PersistentRecordIdentity, RecordFingerprint, SessionState, SnapshotRevision, SourceSubmission,
     SourceSubmissionParts, SubmissionTrace, TracePresence,
 };
+pub use schema::historical::{CompiledHistoricalFlowSchema, RecordByteProjectionDefinition};
 
 // Adapter support only: engine/service still receive explicit repositories/paths.
 mod bundle_resolution;

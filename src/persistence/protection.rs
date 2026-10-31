@@ -306,6 +306,40 @@ impl IdentityProtector {
         component(&mut mac, pk.as_bytes())?;
         component(&mut mac, &definition.0)?;
         component(&mut mac, projection.as_bytes())?;
+        self.finish_record(identity, definition, mac)
+    }
+    /// Protect a physical record-byte projection as ONE canonical JoinKey
+    /// component. The producer supplies its compiler-bound definition; this
+    /// primitive assigns no clinical meaning to byte/padding changes.
+    /// Streaming the inner and outer length frames avoids copying the record.
+    pub fn protect_record_bytes(
+        &self,
+        scope: &IdentityProtectionScope,
+        pk: &JoinKey,
+        definition: &Sha256Digest,
+        record: &[u8],
+    ) -> Result<StoredIdentity, ProtectionError> {
+        let identity = self.protect_key(scope, pk)?;
+        let mut mac = self.scoped_mac(scope, b"record")?;
+        component(&mut mac, pk.as_bytes())?;
+        component(&mut mac, &definition.0)?;
+        let length = u64::try_from(record.len()).map_err(|_| ProtectionError::LengthOverflow)?;
+        let encoded_length = length
+            .checked_add(8)
+            .ok_or(ProtectionError::LengthOverflow)?;
+        mac.update(&encoded_length.to_be_bytes());
+        mac.update(&length.to_be_bytes());
+        mac.update(record);
+        self.finish_record(identity, definition, mac)
+    }
+    /// Shared sealing preserves the existing v1 wire, scheme and private MAC
+    /// proof for both a prebuilt JoinKey and its borrowed streaming equivalent.
+    fn finish_record(
+        &self,
+        identity: PersistentRecordIdentity,
+        definition: &Sha256Digest,
+        mac: HmacSha256,
+    ) -> Result<StoredIdentity, ProtectionError> {
         let scheme = format!("lintra.hmac-sha256.record.v1:{definition}");
         let fingerprint = Fingerprint::new(
             scheme,
@@ -383,6 +417,22 @@ impl IdentityProtector {
         self.record_mac(value)?
             .verify_slice(tag)
             .map_err(|_| ProtectionError::InvalidAttestation)
+    }
+    /// Compiler-bound seed for a new application draft. It is a real keyed
+    /// token, not caller-supplied evidence of validation; protect_submission
+    /// subsequently seals it together with the actual run metadata and state.
+    pub(crate) fn draft_fingerprint(
+        &self,
+        schema_hash: &Sha256Digest,
+    ) -> Result<Fingerprint, ProtectionError> {
+        let mut mac = self.mac(b"audit-draft")?;
+        component(&mut mac, &schema_hash.0)?;
+        Fingerprint::new(
+            "lintra.hmac-sha256.audit-draft.v1".into(),
+            self.key_id.clone(),
+            mac.finalize().into_bytes().to_vec(),
+        )
+        .map_err(ProtectionError::Metadata)
     }
     /// Explicit preparation step for an invio. The existing opaque preparation
     /// fingerprint is wrapped together with all metadata, never stored verbatim

@@ -240,6 +240,12 @@ impl CommitReceipt {
 /// Generic application port. No engine ContextStore dependency and no filesystem
 /// discovery. All lookups are exact, namespace-scoped and read only.
 pub trait PersistentContextRepository: Send + Sync {
+    /// Public key-confirmation metadata from the initialized repository, never
+    /// secret material. A historical producer verifies this before reading data,
+    /// including when its selected namespace has no snapshots yet.
+    fn load_protection_audit(&self) -> Result<ProtectionAudit, PersistenceError> {
+        Err(PersistenceError::StorageUnavailable)
+    }
     /// Latest exact occurrence and its source, including omitted identities.
     /// A default fails closed: unsupported provenance is never an empty history.
     /// The caller pins/checks generation when combining several historical reads.

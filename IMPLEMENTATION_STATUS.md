@@ -1,9 +1,46 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-10-30**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-10-31**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — PERSIST08 DONE, integrazione SIOC prossima READY
+## Frontiera corrente — T-PERSIST-09 gate locali completi, qualifica nativa da avviare
+
+31 ottobre 2026: **119/140 DONE = 85%**; UI 9/9 e M8 confermate, nessun nuovo
+DONE anticipato. Ripresa single-agent su fafac99 con lavoro 09 parziale conservato.
+Compiler/registry storico audit-only da una source, observer PK/record borrowing,
+HMAC byte-esatto senza righe conservate, servizio Full/preview e archivio privo
+di trimestre implementati. Percorsi ordinari UI/CLI e schemi FROZEN invariati.
+Fonte tecnica: docs/verification/T-PERSIST-09-integration.md e preflight 09.
+
+Gate locali completi: 49 test mirati (14 audit, 9 protection, 15 session, 11 SIOC) e clock
+positivo; workspace default/all-features 846 esiti/109 riepiloghi ciascuno,
+core-no-bundle 803/92, 0 fail/4 ignored. Fmt/Clippy due assetti e boundary positivi.
+257 hash sorgenti immutati durante 9 comandi finali; T-PERSIST-09-local-gates.json.
+Tentativi con fixture negative errate e interruzione per portabilità del clock
+conservati, non confusi con pass. Campione 700 ns verificato nel reticolo Windows 100 ns.
+DEC-SIOC-HIST-01 resta aperta, solo audit inter-run. Test sintetici sul componente
+SIOC tracciato; nessuna falsa conformità del profilo completo ancora non eseguibile.
+Nessun report fallito/cancel/invalid consente commit; chiave del repository
+verificata anche in namespace vuoto. docs/migration esclusa e preservata.
+Residuo: commit/push e CI Linux/MSVC. T-PERSIST-09 IN_PROGRESS,
+AUTO_CONTINUE; prossima candidata 10 dopo preflight dei propri contratti e gate.
+
+## HANDOFF §15.3 — T-PERSIST-09 qualificata localmente, AUTO_CONTINUE
+
+File: schema historical/compiler/registry/canonical, hook engine e service Full,
+application/historical_validation/session, protection/audit port e adapter SQLite/fake,
+lib re-export, test SIOC/protection/SQLite e dossier 09. Nessun nuovo crate, schema
+normativo, UI, formato storage o dato paziente. Il materiale esterno docs/migration
+rimane escluso. Architettura: application orchestra, engine borrowing senza SQL;
+source, PK e input audit provengono dalla stessa esecuzione. Il report tecnico
+spiega struct, funzioni, condizioni e limiti. Nessuna conformità globale inventata.
+Evidenze locali nel ledger: 846/846/803, 0 fail, source unchanged, tutti 9 comandi exit 0.
+CI nativa ancora da avviare: non DONE. Git work/p1-foundations su base fafac99,
+working tree 09 da pubblicare; approvazione Git/CI permanente già applicabile.
+Next: avvio/gate 09; durante l'attesa preflight 10, oppure 11 indipendente con 05/07/08
+realmente DONE. Nessun consenso ordinario ulteriore, single-agent/no daemon.
+
+## Registro precedente — PERSIST08 DONE, T-PERSIST-09 IN_PROGRESS
 
 30 ottobre2026: **119/140 DONE = 85%**; UI9/9 e M8 confermate. Audit generico
 PERSIST08 verificato sul codice bc7c448: CI41069605562 completed/success,
@@ -20,6 +57,13 @@ Locali:14test audit,18SQLite; workspace831esiti/108riepiloghi perassetto e
 core-no-bundle788/91,0fail/4ignored, inclusi helper/doctest; fmt/Clippy/boundary
 positivi. Dossier T-PERSIST-08-audit.md, local-gates.json e native-ci.json.
 T-P17-03 DONE: soglie non definite con motivo; DEC-14 aperta. M9 ancora aperta.
+T-PERSIST-09 avviata in preflight:08/CI41069605562,6-07/CI39439627879 e
+P13/CI40192491629 effettivamente verificati. Profili operativi SIOC già dotati
+di audit PK su5trace e namespace organisation_namespace integer1..4294967295;
+snapshot policy assente. Verificare collegamento compiler/registry/collector,
+fingerprint minimale protetto e lifecycle audit senza periodi CAD. No codice
+UI, nuova norma o modifica FROZEN; dossier T-PERSIST-09-preflight.md.
+
 
 ## HANDOFF §15.3 — T-PERSIST-08 DONE, AUTO_CONTINUE
 
@@ -2676,7 +2720,8 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-PERSIST-06 | DONE | 2026-10-29 | Code3e8fae4, CI40853726275 tutti4job success; metadati, consenso dichiarato e compatibilità verificati |
 | T-PERSIST-07 | DONE | 2026-10-29 | Code1e92b1f, CI40877202683 tutti4job success;795test locali/97suite, coordinator e cursor SQLite verificati |
 | T-PERSIST-08 | DONE | 2026-10-30 | bc7c448, CI41069605562 tutti5job richiesti success; audit deterministico/HMAC/CAS read-only,14test audit/18SQLite,831esiti locali perassetto; dossier08 |
-| T-PERSIST-09..12 | NOT_STARTED | — | Dopo08 e rispettive dipendenze |
+| T-PERSIST-09 | IN_PROGRESS | 2026-10-30 | Preflight dopo08 verificata, sorgente fafac99; integrazione SIOC audit-only e PK5trace, nessun divieto inter-run |
+| T-PERSIST-10..12 | NOT_STARTED | — | Dopo rispettive dipendenze |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — Linux locale

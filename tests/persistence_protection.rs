@@ -61,6 +61,55 @@ fn keys(record: &[u8]) -> (JoinKey, JoinKey) {
         build_join_key(&RecordView::new(record), &[1], trace).unwrap(),
     )
 }
+
+#[test]
+fn streaming_record_bytes_match_the_existing_v1_single_component_projection() {
+    let provider = Provider::new("test-key", 0xaa);
+    let protector = IdentityProtector::preflight(Some("test-key"), &provider, None).unwrap();
+    let record = b"001A  ";
+    let (pk, _) = keys(record);
+    // One exact field covering the whole record creates the existing canonical
+    // JoinKey oracle. Production streaming does not allocate that record copy.
+    let mut raw: RawFlowSchema =
+        serde_json::from_slice(include_bytes!("golden/synthetic/v1/schema.json")).unwrap();
+    raw.encoding.resolved = Some(RawResolvedEncoding::Utf8);
+    let compiled = SchemaCompiler.compile(raw).unwrap();
+    let projection = build_join_key(&RecordView::new(record), &[0], &compiled.traces()[0]).unwrap();
+    let expected = protector
+        .protect_projection(&scope(), &pk, &definition(), &projection)
+        .unwrap();
+    let actual = protector
+        .protect_record_bytes(&scope(), &pk, &definition(), record)
+        .unwrap();
+    assert_eq!(actual, expected);
+    protector.verify_stored_identity(&actual).unwrap();
+    let changed = protector
+        .protect_record_bytes(&scope(), &pk, &definition(), b"001B  ")
+        .unwrap();
+    assert_eq!(actual.identity(), changed.identity());
+    assert_ne!(actual.record_fingerprint(), changed.record_fingerprint());
+}
+
+#[test]
+fn initialized_fake_exposes_verified_public_audit_without_generating_keys() {
+    let provider = Provider::new("test-key", 0xaa);
+    let protector = IdentityProtector::preflight(Some("test-key"), &provider, None).unwrap();
+    assert!(matches!(
+        InMemoryPersistenceRepository::default().load_protection_audit(),
+        Err(PersistenceError::StorageUnavailable)
+    ));
+    let repo = InMemoryPersistenceRepository::with_protection_audit(protector.audit().unwrap());
+    let reopened = InMemoryPersistenceRepository::open(repo.image());
+    protector
+        .verify_audit(&reopened.load_protection_audit().unwrap())
+        .unwrap();
+    let other = Provider::new("test-key", 0xbb);
+    let changed = IdentityProtector::preflight(Some("test-key"), &other, None).unwrap();
+    assert!(matches!(
+        changed.verify_audit(&reopened.load_protection_audit().unwrap()),
+        Err(ProtectionError::KeyMismatch)
+    ));
+}
 #[test]
 fn protected_projection_matches_a_golden_computed_with_independent_python_hmac() {
     let provider = Provider::new("test-key", 0xaa);
