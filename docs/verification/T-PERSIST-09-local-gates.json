@@ -3,7 +3,7 @@
   "date": "2026-10-31",
   "cargo_build_jobs": 2,
   "local_complete": true,
-  "native_gate": "not_started",
+  "native_gate": "dispatched; result not yet inspected",
   "source_before": {
     "Cargo.lock": "016c337544ea30b25e673b8f9f637be11caa8af4789155c18e21d683d08fdfac",
     "Cargo.toml": "3c73008d82089c91d2761538b84b114eb158db941836f2f9ebb5d61d5feba777",
@@ -712,5 +712,8 @@
     "ui/ui/results.slint": "189d8a3381361dde156304ee1d2f1902bad4d09c4c6fbbcb26fcb81621d62dba",
     "ui/ui/tokens.slint": "d3847381138274d3c8072ea2ac367711dc233e9db87ee627ada2c5e18636f4f7"
   },
-  "source_unchanged": true
+  "source_unchanged": true,
+  "qualified_local_source_commit": "4313f22e48c6b8a239028c0bb6a617ac8c37cc48",
+  "native_ci_run": 41194045486,
+  "native_ci_url": "https://github.com/UraganoAngelina/lintra/actions/runs/41194045486"
 }

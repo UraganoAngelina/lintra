@@ -3,7 +3,7 @@
 Consuntivo aggiornato al **2026-10-31**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-PERSIST-09 gate locali completi, qualifica nativa da avviare
+## Frontiera corrente — T-PERSIST-09 WAITING_GATE, CI nativa avviata
 
 31 ottobre 2026: **119/140 DONE = 85%**; UI 9/9 e M8 confermate, nessun nuovo
 DONE anticipato. Ripresa single-agent su fafac99 con lavoro 09 parziale conservato.
@@ -22,7 +22,9 @@ DEC-SIOC-HIST-01 resta aperta, solo audit inter-run. Test sintetici sul componen
 SIOC tracciato; nessuna falsa conformità del profilo completo ancora non eseguibile.
 Nessun report fallito/cancel/invalid consente commit; chiave del repository
 verificata anche in namespace vuoto. docs/migration esclusa e preservata.
-Residuo: commit/push e CI Linux/MSVC. T-PERSIST-09 IN_PROGRESS,
+Codice 4313f22 pubblicato; CI41194045486 avviata con dispatch riuscito, esito
+non ancora letto. Residuo: gate Linux/MSVC e confronti JSONL/pixel effettivi.
+T-PERSIST-09 IN_PROGRESS/WAITING_GATE,
 AUTO_CONTINUE; prossima candidata 10 dopo preflight dei propri contratti e gate.
 
 ## HANDOFF §15.3 — T-PERSIST-09 qualificata localmente, AUTO_CONTINUE
@@ -35,9 +37,9 @@ rimane escluso. Architettura: application orchestra, engine borrowing senza SQL;
 source, PK e input audit provengono dalla stessa esecuzione. Il report tecnico
 spiega struct, funzioni, condizioni e limiti. Nessuna conformità globale inventata.
 Evidenze locali nel ledger: 846/846/803, 0 fail, source unchanged, tutti 9 comandi exit 0.
-CI nativa ancora da avviare: non DONE. Git work/p1-foundations su base fafac99,
-working tree 09 da pubblicare; approvazione Git/CI permanente già applicabile.
-Next: avvio/gate 09; durante l'attesa preflight 10, oppure 11 indipendente con 05/07/08
+CI41194045486 avviata su 4313f22, nessun successo presunto: non DONE.
+Git work/p1-foundations, codice pubblicato; aggiornamento documentale in corso.
+Next: gate 09; durante l'attesa preflight 10, oppure 11 indipendente con 05/07/08
 realmente DONE. Nessun consenso ordinario ulteriore, single-agent/no daemon.
 
 ## Registro precedente — PERSIST08 DONE, T-PERSIST-09 IN_PROGRESS
@@ -2720,7 +2722,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-PERSIST-06 | DONE | 2026-10-29 | Code3e8fae4, CI40853726275 tutti4job success; metadati, consenso dichiarato e compatibilità verificati |
 | T-PERSIST-07 | DONE | 2026-10-29 | Code1e92b1f, CI40877202683 tutti4job success;795test locali/97suite, coordinator e cursor SQLite verificati |
 | T-PERSIST-08 | DONE | 2026-10-30 | bc7c448, CI41069605562 tutti5job richiesti success; audit deterministico/HMAC/CAS read-only,14test audit/18SQLite,831esiti locali perassetto; dossier08 |
-| T-PERSIST-09 | IN_PROGRESS | 2026-10-30 | Preflight dopo08 verificata, sorgente fafac99; integrazione SIOC audit-only e PK5trace, nessun divieto inter-run |
+| T-PERSIST-09 | IN_PROGRESS | 2026-10-31 | Codice 4313f22 pubblicato, locali 846/846/803 pass; CI41194045486 avviata, esito nativo pendente. Audit-only, nessun divieto inter-run |
 | T-PERSIST-10..12 | NOT_STARTED | — | Dopo rispettive dipendenze |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 

@@ -181,5 +181,6 @@ nel sorgente std della toolchain 1.99.1. Nessun controllo produttivo è attenuat
 | Confini workspace/core |exit 0 |
 
 I conteggi includono helper di processo e doctest effettivamente riportati dai
-runner. La CI Linux/MSVC non è ancora attribuita a questo codice; pubblicazione
-e gate nativo sono i passi successivi obbligatori prima di DONE.
+runner. Codice `4313f22` pubblicato sul branch concordato;
+[CI nativa 41194045486](https://github.com/UraganoAngelina/lintra/actions/runs/41194045486)
+avviata, esito non ancora ispezionato. Nessun DONE prima dei gate effettivi.
