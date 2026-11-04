@@ -1,6 +1,6 @@
 # T-P17-02 — profilazione misurata prima delle ottimizzazioni
 
-4 novembre 2026, IN_PROGRESS. Al preflight T-P17-02 era indipendente da
+4 novembre 2026, **DONE** (CI41846160280 qualificata; chiusura in fondo). Al preflight T-P17-02 era indipendente da
 T-PERSIST-10, allora in attesa del gate41822083629, ora DONE. Nessun prerequisito
 aggirato:
 T-P17-01 DONE su 485c98f, CI40476599897 Linux/MSVC e confronto JSONL positivi,
@@ -121,3 +121,13 @@ interrotta con exit130 dopo il successo standard: nessun runtime o ramo feature
 gli smoke pertinenti, Clippy all-features e la regressione standard. La futura
 CI completa all-features su entrambi gli OS resta un gate nativo obbligatorio.
 Nessun esito Windows anticipato; IN_PROGRESS fino alla CI reale.
+
+
+## Chiusura nativa
+
+DONE: CI41846160280 su9d641d4478ad8026441696a1f1bd4b099524e19f conclusa con
+successo, tutti sette i job richiesti positivi. Entrambi gli smoke qualificano
+realmente il nuovo scenario e meter; full all-features nativo passato su entrambi
+gli OS, insieme ai confronti JSONL/pixel e trasferimenti SQLite. Packaging UI
+opzionale saltato. Ledger T-P17-02-native-ci.json, tre letture distanziate.
+Nessun gate residuo17-02; golden/runtime invariati e nessun guadagno dichiarato.

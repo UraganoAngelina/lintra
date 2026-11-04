@@ -1,0 +1,93 @@
+{
+  "task": "T-P17-02",
+  "head_sha": "9d641d4478ad8026441696a1f1bd4b099524e19f",
+  "run_id": 41846160280,
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41846160280",
+  "status": "completed",
+  "conclusion": "success",
+  "done": true,
+  "ordinary_reads": 3,
+  "verified_at_utc": "2026-11-04T15:09:42.894966+00:00",
+  "jobs": [
+    {
+      "name": "Verify (x86_64-unknown-linux-gnu)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41846160280/job/126630102019",
+      "startedAt": "2026-11-04T14:18:03Z",
+      "completedAt": "2026-11-04T14:31:32Z",
+      "benchmark_step": {
+        "completedAt": "2026-11-04T14:27:21Z",
+        "conclusion": "success",
+        "name": "Smoke synthetic benchmark and verify expected validation counts",
+        "number": 19,
+        "startedAt": "2026-11-04T14:27:13Z",
+        "status": "completed"
+      }
+    },
+    {
+      "name": "Verify (x86_64-pc-windows-msvc)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41846160280/job/126630102533",
+      "startedAt": "2026-11-04T14:18:03Z",
+      "completedAt": "2026-11-04T14:49:44Z",
+      "benchmark_step": {
+        "completedAt": "2026-11-04T14:40:37Z",
+        "conclusion": "success",
+        "name": "Smoke synthetic benchmark and verify expected validation counts",
+        "number": 19,
+        "startedAt": "2026-11-04T14:40:15Z",
+        "status": "completed"
+      }
+    },
+    {
+      "name": "Qualify UI archives",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41846160280/job/126630104578",
+      "startedAt": "2026-11-04T14:18:01Z",
+      "completedAt": "2026-11-04T14:18:00Z"
+    },
+    {
+      "name": "Compare native desktop theme pixels",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41846160280/job/126648583682",
+      "startedAt": "2026-11-04T14:49:47Z",
+      "completedAt": "2026-11-04T14:49:55Z"
+    },
+    {
+      "name": "Compare production UI regression pixels",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41846160280/job/126648583759",
+      "startedAt": "2026-11-04T14:49:47Z",
+      "completedAt": "2026-11-04T14:49:56Z"
+    },
+    {
+      "name": "Reopen counterpart snapshot (x86_64-unknown-linux-gnu)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41846160280/job/126648583768",
+      "startedAt": "2026-11-04T14:49:47Z",
+      "completedAt": "2026-11-04T14:50:45Z"
+    },
+    {
+      "name": "Compare Linux and Windows JSONL bytes",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41846160280/job/126648583868",
+      "startedAt": "2026-11-04T14:49:47Z",
+      "completedAt": "2026-11-04T14:49:59Z"
+    },
+    {
+      "name": "Reopen counterpart snapshot (x86_64-pc-windows-msvc)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41846160280/job/126648584046",
+      "startedAt": "2026-11-04T14:49:47Z",
+      "completedAt": "2026-11-04T14:51:28Z"
+    }
+  ]
+}
