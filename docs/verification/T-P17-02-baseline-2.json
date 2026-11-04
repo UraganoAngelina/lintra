@@ -1,0 +1,189 @@
+{
+  "arch": "x86_64",
+  "benchmark_format_version": 2,
+  "compiler_commit": "c884692e29dbc0db9a9405414606f09b1156d8bc",
+  "harness_source_sha256": "28bd00423397d39dc2997c20fcb48058e7976fc3a0fda03d2b86b29bed5bb3d6",
+  "join_key_source_sha256": "b3bb61f04b760af6a90ac43658dd1dd450d8dfa0a90df2dd9123a17c5cb756f1",
+  "memory_metric": "peak additional requested Rust heap bytes, not RSS; allocator instrumentation affects throughput",
+  "optimized": true,
+  "os": "linux",
+  "projection_source_sha256": "295bc7f04c4da40153905489f1f19b6d1254629f43d92795c98fb478325ca3b3",
+  "results": [
+    {
+      "errors": 0,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 18560476,
+        "successful_allocations": 197885,
+        "successful_reallocations": 14
+      },
+      "peak_additional_requested_heap_bytes": 8871396,
+      "record_width_bytes": 18,
+      "records": 10000,
+      "records_per_second": 145930.06946431828,
+      "scenario": "valid-heavy",
+      "scope": "Full service including compilation, two passes and count-only sink; fixture IO excluded",
+      "seconds": 0.068525973
+    },
+    {
+      "errors": 5000,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 27171576,
+        "successful_allocations": 327898,
+        "successful_reallocations": 10014
+      },
+      "peak_additional_requested_heap_bytes": 8916655,
+      "record_width_bytes": 18,
+      "records": 10000,
+      "records_per_second": 112344.85989348943,
+      "scenario": "error-heavy",
+      "scope": "Full service including compilation, two passes and count-only sink; fixture IO excluded",
+      "seconds": 0.089011638
+    },
+    {
+      "heap_traffic": {
+        "cumulative_requested_bytes": 5350000,
+        "successful_allocations": 110000,
+        "successful_reallocations": 0
+      },
+      "peak_additional_requested_heap_bytes": 535,
+      "record_width_bytes": 18,
+      "records": 10000,
+      "records_per_second": 736212.380191558,
+      "scenario": "projection",
+      "scope": "project_record, three fields and join keys, drop each projection; no ContextStore or IO",
+      "seconds": 0.013583037
+    },
+    {
+      "heap_traffic": {
+        "cumulative_requested_bytes": 160000,
+        "successful_allocations": 10000,
+        "successful_reallocations": 0
+      },
+      "peak_additional_requested_heap_bytes": 16,
+      "records": 10000,
+      "records_per_second": 6978766.405335127,
+      "scenario": "join-key",
+      "scope": "one logical component, exact length-prefixed bytes; drop each key; no IO or ContextStore",
+      "seconds": 0.001432918
+    },
+    {
+      "errors": 0,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 179779884,
+        "successful_allocations": 1967980,
+        "successful_reallocations": 14
+      },
+      "peak_additional_requested_heap_bytes": 87128660,
+      "record_width_bytes": 18,
+      "records": 100000,
+      "records_per_second": 132658.92419393754,
+      "scenario": "valid-heavy",
+      "scope": "Full service including compilation, two passes and count-only sink; fixture IO excluded",
+      "seconds": 0.753812837
+    },
+    {
+      "errors": 50000,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 264805736,
+        "successful_allocations": 3267996,
+        "successful_reallocations": 100014
+      },
+      "peak_additional_requested_heap_bytes": 87425183,
+      "record_width_bytes": 18,
+      "records": 100000,
+      "records_per_second": 103255.291686302,
+      "scenario": "error-heavy",
+      "scope": "Full service including compilation, two passes and count-only sink; fixture IO excluded",
+      "seconds": 0.968473367
+    },
+    {
+      "heap_traffic": {
+        "cumulative_requested_bytes": 53500000,
+        "successful_allocations": 1100000,
+        "successful_reallocations": 0
+      },
+      "peak_additional_requested_heap_bytes": 535,
+      "record_width_bytes": 18,
+      "records": 100000,
+      "records_per_second": 734821.6921362233,
+      "scenario": "projection",
+      "scope": "project_record, three fields and join keys, drop each projection; no ContextStore or IO",
+      "seconds": 0.136087436
+    },
+    {
+      "heap_traffic": {
+        "cumulative_requested_bytes": 1600000,
+        "successful_allocations": 100000,
+        "successful_reallocations": 0
+      },
+      "peak_additional_requested_heap_bytes": 16,
+      "records": 100000,
+      "records_per_second": 7170478.851748199,
+      "scenario": "join-key",
+      "scope": "one logical component, exact length-prefixed bytes; drop each key; no IO or ContextStore",
+      "seconds": 0.01394607
+    },
+    {
+      "errors": 0,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 1886186860,
+        "successful_allocations": 19668870,
+        "successful_reallocations": 14
+      },
+      "peak_additional_requested_heap_bytes": 903294644,
+      "record_width_bytes": 18,
+      "records": 1000000,
+      "records_per_second": 112367.98367796786,
+      "scenario": "valid-heavy",
+      "scope": "Full service including compilation, two passes and count-only sink; fixture IO excluded",
+      "seconds": 8.899332063
+    },
+    {
+      "errors": 500000,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 2762393416,
+        "successful_allocations": 32668890,
+        "successful_reallocations": 1000014
+      },
+      "peak_additional_requested_heap_bytes": 913041407,
+      "record_width_bytes": 18,
+      "records": 1000000,
+      "records_per_second": 86767.24052047549,
+      "scenario": "error-heavy",
+      "scope": "Full service including compilation, two passes and count-only sink; fixture IO excluded",
+      "seconds": 11.525087049
+    },
+    {
+      "heap_traffic": {
+        "cumulative_requested_bytes": 535000000,
+        "successful_allocations": 11000000,
+        "successful_reallocations": 0
+      },
+      "peak_additional_requested_heap_bytes": 535,
+      "record_width_bytes": 18,
+      "records": 1000000,
+      "records_per_second": 850020.7617146039,
+      "scenario": "projection",
+      "scope": "project_record, three fields and join keys, drop each projection; no ContextStore or IO",
+      "seconds": 1.176441853
+    },
+    {
+      "heap_traffic": {
+        "cumulative_requested_bytes": 16000000,
+        "successful_allocations": 1000000,
+        "successful_reallocations": 0
+      },
+      "peak_additional_requested_heap_bytes": 16,
+      "records": 1000000,
+      "records_per_second": 7586555.4281402,
+      "scenario": "join-key",
+      "scope": "one logical component, exact length-prefixed bytes; drop each key; no IO or ContextStore",
+      "seconds": 0.131812126
+    }
+  ],
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "synthetic": true,
+  "synthetic_schema_source_sha256": "edbdc25d15a8c2d9c1268eabacee88747ffa421dfdfbac160d56642048de3a7d",
+  "thresholds": null,
+  "validator_version": "0.1.1-rc.1"
+}

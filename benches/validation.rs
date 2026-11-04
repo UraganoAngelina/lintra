@@ -21,12 +21,30 @@ mod full_schema;
 struct Meter;
 static LIVE: AtomicUsize = AtomicUsize::new(0);
 static PEAK: AtomicUsize = AtomicUsize::new(0);
+static ALLOCATIONS: AtomicUsize = AtomicUsize::new(0);
+static REALLOCATIONS: AtomicUsize = AtomicUsize::new(0);
+static REQUESTED: AtomicUsize = AtomicUsize::new(0);
 static MEASURING: AtomicBool = AtomicBool::new(false);
 
 fn acquired(bytes: usize) {
     let live = LIVE.fetch_add(bytes, Ordering::Relaxed) + bytes;
     if MEASURING.load(Ordering::Relaxed) {
         PEAK.fetch_max(live, Ordering::Relaxed);
+    }
+}
+
+/// Count successful calls only. Reallocation counts its complete requested target
+/// size, independently of whether System extends in place; this is allocation
+/// traffic, not live memory or bytes actually copied by the allocator.
+fn requested(bytes: usize, reallocation: bool) {
+    if MEASURING.load(Ordering::Relaxed) {
+        let counter = if reallocation {
+            &REALLOCATIONS
+        } else {
+            &ALLOCATIONS
+        };
+        counter.fetch_add(1, Ordering::Relaxed);
+        REQUESTED.fetch_add(bytes, Ordering::Relaxed);
     }
 }
 
@@ -45,6 +63,7 @@ unsafe impl GlobalAlloc for Meter {
         let pointer = unsafe { System.alloc(layout) };
         if !pointer.is_null() {
             acquired(layout.size());
+            requested(layout.size(), false);
         }
         pointer
     }
@@ -53,6 +72,7 @@ unsafe impl GlobalAlloc for Meter {
         let pointer = unsafe { System.alloc_zeroed(layout) };
         if !pointer.is_null() {
             acquired(layout.size());
+            requested(layout.size(), false);
         }
         pointer
     }
@@ -65,6 +85,7 @@ unsafe impl GlobalAlloc for Meter {
         // SAFETY: System receives the original allocation and requested size.
         let next = unsafe { System.realloc(pointer, layout, size) };
         if !next.is_null() {
+            requested(size, true);
             if size >= layout.size() {
                 acquired(size - layout.size());
             } else {
@@ -77,19 +98,38 @@ unsafe impl GlobalAlloc for Meter {
 #[global_allocator]
 static ALLOCATOR: Meter = Meter;
 
-/// Measurements wrap only synchronous work; fixture IO and JSON serialization
-/// happen outside. Baseline subtraction permits successive samples without
-/// misreporting already-live fixture allocations as measured validation memory.
-fn measure<T>(work: impl FnOnce() -> T) -> (T, f64, usize) {
+/// Successful allocation traffic during one synchronous sample.
+#[derive(serde::Serialize)]
+struct HeapTraffic {
+    successful_allocations: usize,
+    successful_reallocations: usize,
+    cumulative_requested_bytes: usize,
+}
+
+/// Fixture IO and JSON serialization happen outside the measurement. Baseline
+/// subtraction excludes already-live fixtures from additional peak memory.
+fn measure<T>(work: impl FnOnce() -> T) -> (T, f64, usize, HeapTraffic) {
     let baseline = LIVE.load(Ordering::Relaxed);
     PEAK.store(baseline, Ordering::Relaxed);
+    ALLOCATIONS.store(0, Ordering::Relaxed);
+    REALLOCATIONS.store(0, Ordering::Relaxed);
+    REQUESTED.store(0, Ordering::Relaxed);
     MEASURING.store(true, Ordering::Relaxed);
     let start = Instant::now();
     let result = work();
     let seconds = start.elapsed().as_secs_f64();
     MEASURING.store(false, Ordering::Relaxed);
     let bytes = PEAK.load(Ordering::Relaxed).saturating_sub(baseline);
-    (result, seconds, bytes)
+    (
+        result,
+        seconds,
+        bytes,
+        HeapTraffic {
+            successful_allocations: ALLOCATIONS.load(Ordering::Relaxed),
+            successful_reallocations: REALLOCATIONS.load(Ordering::Relaxed),
+            cumulative_requested_bytes: REQUESTED.load(Ordering::Relaxed),
+        },
+    )
 }
 
 #[derive(Default)]
@@ -178,7 +218,7 @@ fn sample(count: usize, invalid: bool) -> Value {
         },
     };
     let mut sink = CountSink::default();
-    let (outcome, seconds, bytes) = measure(|| {
+    let (outcome, seconds, bytes, traffic) = measure(|| {
         service.validate(
             request,
             &mut sink,
@@ -205,7 +245,7 @@ fn sample(count: usize, invalid: bool) -> Value {
     );
     json!({"scenario":if invalid {"error-heavy"} else {"valid-heavy"}, "records":count,
         "errors":expected, "seconds":seconds, "records_per_second":count as f64 / seconds,
-        "peak_additional_requested_heap_bytes":bytes, "record_width_bytes":18,
+        "heap_traffic":traffic, "peak_additional_requested_heap_bytes":bytes, "record_width_bytes":18,
         "scope":"Full service including compilation, two passes and count-only sink; fixture IO excluded"})
 }
 
@@ -214,7 +254,7 @@ fn projection(count: usize) -> Value {
     raw.encoding.resolved = Some(RawResolvedEncoding::Utf8);
     let compiled = SchemaCompiler.compile(raw).unwrap();
     let record = RecordView::new(b"0000000100000001OK");
-    let ((), seconds, bytes) = measure(|| {
+    let ((), seconds, bytes, traffic) = measure(|| {
         for line in 1..=count / 2 {
             for trace in compiled.traces() {
                 let value =
@@ -225,8 +265,39 @@ fn projection(count: usize) -> Value {
         }
     });
     json!({"scenario":"projection", "records":count, "seconds":seconds,
-        "records_per_second":count as f64 / seconds, "peak_additional_requested_heap_bytes":bytes,
+        "records_per_second":count as f64 / seconds, "heap_traffic":traffic, "peak_additional_requested_heap_bytes":bytes,
         "record_width_bytes":18, "scope":"project_record, three fields and join keys, drop each projection; no ContextStore or IO"})
+}
+
+/// Isolate the owned single-component encoding from projection and ContextStore.
+/// An exact byte oracle precedes measurement. The loop allocates only each key;
+/// its counters also qualify the meter (one 16-byte allocation, no realloc).
+fn join_key(count: usize) -> Value {
+    let mut raw: RawFlowSchema = serde_json::from_value(schema()).unwrap();
+    raw.encoding.resolved = Some(RawResolvedEncoding::Utf8);
+    let compiled = SchemaCompiler.compile(raw).unwrap();
+    let trace = &compiled.traces()[0];
+    let record = RecordView::new(b"0000000100000001OK");
+    let expected = b"\0\0\0\0\0\0\0\x0800000001";
+    assert_eq!(
+        build_join_key(&record, &[0], trace).unwrap().as_bytes(),
+        expected
+    );
+    let ((), seconds, bytes, traffic) = measure(|| {
+        for _ in 0..count {
+            black_box(
+                build_join_key(black_box(&record), black_box(&[0]), black_box(trace)).unwrap(),
+            );
+        }
+    });
+    assert_eq!(traffic.successful_allocations, count);
+    assert_eq!(traffic.successful_reallocations, 0);
+    assert_eq!(traffic.cumulative_requested_bytes, count * 16);
+    assert_eq!(bytes, 16);
+    json!({"scenario":"join-key", "records":count, "seconds":seconds,
+        "records_per_second":count as f64 / seconds, "heap_traffic":traffic,
+        "peak_additional_requested_heap_bytes":bytes,
+        "scope":"one logical component, exact length-prefixed bytes; drop each key; no IO or ContextStore"})
 }
 
 fn main() {
@@ -259,6 +330,7 @@ fn main() {
         results.push(sample(count, false));
         results.push(sample(count, true));
         results.push(projection(count));
+        results.push(join_key(count));
     }
     let rust = std::process::Command::new("rustc")
         .arg("--version")
@@ -266,10 +338,12 @@ fn main() {
         .unwrap();
     assert!(rust.status.success());
     serde_json::to_writer_pretty(output, &json!({
-        "benchmark_format_version":1, "synthetic":true, "compiler_commit":env!("LINTRA_BUILD_COMMIT"),
+        "benchmark_format_version":2, "synthetic":true, "compiler_commit":env!("LINTRA_BUILD_COMMIT"),
         "validator_version":env!("CARGO_PKG_VERSION"), "rustc":String::from_utf8(rust.stdout).unwrap().trim(),
         "harness_source_sha256":digest(include_bytes!("validation.rs")),
         "synthetic_schema_source_sha256":digest(include_bytes!("../tests/support/full_schema.rs")),
+        "join_key_source_sha256":digest(include_bytes!("../src/context/join_key.rs")),
+        "projection_source_sha256":digest(include_bytes!("../src/context/projected_record.rs")),
         "os":std::env::consts::OS, "arch":std::env::consts::ARCH, "optimized":!cfg!(debug_assertions),
         "memory_metric":"peak additional requested Rust heap bytes, not RSS; allocator instrumentation affects throughput",
         "thresholds":null, "results":results

@@ -1,0 +1,170 @@
+{
+  "task": "T-P17-02",
+  "synthetic": true,
+  "runtime_optimization_applied": false,
+  "reason": "isolated single-key cost does not establish a Full service bottleneck; no public representation change justified",
+  "runs": 3,
+  "results": [
+    {
+      "records": 10000,
+      "scenario": "valid-heavy",
+      "median_seconds": 0.068525973,
+      "min_seconds": 0.066299351,
+      "max_seconds": 0.068624377,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 18560476,
+        "successful_allocations": 197885,
+        "successful_reallocations": 14
+      },
+      "peak_additional_requested_heap_bytes": 8871396
+    },
+    {
+      "records": 10000,
+      "scenario": "error-heavy",
+      "median_seconds": 0.077725662,
+      "min_seconds": 0.074812401,
+      "max_seconds": 0.089011638,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 27171576,
+        "successful_allocations": 327898,
+        "successful_reallocations": 10014
+      },
+      "peak_additional_requested_heap_bytes": 8916655
+    },
+    {
+      "records": 10000,
+      "scenario": "projection",
+      "median_seconds": 0.013583037,
+      "min_seconds": 0.013230804,
+      "max_seconds": 0.013787531,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 5350000,
+        "successful_allocations": 110000,
+        "successful_reallocations": 0
+      },
+      "peak_additional_requested_heap_bytes": 535
+    },
+    {
+      "records": 10000,
+      "scenario": "join-key",
+      "median_seconds": 0.001299813,
+      "min_seconds": 0.001164731,
+      "max_seconds": 0.001432918,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 160000,
+        "successful_allocations": 10000,
+        "successful_reallocations": 0
+      },
+      "peak_additional_requested_heap_bytes": 16
+    },
+    {
+      "records": 100000,
+      "scenario": "valid-heavy",
+      "median_seconds": 0.753812837,
+      "min_seconds": 0.742425076,
+      "max_seconds": 0.76473739,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 179779884,
+        "successful_allocations": 1967980,
+        "successful_reallocations": 14
+      },
+      "peak_additional_requested_heap_bytes": 87128660
+    },
+    {
+      "records": 100000,
+      "scenario": "error-heavy",
+      "median_seconds": 0.968473367,
+      "min_seconds": 0.965180294,
+      "max_seconds": 0.9727879,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 264805736,
+        "successful_allocations": 3267996,
+        "successful_reallocations": 100014
+      },
+      "peak_additional_requested_heap_bytes": 87425183
+    },
+    {
+      "records": 100000,
+      "scenario": "projection",
+      "median_seconds": 0.136087436,
+      "min_seconds": 0.134187768,
+      "max_seconds": 0.150790245,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 53500000,
+        "successful_allocations": 1100000,
+        "successful_reallocations": 0
+      },
+      "peak_additional_requested_heap_bytes": 535
+    },
+    {
+      "records": 100000,
+      "scenario": "join-key",
+      "median_seconds": 0.012113821,
+      "min_seconds": 0.010683349,
+      "max_seconds": 0.01394607,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 1600000,
+        "successful_allocations": 100000,
+        "successful_reallocations": 0
+      },
+      "peak_additional_requested_heap_bytes": 16
+    },
+    {
+      "records": 1000000,
+      "scenario": "valid-heavy",
+      "median_seconds": 8.899332063,
+      "min_seconds": 8.882453448,
+      "max_seconds": 9.11795925,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 1886186860,
+        "successful_allocations": 19668870,
+        "successful_reallocations": 14
+      },
+      "peak_additional_requested_heap_bytes": 903294644
+    },
+    {
+      "records": 1000000,
+      "scenario": "error-heavy",
+      "median_seconds": 11.558921407,
+      "min_seconds": 11.525087049,
+      "max_seconds": 11.749972535,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 2762393416,
+        "successful_allocations": 32668890,
+        "successful_reallocations": 1000014
+      },
+      "peak_additional_requested_heap_bytes": 913041407
+    },
+    {
+      "records": 1000000,
+      "scenario": "projection",
+      "median_seconds": 1.199180161,
+      "min_seconds": 1.176441853,
+      "max_seconds": 1.2586602820000001,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 535000000,
+        "successful_allocations": 11000000,
+        "successful_reallocations": 0
+      },
+      "peak_additional_requested_heap_bytes": 535
+    },
+    {
+      "records": 1000000,
+      "scenario": "join-key",
+      "median_seconds": 0.114502366,
+      "min_seconds": 0.114152203,
+      "max_seconds": 0.131812126,
+      "heap_traffic": {
+        "cumulative_requested_bytes": 16000000,
+        "successful_allocations": 1000000,
+        "successful_reallocations": 0
+      },
+      "peak_additional_requested_heap_bytes": 16
+    }
+  ],
+  "no_clobber": {
+    "exit_code": 101,
+    "preserved_sha256": "e35221118ab32af5812c78983bd0d0e58a8d629ffcb3b0a57238a10ccedb6692",
+    "expected_failure": true
+  }
+}

@@ -5963,3 +5963,25 @@ la task indipendente17-02 già in corso, senza sovrapporre implementazioni.
 AUTO_CONTINUE: completare baseline/profilazione17-02 e i suoi gate; poi12.
 Working tree: documentazione di chiusura10 e lavoro17-02 propri, docs/migration
 preesistente preservata/esclusa. Commit/push autorizzati, nessun blocker umano.
+
+
+## HANDOFF §15.3 — T-P17-02 locale qualificata, 2026-11-04
+
+Solo benches/validation.rs modificato: traffico allocazioni e scenario JoinKey,
+formato benchmark2, hash separati dei sorgenti misurati. Tre run release completi,
+36scenari10k/100k/1M, conteggi e hash identici; report e JSON nel dossier17-02.
+Mediane1M: Full valido8,899s, error-heavy11,559s, projection1,199s, chiavi0,115s.
+Nessuna ottimizzazione runtime adottata: il costo isolato della doppia estrazione
+non dimostra un collo di bottiglia Full. Nessun guadagno prima/dopo inventato;
+nuova strumentazione non confrontabile direttamente coi vecchi tempi17-01.
+
+Fmt/Clippy default eall-features pass, workspace standard870pass/0fail/6ignored,
+smoke quattro scenari nelle due configurazioni pass. Sei comandi exit0,
+399impronte sorgenti invariate. Ripetizione locale workspace all-features
+interrotta130 come ridondante dopo standard; non dichiarata superata. CI completa
+all-features Linux/MSVC resta richiesta prima di DONE. Nessun core/schema/golden,
+manifest, dipendenza o policy cambiati. Negativo no-clobber preserva la baseline.
+
+122/140DONE invariato. AUTO_CONTINUE: pubblicare17-02 e avviare CI unica;
+durante l'attesa preflight T-PERSIST-12 con09/10/11 effettivamenteDONE.
+Nessun blocker umano nuovo; docs/migration preesistente esclusa e preservata.
