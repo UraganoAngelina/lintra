@@ -1,9 +1,45 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-10-31**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
+Consuntivo aggiornato al **2026-11-04**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-PERSIST-09 WAITING_GATE, CI nativa avviata
+## Frontiera corrente — PERSIST09 DONE, PERSIST11 gate locali completi
+
+4 novembre 2026: ripresa dal solo working tree di work/p1-foundations; modifiche
+preesistenti preservate, nessuna ricostruzione dalla cronologia. **120/140 DONE
+= 85,7%**. T-PERSIST-09: CI41194045486 letta realmente, completed/success su
+4313f22e48c6b8a239028c0bb6a617ac8c37cc48; entrambi i job nativi e tre confronti
+JSONL/pixel positivi. Packaging UI opzionale skipped, nessuna nuova release.
+Evidenza completa: docs/verification/T-PERSIST-09-native-ci.json.
+
+T-PERSIST-11 IN_PROGRESS: ripresi test/hook cfg(test) e workflow cross-OS già
+non committati. Rafforzati flush delle pagine prima del kill, generazione dopo
+recovery, nuova pubblicazione dopo recovery, chiave errata senza modifica DB e
+manifest malformato/oversize. SQLite locale:23pass/4ignored (helper e trasferimenti
+nativi espliciti); workspace default/all-features850/850 esiti in109riepiloghi,
+core-no-bundle807/92,0fail/6ignored. Fmt/Clippy due assetti, boundary,23Python
+e actionlint pass;370impronte sorgenti immutate negli8comandi finali. Ledger
+T-PERSIST-11-local-gates.json e report T-PERSIST-11-qualification.md. Nessun
+DONE11 anticipato; residui commit/push e CI con scambio bidirezionale dei DB.
+T-PERSIST-10 sbloccata dalla ratifica esplicita dell’autore del4novembre:
+chiave HMAC comune di32byte nel bundle privato portabile Slint, CLI esplicita,
+percorso Slint deterministico e garanzie sul file invariati. Fonte completa
+PERSIST-KEY-PROVISIONING-01-ratification.md; nessun installer o segreto operativo.
+Prossima task prioritaria10 dopo pubblicazione11, prerequisiti07/8-03/09 positivi.
+docs/migration preservata/esclusa dallo sviluppo. AUTO_CONTINUE, single-agent.
+
+## Registro precedente — PERSIST09 WAITING_GATE, PERSIST10 BLOCKED, PERSIST11 IN_PROGRESS
+
+PERSIST10: prerequisiti07/CLI8-03 verificati; scelta del provider per la CLI
+effettivamente aperta dalla ratifica ADR002. Proposta concreta
+docs/proposals/PERSIST-KEY-PROVISIONING-01.md sottoposta all'autore con domanda
+asincrona. Nessun consenso presunto o nuovo checkpoint ordinario; nessun codice10
+implementato. Preflight e blocco circoscritto in T-PERSIST-10-preflight.md.
+Prosegue in sequenza PERSIST11, indipendente da09/10: prerequisiti05/07/08
+positivi (CI40844540287/40877202683/41069605562). Coverage esistente revisionata;
+aggiunte previste su visibilità durante interruzione e file SQLite cross-OS,
+solo test/hook cfg(test)/CI. Preflight11 consultabile, gate nuovi non eseguiti.
+Conteggio DONE invariato, nessuna norma, UI o dipendenza nuova.
 
 31 ottobre 2026: **119/140 DONE = 85%**; UI 9/9 e M8 confermate, nessun nuovo
 DONE anticipato. Ripresa single-agent su fafac99 con lavoro 09 parziale conservato.
@@ -2722,8 +2758,10 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-PERSIST-06 | DONE | 2026-10-29 | Code3e8fae4, CI40853726275 tutti4job success; metadati, consenso dichiarato e compatibilità verificati |
 | T-PERSIST-07 | DONE | 2026-10-29 | Code1e92b1f, CI40877202683 tutti4job success;795test locali/97suite, coordinator e cursor SQLite verificati |
 | T-PERSIST-08 | DONE | 2026-10-30 | bc7c448, CI41069605562 tutti5job richiesti success; audit deterministico/HMAC/CAS read-only,14test audit/18SQLite,831esiti locali perassetto; dossier08 |
-| T-PERSIST-09 | IN_PROGRESS | 2026-10-31 | Codice 4313f22 pubblicato, locali 846/846/803 pass; CI41194045486 avviata, esito nativo pendente. Audit-only, nessun divieto inter-run |
-| T-PERSIST-10..12 | NOT_STARTED | — | Dopo rispettive dipendenze |
+| T-PERSIST-09 | DONE | 2026-11-04 | Codice4313f22; CI41194045486 realmente completed/success,5job richiesti positivi; locali846/846/803. Audit-only, nessun divieto inter-run |
+| T-PERSIST-10 | IN_PROGRESS | 2026-11-04 | Provider file ratificato esplicitamente, chiave comune nel bundle Slint privato; preflight aggiornato. Implementazione dopo pubblicazione11, nessun default sintetico runtime |
+| T-PERSIST-11 | IN_PROGRESS | 2026-11-04 | Gate locali850/850/807 positivi,0fail/6ignored; fmt/Clippy/boundary/23Python/actionlint pass. Residuo pubblicazione e CI bidirezionale, report11 |
+| T-PERSIST-12 | NOT_STARTED | — | Dopo09/10/11 effettivamente DONE |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
 ## Registro verifiche corrente — Linux locale
@@ -5759,3 +5797,41 @@ DNS-over-HTTPS/TLS integro, senza mutare la rete del PC né scrivere credenziali
 Misura finale locale source-hash prima/dopo registrata; controllare il file e
 l'exit effettivo prima di usarla come evidenza. Nessuna nuova task dipendente
 avviata; PERSIST06 attende05. AUTO_CONTINUE sulla diagnosi native Windows.
+
+
+## HANDOFF §15.3 — T-PERSIST-11 gate locali completi,2026-11-04
+
+- Ripresa da working tree su c49631b, branch work/p1-foundations; conservati i
+  candidati11 e le proposte10 preesistenti. docs/migration esclusa/preservata.
+- T-PERSIST-09 realmente DONE: CI41194045486 su4313f22 tutti5job richiesti
+  success, packaging UI opzionale skipped.120/140DONE=85,7%, nessun DONE11.
+- TestSQLite/hook cfg(test): letture durante stage/SQL con pagine flushate,
+  kill/wait/recovery, generazione e nuova pubblicazione; guardia figli/deadline.
+  DB chiuso sintetico, manifest/hash bounded, namespace/revisioni/provenienza/
+  HMAC e negativi; CI scambia il vero file fra Linux/MSVC. Nessuna API restore.
+- Gate finali:850/850workspace in109riepiloghi ciascuno,807core/92,0fail/6ignored;
+  fmt/Clippy default/allfeatures, boundary,23Python/actionlint pass.370file
+  sorgenti immutati durante8comandi; dettagli e condizioni nel report11/ledger.
+- Nessuna query produttiva, dipendenza, UI, schema normativo o PHI introdotti.
+  Residui11: commit/push e gate nativi con scambio effettivo, non DONE prima.
+- PERSIST10 bloccata solo su provisioning della chiave, proposta concreta e
+  domanda aperta senza consenso presunto; PERSIST12 attende09/10/11.
+- AUTO_CONTINUE: pubblicare11 e avviare CI ora che09 è conclusa. Durante attesa
+  candidata indipendente17-02 (profiling, prereq17-01) dopo proprio preflight.
+
+
+## Ratifica PERSIST-KEY-PROVISIONING-01 e prossima T-PERSIST-10 —2026-11-04
+
+Risposta esplicita dell’autore ricevuta durante la finalizzazione11: A approvata
+con chiave comune32byte e Key ID stabile nel bundle privato portabile Slint.
+Record vincolante docs/verification/PERSIST-KEY-PROVISIONING-01-ratification.md;
+proposta storica collegata, AGENTS aggiornato. CLI con path/ID espliciti; Slint
+risolve solo da eseguibile/config controllata, mai cwd/home/discovery generale.
+Controlli file aperto/ACL/ownership/link/sostituzione e memoria azzerabile restano.
+Nessun materiale operativo generato/versionato o distribuito da questa sessione;
+nessun installer/credential manager, HMAC/formati/namespace invariati, DB locali
+indipendenti, continuità update e key-confirmation anche namespace vuoto.
+Cifratura/retention/backup completo/uso reale rimangono aperti come ratificato.
+Superato il blocco di scelta10; implementarla come prossima prioritaria, al posto
+di17-02 candidata nel precedente handoff, dopo pubblicazione11 e dispatchCI.
+Prererequisiti07/8-03/09 effettivamente DONE. Nessun nuovo stop ordinario.

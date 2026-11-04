@@ -16,6 +16,7 @@ pub(super) enum TestFault {
     DuringExit,
     AfterLost,
     AfterExit,
+    PauseBeforeCommit,
 }
 impl SQLitePersistenceAdapter {
     pub(super) fn configure_commit_fault(&self, c: &mut Connection) {
@@ -45,6 +46,14 @@ impl SQLitePersistenceAdapter {
             // Spill real uncommitted pages under the rollback journal before
             // entering COMMIT. Recovery must repair disk, not just clear RAM.
             tx.cache_flush().map_err(sql)?;
+        }
+        if matches!(*fault, Some(TestFault::PauseBeforeCommit)) {
+            // The INSERTs exist only inside this writer transaction. A separate
+            // process/connection must never observe them as committed history.
+            // Flush dirty pages as well: abrupt termination must exercise the
+            // rollback journal on disk, not merely discard an in-memory cache.
+            tx.cache_flush().map_err(sql)?;
+            wait_at_barrier("write-pause");
         }
         Ok(())
     }
@@ -581,6 +590,15 @@ fn child(root: &Path, mode: &str, barrier: Option<&Path>) -> Child {
     }
     command.spawn().unwrap()
 }
+fn wait_at_barrier(mode: &str) {
+    let barrier = PathBuf::from(std::env::var_os("LINTRA_SQLITE_TEST_BARRIER").unwrap());
+    fs::write(barrier.join(format!("{mode}.ready")), []).unwrap();
+    let start = Instant::now();
+    while !barrier.join("go").exists() {
+        assert!(start.elapsed() < Duration::from_secs(20));
+        std::thread::sleep(Duration::from_millis(10));
+    }
+}
 #[test]
 #[ignore = "subprocess helper invoked only with a synthetic archive by parent tests"]
 fn process_worker() {
@@ -617,15 +635,8 @@ fn process_worker() {
     match mode.as_str() {
         "during" => *repo.inner.fault.lock().unwrap() = Some(TestFault::DuringExit),
         "after" => *repo.inner.fault.lock().unwrap() = Some(TestFault::AfterExit),
-        _ => {
-            let barrier = PathBuf::from(std::env::var_os("LINTRA_SQLITE_TEST_BARRIER").unwrap());
-            fs::write(barrier.join(format!("{mode}.ready")), []).unwrap();
-            let start = Instant::now();
-            while !barrier.join("go").exists() {
-                assert!(start.elapsed() < Duration::from_secs(20));
-                std::thread::sleep(Duration::from_millis(10));
-            }
-        }
+        "write-pause" => *repo.inner.fault.lock().unwrap() = Some(TestFault::PauseBeforeCommit),
+        _ => wait_at_barrier(&mode),
     }
     match tx.commit() {
         Ok(_) => std::process::exit(0),
@@ -835,6 +846,7 @@ fn an_unfinished_transaction_view_cannot_be_mistaken_for_publication() {
 }
 
 mod metadata;
+mod qualification;
 
 #[test]
 fn protection_audit_is_loaded_from_an_empty_archive_without_silent_reinitialization() {

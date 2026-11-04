@@ -109,6 +109,17 @@ jobs:
         run: cargo test --bench validation --target ${{ matrix.target }} --locked -- --output target/benchmark-smoke.json --smoke
       - name: Smoke the real SQLite adapter with indexed lookups and process restart
         run: cargo test --bench persistence --target ${{ matrix.target }} --locked -- --output target/sqlite-smoke.json --smoke
+      - name: Export a closed synthetic SQLite database for the opposite OS
+        env:
+          LINTRA_SQLITE_EXPORT_DIR: ${{ github.workspace }}/target/persistence-transfer
+        run: cargo test -p lintra --lib --target ${{ matrix.target }} --locked persistence::sqlite::tests::qualification::export_native_snapshot_fixture -- --exact --ignored
+      - name: Upload the synthetic database and transport manifest
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: snapshot-portability-${{ matrix.target }}
+          path: target/persistence-transfer/*
+          if-no-files-found: error
+          retention-days: 7
       - name: Check tooling formatting
         run: cargo fmt --manifest-path xtask/Cargo.toml -- --check
       - name: Clippy tooling
@@ -143,6 +154,53 @@ jobs:
         with:
           name: jsonl-${{ matrix.target }}
           path: target/cross-os-jsonl/*.jsonl
+          if-no-files-found: error
+          retention-days: 7
+
+  cross-os-snapshots:
+    name: Reopen counterpart snapshot (${{ matrix.target }})
+    needs: verify
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+            peer_target: x86_64-pc-windows-msvc
+            peer_os: windows
+            msvc_rustflags: ''
+          - os: windows-2025
+            target: x86_64-pc-windows-msvc
+            peer_target: x86_64-unknown-linux-gnu
+            peer_os: linux
+            msvc_rustflags: '-C target-feature=+crt-static'
+    env:
+      CARGO_TERM_COLOR: always
+      CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS: ${{ matrix.msvc_rustflags }}
+      LINTRA_SQLITE_IMPORT_DIR: ${{ github.workspace }}/target/persistence-counterpart
+      LINTRA_SQLITE_EXPECTED_ORIGIN: ${{ matrix.peer_os }}
+      LINTRA_SQLITE_IMPORT_RESULT: ${{ github.workspace }}/target/persistence-import-result.json
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: snapshot-portability-${{ matrix.peer_target }}
+          path: target/persistence-counterpart
+      - name: Install pinned Rust toolchain
+        run: rustup show active-toolchain
+      - name: Install native target
+        run: rustup target add ${{ matrix.target }}
+      - name: Reopen and authenticate the database produced by the opposite OS
+        run: cargo test -p lintra --lib --target ${{ matrix.target }} --locked persistence::sqlite::tests::qualification::import_opposite_native_snapshot_fixture -- --exact --ignored
+      - name: Upload native cross-OS snapshot evidence
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: snapshot-import-${{ matrix.target }}
+          path: target/persistence-import-result.json
           if-no-files-found: error
           retention-days: 7
 
