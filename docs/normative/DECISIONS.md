@@ -206,3 +206,19 @@ non autorizzati dati sanitari reali. Binding rusqlite0.41.0 bundled con SQLite
 
 [Prescrizioni vincolanti e tracciabilità ADR001/03/04](../verification/ADR-PERSIST-002-ratification.md).
 Questa registrazione non riscrive le decisioni storiche né le baseline normative.
+
+
+## PERSIST-KEY-PROVISIONING-01 — alternativa A aggiornata APPROVATA,2026-11-04
+
+Ratifica esplicita dell’autore: stessa chiave HMAC32byte e stesso Key ID per tutti
+i destinatari della prima distribuzione privata portabile Slint, file esterno
+all’eseguibile e risoluzione limitata all’eseguibile/config controllata. CLI con
+ID/path espliciti. Nessun installer o deposito credenziali ora, nessuna deroga a
+ACL/ownership/link/controlli sul file aperto, HMAC/formati/namespace invariati.
+Chiave stabile negli aggiornamenti, archivi locali indipendenti; nessuna chiave
+operativa in Git/CI/log o usata nei test. Rischio comune accettato dall’autore,
+nessuna equivalenza con credenziali individuali o anonimizzazione automatica.
+
+Fonte vincolante e tutte le precisazioni:
+[ratifica](../verification/PERSIST-KEY-PROVISIONING-01-ratification.md).
+Procedere T-PERSIST-10; cifratura/retention/backup completo/dati reali restano aperti.

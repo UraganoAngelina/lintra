@@ -1,10 +1,13 @@
-//! Local storage boundaries. Creation is explicit and private; opening never
+//! Local filesystem boundaries shared by storage and explicit key loading.
+//! Creation is explicit and private; opening never
 //! repairs permissions or follows a path into a different archive silently.
 use crate::PersistenceError;
 use std::{
     fs::{self, File, OpenOptions},
     path::{Component, Path, PathBuf},
 };
+
+pub(super) mod key;
 
 pub(super) struct RootGuard {
     pub path: PathBuf,

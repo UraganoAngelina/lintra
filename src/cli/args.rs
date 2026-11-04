@@ -24,10 +24,28 @@ pub struct ValidateArgs {
 /// Binary commands carry only the configuration needed by their operation.
 pub enum CliCommand {
     Validate(Box<ValidateArgs>),
+    HistoryInit(ArchiveArgs),
+    HistoryCheck(ArchiveArgs),
+    Historical(Box<HistoricalArgs>),
     SchemaLint(LintArgs),
     SchemaList(PathBuf),
     ReferenceList(ReferenceListArgs),
     SchemaImport(ImportArgs),
+}
+/// Creating an archive is a separate command, never a fallback from opening.
+pub struct ArchiveArgs {
+    pub archive: PathBuf,
+    pub key_id: String,
+    pub key_file: PathBuf,
+}
+pub struct HistoricalArgs {
+    pub validation: ValidateArgs,
+    pub archive: ArchiveArgs,
+    pub submission_id: String,
+    pub audit: PathBuf,
+    pub audit_summary: PathBuf,
+    /// Enables a review prompt after preview; it does not grant approval.
+    pub review: bool,
 }
 pub struct ReferenceListArgs {
     pub schema_root: PathBuf,
@@ -114,7 +132,7 @@ pub fn command() -> Command {
         }
     };
     Command::new("lintra")
-        .about("Validazione fixed-width LocalOnly e Full")
+        .about("Validazione fixed-width LocalOnly, Full e audit storico locale")
         .version(concat!(
             env!("CARGO_PKG_VERSION"),
             " (commit ",
@@ -171,6 +189,46 @@ pub fn command() -> Command {
         )
         .subcommand(validation_command("validate", false))
         .subcommand(validation_command("validate-flow", true))
+        .subcommand(
+            Command::new("history")
+                .about("Archivio locale e preview storico audit-only con approvazione separata")
+                .subcommand_required(true)
+                .arg_required_else_help(true)
+                .subcommand(
+                    Command::new("init")
+                        .about(
+                            "Crea esplicitamente un nuovo archivio locale, senza generare chiavi",
+                        )
+                        .arg(path("archive").required(true))
+                        .arg(text("key-id"))
+                        .arg(path("key-file").required(true)),
+                )
+                .subcommand(
+                    Command::new("check")
+                        .about("Verifica chiave e archivio esistente senza approvare invii")
+                        .arg(path("archive").required(true))
+                        .arg(text("key-id"))
+                        .arg(path("key-file").required(true)),
+                )
+                .subcommand(
+                    validation_command("preview", true)
+                        .about(
+                            "Valida Full e confronta lo storico locale; nessun commit automatico",
+                        )
+                        .arg(path("archive").required(true))
+                        .arg(text("key-id"))
+                        .arg(path("key-file").required(true))
+                        .arg(text("submission-id"))
+                        .arg(path("audit").required(true))
+                        .arg(path("audit-summary").required(true))
+                        .arg(
+                            Arg::new("review")
+                                .long("review")
+                                .action(clap::ArgAction::SetTrue)
+                                .help("Dopo la preview richiede conferma esatta o ABORT su stdin"),
+                        ),
+                ),
+        )
 }
 /// Clap's required, typed parsers guarantee the values exist on this path.
 /// All file paths stay native PathBuf, including spaces/non-UTF-8 where supported.
@@ -189,6 +247,18 @@ where
 {
     let matches = command().try_get_matches_from(arguments)?;
     let (name, args) = matches.subcommand().expect("clap requires a subcommand");
+    let (name, args, historical) = if name == "history" {
+        let (operation, args) = args.subcommand().expect("clap requires history operation");
+        if operation == "init" {
+            return Ok(CliCommand::HistoryInit(archive_args(args)));
+        }
+        if operation == "check" {
+            return Ok(CliCommand::HistoryCheck(archive_args(args)));
+        }
+        ("validate-flow", args, true)
+    } else {
+        (name, args, false)
+    };
     if name == "reference-data" {
         let (_, list) = args
             .subcommand()
@@ -265,7 +335,7 @@ where
             BTreeMap::new(),
         )
     };
-    Ok(CliCommand::Validate(Box::new(ValidateArgs {
+    let validation = ValidateArgs {
         bundle_manifest: args.get_one::<PathBuf>("bundle-manifest").cloned(),
         dirs: CliDirs {
             schema_dir: args.get_one::<PathBuf>("schema-dir").cloned(),
@@ -294,7 +364,27 @@ where
         xlsx: args.get_one::<PathBuf>("xlsx").cloned(),
         summary: required(args, "summary"),
         parameters,
-    })))
+    };
+    if historical {
+        Ok(CliCommand::Historical(Box::new(HistoricalArgs {
+            validation,
+            archive: archive_args(args),
+            submission_id: required(args, "submission-id"),
+            audit: required(args, "audit"),
+            audit_summary: required(args, "audit-summary"),
+            review: args.get_flag("review"),
+        })))
+    } else {
+        Ok(CliCommand::Validate(Box::new(validation)))
+    }
+}
+
+fn archive_args(args: &ArgMatches) -> ArchiveArgs {
+    ArchiveArgs {
+        archive: required(args, "archive"),
+        key_id: required(args, "key-id"),
+        key_file: required(args, "key-file"),
+    }
 }
 
 #[cfg(unix)]

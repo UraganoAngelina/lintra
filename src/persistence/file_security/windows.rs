@@ -1,4 +1,4 @@
-//! Windows ACL boundary using the qualified OS APIs, not shell commands. New
+//! Shared Windows ACL boundary using the qualified OS APIs, not shell commands. New
 //! directories have a protected inheritable DACL for this user and LocalSystem.
 use super::*;
 use std::{
@@ -151,7 +151,6 @@ pub(super) fn check_private(
     _meta: &fs::Metadata,
     dir: bool,
 ) -> Result<(), PersistenceError> {
-    let user = User::current()?;
     let path = wide(path)?;
     let (mut owner, mut dacl, mut descriptor) = (ptr::null_mut(), ptr::null_mut(), ptr::null_mut());
     // SAFETY: all outputs are writable and path is terminated. Returned owner/ACL
@@ -172,6 +171,41 @@ pub(super) fn check_private(
         return Err(bad());
     }
     let _owned = Local(descriptor);
+    validate_descriptor(owner, dacl, descriptor, dir)
+}
+
+/// The key adapter queries the opened kernel object, never a second pathname's
+/// ACL. The same descriptor validator preserves the qualified access policy.
+pub(super) fn check_open_key(file: &File) -> Result<(), PersistenceError> {
+    let (mut owner, mut dacl, mut descriptor) = (ptr::null_mut(), ptr::null_mut(), ptr::null_mut());
+    // SAFETY: file owns a live handle with READ_CONTROL from GENERIC_READ;
+    // writable outputs borrow descriptor, retained by Local for validation.
+    if unsafe {
+        GetSecurityInfo(
+            file.as_raw_handle(),
+            SE_FILE_OBJECT,
+            OWNER_SECURITY_INFORMATION | DACL_SECURITY_INFORMATION,
+            &mut owner,
+            ptr::null_mut(),
+            &mut dacl,
+            ptr::null_mut(),
+            &mut descriptor,
+        )
+    } != ERROR_SUCCESS
+    {
+        return Err(bad());
+    }
+    let _owned = Local(descriptor);
+    validate_descriptor(owner, dacl, descriptor, false)
+}
+
+fn validate_descriptor(
+    owner: PSID,
+    dacl: *mut ACL,
+    descriptor: PSECURITY_DESCRIPTOR,
+    dir: bool,
+) -> Result<(), PersistenceError> {
+    let user = User::current()?;
     // SAFETY: both owner and user SID are valid while their owners remain alive.
     if owner.is_null() || dacl.is_null() {
         return Err(bad());
@@ -275,6 +309,51 @@ pub(super) fn check_filesystem(path: &Path) -> Result<(), PersistenceError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn opened_key_acl_links_and_replacement_are_checked_without_weakening_storage() {
+        use crate::{FileKeyError, FilePersistenceKeyProvider};
+        let base = std::env::current_dir()
+            .unwrap()
+            .join("target/key-acl-tests");
+        fs::create_dir_all(&base).unwrap();
+        let temp = tempfile::tempdir_in(base).unwrap();
+        let root = temp.path().join("private-bundle");
+        create_directory(&root).unwrap();
+        let key = root.join("hmac.key");
+        fs::write(&key, [0xaa; 32]).unwrap();
+        FilePersistenceKeyProvider::load("synthetic", &key).unwrap();
+        let alias = root.join("alias.key");
+        fs::hard_link(&key, &alias).unwrap();
+        assert!(matches!(
+            FilePersistenceKeyProvider::load("synthetic", &key),
+            Err(FileKeyError::UnsafeSource)
+        ));
+        fs::remove_file(&alias).unwrap();
+        std::os::windows::fs::symlink_file(&key, &alias)
+            .expect("native Windows runner supports synthetic symlinks");
+        assert!(FilePersistenceKeyProvider::load("synthetic", &alias).is_err());
+        fs::remove_file(&alias).unwrap();
+        let ancestor = temp.path().join("linked-bundle");
+        std::os::windows::fs::symlink_dir(&root, &ancestor).expect("native directory symlink");
+        assert!(FilePersistenceKeyProvider::load("synthetic", &ancestor.join("hmac.key")).is_err());
+        fs::remove_dir(&ancestor).unwrap();
+        super::super::key::read(&key, || {
+            // No sharing of DELETE or WRITE is granted on the held key. Parent
+            // directories are pinned too, so both replacements must be denied.
+            assert!(fs::rename(&key, root.join("old.key")).is_err());
+            assert!(OpenOptions::new().write(true).open(&key).is_err());
+            assert!(fs::rename(&root, temp.path().join("moved-bundle")).is_err());
+        })
+        .unwrap();
+        // Once loading returns, all handles are closed; relocation is allowed.
+        fs::rename(&key, &alias).unwrap();
+        FilePersistenceKeyProvider::load("synthetic", &alias).unwrap();
+        set_world_acl(&alias);
+        assert!(matches!(
+            FilePersistenceKeyProvider::load("synthetic", &alias),
+            Err(FileKeyError::UnsafeSource)
+        ));
+    }
     fn set_world_acl(path: &Path) {
         let mut sddl: Vec<u16> = "D:P(A;OICI;FA;;;WD)".encode_utf16().collect();
         sddl.push(0);

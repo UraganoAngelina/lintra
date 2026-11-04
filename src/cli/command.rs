@@ -33,7 +33,11 @@ impl Error for FailedRun {
 }
 /// Always attempt both aborts, even when the first fails. No old destination is
 /// removed and the original error never becomes a successful validation outcome.
-fn abort(errors: Option<ErrorSpool>, outputs: Vec<AtomicReportFile>, primary: Failure) -> Failure {
+pub(super) fn abort(
+    errors: Option<ErrorSpool>,
+    outputs: Vec<AtomicReportFile>,
+    primary: Failure,
+) -> Failure {
     let mut cleanup: Vec<_> = outputs
         .into_iter()
         .filter_map(|output| output.abort().err())
@@ -48,9 +52,28 @@ fn abort(errors: Option<ErrorSpool>, outputs: Vec<AtomicReportFile>, primary: Fa
 fn invalid(message: &'static str) -> Failure {
     io::Error::new(io::ErrorKind::InvalidInput, message).into()
 }
+/// Controlled cancellation remains exit130 unless cleanup itself fails. All
+/// guards are explicitly aborted and every cleanup error is retained.
+pub(super) fn discard(errors: ErrorSpool, outputs: Vec<AtomicReportFile>) -> Result<(), Failure> {
+    let mut cleanup: Vec<_> = outputs
+        .into_iter()
+        .filter_map(|report| report.abort().err())
+        .collect();
+    if let Err(error) = errors.abort() {
+        cleanup.push(error);
+    }
+    if cleanup.is_empty() {
+        Ok(())
+    } else {
+        Err(Box::new(FailedRun {
+            primary: io::Error::other("cancelled report cleanup failed").into(),
+            cleanup,
+        }))
+    }
+}
 /// Resolve an existing target (including symlinks), or its existing parent for
 /// a new filename. Missing parents remain technical errors; none are created.
-fn resolved(path: &Path) -> io::Result<PathBuf> {
+pub(super) fn resolved(path: &Path) -> io::Result<PathBuf> {
     match fs::canonicalize(path) {
         Ok(path) => Ok(path),
         Err(error) if error.kind() == io::ErrorKind::NotFound => {
@@ -68,10 +91,12 @@ fn resolved(path: &Path) -> io::Result<PathBuf> {
 }
 /// Protect input and the selected bundle from both final destinations and part
 /// filenames. Cross-output part collisions would otherwise depend on write order.
-fn check_outputs(
+pub(super) fn check_outputs(
     args: &ValidateArgs,
     roots: &[PathBuf],
     manifest: Option<&Path>,
+    extra_destinations: &[PathBuf],
+    protected_inputs: &[PathBuf],
 ) -> Result<(), Failure> {
     let inputs = match &args.request.scope {
         ValidationScope::Trace(input) => vec![input],
@@ -84,6 +109,9 @@ fn check_outputs(
             fs::canonicalize(path)
         })
         .collect::<Result<Vec<_>, _>>()?;
+    for input in protected_inputs {
+        inputs.push(fs::canonicalize(input)?);
+    }
     if let Some(manifest) = manifest {
         inputs.push(fs::canonicalize(manifest)?);
     }
@@ -97,6 +125,7 @@ fn check_outputs(
         .iter()
         .chain(std::iter::once(&args.summary))
         .chain(args.xlsx.iter())
+        .chain(extra_destinations.iter())
     {
         let mut part = destination.as_os_str().to_os_string();
         part.push(".part");
@@ -130,7 +159,13 @@ fn validate_with_token(
     let exe = std::env::current_exe()?;
     let source = paths::resolve_bundle_source(&args.dirs, &paths::SystemEnv, &exe)?;
     let selected = super::bundle::compose(&args, source)?;
-    check_outputs(&args, &selected.roots, selected.manifest_path.as_deref())?;
+    check_outputs(
+        &args,
+        &selected.roots,
+        selected.manifest_path.as_deref(),
+        &[],
+        &[],
+    )?;
     let service = selected.service;
     let mut errors = ErrorSpool::create(args.errors.as_deref())?;
     let mut summary =

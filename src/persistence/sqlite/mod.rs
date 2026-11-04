@@ -10,7 +10,7 @@ use std::{
     sync::{Mutex, MutexGuard},
 };
 mod codec;
-mod security;
+use super::file_security as security;
 // Format2 adds explicit omission-consent metadata; legacy payloads/MACs stay valid.
 const FORMAT: i64 = 2;
 const APPLICATION: i64 = 0x4c4e5452;

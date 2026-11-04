@@ -248,3 +248,14 @@ Microsoft) ammessa solo per UI, rilevata nell'import table MSVC reale.
 Il prefisso runtime socket X11 /tmp/.X11-unix/X è distinto dai percorsi privati
 con eccezione strettamente delimitata UI GNU; scanner CLI e radici di build
 esplicite restano invariati. Nessuna nuova libreria introdotta nel binario.
+
+## T-PERSIST-10 — console/pipe Windows per revisione cancellabile,2026-11-04
+
+Prima dei manifest: nessun crate/versione/backend nuovo. `windows-sys=0.61.2`
+(MIT OR Apache-2.0, binding Rust alle API OS, già qualificato) abilita anche
+`Win32_System_Console` e `Win32_System_Pipes`. Servono attesa/input console e
+readiness delle pipe per controllare la cancellazione durante la conferma CLI,
+senza thread stdin distaccati o dipendenze da credential manager. Nessuna nuova
+DLL di terze parti, installer o processo esterno; restano i gate nativi MSVC.
+API e layout verificati nei sorgenti della versione fissata, non in esempi di
+versioni diverse. Lock/pin esistenti invariati salvo feature graph necessario.

@@ -8,8 +8,9 @@ compiler incrementale, controlli locali, membership reference e validazione
 cross-record a due passate. I record sono byte-oriented; Decimal nel formato 2
 riguarda soltanto importi dichiarati esplicitamente. Report JSONL/XLSX/summary,
 audit degli input, progress e cancellazione mantengono distinti errori normativi,
-warning e completezza. Persistenza storica, lookup metadata/temporali e capacità
-normative non ancora compilabili restano consegne future esplicite.
+warning e completezza. Il core include storico locale SQLite protetto e API di
+preview/audit con approvazione separata. Policy cumulative/temporali CAD, lookup
+metadata e capacità normative non ancora compilabili restano consegne future.
 Il consuntivo verificato è in [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md).
 
 La CLI esegue `validate` per Trace/LocalOnly e `validate-flow` per Flow/Full;
@@ -17,6 +18,13 @@ produce report e un riepilogo testuale. `--version` mostra versione e commit.
 `schema lint` verifica gli schemi con il compiler corrente. Ctrl+C richiede
 la cancellazione cooperativa e restituisce 130, conservando i report definitivi
 precedenti e rimuovendo le parti create dal run interrotto.
+
+`history init`, `history check` e `history preview` configurano e verificano
+l'archivio locale e producono la preview audit-only, con Key ID/file espliciti e
+conferma separata per il commit. Argomenti, esiti e limiti sono nel
+[contratto CLI storico](docs/HISTORICAL_CLI.md); il
+[bundle Slint privato](docs/PORTABLE_KEY_BUNDLE.md) mantiene la chiave fuori
+dall'artefatto generico e richiede gli accessi ratificati sul file reale.
 
 ## Avvio con il binario distribuito
 

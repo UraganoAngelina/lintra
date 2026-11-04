@@ -340,8 +340,9 @@ pub use schema::authoring::{
 
 // Persistence data contracts, never an executable historical-validation proof.
 pub use application::historical_validation::{
-    HistoricalAuditSink, HistoricalValidationError, HistoricalValidationOutcome,
-    HistoricalValidationPreview, HistoricalValidationRequest, HistoricalValidationService,
+    HistoricalAuditSink, HistoricalReview, HistoricalTextValidationRequest,
+    HistoricalValidationError, HistoricalValidationOutcome, HistoricalValidationPreview,
+    HistoricalValidationRequest, HistoricalValidationService,
 };
 pub use domain::{
     Fingerprint, HistoricalChange, HistoricalDiff, HistoryDiff, MissingTraceProceedConsent,
@@ -373,6 +374,7 @@ pub use persistence::{
 };
 
 pub use persistence::{CommitResolution, SQLitePersistenceAdapter, SQLiteStorageSettings};
+pub use persistence::{FileKeyError, FilePersistenceKeyProvider, portable_persistence_key_path};
 
 // Explicit application approval lifecycle, separate from technical transactions.
 pub use application::history_audit::{

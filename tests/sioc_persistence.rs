@@ -194,6 +194,103 @@ fn commit(preview: &mut HistoricalValidationPreview<'_>) -> CommitReceipt {
 }
 
 #[test]
+fn text_parameters_use_one_source_and_another_candidates_review_cannot_authorize_commit() {
+    let fixture = Fixture::new();
+    let protector = protector();
+    let repository =
+        InMemoryPersistenceRepository::with_protection_audit(protector.audit().unwrap());
+    let service = fixture.service();
+    let request = fixture.request("text-request", 1);
+    let result = HistoricalValidationService::new(&service, &repository, &protector)
+        .validate_text(
+            HistoricalTextValidationRequest {
+                validation: request.validation,
+                submission_id: request.submission_id,
+                parameters: BTreeMap::from([("organisation_namespace".into(), "1".into())]),
+            },
+            &mut VecSink::default(),
+            &mut AuditSink::default(),
+            &mut |_| {},
+            &CancellationToken::default(),
+        )
+        .unwrap();
+    let HistoricalValidationOutcome::Preview(mut current) = result else {
+        panic!("real historical preview")
+    };
+    assert_eq!(fixture.reads.load(Ordering::SeqCst), 1);
+    assert!(
+        current
+            .snapshot()
+            .namespace()
+            .parameters()
+            .any(|(_, value)| *value == NamespaceValue::Integer(1))
+    );
+    let other = preview(&fixture, &repository, &protector, "other-request", 2);
+    assert!(matches!(
+        current.approve_reviewed(
+            &other.review(),
+            &CancellationToken::default(),
+            |_, _, _| panic!("stale review must fail before publication")
+        ),
+        Err(SessionApprovalError::InvalidBinding)
+    ));
+    assert_eq!(
+        repository
+            .current_generation(current.snapshot().namespace())
+            .unwrap(),
+        None
+    );
+    let review = current.review();
+    current
+        .approve_reviewed(&review, &CancellationToken::default(), |_, _, _| Ok(()))
+        .unwrap();
+    assert_eq!(
+        repository
+            .current_generation(current.snapshot().namespace())
+            .unwrap(),
+        Some(SnapshotRevision::new(1))
+    );
+}
+
+#[test]
+fn malformed_text_parameter_is_rejected_before_the_missing_input_is_opened() {
+    let fixture = Fixture::new();
+    fs::remove_file(fixture.path("1")).unwrap();
+    let protector = protector();
+    let repository =
+        InMemoryPersistenceRepository::with_protection_audit(protector.audit().unwrap());
+    let service = fixture.service();
+    let request = fixture.request("bad-parameter", 1);
+    let mut sink = VecSink::default();
+    let mut audit = AuditSink::default();
+    let result = HistoricalValidationService::new(&service, &repository, &protector).validate_text(
+        HistoricalTextValidationRequest {
+            validation: request.validation,
+            submission_id: request.submission_id,
+            parameters: BTreeMap::from([(
+                "organisation_namespace".into(),
+                "not-an-integer".into(),
+            )]),
+        },
+        &mut sink,
+        &mut audit,
+        &mut |_| {},
+        &CancellationToken::default(),
+    );
+    assert!(matches!(
+        result,
+        Err(HistoricalValidationError::Validation(
+            ValidationRunError::Flow(FlowValidationError::Inputs(
+                RelatedContextError::InvalidParameter
+            ))
+        ))
+    ));
+    assert_eq!(fixture.reads.load(Ordering::SeqCst), 1);
+    assert!(sink.errors().is_empty() && sink.summaries().is_empty());
+    assert_eq!(audit.summaries, 0);
+}
+
+#[test]
 fn source_pk_tuples_are_exact_and_compiler_does_not_enable_history_implicitly() {
     let value = model();
     let source: Value = serde_json::from_str(PROFILE).unwrap();

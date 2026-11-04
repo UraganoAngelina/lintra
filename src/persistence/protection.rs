@@ -76,7 +76,7 @@ impl fmt::Debug for PersistenceKey {
         f.write_str("PersistenceKey([redacted])")
     }
 }
-/// Injection point for an explicitly configured secret manager. No filesystem,
+/// Injection point for an explicitly configured key source. No filesystem,
 /// environment fallback or production provider is selected by the core.
 pub trait PersistenceKeyProvider: Send + Sync {
     fn resolve(&self, key_id: &str) -> Result<Arc<PersistenceKey>, ProtectionError>;

@@ -13,6 +13,18 @@ pub struct HistoricalValidationRequest {
     pub submission_id: String,
 }
 
+/// Adapter request for CLI/forms. Text is bound using the SAME compiled source
+/// resolved for the run; string parameters never undergo numeric guessing.
+pub struct HistoricalTextValidationRequest {
+    pub validation: ValidationRequest,
+    pub parameters: BTreeMap<String, String>,
+    pub submission_id: String,
+}
+enum RequestInput {
+    Typed(HistoricalValidationRequest),
+    Text(HistoricalTextValidationRequest),
+}
+
 /// A sink may contain partial output on error. Its owner must use atomic report
 /// publication, exactly as with ValidationSink. No Vec of diffs is required.
 pub trait HistoricalAuditSink {
@@ -37,7 +49,7 @@ impl fmt::Display for HistoricalValidationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(match self {
             Self::InvalidRequest => {
-                "historical audit requires Full flow scope and a valid submission ID"
+                "historical audit requires Full flow scope, a valid submission ID and compatible parameters"
             }
             Self::Cancelled => "historical validation was cancelled before preview completed",
             Self::Validation(_) => "historical input validation failed technically",
@@ -72,6 +84,39 @@ pub enum HistoricalValidationOutcome<'repo> {
     Preview(Box<HistoricalValidationPreview<'repo>>),
 }
 
+/// Owned client review descriptor. It names one immutable candidate AND its
+/// observed base generation. It cannot be deserialized into an approval token;
+/// callers obtain it from the actual preview they present for review.
+/// ```compile_fail
+/// let _: lintra::HistoricalReview = serde_json::from_str("{}").unwrap();
+/// ```
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
+pub struct HistoricalReview {
+    format_version: u32,
+    base_generation: Option<SnapshotRevision>,
+    candidate_revision: SnapshotRevision,
+    candidate_fingerprint: Fingerprint,
+}
+impl HistoricalReview {
+    pub fn base_generation(&self) -> Option<SnapshotRevision> {
+        self.base_generation
+    }
+    pub fn candidate_revision(&self) -> SnapshotRevision {
+        self.candidate_revision
+    }
+    /// Explicit CLI confirmation, generated AFTER preview. This is a human
+    /// review binding, not authentication or a replacement for repository CAS.
+    pub fn confirmation(&self) -> String {
+        use std::fmt::Write;
+        let mut value = format!("APPROVE {} ", self.candidate_revision.value());
+        for byte in self.candidate_fingerprint.as_bytes() {
+            // Writing to a String cannot fail.
+            write!(&mut value, "{byte:02x}").expect("String formatting is infallible");
+        }
+        value
+    }
+}
+
 /// Holds the exact reviewed candidate and repository. Writing reports or
 /// constructing this object does not mutate storage; approval is a separate call.
 pub struct HistoricalValidationPreview<'repo> {
@@ -80,6 +125,32 @@ pub struct HistoricalValidationPreview<'repo> {
     approval: ApprovalPreview<'repo>,
 }
 impl HistoricalValidationPreview<'_> {
+    pub fn review(&self) -> HistoricalReview {
+        HistoricalReview {
+            format_version: 1,
+            base_generation: self.audit.metadata.namespace_generation,
+            candidate_revision: self.snapshot().revision(),
+            candidate_fingerprint: self.snapshot().source().fingerprint().clone(),
+        }
+    }
+    /// UI/CLI adapters keep the descriptor actually presented to their user.
+    /// A review from another candidate/base fails before report publication or
+    /// storage access. The existing approval method remains API-compatible.
+    pub fn approve_reviewed(
+        &mut self,
+        review: &HistoricalReview,
+        cancellation: &CancellationToken,
+        publish_reports: impl FnOnce(
+            &ValidationRunOutcome,
+            &HistoricalAuditSummary,
+            &HistoricalSnapshot,
+        ) -> Result<(), ReportError>,
+    ) -> Result<CommitReceipt, SessionApprovalError> {
+        if review != &self.review() {
+            return Err(SessionApprovalError::InvalidBinding);
+        }
+        self.approve_commit(cancellation, publish_reports)
+    }
     pub fn outcome(&self) -> &ValidationRunOutcome {
         &self.outcome
     }
@@ -143,7 +214,50 @@ impl<'service, 'repo> HistoricalValidationService<'service, 'repo> {
         progress: &mut dyn ProgressObserver,
         cancellation: &CancellationToken,
     ) -> Result<HistoricalValidationOutcome<'repo>, HistoricalValidationError> {
+        self.execute(
+            RequestInput::Typed(request),
+            sink,
+            audit_sink,
+            progress,
+            cancellation,
+        )
+    }
+    pub fn validate_text(
+        &self,
+        request: HistoricalTextValidationRequest,
+        sink: &mut dyn ValidationSink,
+        audit_sink: &mut dyn HistoricalAuditSink,
+        progress: &mut dyn ProgressObserver,
+        cancellation: &CancellationToken,
+    ) -> Result<HistoricalValidationOutcome<'repo>, HistoricalValidationError> {
+        self.execute(
+            RequestInput::Text(request),
+            sink,
+            audit_sink,
+            progress,
+            cancellation,
+        )
+    }
+    fn execute(
+        &self,
+        input: RequestInput,
+        sink: &mut dyn ValidationSink,
+        audit_sink: &mut dyn HistoricalAuditSink,
+        progress: &mut dyn ProgressObserver,
+        cancellation: &CancellationToken,
+    ) -> Result<HistoricalValidationOutcome<'repo>, HistoricalValidationError> {
         use HistoricalValidationError as E;
+        let (mut request, textual) = match input {
+            RequestInput::Typed(request) => (request, None),
+            RequestInput::Text(request) => (
+                HistoricalValidationRequest {
+                    validation: request.validation,
+                    submission_id: request.submission_id,
+                    parameters: BTreeMap::new(),
+                },
+                Some(request.parameters),
+            ),
+        };
         checkpoint(cancellation)?;
         if request.validation.mode != ValidationMode::Full
             || !matches!(request.validation.scope, ValidationScope::Flow(_))
@@ -158,6 +272,21 @@ impl<'service, 'repo> HistoricalValidationService<'service, 'repo> {
             .resolve_historical_audit(&request.validation.schema_key)
             .map_err(E::Resolution)?;
         let profile = resolved.profile();
+        if let Some(text) = textual {
+            request.parameters = super::full::bind_parameters(resolved.resolved().schema(), &text)
+                .map_err(E::Validation)?
+                .into_iter()
+                .map(|(id, value)| {
+                    let value = match value {
+                        JoinParameterValue::Text(value) => NamespaceValue::String(value),
+                        JoinParameterValue::Integer(value) => NamespaceValue::Integer(
+                            value.to_string().parse().map_err(|_| E::InvalidRequest)?,
+                        ),
+                    };
+                    Ok((id, value))
+                })
+                .collect::<Result<_, E>>()?;
+        }
         let namespace = bind_audit_namespace(profile, &request.parameters, &request.submission_id)
             .map_err(E::Approval)?;
         let audit = self

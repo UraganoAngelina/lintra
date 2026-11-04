@@ -29,9 +29,18 @@ chiave HMAC comune di32byte nel bundle privato portabile Slint, CLI esplicita,
 percorso Slint deterministico e garanzie sul file invariati. Fonte completa
 PERSIST-KEY-PROVISIONING-01-ratification.md; nessun installer o segreto operativo.
 Avviata10 dopo pubblicazione11, prerequisiti07/8-03/09 positivi.
-File candidati: provider file/configurazione bundle e helper filesystem condivisi,
-CLI args/command storico, export lib/test sintetici e documentazione. Nessuna
-modifica HMAC/SQL/formati/norme o UI concreta; gate11 non aggirato.
+Codice candidato10: provider file con bufferZeroizing33byte senza riallocazioni,
+helperFS condivisi/checkACLhandle, APItext/review eCLIhistoryinit/check/preview
+con conferma postanalisi, CAS/cancel/reportfailure/esitiambigui espliciti.
+Fontecompilata unica per bindingtestuale, nessuna numerizzazione per nome.
+5provider,9CLIadapter inclusoXLSX/spool,2pipe,13SIOC ebinario reale con0/1/2/130
+passati suLinux. Primo workspace869pass maallfeatures interrotto per correzione
+collisione chiave/manifest: preflight metadata anticipato prima dicompose,
+regressioneesplicito/implicito passata. Nuovi gatefinali tutti positivi:870/870workspace (110riepiloghi),827core/93,
+0fail/6ignored; fmt/Clippy dueassetti,boundary,23Python etooling17/1ignored pass.
+397hash sorgentiimmutati in11comandi; ledger/report10 aggiornati. ProviderWindows
+non ancora qualificato, residui commit/push/CI. DocHISTORICAL_CLI/PORTABLE_KEY_BUNDLE/report10 consultabili.
+Nessuna modifica HMAC/SQL/formati/norme oUIconcreta; gate11 nonaggirato.
 docs/migration preservata/esclusa dallo sviluppo. AUTO_CONTINUE, single-agent.
 
 ## Registro precedente — PERSIST09 WAITING_GATE, PERSIST10 BLOCKED, PERSIST11 IN_PROGRESS
@@ -5859,3 +5868,45 @@ Prererequisiti07/8-03/09 effettivamente DONE. Nessun nuovo stop ordinario.
   sorgenti ancora in evoluzione, non gatefinale10 o qualificaWindows del provider.
 - Nessun HMAC/formato/norma/driver/GUI concreta o chiave operativa introdotti.
   docs/migration resta preservata/esclusa. AUTO_CONTINUE10, single-agent.
+
+
+## HANDOFF §15.3 — T-PERSIST-10 gate finali in corso,2026-11-04
+
+- HEAD217037d pubblicato chiude11; codice10 corrente noncommittato e distinto
+  dalla CI11. Provider32byte/Zeroizing33, helperFS condivisi, review/text API,
+  CLIhistoryinit/check/preview, stdin cancellabile e documenti implementati.
+- Ratifica esplicita04nov in PERSIST-KEY-PROVISIONING-01-ratification.md; nessuna
+  decisione provider ancora pendente, nessun materiale operativo generato.
+- Correzione ruoli chiave/manifest prima dicompose e regressione esplicito/
+  implicito:9adaptertest pass. XLSX/tempSpool eabort/cancel/ambiguity coperti.
+- Primo gate interrotto dopo869workspace per fixmanifest; evidenza precedente
+  target/verification-persist10/local-gates.json, marcata interrotta/superata.
+- Gatefinale foreground: /tmp/lintra_persist10_gates.py, sessioneexec79948;
+  ledger target/verification-persist10-final/local-gates.json. Fmt eClippy due
+  assetti PASS, workspace default/allfeatures870/870 in110riepiloghi,0fail/6ignored.
+  Ora core-no-bundle etoolingstandalone in esecuzione; non dichiararliPASS prima
+  dell’exit.397file sorgenti congelati. NessunaCI10 ancora avviata, nonDONE10.
+- Dopo11comandi exit0 ehashimmutati: copiareledger nel dossier10, aggiornare
+  report/status, commit mirato/push autorizzati escludendo docs/migration;
+  dispatchCI unica normale Linux/MSVC inclnuovetestACL/reparse econsole/pipe.
+  Non usare CI11perqualificare il nuovo provider. Nessun nuovo consenso ordinario.
+- AUTO_CONTINUE, single-agent/no daemon/subagenti. Next12 dopo09/10/11 DONE:
+  benchmark memoria/storage sintetici, privacy/no plaintext epolicyrestore/retention
+  documentate senza chiudere implicitamente backup/cifratura/dati reali.
+
+
+## HANDOFF §15.3 — T-PERSIST-10 gate locali completi,2026-11-04
+
+- Base217037d, source10finale dopo guardmanifest.11comandi reali exit0,
+ 397hash immutati;870/870workspace,827core,0fail/6ignored; fmt/Clippy workspace
+  dueassetti eTooling standalone, graph,23Python e17tooling/1ignored pass.
+- Nuovi APItext/review/providerFile32 eCLIinit/check/preview testati;9adapter,
+  binario reale0/1/2/130 (inclSIGINTLinux),XLSX/tempSpool,partialreference,
+  reportfailure/CAS/ambiguous eantiKeyManifest provati. Report consultabile10.
+- HMAC/canonizzazione/formati/norme invariati; nessun segreto operativo, database
+  di rete, installer/credential manager/GUI concreta oTauri. Ratifica04nov applicata.
+- Residui10: commitmirato/push/CI, proveWindows ACL/handle/reparse/pipe/console
+  ecomparazioni native reali. NonDONE10,121/140DONE immutato;11giàDONE.
+- docs/migration originale esclusa/preservata. AUTO_CONTINUE: pubblicare10,
+  dispatchCI unica (11terminata), attendere gate reale eproseguire12 con09/10/11
+  effettivamenteDONE; eventuale17-02 indipendente solo dopo propriopreflight.

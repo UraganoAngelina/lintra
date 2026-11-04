@@ -7,8 +7,11 @@ use crate::{
 };
 use std::{collections::HashSet, error::Error, fmt, sync::Arc};
 
+mod file_security;
+mod key_file;
 mod memory;
 mod protection;
+pub use key_file::{FileKeyError, FilePersistenceKeyProvider, portable_persistence_key_path};
 pub use memory::{InMemoryPersistenceImage, InMemoryPersistenceRepository};
 pub use protection::{
     IdentityProtectionScope, IdentityProtector, PersistenceKey, PersistenceKeyProvider,
