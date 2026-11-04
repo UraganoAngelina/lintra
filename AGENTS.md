@@ -83,6 +83,19 @@ mockup Slint; scuro nero con accenti rosso/arancione, mai gradiente nero/viola.
 Il requisito temi è autorizzato, da attuare nel perimetro delle task UI dopo il
 collaudo del prototipo, senza riscrivere il riferimento chiaro o aggirare gate.
 
+## Ratifica provisioning portabile — 2026-11-04
+
+PERSIST-KEY-PROVISIONING-01 alternativa A approvata con prescrizioni vincolanti:
+chiave HMAC comune di32byte in file esterno nel bundle privato portabile Slint,
+Key ID stabile, nessun installer ora, CLI esplicita e risoluzione Slint limitata
+all'eseguibile/config controllata. Garanzie del file aperto/ACL/link immutate;
+archivi locali indipendenti, nessuna chiave operativa in Git/CI/log o generata
+dall'agente. Continuità negli aggiornamenti; nessuna migrazione tacita.
+Fonte dettagliata: docs/verification/PERSIST-KEY-PROVISIONING-01-ratification.md.
+Autorizzata T-PERSIST-10, superato il blocco di scelta; cifratura/retention/backup
+completo/dati reali restano aperti. Single-agent, commit/push/CI e prosecuzione
+READY confermati. Nessuna anticipazione installer/Tauri/credential manager.
+
 ## Registro storico e ratifiche precedenti
 
 Mandato dell'autore aggiornato il 2026-10-19:

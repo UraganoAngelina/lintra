@@ -1,9 +1,68 @@
 {
-  "task": "T-PERSIST-09",
-  "expected_head_sha": "4313f22e48c6b8a239028c0bb6a617ac8c37cc48",
-  "run_id": 41194045486,
+  "conclusion": "success",
+  "headSha": "4313f22e48c6b8a239028c0bb6a617ac8c37cc48",
+  "jobs": [
+    {
+      "completedAt": "2026-10-31T11:16:12Z",
+      "conclusion": "success",
+      "databaseId": 124516506728,
+      "name": "Verify (x86_64-pc-windows-msvc)",
+      "startedAt": "2026-10-31T10:45:36Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41194045486/job/124516506728"
+    },
+    {
+      "completedAt": "2026-10-31T11:02:48Z",
+      "conclusion": "success",
+      "databaseId": 124516506927,
+      "name": "Verify (x86_64-unknown-linux-gnu)",
+      "startedAt": "2026-10-31T10:45:36Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41194045486/job/124516506927"
+    },
+    {
+      "completedAt": "2026-10-31T10:45:33Z",
+      "conclusion": "skipped",
+      "databaseId": 124516507570,
+      "name": "Qualify UI archives",
+      "startedAt": "2026-10-31T10:45:34Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41194045486/job/124516507570"
+    },
+    {
+      "completedAt": "2026-10-31T11:16:26Z",
+      "conclusion": "success",
+      "databaseId": 124522606063,
+      "name": "Compare production UI regression pixels",
+      "startedAt": "2026-10-31T11:16:15Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41194045486/job/124522606063"
+    },
+    {
+      "completedAt": "2026-10-31T11:16:22Z",
+      "conclusion": "success",
+      "databaseId": 124522606119,
+      "name": "Compare native desktop theme pixels",
+      "startedAt": "2026-10-31T11:16:14Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41194045486/job/124522606119"
+    },
+    {
+      "completedAt": "2026-10-31T11:16:25Z",
+      "conclusion": "success",
+      "databaseId": 124522606120,
+      "name": "Compare Linux and Windows JSONL bytes",
+      "startedAt": "2026-10-31T11:16:15Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41194045486/job/124522606120"
+    }
+  ],
+  "status": "completed",
   "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41194045486",
-  "dispatch_exit_code": 0,
-  "result_inspected": false,
-  "required_job_results": null
+  "task": "T-PERSIST-09",
+  "verified_on": "2026-11-04",
+  "required_jobs_success": 5,
+  "ui_packaging_optional": "skipped as requested; no new UI archive claimed",
+  "expected_head_sha": "4313f22e48c6b8a239028c0bb6a617ac8c37cc48",
+  "run_id": 41194045486
 }
