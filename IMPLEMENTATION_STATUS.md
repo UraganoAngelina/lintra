@@ -3,29 +3,35 @@
 Consuntivo aggiornato al **2026-11-04**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — PERSIST09 DONE, PERSIST11 gate locali completi
+## Frontiera corrente — PERSIST11 DONE, PERSIST10 IN_PROGRESS
 
 4 novembre 2026: ripresa dal solo working tree di work/p1-foundations; modifiche
-preesistenti preservate, nessuna ricostruzione dalla cronologia. **120/140 DONE
-= 85,7%**. T-PERSIST-09: CI41194045486 letta realmente, completed/success su
+preesistenti preservate, nessuna ricostruzione dalla cronologia. **121/140 DONE
+= 86,4%**. T-PERSIST-09: CI41194045486 letta realmente, completed/success su
 4313f22e48c6b8a239028c0bb6a617ac8c37cc48; entrambi i job nativi e tre confronti
 JSONL/pixel positivi. Packaging UI opzionale skipped, nessuna nuova release.
 Evidenza completa: docs/verification/T-PERSIST-09-native-ci.json.
 
-T-PERSIST-11 IN_PROGRESS: ripresi test/hook cfg(test) e workflow cross-OS già
+T-PERSIST-11 DONE: ripresi test/hook cfg(test) e workflow cross-OS già
 non committati. Rafforzati flush delle pagine prima del kill, generazione dopo
 recovery, nuova pubblicazione dopo recovery, chiave errata senza modifica DB e
 manifest malformato/oversize. SQLite locale:23pass/4ignored (helper e trasferimenti
 nativi espliciti); workspace default/all-features850/850 esiti in109riepiloghi,
 core-no-bundle807/92,0fail/6ignored. Fmt/Clippy due assetti, boundary,23Python
 e actionlint pass;370impronte sorgenti immutate negli8comandi finali. Ledger
-T-PERSIST-11-local-gates.json e report T-PERSIST-11-qualification.md. Nessun
-DONE11 anticipato; residui commit/push e CI con scambio bidirezionale dei DB.
+T-PERSIST-11-local-gates.json e report T-PERSIST-11-qualification.md.
+DONE11 ora qualificato:633f61f, CI41805357515 completed/success,7job richiesti
+positivi. Scaricati i4artifact snapshot: entrambi i DB esportati verificati
+per SHA256 e corrispondenza col risultato di import del runner opposto.
+Report e ledger11 aggiornati, evidenza T-PERSIST-11-native-ci.json.
 T-PERSIST-10 sbloccata dalla ratifica esplicita dell’autore del4novembre:
 chiave HMAC comune di32byte nel bundle privato portabile Slint, CLI esplicita,
 percorso Slint deterministico e garanzie sul file invariati. Fonte completa
 PERSIST-KEY-PROVISIONING-01-ratification.md; nessun installer o segreto operativo.
-Prossima task prioritaria10 dopo pubblicazione11, prerequisiti07/8-03/09 positivi.
+Avviata10 dopo pubblicazione11, prerequisiti07/8-03/09 positivi.
+File candidati: provider file/configurazione bundle e helper filesystem condivisi,
+CLI args/command storico, export lib/test sintetici e documentazione. Nessuna
+modifica HMAC/SQL/formati/norme o UI concreta; gate11 non aggirato.
 docs/migration preservata/esclusa dallo sviluppo. AUTO_CONTINUE, single-agent.
 
 ## Registro precedente — PERSIST09 WAITING_GATE, PERSIST10 BLOCKED, PERSIST11 IN_PROGRESS
@@ -2760,7 +2766,7 @@ Tabella milestone riallineata al checkpoint 2026-10-23 sulla base dei dossier.
 | T-PERSIST-08 | DONE | 2026-10-30 | bc7c448, CI41069605562 tutti5job richiesti success; audit deterministico/HMAC/CAS read-only,14test audit/18SQLite,831esiti locali perassetto; dossier08 |
 | T-PERSIST-09 | DONE | 2026-11-04 | Codice4313f22; CI41194045486 realmente completed/success,5job richiesti positivi; locali846/846/803. Audit-only, nessun divieto inter-run |
 | T-PERSIST-10 | IN_PROGRESS | 2026-11-04 | Provider file ratificato esplicitamente, chiave comune nel bundle Slint privato; preflight aggiornato. Implementazione dopo pubblicazione11, nessun default sintetico runtime |
-| T-PERSIST-11 | IN_PROGRESS | 2026-11-04 | Gate locali850/850/807 positivi,0fail/6ignored; fmt/Clippy/boundary/23Python/actionlint pass. Residuo pubblicazione e CI bidirezionale, report11 |
+| T-PERSIST-11 | DONE | 2026-11-04 | Code633f61f; CI41805357515 tutti7job richiesti success, artifact DB/import incrociati perhash verificati. Locali850/850/807 e gate pass; report11 |
 | T-PERSIST-12 | NOT_STARTED | — | Dopo09/10/11 effettivamente DONE |
 | T-CAD-01..12 | NOT_STARTED | — | Nessun runtime CAD |
 
@@ -5835,3 +5841,21 @@ Cifratura/retention/backup completo/uso reale rimangono aperti come ratificato.
 Superato il blocco di scelta10; implementarla come prossima prioritaria, al posto
 di17-02 candidata nel precedente handoff, dopo pubblicazione11 e dispatchCI.
 Prererequisiti07/8-03/09 effettivamente DONE. Nessun nuovo stop ordinario.
+
+
+## HANDOFF §15.3 — T-PERSIST-11 DONE, T-PERSIST-10 in sviluppo,2026-11-04
+
+- Code633f61f pubblicato; CI41805357515 completed/success,7job richiesti:
+  Linux/MSVC,3confronti JSONL/pixel e2riaperture DB nativi incrociati. Packaging
+  UI opzionale skipped. Due letture ordinarie distanziate, nessun polling ripetuto.
+-4artifact snapshot scaricati: SHA256 di ciascun DB coincide col manifest del
+  produttore e col risultato del consumer opposto;3snapshot/2namespace, HMAC e
+  provenienza delle identità conservate realmente verificati. JSON nativo11.
+- Locali850/850/807,0fail/6ignored;fmt/Clippy/boundary/23Python/actionlint pass,
+ 370hash sorgenti invariati durante8comandi. Nessun residuo11,121/140DONE=86,4%.
+- T-PERSIST-10 indipendente in corso sulla ratifica utente: provider file32byte,
+  helperFS condivisi, APItext/review eCLIinit/preview/revisione esplicita.
+ 5testprovider e6CLIunit,2inputpipe,13SIOC ebinario reale passati suLinux;
+  sorgenti ancora in evoluzione, non gatefinale10 o qualificaWindows del provider.
+- Nessun HMAC/formato/norma/driver/GUI concreta o chiave operativa introdotti.
+  docs/migration resta preservata/esclusa. AUTO_CONTINUE10, single-agent.

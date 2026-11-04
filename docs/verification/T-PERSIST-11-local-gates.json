@@ -875,7 +875,7 @@
   "source_unchanged": true,
   "local_complete": true,
   "cargo_build_jobs": 2,
-  "native_gate": "not dispatched yet; no Windows or cross-OS success claimed",
+  "native_gate": "CI41805357515 success on633f61f,7required jobs; native artifacts verified bidirectionally",
   "actionlint": {
     "version": "1.7.7",
     "command": [
@@ -895,5 +895,6 @@
     },
     "database_bytes": 49152,
     "cross_os_import": "not executed locally; requires opposite native runner"
-  }
+  },
+  "code_commit": "633f61f99e7a29cec5f124c967696c318dc28950"
 }

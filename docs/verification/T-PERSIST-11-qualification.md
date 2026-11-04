@@ -1,5 +1,7 @@
 # T-PERSIST-11 — visibilità, recovery e portabilità SQLite
 
+**Stato corrente: DONE su633f61f, CI41805357515; evidenze native in fondo.**
+
 4 novembre 2026. Ripresa dal working tree corrente, senza ricostruire sessioni
 dalla cronologia Git. Scope: test sintetici, hook già limitati a `cfg(test)` e CI.
 Nessuna API pubblica, query produttiva, schema normativo, dipendenza o UI cambia.
@@ -134,4 +136,17 @@ I conteggi aggregano anche i riepiloghi degli helper subprocessi, come nei
 ledger precedenti; non sono conteggi di soli test top-level. I6ignored dei run
 completi comprendono helper, probe e i2trasferimenti nativi espliciti. Non sono
 successi impliciti. Gate remoto e file realmente scambiati restano da verificare;
-la task è IN_PROGRESS, non DONE.
+al termine dei soli gate locali la task era IN_PROGRESS, non DONE.
+
+
+## Gate nativo concluso — DONE
+
+Codice633f61f, [CI41805357515](https://github.com/UraganoAngelina/lintra/actions/runs/41805357515)
+completed/success: Linux/MSVC, tre confronti JSONL/pixel e due import incrociati
+sono tutti success. Packaging UI opzionale skipped. [Evidenza](T-PERSIST-11-native-ci.json).
+
+Scaricati4artifact snapshot: hash ricalcolato su entrambi i DB esportati, uguale
+al manifest del rispettivo produttore e al source hash dell'import sul runner
+opposto. Ogni consumer ha verificato3snapshot,2namespace, protezione e provenienza
+conservata. Non è un roundtrip Linux spacciato per Windows. Nessun residuo11.
+La successiva task10 cambia provider/CLI ma non è qualificata da questa CI11.

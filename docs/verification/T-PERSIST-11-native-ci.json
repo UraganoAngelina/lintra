@@ -1,0 +1,126 @@
+{
+  "conclusion": "success",
+  "headSha": "633f61f99e7a29cec5f124c967696c318dc28950",
+  "jobs": [
+    {
+      "completedAt": "2026-11-04T09:27:16Z",
+      "conclusion": "success",
+      "databaseId": 126490898015,
+      "name": "Verify (x86_64-unknown-linux-gnu)",
+      "startedAt": "2026-11-04T09:11:09Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41805357515/job/126490898015"
+    },
+    {
+      "completedAt": "2026-11-04T09:42:09Z",
+      "conclusion": "success",
+      "databaseId": 126490898572,
+      "name": "Verify (x86_64-pc-windows-msvc)",
+      "startedAt": "2026-11-04T09:11:08Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41805357515/job/126490898572"
+    },
+    {
+      "completedAt": "2026-11-04T09:11:06Z",
+      "conclusion": "skipped",
+      "databaseId": 126490900111,
+      "name": "Qualify UI archives",
+      "startedAt": "2026-11-04T09:11:07Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41805357515/job/126490900111"
+    },
+    {
+      "completedAt": "2026-11-04T09:42:18Z",
+      "conclusion": "success",
+      "databaseId": 126504519879,
+      "name": "Compare Linux and Windows JSONL bytes",
+      "startedAt": "2026-11-04T09:42:11Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41805357515/job/126504519879"
+    },
+    {
+      "completedAt": "2026-11-04T09:43:16Z",
+      "conclusion": "success",
+      "databaseId": 126504522670,
+      "name": "Reopen counterpart snapshot (x86_64-unknown-linux-gnu)",
+      "startedAt": "2026-11-04T09:42:12Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41805357515/job/126504522670"
+    },
+    {
+      "completedAt": "2026-11-04T09:42:19Z",
+      "conclusion": "success",
+      "databaseId": 126504524195,
+      "name": "Compare native desktop theme pixels",
+      "startedAt": "2026-11-04T09:42:12Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41805357515/job/126504524195"
+    },
+    {
+      "completedAt": "2026-11-04T09:42:28Z",
+      "conclusion": "success",
+      "databaseId": 126504524895,
+      "name": "Compare production UI regression pixels",
+      "startedAt": "2026-11-04T09:42:17Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41805357515/job/126504524895"
+    },
+    {
+      "completedAt": "2026-11-04T09:43:43Z",
+      "conclusion": "success",
+      "databaseId": 126504532683,
+      "name": "Reopen counterpart snapshot (x86_64-pc-windows-msvc)",
+      "startedAt": "2026-11-04T09:42:14Z",
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41805357515/job/126504532683"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41805357515",
+  "task": "T-PERSIST-11",
+  "verified_on": "2026-11-04",
+  "done": true,
+  "required_jobs_success": 7,
+  "native_transfer_artifacts": [
+    {
+      "producer_target": "x86_64-unknown-linux-gnu",
+      "consumer_target": "x86_64-pc-windows-msvc",
+      "database_bytes": 49152,
+      "manifest": {
+        "kind": "lintra.synthetic-sqlite-transfer.v1",
+        "producer_os": "linux",
+        "db_sha256": "a133f9e523e240e303be3ad9fa43cce2968d0187cc53f5f944f47e71f5e59a3a"
+      },
+      "import_result": {
+        "consumer_os": "windows",
+        "fixture_kind": "lintra.synthetic-sqlite-transfer.v1",
+        "namespaces_verified": 2,
+        "producer_os": "linux",
+        "protection_verified": true,
+        "retained_occurrence_verified": true,
+        "snapshots_verified": 3,
+        "source_db_sha256": "a133f9e523e240e303be3ad9fa43cce2968d0187cc53f5f944f47e71f5e59a3a"
+      }
+    },
+    {
+      "producer_target": "x86_64-pc-windows-msvc",
+      "consumer_target": "x86_64-unknown-linux-gnu",
+      "database_bytes": 49152,
+      "manifest": {
+        "kind": "lintra.synthetic-sqlite-transfer.v1",
+        "producer_os": "windows",
+        "db_sha256": "a133f9e523e240e303be3ad9fa43cce2968d0187cc53f5f944f47e71f5e59a3a"
+      },
+      "import_result": {
+        "consumer_os": "linux",
+        "fixture_kind": "lintra.synthetic-sqlite-transfer.v1",
+        "namespaces_verified": 2,
+        "producer_os": "windows",
+        "protection_verified": true,
+        "retained_occurrence_verified": true,
+        "snapshots_verified": 3,
+        "source_db_sha256": "a133f9e523e240e303be3ad9fa43cce2968d0187cc53f5f944f47e71f5e59a3a"
+      }
+    }
+  ]
+}
