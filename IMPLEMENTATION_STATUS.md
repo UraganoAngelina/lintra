@@ -3,46 +3,44 @@
 Consuntivo aggiornato al **2026-11-04**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — PERSIST10 DONE, T-P17-02 profiling indipendente
+## Frontiera corrente — T-PERSIST-12 locale qualificata, da pubblicare
 
-4 novembre 2026: ripresa dal solo working tree di work/p1-foundations; modifiche
-preesistenti preservate, nessuna ricostruzione dalla cronologia. **122/140 DONE
-= 87,1%**. T-PERSIST-09: CI41194045486 letta realmente, completed/success su
-4313f22e48c6b8a239028c0bb6a617ac8c37cc48; entrambi i job nativi e tre confronti
-JSONL/pixel positivi. Packaging UI opzionale skipped, nessuna nuova release.
-Evidenza completa: docs/verification/T-PERSIST-09-native-ci.json.
+4 novembre 2026. Recovery iniziale solo dal working tree del branch
+work/p1-foundations, nessuna ricostruzione dalla cronologia. **123/140 DONE =87,9%**
+(conta delle task, non stima dello sforzo residuo). Single-agent, nessun subagente,
+commit/push/CI autorizzati e AUTO_CONTINUE sulle task realmente READY.
 
-T-PERSIST-11 DONE: ripresi test/hook cfg(test) e workflow cross-OS già
-non committati. Rafforzati flush delle pagine prima del kill, generazione dopo
-recovery, nuova pubblicazione dopo recovery, chiave errata senza modifica DB e
-manifest malformato/oversize. SQLite locale:23pass/4ignored (helper e trasferimenti
-nativi espliciti); workspace default/all-features850/850 esiti in109riepiloghi,
-core-no-bundle807/92,0fail/6ignored. Fmt/Clippy due assetti, boundary,23Python
-e actionlint pass;370impronte sorgenti immutate negli8comandi finali. Ledger
-T-PERSIST-11-local-gates.json e report T-PERSIST-11-qualification.md.
-DONE11 ora qualificato:633f61f, CI41805357515 completed/success,7job richiesti
-positivi. Scaricati i4artifact snapshot: entrambi i DB esportati verificati
-per SHA256 e corrispondenza col risultato di import del runner opposto.
-Report e ledger11 aggiornati, evidenza T-PERSIST-11-native-ci.json.
-T-PERSIST-10 sbloccata dalla ratifica esplicita dell’autore del4novembre:
-chiave HMAC comune di32byte nel bundle privato portabile Slint, CLI esplicita,
-percorso Slint deterministico e garanzie sul file invariati. Fonte completa
-PERSIST-KEY-PROVISIONING-01-ratification.md; nessun installer o segreto operativo.
-Avviata10 dopo pubblicazione11, prerequisiti07/8-03/09 positivi.
-Codice candidato10: provider file con bufferZeroizing33byte senza riallocazioni,
-helperFS condivisi/checkACLhandle, APItext/review eCLIhistoryinit/check/preview
-con conferma postanalisi, CAS/cancel/reportfailure/esitiambigui espliciti.
-Fontecompilata unica per bindingtestuale, nessuna numerizzazione per nome.
-5provider,9CLIadapter inclusoXLSX/spool,2pipe,13SIOC ebinario reale con0/1/2/130
-passati suLinux. Primo workspace869pass maallfeatures interrotto per correzione
-collisione chiave/manifest: preflight metadata anticipato prima dicompose,
-regressioneesplicito/implicito passata. Nuovi gatefinali tutti positivi:870/870workspace (110riepiloghi),827core/93,
-0fail/6ignored; fmt/Clippy dueassetti,boundary,23Python etooling17/1ignored pass.
-397hash sorgentiimmutati in11comandi; ledger/report10 aggiornati. ProviderWindows
-non ancora qualificato: codicec884692 pubblicato, CI41822083629 avviata con
-dispatch riuscito. Residuo gate Linux/MSVC reale, nessun DONE10 anticipato. DocHISTORICAL_CLI/PORTABLE_KEY_BUNDLE/report10 consultabili.
-Nessuna modifica HMAC/SQL/formati/norme oUIconcreta; gate11 nonaggirato.
-docs/migration preservata/esclusa dallo sviluppo. AUTO_CONTINUE, single-agent.
+PERSIST09 DONE:4313f22, CI41194045486 completed/success,5job richiesti positivi.
+PERSIST11 DONE:633f61f, CI41805357515 completed/success,7job richiesti positivi;
+crash/recovery e4artifact di trasferimentoSQLite verificati fra i due OS.
+PERSIST10 DONE:c884692, CI41822083629 completed/success,7job richiesti positivi,
+nuovi test Windows ACL/link/sostituzioni/pipe/console realmente passati.
+Ratifica04nov applicata: chiave HMAC comune32byte in file separato nel bundle
+privato portabile Slint, Key ID stabile, sorgente deterministica controllata,
+CLI esplicita, nessun installer o chiave operativa generata. Formato/HMAC/norme
+immutati. Fonti ratifica, HISTORICAL_CLI, PORTABLE_KEY_BUNDLE e dossier10.
+
+T-P17-02 DONE:9d641d4, CI41846160280 completed/success,7job richiesti positivi.
+Profilazione con tre run estesi/36scenari e contatori allocazioni; nessuna
+ottimizzazione runtime senza evidenza sufficiente, nessun guadagno inventato.
+Smoke nuovo su entrambi gli OS, full all-features e golden nativi passati.
+
+T-PERSIST-12 IN_PROGRESS:09/10/11 qualificati. Nuovi carichi sintetici cinque
+trace memory-fake/SQLite,24casi in due run release10k/100k/300k. Sorgenti e
+volumeDB ripetibili verificati.300k × due snapshot: circa3,35GB SQLite e509MB
+picco processo; commit di minuti documentati senza soglie DEC14 inventate.
+Privacy byte/hex, copia chiusa e nuovo testCLI stdout/stderr/audit/wrong-key
+passati. Dieci gate finali exit0,402hash immutati:873workspace/111riepiloghi,
+0fail/6ignored, fmt/Clippy due assetti, test mirati e smoke due assetti, boundary
+ed actionlint. Report e ledger12 consultabili. NonDONE12 prima della propria CI.
+
+Restano12: commit/push, dispatchCI unica ora che17 è terminata, gate nativi e
+verifica artifact delle misure smoke. Cifratura/retention/backup operativo
+completo/dati reali restano aperti, documentati in PERSISTENCE_OPERATIONS.
+Nessuna modifica runtime, SQL/formati/norme, baseline oGUI concreta. Nessuna
+nuova release o assemblaggio privato operativo. docs/migration originale resta
+preservata/esclusa. Durante l'attesa CI proseguire con preflight di task
+indipendenti autorizzate, mantenendo gate e prerequisiti reali.
 
 ## Registro precedente — PERSIST09 WAITING_GATE, PERSIST10 BLOCKED, PERSIST11 IN_PROGRESS
 
@@ -5985,3 +5983,77 @@ manifest, dipendenza o policy cambiati. Negativo no-clobber preserva la baseline
 122/140DONE invariato. AUTO_CONTINUE: pubblicare17-02 e avviare CI unica;
 durante l'attesa preflight T-PERSIST-12 con09/10/11 effettivamenteDONE.
 Nessun blocker umano nuovo; docs/migration preesistente esclusa e preservata.
+
+
+## Preflight T-PERSIST-12 — 2026-11-04
+
+T-P17-02 pubblicata su9d641d4, CI41846160280 avviata: nessun DONE17 anticipato.
+Prosegue12 indipendente, con09/10/11 tutte completed/success nei dossier nativi
+rispettivamente4313f22/c884692/633f61f. ARCH45, DET166–174, ADR-PERSIST-001,
+piano§4/14/20 e prompt12 verificati. Ratifica provisioning04nov preservata.
+
+Scope: nuovo benchmark sintetico memory/SQLite con cinque trace e arità PK
+rappresentative dei due profili, prove privacy positive/negative, documentazione
+retention/restore e dossier gate/handoffCAD. Non si implementano regole CAD,
+algoritmi HMAC, cifratura o cancellazioni; niente dati reali, soglie inventate o
+nuovo backend. Il repository memory è un fake, non un'alternativa durevole.
+Retention operativa/cifratura/backup completo prima dei dati reali rimangono
+scelte aperte; documentare il comportamento effettivo senza approvarle tacitamente.
+Prima modifica limitata a helper sintetico tests/support, test di qualificazione,
+benches/persistence_profiles.rs e target Cargo relativo; nessuna dipendenza nuova.
+AUTO_CONTINUE, single-agent, docs/migration preservata/esclusa.
+
+
+## Avanzamento locale T-PERSIST-12 — misure estese in corso
+
+Nuovo helper con cinque trace e arità PK dichiarate, benchmark opt-in con processi
+posseduti e misure OS, due test privacy/copia chiusa già passati e Clippy mirato
+positivo. Primo smoke quattro casi100record/restart passato. Nuovo test del CLI
+reale per stdout/stderr/audit e chiave errata scritto, in attesa dei gate finali.
+Scanner esteso anche a esadecimale dei DTO, con controllo positivo.
+Prima run release completa12casi passata earchiviata, hash harness/helper/adapter
+verificati.300k × due snapshot: SQLite circa3,35GB e509MB picco processo; commit
+circa231/129s (SIOCshape) e230/128s (CADshape), restart circa13s. Nessuna soglia,
+ottimizzazione runtime o idoneità reale inventata. Seconda run sullo stesso binario
+in corso; evitare altre compilazioni/test finché le misure terminano.
+Runbook PERSISTENCE_OPERATIONS esplicita niente purge, niente cifratura HMAC,
+copy/restore offline isolati, originale preservato, responsabilità e policy dati
+reali ancora aperte. CI aggiunge smoke/artifact nativi; non ancora pubblicata12.
+T-P17-02: seconda lettura, Linux job success, Windows test/allfeatures/core/smoke
+passati e buildrelease in corso; nonDONE17. Rimane122/140DONE.
+
+
+## Chiusura e HANDOFF §15.3 — T-P17-02 DONE, 2026-11-04
+
+CI41846160280 completed/success su9d641d4478ad8026441696a1f1bd4b099524e19f:
+sette job richiesti positivi, optionalUIpackaging skipped. Smoke benchmark nuovo
+realmente passato su Linux/MSVC, full default/allfeatures/core positivi, confronti
+JSONL/pixel e due importSQLite crossOS positivi. Terza lettura ordinaria finale,
+nessun gate dedotto. Evidenza T-P17-02-native-ci.json.
+
+Solo benchmark modificato: conteggi alloc/realloc/traffico, scenario isolatochiavi,
+36scenari estesi in tre run e negativo no-clobber; sei gate locali positivi,
+399impronte invariate, workspace870pass/0fail/6ignored. Nessuna ottimizzazione
+runtime adottata senza collo di bottiglia Full dimostrato; nessun guadagno prima/
+dopo o soglia inventati. Golden identici, attestati da regressione locale/nativa.
+123/140DONE =87,9%. AUTO_CONTINUE:12 già in corso indipendente; due run completi
+24casi reali ora riusciti, sorgenti/volumi e dimensioniDB ripetibili verificati.
+Restano nuovo testCLI sentinelle e gate finali12, commit/push/CI propria.
+
+
+## HANDOFF §15.3 — T-PERSIST-12 gate locali conclusi, 2026-11-04
+
+Solo supporto test/benchmark, targetCargo eCI/doc modificati; src runtime invariato.
+Due run estesi24casi, dimensioniDB identiche per forma/volume e hash sorgenti
+verificati. Negativo no-clobber preserva dati. Privacy/copia chiusa e binarioCLI
+reale provati, inclusi esadecimale,stdout/stderr,audit,wrong-key eDB invariato.
+Dieci comandi finali exit0,402impronte invariate,873workspace/111riepiloghi,
+0fail/6ignored, mirati2+1allfeatures, smoke4casi per assetto, boundary eactionlint.
+Nessuna soglia, norma, key operativa, installer o formato nuovo. Policy dati reali
+rimangono aperte; runbook per proprietario/manutentore, non wizard prodotto.
+
+T-P17-02 ora DONE con CI41846160280 reale,123/140DONE. Prossimi passi12:
+pubblicazione eCI propria, download/verifica dei due artifact smoke nativi prima
+DiDONE. AUTO_CONTINUE durante l'attesa con task indipendenti dopo preflight;
+handoffCAD del core solo dopo gate12, senza dichiarare approvate norme mancanti.
+docs/migration preesistente preservata/esclusa; nessun blocker umano nuovo12.

@@ -1,0 +1,323 @@
+{
+  "task": "T-PERSIST-12",
+  "runs": 2,
+  "cases": 24,
+  "synthetic_only": true,
+  "thresholds": null,
+  "benchmark_commands": [
+    {
+      "command": [
+        "cargo",
+        "bench",
+        "--bench",
+        "persistence_profiles",
+        "--locked",
+        "--offline",
+        "--",
+        "--output",
+        "target/verification-persist12/full-1.json"
+      ],
+      "exit_code": 0,
+      "seconds": 1324.5631040450025
+    },
+    {
+      "command": [
+        "target/release/deps/persistence_profiles-06d21e399cdf5b33",
+        "--output",
+        "target/verification-persist12/full-2.json"
+      ],
+      "exit_code": 0,
+      "seconds": 1077.500215942
+    }
+  ],
+  "results": [
+    {
+      "backend": "memory-fake",
+      "shape": "sioc-shaped-synthetic",
+      "records_per_snapshot": 10000,
+      "database_bytes": null,
+      "commit_seconds_range_by_revision": [
+        [
+          0.02581078,
+          0.028541851
+        ],
+        [
+          0.042987264,
+          0.048269162
+        ]
+      ],
+      "peak_process_bytes_range": [
+        63008768,
+        63078400
+      ],
+      "lookup_p95_ns_range": [
+        7874,
+        8962
+      ]
+    },
+    {
+      "backend": "sqlite",
+      "shape": "sioc-shaped-synthetic",
+      "records_per_snapshot": 10000,
+      "database_bytes": 111423488,
+      "commit_seconds_range_by_revision": [
+        [
+          0.767721604,
+          1.057143664
+        ],
+        [
+          1.277477546,
+          1.550775753
+        ]
+      ],
+      "peak_process_bytes_range": [
+        26202112,
+        26210304
+      ],
+      "lookup_p95_ns_range": [
+        169946,
+        186559
+      ]
+    },
+    {
+      "backend": "memory-fake",
+      "shape": "cad-shaped-synthetic",
+      "records_per_snapshot": 10000,
+      "database_bytes": null,
+      "commit_seconds_range_by_revision": [
+        [
+          0.026309223,
+          0.029502417
+        ],
+        [
+          0.042534051,
+          0.044310104
+        ]
+      ],
+      "peak_process_bytes_range": [
+        62930944,
+        62984192
+      ],
+      "lookup_p95_ns_range": [
+        3551,
+        11492
+      ]
+    },
+    {
+      "backend": "sqlite",
+      "shape": "cad-shaped-synthetic",
+      "records_per_snapshot": 10000,
+      "database_bytes": 111398912,
+      "commit_seconds_range_by_revision": [
+        [
+          0.770626287,
+          1.363864676
+        ],
+        [
+          1.2549908699999999,
+          1.271865984
+        ]
+      ],
+      "peak_process_bytes_range": [
+        26058752,
+        26255360
+      ],
+      "lookup_p95_ns_range": [
+        209229,
+        211447
+      ]
+    },
+    {
+      "backend": "memory-fake",
+      "shape": "sioc-shaped-synthetic",
+      "records_per_snapshot": 100000,
+      "database_bytes": null,
+      "commit_seconds_range_by_revision": [
+        [
+          0.297034814,
+          0.300574817
+        ],
+        [
+          0.537773407,
+          0.554074037
+        ]
+      ],
+      "peak_process_bytes_range": [
+        543518720,
+        543621120
+      ],
+      "lookup_p95_ns_range": [
+        4349,
+        5081
+      ]
+    },
+    {
+      "backend": "sqlite",
+      "shape": "sioc-shaped-synthetic",
+      "records_per_snapshot": 100000,
+      "database_bytes": 1115918336,
+      "commit_seconds_range_by_revision": [
+        [
+          55.095668697,
+          60.230597533
+        ],
+        [
+          55.091314616,
+          57.121894599
+        ]
+      ],
+      "peak_process_bytes_range": [
+        175718400,
+        175779840
+      ],
+      "lookup_p95_ns_range": [
+        194351,
+        217650
+      ]
+    },
+    {
+      "backend": "memory-fake",
+      "shape": "cad-shaped-synthetic",
+      "records_per_snapshot": 100000,
+      "database_bytes": null,
+      "commit_seconds_range_by_revision": [
+        [
+          0.309495717,
+          0.320545024
+        ],
+        [
+          0.509034933,
+          0.549273496
+        ]
+      ],
+      "peak_process_bytes_range": [
+        543633408,
+        543653888
+      ],
+      "lookup_p95_ns_range": [
+        4538,
+        7183
+      ]
+    },
+    {
+      "backend": "sqlite",
+      "shape": "cad-shaped-synthetic",
+      "records_per_snapshot": 100000,
+      "database_bytes": 1116057600,
+      "commit_seconds_range_by_revision": [
+        [
+          52.259540339,
+          54.13155799
+        ],
+        [
+          54.059075338,
+          57.709217084
+        ]
+      ],
+      "peak_process_bytes_range": [
+        175460352,
+        175841280
+      ],
+      "lookup_p95_ns_range": [
+        194368,
+        199905
+      ]
+    },
+    {
+      "backend": "memory-fake",
+      "shape": "sioc-shaped-synthetic",
+      "records_per_snapshot": 300000,
+      "database_bytes": null,
+      "commit_seconds_range_by_revision": [
+        [
+          1.015436842,
+          1.075841342
+        ],
+        [
+          1.787523882,
+          1.840877929
+        ]
+      ],
+      "peak_process_bytes_range": [
+        1777614848,
+        1777782784
+      ],
+      "lookup_p95_ns_range": [
+        3665,
+        3874
+      ]
+    },
+    {
+      "backend": "sqlite",
+      "shape": "sioc-shaped-synthetic",
+      "records_per_snapshot": 300000,
+      "database_bytes": 3347546112,
+      "commit_seconds_range_by_revision": [
+        [
+          227.328904543,
+          231.135470729
+        ],
+        [
+          120.128501236,
+          129.368240423
+        ]
+      ],
+      "peak_process_bytes_range": [
+        509378560,
+        509890560
+      ],
+      "lookup_p95_ns_range": [
+        215785,
+        226309
+      ]
+    },
+    {
+      "backend": "memory-fake",
+      "shape": "cad-shaped-synthetic",
+      "records_per_snapshot": 300000,
+      "database_bytes": null,
+      "commit_seconds_range_by_revision": [
+        [
+          1.022670061,
+          1.046511253
+        ],
+        [
+          1.788075818,
+          1.801381835
+        ]
+      ],
+      "peak_process_bytes_range": [
+        1777815552,
+        1777844224
+      ],
+      "lookup_p95_ns_range": [
+        3674,
+        3918
+      ]
+    },
+    {
+      "backend": "sqlite",
+      "shape": "cad-shaped-synthetic",
+      "records_per_snapshot": 300000,
+      "database_bytes": 3347189760,
+      "commit_seconds_range_by_revision": [
+        [
+          224.458058972,
+          229.68427721
+        ],
+        [
+          117.280495263,
+          127.577689958
+        ]
+      ],
+      "peak_process_bytes_range": [
+        509562880,
+        509747200
+      ],
+      "lookup_p95_ns_range": [
+        211158,
+        214586
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "command": [
+    "target/release/deps/persistence_profiles-06d21e399cdf5b33",
+    "--output",
+    "target/verification-persist12/full-1.json",
+    "--smoke"
+  ],
+  "expected_failure": true,
+  "exit_code": 101,
+  "preserved_sha256": "d3d58b735908dd4fe595dce1980e079e641ec2a01d5d3c99defc1ba02bf85f95"
+}

@@ -25,7 +25,7 @@ restano nel kit storico. Nessuna conclusione di task impone lo stop della sessio
 | T-P16-07 | DONE | [prompt](TASK_PROMPTS/T-P16-07.md) |
 | T-P16-08 | DONE | [prompt](TASK_PROMPTS/T-P16-08.md) |
 | T-P17-01 | DONE | [prompt](TASK_PROMPTS/T-P17-01.md) |
-| T-P17-02 | IN_PROGRESS | [prompt](TASK_PROMPTS/T-P17-02.md) |
+| T-P17-02 | DONE | [prompt](TASK_PROMPTS/T-P17-02.md) |
 | T-P17-03 | DONE | [prompt](TASK_PROMPTS/T-P17-03.md) |
 | T-P17-04 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P17-04.md) |
 | T-P17-05 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P17-05.md) |
@@ -45,7 +45,7 @@ restano nel kit storico. Nessuna conclusione di task impone lo stop della sessio
 | T-PERSIST-09 | DONE | [prompt](TASK_PROMPTS/T-PERSIST-09.md) |
 | T-PERSIST-10 | DONE | [prompt](TASK_PROMPTS/T-PERSIST-10.md) |
 | T-PERSIST-11 | DONE | [prompt](TASK_PROMPTS/T-PERSIST-11.md) |
-| T-PERSIST-12 | NOT_STARTED | [prompt](TASK_PROMPTS/T-PERSIST-12.md) |
+| T-PERSIST-12 | IN_PROGRESS | [prompt](TASK_PROMPTS/T-PERSIST-12.md) |
 | T-CAD-01 | NOT_STARTED | [prompt](TASK_PROMPTS/T-CAD-01.md) |
 | T-CAD-02 | NOT_STARTED | [prompt](TASK_PROMPTS/T-CAD-02.md) |
 | T-CAD-03 | NOT_STARTED | [prompt](TASK_PROMPTS/T-CAD-03.md) |

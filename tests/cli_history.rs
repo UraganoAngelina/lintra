@@ -145,6 +145,64 @@ impl Fixture {
         .unwrap()
     }
 }
+/// PERSIST-12: qualify the real adapter's output channels, beyond formatting a
+/// DTO in memory. The key file is intentionally excluded from storage scans:
+/// its raw synthetic bytes are provisioning input, never an output or a log.
+#[test]
+fn synthetic_record_and_key_sentinels_never_reach_cli_logs_or_historical_audit() {
+    const SENTINEL: &[u8] = b"SYNTHETIC-RAW-XX";
+    let safe = |bytes: &[u8]| {
+        ![SENTINEL, &[0xaa; 32], &[0xbb; 32]].iter().any(|needle| {
+            let hex = needle
+                .iter()
+                .map(|b| format!("{b:02x}"))
+                .collect::<String>();
+            bytes.windows(needle.len()).any(|w| w == *needle)
+                || bytes
+                    .windows(hex.len())
+                    .any(|w| w.eq_ignore_ascii_case(hex.as_bytes()))
+        })
+    };
+    assert!(!safe(SENTINEL));
+    let fixture = Fixture::new();
+    let schema_path = fixture.path("schemas/SYNTHETIC/v1/flow.json");
+    let mut schema: Value = serde_json::from_slice(&fs::read(&schema_path).unwrap()).unwrap();
+    schema["traces"][0]["record_length"] = json!(SENTINEL.len());
+    schema["traces"][0]["fields"][0]["physical"]["length"] = json!(SENTINEL.len());
+    fs::write(schema_path, serde_json::to_vec(&schema).unwrap()).unwrap();
+    let mut row = SENTINEL.to_vec();
+    row.push(b'\n');
+    fs::write(fixture.path("input.dat"), row).unwrap();
+    let initialized = fixture.init();
+    assert_eq!(initialized.status.code(), Some(0));
+    assert!(safe(&initialized.stdout) && safe(&initialized.stderr));
+    let approved = review(&mut fixture.command("sentinel-approved", true), "approve");
+    assert_eq!(approved.status.code(), Some(0));
+    assert!(safe(&approved.stdout) && safe(&approved.stderr));
+    for file in ["audit.jsonl", "audit-summary.json", "summary.json"] {
+        assert!(safe(
+            &fs::read(fixture.path("sentinel-approved").join(file)).unwrap()
+        ));
+    }
+    for entry in fs::read_dir(fixture.path("archive")).unwrap() {
+        assert!(safe(&fs::read(entry.unwrap().path()).unwrap()));
+    }
+    // Correctly sized but incompatible material with the same Key ID must emit
+    // a redacted technical error; it must not initialize another empty history.
+    let database = fs::read(fixture.path("archive/lintra.db")).unwrap();
+    fs::write(fixture.path("private bundle é/hmac.key"), [0xbb; 32]).unwrap();
+    let mut command = fixture.base();
+    command.args(["history", "check"]);
+    fixture.key(&mut command);
+    let rejected = command.output().unwrap();
+    assert_eq!(rejected.status.code(), Some(1));
+    assert!(safe(&rejected.stdout) && safe(&rejected.stderr));
+    assert_eq!(
+        fs::read(fixture.path("archive/lintra.db")).unwrap(),
+        database
+    );
+}
+
 struct Owned(Option<Child>);
 impl Drop for Owned {
     fn drop(&mut self) {

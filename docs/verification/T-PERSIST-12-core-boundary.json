@@ -1,0 +1,14 @@
+{
+  "runtime_diff_empty": true,
+  "scan_command": [
+    "rg",
+    "-n",
+    "\"SIOC\"|\"CAD\"",
+    "src/persistence",
+    "src/application/historical_validation.rs",
+    "src/engine"
+  ],
+  "scan_exit_code": 1,
+  "matches": [],
+  "scope": "persistence, historical application and engine; no CAD/SIOC literal or flow-specific branch introduced; shapes exist only in test/benchmark support"
+}

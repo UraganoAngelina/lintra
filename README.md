@@ -25,6 +25,8 @@ conferma separata per il commit. Argomenti, esiti e limiti sono nel
 [contratto CLI storico](docs/HISTORICAL_CLI.md); il
 [bundle Slint privato](docs/PORTABLE_KEY_BUNDLE.md) mantiene la chiave fuori
 dall'artefatto generico e richiede gli accessi ratificati sul file reale.
+Conservazione, copie a database chiuso, ripristino isolato e decisioni ancora
+aperte per i dati reali sono descritti nelle [operazioni sullo storico](docs/PERSISTENCE_OPERATIONS.md).
 
 ## Avvio con il binario distribuito
 

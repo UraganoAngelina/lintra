@@ -31,6 +31,10 @@ harness = false
 name = "persistence"
 harness = false
 
+[[bench]]
+name = "persistence_profiles"
+harness = false
+
 [dependencies]
 rusqlite={version="=0.41.0",default-features=false,features=["bundled","cache","hooks"]}
 ctrlc = { version = "=3.5.2", default-features = false }
