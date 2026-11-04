@@ -3,11 +3,11 @@
 Consuntivo aggiornato al **2026-11-04**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — PERSIST11 DONE, PERSIST10 IN_PROGRESS
+## Frontiera corrente — PERSIST10 DONE, T-P17-02 profiling indipendente
 
 4 novembre 2026: ripresa dal solo working tree di work/p1-foundations; modifiche
-preesistenti preservate, nessuna ricostruzione dalla cronologia. **121/140 DONE
-= 86,4%**. T-PERSIST-09: CI41194045486 letta realmente, completed/success su
+preesistenti preservate, nessuna ricostruzione dalla cronologia. **122/140 DONE
+= 87,1%**. T-PERSIST-09: CI41194045486 letta realmente, completed/success su
 4313f22e48c6b8a239028c0bb6a617ac8c37cc48; entrambi i job nativi e tre confronti
 JSONL/pixel positivi. Packaging UI opzionale skipped, nessuna nuova release.
 Evidenza completa: docs/verification/T-PERSIST-09-native-ci.json.
@@ -39,7 +39,8 @@ collisione chiave/manifest: preflight metadata anticipato prima dicompose,
 regressioneesplicito/implicito passata. Nuovi gatefinali tutti positivi:870/870workspace (110riepiloghi),827core/93,
 0fail/6ignored; fmt/Clippy dueassetti,boundary,23Python etooling17/1ignored pass.
 397hash sorgentiimmutati in11comandi; ledger/report10 aggiornati. ProviderWindows
-non ancora qualificato, residui commit/push/CI. DocHISTORICAL_CLI/PORTABLE_KEY_BUNDLE/report10 consultabili.
+non ancora qualificato: codicec884692 pubblicato, CI41822083629 avviata con
+dispatch riuscito. Residuo gate Linux/MSVC reale, nessun DONE10 anticipato. DocHISTORICAL_CLI/PORTABLE_KEY_BUNDLE/report10 consultabili.
 Nessuna modifica HMAC/SQL/formati/norme oUIconcreta; gate11 nonaggirato.
 docs/migration preservata/esclusa dallo sviluppo. AUTO_CONTINUE, single-agent.
 
@@ -5910,3 +5911,55 @@ Prererequisiti07/8-03/09 effettivamente DONE. Nessun nuovo stop ordinario.
 - docs/migration originale esclusa/preservata. AUTO_CONTINUE: pubblicare10,
   dispatchCI unica (11terminata), attendere gate reale eproseguire12 con09/10/11
   effettivamenteDONE; eventuale17-02 indipendente solo dopo propriopreflight.
+
+
+## HANDOFF §15.3 — T-PERSIST-10 pubblicata, WAITING_GATE,2026-11-04
+
+- Code c884692 pubblicato sul branch autorizzato; CI41822083629 avviata,
+  dispatch conURL riuscito, nessuna lettura/esito ancora anticipati. NonDONE10.
+-870/870workspace,827core,0fail/6ignored;17tooling/1ignored e23Python;
+ 11gate exit0,397impronte sorgentiimmutate. Ledger efile src/docs nel commit.
+- Manifestguard prima dicompose,9adaptertests reali inclusiXLSX/spool/abort/CAS/
+  ambiguity ekeymanifest; CLIbinario0/1/2/130/SIGINTLinux e13SIOC positivi.
+- Windows nuovo provider/GetSecurityInfo/reparse/condivisione,pipe econsole
+  isolata saranno qualificati da questaCI, mai dalla precedente11.
+- docs/migration resta sola modifica estranea/untracked, preservata/esclusa.
+ 121/140DONE invariato. AUTO_CONTINUE attivitàindipendenti autorizzate durante
+  l’attesa, oppure12dopo09/10/11realmenteDONE; nessun consenso ordinario richiesto.
+
+
+## Preflight T-P17-02 —2026-11-04, indipendente dal gate10
+
+Prereq17-01 realmenteDONE:485c98f, CI40476599897 completed/success, entrambi
+smoke nativi ecompareJSONL verificati nel dossier esistente. ARCH33/DET113 e
+prompt17-02 letti; nessuna soglia DEC14 o parallelismo/DEC17 introdotti.
+Prima letturaCI10: Linux/MSVC entrambiClippy pass, test in corso; nonDONE10.
+Nuovo scope sequenziale17-02: aggiungere misure isolate JoinKey econtatori
+alloc/realloc allo stesso harness, baseline ottimizzata ripetuta; engine invariato
+finché le misure non indicano un costo reale. Niente crate/profiler installato,
+raw sanitari, norme, baseline o API pubbliche cambiate. GDB disponibile ma non
+usato come prova di sampling. Eventuale ottimizzazione solo byte/contratto invariati
+con confronto prima/dopo nello stesso harness e golden. AUTO_CONTINUE.
+
+
+## Chiusura e HANDOFF §15.3 — T-PERSIST-10 DONE, 2026-11-04
+
+CI41822083629 su c884692e29dbc0db9a9405414606f09b1156d8bc completata con
+successo: sette job richiesti positivi, incluso Linux/MSVC, tre confronti JSONL/UI
+e due riaperture SQLite tra OS. Packaging UI opzionale saltato come previsto.
+Letti i log reali Windows: ACL/link/sostituzione del file aperto, pipe native,
+console isolata con cancellazione e identità comuni con archivi indipendenti
+passano. Nessun esito dedotto dalla sola compilazione. Evidenza strutturata in
+T-PERSIST-10-native-ci.json; tre letture ordinarie distanziate più log finale.
+
+File consegnati: provider e helper di sicurezza condivisi, API testuale/review,
+CLI history init/check/preview, test nativi e documenti CLI/bundle/ratifica/report.
+Gate locali già conclusi: 870/870 workspace,827 core; fmt/Clippy e tooling positivi.
+Nessuna chiave operativa generata né distribuita. Nessun installer anticipato,
+formato/HMAC/norma cambiati o autorizzazione implicita per dati sanitari reali.
+
+122/140 DONE =87,1%. T-PERSIST-12 ora READY con09/10/11 qualificati; avvio dopo
+la task indipendente17-02 già in corso, senza sovrapporre implementazioni.
+AUTO_CONTINUE: completare baseline/profilazione17-02 e i suoi gate; poi12.
+Working tree: documentazione di chiusura10 e lavoro17-02 propri, docs/migration
+preesistente preservata/esclusa. Commit/push autorizzati, nessun blocker umano.

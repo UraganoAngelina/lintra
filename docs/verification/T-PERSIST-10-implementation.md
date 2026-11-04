@@ -1,7 +1,6 @@
 # T-PERSIST-10 — provider file, client API e CLI storica
 
-4novembre2026. **IN_PROGRESS**: questo report descrive il codice candidato e le
-prove effettive; non certifica Windows o una release prima dei gate finali.
+4novembre2026. **DONE**: gate locali e nativi qualificati; vedere la chiusura in fondo.
 [Preflight](T-PERSIST-10-preflight.md), [ratifica dell'autore](PERSIST-KEY-PROVISIONING-01-ratification.md).
 Prerequisiti07/8-03/09 qualificati;11 conclusa indipendentemente su633f61f,
 CI41805357515. La CI11 non qualifica il codice10 ancora in working tree.
@@ -241,3 +240,19 @@ che10siaDONE. Nessun materiale operativo o UI storica concreta consegnati.
 | Cargo.toml, docs/DEPENDENCIES.md | Feature Console/Pipes del binding OS già fissato; nessun crate nuovo |
 | .gitignore, README e documenti CLI/bundle/decisioni/report | Protezione materiale locale e contratto operativo consultabile |
 | IMPLEMENTATION_STATUS e dossier10 | Stato fedele, hash e risultati, nessun gate nativo anticipato |
+
+
+Pubblicazione: codec884692, [CI41822083629](https://github.com/UraganoAngelina/lintra/actions/runs/41822083629)
+avviata con dispatch riuscito. Stato WAITING_GATE; nessun successo Windows
+inferito. [Registro nativo](T-PERSIST-10-native-ci.json).
+
+
+## Chiusura nativa effettiva
+
+CI [41822083629](https://github.com/UraganoAngelina/lintra/actions/runs/41822083629)
+su c884692e29dbc0db9a9405414606f09b1156d8bc completed/success. Tutti sette i job
+richiesti positivi, incluso MSVC, confronti byte JSONL/pixel e SQLite tra OS.
+Log Windows letto: nuovi test del provider con ACL/link/sostituzioni, pipe native
+e console isolata passano realmente. La qualifica include il codice10; non usa
+la vecchia CI11 come sostituto. Ledger completo T-PERSIST-10-native-ci.json.
+Packaging UI opzionale saltato, nessuna release o assemblaggio operativo eseguiti.
