@@ -1,0 +1,109 @@
+{
+  "status": "completed",
+  "conclusion": "success",
+  "headSha": "638feec6b5cdbd930419a1440ab47565ae2c972c",
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41857167059",
+  "task": "T-PERSIST-12",
+  "done": true,
+  "ordinary_reads": 2,
+  "permission_review_timeout_retry": 1,
+  "verified_at_utc": "2026-11-04T18:25:22.010313+00:00",
+  "jobs": [
+    {
+      "name": "Verify (x86_64-unknown-linux-gnu)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41857167059/job/126668797971"
+    },
+    {
+      "name": "Verify (x86_64-pc-windows-msvc)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41857167059/job/126668798689"
+    },
+    {
+      "name": "Qualify UI archives",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41857167059/job/126668800290"
+    },
+    {
+      "name": "Compare production UI regression pixels",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41857167059/job/126687926397"
+    },
+    {
+      "name": "Compare Linux and Windows JSONL bytes",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41857167059/job/126687926455"
+    },
+    {
+      "name": "Reopen counterpart snapshot (x86_64-unknown-linux-gnu)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41857167059/job/126687926482"
+    },
+    {
+      "name": "Compare native desktop theme pixels",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41857167059/job/126687926536"
+    },
+    {
+      "name": "Reopen counterpart snapshot (x86_64-pc-windows-msvc)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41857167059/job/126687926625"
+    }
+  ],
+  "downloaded_artifacts": [
+    {
+      "os": "linux",
+      "sha256": "e37297322c6d2aad05cdee71164fe21e7032c43fcb5e1b70fe598bc8ff4d6ce4",
+      "cases": 4,
+      "source_checks": {
+        "benches/persistence_profiles.rs": {
+          "observed_sha256": "fbea2e77d35abc12f61bcad964823d049d4bc33d5e3c95368291e57878caaa7f",
+          "verified_checkout_line_endings": "LF"
+        },
+        "tests/support/persistence_profiles.rs": {
+          "observed_sha256": "3d5b791dab066fb0109ca2212885a786ca2721522000ca228f4f9c8efba66a52",
+          "verified_checkout_line_endings": "LF"
+        },
+        "src/persistence/sqlite/mod.rs": {
+          "observed_sha256": "6f447856677f684d6c336796818dc69c3f76eb65ef0c34740ad96f58483a6fe1",
+          "verified_checkout_line_endings": "LF"
+        },
+        "src/persistence/memory.rs": {
+          "observed_sha256": "23be5d3cd021aff87c89759c13e7a5c685928cc4f47d65557a32828317748419",
+          "verified_checkout_line_endings": "LF"
+        }
+      }
+    },
+    {
+      "os": "windows",
+      "sha256": "7fda988d868aad64675a1b541382d9bba2bddc4af4d7f08f92d0d18e1228a95f",
+      "cases": 4,
+      "source_checks": {
+        "benches/persistence_profiles.rs": {
+          "observed_sha256": "f933f4073317f0ddfe2bf9c6bb043d24cbf0feeb0fe78fe2fc10400533dce338",
+          "verified_checkout_line_endings": "CRLF"
+        },
+        "tests/support/persistence_profiles.rs": {
+          "observed_sha256": "b5aa61527fbe9aa1242fc9982ae96f230088e7ecc6580b747b5a2a6c9b85018c",
+          "verified_checkout_line_endings": "CRLF"
+        },
+        "src/persistence/sqlite/mod.rs": {
+          "observed_sha256": "1d9eab2ebff1e262d7e0a41ae5c4901ac23bc9cab721c48ca0ed0458be184e19",
+          "verified_checkout_line_endings": "CRLF"
+        },
+        "src/persistence/memory.rs": {
+          "observed_sha256": "306d19f6168bfda4898f61497c7189cb79981a2153f10176e9b69c344feb6701",
+          "verified_checkout_line_endings": "CRLF"
+        }
+      }
+    }
+  ]
+}

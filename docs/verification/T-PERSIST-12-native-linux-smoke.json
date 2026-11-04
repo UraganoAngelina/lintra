@@ -1,0 +1,168 @@
+{
+  "arch": "x86_64",
+  "compiler_commit": "638feec6b5cdbd930419a1440ab47565ae2c972c",
+  "fixture_sha256": "3d5b791dab066fb0109ca2212885a786ca2721522000ca228f4f9c8efba66a52",
+  "format_version": 1,
+  "harness_sha256": "fbea2e77d35abc12f61bcad964823d049d4bc33d5e3c95368291e57878caaa7f",
+  "memory_adapter_sha256": "23be5d3cd021aff87c89759c13e7a5c685928cc4f47d65557a32828317748419",
+  "normative_validation": false,
+  "optimized": false,
+  "os": "linux",
+  "results": [
+    {
+      "backend": "memory-fake",
+      "database_bytes": null,
+      "five_traces_verified": true,
+      "load_snapshot_seconds": 6.55e-6,
+      "lookup_p50_ns": 3185,
+      "lookup_p95_ns": 3766,
+      "lookup_samples": 100,
+      "memory_scope": "OS peak RSS/working set includes fixtures, Rust and SQLite C; memory backend is a transaction fake",
+      "namespace_isolation_verified": true,
+      "peak_process_bytes": 10113024,
+      "pk_component_counts": [
+        3,
+        3,
+        4,
+        4,
+        2
+      ],
+      "records_per_snapshot": 100,
+      "restart": null,
+      "shape": "sioc-shaped-synthetic",
+      "snapshots": 2,
+      "timings": [
+        {
+          "commit_seconds": 0.00031695,
+          "prepare_seconds": 0.011464173,
+          "revision": 1
+        },
+        {
+          "commit_seconds": 0.000325722,
+          "prepare_seconds": 0.011316118,
+          "revision": 2
+        }
+      ]
+    },
+    {
+      "backend": "sqlite",
+      "database_bytes": 1150976,
+      "five_traces_verified": true,
+      "load_snapshot_seconds": 0.010391599,
+      "lookup_p50_ns": 214234,
+      "lookup_p95_ns": 376509,
+      "lookup_samples": 100,
+      "memory_scope": "OS peak RSS/working set includes fixtures, Rust and SQLite C; memory backend is a transaction fake",
+      "namespace_isolation_verified": true,
+      "peak_process_bytes": 13115392,
+      "pk_component_counts": [
+        3,
+        3,
+        4,
+        4,
+        2
+      ],
+      "records_per_snapshot": 100,
+      "restart": {
+        "generation": 2,
+        "peak_bytes": 12861440,
+        "reopen_seconds": 0.003401185,
+        "verified_trace_samples": 5
+      },
+      "shape": "sioc-shaped-synthetic",
+      "snapshots": 2,
+      "timings": [
+        {
+          "commit_seconds": 0.014181313,
+          "prepare_seconds": 0.011656343,
+          "revision": 1
+        },
+        {
+          "commit_seconds": 0.017725274,
+          "prepare_seconds": 0.011458824,
+          "revision": 2
+        }
+      ]
+    },
+    {
+      "backend": "memory-fake",
+      "database_bytes": null,
+      "five_traces_verified": true,
+      "load_snapshot_seconds": 2.915e-6,
+      "lookup_p50_ns": 2764,
+      "lookup_p95_ns": 2915,
+      "lookup_samples": 100,
+      "memory_scope": "OS peak RSS/working set includes fixtures, Rust and SQLite C; memory backend is a transaction fake",
+      "namespace_isolation_verified": true,
+      "peak_process_bytes": 10203136,
+      "pk_component_counts": [
+        2,
+        2,
+        2,
+        5,
+        5
+      ],
+      "records_per_snapshot": 100,
+      "restart": null,
+      "shape": "cad-shaped-synthetic",
+      "snapshots": 2,
+      "timings": [
+        {
+          "commit_seconds": 0.0003767,
+          "prepare_seconds": 0.013425269,
+          "revision": 1
+        },
+        {
+          "commit_seconds": 0.000316419,
+          "prepare_seconds": 0.012053373,
+          "revision": 2
+        }
+      ]
+    },
+    {
+      "backend": "sqlite",
+      "database_bytes": 1150976,
+      "five_traces_verified": true,
+      "load_snapshot_seconds": 0.009874146,
+      "lookup_p50_ns": 203839,
+      "lookup_p95_ns": 218611,
+      "lookup_samples": 100,
+      "memory_scope": "OS peak RSS/working set includes fixtures, Rust and SQLite C; memory backend is a transaction fake",
+      "namespace_isolation_verified": true,
+      "peak_process_bytes": 13099008,
+      "pk_component_counts": [
+        2,
+        2,
+        2,
+        5,
+        5
+      ],
+      "records_per_snapshot": 100,
+      "restart": {
+        "generation": 2,
+        "peak_bytes": 12677120,
+        "reopen_seconds": 0.002535705,
+        "verified_trace_samples": 5
+      },
+      "shape": "cad-shaped-synthetic",
+      "snapshots": 2,
+      "timings": [
+        {
+          "commit_seconds": 0.013859396,
+          "prepare_seconds": 0.011435909,
+          "revision": 1
+        },
+        {
+          "commit_seconds": 0.014236626,
+          "prepare_seconds": 0.011280444,
+          "revision": 2
+        }
+      ]
+    }
+  ],
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "sqlite_adapter_sha256": "6f447856677f684d6c336796818dc69c3f76eb65ef0c34740ad96f58483a6fe1",
+  "synthetic_only": true,
+  "task": "T-PERSIST-12",
+  "thresholds": null
+}

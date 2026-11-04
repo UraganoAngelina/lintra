@@ -1,6 +1,6 @@
 # T-PERSIST-12 — qualifica sintetica della persistenza core
 
-4 novembre 2026, IN_PROGRESS. [Preflight](T-PERSIST-12-preflight.md),
+4 novembre 2026, **DONE**, gate nativo e artifact verificati; chiusura in fondo. [Preflight](T-PERSIST-12-preflight.md),
 [operazioni e limiti](../PERSISTENCE_OPERATIONS.md). Prerequisiti09/10/11
 qualificati con CI reale.17-02 è indipendente e ora DONE su CI41846160280.
 Nessun DONE o gate Windows del nuovo codice anticipato.
@@ -200,3 +200,24 @@ la CI completa nativa resta richiesta e qualificherà anche tutte le feature.
 Ledger completo T-PERSIST-12-local-gates.json. Nessun codice modificato durante
 i controlli. IN_PROGRESS fino a pubblicazione, CI propria e verifica dei due
 artifact di misure smoke; non si riutilizza il successo17 per certificare12.
+
+
+## Chiusura nativa effettiva
+
+CI41857167059 su638feec6b5cdbd930419a1440ab47565ae2c972c completed/success,
+sette job richiesti positivi (Linux/MSVC, tre confronti JSONL/UI, due importSQLite).
+Scaricati e verificati entrambi gli artifact persistence-profiles: quattro casi100
+record per OS, due revisioni, cinque trace, namespace isolato, RSS reale e restart
+SQLite con generazione2/cinque campioni. JSON originali native-linux/windows-smoke
+conservati, digest e controllo dei sorgenti nel ledger native-ci.
+
+Hash sorgenti differenti fra checkoutLF Linux eCRLF Windows: verificata l'esatta
+conversione di sole terminazioni prevista dagli attributi textauto, non accettate
+altre modifiche. I quattro sorgenti corrispondono per contenuto alla revisione
+qualificata. Nessuna alterazione degli artifact per far coincidere gli hash.
+Non è un benchmark Windows300k; i24casi estesi restano misure Linux.
+
+Una lettura ha subito timeout della revisione automatica dei permessi prima di
+partire; l'unico retry consentito ha completato la lettura. Nessun gate dedotto
+né errore di autorizzazione residuo. DONE12 nel perimetro core sintetico;
+cifratura, retention e backup operativo completo/dati reali restano aperti.
