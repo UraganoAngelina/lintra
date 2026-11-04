@@ -72,7 +72,7 @@ fn full_and_flow_capabilities_are_never_silently_downgraded() {
         Err(InvalidRequestError::UnsupportedFlowScope)
     ));
 }
-/// Key mismatch and any requested max_errors bound fail before execution.
+/// Key mismatch and zero fail before execution; positive limits are explicit.
 #[test]
 fn schema_key_and_operational_options_are_checked() {
     let schema = schema();
@@ -83,10 +83,16 @@ fn schema_key_and_operational_options_are_checked() {
         Err(InvalidRequestError::SchemaKeyMismatch { .. })
     ));
     request.schema_key = schema.key().clone();
-    for limit in [0, 1, u64::MAX] {
+    request.options.max_errors = Some(0);
+    assert!(matches!(
+        preflight(&request, &schema),
+        Err(InvalidRequestError::UnsupportedMaxErrors { limit: 0 })
+    ));
+    for limit in [1, u64::MAX] {
         request.options.max_errors = Some(limit);
-        assert!(
-            matches!(preflight(&request,&schema),Err(InvalidRequestError::UnsupportedMaxErrors{limit:found}) if found==limit)
+        assert_eq!(
+            preflight(&request, &schema).unwrap().options().max_errors,
+            Some(limit)
         );
     }
 }

@@ -109,7 +109,7 @@ fn uncertainty(reason: UnknownReason) -> Result<CrossUncertaintyReason, Validati
     })
 }
 pub(crate) fn into_summary(
-    artifacts: FlowValidationArtifacts,
+    artifacts: crate::engine::flow_execution::FlowRunArtifacts,
     parameters: &BTreeMap<String, JoinParameterValue>,
 ) -> Result<FullValidationSummary, ValidationRunError> {
     let traces = artifacts

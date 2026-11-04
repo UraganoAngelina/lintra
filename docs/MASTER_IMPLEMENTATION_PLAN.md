@@ -862,7 +862,7 @@ Responsabile di default: **autore del progetto**.
 | DEC-13 | Lista concreta di `EncodingSpec` | DET §33 | Si popola in P0 | T-P4-04 | File reali | Registrare in G0 |
 | DEC-14 | Dimensioni reali dei flussi e soglie prestazionali | DET §114 | Aperta | T-P17-03 | Dimensioni reali | Raccogliere dati |
 | DEC-15 | Nuove dipendenze non nominate dai documenti (SHA-256, `regex`, `ctrlc`, eventuale crate di benchmark o test) | N-26; ARCH §39C.1 | Aperta, voce per voce | T-P5-05, T-P8-05, T-P9-04, T-P17-01 | Verifica pure-Rust e licenza | Una riga di registro per crate |
-| DEC-16 | Semantica di `max_errors` e stato `CompletedWithLimitReached` | DET §80 | Rinviata | T-P17-04 | — | Decidere in P17 |
+| DEC-16 | Semantica di `max_errors`, senza nuovo stato serializzato | DET §80 | RISOLTA A, autore 2026-11-04 | T-P17-04 | DEC-16-MAX-ERRORS-01 e ratifica | N>0 opzionale, CompletedInvalid + truncated/Partial; None default |
 | DEC-17 | Parallelismo a runtime | ARCH §33; DET §115 | Rinviata | T-P17-05 | Misure | Decidere in P17 |
 | DEC-18 | Contratto di elenco di schemi, versioni e tracciati (le trait di DET §10 hanno solo `load_raw`) | ARCH §30; DET §10 | Aperta | T-P14-05, T-P16-03 | Proposta di contratto | Decidere prima di P14 |
 

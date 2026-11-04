@@ -96,6 +96,16 @@ Autorizzata T-PERSIST-10, superato il blocco di scelta; cifratura/retention/back
 completo/dati reali restano aperti. Single-agent, commit/push/CI e prosecuzione
 READY confermati. Nessuna anticipazione installer/Tauri/credential manager.
 
+## Mandato di arresto corrente — 2026-11-04
+
+L’autore chiede «stoppati dopo aver completato la task corrente». La task
+corrente è T-P17-04 (DEC-16 A ratificata). Completare commit/push, Quality Gate
+locali/nativi effettivi e handoff, quindi fermarsi e attendere ripresa esplicita.
+È ammessa la chiusura documentale di T-PERSIST-12 già avviata e conCI positiva;
+non iniziare altre task, release o sviluppo CAD/18/17-05 durante l’attesa.
+Questo checkpoint supera temporaneamente la prosecuzione automatica; restano
+autorizzati commit/push/CI necessari a concludere17-04. Nessun subagente.
+
 ## Registro storico e ratifiche precedenti
 
 Mandato dell'autore aggiornato il 2026-10-19:

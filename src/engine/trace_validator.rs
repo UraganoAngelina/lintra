@@ -17,6 +17,22 @@ pub enum TraceCompletion {
     Completed { count: u64 },
     Cancelled { count: u64 },
 }
+/// Bounded application execution uses a private result so existing public
+/// TraceCompletion/TraceControl callers retain their exact unlimited contract.
+pub(crate) struct TraceRunCompletion {
+    pub(crate) completion: crate::domain::ExecutionStop,
+    pub(crate) count: u64,
+}
+impl TraceRunCompletion {
+    fn into_unlimited(self) -> Result<TraceCompletion, TraceValidationError> {
+        use crate::domain::ExecutionStop;
+        match self.completion {
+            ExecutionStop::Completed => Ok(TraceCompletion::Completed { count: self.count }),
+            ExecutionStop::Cancelled => Ok(TraceCompletion::Cancelled { count: self.count }),
+            ExecutionStop::ErrorLimit => Err(TraceValidationError::PreviousFailure),
+        }
+    }
+}
 /// Neutral engine notifications; application maps them to ProgressEvent.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum TraceEvent {
@@ -117,10 +133,12 @@ impl<'schema> TraceValidator<'schema> {
         summary: &mut ValidationSummaryBuilder,
         control: &mut TraceControl<'_>,
     ) -> Result<TraceCompletion, TraceValidationError> {
-        if self.failed {
+        if self.failed || summary.error_budget().is_some() {
             return Err(TraceValidationError::PreviousFailure);
         }
-        let result = self.run(reader, sink, summary, control, None);
+        let result = self
+            .run(reader, sink, summary, control, None)
+            .and_then(TraceRunCompletion::into_unlimited);
         if result.is_err() {
             self.failed = true;
         }
@@ -137,7 +155,7 @@ impl<'schema> TraceValidator<'schema> {
         control: &mut TraceControl<'_>,
         audits: &InputAuditSession,
     ) -> Result<TraceCompletion, TraceValidationError> {
-        if self.failed {
+        if self.failed || summary.error_budget().is_some() {
             return Err(TraceValidationError::PreviousFailure);
         }
         let source = match audits.open(self.trace_id.clone(), path) {
@@ -149,11 +167,35 @@ impl<'schema> TraceValidator<'schema> {
         };
         self.validate_reader(BufReader::new(source), sink, summary, control)
     }
+    /// The application-only bounded adapter shares framing/audits with Full;
+    /// a limit is a controlled stop, never a fake cancellation or report error.
+    pub(crate) fn validate_controlled_path(
+        &mut self,
+        path: &Path,
+        sink: &mut dyn ValidationSink,
+        summary: &mut ValidationSummaryBuilder,
+        control: &mut TraceControl<'_>,
+        audits: &InputAuditSession,
+    ) -> Result<TraceRunCompletion, TraceValidationError> {
+        if self.failed {
+            return Err(TraceValidationError::PreviousFailure);
+        }
+        let result = (|| {
+            let source = audits
+                .open(self.trace_id.clone(), path)
+                .map_err(|e| TraceValidationError::Input(InputError::Audit(e)))?;
+            self.run(BufReader::new(source), sink, summary, control, None)
+        })();
+        if result.is_err() {
+            self.failed = true;
+        }
+        result
+    }
     pub(crate) fn validate_full_path(
         &mut self,
         path: &Path,
         ports: TracePassOnePorts<'_, '_>,
-    ) -> Result<TraceCompletion, TraceValidationError> {
+    ) -> Result<TraceRunCompletion, TraceValidationError> {
         if self.failed {
             return Err(TraceValidationError::PreviousFailure);
         }
@@ -184,13 +226,22 @@ impl<'schema> TraceValidator<'schema> {
         summary: &mut ValidationSummaryBuilder,
         control: &mut TraceControl<'_>,
         mut collector: Option<&mut dyn FullRecordCollector>,
-    ) -> Result<TraceCompletion, TraceValidationError> {
+    ) -> Result<TraceRunCompletion, TraceValidationError> {
         (control.on_event)(TraceEvent::Started {
             trace_id: self.trace_id.clone(),
         });
+        if summary.error_limit_reached() {
+            return Ok(TraceRunCompletion {
+                completion: crate::domain::ExecutionStop::ErrorLimit,
+                count: 0,
+            });
+        }
         if (control.is_cancelled)() {
             summary.cancel();
-            return Ok(TraceCompletion::Cancelled { count: 0 });
+            return Ok(TraceRunCompletion {
+                completion: crate::domain::ExecutionStop::Cancelled,
+                count: 0,
+            });
         }
         let source =
             preflight_bom(reader, BomPolicy::Reject).map_err(TraceValidationError::Input)?;
@@ -199,10 +250,20 @@ impl<'schema> TraceValidator<'schema> {
         let mut count = 0;
         let mut notified = 0;
         loop {
+            if summary.error_limit_reached() {
+                self.notify_count(control, count, &mut notified);
+                return Ok(TraceRunCompletion {
+                    completion: crate::domain::ExecutionStop::ErrorLimit,
+                    count,
+                });
+            }
             if (control.is_cancelled)() {
                 summary.cancel();
                 self.notify_count(control, count, &mut notified);
-                return Ok(TraceCompletion::Cancelled { count });
+                return Ok(TraceRunCompletion {
+                    completion: crate::domain::ExecutionStop::Cancelled,
+                    count,
+                });
             }
             let Some(record) = reader
                 .read_next(&mut buffer)
@@ -213,7 +274,10 @@ impl<'schema> TraceValidator<'schema> {
                     trace_id: self.trace_id.clone(),
                     count,
                 });
-                return Ok(TraceCompletion::Completed { count });
+                return Ok(TraceRunCompletion {
+                    completion: crate::domain::ExecutionStop::Completed,
+                    count,
+                });
             };
             let local = match &mut self.record {
                 TraceRecordExecution::Local(validator) => {
@@ -252,6 +316,13 @@ impl<'schema> TraceValidator<'schema> {
             // RecordReader already checks line-counter overflow; no unchecked
             // second processed counter or summary increment is needed here.
             count = record.line_number;
+            if summary.error_limit_reached() {
+                self.notify_count(control, count, &mut notified);
+                return Ok(TraceRunCompletion {
+                    completion: crate::domain::ExecutionStop::ErrorLimit,
+                    count,
+                });
+            }
             if count.is_multiple_of(1024) {
                 self.notify_count(control, count, &mut notified);
             }

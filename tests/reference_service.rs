@@ -111,6 +111,37 @@ fn run(service: &ValidationService, input: &Path) -> (ValidationRunOutcome, VecS
         .unwrap();
     (outcome, sink)
 }
+
+#[test]
+fn reference_warnings_do_not_spend_the_optional_normative_error_budget() {
+    let fixture = Fixture::new(&b"XXOK\n".repeat(128));
+    let raw = fixture.schema([false, false, false], false, false);
+    let service = fixture.service(raw, DatasetPreparationPolicy::ContinueWithAvailableEvidence);
+    let mut request = request(&fixture.input);
+    request.options.max_errors = Some(1);
+    let mut sink = VecSink::default();
+    let out = service
+        .validate(
+            request,
+            &mut sink,
+            &mut |_| {},
+            &CancellationToken::default(),
+        )
+        .unwrap();
+    assert_eq!(out.status, RunStatus::CompletedValid);
+    assert_eq!(out.summary.records_processed, 128);
+    assert_eq!(out.summary.total_errors, 0);
+    assert!(!out.summary.truncated);
+    assert_eq!(out.summary.completeness(), ValidationCompleteness::Partial);
+    assert!(sink.errors().is_empty());
+    assert!(
+        out.summary
+            .reference_validation
+            .as_ref()
+            .unwrap()
+            .has_non_definitive_evaluations()
+    );
+}
 const CONTINUE: DatasetPreparationPolicy = DatasetPreparationPolicy::ContinueWithAvailableEvidence;
 #[test]
 fn verified_union_fallback_real_violations_and_actual_audit_are_preserved() {

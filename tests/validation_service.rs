@@ -303,7 +303,7 @@ fn schema_and_input_failures_never_publish_a_summary() {
     );
 }
 #[test]
-fn full_and_unsupported_options_fail_before_input_opening() {
+fn full_trace_scope_and_zero_limit_fail_before_input_opening() {
     let valid = service(raw());
     let mut req = request(Path::new("absent synthetic input.txt"));
     let mut capture = Capture::default();
@@ -320,7 +320,7 @@ fn full_and_unsupported_options_fail_before_input_opening() {
         ))
     ));
     req.mode = ValidationMode::LocalOnly;
-    req.options.max_errors = Some(1);
+    req.options.max_errors = Some(0);
     assert!(matches!(
         valid.validate(
             req,

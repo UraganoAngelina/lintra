@@ -3,44 +3,42 @@
 Consuntivo aggiornato al **2026-11-04**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
 Piano v1.1; architettura e detailed design revisione 2026-10-16.
 
-## Frontiera corrente — T-PERSIST-12 locale qualificata, da pubblicare
+## Frontiera corrente — completare T-P17-04 e fermarsi (mandato autore)
 
-4 novembre 2026. Recovery iniziale solo dal working tree del branch
-work/p1-foundations, nessuna ricostruzione dalla cronologia. **123/140 DONE =87,9%**
-(conta delle task, non stima dello sforzo residuo). Single-agent, nessun subagente,
-commit/push/CI autorizzati e AUTO_CONTINUE sulle task realmente READY.
+4 novembre 2026. **124/140 DONE =88,6%** (conteggio task, non stima dello sforzo).
+Recovery iniziale solo working tree work/p1-foundations; modifiche preesistenti
+preservate. Un solo agente, nessun subagente o processo autonomo in background.
+Ultimo mandato: «stoppati dopo aver completato la task corrente», cioè17-04.
+Nessuna nuova task dopo il suo gate/handoff fino a ripresa esplicita dell’autore.
 
-PERSIST09 DONE:4313f22, CI41194045486 completed/success,5job richiesti positivi.
-PERSIST11 DONE:633f61f, CI41805357515 completed/success,7job richiesti positivi;
-crash/recovery e4artifact di trasferimentoSQLite verificati fra i due OS.
-PERSIST10 DONE:c884692, CI41822083629 completed/success,7job richiesti positivi,
-nuovi test Windows ACL/link/sostituzioni/pipe/console realmente passati.
-Ratifica04nov applicata: chiave HMAC comune32byte in file separato nel bundle
-privato portabile Slint, Key ID stabile, sorgente deterministica controllata,
-CLI esplicita, nessun installer o chiave operativa generata. Formato/HMAC/norme
-immutati. Fonti ratifica, HISTORICAL_CLI, PORTABLE_KEY_BUNDLE e dossier10.
+PERSIST09/10/11 già DONE con CI41194045486/41822083629/41805357515 reali.
+Ratifica chiave comune32byte, esterna al binario nel bundle privato portabile
+Slint, applicata10; nessun installer o materiale operativo generato. Key ID e
+continuità dello storico invariati, sicurezza file/ACL/link non indebolita.
+T-P17-02 DONE:9d641d4/CI41846160280, tre run/36scenari di profilazione,
+nessuna ottimizzazione runtime senza evidenza, golden e API preservati.
 
-T-P17-02 DONE:9d641d4, CI41846160280 completed/success,7job richiesti positivi.
-Profilazione con tre run estesi/36scenari e contatori allocazioni; nessuna
-ottimizzazione runtime senza evidenza sufficiente, nessun guadagno inventato.
-Smoke nuovo su entrambi gli OS, full all-features e golden nativi passati.
+T-PERSIST-12 DONE:638feec/CI41857167059 completed/success, sette job richiesti
+positivi; scaricati/verificati i due artifact di misure smoke native. Quattro casi
+per OS, sourcehash verificati anche rispetto alle terminazioniLF/CRLF. Due run
+estesi24casi Linux10k/100k/300k, dimensioniDB ripetibili; circa3,35GB SQLite per
+due snapshot300k e509MB picco processo, costi documentati. Privacy byte/hex, copie
+chiuse eCLI reale provati.873workspace,10comandi/402hash invariati. Policy dati
+reali/cifratura/retention/backup operativo completo ancora aperte.
 
-T-PERSIST-12 IN_PROGRESS:09/10/11 qualificati. Nuovi carichi sintetici cinque
-trace memory-fake/SQLite,24casi in due run release10k/100k/300k. Sorgenti e
-volumeDB ripetibili verificati.300k × due snapshot: circa3,35GB SQLite e509MB
-picco processo; commit di minuti documentati senza soglie DEC14 inventate.
-Privacy byte/hex, copia chiusa e nuovo testCLI stdout/stderr/audit/wrong-key
-passati. Dieci gate finali exit0,402hash immutati:873workspace/111riepiloghi,
-0fail/6ignored, fmt/Clippy due assetti, test mirati e smoke due assetti, boundary
-ed actionlint. Report e ledger12 consultabili. NonDONE12 prima della propria CI.
+T-P17-04 IN_PROGRESS: DEC-16 A approvata esplicitamente dall’autore. Some(N>0)
+globale, None default, zero preflight; CompletedInvalid/truncated/Partial esistenti,
+nessun nuovo RunStatus/formato persistente o flagCLI/GUI. Causa limite privata
+separata da cancel eguasti; stop fra campi/regole/trace/passate e nessuna preview
+storica approvabile se troncata. Report T-P17-04-max-errors.md e ratifica.
+Gate locali tutti positivi:8comandi,404impronte invariate;887workspace/112riepiloghi,
+844core senza bundle,42mirati allfeatures, smoke eboundary;0fail/6ignored.
+Restano commit/push/CI propria e gate Linux/MSVC reali prima di DONE17-04.
 
-Restano12: commit/push, dispatchCI unica ora che17 è terminata, gate nativi e
-verifica artifact delle misure smoke. Cifratura/retention/backup operativo
-completo/dati reali restano aperti, documentati in PERSISTENCE_OPERATIONS.
-Nessuna modifica runtime, SQL/formati/norme, baseline oGUI concreta. Nessuna
-nuova release o assemblaggio privato operativo. docs/migration originale resta
-preservata/esclusa. Durante l'attesa CI proseguire con preflight di task
-indipendenti autorizzate, mantenendo gate e prerequisiti reali.
+T-P18-03 ha avuto soltanto letture di preflight, nessun cambio versione/codice,
+release o operazione remota; rinviata dopo17-04 e ora esclusa dal checkpoint.
+CAD e17-05 non avviate. Dopo17-04: STOP_REQUESTED_BY_AUTHOR, resoconto e attesa.
+docs/migration originale resta preservata/esclusa. Nessun segreto operativo inGit/CI.
 
 ## Registro precedente — PERSIST09 WAITING_GATE, PERSIST10 BLOCKED, PERSIST11 IN_PROGRESS
 
@@ -6057,3 +6055,54 @@ pubblicazione eCI propria, download/verifica dei due artifact smoke nativi prima
 DiDONE. AUTO_CONTINUE durante l'attesa con task indipendenti dopo preflight;
 handoffCAD del core solo dopo gate12, senza dichiarare approvate norme mancanti.
 docs/migration preesistente preservata/esclusa; nessun blocker umano nuovo12.
+
+
+## Preflight17-04 e prossima task indipendente — 2026-11-04
+
+12 pubblicata638feec eCI41857167059 avviata, nonDONE12. MapPER→CAD richiede il
+gate storage prima di implementare CAD; G0 approvato con rinvii19ott verificato,
+nessuna promozione del candidato o traduzione di note normativa ora.
+17-04 nonREADY: DEC-16 esplicitamente rinviata in piano13.1/DET80; implementazione
+Some tuttora rifiutata in preflight LocalOnly/Full, None invariato. Proposta
+DEC-16-MAX-ERRORS-01 concreta: A limite positivo opzionale con CompletedInvalid+
+truncated/Partial esistenti e nessun nuovo formato; B MVPNone con rinvio esplicito
+feature e perimetro task solo se ratificato. BLOCKED solo17-04, nessun consenso
+presunto.17-05 richiede a sua volta DEC-17 ancora aperta, non viene anticipata.
+Prosegue18-03 indipendente: prereq15-05 pubblicata/immutable verificato nel dossier,
+DEC-RELEASE-SETUP-01 A ratificata per destinazioni private e prova soloCI. Preflight
+runbook/versione nuova e controlli di pubblicazione, senza chiave operativa.
+
+
+## Ratifica DEC-16 A e ripresa T-P17-04 — 2026-11-04
+
+Autore approva esplicitamente A. Fonte DEC-16-MAX-ERRORS-01-ratification.md,
+pianoDEC-16 eDET80 aggiornati con tracciabilità, proposta storica annotata.
+17-04 READY→IN_PROGRESS: None default, N>0 globale/zero preflight, errori emessi
+esatti e ordine stabile, CompletedInvalid/truncated/Partial esistenti, nessun
+nuovo formato/RunStatus. Prefisso corretto, niente commit storico, cancel/I/O
+separati. Nessun nuovo flagCLI o selettoreGUI anticipato.
+Preflight18-03 solo letture: nessun cambio versione, codice o release avviata.
+Priorità alla feature core17-04 appena ratificata, poi runbook/release.12 continua
+sulla propriaCI41857167059 indipendente, nonDONE.123/140DONE invariato.
+Scope previsto17-04: controllo condiviso emissioni e stop interno fra engine/
+application, summary/evidenze Full/LocalOnly, test positivi/boundary. Il dettaglio
+implementativo sarà guidato dai contratti e dal codice esistente, senza finti
+errori sink o riuso della cancellazione per simulare il limite. Single-agent.
+
+
+## Chiusura12, gate locali17-04 e checkpoint autore — 2026-11-04
+
+12 conclusa su638feec/CI41857167059, seven required jobs success, due artifact
+reali scaricati e controllati per matrice/righe/revisioni/trace/scope/restart e
+impronte dei sorgenti con LF/CRLF. Ledger/report aggiornati,124/140DONE88,6%.
+Timeout revisione automatica su una lettura CI risolto con unico retry consentito;
+nessuna autorizzazione mancante o gate residuo12. Restano policy operative reali.
+
+17-04:8gate locali exit0,404hash immutati;887workspace/112summary,844core,
+42mirati allfeatures e4scenari smoke validation. None/golden/pubAPI invariati,
+limite controllato distinto da cancel senza finti errori I/O; JSON storico
+LocalOnly senza nuovo campo completeness, truncated reale e API Partial.
+
+Mandato ultimo autore: fermarsi dopo task corrente17-04. Chiudere soltanto
+pubblicazione/gate17-04 e handoff; niente nuove18/CAD/17-05 o release. AGENTS
+aggiornato con checkpoint esplicito. Code17 da pubblicare, nonDONE fino ai gate.

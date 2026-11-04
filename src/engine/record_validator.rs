@@ -270,6 +270,9 @@ impl<'schema> RecordValidator<'schema> {
         let mut pipeline = FieldPipeline::new(factory, sink, summary);
         let mut valid = true;
         for field in self.schema.fields() {
+            if pipeline.error_limit_reached() {
+                break;
+            }
             let value =
                 view.field(field)
                     .ok_or_else(|| RecordValidationError::FieldOutOfBounds {
@@ -309,6 +312,9 @@ impl<'schema> RecordValidator<'schema> {
             }
         }
         for rule in self.schema.local_rules() {
+            if summary.error_limit_reached() {
+                break;
+            }
             let artifacts = if references.is_some() {
                 super::rule_validator::evaluate_rule_with_references(
                     rule,

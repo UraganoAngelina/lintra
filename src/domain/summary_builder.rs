@@ -163,6 +163,7 @@ pub struct ValidationSummaryBuilder {
     by_code: BTreeMap<ValidationCode, u64>,
     cancelled: bool,
     truncated: bool,
+    error_budget: Option<super::ErrorBudget>,
     failed: bool,
     unreported_reference_evidence: bool,
     unreported_full_evidence: bool,
@@ -182,11 +183,26 @@ impl ValidationSummaryBuilder {
             by_code: BTreeMap::new(),
             cancelled: false,
             truncated: false,
+            error_budget: None,
             failed: false,
             unreported_reference_evidence: false,
             unreported_full_evidence: false,
             expected_full: None,
         }
+    }
+    /// Application configures once on a fresh builder after request preflight.
+    /// None allocates nothing and preserves the unlimited public engine path.
+    pub(crate) fn with_error_limit(mut self, maximum: Option<std::num::NonZeroU64>) -> Self {
+        self.error_budget = maximum.map(super::ErrorBudget::new);
+        self
+    }
+    pub(crate) fn error_budget(&self) -> Option<super::ErrorBudget> {
+        self.error_budget.clone()
+    }
+    pub(crate) fn error_limit_reached(&self) -> bool {
+        self.error_budget
+            .as_ref()
+            .is_some_and(super::ErrorBudget::reached)
     }
     fn increment(&mut self, counter: SummaryCounter) -> Result<(), SummaryBuildError> {
         if self.failed {
@@ -261,10 +277,22 @@ impl ValidationSummaryBuilder {
         };
         self.errors = total;
         self.by_code.insert(code.clone(), count);
+        if !self.cancelled
+            && let Some(budget) = &self.error_budget
+        {
+            budget.observe(total);
+            if budget.reached() {
+                self.truncated = true;
+            }
+        }
         Ok(())
     }
     pub fn cancel(&mut self) {
-        self.cancelled = true;
+        // DEC-16: a limit already observed by emission is the first controlled
+        // cause. Later cancellation cannot relabel that completed prefix.
+        if !self.error_limit_reached() {
+            self.cancelled = true;
+        }
     }
     pub fn truncate(&mut self) {
         self.truncated = true;

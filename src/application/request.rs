@@ -27,6 +27,9 @@ pub enum RecordLengthPolicy {
 pub struct ValidationOptions {
     pub record_length_policy: RecordLengthPolicy,
     pub newline_policy: NewlinePolicy,
+    /// None is unlimited. Some(N>0) counts successfully emitted normative errors
+    /// across the whole run; reaching N returns a truncated, Partial outcome.
+    /// Zero is rejected before validation inputs are opened (DEC-16 A).
     pub max_errors: Option<u64>,
 }
 /// DET §25's key/scope/mode/options structure is preserved verbatim.

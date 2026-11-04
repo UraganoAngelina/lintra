@@ -10,10 +10,12 @@ pub use errors::{
     InvalidValidationCode, ValidationCode, ValidationError,
 };
 
+mod error_budget;
 mod identity;
 mod input_audit;
 mod summary;
 mod summary_builder;
+pub(crate) use error_budget::{ErrorBudget, ExecutionStop};
 pub use summary_builder::{
     SummaryBuildError, SummaryCounter, ValidationCounters, ValidationSummaryBuilder,
 };

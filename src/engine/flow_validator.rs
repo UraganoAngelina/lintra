@@ -511,6 +511,7 @@ pub fn validate_cross_record_rules(
         observer,
         CrossPassControl {
             coverage: None,
+            error_budget: None,
             is_cancelled: &|| false,
             on_record: &mut |_| {},
         },
@@ -519,6 +520,7 @@ pub fn validate_cross_record_rules(
 }
 
 pub(super) struct CrossPassControl<'a> {
+    pub error_budget: Option<crate::domain::ErrorBudget>,
     pub coverage: Option<&'a std::collections::HashMap<TraceId, crate::TraceContextCoverage>>,
     pub is_cancelled: &'a dyn Fn() -> bool,
     pub on_record: &'a mut dyn FnMut(u64),
@@ -530,8 +532,9 @@ pub(super) fn run_cross_record_rules(
     sink: &mut dyn ValidationSink,
     observer: &mut dyn CrossRecordEvaluationObserver,
     control: CrossPassControl<'_>,
-) -> Result<(CrossRecordPassSummary, bool), CrossRecordValidationError> {
+) -> Result<(CrossRecordPassSummary, crate::domain::ExecutionStop), CrossRecordValidationError> {
     let CrossPassControl {
+        error_budget,
         coverage,
         is_cancelled,
         on_record,
@@ -588,8 +591,14 @@ pub(super) fn run_cross_record_rules(
             continue;
         }
         for record in store.iter_trace(trace.id()) {
+            if error_budget
+                .as_ref()
+                .is_some_and(crate::domain::ErrorBudget::reached)
+            {
+                return Ok((totals, crate::domain::ExecutionStop::ErrorLimit));
+            }
             if is_cancelled() {
-                return Ok((totals, true));
+                return Ok((totals, crate::domain::ExecutionStop::Cancelled));
             }
             if &record.trace_id != trace.id() {
                 return Err(CrossRecordValidationError::InvalidPlan);
@@ -622,6 +631,16 @@ pub(super) fn run_cross_record_rules(
                     .on_evaluation(trace.id(), record.line_number, &plan.rule.id, &outcome)
                     .map_err(CrossRecordValidationError::Observer)?;
                 totals = next;
+                if error_budget
+                    .as_ref()
+                    .is_some_and(crate::domain::ErrorBudget::reached)
+                {
+                    processed = processed
+                        .checked_add(1)
+                        .ok_or(CrossRecordValidationError::CounterOverflow)?;
+                    on_record(processed);
+                    return Ok((totals, crate::domain::ExecutionStop::ErrorLimit));
+                }
             }
             processed = processed
                 .checked_add(1)
@@ -629,5 +648,12 @@ pub(super) fn run_cross_record_rules(
             on_record(processed);
         }
     }
-    Ok((totals, is_cancelled()))
+    Ok((
+        totals,
+        if is_cancelled() {
+            crate::domain::ExecutionStop::Cancelled
+        } else {
+            crate::domain::ExecutionStop::Completed
+        },
+    ))
 }

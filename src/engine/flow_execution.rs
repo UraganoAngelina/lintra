@@ -4,6 +4,7 @@ use super::{
     flow_validator::{CrossPassControl, run_cross_record_rules},
     trace_validator::{FullRecordCollector, TracePassOnePorts},
 };
+use crate::domain::ExecutionStop;
 use crate::*;
 use std::{
     collections::{BTreeMap, HashMap, HashSet},
@@ -125,7 +126,8 @@ pub struct CrossControlEvidence {
     pub trace_id: TraceId,
     pub rule_id: String,
     pub counts: CrossRecordPassSummary,
-    /// Physical source records whose width prevents projection, not rule IDs.
+    /// Source-record/rule evaluations not performed (unprojectable rows or a
+    /// controlled stop), distinct from the number of declared rule IDs.
     pub skipped_evaluations: u64,
     pub non_definitive: Vec<CrossEvidenceCause>,
 }
@@ -144,6 +146,36 @@ pub struct FlowValidationArtifacts {
     pub record_keys: Vec<RecordKeyEvidence>,
     pub cross: Vec<CrossControlEvidence>,
     pub cross_totals: CrossRecordPassSummary,
+}
+
+/// Private bounded result. Keeping it separate preserves every field and enum
+/// variant of the public unlimited engine API; application alone maps the stop
+/// into the existing summary.truncated/Partial contract.
+#[derive(Debug)]
+pub(crate) struct FlowRunArtifacts {
+    pub completion: ExecutionStop,
+    pub counters: ValidationCounters,
+    pub traces: Vec<TraceCoverageEvidence>,
+    pub record_keys: Vec<RecordKeyEvidence>,
+    pub cross: Vec<CrossControlEvidence>,
+    pub cross_totals: CrossRecordPassSummary,
+}
+impl FlowRunArtifacts {
+    fn into_unlimited(self) -> Result<FlowValidationArtifacts, FlowValidationError> {
+        let completion = match self.completion {
+            ExecutionStop::Completed => FlowCompletion::Completed,
+            ExecutionStop::Cancelled => FlowCompletion::Cancelled,
+            ExecutionStop::ErrorLimit => return Err(FlowValidationError::InvalidPlan),
+        };
+        Ok(FlowValidationArtifacts {
+            completion,
+            counters: self.counters,
+            traces: self.traces,
+            record_keys: self.record_keys,
+            cross: self.cross,
+            cross_totals: self.cross_totals,
+        })
+    }
 }
 
 pub struct FlowValidator<'a> {
@@ -190,7 +222,11 @@ impl<'a> FlowValidator<'a> {
         parameters: &BTreeMap<String, JoinParameterValue>,
         ports: FlowExecutionPorts<'_, '_>,
     ) -> Result<FlowValidationArtifacts, FlowValidationError> {
+        if ports.summary.error_budget().is_some() {
+            return Err(FlowValidationError::InvalidPlan);
+        }
         self.validate_with_record_observer(inputs, parameters, ports, None)
+            .and_then(FlowRunArtifacts::into_unlimited)
     }
     pub(crate) fn validate_with_record_observer(
         &self,
@@ -198,7 +234,7 @@ impl<'a> FlowValidator<'a> {
         parameters: &BTreeMap<String, JoinParameterValue>,
         mut ports: FlowExecutionPorts<'_, '_>,
         mut record_observer: Option<&mut dyn FlowRecordObserver>,
-    ) -> Result<FlowValidationArtifacts, FlowValidationError> {
+    ) -> Result<FlowRunArtifacts, FlowValidationError> {
         let prepared = prepare_flow(self.schema, inputs, parameters)?;
         let available = prepared
             .iter()
@@ -240,8 +276,11 @@ impl<'a> FlowValidator<'a> {
             .map_err(FlowValidationError::Summary)?;
         let mut state = FlowState::new(self.schema);
         for (index, path) in prepared {
+            if ports.summary.error_limit_reached() {
+                return state.finish(ExecutionStop::ErrorLimit, ports);
+            }
             if (ports.control.is_cancelled)() {
-                return state.finish(FlowCompletion::Cancelled, ports);
+                return state.finish(ExecutionStop::Cancelled, ports);
             }
             let trace = &self.schema.traces()[index];
             let mut collector = ProjectionCollector {
@@ -294,8 +333,8 @@ impl<'a> FlowValidator<'a> {
                 )
                 .map_err(FlowValidationError::Trace)?;
             drop(validator);
-            if matches!(completion, TraceCompletion::Cancelled { .. }) {
-                return state.finish(FlowCompletion::Cancelled, ports);
+            if completion.completion != ExecutionStop::Completed {
+                return state.finish(completion.completion, ports);
             }
             let evidence = &mut state.traces[index];
             evidence.coverage = if evidence.unprojectable_records == 0 {
@@ -305,7 +344,7 @@ impl<'a> FlowValidator<'a> {
             };
         }
         if (ports.control.is_cancelled)() {
-            return state.finish(FlowCompletion::Cancelled, ports);
+            return state.finish(ExecutionStop::Cancelled, ports);
         }
         (ports.control.on_event)(FlowEvent::CrossStarted);
         let coverage = state
@@ -313,6 +352,7 @@ impl<'a> FlowValidator<'a> {
             .iter()
             .map(|trace| (trace.trace_id.clone(), trace.coverage))
             .collect::<HashMap<_, _>>();
+        let error_budget = ports.summary.error_budget();
         let mut observer = FullCrossObserver {
             invalid: &mut state.invalid,
             summary: ports.summary,
@@ -321,7 +361,7 @@ impl<'a> FlowValidator<'a> {
         };
         let mut on_record =
             |count| (ports.control.on_event)(FlowEvent::CrossRecordsProcessed { count });
-        let (totals, cancelled) = run_cross_record_rules(
+        let (totals, completion) = run_cross_record_rules(
             self.schema,
             &state.store,
             CrossRecordInputs {
@@ -331,6 +371,7 @@ impl<'a> FlowValidator<'a> {
             ports.sink,
             &mut observer,
             CrossPassControl {
+                error_budget,
                 coverage: Some(&coverage),
                 is_cancelled: ports.control.is_cancelled,
                 on_record: &mut on_record,
@@ -338,14 +379,7 @@ impl<'a> FlowValidator<'a> {
         )
         .map_err(FlowValidationError::Cross)?;
         state.totals = totals;
-        state.finish(
-            if cancelled {
-                FlowCompletion::Cancelled
-            } else {
-                FlowCompletion::Completed
-            },
-            ports,
-        )
+        state.finish(completion, ports)
     }
 }
 
@@ -399,13 +433,14 @@ impl FlowState {
     }
     fn finish(
         mut self,
-        completion: FlowCompletion,
+        completion: ExecutionStop,
         ports: FlowExecutionPorts<'_, '_>,
-    ) -> Result<FlowValidationArtifacts, FlowValidationError> {
-        if completion == FlowCompletion::Cancelled {
+    ) -> Result<FlowRunArtifacts, FlowValidationError> {
+        if completion == ExecutionStop::Cancelled {
             ports.summary.cancel();
         }
-        // Account known source records not evaluated after cooperative cancellation.
+        // Account only known source records not evaluated after a controlled
+        // stop or failed projection; never estimate unread rows.
         for control in &mut self.cross {
             let source = self
                 .traces
@@ -421,12 +456,12 @@ impl FlowState {
                 .rules_skipped(control.skipped_evaluations)
                 .map_err(FlowValidationError::Summary)?;
         }
-        (ports.control.on_event)(if completion == FlowCompletion::Cancelled {
-            FlowEvent::Cancelled
-        } else {
-            FlowEvent::Completed
-        });
-        Ok(FlowValidationArtifacts {
+        match completion {
+            ExecutionStop::Cancelled => (ports.control.on_event)(FlowEvent::Cancelled),
+            ExecutionStop::Completed => (ports.control.on_event)(FlowEvent::Completed),
+            ExecutionStop::ErrorLimit => {} // No fake Completed/Cancelled event.
+        }
+        Ok(FlowRunArtifacts {
             completion,
             counters: ports.summary.counters(),
             traces: self.traces,
@@ -460,6 +495,14 @@ impl FullRecordCollector for ProjectionCollector<'_, '_, '_> {
             self.state
                 .invalid
                 .insert((trace.id().clone(), record.line_number));
+        }
+        if summary.error_limit_reached() {
+            // Stopping before key/projection does not make a full-width row
+            // physically malformed. Keep that counter restricted to width.
+            evidence.unprojectable_records +=
+                u64::from(record.bytes.len() != trace.record_length());
+            self.state.record_keys[self.trace_index].inconclusive += 1;
+            return Ok(());
         }
         if record.bytes.len() != trace.record_length() {
             evidence.unprojectable_records += 1;
@@ -508,6 +551,9 @@ impl FullRecordCollector for ProjectionCollector<'_, '_, '_> {
                 key_evidence.inconclusive += 1;
             }
             Err(error) => return Err(Box::new(error)),
+        }
+        if summary.error_limit_reached() {
+            return Ok(());
         }
         // Invalid full-width records still contribute independent byte evidence.
         if trace.projection_plan().required() {

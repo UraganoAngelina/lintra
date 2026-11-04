@@ -2366,6 +2366,19 @@ Per MVP è accettabile lasciare `max_errors = None` se non si vuole ancora gesti
 
 ---
 
+## Ratifica DEC-16 A — 2026-11-04
+
+La proposta DEC-16-MAX-ERRORS-01 A è approvata: None invariato, Some(N>0)
+opzionale globale, zero rifiutato in preflight, stop dopo N ValidationError
+realmente emessi. CompletedInvalid con truncated=true e completeness Partial;
+non introdurre CompletedWithLimitReached o nuovi valori persistenti. Confine EOF
+conservativo, nessun commit/preview storica approvabile, errori tecnici e cancel
+distinti. Contratto completo e tracciabilità nella proposta e relativa ratifica
+in docs/verification/DEC-16-MAX-ERRORS-01-ratification.md. Test LocalOnly/Full,
+contatori/prefisso, più trace/passate e sink failure obbligatori in T-P17-04.
+
+---
+
 # 81. ProgressObserver
 
 La futura UI richiede feedback senza contaminare il core.

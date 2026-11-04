@@ -287,6 +287,10 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
         Ok(FieldPipelineResult::Valid)
     }
 
+    pub(crate) fn error_limit_reached(&self) -> bool {
+        self.summary.error_limit_reached()
+    }
+
     /// Stream first, then count only successfully emitted diagnostics. Either
     /// failure is terminal, with its original typed cause. No global error Vec.
     fn emit(

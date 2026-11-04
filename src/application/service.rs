@@ -29,7 +29,9 @@ impl fmt::Display for InvalidRequestError {
             Self::SchemaKeyMismatch { .. } => "request and compiled schema keys differ",
             Self::UnsupportedMode(_) => "Full validation requires Flow scope",
             Self::UnsupportedFlowScope => "Flow scope is not available until P13",
-            Self::UnsupportedMaxErrors { .. } => "max_errors must be None in the current engine",
+            Self::UnsupportedMaxErrors { .. } => {
+                "max_errors must be greater than zero when configured"
+            }
             Self::MissingRequiredTrace(_) => "Full bundle lacks a required trace",
             Self::EmptyFlow => "flow input must contain at least one trace",
             Self::DuplicateTrace(_) => "trace input is duplicated",
@@ -82,7 +84,7 @@ pub fn preflight<'schema, 'input>(
     if request.mode == ValidationMode::Full {
         return Err(InvalidRequestError::UnsupportedMode(request.mode));
     }
-    if let Some(limit) = request.options.max_errors {
+    if let Some(limit @ 0) = request.options.max_errors {
         return Err(InvalidRequestError::UnsupportedMaxErrors { limit });
     }
     match &request.scope {
@@ -391,6 +393,12 @@ impl ValidationService {
             crate::ScopeSummary::Trace {
                 trace_id: plan.trace().id().clone(),
             },
+        )
+        .with_error_limit(
+            request
+                .options
+                .max_errors
+                .and_then(std::num::NonZeroU64::new),
         );
         let prepared = if schema.required_reference_data().is_empty() {
             None
@@ -462,7 +470,13 @@ impl ValidationService {
                     ));
                 }
             };
-            validator.validate_path(plan.path(), sink, &mut summary, &mut control, &audits)?;
+            validator.validate_controlled_path(
+                plan.path(),
+                sink,
+                &mut summary,
+                &mut control,
+                &audits,
+            )?;
         }
         progress.on_event(Event::PhaseStarted(Phase::FinalizingReport));
         if cancellation.is_cancelled() {
@@ -512,7 +526,7 @@ impl ValidationService {
                 },
             ));
         }
-        if let Some(limit) = request.options.max_errors {
+        if let Some(limit @ 0) = request.options.max_errors {
             return Err(ValidationRunError::InvalidRequest(
                 InvalidRequestError::UnsupportedMaxErrors { limit },
             ));
@@ -575,6 +589,12 @@ impl ValidationService {
         let mut summary = ValidationSummaryBuilder::new(
             schema.key().clone(),
             ScopeSummary::Flow { trace_ids: traces },
+        )
+        .with_error_limit(
+            request
+                .options
+                .max_errors
+                .and_then(std::num::NonZeroU64::new),
         );
         let audits = InputAuditSession::new();
         ports.progress.on_event(ProgressEvent::RunStarted);

@@ -194,6 +194,82 @@ fn commit(preview: &mut HistoricalValidationPreview<'_>) -> CommitReceipt {
 }
 
 #[test]
+fn reaching_an_error_budget_cannot_create_an_approvable_historical_preview() {
+    let fixture = Fixture::new();
+    let protector = protector();
+    let repository =
+        InMemoryPersistenceRepository::with_protection_audit(protector.audit().unwrap());
+    let service = fixture.service();
+    let mut request = fixture.request("before-limit", 1);
+    request.validation.options.max_errors = Some(1);
+    let mut sink = VecSink::default();
+    let mut audit = AuditSink::default();
+    let initial = HistoricalValidationService::new(&service, &repository, &protector)
+        .validate(
+            request,
+            &mut sink,
+            &mut audit,
+            &mut |_| {},
+            &CancellationToken::default(),
+        )
+        .unwrap();
+    // Configuring a budget that is not reached must still permit a genuinely
+    // complete, valid historical review and its separate approval.
+    let HistoricalValidationOutcome::Preview(mut initial) = initial else {
+        panic!("an unreached budget must preserve complete historical review");
+    };
+    assert!(sink.errors().is_empty());
+    commit(&mut initial);
+    drop(initial);
+    let namespace = PersistenceNamespace::new(vec![(
+        "organisation_namespace".into(),
+        NamespaceValue::Integer(1),
+    )])
+    .unwrap();
+    let before = repository.load_current_snapshot(&namespace).unwrap();
+    fs::write(fixture.path("1"), b"short\n").unwrap();
+    let mut request = fixture.request("limited-run", 1);
+    request.validation.options.max_errors = Some(1);
+    let service = fixture.service();
+    let mut sink = VecSink::default();
+    let mut audit = AuditSink::default();
+    let result = HistoricalValidationService::new(&service, &repository, &protector)
+        .validate(
+            request,
+            &mut sink,
+            &mut audit,
+            &mut |_| {},
+            &CancellationToken::default(),
+        )
+        .unwrap();
+    let HistoricalValidationOutcome::ValidationOnly(outcome) = result else {
+        panic!("a limited validation must not expose approval");
+    };
+    assert_eq!(outcome.status, RunStatus::CompletedInvalid);
+    assert!(outcome.summary.truncated);
+    assert_eq!(
+        outcome.summary.completeness(),
+        ValidationCompleteness::Partial
+    );
+    assert_eq!(sink.errors().len(), 1);
+    assert!(audit.diffs.is_empty());
+    assert_eq!(
+        repository.current_generation(&namespace).unwrap(),
+        Some(SnapshotRevision::new(1))
+    );
+    assert_eq!(
+        repository.load_current_snapshot(&namespace).unwrap(),
+        before
+    );
+    assert!(
+        repository
+            .load_submission(&namespace, "limited-run")
+            .unwrap()
+            .is_none()
+    );
+}
+
+#[test]
 fn text_parameters_use_one_source_and_another_candidates_review_cannot_authorize_commit() {
     let fixture = Fixture::new();
     let protector = protector();
