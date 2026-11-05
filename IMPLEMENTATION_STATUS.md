@@ -6200,3 +6200,34 @@ CI18-03 nuova41999182424 deve qualificare quel commit esatto. Run iniziale
 41996304493 registrata separatamente; log reale conferma locktooling/exit101.
 Nessuna release rc.2 o chiave operativa pubblicata, docs/migration esclusa.
 ProsecuzioneWAITING_GATE: dopo dispatchrelease18, push/CI01, nessun bypass02.
+
+
+## Avvio indipendente T-CAD-10 —2026-11-05
+
+P6/P10/G0 qualificati, indipendente daCAD02/namespacebinding. Componente versionato
+T70 e test sintetici alle coordinate B1 reali, solo nodi approvati regexraw/eq/
+presence. Positional_bitset legacy resta rifiutato, nessuna falsa eseguibilità
+CADglobale.5test mirati positivi,35.840 combinazioni byte esaustive; iniziali
+errori guardie corretti e documentati. Gate finali locali foreground in avvio,
+nonDONE10. Nessun runtimeengine, crate, norma o baseline modificati.
+Report T-CAD-10-composite.md, fonte/hash e campi ricevuti preservati nel componente.
+18-03: Linux8430de9 positivo, Windowscore in corso alla terza lettura ordinaria;
+nessuna release ancora tentata. CAD01 locale894+35 positivo, codice629ce3f ancora
+solo locale per conservare la ref remota della release sullo SHA qualificato.
+125/140DONE invariato, no subagenti/background, docs/migration preservata/esclusa.
+
+
+## HANDOFF §15.3 — T-CAD-10 locale qualificata, 2026-11-05
+
+Componente2024-06.t70.1 eREADME con fonte/hash/copielegacy,5test per35.840casi
+esaustivi e boundary, nessun srcengine modificato. Cinque gate exit0,408hash
+immutati,899workspace/114riepiloghi,0fail/6ignored;12mirati allfeatures,
+fmt/Clippy/boundary positivi. Lowering regexraw esplicito di policy già approvata,
+nessun positional_bitset legacy accettato tacitamente o profilo CAD completo
+simulato. Errori preliminari guardie/Clippy documentati e corretti senza soppressioni.
+Codice01 e10 da pubblicare dopo dispatchrelease18sullo SHA8430de9, poi unicaCI
+sul commit finale che comprende entrambe le task indipendenti. NonDONE01/10,
+125/140DONE invariato. UltimaCI18: entrambi nativejob e tre confronti positivi,
+restano due riapertureSQLite crossOS; nessuna pubblicazione rc.2 anticipata.
+Single-agent; docs/migration preservata/esclusa. Contratto namespaceCAD02 e
+DEC17 restano proposte in attesa, nessun consenso presunto.

@@ -1,0 +1,309 @@
+{
+  "component_version": "2024-06.t70.1",
+  "scope": "B1 fields 2.3 and 2.22 only; not a complete CAD flow schema",
+  "source": {
+    "legacy_trace_sha256": "a6726cf3b2365c7b230c2b1e82b0ba00d8ba18d504c1f3aa3ec9c008674238a3",
+    "pdf_sha256": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29",
+    "decisions": [
+      "CAD-08",
+      "G-03"
+    ],
+    "regulatory_version": "2024-06",
+    "record_length": 198,
+    "full_normative_compliance": false
+  },
+  "required_capabilities": [
+    "local.v1",
+    "expressions.v1"
+  ],
+  "fields": [
+    {
+      "id": "2.3",
+      "name": "Tipologia presa in carico",
+      "physical": {
+        "type": "numeric",
+        "start": 15,
+        "length": 1,
+        "alignment": {
+          "kind": "exact"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "0"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "allowed_values",
+          "target": "raw",
+          "values": [
+            "1",
+            "2"
+          ]
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "2.3",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica la tipologia di presa in carico. I valori ammessi sono i seguenti: 1 - Cure domiciliari (DPCM 12 gennaio 2017 art. 22), 2 - UCPDOM",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.22",
+      "name": "Problemi salute e bisogni assistenziali",
+      "physical": {
+        "type": "alphanumeric",
+        "start": 67,
+        "length": 70,
+        "alignment": {
+          "kind": "exact"
+        },
+        "lexical": {
+          "kind": "encoded_text"
+        }
+      },
+      "missing_value": {
+        "kind": "spaces"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "regex",
+          "match": "required",
+          "target": "raw",
+          "pattern": "\\A[12]{59}[12 ]2{10}\\z"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "2.22",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "problemi di salute allineato con DM 17-12-2008; Codificare in questo modo: \"1\" in caso di problema presente, \"2\" in caso di problema\nassente.\nLa posizione del carattere si riferisce al \"bisogno assistenziale\" secondo la tabella allegato D - Bisogni_NEW\nI caratteri delle posizione 61-70 (bisogni \"vuoti\") vanno compilate con il carattere 2.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    }
+  ],
+  "rules": [
+    {
+      "id": "CAD-T70-UCPDOM-60",
+      "when": {
+        "and": [
+          {
+            "is_present": {
+              "ref": {
+                "field": "2.3"
+              }
+            }
+          },
+          {
+            "is_present": {
+              "ref": {
+                "field": "2.22"
+              }
+            }
+          },
+          {
+            "eq": {
+              "ref": {
+                "field": "2.3"
+              },
+              "value": "2"
+            }
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "kind": "constraint",
+          "field": {
+            "field": "2.22"
+          },
+          "constraint": {
+            "kind": "regex",
+            "match": "required",
+            "target": "raw",
+            "pattern": "\\A[12]{60}2{10}\\z"
+          }
+        }
+      ],
+      "error_code": "E_CROSS_FIELD",
+      "message_template": "In UCPDOM la posizione 60 del campo 2.22 deve contenere 1 oppure 2."
+    },
+    {
+      "id": "CAD-T70-NON-UCPDOM-60",
+      "when": {
+        "and": [
+          {
+            "is_present": {
+              "ref": {
+                "field": "2.3"
+              }
+            }
+          },
+          {
+            "is_present": {
+              "ref": {
+                "field": "2.22"
+              }
+            }
+          },
+          {
+            "eq": {
+              "ref": {
+                "field": "2.3"
+              },
+              "value": "1"
+            }
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "kind": "constraint",
+          "field": {
+            "field": "2.22"
+          },
+          "constraint": {
+            "kind": "regex",
+            "match": "required",
+            "target": "raw",
+            "pattern": "\\A[12]{59} 2{10}\\z"
+          }
+        }
+      ],
+      "error_code": "E_CROSS_FIELD",
+      "message_template": "Fuori UCPDOM la posizione 60 del campo 2.22 deve contenere uno spazio ASCII."
+    }
+  ],
+  "lowering": "Approved regex constraints on exact raw bytes; positional_bitset is not silently accepted or dropped by the compiler. Only this versioned component uses equivalent supported nodes.",
+  "source_fields": [
+    {
+      "id": "2.3",
+      "name": "Tipologia presa in carico",
+      "physical": {
+        "start": 15,
+        "length": 1,
+        "type": "numeric",
+        "source_type": "N",
+        "alignment": {
+          "kind": "right",
+          "pad": "0"
+        }
+      },
+      "missing_value": {
+        "kind": "exact",
+        "raw": "0"
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "allowed_values",
+          "values": [
+            "1",
+            "2"
+          ]
+        },
+        {
+          "kind": "digits_only_if_present"
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "2.3",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "Indica la tipologia di presa in carico. I valori ammessi sono i seguenti: 1 - Cure domiciliari (DPCM 12 gennaio 2017 art. 22), 2 - UCPDOM",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    },
+    {
+      "id": "2.22",
+      "name": "Problemi salute e bisogni assistenziali",
+      "physical": {
+        "start": 67,
+        "length": 70,
+        "type": "alphanumeric",
+        "source_type": "T",
+        "alignment": {
+          "kind": "left",
+          "pad": " "
+        }
+      },
+      "missing_value": {
+        "kind": "spaces",
+        "raw": "                                                                      "
+      },
+      "presence": {
+        "base": "required",
+        "required_if": [],
+        "forbidden_if": []
+      },
+      "constraints": [
+        {
+          "kind": "positional_bitset",
+          "positions": {
+            "1-59": {
+              "values": [
+                "1",
+                "2"
+              ]
+            },
+            "60": {
+              "values": [
+                "1",
+                "2"
+              ],
+              "condition": "is_ucpdom",
+              "outside_ucpdom": " "
+            },
+            "61-70": {
+              "fixed": "2"
+            }
+          },
+          "source_type": "T",
+          "note": "Position 60: UCPDOM => 1 or 2; non-UCPDOM => exactly one ASCII space (user normative formalization, 2026-10-16). Positions 61–70 fixed 2."
+        }
+      ],
+      "regulatory_metadata": {
+        "source_id": "2.22",
+        "source_obligation": "SI",
+        "source_nsis_obligation": "SI",
+        "resolved_obligation": "SI",
+        "source_page": 2,
+        "source": "2025-05-14_FLUSSO_ADI.pdf",
+        "source_key_marker": false,
+        "source_note": "problemi di salute allineato con DM 17-12-2008; Codificare in questo modo: \"1\" in caso di problema presente, \"2\" in caso di problema\nassente.\nLa posizione del carattere si riferisce al \"bisogno assistenziale\" secondo la tabella allegato D - Bisogni_NEW\nI caratteri delle posizione 61-70 (bisogni \"vuoti\") vanno compilate con il carattere 2.",
+        "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+      }
+    }
+  ]
+}
