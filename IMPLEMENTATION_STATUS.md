@@ -6183,3 +6183,20 @@ CAD01: cinque gate locali positivi,894workspace/0fail/6ignored,35mirati
 allfeatures/0fail,405hash invariati; nuovaAPI e7test positivi. Gate relativo al
 runtimeCAD immutato; successiva fixPython/lock distinta e tracciata. Nessun gate
 WindowsCAD anticipato. Restano125/140DONE, docs/migration preservata/esclusa.
+
+
+## HANDOFF §15.3 — T-CAD-01 locale qualificata, attesa pubblicazione sequenziale
+
+Nuovo metodoSchemaRegistry.resolve_persistence_profile, testintegration7 e
+SCHEMA_AUTHORING aggiornati. Controllo chiave/encoding/source singola, manifest
+filesystem e gruppi con fingerprint reali; policyoff e audit-onlySIOC invariati.
+Nessuna compilazione/esecuzione fittizia di regole history/temporal. Scope01 è
+registration; profilo normativo PK/ULSS/sessioni resta02 e task successive.
+Cinque gate exit0,405hash invariati,894workspace/0fail/6ignored,35mirati
+allfeatures; report/ledger01 consultabili. Errorefixturehex iniziale corretto,
+non mascherato. Nessun gate Windows01 ancora svolto.125/140DONE invariato.
+Commit locale01 da pubblicare solo dopo dispatchrelease sullo SHA8430de9:
+CI18-03 nuova41999182424 deve qualificare quel commit esatto. Run iniziale
+41996304493 registrata separatamente; log reale conferma locktooling/exit101.
+Nessuna release rc.2 o chiave operativa pubblicata, docs/migration esclusa.
+ProsecuzioneWAITING_GATE: dopo dispatchrelease18, push/CI01, nessun bypass02.

@@ -53,6 +53,55 @@ pub struct SchemaRegistry {
     encoding: RawResolvedEncoding,
 }
 impl SchemaRegistry {
+    /// Resolve a declaration-only persistence plan by its exact flow/version.
+    ///
+    /// This deliberately returns no executable schema: a checked snapshot plan
+    /// is not evidence that historical identity or temporal rules can execute.
+    /// The compiler keeps rejecting unsupported declarations instead of dropping
+    /// them. Each compatibility member is loaded by the same flow and its exact
+    /// declared version, so a name alone cannot certify cross-version PK meaning.
+    pub fn resolve_persistence_profile(
+        &self,
+        key: &SchemaKey,
+    ) -> Result<crate::CompiledPersistenceProfile, SchemaResolutionError> {
+        let mut raw = self.repository.load_raw(key)?;
+        check_selected(&raw, key)?;
+        raw.encoding.resolved = Some(self.encoding.clone());
+        // Lint before following group references: malformed declarations must
+        // fail before they can trigger any additional repository reads.
+        let issues = crate::lint_raw_schema(&raw);
+        if issues
+            .iter()
+            .any(|i| i.severity == crate::SchemaIssueSeverity::Error)
+        {
+            return Err(SchemaCompilationError { issues }.into());
+        }
+        let mut members = Vec::new();
+        if let Some(policy) = &raw.persistence_policy
+            && let super::raw::RawPersistenceVersionCompatibility::DeclaredGroup {
+                schema_versions,
+                ..
+            } = &policy.version_compatibility
+        {
+            for version in schema_versions {
+                if version == &raw.schema_version {
+                    continue;
+                }
+                let member_key = SchemaKey {
+                    flow_id: key.flow_id.clone(),
+                    version: SchemaVersion(version.clone()),
+                };
+                let mut member = self.repository.load_raw(&member_key)?;
+                check_selected(&member, &member_key)?;
+                member.encoding.resolved = Some(self.encoding.clone());
+                members.push(member);
+            }
+        }
+        // One selected source supplies both the bindings and their fingerprint.
+        // No second load can replace the schema between identity and compilation.
+        Ok(self.compiler.compile_persistence_profile(&raw, &members)?)
+    }
+
     /// Explicit audit resolution from the same source used for normal validation.
     /// Other group members are loaded by exact declared keys; no policy is stripped
     /// and the ordinary resolve path keeps rejecting unsupported history contexts.

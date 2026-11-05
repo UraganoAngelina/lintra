@@ -552,3 +552,26 @@ Non dimostra che i profili normativi legacy siano compilati o validi in Rust.
 T-P0-07 è DONE dopo la revisione umana del contratto completo. È autorizzata
 la verifica della task successiva; G0 e l’eseguibilità dei profili restano
 gate separati. Le boundary normative indicate non sono colmate per deduzione.
+
+### Risoluzione dichiarativa dei profili persistenti (T-CAD-01)
+
+`SchemaRegistry::resolve_persistence_profile(&SchemaKey)` risolve una versione
+esplicita dal repository selezionato e restituisce `CompiledPersistenceProfile`.
+Usa il medesimo contratto raw/manifest dei percorsi ordinari; non aggiunge un
+formato CAD separato. L’identità flow/version del file e degli eventuali membri
+di `declared_group` deve coincidere con le chiavi richieste. Il namespace non
+si deduce dal nome del flusso e una policy nulla rimane disattivata.
+
+Questo accesso espone i piani dichiarativi già supportati, compreso snapshot,
+senza produrre uno schema eseguibile. `resolve` continua a richiedere tutte le
+capability di validazione; `resolve_historical_audit` continua a escludere
+snapshot, identità storiche e regole temporali. Un requisito non supportato
+viene rifiutato anche dalla risoluzione dichiarativa: non viene eliminato per
+registrare una versione apparentemente compatibile. I piani di identità e
+quelli temporali CAD restano alle task successive del profilo.
+
+La registrazione è generica per qualsiasi flow. I test CAD-labelled di
+registration usano un layout sintetico esplicito; non sono il profilo CAD
+normativo di83campi, né una nuova revisione approvata del candidato ricevuto.
+La definizione di PK/ULSS/sessioni e il lowering del candidato sono verificati
+nelle task del profilo, separatamente dalla disponibilità di questo accesso.
