@@ -66,3 +66,13 @@ immutate nel ledger T-CAD-01-local-gates.json. Correzione lock/Python18-03
 successiva riguarda tooling/versione, non il metodo registry misurato e verificato.
 Nessun testWindows dichiarato locale. Restano pubblicazione del codiceCAD01 e
 CI propria: nonDONE01. Nessuna parte diCAD02 avviata senza quel prerequisito.
+
+
+## Chiusura nativa — DONE
+
+CI42004833488 completed/success su46d574f8ec4627bcc9561d298c2dc33007137654;
+sette job richiesti positivi, optionalUI skipped. Default/allfeatures/core su
+Linux/MSVC, confronti JSONL/pixel e due riapertureSQLite crossOS effettivamente
+positivi. Due letture ordinarie distanziate. Fonte T-CAD-01-10-native-ci.json.
+Questo gate qualifica i due scope indipendenti registry01 e componente10,
+non il profilo CAD completo né il futuro bindingformato3/parallelismo.
