@@ -1,0 +1,20 @@
+{
+  "initial_gate_changed_files": [
+    "spikes/dec17-selective/full.rs"
+  ],
+  "refinement_hash_matches": true,
+  "full_campaign_source_hashes_verified": 365,
+  "task": "T-P17-05",
+  "date": "2026-11-05",
+  "native_final_success": true,
+  "native_jobs": 7,
+  "artifacts": 16,
+  "downloaded_files": 250,
+  "experimental_commit": "8a02f55fba06be0e9784465cb8aa6ee347cd583b",
+  "production_adoption": false,
+  "dynamic_cancellation_equivalent": false,
+  "archive_verified": true,
+  "local_native_jsonl_comparison": "success",
+  "local_native_bootstrap_pixel_comparison": "success",
+  "local_native_regression_pixel_comparison": "success"
+}

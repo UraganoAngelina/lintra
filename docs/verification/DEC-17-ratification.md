@@ -107,3 +107,10 @@ T-P17-05 non DONE prima di esperimento/report/gate reali. Dopo handoff proseguir
 READY. Decisione non blocca18-03/CAD indipendenti. Restano vietati subagenti,
 Superpowers, delega/sessioni autonome/task concorrenti; worker Rust interni
 foreground esplicitamente autorizzati. Commit/push/CI pertinenti autorizzati.
+
+
+## Ratifica conclusiva successiva —2026-11-05
+
+La campagna è conclusa con esito D; prototipo non adottato e runtime sequenziale.
+Fonte corrente: [ratifica conclusiva](DEC-17-final-ratification.md). Il mandato
+sperimentale sopra resta storico e non autorizza una nuova campagna.

@@ -1,0 +1,31 @@
+
+running 1 test
+A1 total=500000 skewed=false heavy=false workers=0 seconds=0.89710246
+A1 total=500000 skewed=false heavy=false workers=1 seconds=1.195050545
+A1 total=500000 skewed=false heavy=false workers=2 seconds=0.59315578
+A1 total=500000 skewed=false heavy=false workers=4 seconds=0.413120696
+A1 total=500000 skewed=false heavy=false workers=4 seconds=0.316302121
+A1 total=500000 skewed=false heavy=false workers=2 seconds=0.606738554
+A1 total=500000 skewed=false heavy=false workers=1 seconds=1.185076415
+A1 total=500000 skewed=false heavy=false workers=0 seconds=0.904681954
+A1 total=500000 skewed=false heavy=false workers=2 seconds=0.590195363
+A1 total=500000 skewed=false heavy=false workers=4 seconds=0.345244649
+A1 total=500000 skewed=false heavy=false workers=0 seconds=0.914873378
+A1 total=500000 skewed=false heavy=false workers=1 seconds=1.321659866
+A1 total=500000 skewed=false heavy=true workers=0 seconds=7.132152097
+A1 total=500000 skewed=false heavy=true workers=1 seconds=7.475556835
+A1 total=500000 skewed=false heavy=true workers=2 seconds=5.890373149
+A1 total=500000 skewed=false heavy=true workers=4 seconds=4.876213378
+A1 total=500000 skewed=false heavy=true workers=4 seconds=4.841685003
+test engine::flow_execution::selective_parallelism::a1_local_only has been running for over 60 seconds
+A1 total=500000 skewed=false heavy=true workers=2 seconds=5.247141661
+A1 total=500000 skewed=false heavy=true workers=1 seconds=7.477508873
+A1 total=500000 skewed=false heavy=true workers=0 seconds=7.12939375
+A1 total=500000 skewed=false heavy=true workers=2 seconds=5.15083531
+A1 total=500000 skewed=false heavy=true workers=4 seconds=4.943789259
+A1 total=500000 skewed=false heavy=true workers=0 seconds=7.112254077
+A1 total=500000 skewed=false heavy=true workers=1 seconds=7.763055973
+test engine::flow_execution::selective_parallelism::a1_local_only ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 106 filtered out; finished in 107.21s
+

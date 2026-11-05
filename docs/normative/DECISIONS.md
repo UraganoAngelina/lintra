@@ -222,3 +222,15 @@ nessuna equivalenza con credenziali individuali o anonimizzazione automatica.
 Fonte vincolante e tutte le precisazioni:
 [ratifica](../verification/PERSIST-KEY-PROVISIONING-01-ratification.md).
 Procedere T-PERSIST-10; cifratura/retention/backup completo/dati reali restano aperti.
+
+
+## DEC-17 — ratifica conclusiva, 2026-11-05
+
+Esito D ratificato: valutazione completata, prototipo non adottato; ValidationEngine
+produttivo sequenziale, architettura a due passate invariata. Accelerazione A1
+LocalOnly non trasferita robustamente a Full, cancellazione dinamica non equivalente.
+Futuro profiling sequenziale CAD/SIOC su carichi rappresentativi prima di proposte
+di ottimizzazione; nessuna nuova implementazione o campagna autorizzata ora.
+[Prescrizioni, evidenze, gate e strategia](../verification/DEC-17-final-ratification.md).
+[Conflitto separato sull'ordine](../verification/CNF-DIAGNOSTIC-ORDER-01.md): aperto,
+nessuna modifica dell'ordine runtime o approvazione contrattuale implicita.

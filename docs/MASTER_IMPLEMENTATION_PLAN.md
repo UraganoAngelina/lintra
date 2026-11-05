@@ -187,6 +187,7 @@ Ogni riga è un vincolo da rispettare. Modificarne uno richiede una nuova decisi
 8. **Parallelismo.**
    - *Tra task:* ammesso solo se i file non si sovrappongono e non condividono un contratto non ancora fissato.
    - *A runtime:* escluso dall'MVP (DET §115); valutato in T-P17-05 e adottato solo se (a) il guadagno è misurato, (b) il determinismo dell'output resta provato, (c) la complessità di ownership non annulla il vantaggio.
+   - *Ratifica conclusiva DEC-17 (2026-11-05):* T-P17-05 esito D, nessuna adozione; runtime sequenziale. Futuro profiling del workflow CAD/SIOC su carichi rappresentativi prima di nuove proposte, nessuna nuova campagna immediata. Prescrizioni in `verification/DEC-17-final-ratification.md`; conflitto d’ordine separato CNF-DIAGNOSTIC-ORDER-01.
 9. **Documentazione sincronizzata.** Una task che cambia un contratto pubblico aggiorna il documento sorgente pertinente o apre un `CNF-*` (non lo fa in silenzio).
 10. **Nessun lavoro su ciò che è rinviato** (§13.5).
 
@@ -863,7 +864,7 @@ Responsabile di default: **autore del progetto**.
 | DEC-14 | Dimensioni reali dei flussi e soglie prestazionali | DET §114 | Aperta | T-P17-03 | Dimensioni reali | Raccogliere dati |
 | DEC-15 | Nuove dipendenze non nominate dai documenti (SHA-256, `regex`, `ctrlc`, eventuale crate di benchmark o test) | N-26; ARCH §39C.1 | Aperta, voce per voce | T-P5-05, T-P8-05, T-P9-04, T-P17-01 | Verifica pure-Rust e licenza | Una riga di registro per crate |
 | DEC-16 | Semantica di `max_errors`, senza nuovo stato serializzato | DET §80 | RISOLTA A, autore 2026-11-04 | T-P17-04 | DEC-16-MAX-ERRORS-01 e ratifica | N>0 opzionale, CompletedInvalid + truncated/Partial; None default |
-| DEC-17 | Valutazione sperimentale pipeline ibrida, prodotto sequenziale | ARCH §33; DET §115 | RATIFICATA A estesa, autore 2026-11-05 | T-P17-05 | DEC-17-ratification e misure effettive | A1 LocalOnly; A2 Pass1 parallela/Pass2 sequenziale; A3 end-to-end; adozione separata |
+| DEC-17 | Valutazione sperimentale pipeline ibrida, prodotto sequenziale | ARCH §33; DET §115 | RATIFICATA conclusiva D, autore 2026-11-05 | T-P17-05 DONE | DEC-17-final-ratification e gate finale 42038174791 | Valutazione completata; prototipo non adottato; runtime sequenziale; futuro profiling rappresentativo prima di nuove proposte |
 | DEC-18 | Contratto di elenco di schemi, versioni e tracciati (le trait di DET §10 hanno solo `load_raw`) | ARCH §30; DET §10 | Aperta | T-P14-05, T-P16-03 | Proposta di contratto | Decidere prima di P14 |
 
 ### 13.2 Conflitti documentali risolti (revisione approvata 2026-10-16)

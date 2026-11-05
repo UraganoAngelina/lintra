@@ -3182,6 +3182,13 @@ La performance target va definita dopo aver conosciuto dimensioni reali dei flus
 
 # 115. Parallelismo
 
+Ratifica conclusiva DEC-17 del 5 novembre 2026: esito D, prototipo non adottato.
+Runtime sequenziale e architettura a due passate invariati; nessuna attivazione
+implicita cfg(test). Eventuali nuove ottimizzazioni richiedono profiling reale e
+nuove evidenze/approvazioni: verification/DEC-17-final-ratification.md.
+Conflitto d’ordine separato: verification/CNF-DIAGNOSTIC-ORDER-01.md, aperto;
+nessun cambiamento dei contratti osservabili in questa chiusura.
+
 Ratifica DEC-17 del5novembre2026: autorizzata esclusivamente la valutazione
 isolata A1LocalOnly/A2Full con prima passata selettivamente parallela e seconda
 sequenziale/A3end-to-end, mantenendo invarianti/ordine/streaming/privacy e senza

@@ -1,0 +1,14 @@
+   Compiling lintra v0.1.1-rc.2 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 25.93s
+     Running unittests src/lib.rs (target/debug/deps/lintra-42cd44698327b8de)
+
+running 6 tests
+test engine::flow_execution::hybrid::dense_projection_and_incomplete_context_remain_equivalent ... ok
+test engine::flow_execution::hybrid::dynamic_cancel_records_failed_observable_contract_and_no_false_completion ... ok
+test engine::flow_execution::hybrid::full_benchmark ... ignored, opt-in foreground DEC-17 A2/A3; never product feature
+test engine::flow_execution::hybrid::full_equivalence ... ok
+test engine::flow_execution::hybrid::limited_and_precancelled_runs_use_original_path ... ok
+test engine::flow_execution::hybrid::technical_faults_join_backpressured_workers_without_summary ... ok
+
+test result: ok. 5 passed; 0 failed; 1 ignored; 0 measured; 107 filtered out; finished in 5.45s
+
