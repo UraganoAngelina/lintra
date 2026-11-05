@@ -1,0 +1,16 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 24.81s
+     Running tests/sioc_referential.rs (target/debug/deps/sioc_referential-b2faad3f7f0a8abd)
+
+running 8 tests
+test a_join_declaration_never_synthesizes_a_normative_control ... ok
+test optional_anagraphic_policy_remains_not_applicable_without_inverse_obligation ... ok
+test corrected_unavailable_trace_policy_remains_unknown_in_standalone_executor ... ok
+test partial_revoking_universe_is_unknown_without_a_false_missing_act_violation ... ok
+test full_missing_indispensable_trace_fails_before_reading_other_sources ... ok
+test operative_component_preserves_selected_definitions_and_lists_every_exclusion ... ok
+test approved_cross_trace_rules_match_independent_normative_goldens_byte_for_byte ... ok
+test derived_profile_changes_only_ratified_rules_and_revoking_policies ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+

@@ -2,7 +2,7 @@
 
 Consuntivo aggiornato al **2026-11-05**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — DEC-17 ratificata, T-P17-05 DONE, AUTO_CONTINUE CAD-02
+## Frontiera corrente — T-CAD-02 WAITING_GATE, DEC-17 chiusa
 
 **129/140 DONE = 92,1%** (conteggio task, non stima dello sforzo).
 T-P17-05 DONE: valutazione sperimentale completata, prototipo non adottato,
@@ -28,8 +28,19 @@ prototipo nel runtime né helper cfg(test) trasferiti. Nessuna nuova campagna o
 ottimizzazione implementativa autorizzata: futuro profiling sequenziale CAD/SIOC
 su volumi rappresentativi e Windows 11 prima di proposte distinte.
 CAD01/10 DONE con CI42004833488; PERSIST02 DONE; namespace A estesa ratificato.
-T-CAD-02 IN_PROGRESS: preflight avviato e documentato sul branch work/p1-foundations
-dopo conservazione dello spike e sincronizzazione dei soli documenti. Single-agent, no background/delega;
+T-CAD-02 IN_PROGRESS: implementati formato3/capability, piano binding compilato,
+contesto tipizzato e confronto dopo validità del campo, prima della proiezione.
+LocalOnly diagnostico senza parametro Partial; Full preflight obbligatorio;
+Historical mismatch senza preview/commit. Componente namespace/periodo/PK CAD
+versionato, nessuno schema CAD completo o snapshot operativo anticipato.
+Baseline sviluppo rc.3 distinta dalla rc.2 pubblicata, nessuna nuova release.
+Gate locali completi positivi:915workspace/915allfeatures/872core,0falliti;
+fmt/Clippy/Python/boundary/tooling positivi, hash sorgenti invariati. Nessun
+nuovo gate nativo ancora qualificato; pubblicazione e CI in preparazione.
+Affinamento finale del preflight condiviso con PersistenceNamespace verificato
+con fmt/Clippy e54test standard/17allfeatures; soltanto due file differiscono
+dal gate completo precedente. CI finale deve coprire esattamente questo delta.
+Report docs/verification/T-CAD-02-implementation.md. Single-agent, no background/delega;
 commit/push/CI autorizzati, docs/migration preesistente preservata/esclusa.
 
 ## Registro precedente —18-03/CAD01/CAD10 DONE, spike17-05 in corso
@@ -6380,3 +6391,27 @@ prerequisiti01/PERSIST02 qualificati e ratifica namespace verificata,3disponibil
 ma non implementato. Ricostruiti confini raw/compiler/request/locale/proiezione/
 storico/sessione; nessun blocco di autorizzazione rilevato. Implementazione e gate
 CAD02 ancora da eseguire,129/140DONE invariato; nessun nuovo supporto dichiarato.
+
+
+## HANDOFF §15.3 — T-CAD-02 locale verificata / WAITING_GATE
+
+Formato3/capability, piano/contesto tipizzato e binding locale completati;
+parent fuori namespace escluso dal contesto autorevole, Partial esplicito.
+Componente CAD namespace/periodo/PK con fonti/hash, non profilo completo o snapshot
+operativo. Root/UI/lockfile rc.3 distinti dalla rc.2 già pubblicata.
+Dieci gate locali exit0,915workspace e915allfeatures/872core/17tooling,0fail;
+16test nuovi di servizio/schema/componenti positivi. Ledger/hash/log conservati,
+fallimenti preliminari e fix distinti dai gate finali. Tre golden SIOC modificati
+soltanto per validator_version, uguaglianza strutturale degli altri campi verificata.
+Nessuna norma/FROZEN/PK/HMAC/storage o ordering modificati, nessun parallelismo.
+Commit/push/CI autorizzati da governance; nonDONE02 prima della CI nativa effettiva.
+CAD03 attende02; durante attesa remota è possibile sospendere02 e verificare una
+task CAD indipendente READY in sequenza. docs/migration preesistente esclusa.
+
+
+Affinamento locale02 finale: struttura del namespace verificata con costruttore
+di dominio condiviso prima dell’I/O, oltre al dominio dei parametri. Prova
+negativa riprodotta prima del fix e positiva dopo;54test standard/17allfeatures
+mirati e fmt/Clippy positivi,330hash invariati. Gate completi915/915/872precedenti
+distinti dal delta, descritto nel ledgerrefinement. Prova bundle reale positiva;
+nessun nuovo tag/release. Attendere il gate nativo sul commit finale prima diDONE.

@@ -159,10 +159,10 @@ impl Diagnostics<'_> {
                     scale,
                     ..
                 } => {
-                    if self.raw.schema_format_version != 2 {
+                    if !(2..=3).contains(&self.raw.schema_format_version) {
                         issues.push((
                             SchemaIssueCode::UnsupportedConstruct,
-                            "Decimal requires schema_format_version 2".to_owned(),
+                            "Decimal requires schema_format_version 2 or 3".to_owned(),
                         ));
                     }
                     if *length < 4 || *scale != 2 {
@@ -278,6 +278,9 @@ pub fn lint_raw_schema(raw: &RawFlowSchema) -> Vec<SchemaIssue> {
         raw,
         issues: Vec::new(),
     };
+    if let Err((code, message)) = crate::schema::namespace_binding::compile(raw) {
+        diagnostics.error(code, None, None, message);
+    }
     diagnostics.identifier(&raw.flow_id, None, None);
     diagnostics.identifier(&raw.schema_version, None, None);
     if let Some(message) = EngineCapabilities::current()

@@ -812,6 +812,7 @@ pub enum Capability {
     DerivedCalendarYearDeltaV1,
     ReferenceMetadataV1,
     PersistenceAuditV1,
+    PersistenceNamespaceBindingV1,
     PersistenceSnapshotV1,
     HistoryExistenceV1,
     TemporalIntervalsV1,
@@ -820,3 +821,13 @@ pub enum Capability {
 }
 
 pub type RegulatoryMetadata = BTreeMap<String, serde_json::Value>;
+
+/// Indexes resolved once by compilation; no raw names searched in the record loop.
+#[derive(Debug, Clone)]
+pub struct NamespaceBindingPlan {
+    pub trace_index: usize,
+    pub field_index: usize,
+    pub parameter_index: usize,
+    pub error_code: ValidationCode,
+    pub message_template: Arc<str>,
+}

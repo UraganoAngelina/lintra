@@ -234,3 +234,11 @@ di ottimizzazione; nessuna nuova implementazione o campagna autorizzata ora.
 [Prescrizioni, evidenze, gate e strategia](../verification/DEC-17-final-ratification.md).
 [Conflitto separato sull'ordine](../verification/CNF-DIAGNOSTIC-ORDER-01.md): aperto,
 nessuna modifica dell'ordine runtime o approvazione contrattuale implicita.
+
+## CNF-CAD-NAMESPACE-BINDING-01 — attuazione T-CAD-02 in verifica
+
+Alternativa A estesa ratificata: formato3/capability, richiesta tipizzata unica,
+confronto locale del testo logico prima della proiezione e nessun bypass storico.
+[Implementazione, componenti, comportamento e limiti](../verification/T-CAD-02-implementation.md).
+Nessuna nuova norma CAD, variazione di PK, DSL Parameter generale o parallelismo.
+I gate di questa consegna sono distinti dalla precedente rc.2 e da DEC-17.

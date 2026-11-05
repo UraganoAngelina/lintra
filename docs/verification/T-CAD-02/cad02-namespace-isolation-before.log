@@ -1,0 +1,24 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.92s
+     Running tests/namespace_bindings.rs (target/debug/deps/namespace_bindings-36c72e5befd1985c)
+
+running 1 test
+test wrong_namespace_parent_cannot_satisfy_a_child_join ... FAILED
+
+failures:
+
+---- wrong_namespace_parent_cannot_satisfy_a_child_join stdout ----
+
+thread 'wrong_namespace_parent_cannot_satisfy_a_child_join' (138) panicked at tests/namespace_bindings.rs:683:5:
+assertion `left == right` failed: an out-of-namespace parent must not supply trusted join evidence
+  left: 1
+ right: 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    wrong_namespace_parent_cannot_satisfy_a_child_join
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `--test namespace_bindings`

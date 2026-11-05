@@ -227,6 +227,7 @@ fn flow_parts(traces: Vec<CompiledRecordSchema>) -> FlowParts {
         parameters: vec![],
         required_capabilities: vec![Capability::LocalV1],
         persistence_policy: None,
+        namespace_bindings: vec![],
     }
 }
 

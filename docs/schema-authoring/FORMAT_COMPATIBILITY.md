@@ -1,5 +1,9 @@
 # Inventario compatibilità formato / eseguibile — CNF-FORMAT-01
 
+La consegna corrente del formato 3 è descritta nell’ultima sezione T-CAD-02.
+Le sezioni precedenti conservano baseline ed evidenze storiche, non lo stato
+dell’eseguibile di sviluppo attuale.
+
 2026-10-19. **APPROVATO dall’autore: «Approvo la mappa con baseline di sviluppo 0.1.0».**
 CNF-FORMAT-01 risolto. La tabella è la mappatura ufficiale corrente del progetto;
 non è una dichiarazione di release pubblicata o supporto completo di local.v1.
@@ -113,3 +117,17 @@ corrente e rc.2 supportano1..2; un messaggio di vecchio binario che non conosce3
 non lo abilita. Baseline minima/SHA/gate3 saranno registrati alla consegna02,
 mai dedotti dal numero né attribuiti alla release precedente. Nessuna migrazione
 implicita o modifica della grammatica1/2/FROZEN.
+
+## Consegna formato 3 — T-CAD-02, in verifica
+
+Il paragrafo di riserva sopra è storico. Nuova implementazione di sviluppo
+0.1.1-rc.3: formato3 e persistence.namespace_binding.v1, senza assegnare questa
+capability alla release rc.2. Nessuna release/tag rc.3 pubblicata qui. Formati1/2
+immutati; 4..u32::MAX indefiniti. Il supporto numerico non abilita snapshot o
+altre capability non implementate. Documento operativo/gate effettivi:
+[report T-CAD-02](../verification/T-CAD-02-implementation.md). La qualificazione
+nativa resta pendente finché il report non registra il run esatto concluso.
+
+Gate locali T-CAD-02 completati: fmt/Clippy, workspace default/allfeatures915test
+ciascuno, core872test, Python/boundary/tooling positivi; hash sorgenti invariati.
+CI nativa ancora pendente, nessuna qualificazione rc.3 anticipata.

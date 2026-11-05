@@ -1043,9 +1043,33 @@ pub enum RawPersistenceStorageProtection {
     ExternalSecureConfigurationRequired,
 }
 
+/// Declarative field-to-namespace comparison, never a general DSL parameter.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RawNamespaceBinding {
+    pub trace: String,
+    pub field: String,
+    pub parameter: String,
+    pub comparison: RawNamespaceComparison,
+    pub error_code: String,
+    pub message_template: String,
+}
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum RawNamespaceComparison {
+    #[serde(rename = "logical_text_exact")]
+    LogicalTextExact,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct RawPersistence {
+    /// Format 3 only. Absence preserves the canonical serialization of formats 1/2.
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "present_namespace_bindings"
+    )]
+    pub namespace_bindings: Option<Vec<RawNamespaceBinding>>,
     pub namespace_parameters: Vec<String>,
     pub version_compatibility: RawPersistenceVersionCompatibility,
     pub run_uniqueness: Vec<RawPolicyKey>,
@@ -1103,6 +1127,8 @@ pub enum RawFlowSchemaRequiredCapabilitiesItem {
     ReferenceMetadataV1,
     #[serde(rename = "persistence.audit.v1")]
     PersistenceAuditV1,
+    #[serde(rename = "persistence.namespace_binding.v1")]
+    PersistenceNamespaceBindingV1,
     #[serde(rename = "persistence.snapshot.v1")]
     PersistenceSnapshotV1,
     #[serde(rename = "history.existence.v1")]
@@ -1136,3 +1162,9 @@ pub struct RawFlowSchema {
 #[cfg(test)]
 #[path = "raw_tests.rs"]
 mod tests;
+
+fn present_namespace_bindings<'de, D: serde::Deserializer<'de>>(
+    d: D,
+) -> Result<Option<Vec<RawNamespaceBinding>>, D::Error> {
+    Vec::<RawNamespaceBinding>::deserialize(d).map(Some)
+}

@@ -67,6 +67,7 @@ pub enum RecordValidationError {
     },
     RuleDiagnostic(RuleDiagnosticError),
     Reference(super::reference_execution::ReferenceExecutionError),
+    NamespaceContext(crate::RelatedContextError),
     PreviousFailure,
 }
 impl fmt::Display for RecordValidationError {
@@ -90,6 +91,7 @@ impl fmt::Display for RecordValidationError {
                 "local rule cannot be determined from available values"
             }
             Self::RuleDiagnostic(_) => "local rule diagnostic construction failed",
+            Self::NamespaceContext(_) => "record namespace context is incompatible",
             Self::PreviousFailure => "record validator cannot resume after a technical failure",
         })
     }
@@ -99,6 +101,7 @@ impl Error for RecordValidationError {
     /// parsing human text. Context-only variants have no nested source.
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
+            Self::NamespaceContext(error) => Some(error),
             Self::Reference(error) => Some(error),
             Self::RuleDiagnostic(error) => Some(error),
             Self::Identity(error) => Some(error),
@@ -114,6 +117,10 @@ impl Error for RecordValidationError {
 /// dataset, projection, application type or owned record is stored here.
 /// A technical failure is terminal for this instance; normative Invalid is not.
 pub struct RecordValidator<'schema> {
+    flow: &'schema CompiledFlowSchema,
+    bindings: Vec<super::namespace_context::BindingExecution>,
+    context_frozen: bool,
+    namespace_compatible: bool,
     schema: &'schema CompiledRecordSchema,
     factory: ErrorFactory<'schema>,
     failed: bool,
@@ -145,6 +152,18 @@ impl<'schema> RecordValidator<'schema> {
             .ok_or_else(|| RecordValidationError::TraceNotFound(trace_id.clone()))?;
         check_local_plan(schema, references)?;
         Ok(Self {
+            flow,
+            context_frozen: false,
+            namespace_compatible: true,
+            bindings: flow
+                .namespace_bindings()
+                .iter()
+                .filter(|b| flow.traces()[b.trace_index].id() == trace_id)
+                .map(|plan| super::namespace_context::BindingExecution {
+                    plan: plan.clone(),
+                    text: None,
+                })
+                .collect(),
             schema,
             skipped_cross_rules: flow
                 .cross_record_plan()
@@ -166,6 +185,34 @@ impl<'schema> RecordValidator<'schema> {
         })
     }
 
+    /// Reject contexts prepared for another compiled artifact, even if its key
+    /// has the same spelling. Values cannot be replaced during record execution.
+    pub fn with_run_context(
+        mut self,
+        context: &crate::VerifiedRunContext<'_>,
+    ) -> Result<Self, RecordValidationError> {
+        if self.context_frozen || self.failed || !std::ptr::eq(self.flow, context.schema) {
+            return Err(RecordValidationError::NamespaceContext(
+                crate::RelatedContextError::InvalidParameter,
+            ));
+        }
+        for binding in &mut self.bindings {
+            binding.text = context
+                .text(binding.plan.parameter_index)
+                .map(str::to_owned);
+        }
+        Ok(self)
+    }
+    /// Full may retain independent invalid-field evidence only after the row's
+    /// organizational membership is established. Never place another namespace
+    /// into a store whose implicit scope is the request's namespace.
+    pub(crate) fn namespace_compatible(&self) -> bool {
+        self.namespace_compatible
+    }
+    pub(crate) fn missing_bindings(&self) -> usize {
+        self.bindings.iter().filter(|b| b.text.is_none()).count()
+    }
+
     /// StrictSkipRecord: malformed width emits only E_RECORD_LENGTH and returns
     /// no identity. On a full-width record all fields are checked in schema
     /// order; Invalid never suppresses independent later fields. The caller
@@ -180,6 +227,7 @@ impl<'schema> RecordValidator<'schema> {
         if self.failed {
             return Err(RecordValidationError::PreviousFailure);
         }
+        self.context_frozen = true;
         let result = self.validate_record(record, sink, summary, None, RecordPhase::LocalOnly);
         if result.is_err() {
             self.failed = true;
@@ -196,6 +244,7 @@ impl<'schema> RecordValidator<'schema> {
         if self.failed {
             return Err(RecordValidationError::PreviousFailure);
         }
+        self.context_frozen = true;
         let result = self.validate_record(record, sink, summary, None, RecordPhase::FullPassOne);
         if result.is_err() {
             self.failed = true;
@@ -206,13 +255,14 @@ impl<'schema> RecordValidator<'schema> {
     /// Keep the technical terminal-state transition in the public wrapper so
     /// every early `?` below has the same failure behavior.
     fn validate_record(
-        &self,
+        &mut self,
         record: RawRecord<'_>,
         sink: &mut dyn ValidationSink,
         summary: &mut ValidationSummaryBuilder,
         mut references: Option<&mut super::reference_execution::ReferenceExecution<'_>>,
         phase: RecordPhase,
     ) -> Result<LocalRecordValidationArtifacts, RecordValidationError> {
+        self.namespace_compatible = true;
         if record.line_number == 0 {
             return Err(RecordValidationError::InvalidLineNumber);
         }
@@ -269,7 +319,7 @@ impl<'schema> RecordValidator<'schema> {
         let ctx = EvaluationContext { fields: &local };
         let mut pipeline = FieldPipeline::new(factory, sink, summary);
         let mut valid = true;
-        for field in self.schema.fields() {
+        for (field_index, field) in self.schema.fields().iter().enumerate() {
             if pipeline.error_limit_reached() {
                 break;
             }
@@ -297,6 +347,44 @@ impl<'schema> RecordValidator<'schema> {
                     field_id: field.id().clone(),
                     reason,
                 });
+            }
+            for binding in self
+                .bindings
+                .iter()
+                .filter(|b| b.plan.field_index == field_index)
+            {
+                if pipeline.error_limit_reached() {
+                    break;
+                }
+                match (result, binding.text.as_deref()) {
+                    (FieldPipelineResult::Valid, Some(text)) => {
+                        if pipeline
+                            .run_namespace_binding(
+                                field,
+                                value,
+                                record.line_number,
+                                &identity,
+                                &binding.plan,
+                                text,
+                            )
+                            .map_err(RecordValidationError::Pipeline)?
+                            == FieldPipelineResult::Invalid
+                        {
+                            valid = false;
+                            self.namespace_compatible = false;
+                        }
+                    }
+                    // A primary violation still counts as Invalid; no cascade.
+                    (FieldPipelineResult::Invalid, _) => {
+                        self.namespace_compatible = false;
+                    }
+                    _ => {
+                        self.namespace_compatible = false;
+                        pipeline
+                            .namespace_skipped()
+                            .map_err(RecordValidationError::Pipeline)?;
+                    }
+                }
             }
             match result {
                 FieldPipelineResult::Valid | FieldPipelineResult::MissingOptional => {}
@@ -474,6 +562,20 @@ pub struct ReferenceRecordValidator<'schema, 'references> {
     prepared: &'references crate::PreparedReferenceEvidence,
 }
 impl<'schema, 'references> ReferenceRecordValidator<'schema, 'references> {
+    pub fn with_run_context(
+        mut self,
+        context: &crate::VerifiedRunContext<'_>,
+    ) -> Result<Self, RecordValidationError> {
+        self.inner = self.inner.with_run_context(context)?;
+        Ok(self)
+    }
+    pub(crate) fn namespace_compatible(&self) -> bool {
+        self.inner.namespace_compatible()
+    }
+    pub(crate) fn missing_bindings(&self) -> usize {
+        self.inner.missing_bindings()
+    }
+
     pub fn new(
         flow: &'schema CompiledFlowSchema,
         trace_id: &TraceId,
@@ -516,6 +618,7 @@ impl<'schema, 'references> ReferenceRecordValidator<'schema, 'references> {
         if self.inner.failed {
             return Err(RecordValidationError::PreviousFailure);
         }
+        self.inner.context_frozen = true;
         let mut execution = super::reference_execution::ReferenceExecution {
             prepared: self.prepared,
             dependencies: self.dependencies,

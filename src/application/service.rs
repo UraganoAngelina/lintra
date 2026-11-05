@@ -350,6 +350,46 @@ impl ValidationService {
             },
         )
     }
+    /// Typed library entry: numeric namespace values cannot be coerced into text.
+    pub fn validate_with_typed_parameters(
+        &self,
+        request: ValidationRequest,
+        values: std::collections::BTreeMap<String, crate::JoinParameterValue>,
+        sink: &mut dyn crate::ValidationSink,
+        progress: &mut dyn crate::ProgressObserver,
+        cancellation: &crate::CancellationToken,
+    ) -> Result<crate::ValidationRunOutcome, ValidationRunError> {
+        let resolved = self
+            .schema_registry
+            .resolve_with_hash(&request.schema_key)?;
+        let context = crate::VerifiedRunContext::new(resolved.schema(), values, request.mode)
+            .map_err(|e| ValidationRunError::Flow(crate::FlowValidationError::Inputs(e)))?;
+        let text = context
+            .parameters()
+            .iter()
+            .map(|(id, value)| {
+                (
+                    id.clone(),
+                    match value {
+                        crate::JoinParameterValue::Text(v) => v.clone(),
+                        crate::JoinParameterValue::Integer(v) => v.to_string(),
+                    },
+                )
+            })
+            .collect();
+        self.validate_resolved_with_parameters(
+            request,
+            text,
+            super::full::FullServicePorts {
+                sink,
+                progress,
+                cancellation,
+                started_at: self.clock.now(),
+                resolved: &resolved,
+                record_observer: None,
+            },
+        )
+    }
     /// Historical wiring supplies one checked resolution and a synchronous
     /// producer; the ordinary API always resolves through its original compiler.
     pub(crate) fn validate_resolved_with_parameters(
@@ -382,11 +422,14 @@ impl ValidationService {
                 },
             );
         }
-        if !parameters.is_empty() {
+        if !parameters.is_empty() && schema.namespace_bindings().is_empty() {
             return Err(ValidationRunError::Flow(
                 crate::FlowValidationError::Inputs(crate::RelatedContextError::InvalidParameter),
             ));
         }
+        let values = super::full::bind_parameters(schema, &parameters)?;
+        let context = crate::VerifiedRunContext::new(schema, values, ValidationMode::LocalOnly)
+            .map_err(|e| ValidationRunError::Flow(crate::FlowValidationError::Inputs(e)))?;
         let plan = preflight(&request, schema).map_err(ValidationRunError::InvalidRequest)?;
         let mut summary = crate::ValidationSummaryBuilder::new(
             schema.key().clone(),
@@ -451,7 +494,7 @@ impl ValidationService {
                 is_cancelled: &|| cancellation.is_cancelled(),
                 on_event: &mut notify,
             };
-            let mut validator = match (&prepared, &mut reference_audit) {
+            let validator = match (&prepared, &mut reference_audit) {
                 (Some(prepared), Some(observer)) => crate::TraceValidator::with_reference_data(
                     schema,
                     plan.trace().id(),
@@ -470,6 +513,7 @@ impl ValidationService {
                     ));
                 }
             };
+            let mut validator = validator.with_run_context(&context)?;
             validator.validate_controlled_path(
                 plan.path(),
                 sink,

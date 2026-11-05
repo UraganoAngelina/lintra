@@ -18,6 +18,7 @@ impl SchemaFormatVersion {
         match self.0 {
             1 => Some(FORMAT_ONE_MINIMUM_ENGINE_VERSION),
             2 => Some(FORMAT_TWO_MINIMUM_ENGINE_VERSION),
+            3 => Some("0.1.1-rc.3"),
             _ => None,
         }
     }
@@ -40,7 +41,7 @@ pub struct EngineCapabilities {
 impl EngineCapabilities {
     pub fn current() -> Self {
         Self {
-            supported_schema_formats: SchemaFormatVersion(1)..=SchemaFormatVersion(2),
+            supported_schema_formats: SchemaFormatVersion(1)..=SchemaFormatVersion(3),
             engine_version: env!("CARGO_PKG_VERSION").to_owned(),
         }
     }
@@ -55,8 +56,10 @@ impl EngineCapabilities {
             Some(minimum) => {
                 let delivery = if requested.0 == 1 {
                     format!("verified compiler {FORMAT_ONE_BASELINE_COMPILER}")
-                } else {
+                } else if requested.0 == 2 {
                     "compiler delivery T-P9-03; see format compatibility ledger".to_owned()
+                } else {
+                    "compiler delivery T-CAD-02; see format compatibility ledger".to_owned()
                 };
                 format!(
                     "minimum required executable version: {minimum} (development baseline; {delivery})"

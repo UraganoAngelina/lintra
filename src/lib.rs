@@ -120,7 +120,7 @@ pub use schema::raw::{
 pub use schema::compiled::{
     AlignmentRule, BasePresence, Capability, CompiledFieldSpec, CompiledFlowSchema,
     CompiledRecordSchema, ContentBoundaryPolicy, DecimalSpec, EncodingSpec, FieldType, LexicalPlan,
-    MissingValuePolicy, SignPolicy,
+    MissingValuePolicy, NamespaceBindingPlan, SignPolicy,
 };
 
 pub use schema::repository::{
@@ -393,3 +393,5 @@ pub use engine::field_guide::{
     DeclaredDomain, DomainPage, DomainPosition, constraint_comparison_guide, declared_domain,
     declared_domain_page, domain_literal, field_format_guide,
 };
+
+pub use engine::namespace_context::VerifiedRunContext;

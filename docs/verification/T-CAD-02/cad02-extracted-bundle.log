@@ -1,0 +1,10 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+   Compiling xtask v0.1.0 (/home/alberto/Desktop/LINTRA/lintra/xtask)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 25.96s
+     Running unittests src/main.rs (xtask/target/debug/deps/xtask-e2f0cea8e6e8d097)
+
+running 1 test
+test bundle_data::tests::extracted_bundle_is_accepted_by_existing_executable ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 17 filtered out; finished in 12.23s
+

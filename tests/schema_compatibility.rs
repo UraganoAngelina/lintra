@@ -7,10 +7,10 @@ use serde_json::Value;
 #[test]
 fn current_descriptor_declares_exact_numeric_format_and_package_version() {
     let current = EngineCapabilities::current();
-    assert_eq!(current.supported_schema_formats, Format(1)..=Format(2));
+    assert_eq!(current.supported_schema_formats, Format(1)..=Format(3));
     assert_eq!(current.engine_version, env!("CARGO_PKG_VERSION"));
     assert!(current.supports_schema_format(Format(1)));
-    for version in [0, 3, u32::MAX] {
+    for version in [0, 4, u32::MAX] {
         assert!(!current.supports_schema_format(Format(version)));
     }
 }
@@ -37,19 +37,19 @@ fn caller_descriptor_cannot_enable_an_unimplemented_format_in_lint() {
         supported_schema_formats: Format(1)..=Format(u32::MAX),
         engine_version: "synthetic-descriptor".into(),
     };
-    assert!(caller.supports_schema_format(Format(3)));
+    assert!(caller.supports_schema_format(Format(4)));
     let mut value: Value = serde_json::from_str(include_str!(
         "../docs/schema-authoring/examples/schemas/local-flow.json"
     ))
     .unwrap();
-    value["schema_format_version"] = serde_json::json!(3);
+    value["schema_format_version"] = serde_json::json!(4);
     let raw: RawFlowSchema = serde_json::from_value(value).unwrap();
     assert!(
         lint_raw_schema(&raw)
             .iter()
             .any(|i| i.code == SchemaIssueCode::UnsupportedSchemaFormat)
     );
-    assert!(!EngineCapabilities::current().supports_schema_format(Format(3)));
+    assert!(!EngineCapabilities::current().supports_schema_format(Format(4)));
 }
 
 #[test]
@@ -57,7 +57,7 @@ fn official_mapping_uses_the_ratified_development_baseline_and_no_future_release
     assert_eq!(Format(1).minimum_engine_version(), Some("0.1.0"));
     assert_eq!(Format(2).minimum_engine_version(), Some("0.1.0"));
     assert!(EngineCapabilities::current().supports_schema_format(Format(2)));
-    for version in [0, 3, u32::MAX] {
+    for version in [0, 4, u32::MAX] {
         assert_eq!(Format(version).minimum_engine_version(), None);
         let message = EngineCapabilities::current()
             .incompatibility_message(Format(version))

@@ -44,3 +44,7 @@ di un flow normativo o del manifest v1. Contratto e implementazione sono
 tracciati in T-P9-03. Il check_authoring verifica entrambi i meta-schemi e
 l'esatta relazione di estensione, senza dichiarare che il JSON Schema esegua
 il motore Rust o certifichi normative sanitarie.
+
+Estensione corrente T-CAD-02: [flow-v3.schema.json](flow-v3.schema.json), binding
+namespace/campo ratificato, baseline di sviluppo0.1.1-rc.3 in verifica. Le grammatiche
+1/2 sono preservate; non attribuire la nuova capability alla rc.2 pubblicata.

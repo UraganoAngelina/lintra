@@ -501,10 +501,15 @@ impl SchemaCompiler {
         &self,
         raw: RawFlowSchema,
     ) -> Result<CompiledFlowSchema, SchemaCompilationError> {
-        self.compile_scoped(raw, None)
+        if crate::schema::namespace_binding::binding_only(&raw) {
+            let profile = self.compile_persistence_profile(&raw, &[])?;
+            self.compile_scoped(raw, profile.policy().cloned())
+        } else {
+            self.compile_scoped(raw, None)
+        }
     }
-    /// Only the checked historical compiler supplies this authorization. The
-    /// public ordinary path retains its existing fail-closed capability checks.
+    /// A checked historical or namespace-only profile supplies policy metadata.
+    /// Snapshot/temporal executors remain gated; a binding never authorizes them.
     pub(crate) fn compile_scoped(
         &self,
         raw: RawFlowSchema,
@@ -570,6 +575,7 @@ impl SchemaCompiler {
                     | RawFlowSchemaRequiredCapabilitiesItem::DerivedSubstringV1
                     | RawFlowSchemaRequiredCapabilitiesItem::DerivedAgeInCompletedYearsV1
                     | RawFlowSchemaRequiredCapabilitiesItem::DerivedCalendarYearDeltaV1
+                    | RawFlowSchemaRequiredCapabilitiesItem::PersistenceNamespaceBindingV1
             ) && !(audit_policy.is_some()
                 && *capability == RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1)
             {
@@ -587,6 +593,13 @@ impl SchemaCompiler {
             None,
             "persistence_policy",
         );
+        let namespace_bindings = match crate::schema::namespace_binding::compile(&raw) {
+            Ok(bindings) => bindings,
+            Err((code, message)) => {
+                checks.error(code, None, None, message);
+                vec![]
+            }
+        };
         let dependencies = match reference::compile_dependencies(&raw.reference_data) {
             Ok(dependencies) => dependencies,
             Err((code, message)) => {
@@ -775,11 +788,20 @@ impl SchemaCompiler {
             traces,
             required_reference_data: dependencies,
             cross_record_plan: CrossRecordValidationPlan {
+                // Format 3 honors an explicit Unknown policy for unavailable
+                // targets. A missing source is still a bundle preflight error;
+                // formats 1/2 retain their qualified bundle contract verbatim.
                 required_traces: (0..raw.traces.len())
                     .filter(|index| {
-                        joins
-                            .iter()
-                            .any(|join| join.source_trace == *index || join.target_trace == *index)
+                        joins.iter().any(|join| {
+                            join.source_trace == *index
+                                || (join.target_trace == *index
+                                    && (raw.schema_format_version != 3
+                                        || !matches!(
+                                            join.on_missing_trace,
+                                            RelatedPolicy::Unknown { .. }
+                                        )))
+                        })
                     })
                     .collect(),
                 joins,
@@ -811,6 +833,9 @@ impl SchemaCompiler {
                         RawFlowSchemaRequiredCapabilitiesItem::DerivedCalendarYearDeltaV1 => {
                             Capability::DerivedCalendarYearDeltaV1
                         }
+                        RawFlowSchemaRequiredCapabilitiesItem::PersistenceNamespaceBindingV1 => {
+                            Capability::PersistenceNamespaceBindingV1
+                        }
                         RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1
                             if audit_policy.is_some() =>
                         {
@@ -828,6 +853,7 @@ impl SchemaCompiler {
                 })
                 .collect::<Result<Vec<_>, SchemaCompilationError>>()?,
             persistence_policy: audit_policy,
+            namespace_bindings,
         })
         .map_err(|error| {
             fail(

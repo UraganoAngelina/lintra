@@ -70,3 +70,7 @@ DEC-17 è chiusa indipendentemente: questo preflight non anticipa un esito di
 T-CAD-02. CNF-DIAGNOSTIC-ORDER-01 resta aperto separatamente; preservare l'ordine
 runtime corrente. Prossimo passo implementativo: grammatica/compilazione del
 binding, poi contesto tipizzato e integrazione locale con regressioni coerenti.
+
+Attuazione successiva: vedi T-CAD-02-implementation.md e T-CAD-02-local-gates.json.
+Implementazione/gate locali completati, CI nativa da qualificare; il testo sopra
+conserva il preflight e non rappresenta più l'intero avanzamento della task.

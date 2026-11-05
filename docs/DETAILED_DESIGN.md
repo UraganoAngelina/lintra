@@ -4557,6 +4557,20 @@ pub trait PersistenceTransaction {
 
 Un profilo normativo versionato specifica `run_uniqueness`, `cross_run_audit`, eventuale `cumulative_snapshot`, `history_identity_invariants`, `snapshot_scope`, `temporal_rules`, `missing_trace_policy`. Il `SchemaCompiler` normalizza e linter verifica riferimenti alle PK e versioni. Un profilo incompatibile o non supportato causa **schema error**, non il falso superamento di controlli. Il contratto di serializzazione definitivo deve essere definito/approvato in `SCHEMA_AUTHORING.md` senza modificare retroattivamente i JSON SIOC FROZEN.
 
+Estensione ratificata CNF-CAD-NAMESPACE-BINDING-01 (T-CAD-02): formato 3,
+`persistence.namespace_binding.v1`, `namespace_bindings` sotto persistence_policy.
+Il compiler risolve campo e parametro stringa; confronto logical_text_exact dopo
+la validità locale del campo e prima della proiezione, indipendente dall'apertura
+storage. Contesto tipizzato immutabile dello stesso compiled per validazione,
+join e derivazioni dello storico; tipi/domìni/mancanza Full verificati in preflight.
+LocalOnly senza parametro: binding skipped/Partial, nessuna falsa conformità
+organizzativa. Campo invalido: nessun mismatch derivato. Formati 1/2 invariati.
+Nel formato 3 un target con on_missing_trace Unknown può mancare se non richiesto
+anche come sorgente; seconda passata conserva Unknown, target vuoto distinto.
+Non si abilita per questo la riconciliazione snapshot. API, dettaglio e gate:
+verification/T-CAD-02-implementation.md e SCHEMA_AUTHORING.md, sezione formato 3.
+Nessun mutamento di HMAC/storage/PK o della classificazione normativa delle regole.
+
 # 169. Sequenza transazionale e gestione dei report
 
 Validazione locale/full → estrazione contesto → preview storica → diagnostica/errori → eventuale consenso esplicito → approvazione sessione → commit atomico e idempotente. **Mai** aggiornare lo snapshot corrente a metà validazione o in fase di preview. `Cancelled`, errori I/O o sessione definitivamente approvata non producono mutazioni. Check di concorrenza CAS/locking; un risultato storico deve dichiarare esattamente lo snapshot di base e il numero di generazione. L'output di report e l'aggiornamento dello storage non devono essere confusi con un'unica transazione se non è garantita atomicità: al fallimento del report non committare; al fallimento del commit segnalare l'esito senza falso successo.

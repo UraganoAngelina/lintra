@@ -124,6 +124,34 @@ impl<'schema> TraceValidator<'schema> {
             failed: false,
         })
     }
+    pub fn with_run_context(
+        mut self,
+        context: &crate::VerifiedRunContext<'_>,
+    ) -> Result<Self, TraceValidationError> {
+        self.record = match self.record {
+            TraceRecordExecution::Local(validator) => TraceRecordExecution::Local(
+                validator
+                    .with_run_context(context)
+                    .map_err(TraceValidationError::Record)?,
+            ),
+            TraceRecordExecution::Reference {
+                validator,
+                observer,
+            } => TraceRecordExecution::Reference {
+                validator: validator
+                    .with_run_context(context)
+                    .map_err(TraceValidationError::Record)?,
+                observer,
+            },
+        };
+        Ok(self)
+    }
+    fn missing_bindings(&self) -> usize {
+        match &self.record {
+            TraceRecordExecution::Local(v) => v.missing_bindings(),
+            TraceRecordExecution::Reference { validator, .. } => validator.missing_bindings(),
+        }
+    }
     /// Caller may supply an audited reader. BOM Reject is the existing input
     /// baseline; hashing, if enabled, stays below this preflight and framing.
     pub fn validate_reader<R: BufRead>(
@@ -269,6 +297,14 @@ impl<'schema> TraceValidator<'schema> {
                 .read_next(&mut buffer)
                 .map_err(TraceValidationError::Input)?
             else {
+                // Empty input is not proof that an unavailable binding ran.
+                if count == 0 {
+                    for _ in 0..self.missing_bindings() {
+                        summary.rule_skipped().map_err(|e| {
+                            TraceValidationError::Record(RecordValidationError::Summary(e))
+                        })?;
+                    }
+                }
                 self.notify_count(control, count, &mut notified);
                 (control.on_event)(TraceEvent::Completed {
                     trace_id: self.trace_id.clone(),
@@ -309,8 +345,14 @@ impl<'schema> TraceValidator<'schema> {
             }
             .map_err(TraceValidationError::Record)?;
             if let Some(collector) = &mut collector {
+                let namespace_compatible = match &self.record {
+                    TraceRecordExecution::Local(v) => v.namespace_compatible(),
+                    TraceRecordExecution::Reference { validator, .. } => {
+                        validator.namespace_compatible()
+                    }
+                };
                 collector
-                    .collect(record, local, sink, summary)
+                    .collect(record, local, namespace_compatible, sink, summary)
                     .map_err(TraceValidationError::Collection)?;
             }
             // RecordReader already checks line-counter overflow; no unchecked
@@ -360,6 +402,7 @@ pub(crate) trait FullRecordCollector {
         &mut self,
         record: crate::RawRecord<'_>,
         local: crate::LocalRecordValidationArtifacts,
+        namespace_compatible: bool,
         sink: &mut dyn ValidationSink,
         summary: &mut ValidationSummaryBuilder,
     ) -> Result<(), Box<dyn Error + Send + Sync>>;

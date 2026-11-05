@@ -1,0 +1,22 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 28.24s
+     Running tests/namespace_bindings.rs (target/debug/deps/namespace_bindings-36c72e5befd1985c)
+
+running 1 test
+test validation_and_storage_share_namespace_structural_validity ... FAILED
+
+failures:
+
+---- validation_and_storage_share_namespace_structural_validity stdout ----
+
+thread 'validation_and_storage_share_namespace_structural_validity' (145) panicked at tests/namespace_bindings.rs:702:13:
+mode LocalOnly accepted a namespace rejected by storage
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    validation_and_storage_share_namespace_structural_validity
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 16 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--test namespace_bindings`

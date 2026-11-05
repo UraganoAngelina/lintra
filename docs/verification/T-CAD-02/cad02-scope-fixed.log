@@ -1,0 +1,56 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 23.44s
+     Running tests/namespace_bindings.rs (target/debug/deps/namespace_bindings-36c72e5befd1985c)
+
+running 16 tests
+test a_started_record_executor_cannot_switch_organizational_context ... ok
+test context_cannot_be_reused_with_another_compiled_artifact_having_the_same_key ... ok
+test budget_and_dynamic_cancellation_keep_the_sequential_contract ... ok
+test binding_contract_rejects_old_formats_bad_references_types_duplicates_and_capabilities ... ok
+test historical_binding_mismatch_never_produces_a_preview_or_mutates_storage ... ok
+test local_without_namespace_is_diagnostic_including_empty_input ... ok
+test binding_changes_fingerprint_and_cross_version_compatibility_but_run_values_do_not ... ok
+test cad_component_compiles_normative_keys_namespace_and_quarter_without_claiming_full_runtime ... ok
+test logical_comparison_uses_padding_but_never_numeric_coercion ... ok
+test compatibility_checks_bound_field_value_semantics_even_outside_the_pk ... ok
+test optional_missing_namespace_field_is_not_a_positive_namespace_verification ... ok
+test match_mismatch_and_primary_error_preserve_real_summary_jsonl_and_order ... ok
+test full_missing_and_supplied_invalid_parameters_fail_before_input_or_callbacks ... ok
+test wrong_namespace_parent_cannot_satisfy_a_child_join ... ok
+test missing_parent_trace_empty_parent_and_real_parent_keep_existing_join_semantics ... ok
+test historical_uses_the_same_namespace_for_validation_review_and_commit ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/schema_linter.rs (target/debug/deps/schema_linter-33221feeb3541b0f)
+
+running 14 tests
+test maximal_raw_coordinates_are_checked_without_u32_wraparound ... ok
+test contiguous_layout_and_explicit_filler_are_valid_without_mutating_raw ... ok
+test invalid_start_and_zero_width_are_aggregated ... ok
+test multiple_issues_have_stable_trace_field_and_stage_order ... ok
+test leading_and_internal_gaps_are_not_implicit_padding ... ok
+test duplicate_ids_are_local_to_their_scope ... ok
+test physical_order_is_checked_without_inventing_a_gap_from_declaration_order ... ok
+test overlap_uses_the_whole_covered_union_including_nested_ranges ... ok
+test unsupported_format_and_empty_flow_are_errors ... ok
+test physical_type_parameters_are_checked ... ok
+test record_length_must_match_nonempty_coverage_exactly ... ok
+test unknown_type_aliases_and_date_formats_are_rejected_before_lint ... ok
+test invalid_identifiers_are_reported_without_trimming_or_case_folding ... ok
+test approved_examples_and_p0_sioc_profile_pass_structural_lint ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/schema_registry.rs (target/debug/deps/schema_registry-503d52a8c77785d9)
+
+running 6 tests
+test custom_repository_cannot_substitute_another_schema_key ... ok
+test missing_version_is_a_load_failure_without_latest_or_fallback ... ok
+test compiler_failure_preserves_aggregated_issues_and_technical_source ... ok
+test caller_encoding_is_explicit_and_unsupported_encoding_does_not_fall_back ... ok
+test resolves_exact_versions_and_returns_distinct_shared_compiled_values ... ok
+test each_resolution_reloads_and_recompiles_including_changes_and_later_failures ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

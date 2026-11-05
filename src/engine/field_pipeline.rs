@@ -100,6 +100,40 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
         }
     }
 
+    /// Compare only after the ordinary field pipeline returned Valid. The exact
+    /// logical slice obeys compiled padding; no trim, number conversion or locale.
+    pub(crate) fn run_namespace_binding(
+        &mut self,
+        field: &CompiledFieldSpec,
+        raw: FieldSlice<'_>,
+        line: u64,
+        identity: &RecordIdentity,
+        binding: &crate::NamespaceBindingPlan,
+        text: &str,
+    ) -> Result<FieldPipelineResult, FieldPipelineError> {
+        let value = logical_value(&field.alignment(), raw).map_err(FieldPipelineError::Logical)?;
+        if value.as_bytes() == text.as_bytes() {
+            return Ok(FieldPipelineResult::Valid);
+        }
+        self.emit(
+            field,
+            raw,
+            line,
+            identity,
+            FieldViolation {
+                code: binding.error_code.clone(),
+                expected: None,
+                reason: binding.message_template.to_string(),
+                diagnostic_context: vec![],
+            },
+        )
+    }
+    pub(crate) fn namespace_skipped(&mut self) -> Result<(), FieldPipelineError> {
+        self.summary
+            .rule_skipped()
+            .map_err(FieldPipelineError::Summary)
+    }
+
     /// Run one already sliced, full-width field. Input metadata (line/identity)
     /// is supplied by the record stage. Stop on the first primary violation;
     /// a normative Invalid does not stop other fields, a technical Err does.

@@ -1,0 +1,204 @@
+{
+  "component_version": "2024-06.namespace.1",
+  "scope": "CAD namespace, period and normative PK declarations only; not a complete executable CAD schema",
+  "schema_format_version": 3,
+  "full_normative_compliance": false,
+  "source": {
+    "regulatory_version": "2024-06",
+    "runtime_profile_sha256": "2716d49ab57a1a17c4c997a8e350efd9e35367cf1f44bcdad133f828d702eda3",
+    "trace_sha256": {
+      "A": "1b7850af503c0f832f3add306a997e2b3a9f072b590d46a34c6f7783dbf00876",
+      "B1": "a6726cf3b2365c7b230c2b1e82b0ba00d8ba18d504c1f3aa3ec9c008674238a3",
+      "B2": "daa651271ca210485a9cd4b46c469a8364b807fd78adb6089cb6c76cb86cd148",
+      "C": "0ffcf4f83bdb391485c9963125dbcb18cbffc5370d46e26e99449d4e52677b9c",
+      "D": "47f6d04d94f63ecdbdcce629615f715e0ec3332ff1b25405256c350f4034db32"
+    },
+    "decision": "CNF-CAD-NAMESPACE-BINDING-01 A estesa / G-06"
+  },
+  "required_capabilities": [
+    "local.v1",
+    "persistence.namespace_binding.v1",
+    "persistence.snapshot.v1"
+  ],
+  "parameters": [
+    {
+      "id": "sending_ulss",
+      "type": "string",
+      "allowed_values": [
+        "501",
+        "502",
+        "503",
+        "504",
+        "505",
+        "506",
+        "507",
+        "508",
+        "509"
+      ]
+    },
+    {
+      "id": "year",
+      "type": "integer",
+      "min": 1,
+      "max": 9999
+    },
+    {
+      "id": "quarter",
+      "type": "integer",
+      "min": 1,
+      "max": 4
+    }
+  ],
+  "record_keys": {
+    "A": {
+      "fields": [
+        "1.1",
+        "1.23"
+      ],
+      "uniqueness_scope": "trace",
+      "error_code": "E_DUPLICATE_RECORD_KEY"
+    },
+    "B1": {
+      "fields": [
+        "2.1",
+        "2.36"
+      ],
+      "uniqueness_scope": "trace",
+      "error_code": "E_DUPLICATE_RECORD_KEY"
+    },
+    "B2": {
+      "fields": [
+        "3.1",
+        "3.5"
+      ],
+      "uniqueness_scope": "trace",
+      "error_code": "E_DUPLICATE_RECORD_KEY"
+    },
+    "C": {
+      "fields": [
+        "4.1",
+        "4.2",
+        "4.4",
+        "4.5",
+        "4.11"
+      ],
+      "uniqueness_scope": "trace",
+      "error_code": "E_DUPLICATE_RECORD_KEY"
+    },
+    "D": {
+      "fields": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4",
+        "5.7"
+      ],
+      "uniqueness_scope": "trace",
+      "error_code": "E_DUPLICATE_RECORD_KEY"
+    }
+  },
+  "namespace_field": {
+    "id": "1.1",
+    "name": "Azienda ULSS erogatrice",
+    "physical": {
+      "type": "alphanumeric",
+      "start": 1,
+      "length": 3,
+      "alignment": {
+        "kind": "right_pad",
+        "fill_byte": 32,
+        "content_policy": "strip_trailing_fill"
+      },
+      "lexical": {
+        "kind": "encoded_text"
+      }
+    },
+    "missing_value": {
+      "kind": "spaces"
+    },
+    "presence": {
+      "base": "required",
+      "required_if": [],
+      "forbidden_if": []
+    },
+    "constraints": [
+      {
+        "kind": "allowed_values",
+        "target": "logical",
+        "values": [
+          "501",
+          "502",
+          "503",
+          "504",
+          "505",
+          "506",
+          "507",
+          "508",
+          "509"
+        ]
+      }
+    ]
+  },
+  "persistence_policy": {
+    "namespace_parameters": [
+      "sending_ulss"
+    ],
+    "namespace_bindings": [
+      {
+        "trace": "A",
+        "field": "1.1",
+        "parameter": "sending_ulss",
+        "comparison": "logical_text_exact",
+        "error_code": "E_NAMESPACE_VALUE_MISMATCH",
+        "message_template": "Il codice dell’organizzazione non coincide con quello dell’invio."
+      }
+    ],
+    "version_compatibility": {
+      "kind": "same_schema_version"
+    },
+    "run_uniqueness": [
+      {
+        "trace": "A",
+        "key": "record_key"
+      },
+      {
+        "trace": "B1",
+        "key": "record_key"
+      },
+      {
+        "trace": "B2",
+        "key": "record_key"
+      },
+      {
+        "trace": "C",
+        "key": "record_key"
+      },
+      {
+        "trace": "D",
+        "key": "record_key"
+      }
+    ],
+    "cross_run_audit": [],
+    "history_identity_invariants": [],
+    "snapshot": {
+      "scope_parameters": [
+        "sending_ulss"
+      ],
+      "period": {
+        "year_parameter": "year",
+        "quarter_parameter": "quarter"
+      },
+      "approved_immutable": true,
+      "require_explicit_approval": true,
+      "commit": "atomic_idempotent",
+      "missing_trace_policy": {
+        "consent": "proceed_or_abort",
+        "warning_code": "W_CAD_MISSING_TRACE",
+        "on_absent_trace": "preserve",
+        "present_trace_is_complete": true
+      }
+    },
+    "temporal_rules": [],
+    "storage_protection": "external_secure_configuration_required"
+  }
+}

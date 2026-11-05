@@ -1,3 +1,4 @@
+pub(crate) mod namespace_binding;
 pub(crate) mod raw;
 
 pub(crate) mod compiled;

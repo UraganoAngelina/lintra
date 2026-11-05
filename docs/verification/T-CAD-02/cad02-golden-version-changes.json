@@ -1,0 +1,20 @@
+[
+  {
+    "path": "tests/golden/cross-trace/sioc-referential/v1/valid/expected.summary.json",
+    "before": "b15d545f816246a43f754add86f8a98ce182d3e33a464300a6fd03cf1cd5d617",
+    "after": "3ca7a7d947693989967cf0420469c6032ee33ace2a81ebd2b4078e8fb46d22c3",
+    "only_change": "validator_version 0.1.1-rc.2 -> 0.1.1-rc.3"
+  },
+  {
+    "path": "tests/golden/cross-trace/sioc-referential/v1/missing/expected.summary.json",
+    "before": "a2b6287b49525acbe5faef298292ca1ff29e5d47b361fdaa91a235bc27782625",
+    "after": "ad6a3d6e1b82d53d77c19c07f8b4fb6c61416600a81885b376bec4d70e2297eb",
+    "only_change": "validator_version 0.1.1-rc.2 -> 0.1.1-rc.3"
+  },
+  {
+    "path": "tests/golden/cross-trace/sioc-referential/v1/cardinality/expected.summary.json",
+    "before": "9f5e6ee60e45d870d74ff1a3073799eaec9e4bf017c024c66faec7751cc9104b",
+    "after": "a94d7f791b4be4f78e181c7ceb78de51bd80f0e669f90d35f09d91a14906e8c6",
+    "only_change": "validator_version 0.1.1-rc.2 -> 0.1.1-rc.3"
+  }
+]

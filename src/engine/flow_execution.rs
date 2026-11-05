@@ -235,7 +235,13 @@ impl<'a> FlowValidator<'a> {
         mut ports: FlowExecutionPorts<'_, '_>,
         mut record_observer: Option<&mut dyn FlowRecordObserver>,
     ) -> Result<FlowRunArtifacts, FlowValidationError> {
-        let prepared = prepare_flow(self.schema, inputs, parameters)?;
+        let context = crate::VerifiedRunContext::new(
+            self.schema,
+            parameters.clone(),
+            crate::ValidationMode::Full,
+        )
+        .map_err(FlowValidationError::Inputs)?;
+        let prepared = prepare_flow(self.schema, inputs, context.parameters())?;
         let available = prepared
             .iter()
             .map(|(index, _)| self.schema.traces()[*index].id().clone())
@@ -319,6 +325,8 @@ impl<'a> FlowValidator<'a> {
                 }
                 None => TraceValidator::new(self.schema, trace.id(), self.newline),
             }
+            .map_err(FlowValidationError::Trace)?
+            .with_run_context(&context)
             .map_err(FlowValidationError::Trace)?;
             let completion = validator
                 .validate_full_path(
@@ -484,6 +492,7 @@ impl FullRecordCollector for ProjectionCollector<'_, '_, '_> {
         &mut self,
         record: RawRecord<'_>,
         local: LocalRecordValidationArtifacts,
+        namespace_compatible: bool,
         sink: &mut dyn ValidationSink,
         summary: &mut ValidationSummaryBuilder,
     ) -> Result<(), TechnicalError> {
@@ -504,7 +513,10 @@ impl FullRecordCollector for ProjectionCollector<'_, '_, '_> {
             self.state.record_keys[self.trace_index].inconclusive += 1;
             return Ok(());
         }
-        if record.bytes.len() != trace.record_length() {
+        // A row without verified membership is not eligible for this scoped
+        // store or its historical observer, even if its physical PK is readable.
+        // Retain its local diagnostics/counts and expose Partial context/keys.
+        if record.bytes.len() != trace.record_length() || !namespace_compatible {
             evidence.unprojectable_records += 1;
             self.state.record_keys[self.trace_index].inconclusive += 1;
             return Ok(());
@@ -641,6 +653,8 @@ fn prepare_flow<'b>(
     inputs: &'b [FlowTraceInput<'b>],
     parameters: &BTreeMap<String, JoinParameterValue>,
 ) -> Result<Vec<(usize, &'b Path)>, FlowValidationError> {
+    crate::VerifiedRunContext::new(schema, parameters.clone(), crate::ValidationMode::Full)
+        .map_err(FlowValidationError::Inputs)?;
     let mut paths = HashMap::new();
     for input in inputs {
         if schema.trace(input.trace_id).is_none() {

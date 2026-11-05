@@ -28,8 +28,12 @@ pub struct CompiledPersistenceProfile {
     record_keys: BTreeMap<usize, Vec<usize>>,
     compatible_schemas: Vec<(SchemaVersion, Sha256Digest)>,
     trace_ids: Vec<crate::TraceId>,
+    namespace_bindings: Vec<crate::NamespaceBindingPlan>,
 }
 impl CompiledPersistenceProfile {
+    pub fn namespace_bindings(&self) -> &[crate::NamespaceBindingPlan] {
+        &self.namespace_bindings
+    }
     /// Complete trace inventory, including traces absent from a particular run.
     pub fn trace_ids(&self) -> &[crate::TraceId] {
         &self.trace_ids
@@ -205,6 +209,20 @@ fn signature(trace: &RawRecordSchema) -> Result<Vec<(String, RawPhysical, RawMis
         .collect()
 }
 
+fn profile_bindings(raw: &RawFlowSchema) -> Result<Vec<crate::NamespaceBindingPlan>, Failure> {
+    crate::schema::namespace_binding::compile(raw)
+}
+fn binding_value_signature(field: &RawFieldSpec) -> (RawPhysical, RawMissing) {
+    let mut physical = field.physical.clone();
+    match &mut physical {
+        RawPhysical::Numeric { start, .. }
+        | RawPhysical::Alphanumeric { start, .. }
+        | RawPhysical::Date { start, .. }
+        | RawPhysical::Decimal { start, .. } => *start = 1,
+    }
+    (physical, field.missing_value.clone())
+}
+
 fn compatibility(
     raw: &RawFlowSchema,
     policy: &RawPersistence,
@@ -261,7 +279,9 @@ fn compatibility(
                 let member_policy = member.persistence_policy.as_ref().ok_or(invalid(
                     "compatibility member has no declared persistence namespace",
                 ))?;
-                if member_policy.namespace_parameters != policy.namespace_parameters {
+                if member_policy.namespace_bindings != policy.namespace_bindings
+                    || member_policy.namespace_parameters != policy.namespace_parameters
+                {
                     return Err(invalid(
                         "compatibility group changes the declared namespace projection",
                     ));
@@ -276,6 +296,27 @@ fn compatibility(
                     {
                         return Err(invalid(
                             "compatibility group changes a namespace parameter type",
+                        ));
+                    }
+                }
+                // Binding compatibility includes the exact logical extraction
+                // semantics even if the bound field is not a selected PK.
+                for binding in &profile_bindings(raw)? {
+                    let current = &raw.traces[binding.trace_index];
+                    let foreign = member
+                        .traces
+                        .iter()
+                        .find(|t| t.id == current.id)
+                        .ok_or(invalid("compatibility member lacks a binding trace"))?;
+                    let field = &current.fields[binding.field_index];
+                    let other = foreign
+                        .fields
+                        .iter()
+                        .find(|f| f.id == field.id)
+                        .ok_or(invalid("compatibility member lacks a binding field"))?;
+                    if binding_value_signature(field) != binding_value_signature(other) {
+                        return Err(invalid(
+                            "compatibility group changes namespace binding value semantics",
                         ));
                     }
                 }
@@ -387,6 +428,7 @@ impl SchemaCompiler {
             lint(member)?;
         }
         let lowered = || -> Result<CompiledPersistenceProfile, Failure> {
+            let namespace_bindings = crate::schema::namespace_binding::compile(raw)?;
             let parameters = joins::compile_parameters(&raw.parameters)?;
             for member in other_versions {
                 joins::compile_parameters(&member.parameters)?;
@@ -399,6 +441,7 @@ impl SchemaCompiler {
                 schema_hash: hash(raw)?,
                 parameters,
                 policy: None,
+                namespace_bindings,
                 record_keys: BTreeMap::new(),
                 compatible_schemas: vec![],
                 trace_ids: raw

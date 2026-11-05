@@ -575,3 +575,55 @@ registration usano un layout sintetico esplicito; non sono il profilo CAD
 normativo di83campi, né una nuova revisione approvata del candidato ricevuto.
 La definizione di PK/ULSS/sessioni e il lowering del candidato sono verificati
 nelle task del profilo, separatamente dalla disponibilità di questo accesso.
+
+## Formato 3 — namespace binding, ratifica 5 novembre 2026
+
+Estensione CNF-CAD-NAMESPACE-BINDING-01 A estesa, consegna T-CAD-02. Grammatica:
+[schema formato 3](schema-authoring/flow-v3.schema.json). Formati1/2 e FROZEN
+restano invariati, nessuna migrazione implicita. Capability esplicita
+`persistence.namespace_binding.v1`, richiesta insieme a una lista non vuota:
+
+```json
+"namespace_bindings": [{
+  "trace": "A", "field": "1.1", "parameter": "sending_ulss",
+  "comparison": "logical_text_exact",
+  "error_code": "E_NAMESPACE_VALUE_MISMATCH",
+  "message_template": "Il codice dell’organizzazione non coincide con quello dell’invio."
+}]
+```
+
+La proprietà appartiene a persistence_policy; il controllo non richiede un DB.
+Il parametro deve essere stringa dichiarata nel namespace, il campo compatibile
+con testo logico; riferimenti/duplicati/tipi/codici/template/proprietà sconosciuti
+sono rifiutati. Il messaggio è letterale, senza interpolazioni. Binding incluso
+nel fingerprint/compatibilità; valore della request escluso. I formati1/2
+rifiutano la proprietà, anche se vuota, e la capability.
+
+Dopo la validità locale del campo, prima della proiezione, confronto byte-esatto
+del testo logico secondo encoding/padding/missing compilati; nessun trim/cast o
+confronto con placeholder. Campo invalido: violazione primaria senza cascade;
+campo opzionale assente: skipped, nessuna prova positiva. Mismatch: diagnostica
+normativa nel sink/summary/JSONL ordinari, con max_errors e cancellazione invariati.
+Full richiede il parametro valido in preflight; LocalOnly senza parametro resta
+diagnostico Partial, binding skipped. Parametro presente invalido è errore tecnico.
+Gli stessi valori verificati servono binding/join/storico/approvazione/audit.
+
+Formato3 consente un target di join assente con on_missing_trace Unknown, se non
+richiesto anche come sorgente; è preservata la distinzione target assente/vuoto.
+I formati1/2 conservano il contratto di presenza precedente. Snapshot/temporali
+non diventano eseguibili per il solo numero di formato o per il binding.
+Baseline di sviluppo e gate in [compatibilità](schema-authoring/FORMAT_COMPATIBILITY.md);
+implementazione e limiti in [T-CAD-02](verification/T-CAD-02-implementation.md).
+
+Un record con appartenenza non verificata non entra nel ContextStore del
+namespace dichiarato né nell'observer storico: errori locali conservati, PK e
+proiezione inconcludenti/unprojectable, completezza Partial. Questo impedisce
+che un parent fuori namespace soddisfi una join anche in un run già Invalid.
+Gli invalidi per altre cause mantengono le evidenze indipendenti quando il
+binding di appartenenza è verificato; nessun cambiamento per schemi senza binding.
+
+Il contesto applica anche il contratto strutturale di PersistenceNamespace, con
+lo stesso costruttore di dominio usato dallo storico: etichette vuote/solo spazi
+o con controlli sono rifiutate senza alterarne il testo. Full richiede tutti i
+componenti del namespace dichiarato; LocalOnly verifica quelli presenti. Questa
+validazione tecnica non modifica domini clinici o formati di storage.
