@@ -115,3 +115,19 @@ sink failure senza thread residui e senza false Complete, equivalenza lookup/
 join zero/uno/molti intra/cross-trace, metadati progress/inputaudit. Possibile
 fallback sequenziale dichiarato su opzioni non dimostrabili; non chiamarlo
 speedup parallelo. Nessuna conclusione prestazionale prima delle misure.
+
+
+## Ulteriore riscontro audit: mutex globale durante la lettura
+
+InputAuditSession.state èArc<Mutex<State>> con slots di tutti i reader e un
+fallimento globale. AuditedReader::read mantiene quel lock durante read ehash:
+non è un mutex per singolo stream. wrap/finish preservano ordine registrazione,
+non riordinano pertrace. Condividere una sessione tra worker serializzerebbe I/O
+e hashing e registrerebbe gli input in ordine di apertura, potenzialmente variabile.
+Questo è un vincolo reale scoperto dall’analisi, non un bug corretto nel prodotto.
+A1 usa sessioni autonome per validazioni LocalOnly indipendenti; A2 deve progettare
+un’aggregazione di stati audit reali, non auditComplete assemblati fittiziamente,
+senza cambiare l’API pubblica. Ogni eventuale adattatore resta solo nello spike.
+Hardware osservato Linux:i7-1185G7,4core/8thread, memoria15.688MiB e circa9.089MiB
+available all’osservazione, swap preesistente2.260MiB. Niente promessa di RSS per
+worker o misure di speedup già raccolte.1/2/4worker sono sperimentabili.
