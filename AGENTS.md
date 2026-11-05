@@ -106,6 +106,13 @@ non iniziare altre task, release o sviluppo CAD/18/17-05 durante l’attesa.
 Questo checkpoint supera temporaneamente la prosecuzione automatica; restano
 autorizzati commit/push/CI necessari a concludere17-04. Nessun subagente.
 
+## Ripresa dell’autore — 2026-11-05
+
+L’autore chiede di proseguire lo sviluppo seguendo il workflow concordato.
+Revocato il checkpoint dopo T-P17-04: verificarne il gate e chiudere l’handoff,
+poi proseguire automaticamente con task autorizzate e READY. Restano single-agent,
+nessun background, gate effettivi, commit/push/CI autorizzati e decisioni reali.
+
 ## Registro storico e ratifiche precedenti
 
 Mandato dell'autore aggiornato il 2026-10-19:

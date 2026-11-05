@@ -1,44 +1,32 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-11-04**, derivato da `IMPLEMENTATION_STATUS_SEED.md`.
-Piano v1.1; architettura e detailed design revisione 2026-10-16.
+Consuntivo aggiornato al **2026-11-05**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — completare T-P17-04 e fermarsi (mandato autore)
+## Frontiera corrente — T-P17-04 DONE, ripresa AUTO_CONTINUE
 
-4 novembre 2026. **124/140 DONE =88,6%** (conteggio task, non stima dello sforzo).
-Recovery iniziale solo working tree work/p1-foundations; modifiche preesistenti
-preservate. Un solo agente, nessun subagente o processo autonomo in background.
-Ultimo mandato: «stoppati dopo aver completato la task corrente», cioè17-04.
-Nessuna nuova task dopo il suo gate/handoff fino a ripresa esplicita dell’autore.
+**125/140 DONE = 89,3%** (conteggio task, non stima dello sforzo).
+L’autore ha richiesto la ripresa del workflow il5novembre; superato il checkpoint
+successivo a17-04. Single-agent, nessun subagente/background. Branch autorizzato
+work/p1-foundations, docs/migration preesistente preservata ed esclusa.
 
-PERSIST09/10/11 già DONE con CI41194045486/41822083629/41805357515 reali.
-Ratifica chiave comune32byte, esterna al binario nel bundle privato portabile
-Slint, applicata10; nessun installer o materiale operativo generato. Key ID e
-continuità dello storico invariati, sicurezza file/ACL/link non indebolita.
-T-P17-02 DONE:9d641d4/CI41846160280, tre run/36scenari di profilazione,
-nessuna ottimizzazione runtime senza evidenza, golden e API preservati.
+T-P17-04 DONE: codice8045394, CI41887090825 completed/success sullo stesso SHA.
+Sette job richiesti positivi: Linux/MSVC, confronti JSONL e due UI, due riaperture
+SQLite crossOS. Packaging UI opzionale skipped. Seconda lettura ordinaria finale;
+evidenza completa in docs/verification/T-P17-04-native-ci.json. Locali8comandi,
+404hash invariati,887workspace/844core,42mirati allfeatures e4scenari smoke;
+0fail/6ignored. DEC-16 A: limite positivo globale, None default, zero preflight,
+CompletedInvalid/truncated/Partial esistenti; stop distinto da cancel eguasti,
+nessuna preview storica approvabile se troncata. Nessun nuovo flagCLI/UI.
 
-T-PERSIST-12 DONE:638feec/CI41857167059 completed/success, sette job richiesti
-positivi; scaricati/verificati i due artifact di misure smoke native. Quattro casi
-per OS, sourcehash verificati anche rispetto alle terminazioniLF/CRLF. Due run
-estesi24casi Linux10k/100k/300k, dimensioniDB ripetibili; circa3,35GB SQLite per
-due snapshot300k e509MB picco processo, costi documentati. Privacy byte/hex, copie
-chiuse eCLI reale provati.873workspace,10comandi/402hash invariati. Policy dati
-reali/cifratura/retention/backup operativo completo ancora aperte.
+PERSIST09/10/11/12 DONE con gate nativi reali; provisioning esterno comune32byte
+ratificato e qualificato, nessuna chiave operativa generata. Policy dati reali,
+cifratura, retention e backup operativo completo restano aperte. T-P17-02 DONE,
+nessuna ottimizzazione runtime senza evidenza. UI9/9 e M8 già qualificate.
 
-T-P17-04 IN_PROGRESS: DEC-16 A approvata esplicitamente dall’autore. Some(N>0)
-globale, None default, zero preflight; CompletedInvalid/truncated/Partial esistenti,
-nessun nuovo RunStatus/formato persistente o flagCLI/GUI. Causa limite privata
-separata da cancel eguasti; stop fra campi/regole/trace/passate e nessuna preview
-storica approvabile se troncata. Report T-P17-04-max-errors.md e ratifica.
-Gate locali tutti positivi:8comandi,404impronte invariate;887workspace/112riepiloghi,
-844core senza bundle,42mirati allfeatures, smoke eboundary;0fail/6ignored.
-Restano commit/push/CI propria e gate Linux/MSVC reali prima di DONE17-04.
-
-T-P18-03 ha avuto soltanto letture di preflight, nessun cambio versione/codice,
-release o operazione remota; rinviata dopo17-04 e ora esclusa dal checkpoint.
-CAD e17-05 non avviate. Dopo17-04: STOP_REQUESTED_BY_AUTHOR, resoconto e attesa.
-docs/migration originale resta preservata/esclusa. Nessun segreto operativo inGit/CI.
+Prossima candidata T-P18-03: prerequisito15-05 DONE con release privata immutabile
+verificata; ratifica DEC-RELEASE-SETUP-01 A autorizza prova soloCI. Scope runbook,
+nuova prerelease e verifica asset reali. DEC-17 resta aperta:17-05 nonREADY.
+CAD non avviato in questa ripresa. AUTO_CONTINUE dopo preflight18-03.
 
 ## Registro precedente — PERSIST09 WAITING_GATE, PERSIST10 BLOCKED, PERSIST11 IN_PROGRESS
 
@@ -6106,3 +6094,28 @@ LocalOnly senza nuovo campo completeness, truncated reale e API Partial.
 Mandato ultimo autore: fermarsi dopo task corrente17-04. Chiudere soltanto
 pubblicazione/gate17-04 e handoff; niente nuove18/CAD/17-05 o release. AGENTS
 aggiornato con checkpoint esplicito. Code17 da pubblicare, nonDONE fino ai gate.
+
+
+## HANDOFF §15.3 — T-P17-04 pubblicata, WAITING_GATE e stop autore
+
+8045394 pubblicato, CI41887090825 avviata conURL restituito dal dispatch.
+Locali8gate exit0/404hash immutati,887workspace/112riepiloghi,844core/95,
+42mirati allfeatures e4scenari smoke;0fail/6ignored. RatificaA attuata senza
+nuovi stati serializzati o API pubbliche di completamento; runtimeNpositivo
+controllato separato da cancel/errori reali. DefaultCLI/UI None invariato.
+12DONE consette gate e due artifact nativi verificati (LF/CRLF documentati).
+124/140DONE88,6%;17nonDONE finché CI effettiva non conclusa positiva.
+Mandato vincolante: completare solo il gate/handoff17-04 e fermarsi; niente
+nuove18/CAD/17-05 o release. Nessun subagente. docs/migration originale preservata.
+
+
+## HANDOFF §15.3 — T-P17-04 DONE, ripresa autore 2026-11-05
+
+Obiettivo: limite globale max_errors ratificato DEC-16 A. Codice8045394 pubblicato;
+CI41887090825 completed/success sullo SHA esatto con sette job obbligatori positivi,
+optionalUI skipped. Nessun gate pendente17-04. Report tecnico/locali già versionati;
+aggiornati ledger nativo, indice task e frontiera, nessun sorgente runtime cambiato.
+125/140DONE89,3%. Ripresa esplicita autore supera lo stop precedente in AGENTS.
+Git work/p1-foundations; docs/migration preesistente preservata/esclusa.
+AUTO_CONTINUE: preflight18-03, dipendenza15-05 qualificata. DEC-17 ancora aperta;
+nessuna approvazione normativa CAD, dato reale o chiave operativa introdotti.
