@@ -78,3 +78,13 @@ Cinque comandi exit0,408impronte immutate inclusi componenteJSON/README;
 (CADcomposite5 e registry7), fmt/Clippyworkspace all-targets allfeatures eboundary
 positivi. Ledger T-CAD-10-local-gates.json. Nessun engine nuovo, schemaFROZEN,
 dipendenza o chiave operativa. Restano push/CI propria prima diDONE10.
+
+
+## Chiusura nativa — DONE
+
+CI42004833488 completed/success su46d574f8ec4627bcc9561d298c2dc33007137654;
+sette job richiesti positivi, optionalUI skipped. Default/allfeatures/core su
+Linux/MSVC, confronti JSONL/pixel e due riapertureSQLite crossOS effettivamente
+positivi. Due letture ordinarie distanziate. Fonte T-CAD-01-10-native-ci.json.
+Questo gate qualifica i due scope indipendenti registry01 e componente10,
+non il profilo CAD completo né il futuro bindingformato3/parallelismo.

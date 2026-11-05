@@ -2,9 +2,9 @@
 
 Consuntivo aggiornato al **2026-11-05**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente —18-03 DONE, gate CAD01/10 e audit17-05, AUTO_CONTINUE
+## Frontiera corrente —18-03/CAD01/CAD10 DONE, spike17-05 in corso, AUTO_CONTINUE
 
-**126/140 DONE = 90%** (conteggio task, non stima dello sforzo).
+**128/140 DONE = 91,4%** (conteggio task, non stima dello sforzo).
 Ripresa esplicita dell’autore il5novembre: superato il checkpoint17-04.
 Single-agent, nessun subagente/background. Branch work/p1-foundations;
 docs/migration preesistente preservata/esclusa. Nessun segreto operativo generato.
@@ -23,14 +23,15 @@ fallito per locktooling obsoleto preservato; fix/regressione24Python e17tooling+
 prova bundle estratto positiva. Nessuna chiave operativa o capability futura
 nella rc.2. Nessun gate residuo18; M9/18-04 ancora aperta.
 
-T-CAD-01 IN_PROGRESS: accesso registry dichiarativo per chiave esatta, policy
+T-CAD-01 DONE: accesso registry dichiarativo per chiave esatta, policy
 on/off, gruppo/versioni/fingerprint e manifest. Commit629ce3f,7test;894workspace,
 35mirati allfeatures,405hash immutati. Non rende eseguibile il profilo CAD completo.
-T-CAD-10 IN_PROGRESS: componente T70 versionato esplicito, coordinate B1 reali,
+T-CAD-10 DONE: componente T70 versionato esplicito, coordinate B1 reali,
 regexraw e guardie presence approvate; nessun engine nuovo. Commit5e5c69c,
 5test/35.840casi byte,899workspace e12mirati allfeatures,408hash immutati.
-Entrambe attendono push/CI propria sul commit finale; mai qualificate dalla CI
-release8430de9. Il dispatchrelease fissato permette ora il push CAD indipendente.
+Entrambe pubblicate e qualificate daCI42004833488 completed/success sullo SHA
+46d574f8ec4627bcc9561d298c2dc33007137654, sette job richiesti positivi.
+Non usata la CIrelease8430de9. Nessun gate residuo01/10; profilo CAD completo aperto.
 
 Ratifiche autore5nov: DEC-17 Aestesa A1LocalOnly/A2Full pass1parallela-pass2
 sequenziale/A3end-to-end; solo spike, nessuna adozione/API/CLI/UI/dipendenza.
@@ -6292,3 +6293,24 @@ Formato3 libero1..2correnti, ora riservato dalla ratifica, non ancora supportato
 né attribuito a rc.2.17-05 IN_PROGRESS/audit, nessun benchmark o speedup già
 eseguito/dichiarato. Nextisolamento branchA1→A2→A3. Single-agent, no produzione
 parallela, no nuova dipendenza; CAD02 attende gate01 effettivo.
+
+
+## Chiusura CAD01/CAD10 e HANDOFF §15.3 —2026-11-05
+
+CI42004833488 success su46d574f, sette job positivi: Linux/MSVC, tre confronti,
+due riapertureSQLite. Default/allfeatures/core nativi edue scope nuovi realmente
+qualificati. Report eledger aggiornati,01/10DONE.128/140DONE91,4%.18giàDONE con
+release privata rc.2/asset verificati. CAD02 oraREADY sulla ratifica namespace
+Aestesa eprerequisito01; non avviata mentreautore ha richiesto iniziare17-05.
+
+T-P17-05: branchisolato spike/dec17-selective-pass1 da52f9e44; nessuna modifica
+produttiva. A1harness iniziale con10campi/4trace, reader/sink/audit/summary perrun,
+report temporanei privati verificati dahelperFSgiàqualificati, mergeordinato e
+samplingRSS/heap. Debugsmoke100record ×duecase ×4varianti pass, Send/Syncdi
+schema/prepared/evidence realmente compilati. Nessun dato di speedup valido:
+releasebuild,3ripetizioni/volumi eA2/A3 ancora necessari. Clippytestspike e secondo smoke con oracle indipendente passati; aggiunta
+preservazione dei byte originali dei summary nel risultato misure, in verifica.
+Nuovi helpercfg(test) e modulotest esistono solo sul branchsperimentale; funzioni
+produttive/API/CLI/UI invariati. docsmigrationpreesistente ancoraesclusa.
+AUTO_CONTINUE17: completareA1/gate, poiA2/A3; al termineCAD02 connamespaceunico,
+formato3nonattribuitoarc.2. Nessun subagente/daemon/nuova dipendenza.
