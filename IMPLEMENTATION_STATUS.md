@@ -2,31 +2,43 @@
 
 Consuntivo aggiornato al **2026-11-05**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — T-P17-04 DONE, ripresa AUTO_CONTINUE
+## Frontiera corrente — release18-03 e gate CAD01/10, AUTO_CONTINUE
 
 **125/140 DONE = 89,3%** (conteggio task, non stima dello sforzo).
-L’autore ha richiesto la ripresa del workflow il5novembre; superato il checkpoint
-successivo a17-04. Single-agent, nessun subagente/background. Branch autorizzato
-work/p1-foundations, docs/migration preesistente preservata ed esclusa.
+Ripresa esplicita dell’autore il5novembre: superato il checkpoint17-04.
+Single-agent, nessun subagente/background. Branch work/p1-foundations;
+docs/migration preesistente preservata/esclusa. Nessun segreto operativo generato.
 
-T-P17-04 DONE: codice8045394, CI41887090825 completed/success sullo stesso SHA.
-Sette job richiesti positivi: Linux/MSVC, confronti JSONL e due UI, due riaperture
-SQLite crossOS. Packaging UI opzionale skipped. Seconda lettura ordinaria finale;
-evidenza completa in docs/verification/T-P17-04-native-ci.json. Locali8comandi,
-404hash invariati,887workspace/844core,42mirati allfeatures e4scenari smoke;
-0fail/6ignored. DEC-16 A: limite positivo globale, None default, zero preflight,
-CompletedInvalid/truncated/Partial esistenti; stop distinto da cancel eguasti,
-nessuna preview storica approvabile se troncata. Nessun nuovo flagCLI/UI.
+T-P17-04 DONE:8045394/CI41887090825 success, sette job richiesti;887workspace,
+844core e42mirati locali; DEC-16 A attuata, None default, stop distinto da
+cancel/guasti, nessuna preview storica approvabile se troncata.
+PERSIST09/10/11/12 DONE con gate reali; policy dati reali/cifratura/retention/
+backup operativo completo ancora aperte. UI9/9 eM8 già qualificate.
 
-PERSIST09/10/11/12 DONE con gate nativi reali; provisioning esterno comune32byte
-ratificato e qualificato, nessuna chiave operativa generata. Policy dati reali,
-cifratura, retention e backup operativo completo restano aperte. T-P17-02 DONE,
-nessuna ottimizzazione runtime senza evidenza. UI9/9 e M8 già qualificate.
+T-P18-03 IN_PROGRESS/WAITING_RELEASE: runbook/note rc.2, manifest/golden metadata
+preparati497352c. Corretto il locktooling in8430de9 con regressione versioni;
+primaCI41996304493 fallitaLinux/poi cancelled, preservata separatamente.
+NuovaCI41999182424 completed/success su8430de9149862c70cdc3eda1a0a7ef79467c557e,
+sette job richiesti positivi. Release42004607059 avviata e fissata a quello SHA:
+preflight realmente success, build native in corso. Nessuna pubblicazione oDONE18
+anticipati: restano asset privati/immutable da scaricare/verificare.
+Gate locali release887/0fail/6ignored,24Python,17tooling eprova bundle estratto1.
 
-Prossima candidata T-P18-03: prerequisito15-05 DONE con release privata immutabile
-verificata; ratifica DEC-RELEASE-SETUP-01 A autorizza prova soloCI. Scope runbook,
-nuova prerelease e verifica asset reali. DEC-17 resta aperta:17-05 nonREADY.
-CAD non avviato in questa ripresa. AUTO_CONTINUE dopo preflight18-03.
+T-CAD-01 IN_PROGRESS: accesso registry dichiarativo per chiave esatta, policy
+on/off, gruppo/versioni/fingerprint e manifest. Commit629ce3f,7test;894workspace,
+35mirati allfeatures,405hash immutati. Non rende eseguibile il profilo CAD completo.
+T-CAD-10 IN_PROGRESS: componente T70 versionato esplicito, coordinate B1 reali,
+regexraw e guardie presence approvate; nessun engine nuovo. Commit5e5c69c,
+5test/35.840casi byte,899workspace e12mirati allfeatures,408hash immutati.
+Entrambe attendono push/CI propria sul commit finale; mai qualificate dalla CI
+release8430de9. Il dispatchrelease fissato permette ora il push CAD indipendente.
+
+Decisioni aperte: DEC-17 spike-only proposto, nessuna adozione runtime;
+CNF-CAD-NAMESPACE-BINDING-01: norma A.1.1=sending_ulss approvata ma nessun
+binding campo/parametro nel contratto raw attuale. Proposto formato3 esplicito,
+non implementato/ratificato. InteressaCAD02 e successivi, nonCAD01/10 orelease.
+Prossime indipendenti candidateCAD11 e09, con proprio preflight P11/P10/P9/G0.
+Nessuna baseline FROZEN o norma modificata; nessun installer/migrazione anticipati.
 
 ## Registro precedente — PERSIST09 WAITING_GATE, PERSIST10 BLOCKED, PERSIST11 IN_PROGRESS
 
@@ -6231,3 +6243,16 @@ sul commit finale che comprende entrambe le task indipendenti. NonDONE01/10,
 restano due riapertureSQLite crossOS; nessuna pubblicazione rc.2 anticipata.
 Single-agent; docs/migration preservata/esclusa. Contratto namespaceCAD02 e
 DEC17 restano proposte in attesa, nessun consenso presunto.
+
+
+## HANDOFF §15.3 — gate18positivo, release fissata, via libera pushCAD
+
+CI41999182424 completed/success su8430de9 con sette job positivi; fixlock
+qualificata realmente anche Windows. Release42004607059 avviata suquello SHA,
+primo controllo headSha esatto/preflight success ebuild native in corso.
+Ordinaryreadsrelease1; nessun esito finale anticipato.18nonDONE,125/140immutato.
+Pubblicareora i commit locali01/10/proposte e avviare un’unicaCI sul nuovo HEAD
+per i due scope indipendenti, preservando release su8430de9. I sorgenti1/10
+coincidono coi rispettivi ledger locali; mutazioni successive sono documentali.
+Dopo dispatchCI, preflightCAD11 indipendente (P11/P10/G0 qualificati), nessun
+aggiramento del binding CAD02 o consenso alle proposte. docs/migration esclusa.

@@ -18,5 +18,12 @@
     "ui/Cargo.toml": "24f15c04927ecda7e57c13e5f7640a06c9a13891aabfd2d7da45497e367994e8",
     "xtask/Cargo.lock": "8b46834085575d17f1ab4a2deac17b1e0d8834606f74e4a3dc65b73e55c4d960",
     "scripts/tests/test_release.py": "619f99f74d197d4fd1dcbffe405d9678a23163ff0684173715c9b5b61b17f955"
+  },
+  "additional_extracted_bundle_check": {
+    "command": "LINTRA_TEST_BIN=target/debug/lintra cargo test --manifest-path xtask/Cargo.toml --locked --offline -- --ignored",
+    "passed": 1,
+    "failed": 0,
+    "exit_code": 0,
+    "scope": "local development binary with CAD registration API present; not a CI publication or release-source certification"
   }
 }

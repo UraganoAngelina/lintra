@@ -76,3 +76,19 @@ e il runtime ricondotto esattamente a497352c; successivamente il lavoro CAD è
 stato ripristinato con hash identico. Nessuna modifica dell’utente rimossa.
 Serve una nuova CI sul commit corretto prima del dispatchrelease; la run fallita
 resta evidenza e non viene reinterpretata come gate positivo.
+
+
+## Gate nativo corretto e dispatch release
+
+CI41999182424 completed/success su8430de9149862c70cdc3eda1a0a7ef79467c557e:
+sette job richiesti positivi, optionalUI skipped. Tre letture ordinarie distanziate;
+cinque letture finali necessarie per seguire build e due riapertureSQLite senza
+inventarne il completamento. Run iniziale Linuxfailure/aggregatecancelled distinta.
+Ledger T-P18-03-native-ci.json e T-P18-03-native-ci-initial.json.
+
+Ref remota verificata conls-remote ancora su8430de9, dispatchrelease42004607059
+riuscito. Primo controllo headSha coincide, preflight success, due build in corso.
+T-P18-03-release-ci.json. Queste build non includono registryCAD01, componenteT70
+o proposte successive nei commit locali. Resta verifica della pubblicazione reale;
+nonDONE18. Branch può ora avanzare per unaCI CAD distinta, senza mutare il sorgente
+della release già fissato e senza pubblicazioni locali.
