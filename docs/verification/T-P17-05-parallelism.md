@@ -87,3 +87,20 @@ Nessuna adozione autorizzata. Qualsiasi proposta successiva richiede misure A3 e
 garanzie complete; la divergenza di cancellazione impedisce già di proporre questo
 prototipo per la produzione. La decisione finale dello studio verrà registrata
 insieme ai numeri Full e ai gate effettivi, senza inferirla dai soli worker A1.
+
+## Verifiche di sviluppo e affinamento della fixture
+
+Il filesystem temporaneo `/tmp` è stato rifiutato dalla policy di storage
+qualificato; i file sperimentali sono stati spostati nella directory privata sul
+filesystem workspace, senza disattivare controlli. Il primo clone dei due gruppi
+di trace aveva join ID duplicati: il compilatore li ha correttamente rifiutati;
+la fixture usa ora ID flow-unique, senza modificare il compilatore. Un'asserzione
+di test sui guasti è stata corretta per rispettare l'unwrapping effettivo
+Flow/Trace→Report/Input dell'applicazione.
+
+Dopo i cinque gate locali su41defb9, ulteriore affinamento della sola fixture:
+la chiave sorgente punta alla riga precedente, e un'asserzione prova che l'errore
+SELF_COMPARE della riga5 dipende da DATA della riga4. Non basta un self-join che
+ritorni sempre il record corrente. Ripetuti fmt, Clippy e cinque test mirati prima
+della build e delle misure definitive; nessun algoritmo di esecuzione cambiato.
+La prima CI42036498302 su41defb9 è intermedia, non qualifica questa revisione.

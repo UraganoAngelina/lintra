@@ -350,8 +350,9 @@ impl Fixture {
             let mut writer = BufWriter::new(file);
             for line in 1..=count * weight / 100 {
                 let bad = line % if heavy { 4 } else { 1000 } == 0;
-                // Odd source keys have one target, every seventeenth has zero,
-                // target duplicates at every eleventh exercise ambiguous joins.
+                // Source keys normally reference the previous physical row, so
+                // SELF really depends on another record, not the current one.
+                // Every seventeenth has zero, target duplicates exercise many.
                 let pk = if index % 2 == 1 && line % 11 == 0 {
                     line - 1
                 } else {
@@ -359,6 +360,8 @@ impl Fixture {
                 };
                 let key = if index % 2 == 0 && line % 17 == 0 {
                     99_999_999
+                } else if index % 2 == 0 && line > 1 {
+                    line - 1
                 } else {
                     pk
                 };
@@ -563,6 +566,17 @@ fn full_equivalence() {
     let (baseline, original) = run(&fixture, 0);
     let context = CONTEXT.with_borrow(|v| v.clone());
     assert!(baseline["summary"]["total_errors"].as_u64().unwrap() > 0);
+    let bytes = fs::read(original.path()).unwrap();
+    assert!(
+        std::str::from_utf8(&bytes)
+            .unwrap()
+            .lines()
+            .map(|line| serde_json::from_str::<Value>(line).unwrap())
+            .any(|line| line["trace"] == "S0"
+                && line["line"] == 5
+                && line["message"].as_str().unwrap().contains("SELF_COMPARE")),
+        "line5 must depend on line4's different DATA"
+    );
     let controls = baseline["summary"]["full_validation"]["controls"]
         .as_array()
         .unwrap();
