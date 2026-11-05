@@ -712,3 +712,8 @@ pub fn preflight_flow_inputs(
         .map(|(index, _)| schema.traces()[index].id().clone())
         .collect())
 }
+
+// DEC-17 experiment branch only. No code is included in a production library.
+#[cfg(test)]
+#[path = "../../spikes/dec17-selective/a1.rs"]
+mod selective_parallelism;

@@ -352,3 +352,16 @@ pub enum CommitResolution {
 
 mod sqlite;
 pub use sqlite::{SQLitePersistenceAdapter, SQLiteStorageSettings};
+
+// Isolated experiment branch: no public API or production execution path.
+#[cfg(test)]
+pub(crate) fn dec17_private_root(path: &std::path::Path) -> Result<(), PersistenceError> {
+    file_security::root(path, true).map(|_| ())
+}
+#[cfg(test)]
+pub(crate) fn dec17_private_file(
+    path: &std::path::Path,
+    file: &std::fs::File,
+) -> Result<(), PersistenceError> {
+    file_security::dec17_private_file(path, file)
+}

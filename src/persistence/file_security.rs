@@ -193,3 +193,10 @@ fn check_filesystem(_: &Path) -> Result<(), PersistenceError> {
 mod windows;
 #[cfg(windows)]
 use windows::{check_filesystem, check_private, create_directory, open_directory};
+
+// Test-only bridge: reuse the qualified opened-file policy for the experiment's
+// canonical diagnostic reports. It neither opens a repository nor changes ACLs.
+#[cfg(test)]
+pub(super) fn dec17_private_file(path: &Path, file: &File) -> Result<(), PersistenceError> {
+    check_private(path, &file.metadata().map_err(|_| bad())?, false)
+}
