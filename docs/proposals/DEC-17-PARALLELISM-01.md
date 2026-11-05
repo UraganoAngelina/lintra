@@ -1,5 +1,9 @@
 # DEC-17 — perimetro della valutazione del parallelismo
 
+**Ratifica successiva del5novembre2026:** [A estesa](../verification/DEC-17-ratification.md).
+Il testo seguente conserva la proposta originaria e i suoi limiti storici;
+per il mandato corrente vale la ratifica, senza riscrittura retroattiva.
+
 5 novembre 2026. Proposta, non ratifica. Piano§13.1 richiede DEC-17 prima di
 T-P17-05; DET§115 esclude parallelismo nel primo MVP, piano§7.8 consente
 valutazione misurata e adozione solo con beneficio e determinismo provati.

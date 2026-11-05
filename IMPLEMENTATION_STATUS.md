@@ -2,9 +2,9 @@
 
 Consuntivo aggiornato al **2026-11-05**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — release18-03 e gate CAD01/10, AUTO_CONTINUE
+## Frontiera corrente —18-03 DONE, gate CAD01/10 e audit17-05, AUTO_CONTINUE
 
-**125/140 DONE = 89,3%** (conteggio task, non stima dello sforzo).
+**126/140 DONE = 90%** (conteggio task, non stima dello sforzo).
 Ripresa esplicita dell’autore il5novembre: superato il checkpoint17-04.
 Single-agent, nessun subagente/background. Branch work/p1-foundations;
 docs/migration preesistente preservata/esclusa. Nessun segreto operativo generato.
@@ -15,14 +15,13 @@ cancel/guasti, nessuna preview storica approvabile se troncata.
 PERSIST09/10/11/12 DONE con gate reali; policy dati reali/cifratura/retention/
 backup operativo completo ancora aperte. UI9/9 eM8 già qualificate.
 
-T-P18-03 IN_PROGRESS/WAITING_RELEASE: runbook/note rc.2, manifest/golden metadata
-preparati497352c. Corretto il locktooling in8430de9 con regressione versioni;
-primaCI41996304493 fallitaLinux/poi cancelled, preservata separatamente.
-NuovaCI41999182424 completed/success su8430de9149862c70cdc3eda1a0a7ef79467c557e,
-sette job richiesti positivi. Release42004607059 avviata e fissata a quello SHA:
-preflight realmente success, build native in corso. Nessuna pubblicazione oDONE18
-anticipati: restano asset privati/immutable da scaricare/verificare.
-Gate locali release887/0fail/6ignored,24Python,17tooling eprova bundle estratto1.
+T-P18-03 DONE: codice8430de9, CI41999182424 e release42004607059 success.
+Prova privata v0.1.1-rc.2 immutable=true/non draft, tutti tre asset scaricati:
+inventario/size/stato/digest server, somme esterne e interne, due audit nativi e
+Linux --version verificati. Ledger T-P18-03-published-release.json. Primo gate
+fallito per locktooling obsoleto preservato; fix/regressione24Python e17tooling+
+prova bundle estratto positiva. Nessuna chiave operativa o capability futura
+nella rc.2. Nessun gate residuo18; M9/18-04 ancora aperta.
 
 T-CAD-01 IN_PROGRESS: accesso registry dichiarativo per chiave esatta, policy
 on/off, gruppo/versioni/fingerprint e manifest. Commit629ce3f,7test;894workspace,
@@ -33,12 +32,17 @@ regexraw e guardie presence approvate; nessun engine nuovo. Commit5e5c69c,
 Entrambe attendono push/CI propria sul commit finale; mai qualificate dalla CI
 release8430de9. Il dispatchrelease fissato permette ora il push CAD indipendente.
 
-Decisioni aperte: DEC-17 spike-only proposto, nessuna adozione runtime;
-CNF-CAD-NAMESPACE-BINDING-01: norma A.1.1=sending_ulss approvata ma nessun
-binding campo/parametro nel contratto raw attuale. Proposto formato3 esplicito,
-non implementato/ratificato. InteressaCAD02 e successivi, nonCAD01/10 orelease.
-Prossime indipendenti candidateCAD11 e09, con proprio preflight P11/P10/P9/G0.
-Nessuna baseline FROZEN o norma modificata; nessun installer/migrazione anticipati.
+Ratifiche autore5nov: DEC-17 Aestesa A1LocalOnly/A2Full pass1parallela-pass2
+sequenziale/A3end-to-end; solo spike, nessuna adozione/API/CLI/UI/dipendenza.
+Audit reale17-05 IN_PROGRESS prioritario, iniziatoFlowValidator/projection/store/
+crossplan. CNF-CAD-NAMESPACE-BINDING-01 Aestesa approvata: formato3 disponibile,
+fonte unica namespace, LocalOnlydiagnostico nonvalutato senza parametro, Full/
+storico preflightobbligatorio, no mismatchemissione su campo giàinvalido.
+T-CAD-02 autorizzata dopo01effettivamenteDONE; nessuna grammatica3 implementata
+o attribuita a rc.2. Fonti complete nei due nuovi dossier di ratifica.
+CAD11 soltanto letture di preflight prima della ratifica, nessun codice/dataset
+modificato; nuova priorità17-05 dopo chiusura18. CAD09 non avviata.
+Nessuna baselineFROZEN/PK/HMAC/storage o norma modificata; docs/migration esclusa.
 
 ## Registro precedente — PERSIST09 WAITING_GATE, PERSIST10 BLOCKED, PERSIST11 IN_PROGRESS
 
@@ -6256,3 +6260,35 @@ per i due scope indipendenti, preservando release su8430de9. I sorgenti1/10
 coincidono coi rispettivi ledger locali; mutazioni successive sono documentali.
 Dopo dispatchCI, preflightCAD11 indipendente (P11/P10/G0 qualificati), nessun
 aggiramento del binding CAD02 o consenso alle proposte. docs/migration esclusa.
+
+
+## HANDOFF §15.3 — T-P18-03 DONE, ratifiche autore e avvio audit17-05
+
+Release privata rc.2 verificata con asset reali e runbook sullo SHA8430de9,
+CI41999182424/release42004607059 completed/success; ledger18published e report.
+126/140DONE90%. Branchwork/p1-foundations; nuovi commitCAD01/10 pubblicati in46d574f,
+CI42004833488 prima lettura ancora in corso, nonDONE01/10. Nessun segreto reale.
+Autore ratifica DEC17Aestesa e bindingAestesa con prescrizioni durevoli; AGENTS,
+pianoDEC17/DET115/prompt/dossier/proposte annotati senza riscrivere storia.
+Avviato17-05 audit reale: FlowValidator esegue davvero pass1locale+PK/projection+
+store, poi pass2sequenziale. Invalid full-width contribuiscono proveproiettate;
+ContextStore èephemeral eordinato perline. Nessuna API modificata per lo spike.
+Next: completare audit tutti i componenti, poi isolamento sperimentale eA1→A2→A3,
+nessuna adozione prodotto. CAD02 dopo gate01; CAD11 solo preflightletto, sospesa
+per nuova prioritàautore. AUTO_CONTINUEsingle-agent; docs/migration preservata.
+
+
+## Audit iniziale T-P17-05 — ratifica Aestesa attuata come piano, non runtime
+
+Analizzati sourceFlow/Trace/RecordValidator, projection/store/cross, service,
+sink/summary/progress/cancel/budget/audit e contrattiDET richiesti. Report
+T-P17-05-implementation-audit.md. Pass1/2 effettive confermate, local invalid
+full-width ancora proiettato, cross emissionetrace→line→rule, owner mutabili
+non condivisibili per mera presenza diAtomic. PublicFlowAPI unlimited, entry
+controlled interna; niente modificaAPI per lo spike. Elapsed èmonotono interno,
+FixedClock non lo congela: confrontoJSONL integrale e metadati deterministici
+conoriginali summary preservati e diffelapsed esplicito da verificare.
+Formato3 libero1..2correnti, ora riservato dalla ratifica, non ancora supportato
+né attribuito a rc.2.17-05 IN_PROGRESS/audit, nessun benchmark o speedup già
+eseguito/dichiarato. Nextisolamento branchA1→A2→A3. Single-agent, no produzione
+parallela, no nuova dipendenza; CAD02 attende gate01 effettivo.

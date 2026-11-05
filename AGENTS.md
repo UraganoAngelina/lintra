@@ -113,6 +113,23 @@ Revocato il checkpoint dopo T-P17-04: verificarne il gate e chiudere l’handoff
 poi proseguire automaticamente con task autorizzate e READY. Restano single-agent,
 nessun background, gate effettivi, commit/push/CI autorizzati e decisioni reali.
 
+## Ratifiche dell’autore —2026-11-05
+
+DEC-17 A estesa: autorizzati A1LocalOnly, A2Full con passata1 parallela selettiva
+fra trace e passata2 sequenziale, A3misure end-to-end. Prima ricostruire pipeline
+reale/piani/proiezioni/store; nessuna API/CLI/UI/dipendenza nuova o adozione nel
+prodotto. Branch/isolamento equivalente, workerRust interni foreground con
+join obbligatorio autorizzati; restano single-agent/no subagenti/background.
+Fonte vincolante: docs/verification/DEC-17-ratification.md.
+
+CNF-CAD-NAMESPACE-BINDING-01 A estesa: binding generico stringa/logical_text_exact,
+fonte unica namespace request/validazione/join/storia, passata1 dopo campo valido;
+Full/storico richiedono parametro valido, LocalOnly diagnostico senza parametro
+ammesso ma binding non valutato, mai finta conformità. Formato3 se libero e
+capability esplicita,1/2/FROZEN/HMAC/storage invariati, no DSL Parameter generale.
+Fonte completa: docs/verification/CNF-CAD-NAMESPACE-BINDING-01-ratification.md.
+T-CAD-02 dopo prerequisiti/gate reali; nessun nuovo consenso ordinario necessario.
+
 ## Registro storico e ratifiche precedenti
 
 Mandato dell'autore aggiornato il 2026-10-19:

@@ -1,5 +1,9 @@
 # CNF-CAD-NAMESPACE-BINDING-01 — parametro di invio e campo ULSS
 
+**Ratifica successiva del5novembre2026:** [A estesa](../verification/CNF-CAD-NAMESPACE-BINDING-01-ratification.md).
+Il testo seguente conserva la proposta originaria e i suoi limiti storici;
+per il mandato corrente vale la ratifica, senza riscrittura retroattiva.
+
 5 novembre 2026. **Proposta da ratificare**, nessun nuovo formato o controllo
 implementato. Interessa il lowering del profilo in T-CAD-02 e l’eseguibilità
 CAD successiva; non blocca registration T-CAD-01, release18-03 o storage generico.

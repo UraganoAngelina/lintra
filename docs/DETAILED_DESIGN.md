@@ -3182,6 +3182,13 @@ La performance target va definita dopo aver conosciuto dimensioni reali dei flus
 
 # 115. Parallelismo
 
+Ratifica DEC-17 del5novembre2026: autorizzata esclusivamente la valutazione
+isolata A1LocalOnly/A2Full con prima passata selettivamente parallela e seconda
+sequenziale/A3end-to-end, mantenendo invarianti/ordine/streaming/privacy e senza
+cambiare API/CLI/UI o prodotto. Fonte: verification/DEC-17-ratification.md.
+Il divieto MVP seguente resta il contratto del runtime di produzione; lo spike
+su branch dedicato non ne costituisce adozione. Nessun nuovo crate o scheduler.
+
 Non introdurre nel primo MVP.
 
 Motivi:

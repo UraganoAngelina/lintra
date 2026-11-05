@@ -97,3 +97,19 @@ I vecchi test di formato non definito usano ora 3 invece di 2: le stesse
 asserzioni di errore rimangono, con la distinzione approvata che 2 è definito.
 Una descrizione EngineCapabilities creata dal chiamante continua a non
 riconfigurare il compiler; soltanto l'implementazione verificata abilita 1..=2.
+
+
+## Riserva formato3 — ratifica2026-11-05, non ancora implementato
+
+CNF-CAD-NAMESPACE-BINDING-01 Aestesa approvata: verifica del repository corrente
+mostra soltanto formati1/2 assegnati.3 è quindi riservato al binding dichiarativo
+namespace/campo, capability persistence.namespace_binding.v1. Fonte vincolante:
+[ratifica](../verification/CNF-CAD-NAMESPACE-BINDING-01-ratification.md).
+La partizione storica3..u32::MAX sopra conserva lo snapshot precedente; daquesta
+ratifica3 è assegnato al nuovo contratto e4..u32::MAX restano non assegnati.
+
+Nessun compiler/eseguibile compatibile con3 è ancora dichiarato. Il runtime
+corrente e rc.2 supportano1..2; un messaggio di vecchio binario che non conosce3
+non lo abilita. Baseline minima/SHA/gate3 saranno registrati alla consegna02,
+mai dedotti dal numero né attribuiti alla release precedente. Nessuna migrazione
+implicita o modifica della grammatica1/2/FROZEN.
