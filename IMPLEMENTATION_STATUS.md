@@ -6140,3 +6140,46 @@ immutati. Link e tre golden verificati: solo metadata software aggiornato.
 Ledger/report18-03 versionati. Nessun nuovo DONE,125/140immutato. Prossimo:
 commit/push, CI esatta, release.yml solo dopo successo, asset reali da verificare.
 AUTO_CONTINUE; docs/migration esclusa, nessun segreto operativo distribuito.
+
+
+## HANDOFF §15.3 — T-P18-03 pubblicata, WAITING_GATE
+
+Commit497352c pubblicato, CI41996304493 avviata conURL restituito, nessuna lettura
+ordinaria ancora eseguita. Gate locali cinque exit0,887workspace/0fail/6ignored,
+404hash immutati;23testPython, fmt/Clippy/boundary positivi. Runbook e note rc.2,
+versioni first-party e tre metadata golden consegnati.125/140DONE invariato.
+Restano CI sullo SHA esatto, dispatchrelease.yml soltanto dopo successo,
+asset pubblicati privati/immutable da scaricare e verificare. Nessuna release
+rc.2 già dichiarata o chiave operativa distribuita. docs/migration preservata.
+Letture preflightCAD01: PERSIST eP13 qualificati, G0 approvato con rinvii;
+il candidato DSL1.0.0 non è ancora profilo operativo raw. Il compiler dichiarativo
+corrente rifiuta history_identity_invariants e temporal_rules, il resolver storico
+esegue audit-only. Non rimuovere questi requisiti per simulare CAD eseguibile.
+Nessun codice CAD modificato o task CAD dichiarataDONE. DEC-17 ancora aperta.
+
+
+## Avvio indipendente T-CAD-01 —2026-11-05
+
+Preflight documentato in T-CAD-01-preflight.md: corePERSIST/P13 eG0 qualificati.
+Implementazione locale registro dichiarativo generico per chiave flow/version,
+con compiled profile e membri espliciti; nessuno schema eseguibile simulato.
+Sei test mirati registration sintetica CAD e audit-only SIOC in corso; nessun
+DONE anticipato,125/140 invariato. Candidato83campi ancora non distribuito come
+raw operativo; storico/temporale resta esplicitamente rifiutato senza rimozioni.
+Release18-03 resta su497352c remoto; nessun push CAD prima dell’avvio release
+sullo SHA qualificato. Single-agent; nessuna implementazione simultanea locale.
+
+
+## T-P18-03 — correzione lock tooling, gate nativo non superato
+
+CI41996304493 Linux fallita suClippytooling; Windows ancora in corso all’ultima
+lettura. Causa riprodotta exit101: xtask/Cargo.lock manteneva lintra rc.1 mentre
+package èrc.2. Corretta la singola versione, nuova regressionePython compara
+manifest e due lock reali; runbook include gate separati.17tooling/1ignored,
+24Python efmt/Clippytooling positivi sul runtime497352c isolato dal lavoroCAD,
+poi ripristinato con hash identico. Ledger/report18-03 aggiornati. Nessun DONE,
+nessuna release tentata; serve nuovo commit/push/CI prima del dispatchrelease.
+CAD01: cinque gate locali positivi,894workspace/0fail/6ignored,35mirati
+allfeatures/0fail,405hash invariati; nuovaAPI e7test positivi. Gate relativo al
+runtimeCAD immutato; successiva fixPython/lock distinta e tracciata. Nessun gate
+WindowsCAD anticipato. Restano125/140DONE, docs/migration preservata/esclusa.

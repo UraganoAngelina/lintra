@@ -1,6 +1,6 @@
 # Runbook di release Lintra
 
-Procedura T-P18-03, 5 novembre2026. Contratti: ARCH §39C.4–5, piano N-19/N-23,
+Procedura T-P18-03, 5 novembre 2026. Contratti: ARCH §39C.4–5, piano N-19/N-23,
 [ratifica DEC-RELEASE-SETUP-01 A](verification/DEC-RELEASE-SETUP-01-ratification.md).
 Workflow effettivo: `.github/workflows/release.yml`; controlli: `scripts/release.py`.
 L’esecuzione della procedura si registra nel dossier di verifica con SHA, URL,
@@ -16,7 +16,7 @@ abilitata. I bundle dati hanno repository e ciclo di vita separati: vedere
 Usare una versione esplicita `MAJOR.MINOR.PATCH[-prerelease]` accettata dal tooling;
 per una prova usare un suffisso come `0.1.1-rc.2`. Incrementare il suffisso a ogni
 nuova prova. La versione deve coincidere con Cargo.toml, ui/Cargo.toml e le due
-voci first-party in Cargo.lock. Il tag di destinazione è `v<versione>`.
+voci first-party in Cargo.lock e la dipendenza lintra in xtask/Cargo.lock. Il tag di destinazione è `v<versione>`.
 Il commit sorgente completo è registrato in BUILD.json e in `lintra --version`.
 Il tag del repository binari identifica il commit di quel repository, non lo SHA
 del codice Rust: per la provenienza del codice usare BUILD.json e il link al
@@ -39,11 +39,14 @@ Slint ha packaging separato e non è incluso implicitamente. Il bundle incorpora
    pubblicare pazienti, credenziali o file di provisioning. Scrivere note di
    versione in `docs/releases/<versione>.md`, incluse limitazioni e motivo di
    eventuale ripubblicazione. Il commit sorgente linkato dalla release le conserva.
-2. Aggiornare i manifest e Cargo.lock coerentemente. Nei golden che includono
+2. Aggiornare i manifest, Cargo.lock e xtask/Cargo.lock coerentemente. Nei golden che includono
    la versione software cambiare solo quel metadata, verificando che ogni altro
    valore resti identico; non rigenerare baseline normative per un bump.
 3. Eseguire fmt, Clippy e test pertinenti con `--locked`, compresi i test Python
-   `python3 -m unittest discover -s scripts/tests -v`. Registrare gli esiti.
+   `python3 -m unittest discover -s scripts/tests -v`. Verificare anche il workspace separato del tooling con
+   `cargo fmt --manifest-path xtask/Cargo.toml -- --check`,
+   `cargo clippy --manifest-path xtask/Cargo.toml --all-targets --locked -- -D warnings`
+   e `cargo test --manifest-path xtask/Cargo.toml --locked`. Registrare gli esiti.
 4. Commit/push sul branch concordato `work/p1-foundations`. Salvare lo SHA esatto
    con `git rev-parse HEAD`. Avviare la CI nativa sullo stesso branch:
 
@@ -53,7 +56,7 @@ Slint ha packaging separato e non è incluso implicitamente. Il bundle incorpora
 
 5. Annotare la run restituita e leggerla con `gh run view <run-id> --repo
    UraganoAngelina/lintra --json status,conclusion,headSha,jobs,url`. Rispettare
-   AGENTS.md: letture distanziate almeno60secondi, non più di tre ordinarie per run;
+   AGENTS.md: letture distanziate almeno 60 secondi, non più di tre ordinarie per run;
    diagnosi e lettura finale necessarie restano autorizzate. Richiedere
    completed/success sullo SHA preparato e tutti i job richiesti positivi.
    Il packaging UI opzionale può risultare skipped senza qualificare nuovi asset UI.
@@ -61,7 +64,7 @@ Slint ha packaging separato e non è incluso implicitamente. Il bundle incorpora
 ## Avvio della pubblicazione
 
 Il secret sorgente `LINTRA_RELEASE_TOKEN` è un PAT dedicato al solo repository
-binari, Contents write/Metadata read, scadenza90giorni. Lo configura il proprietario
+binari, Contents write/Metadata read, scadenza 90 giorni. Lo configura il proprietario
 in GitHub. Non copiarlo da credenziali locali, non stamparlo e non passarlo alle
 build. `GITHUB_TOKEN` legge il gate del sorgente; il PAT serve negli step di
 preflight/pubblicazione. Credenziale scaduta o non disponibile è un gate tecnico,

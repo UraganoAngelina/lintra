@@ -54,6 +54,19 @@ class Api:
 
 
 class ReleaseTests(unittest.TestCase):
+    def test_first_party_versions_match_in_both_workspaces(self):
+        """Catch stale standalone tooling locks before expensive native builds."""
+        ui = r.tomllib.loads((r.ROOT / "ui/Cargo.toml").read_text())
+        self.assertEqual(ui["package"]["version"], VERSION)
+        for filename, expected in [("Cargo.lock", {"lintra", "lintra-ui"}),
+                                   ("xtask/Cargo.lock", {"lintra"})]:
+            lock = r.tomllib.loads((r.ROOT / filename).read_text())
+            packages = [p for p in lock["package"] if p["name"] in expected]
+            self.assertEqual(len(packages), len(expected), filename)
+            self.assertEqual({p["name"] for p in packages}, expected, filename)
+            for package in packages:
+                self.assertEqual(package["version"], VERSION, filename)
+
     def test_identity_and_ci_guards_reject_missing_or_unrelated_context(self):
         r.identity(VERSION, SHA)
         for version, sha in [("../bad", SHA), ("0.0.1", SHA), (VERSION, "short")]:

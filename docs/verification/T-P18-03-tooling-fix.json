@@ -1,0 +1,22 @@
+{
+  "task": "T-P18-03",
+  "fix": "standalone xtask lock follows first-party rc.2 version",
+  "native_failure_run": 41996304493,
+  "native_failed_step": "Clippy tooling",
+  "local_reproduction_exit": 101,
+  "local_reproduction": "cargo clippy --manifest-path xtask/Cargo.toml --all-targets --locked --offline -- -D warnings",
+  "checks": {
+    "tooling_fmt": 0,
+    "tooling_clippy_all_targets_locked": 0,
+    "tooling_tests_locked": 0,
+    "python_suite_24_tests": 0
+  },
+  "release_runtime_source_matches_497352c": true,
+  "sha256": {
+    "Cargo.toml": "2683dd5c62a7efbabdd0f5e53a6cde5a155ee26a817ead2d3e234d5edf114b5e",
+    "Cargo.lock": "7e48749919a9e89e66c4493847fb3f87f84385858d65732db3450d9130640dbe",
+    "ui/Cargo.toml": "24f15c04927ecda7e57c13e5f7640a06c9a13891aabfd2d7da45497e367994e8",
+    "xtask/Cargo.lock": "8b46834085575d17f1ab4a2deac17b1e0d8834606f74e4a3dc65b73e55c4d960",
+    "scripts/tests/test_release.py": "619f99f74d197d4fd1dcbffe405d9678a23163ff0684173715c9b5b61b17f955"
+  }
+}

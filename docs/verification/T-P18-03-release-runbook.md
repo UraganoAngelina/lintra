@@ -53,3 +53,26 @@ positivi. Ledger T-P18-03-local-gates.json, impronte sorgenti immutate.
 Controllo separato link locali/versioni manifest-lock e confronto strutturale
 dei tre golden PASS: cambia solo validator_version; JSONL e schema invariati.
 Rust runtime non modificato. Restano CI nativa propria e prova release reale.
+
+
+## Correzione gate tooling —2026-11-05
+
+CI41996304493 su497352c: Linux ha superato fmt/Clippy, test standard/allfeatures/
+core, smoke e prove precedenti; fallisce allo step26Clippy tooling. Windows ancora
+in corso all’osservazione. Riprodozione locale sul runtime esatto497352c: exit101,
+`cannot update ... xtask/Cargo.lock because --locked was passed`. Il bump aveva
+omesso la versione lintra nel lock del workspace separato; nessuna dipendenza
+nuova o policy runtime coinvolta. Nessun tentativo di pubblicazione ha riservato
+rc.2, che rimane disponibile salvo preflight remoto autoritativo.
+
+Corretto quel solo metadata first-party in xtask/Cargo.lock. Aggiunto un test
+Python che confronta versioni dei manifest e dei due lock reali, prima delle
+build native costose; l’assenza di una voce o una versione discordante fallisce.
+Aggiornato il runbook con tutti i lock e gate standalone necessari. Gate di
+correzione effettivi: fmt/Clippy all-targets tooling exit0,17test/1ignored tooling,
+24testPython passati. Ledger T-P18-03-tooling-fix.json.
+Durante questi gate il file registry CAD è stato preservato fuori dai sorgenti
+e il runtime ricondotto esattamente a497352c; successivamente il lavoro CAD è
+stato ripristinato con hash identico. Nessuna modifica dell’utente rimossa.
+Serve una nuova CI sul commit corretto prima del dispatchrelease; la run fallita
+resta evidenza e non viene reinterpretata come gate positivo.
