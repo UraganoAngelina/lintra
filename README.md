@@ -220,6 +220,8 @@ Gli upload sono controllati in draft prima della pubblicazione immutabile;
 errori lasciano la versione riservata, da diagnosticare senza sovrascriverla.
 La prerelease privata0.1.1-rc.1 e i relativi asset sono stati verificati:
 [stato T-P15-05](docs/verification/T-P15-05-executable-release.md).
+Procedura operativa e gestione dei fallimenti: [runbook di release](docs/RUNBOOK_RELEASE.md).
+La prova privata successiva è descritta nelle [note rc.2](docs/releases/0.1.1-rc.2.md).
 
 ## Struttura
 

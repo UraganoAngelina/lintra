@@ -2363,7 +2363,7 @@ checksum = "d4a5ff6bcca6c4867b1c4fd4ef63e4db7436ef363e0ad7531d1558856bae64f4"
 
 [[package]]
 name = "lintra"
-version = "0.1.1-rc.1"
+version = "0.1.1-rc.2"
 dependencies = [
  "calamine",
  "chrono",
@@ -2385,7 +2385,7 @@ dependencies = [
 
 [[package]]
 name = "lintra-ui"
-version = "0.1.1-rc.1"
+version = "0.1.1-rc.2"
 dependencies = [
  "lintra",
  "png 0.17.16",

@@ -6119,3 +6119,24 @@ aggiornati ledger nativo, indice task e frontiera, nessun sorgente runtime cambi
 Git work/p1-foundations; docs/migration preesistente preservata/esclusa.
 AUTO_CONTINUE: preflight18-03, dipendenza15-05 qualificata. DEC-17 ancora aperta;
 nessuna approvazione normativa CAD, dato reale o chiave operativa introdotti.
+
+
+## Preflight T-P18-03 — 2026-11-05
+
+READY→IN_PROGRESS con15-05 DONE (CI40349711927/release40352109303) e ratifica
+DEC-RELEASE-SETUP-01 A. Runbook/note rc.2, manifest/lock first-party e soli metadata
+validator_version dei tre golden preparati. Runtime, dipendenze, errori JSONL,
+schemi/norme invariati. Gate locali foreground in corso, nessun esito anticipato.
+125/140DONE immutato; seguono commit/push, CI sullo SHA esatto, prova soloCI in
+repository privato e verifica integrale asset. Nessuna chiave operativa generata.
+AUTO_CONTINUE; docs/migration preservata/esclusa, single-agent.
+
+
+## T-P18-03 locale qualificata — 2026-11-05
+
+Runbook/versione rc.2 preparati, cinque gate locali exit0:887workspace
+allfeatures/0fail/6ignored, fmt/Clippy/Python/boundary positivi, hash sorgenti
+immutati. Link e tre golden verificati: solo metadata software aggiornato.
+Ledger/report18-03 versionati. Nessun nuovo DONE,125/140immutato. Prossimo:
+commit/push, CI esatta, release.yml solo dopo successo, asset reali da verificare.
+AUTO_CONTINUE; docs/migration esclusa, nessun segreto operativo distribuito.
