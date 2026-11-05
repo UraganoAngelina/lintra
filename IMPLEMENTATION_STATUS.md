@@ -28,8 +28,8 @@ prototipo nel runtime né helper cfg(test) trasferiti. Nessuna nuova campagna o
 ottimizzazione implementativa autorizzata: futuro profiling sequenziale CAD/SIOC
 su volumi rappresentativi e Windows 11 prima di proposte distinte.
 CAD01/10 DONE con CI42004833488; PERSIST02 DONE; namespace A estesa ratificato.
-Next T-CAD-02 READY, preflight sul branch work/p1-foundations dopo conservazione
-spike e sincronizzazione dei soli documenti. Single-agent, no background/delega;
+T-CAD-02 IN_PROGRESS: preflight avviato e documentato sul branch work/p1-foundations
+dopo conservazione dello spike e sincronizzazione dei soli documenti. Single-agent, no background/delega;
 commit/push/CI autorizzati, docs/migration preesistente preservata/esclusa.
 
 ## Registro precedente —18-03/CAD01/CAD10 DONE, spike17-05 in corso
@@ -6366,3 +6366,17 @@ Limiti cancellazione/ordine/RSS/scope e rappresentatività conservati.
 Preservare il branch spike; trasferire soltanto documenti/evidenze nel branch
 work/p1-foundations, nessun src/spike compilabile. AUTO_CONTINUE: preflight CAD-02
 su prerequisiti reali e ratifica namespace; nessuna nuova campagna prestazionale.
+
+
+## Ripresa T-CAD-02 — preflight, 2026-11-05
+
+Chiusura sperimentale pubblicata10a0734, documenti/evidenze sul prodotto42392b3.
+Nessuna differenza di src/Cargo/UI/CI dalla basefb9891e; nessun helper cfg(test)
+trasferito. Inventario hash evidenze verificato; confronti nativi JSONL e pixel
+ripetuti localmente positivi. Log conservati byte-per-byte, inclusi whitespace
+originali: diff-check limitato a documenti/JSON redatti, senza riscrivere le prove.
+T-CAD-02 IN_PROGRESS, preflight in docs/verification/T-CAD-02-preflight.md:
+prerequisiti01/PERSIST02 qualificati e ratifica namespace verificata,3disponibile
+ma non implementato. Ricostruiti confini raw/compiler/request/locale/proiezione/
+storico/sessione; nessun blocco di autorizzazione rilevato. Implementazione e gate
+CAD02 ancora da eseguire,129/140DONE invariato; nessun nuovo supporto dichiarato.
