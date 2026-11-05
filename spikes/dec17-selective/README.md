@@ -38,3 +38,12 @@ stopped. Smoke timing is not a performance claim. Output is exclusive/no-clobber
 
 A2 Full and A3 end-to-end are not implemented by A1. No conclusion about Full
 speedup, max_errors, cancellation or adoption follows from these LocalOnly runs.
+
+Instrumentation control: LINTRA_DEC17_HEAP_MODE=off disables all shared live/peak
+counter writes once before fixtures/workers are created. Heap peak is then null,
+not zero; RSS sampling stays active. The allocator still delegates to System
+with a read-only mode-flag check, so this is a counter-disabled control rather
+than an assertion of zero instrumentation overhead. Never re-enable tracking
+in that process. LINTRA_DEC17_A1_CONTROL=1 selects the two500k balanced workloads
+with sparse/heavy errors, still three repetitions and the same four variants.
+Paired on/off comparisons use the exact same release executable and inputs.

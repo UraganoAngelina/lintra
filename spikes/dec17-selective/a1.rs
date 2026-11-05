@@ -25,7 +25,13 @@ struct Meter;
 static LIVE: AtomicUsize = AtomicUsize::new(0);
 static PEAK: AtomicUsize = AtomicUsize::new(0);
 static METERING: AtomicBool = AtomicBool::new(false);
+// May be disabled once, before fixtures/workers exist, and never re-enabled.
+// Disabled runs report no heap peak; System still receives every operation.
+static TRACK_LIVE: AtomicBool = AtomicBool::new(true);
 fn acquired(n: usize) {
+    if !TRACK_LIVE.load(Ordering::Relaxed) {
+        return;
+    }
     let live = LIVE.fetch_add(n, Ordering::Relaxed) + n;
     if METERING.load(Ordering::Relaxed) {
         PEAK.fetch_max(live, Ordering::Relaxed);
@@ -50,11 +56,13 @@ unsafe impl GlobalAlloc for Meter {
     }
     unsafe fn dealloc(&self, p: *mut u8, l: Layout) {
         unsafe { System.dealloc(p, l) };
-        LIVE.fetch_sub(l.size(), Ordering::Relaxed);
+        if TRACK_LIVE.load(Ordering::Relaxed) {
+            LIVE.fetch_sub(l.size(), Ordering::Relaxed);
+        }
     }
     unsafe fn realloc(&self, p: *mut u8, l: Layout, n: usize) -> *mut u8 {
         let q = unsafe { System.realloc(p, l, n) };
-        if !q.is_null() {
+        if !q.is_null() && TRACK_LIVE.load(Ordering::Relaxed) {
             if n >= l.size() {
                 acquired(n - l.size());
             } else {
@@ -362,7 +370,7 @@ fn sample(
     Sample {
         artifacts,
         merged,
-        metrics: json!({"workers":workers,"variant":if workers==0{"sequential"}else{"std_threads"},"trace_seconds":pass_seconds,"aggregation_seconds":aggregation_seconds,"total_seconds":total_seconds,"additional_peak_requested_heap_bytes":heap,"peak_rss_sampled_bytes":peak_rss,"starting_rss_bytes":starting_rss,"additional_peak_rss_sampled_bytes":peak_rss.saturating_sub(starting_rss),"rss_sampling_ms":2,"merged_bytes":merged_bytes,"staging_plus_merged_bytes":staged_bytes+merged_bytes,"scope":"A1 independent LocalOnly; not a Full measurement"}),
+        metrics: json!({"workers":workers,"variant":if workers==0{"sequential"}else{"std_threads"},"trace_seconds":pass_seconds,"aggregation_seconds":aggregation_seconds,"total_seconds":total_seconds,"heap_tracking":TRACK_LIVE.load(Ordering::Relaxed),"additional_peak_requested_heap_bytes":if TRACK_LIVE.load(Ordering::Relaxed){Some(heap)}else{None},"peak_rss_sampled_bytes":peak_rss,"starting_rss_bytes":starting_rss,"additional_peak_rss_sampled_bytes":peak_rss.saturating_sub(starting_rss),"rss_sampling_ms":2,"merged_bytes":merged_bytes,"staging_plus_merged_bytes":staged_bytes+merged_bytes,"scope":"A1 independent LocalOnly; not a Full measurement"}),
     }
 }
 fn report_digest(file: &tempfile::NamedTempFile) -> String {
@@ -425,6 +433,14 @@ fn compare_summary(reference: &Value, actual: &Value, path: &str, diffs: &mut Ve
 #[test]
 #[ignore = "opt-in foreground DEC-17 experiment; no product feature"]
 fn a1_local_only() {
+    let heap_tracking = match std::env::var("LINTRA_DEC17_HEAP_MODE").as_deref() {
+        Ok("off") => false,
+        Ok("on") | Err(_) => true,
+        _ => panic!("heap mode must be on/off"),
+    };
+    if !heap_tracking {
+        TRACK_LIVE.store(false, Ordering::Relaxed);
+    }
     fn send_sync<T: Send + Sync>() {}
     send_sync::<CompiledFlowSchema>();
     send_sync::<PreparedReferenceData>();
@@ -451,8 +467,11 @@ fn a1_local_only() {
     } else {
         vec![0, 1]
     };
+    let control = std::env::var_os("LINTRA_DEC17_A1_CONTROL").is_some();
     let cases = if smoke {
         vec![(100, false, false), (100, true, true)]
+    } else if control {
+        vec![(500_000, false, false), (500_000, false, true)]
     } else {
         vec![
             (10_000, false, false),
@@ -549,7 +568,7 @@ fn a1_local_only() {
     owner
         .close()
         .expect("owned experiment files must be removed");
-    let result = json!({"task":"T-P17-05","activity":"A1","synthetic":true,"experimental_only":true,"source_commit":env!("LINTRA_BUILD_COMMIT"),"package_version":env!("CARGO_PKG_VERSION"),"available_parallelism":parallelism,"os":std::env::consts::OS,"arch":std::env::consts::ARCH,"sampler_threads":1,"worker_counts_include_validation_workers_only":true,"compiler_excluded":true,"schema_hash":hash,"harness_sha256":digest(include_bytes!("a1.rs")),"measurements":measurements});
+    let result = json!({"task":"T-P17-05","activity":"A1","synthetic":true,"experimental_only":true,"source_commit":env!("LINTRA_BUILD_COMMIT"),"package_version":env!("CARGO_PKG_VERSION"),"available_parallelism":parallelism,"heap_tracking":heap_tracking,"control_workloads":control,"os":std::env::consts::OS,"arch":std::env::consts::ARCH,"sampler_threads":1,"worker_counts_include_validation_workers_only":true,"compiler_excluded":true,"schema_hash":hash,"harness_sha256":digest(include_bytes!("a1.rs")),"measurements":measurements});
     let mut file = fs::OpenOptions::new()
         .create_new(true)
         .write(true)

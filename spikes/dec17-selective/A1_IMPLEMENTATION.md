@@ -87,3 +87,29 @@ measurements must use a committed/frozen harness before A1 conclusions.
 Full A2/A3 are separate sequential activities after A1. No production adoption,
 new dependency, scheduling framework, Full speedup or treatment of max_errors/
 cancellation is claimed by this implementation.
+
+## First completed Linux measurement and instrumentation control
+
+Commit6c9cfd5 release binary completed84samples/7workloads/3repetitions, all JSONL
+byte comparisons, independent counts/input hashes and deterministic summaries
+passed.345source hashes unchanged before/after,145.57s foreground wall time.
+The raw result/ledger and descriptive medians are preserved under
+`docs/verification/T-P17-05/A1-linux-metered`. No Full inference follows.
+
+A shared atomic allocator meter is itself a synchronization workload, especially
+on error-heavy inputs. A paired control therefore disables live/peak counter
+writes once before fixtures/workers exist, never re-enabling them in that
+process. Deallocation still always goes to System. Heap metrics become null;
+RSS sampling remains. The read-only mode-flag check still costs something, so
+this is not described as an instrumentation-free product executable.
+
+Control comparisons use the same new release binary in both modes and the same
+two500k balanced datasets (sparse/heavy), three repetitions/four variants. The
+first84samples remain attributable to their original frozen commit/harness;
+they are not silently relabeled as the new binary's measurements.
+
+The pinned regex1.13.1 primary documentation also describes synchronization
+costs for a shared regex on short inputs. This experiment retains the exact
+shared compiled schema; it does not clone/rewrite compiled plans as an unmeasured
+optimization. Cache-contention as an explanation remains a hypothesis, not a
+sampling-profile finding.
