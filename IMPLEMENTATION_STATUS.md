@@ -33,6 +33,15 @@ Entrambe pubblicate e qualificate daCI42004833488 completed/success sullo SHA
 46d574f8ec4627bcc9561d298c2dc33007137654, sette job richiesti positivi.
 Non usata la CIrelease8430de9. Nessun gate residuo01/10; profilo CAD completo aperto.
 
+T-P17-05 IN_PROGRESS sul branch isolato `spike/dec17-selective-pass1`.
+Audit reale completato; A1:84campioni release più96di controllo sul contatoreheap,
+JSONL identici e sorgenti fermi. A2 prototipo FullPassOne/collector originali,
+code bounded64 pertrace, move delle proiezioni, barriera e passata2 originale;
+5test mirati positivi, gateworkspace e A3 ancora in corso. Cancellazione dinamica
+NON equivalente (abort tecnico senza summary): condizione di adozione fallita,
+registrata esplicitamente, nessun nuovo contratto o modifica prodotto.
+Dossier `docs/verification/T-P17-05-parallelism.md`; nessun DONE prima diA3/gate.
+
 Ratifiche autore5nov: DEC-17 Aestesa A1LocalOnly/A2Full pass1parallela-pass2
 sequenziale/A3end-to-end; solo spike, nessuna adozione/API/CLI/UI/dipendenza.
 Audit reale17-05 IN_PROGRESS prioritario, iniziatoFlowValidator/projection/store/

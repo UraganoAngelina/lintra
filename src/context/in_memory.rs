@@ -25,6 +25,18 @@ impl InMemoryContextStore {
     pub fn new() -> Self {
         Self::default()
     }
+
+    /// Experiment only: release secondary Arc owners before moving each minimal
+    /// projection into the coordinator. No payload cloning and no raw records.
+    #[cfg(test)]
+    pub(crate) fn dec17_take(self) -> impl Iterator<Item = ProjectedRecord> {
+        self.traces.into_values().flat_map(|mut trace| {
+            trace.targets.clear();
+            trace.records.into_values().map(|record| {
+                Arc::try_unwrap(record).expect("experiment owns all projection references")
+            })
+        })
+    }
 }
 impl fmt::Debug for InMemoryContextStore {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

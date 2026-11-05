@@ -275,77 +275,95 @@ impl<'a> FlowValidator<'a> {
             )
             .map_err(FlowValidationError::Summary)?;
         let mut state = FlowState::new(self.schema);
-        for (index, path) in prepared {
-            if ports.summary.error_limit_reached() {
-                return state.finish(ExecutionStop::ErrorLimit, ports);
-            }
-            if (ports.control.is_cancelled)() {
-                return state.finish(ExecutionStop::Cancelled, ports);
-            }
-            let trace = &self.schema.traces()[index];
-            let mut collector = ProjectionCollector {
-                flow: self.schema,
-                trace_index: index,
-                state: &mut state,
-                keys: HashMap::new(),
-                record_observer: &mut record_observer,
-            };
-            let mut on_event = |event| (ports.control.on_event)(FlowEvent::Trace(event));
-            let mut control = TraceControl {
-                is_cancelled: ports.control.is_cancelled,
-                on_event: &mut on_event,
-            };
-            let mut validator = match self.references {
-                Some(references) => {
-                    // A reference snapshot can be supplied for a flow with no
-                    // dependencies without inventing an observer.
-                    if self.schema.required_reference_data().is_empty() {
-                        TraceValidator::new(self.schema, trace.id(), self.newline)
-                    } else {
-                        let observer = ports
-                            .reference_observers
-                            .as_deref_mut()
-                            .ok_or(FlowValidationError::ReferencesNotConfigured)?
-                            .for_trace(trace.id())
-                            .map_err(FlowValidationError::ReferenceObserver)?;
-                        TraceValidator::with_reference_data(
-                            self.schema,
-                            trace.id(),
-                            self.newline,
-                            references,
-                            observer,
-                        )
-                    }
-                }
-                None => TraceValidator::new(self.schema, trace.id(), self.newline),
-            }
-            .map_err(FlowValidationError::Trace)?;
-            let completion = validator
-                .validate_full_path(
-                    path,
-                    TracePassOnePorts {
-                        sink: ports.sink,
-                        summary: ports.summary,
-                        control: &mut control,
-                        audits: ports.audits,
-                        collector: &mut collector,
-                    },
-                )
-                .map_err(FlowValidationError::Trace)?;
-            drop(validator);
-            if completion.completion != ExecutionStop::Completed {
-                return state.finish(completion.completion, ports);
-            }
-            let evidence = &mut state.traces[index];
-            evidence.coverage = if evidence.unprojectable_records == 0 {
-                TraceContextCoverage::Complete
-            } else {
-                TraceContextCoverage::Partial
-            };
+        #[cfg(test)]
+        let pass_one_started = std::time::Instant::now();
+        // Test-only branch isolation: normal builds contain only the original
+        // sequential loop. The prototype never changes a public contract.
+        #[cfg(test)]
+        let experimental = hybrid::enabled(self, &ports, record_observer.is_some());
+        #[cfg(not(test))]
+        let experimental = false;
+        #[cfg(test)]
+        if experimental {
+            state = hybrid::pass_one(self, &prepared, &mut ports)?;
         }
+        if !experimental {
+            for (index, path) in prepared {
+                if ports.summary.error_limit_reached() {
+                    return state.finish(ExecutionStop::ErrorLimit, ports);
+                }
+                if (ports.control.is_cancelled)() {
+                    return state.finish(ExecutionStop::Cancelled, ports);
+                }
+                let trace = &self.schema.traces()[index];
+                let mut collector = ProjectionCollector {
+                    flow: self.schema,
+                    trace_index: index,
+                    state: &mut state,
+                    keys: HashMap::new(),
+                    record_observer: &mut record_observer,
+                };
+                let mut on_event = |event| (ports.control.on_event)(FlowEvent::Trace(event));
+                let mut control = TraceControl {
+                    is_cancelled: ports.control.is_cancelled,
+                    on_event: &mut on_event,
+                };
+                let mut validator = match self.references {
+                    Some(references) => {
+                        // A reference snapshot can be supplied for a flow with no
+                        // dependencies without inventing an observer.
+                        if self.schema.required_reference_data().is_empty() {
+                            TraceValidator::new(self.schema, trace.id(), self.newline)
+                        } else {
+                            let observer = ports
+                                .reference_observers
+                                .as_deref_mut()
+                                .ok_or(FlowValidationError::ReferencesNotConfigured)?
+                                .for_trace(trace.id())
+                                .map_err(FlowValidationError::ReferenceObserver)?;
+                            TraceValidator::with_reference_data(
+                                self.schema,
+                                trace.id(),
+                                self.newline,
+                                references,
+                                observer,
+                            )
+                        }
+                    }
+                    None => TraceValidator::new(self.schema, trace.id(), self.newline),
+                }
+                .map_err(FlowValidationError::Trace)?;
+                let completion = validator
+                    .validate_full_path(
+                        path,
+                        TracePassOnePorts {
+                            sink: ports.sink,
+                            summary: ports.summary,
+                            control: &mut control,
+                            audits: ports.audits,
+                            collector: &mut collector,
+                        },
+                    )
+                    .map_err(FlowValidationError::Trace)?;
+                drop(validator);
+                if completion.completion != ExecutionStop::Completed {
+                    return state.finish(completion.completion, ports);
+                }
+                let evidence = &mut state.traces[index];
+                evidence.coverage = if evidence.unprojectable_records == 0 {
+                    TraceContextCoverage::Complete
+                } else {
+                    TraceContextCoverage::Partial
+                };
+            }
+        }
+        #[cfg(test)]
+        hybrid::end_pass_one(pass_one_started.elapsed().as_secs_f64());
         if (ports.control.is_cancelled)() {
             return state.finish(ExecutionStop::Cancelled, ports);
         }
+        #[cfg(test)]
+        hybrid::capture(&state, self.schema);
         (ports.control.on_event)(FlowEvent::CrossStarted);
         let coverage = state
             .traces
@@ -361,6 +379,8 @@ impl<'a> FlowValidator<'a> {
         };
         let mut on_record =
             |count| (ports.control.on_event)(FlowEvent::CrossRecordsProcessed { count });
+        #[cfg(test)]
+        let cross_started = std::time::Instant::now();
         let (totals, completion) = run_cross_record_rules(
             self.schema,
             &state.store,
@@ -378,6 +398,8 @@ impl<'a> FlowValidator<'a> {
             },
         )
         .map_err(FlowValidationError::Cross)?;
+        #[cfg(test)]
+        hybrid::end_cross(cross_started.elapsed().as_secs_f64());
         state.totals = totals;
         state.finish(completion, ports)
     }
@@ -717,3 +739,7 @@ pub fn preflight_flow_inputs(
 #[cfg(test)]
 #[path = "../../spikes/dec17-selective/a1.rs"]
 mod selective_parallelism;
+
+#[cfg(test)]
+#[path = "../../spikes/dec17-selective/full.rs"]
+mod hybrid;

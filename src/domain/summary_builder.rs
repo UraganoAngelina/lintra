@@ -170,6 +170,50 @@ pub struct ValidationSummaryBuilder {
     expected_full: Option<FullExecutionExpectation>,
 }
 impl ValidationSummaryBuilder {
+    /// Experiment only: disjoint trace-local totals, after their sink messages
+    /// were acknowledged in canonical order. Full cross invalidation still uses
+    /// the original single coordinator builder. Limited runs never enter here.
+    #[cfg(test)]
+    pub(crate) fn dec17_merge(&mut self, other: Self) -> Result<(), SummaryBuildError> {
+        if self.failed
+            || other.failed
+            || self.error_budget.is_some()
+            || other.error_budget.is_some()
+            || other.cancelled
+            || other.truncated
+            || self.key != other.key
+        {
+            return Err(SummaryBuildError::PreviousFailure);
+        }
+        for (target, count, kind) in [
+            (
+                &mut self.processed,
+                other.processed,
+                SummaryCounter::Processed,
+            ),
+            (&mut self.valid, other.valid, SummaryCounter::Valid),
+            (&mut self.invalid, other.invalid, SummaryCounter::Invalid),
+            (&mut self.errors, other.errors, SummaryCounter::Errors),
+            (
+                &mut self.skipped,
+                other.skipped,
+                SummaryCounter::SkippedRules,
+            ),
+        ] {
+            *target = target
+                .checked_add(count)
+                .ok_or(SummaryBuildError::CounterOverflow(kind))?;
+        }
+        for (code, count) in other.by_code {
+            let target = self.by_code.entry(code).or_default();
+            *target = target
+                .checked_add(count)
+                .ok_or(SummaryBuildError::CounterOverflow(
+                    SummaryCounter::ErrorsByCode,
+                ))?;
+        }
+        Ok(())
+    }
     pub fn new(key: SchemaKey, scope: ScopeSummary) -> Self {
         Self {
             key,

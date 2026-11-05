@@ -88,6 +88,21 @@ fn active(state: &State) -> Result<(), InputAuditError> {
     Ok(())
 }
 impl InputAuditSession {
+    /// Transfer actual observed states after every reader is dropped. Only the
+    /// experimental coordinator calls this, in schema order; EOF is never forged.
+    #[cfg(test)]
+    pub(crate) fn dec17_adopt(&self, other: Self) -> Result<(), InputAuditError> {
+        if Arc::strong_count(&other.state) != 1 {
+            return Err(InputAuditError::ClosedSession);
+        }
+        let mut source = lock(&other.state)?;
+        active(&source)?;
+        let mut target = lock(&self.state)?;
+        active(&target)?;
+        target.slots.append(&mut source.slots);
+        source.closed = true;
+        Ok(())
+    }
     pub fn new() -> Self {
         Self::default()
     }

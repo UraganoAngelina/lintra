@@ -74,6 +74,21 @@ unsafe impl GlobalAlloc for Meter {
 }
 #[global_allocator]
 static ALLOCATOR: Meter = Meter;
+pub(super) fn disable_heap_counter() {
+    TRACK_LIVE.store(false, Ordering::Relaxed);
+}
+pub(super) fn heap_start() -> usize {
+    let start = LIVE.load(Ordering::Relaxed);
+    PEAK.store(start, Ordering::Relaxed);
+    METERING.store(true, Ordering::Relaxed);
+    start
+}
+pub(super) fn heap_end(start: usize) -> Option<usize> {
+    METERING.store(false, Ordering::Relaxed);
+    TRACK_LIVE
+        .load(Ordering::Relaxed)
+        .then(|| PEAK.load(Ordering::Relaxed).saturating_sub(start))
+}
 fn digest(bytes: &[u8]) -> String {
     Sha256::digest(bytes)
         .iter()
@@ -82,7 +97,7 @@ fn digest(bytes: &[u8]) -> String {
 }
 
 #[cfg(target_os = "linux")]
-fn rss() -> u64 {
+pub(super) fn rss() -> u64 {
     fs::read_to_string("/proc/self/status")
         .unwrap()
         .lines()
@@ -96,7 +111,7 @@ fn rss() -> u64 {
         * 1024
 }
 #[cfg(windows)]
-fn rss() -> u64 {
+pub(super) fn rss() -> u64 {
     use windows_sys::Win32::System::{ProcessStatus::*, Threading::*};
     let mut c = std::mem::MaybeUninit::<PROCESS_MEMORY_COUNTERS>::zeroed();
     // SAFETY: current-process pseudohandle, writable correctly sized buffer;
@@ -114,7 +129,7 @@ fn rss() -> u64 {
     unsafe { c.assume_init() }.WorkingSetSize as u64
 }
 #[cfg(not(any(target_os = "linux", windows)))]
-fn rss() -> u64 {
+pub(super) fn rss() -> u64 {
     panic!("unqualified OS")
 }
 

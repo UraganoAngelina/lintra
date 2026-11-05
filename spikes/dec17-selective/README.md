@@ -47,3 +47,10 @@ than an assertion of zero instrumentation overhead. Never re-enable tracking
 in that process. LINTRA_DEC17_A1_CONTROL=1 selects the two500k balanced workloads
 with sparse/heavy errors, still three repetitions and the same four variants.
 Paired on/off comparisons use the exact same release executable and inputs.
+
+A2/A3 is in `full.rs`; read `FULL_IMPLEMENTATION.md`, including the failed dynamic
+cancellation condition, before interpreting performance. It remains `cfg(test)`
+and cannot enable parallel execution in a product build. Run the ignored
+`hybrid::full_benchmark` only in an isolated foreground process, with exclusive
+`LINTRA_DEC17_FULL_OUTPUT` and optionally `LINTRA_DEC17_SMOKE=1`. No concurrent
+build or benchmark may run during measurement.
