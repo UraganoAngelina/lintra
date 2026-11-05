@@ -92,3 +92,21 @@ T-P18-03-release-ci.json. Queste build non includono registryCAD01, componenteT7
 o proposte successive nei commit locali. Resta verifica della pubblicazione reale;
 nonDONE18. Branch può ora avanzare per unaCI CAD distinta, senza mutare il sorgente
 della release già fissato e senza pubblicazioni locali.
+
+
+## Chiusura effettiva — T-P18-03 DONE
+
+Release42004607059 completed/success sullo SHA8430de9: preflight, due build e
+publish positivi. Release privata v0.1.1-rc.2 non draft/immutable=true, asset
+scaricati in directory nuova. Inventario esatto tre asset, size/stato uploaded/
+digest server confrontati, SHA256SUMS esterno e due inventari/checksum interni/
+versione/SHA/target/audit verificati con l’inspector. Binario Linux scaricato
+eseguito: versione rc.2 e SHA8430de9 corretti. Windows qualificato dalla CI MSVC,
+non eseguito suLinux. Nessuna pubblicazione locale o simulazione Actions.
+
+Evidenza: T-P18-03-published-release.json e release-ci.json. Dimensioni archivi:
+Windows9.966.465byte, Linux4.206.105byte; SHA256SUMS227byte. Nessuna chiaveoperativa,
+UI/installer/DB storico o dataset regionale aggiunti alla release; demoSYNTHETIC.
+RegistryCAD01/T70 e formato3/spike17 successivi non sono capability della rc.2.
+126/140DONE90%. Nessun gate residuo18; M9 non raggiunta, sincronizzazione18-04
+attende le altre task/decisioni/implementazioni. Runbook collaudato realmente.

@@ -1,0 +1,403 @@
+{
+  "task": "T-P18-03",
+  "source_sha": "8430de9149862c70cdc3eda1a0a7ef79467c557e",
+  "version": "0.1.1-rc.2",
+  "done": true,
+  "repository": {
+    "full_name": "UraganoAngelina/lintra-binaries",
+    "private": true,
+    "archived": false
+  },
+  "release": {
+    "id": 435016243,
+    "tag_name": "v0.1.1-rc.2",
+    "draft": false,
+    "prerelease": true,
+    "immutable": true,
+    "published_at": "2026-11-05T09:48:35Z",
+    "html_url": "https://github.com/UraganoAngelina/lintra-binaries/releases/tag/v0.1.1-rc.2"
+  },
+  "assets": [
+    {
+      "name": "lintra-0.1.1-rc.2-x86_64-pc-windows-msvc.zip",
+      "size": 9966465,
+      "digest": "sha256:3cb5c182e990d7428f815bad9135ca6f4eaa647d6e1b558278a2c94aa6bdc4ba",
+      "state": "uploaded"
+    },
+    {
+      "name": "lintra-0.1.1-rc.2-x86_64-unknown-linux-gnu.tar.gz",
+      "size": 4206105,
+      "digest": "sha256:bc35f117aa4906416f72d032cacd3c09fefc8517ba3b1ad3b1cec9d820336a4f",
+      "state": "uploaded"
+    },
+    {
+      "name": "SHA256SUMS",
+      "size": 227,
+      "digest": "sha256:32632188d32a2fef6d68c03ecb83c3594fcca5a4b8e1ff0ebc955e57a86c1919",
+      "state": "uploaded"
+    }
+  ],
+  "checks": {
+    "server_digests_sizes_states": true,
+    "exact_inventory": true,
+    "external_checksums": true,
+    "native_archives_identity_inventory_inner_checksums": true
+  },
+  "build_audits": {
+    "x86_64-unknown-linux-gnu": {
+      "artifact_verified": true,
+      "binary_sha256": "4c56e9471ba33103e2107122f873483585a83ab327a924da44000d39d37aa6ff",
+      "glibc": [
+        "glibc",
+        "2.39"
+      ],
+      "native_os": "linux",
+      "python": "3.13.18",
+      "reproducible": true,
+      "runner_image": "ubuntu24",
+      "runner_image_version": "20261101.360.1",
+      "runner_os": "Linux",
+      "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+      "source_sha": "8430de9149862c70cdc3eda1a0a7ef79467c557e",
+      "target": "x86_64-unknown-linux-gnu",
+      "version": "0.1.1-rc.2"
+    },
+    "x86_64-pc-windows-msvc": {
+      "artifact_verified": true,
+      "binary_sha256": "0edf8d7188339ca3dc80770daa467ba3d64bb39209ed716263e541d70dd88c20",
+      "glibc": null,
+      "native_os": "win32",
+      "python": "3.13.17",
+      "reproducible": true,
+      "runner_image": "win25-vs2026",
+      "runner_image_version": "20261103.298.1",
+      "runner_os": "Windows",
+      "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+      "source_sha": "8430de9149862c70cdc3eda1a0a7ef79467c557e",
+      "target": "x86_64-pc-windows-msvc",
+      "version": "0.1.1-rc.2"
+    }
+  },
+  "release_run": {
+    "conclusion": "success",
+    "headSha": "8430de9149862c70cdc3eda1a0a7ef79467c557e",
+    "jobs": [
+      {
+        "completedAt": "2026-11-05T09:42:48Z",
+        "conclusion": "success",
+        "databaseId": 127168105512,
+        "name": "preflight",
+        "startedAt": "2026-11-05T09:42:42Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-11-05T09:42:43Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-11-05T09:42:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:42:45Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-11-05T09:42:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:42:45Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 3,
+            "startedAt": "2026-11-05T09:42:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:42:46Z",
+            "conclusion": "success",
+            "name": "Verify exact source gate, credential and unused version",
+            "number": 4,
+            "startedAt": "2026-11-05T09:42:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:42:47Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 7,
+            "startedAt": "2026-11-05T09:42:46Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:42:47Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 8,
+            "startedAt": "2026-11-05T09:42:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:42:47Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 9,
+            "startedAt": "2026-11-05T09:42:47Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/UraganoAngelina/lintra/actions/runs/42004607059/job/127168105512"
+      },
+      {
+        "completedAt": "2026-11-05T09:47:48Z",
+        "conclusion": "success",
+        "databaseId": 127168174051,
+        "name": "build (windows-2025, x86_64-pc-windows-msvc)",
+        "startedAt": "2026-11-05T09:42:50Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-11-05T09:42:52Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-11-05T09:42:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:42:58Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-11-05T09:42:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:42:59Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 3,
+            "startedAt": "2026-11-05T09:42:58Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:43:10Z",
+            "conclusion": "success",
+            "name": "Install native Rust target",
+            "number": 4,
+            "startedAt": "2026-11-05T09:42:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:47:43Z",
+            "conclusion": "success",
+            "name": "Native build, reproducibility, artifact gate and packaging",
+            "number": 5,
+            "startedAt": "2026-11-05T09:43:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:47:45Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+            "number": 6,
+            "startedAt": "2026-11-05T09:47:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:47:45Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 11,
+            "startedAt": "2026-11-05T09:47:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:47:46Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 12,
+            "startedAt": "2026-11-05T09:47:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:47:46Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-11-05T09:47:46Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/UraganoAngelina/lintra/actions/runs/42004607059/job/127168174051"
+      },
+      {
+        "completedAt": "2026-11-05T09:48:20Z",
+        "conclusion": "success",
+        "databaseId": 127168174069,
+        "name": "build (ubuntu-24.04, x86_64-unknown-linux-gnu)",
+        "startedAt": "2026-11-05T09:42:50Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-11-05T09:42:52Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-11-05T09:42:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:42:54Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-11-05T09:42:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:42:55Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 3,
+            "startedAt": "2026-11-05T09:42:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:43:05Z",
+            "conclusion": "success",
+            "name": "Install native Rust target",
+            "number": 4,
+            "startedAt": "2026-11-05T09:42:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:48:16Z",
+            "conclusion": "success",
+            "name": "Native build, reproducibility, artifact gate and packaging",
+            "number": 5,
+            "startedAt": "2026-11-05T09:43:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:48:18Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+            "number": 6,
+            "startedAt": "2026-11-05T09:48:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:48:18Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 11,
+            "startedAt": "2026-11-05T09:48:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:48:18Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 12,
+            "startedAt": "2026-11-05T09:48:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:48:18Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-11-05T09:48:18Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/UraganoAngelina/lintra/actions/runs/42004607059/job/127168174069"
+      },
+      {
+        "completedAt": "2026-11-05T09:48:38Z",
+        "conclusion": "success",
+        "databaseId": 127170751724,
+        "name": "publish",
+        "startedAt": "2026-11-05T09:48:22Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-11-05T09:48:24Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-11-05T09:48:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:48:26Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-11-05T09:48:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:48:26Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 3,
+            "startedAt": "2026-11-05T09:48:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:48:27Z",
+            "conclusion": "success",
+            "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+            "number": 4,
+            "startedAt": "2026-11-05T09:48:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:48:36Z",
+            "conclusion": "success",
+            "name": "Publish complete immutable release in approved private repository",
+            "number": 5,
+            "startedAt": "2026-11-05T09:48:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:48:36Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "number": 9,
+            "startedAt": "2026-11-05T09:48:36Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:48:36Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 10,
+            "startedAt": "2026-11-05T09:48:36Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-05T09:48:36Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 11,
+            "startedAt": "2026-11-05T09:48:36Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/UraganoAngelina/lintra/actions/runs/42004607059/job/127170751724"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/UraganoAngelina/lintra/actions/runs/42004607059"
+  },
+  "linux_downloaded_binary_smoke": {
+    "exit_code": 0,
+    "stdout": "lintra 0.1.1-rc.2 (commit 8430de9149862c70cdc3eda1a0a7ef79467c557e)\n"
+  },
+  "windows_limit": "Native CI qualification; not executed on Linux",
+  "verification_method": "Runbook followed: source gate, CI publication, read-only GitHub API and downloaded assets; no local publication or simulated Actions environment"
+}

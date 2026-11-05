@@ -1,7 +1,7 @@
 {
   "task": "T-P18-03",
   "status": "completed",
-  "done": false,
+  "done": true,
   "head_sha": "8430de9149862c70cdc3eda1a0a7ef79467c557e",
   "run_id": 41999182424,
   "url": "https://github.com/UraganoAngelina/lintra/actions/runs/41999182424",
@@ -1042,5 +1042,6 @@
   },
   "finalization_reads": 5,
   "native_gate_passed": true,
-  "release_run_id": 42004607059
+  "release_run_id": 42004607059,
+  "assets_evidence": "T-P18-03-published-release.json"
 }
