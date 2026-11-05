@@ -2,7 +2,37 @@
 
 Consuntivo aggiornato al **2026-11-05**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente —18-03/CAD01/CAD10 DONE, spike17-05 in corso, AUTO_CONTINUE
+## Frontiera corrente — DEC-17 ratificata, T-P17-05 DONE, AUTO_CONTINUE CAD-02
+
+**129/140 DONE = 92,1%** (conteggio task, non stima dello sforzo).
+T-P17-05 DONE: valutazione sperimentale completata, prototipo non adottato,
+esito D ratificato dall'autore il 5 novembre 2026. Runtime produttivo sequenziale,
+architettura a due passate e contratti normativi/storici invariati.
+A1 accelerazione locale; A3 96 campioni Full con benefici insufficienti/regressioni.
+Cancellazione dinamica NON equivalente: requisito di adozione non superato,
+non sanato dal test che registra il fallimento atteso. Fallback non qualificano
+parallelismo Historical/max_errors/reference; nessun beneficio CAD/SQLite provato.
+
+Gate finale CI42038174791 completed/success su
+8a02f55fba06be0e9784465cb8aa6ee347cd583b, branch spike/dec17-selective-pass1;
+sette job richiesti positivi, UI packaging opzionale skipped. 16 artefatti esatti
+scaricati e conservati con inventario di 250 file, log/run/job in native-final.
+Gate locali originali conservati; unica variazione della fixture dopo suite
+completa coperta da refinement e CI finale; 365 hash A3 confermati.
+Dossier: docs/verification/DEC-17-final-ratification.md e T-P17-05-parallelism.md.
+CNF-DIAGNOSTIC-ORDER-01 separato OPEN; nessuna modifica all'ordine del prodotto.
+
+Codice/fixture/riproduzione A1/Full restano sul branch sperimentale al commit
+8a02f55; commit successivo di chiusura soltanto documentale. Nessun cherry-pick
+prototipo nel runtime né helper cfg(test) trasferiti. Nessuna nuova campagna o
+ottimizzazione implementativa autorizzata: futuro profiling sequenziale CAD/SIOC
+su volumi rappresentativi e Windows 11 prima di proposte distinte.
+CAD01/10 DONE con CI42004833488; PERSIST02 DONE; namespace A estesa ratificato.
+Next T-CAD-02 READY, preflight sul branch work/p1-foundations dopo conservazione
+spike e sincronizzazione dei soli documenti. Single-agent, no background/delega;
+commit/push/CI autorizzati, docs/migration preesistente preservata/esclusa.
+
+## Registro precedente —18-03/CAD01/CAD10 DONE, spike17-05 in corso
 
 **128/140 DONE = 91,4%** (conteggio task, non stima dello sforzo).
 Ripresa esplicita dell’autore il5novembre: superato il checkpoint17-04.
@@ -33,6 +63,15 @@ Entrambe pubblicate e qualificate daCI42004833488 completed/success sullo SHA
 46d574f8ec4627bcc9561d298c2dc33007137654, sette job richiesti positivi.
 Non usata la CIrelease8430de9. Nessun gate residuo01/10; profilo CAD completo aperto.
 
+T-P17-05 IN_PROGRESS sul branch isolato `spike/dec17-selective-pass1`.
+Audit reale completato; A1:84campioni release più96di controllo sul contatoreheap,
+JSONL identici e sorgenti fermi. A2 prototipo FullPassOne/collector originali,
+code bounded64 pertrace, move delle proiezioni, barriera e passata2 originale;
+5test mirati positivi, gateworkspace e A3 ancora in corso. Cancellazione dinamica
+NON equivalente (abort tecnico senza summary): condizione di adozione fallita,
+registrata esplicitamente, nessun nuovo contratto o modifica prodotto.
+Dossier `docs/verification/T-P17-05-parallelism.md`; nessun DONE prima diA3/gate.
+
 Ratifiche autore5nov: DEC-17 Aestesa A1LocalOnly/A2Full pass1parallela-pass2
 sequenziale/A3end-to-end; solo spike, nessuna adozione/API/CLI/UI/dipendenza.
 Audit reale17-05 IN_PROGRESS prioritario, iniziatoFlowValidator/projection/store/
@@ -44,6 +83,7 @@ o attribuita a rc.2. Fonti complete nei due nuovi dossier di ratifica.
 CAD11 soltanto letture di preflight prima della ratifica, nessun codice/dataset
 modificato; nuova priorità17-05 dopo chiusura18. CAD09 non avviata.
 Nessuna baselineFROZEN/PK/HMAC/storage o norma modificata; docs/migration esclusa.
+
 
 ## Registro precedente — PERSIST09 WAITING_GATE, PERSIST10 BLOCKED, PERSIST11 IN_PROGRESS
 
@@ -6314,3 +6354,15 @@ Nuovi helpercfg(test) e modulotest esistono solo sul branchsperimentale; funzion
 produttive/API/CLI/UI invariati. docsmigrationpreesistente ancoraesclusa.
 AUTO_CONTINUE17: completareA1/gate, poiA2/A3; al termineCAD02 connamespaceunico,
 formato3nonattribuitoarc.2. Nessun subagente/daemon/nuova dipendenza.
+
+
+## HANDOFF §15.3 — chiusura DEC-17 / T-P17-05, 2026-11-05
+
+DONE come valutazione; nessuna adozione. CI finale42038174791 success sul commit
+8a02f55 esatto, tutti sette job pertinenti; log/artefatti/ledger conservati.
+Quality Gate locali documentati verificati tramite hash e log; suite completa
+precedente + refinement della fixture + gate nativo finale, nessun PASS inventato.
+Limiti cancellazione/ordine/RSS/scope e rappresentatività conservati.
+Preservare il branch spike; trasferire soltanto documenti/evidenze nel branch
+work/p1-foundations, nessun src/spike compilabile. AUTO_CONTINUE: preflight CAD-02
+su prerequisiti reali e ratifica namespace; nessuna nuova campagna prestazionale.

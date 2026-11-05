@@ -415,3 +415,15 @@ reference necessarie a visual.rs sono mantenute in ui/tests/reference, con
 provenienza/hash e senza rigenerazione implicita. Il refactoring non cambia
 sorgenti, palette o comportamento UI. Prima di riprendere08 eseguire il preflight
 richiesto, poi continuare il workflow già autorizzato senza regressioni.
+
+
+## Ratifica conclusiva DEC-17 —2026-11-05
+
+Fonte corrente docs/verification/DEC-17-final-ratification.md: esito D, prototipo
+non adottato, produzione sequenziale con architettura a due passate invariata.
+Nessun trasferimento del codice sperimentale o attivazione cfg(test); conservare
+branch e commit 8a02f55 e tutte le evidenze. Nessuna nuova campagna/ottimizzazione
+automatica: prima profiling reale CAD/SIOC e proposta autorizzata. Conflitto
+d’ordine separato aperto, senza modifica prodotto. Gate finale42038174791 positivo
+sullo SHA esatto; T-P17-05 DONE come valutazione, non feature parallela.
+Proseguire T-CAD-02 con prerequisiti verificati e successive READY; single-agent.

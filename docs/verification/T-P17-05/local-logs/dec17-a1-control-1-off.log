@@ -1,0 +1,31 @@
+
+running 1 test
+A1 total=500000 skewed=false heavy=false workers=0 seconds=0.900921358
+A1 total=500000 skewed=false heavy=false workers=1 seconds=1.176714573
+A1 total=500000 skewed=false heavy=false workers=2 seconds=0.615437417
+A1 total=500000 skewed=false heavy=false workers=4 seconds=0.354103954
+A1 total=500000 skewed=false heavy=false workers=4 seconds=0.317695706
+A1 total=500000 skewed=false heavy=false workers=2 seconds=0.598960371
+A1 total=500000 skewed=false heavy=false workers=1 seconds=1.177985078
+A1 total=500000 skewed=false heavy=false workers=0 seconds=1.055975953
+A1 total=500000 skewed=false heavy=false workers=2 seconds=0.609391888
+A1 total=500000 skewed=false heavy=false workers=4 seconds=0.381965953
+A1 total=500000 skewed=false heavy=false workers=0 seconds=0.903471648
+A1 total=500000 skewed=false heavy=false workers=1 seconds=1.2176711199999999
+A1 total=500000 skewed=false heavy=true workers=0 seconds=6.85869938
+A1 total=500000 skewed=false heavy=true workers=1 seconds=7.063865324
+A1 total=500000 skewed=false heavy=true workers=2 seconds=4.1877922850000004
+A1 total=500000 skewed=false heavy=true workers=4 seconds=2.824516778
+A1 total=500000 skewed=false heavy=true workers=4 seconds=2.681897081
+A1 total=500000 skewed=false heavy=true workers=2 seconds=4.064923965
+test engine::flow_execution::selective_parallelism::a1_local_only has been running for over 60 seconds
+A1 total=500000 skewed=false heavy=true workers=1 seconds=7.190626867
+A1 total=500000 skewed=false heavy=true workers=0 seconds=6.970039034
+A1 total=500000 skewed=false heavy=true workers=2 seconds=4.223069938
+A1 total=500000 skewed=false heavy=true workers=4 seconds=2.8558729830000003
+A1 total=500000 skewed=false heavy=true workers=0 seconds=6.725977372
+A1 total=500000 skewed=false heavy=true workers=1 seconds=7.097561661
+test engine::flow_execution::selective_parallelism::a1_local_only ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 106 filtered out; finished in 94.09s
+

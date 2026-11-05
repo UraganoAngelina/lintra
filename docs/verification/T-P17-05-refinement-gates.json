@@ -1,0 +1,54 @@
+{
+  "task": "T-P17-05",
+  "date": "2026-11-05",
+  "reason": "fixture self-join now depends on previous physical row; no execution algorithm change",
+  "file_sha256_before": "a7713df33125339afcb0fb5533b92ddacc8e54de7c28183d03c03dadadfa8377",
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 2.031,
+      "log": "target/dec17-full-refinement/0.log"
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--lib",
+        "--tests",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 18.44,
+      "log": "target/dec17-full-refinement/1.log"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--lib",
+        "--locked",
+        "--offline",
+        "hybrid::",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "seconds": 31.457,
+      "log": "target/dec17-full-refinement/2.log"
+    }
+  ],
+  "file_sha256_after": "a7713df33125339afcb0fb5533b92ddacc8e54de7c28183d03c03dadadfa8377",
+  "complete": true
+}
