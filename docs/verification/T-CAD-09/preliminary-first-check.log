@@ -1,0 +1,35 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+error[E0433]: cannot find `derived` in `super`
+   --> src/schema/rules.rs:249:32
+    |
+249 |             let plans = super::derived::compile_scoped(&target)?;
+    |                                ^^^^^^^ could not find `derived` in `super`
+    |
+help: consider importing this module
+    |
+  2 + use crate::schema::derived;
+    |
+help: if you import `derived`, refer to it directly
+    |
+249 -             let plans = super::derived::compile_scoped(&target)?;
+249 +             let plans = derived::compile_scoped(&target)?;
+    |
+
+error[E0433]: cannot find `derived` in `super`
+   --> src/schema/rules.rs:250:24
+    |
+250 |             if !super::derived::expression_is_local(&predicate, &plans)? {
+    |                        ^^^^^^^ could not find `derived` in `super`
+    |
+help: consider importing this module
+    |
+  2 + use crate::schema::derived;
+    |
+help: if you import `derived`, refer to it directly
+    |
+250 -             if !super::derived::expression_is_local(&predicate, &plans)? {
+250 +             if !derived::expression_is_local(&predicate, &plans)? {
+    |
+
+For more information about this error, try `rustc --explain E0433`.
+error: could not compile `lintra` (lib) due to 2 previous errors

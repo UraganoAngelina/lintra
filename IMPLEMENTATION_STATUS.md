@@ -2,32 +2,31 @@
 
 Consuntivo aggiornato al **2026-11-06**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD03/11 DONE, CAD09 in verifica locale
+## Frontiera corrente — CAD09 DONE, CAD04 in preflight
 
-**132/140 DONE = 94,3%**; restano8task (CAD04–09/12 eP18-04).
-CAD02 DONE conCI42067927663. CAD03(sessioni trimestrali immutabili) eCAD11
-(membership cliniche/presenza condizionale) DONE conCI42203885693 sullo SHA
-6af5f856c4c4a680d593fe8fe48d8ebc1ef831d2: Linux/MSVC,3confrontiJSONL/pixel,
-2riapertureSQLite crossOS tutti positivi. PackagingUI opzionale skipped.
-Evidenze integrali: T-CAD-11-checkout-recovery-native-ci.json e report03/11.
+**133/140 DONE = 95,0%**; restano 7 task: CAD04–08, CAD12 e P18-04.
+CAD02 DONE con CI42067927663. CAD03 e CAD11 DONE con CI42203885693 su6af5f85.
+CAD09 DONE con CI42231182241 sullo SHA1740a6dd29ac705d29b0cb0425daacf919a6b17e:
+Linux/MSVC, tre confronti JSONL/pixel e due riaperture SQLite crossOS positivi.
+Solo il packaging UI opzionale è skipped, come previsto dal perimetro.
 
-Le dueCI precedenti fallite sono preservate: racejournalSQLite classificataBusy
-solo per scomparsa confermata; ACL/link/chiave/root immutati. CheckoutWindows
-convertiva i5JSONclinici LF→CRLF: regoleGit -text sui soli source/data approvati,
-nessuna normalizzazione/provider indebolito. Commitfixaae2e12 e6af5f85 qualificati.
+CAD09: riferimenti tipizzati tra tracciati per calendar_year_delta, guardie dei
+metadati e causa Unknown preservata; componente A/B1 con soglie3/6/17,12test
+reali di servizio. Tutti gli11gate locali positivi, sorgenti con hash invariati:
+943esiti per ciascuna suite workspace,182core senza bundle,18tooling,24Python;
+fmt/Clippy/release/boundary positivi. Dossier T-CAD-09-calendar-age.md,
+T-CAD-09-local-gates.json, T-CAD-09-native-ci.json e log/inventario omonimi.
+Non è uno schemaCAD completo/FROZEN; integrazione clinica/storica resta al12.
 
-CAD09 IN_PROGRESS: calendar_year_delta cross-trace conRefdate scalar/consensus,
-APIpubbliche invariate, componenteA/B1 distinto da uno schemaCADcompleto.
-12testservizio reale positivi; fmt/Clippyworkspaceallfeatures eworkspace completo
-943pass/0fail/6ignored. Ripresa dal testallfeatures dopo interruzione del processo,
-nessun esito inventato: tutti gli inputhashdelledger confermati immutati.
-Gateallfeatures/core/release/tooling/Python/boundary e nuovaCIsulloSHA09completo
-ancora richiesti. Ledger T-CAD-09-local-gates.json e reportcalendar-age.md.
+CAD04 IN_PROGRESS / PREFLIGHT:03 ePERSIST08DONE. Fonti e contratti letti;
+compilatore attualmente rifiuta history_identity_invariants. Distinguere il
+vincolo progressivo–evento dal confronto sullaPK completa e dagli attributi
+modificabili. Proiezioni protette e guardie prima del commit in verifica;
+nessun nuovo formato storage/HMAC, norma o API è stato ancora introdotto.
+Preflight T-CAD-04-preflight.md.05attende04;06/07READY indipendenti su02/P10/P13.
 
-04READY su03/PERSIST08DONE;05attende04.06/07READY indipendenti su02/P10/P13.
-Completare il delta09 già avviato prima di cambiare task; poi prosecuzione
-single-agent conREADY. NessunaFROZEN/release/tag o chiaveoperativa generata.
-Nessun background/delega; docs/migration preesistente preservata/esclusa.
+Single-agent, nessun background/delega. NessunaFROZEN/release/tag o chiave
+operativa generata; docs/migration preesistente preservata ed esclusa.
 
 ## Registro precedente — T-CAD-02 WAITING_GATE, DEC-17 chiusa
 
@@ -6569,3 +6568,25 @@ Avviare CI sul commit09 per sovrapporla al completamento locale3–10, senza
 ridurre test o anticipareDONE. Inputhash del ledger tutti invariati prima della
 pubblicazione; sorgenti restano ferme fino a chiusura della sequenza.132/140,
 8task aperte. Nessuna nuova task implementata prima della qualificazione del delta.
+
+
+## HANDOFF locale CAD09 / WAITING_GATE, avvio preflight CAD04
+
+Gli11comandi09 tutti exit0, sourcehash prima/dopo identici:943workspace e943allfeatures,
+182core senza bundle,18tooling;0fallimenti, ignored6/6/4/0. Fmt/Clippy/release/
+Python/boundary positivi. Log/ledger/inventario09 preservati, nessunDONE anticipato.
+CI42231182241 su1740a6d ancora in corso alla seconda lettura.132/140,8aperte.
+Sospesa09 sulla sola attesa remota, avviare04 indipendente:03 ePERSIST08DONE;
+leggere fonti e compiler/storage reali prima di nuove strutture, senza norme nuove.
+
+
+## QUALITY GATE / HANDOFF — CAD09 DONE, prosecuzione CAD04
+
+CI42231182241 completed/success sullo SHA1740a6dd29ac705d29b0cb0425daacf919a6b17e.
+Tutti7job richiesti positivi; lettura finale aggiuntiva motivata dalle due
+riaperture crossOS ancora pendenti alla terza lettura. Nessuna pipeline duplicata.
+Locale:11comandi exit0, hash prima/dopo identici. Recap: compiler/derived/rules,
+guardie e evaluator/flowvalidator, authoring, componente calendar-age.1 e12test
+in cad_age.rs.133/140DONE(95,0%),7aperte. Nessuna modifica funzionale dopo1740a6d.
+CAD04 già in preflight su prerequisiti verificati: proseguire con invarianti e
+proiezioni generiche, preservando PK complete/namespace/approvazione/CAS/privacy.

@@ -1,7 +1,10 @@
 # T-CAD-11 — lookup e condizioni cliniche, 6 novembre 2026
 
-IN_PROGRESS / WAITING_GATE. Preflight11 documenta prerequisiti P11/P10/G0 e fonti lette.
-CAD03 attende CI42190202683 sul proprio42f92ed; il presente delta è indipendente.
+DONE. CI42203885693 positiva su6af5f85: Linux/MSVC, confronto JSONL,
+due confronti grafici e due riaperture SQLite crossOS passati. Evidenze in
+T-CAD-11-checkout-recovery-native-ci.json. Il fix Git preserva i byte dei cinque
+artefatti source/data su Windows; hash e controlli del provider sono invariati.
+Preflight11 documenta prerequisiti P11/P10/G0 e fonti lette.
 
 ## Componente, sorgenti e trasformazioni esplicite
 

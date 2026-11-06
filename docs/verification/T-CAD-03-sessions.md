@@ -1,7 +1,10 @@
 # T-CAD-03 — sessioni CAD immutabili, 6 novembre 2026
 
-IN_PROGRESS / WAITING_GATE, qualificazione locale completata. Prerequisiti/fonti e scope nel
-preflight03. CAD02 è DONE suCI42067927663; nessun gate03 presunto da quel run.
+DONE. Gate finale CI42203885693 positivo su6af5f85: Linux/MSVC e tutti
+i5job di confronto/riapertura crossOS passati. Evidenza integrale condivisa in
+T-CAD-11-checkout-recovery-native-ci.json. Le precedenti CI fallite restano
+preservate; la recovery journal e il fix checkout sono inclusi nel commit qualificato.
+Prerequisiti, fonti e confine della consegna nel preflight03.
 
 ## Configurazione e confine della consegna
 

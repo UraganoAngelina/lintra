@@ -1,0 +1,93 @@
+    Blocking waiting for file lock on build directory
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 36.53s
+     Running tests/cad_age.rs (target/debug/deps/cad_age-fa175813cf36121e)
+
+running 11 tests
+test invalid_or_missing_dates_do_not_turn_into_an_age_or_a_second_presence_error ... FAILED
+test declared_age_sources_really_enter_both_projection_plans_and_the_cross_pass ... FAILED
+test actual_calendar_thresholds_two_three_five_six_do_not_use_the_birthday ... FAILED
+test consensus_never_chooses_one_of_two_inconsistent_b1_start_dates ... FAILED
+test derived_unknown_provenance_preserves_false_and_true_boolean_dominance ... FAILED
+test parental_responsibility_is_required_through_seventeen_and_optional_after ... FAILED
+test renamed_ids_and_repeated_jsonl_prove_schema_driven_deterministic_evaluation ... FAILED
+test unavailable_target_is_unknown_but_available_empty_parent_uses_the_declared_policy ... FAILED
+test wrong_namespace_or_duplicate_parent_cannot_supply_a_reliable_birth_date ... FAILED
+test unsupported_local_presence_set_predicate_and_non_date_bindings_fail_at_compile_time ... FAILED
+test local_only_performs_local_checks_and_explicitly_skips_cross_derived_obligations ... FAILED
+
+failures:
+
+---- invalid_or_missing_dates_do_not_turn_into_an_age_or_a_second_presence_error stdout ----
+
+thread 'invalid_or_missing_dates_do_not_turn_into_an_age_or_a_second_presence_error' (148) panicked at tests/cad_age.rs:140:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+---- declared_age_sources_really_enter_both_projection_plans_and_the_cross_pass stdout ----
+
+thread 'declared_age_sources_really_enter_both_projection_plans_and_the_cross_pass' (146) panicked at tests/cad_age.rs:76:58:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+---- actual_calendar_thresholds_two_three_five_six_do_not_use_the_birthday stdout ----
+
+thread 'actual_calendar_thresholds_two_three_five_six_do_not_use_the_birthday' (144) panicked at tests/cad_age.rs:140:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+---- consensus_never_chooses_one_of_two_inconsistent_b1_start_dates stdout ----
+
+thread 'consensus_never_chooses_one_of_two_inconsistent_b1_start_dates' (145) panicked at tests/cad_age.rs:140:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+---- derived_unknown_provenance_preserves_false_and_true_boolean_dominance stdout ----
+
+thread 'derived_unknown_provenance_preserves_false_and_true_boolean_dominance' (147) panicked at tests/cad_age.rs:140:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- parental_responsibility_is_required_through_seventeen_and_optional_after stdout ----
+
+thread 'parental_responsibility_is_required_through_seventeen_and_optional_after' (150) panicked at tests/cad_age.rs:140:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+---- renamed_ids_and_repeated_jsonl_prove_schema_driven_deterministic_evaluation stdout ----
+
+thread 'renamed_ids_and_repeated_jsonl_prove_schema_driven_deterministic_evaluation' (151) panicked at tests/cad_age.rs:140:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+---- unavailable_target_is_unknown_but_available_empty_parent_uses_the_declared_policy stdout ----
+
+thread 'unavailable_target_is_unknown_but_available_empty_parent_uses_the_declared_policy' (152) panicked at tests/cad_age.rs:140:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+---- wrong_namespace_or_duplicate_parent_cannot_supply_a_reliable_birth_date stdout ----
+
+thread 'wrong_namespace_or_duplicate_parent_cannot_supply_a_reliable_birth_date' (154) panicked at tests/cad_age.rs:140:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+---- unsupported_local_presence_set_predicate_and_non_date_bindings_fail_at_compile_time stdout ----
+
+thread 'unsupported_local_presence_set_predicate_and_non_date_bindings_fail_at_compile_time' (153) panicked at tests/cad_age.rs:76:58:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+---- local_only_performs_local_checks_and_explicitly_skips_cross_derived_obligations stdout ----
+
+thread 'local_only_performs_local_checks_and_explicitly_skips_cross_derived_obligations' (149) panicked at tests/cad_age.rs:140:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+
+failures:
+    actual_calendar_thresholds_two_three_five_six_do_not_use_the_birthday
+    consensus_never_chooses_one_of_two_inconsistent_b1_start_dates
+    declared_age_sources_really_enter_both_projection_plans_and_the_cross_pass
+    derived_unknown_provenance_preserves_false_and_true_boolean_dominance
+    invalid_or_missing_dates_do_not_turn_into_an_age_or_a_second_presence_error
+    local_only_performs_local_checks_and_explicitly_skips_cross_derived_obligations
+    parental_responsibility_is_required_through_seventeen_and_optional_after
+    renamed_ids_and_repeated_jsonl_prove_schema_driven_deterministic_evaluation
+    unavailable_target_is_unknown_but_available_empty_parent_uses_the_declared_policy
+    unsupported_local_presence_set_predicate_and_non_date_bindings_fail_at_compile_time
+    wrong_namespace_or_duplicate_parent_cannot_supply_a_reliable_birth_date
+
+test result: FAILED. 0 passed; 11 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `--test cad_age`

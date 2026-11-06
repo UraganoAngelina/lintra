@@ -1,0 +1,9 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 29.11s
+     Running tests/cad_age.rs (target/debug/deps/cad_age-fa175813cf36121e)
+
+running 1 test
+test generic_format_one_calendar_join_does_not_require_a_persistence_profile ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.01s
+

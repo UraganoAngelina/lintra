@@ -1,0 +1,51 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 35.68s
+     Running tests/cad_age.rs (target/debug/deps/cad_age-fa175813cf36121e)
+
+running 11 tests
+test declared_age_sources_really_enter_both_projection_plans_and_the_cross_pass ... ok
+test derived_unknown_provenance_preserves_false_and_true_boolean_dominance ... ok
+test local_only_performs_local_checks_and_explicitly_skips_cross_derived_obligations ... ok
+test consensus_never_chooses_one_of_two_inconsistent_b1_start_dates ... ok
+test renamed_ids_and_repeated_jsonl_prove_schema_driven_deterministic_evaluation ... ok
+test wrong_namespace_or_duplicate_parent_cannot_supply_a_reliable_birth_date ... ok
+test parental_responsibility_is_required_through_seventeen_and_optional_after ... ok
+test actual_calendar_thresholds_two_three_five_six_do_not_use_the_birthday ... ok
+test unavailable_target_is_unknown_but_available_empty_parent_uses_the_declared_policy ... ok
+test invalid_or_missing_dates_do_not_turn_into_an_age_or_a_second_presence_error ... ok
+test unsupported_local_presence_set_predicate_and_non_date_bindings_fail_at_compile_time ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests/conditional_presence.rs (target/debug/deps/conditional_presence-bc923cc9833f14b4)
+
+running 8 tests
+test unknown_stops_field_and_counts_one_skip_without_fabricating_violation ... ok
+test failed_pipeline_never_queries_another_context ... ok
+test named_conditions_compile_into_the_actual_presence_plan ... ok
+test required_unless_is_explicit_not_and_conditions_are_retained ... ok
+test required_condition_reads_later_field_without_mutating_it ... ok
+test undecidable_record_returns_typed_terminal_error_instead_of_valid_or_invalid ... ok
+test required_forbidden_and_conflict_stop_before_datatype_and_domains ... ok
+test presence_state_matrix_covers_base_and_every_required_forbidden_truth_combination ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/derived_rules.rs (target/debug/deps/derived_rules-10865a84891f4488)
+
+running 12 tests
+test compiler_retains_every_declared_supported_capability_and_real_derived_plan ... ok
+test condition_true_derived_eq_uses_the_real_plan_and_failure_context ... ok
+test known_failed_assertion_dominates_an_earlier_unknown_derived_obligation ... ok
+test derived_profile_roundtrips_and_unreachable_bad_definitions_are_rejected ... ok
+test derived_guard_reports_actual_primary_and_all_source_bytes_once_in_order ... ok
+test public_presence_path_uses_compiled_derived_plan_and_preserves_conflict ... ok
+test static_conflicts_are_proved_without_guessing_the_truth_of_a_derived_condition ... ok
+test derived_rules_resolve_by_id_across_reversed_physical_layouts ... ok
+test year_assertion_validates_source_date_and_preserves_two_or_four_digits ... ok
+test invalid_derivation_bindings_types_ranges_and_templates_fail_before_records ... ok
+test derived_assertions_cover_all_operators_exact_integer_and_byte_results ... ok
+test unknown_reasons_survive_guard_and_assertion_and_false_guard_does_not_invent_a_violation ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+

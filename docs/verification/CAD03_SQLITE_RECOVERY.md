@@ -1,8 +1,12 @@
 # Recovery CAD03 — journal SQLite concorrente, 6 novembre 2026
 
-Stato: locale verificata, prova Windows nativa da avviare; nessunDONE CAD03/11.
-Il conteggio resta130/140. Scope di recovery ordinaria del gate, nessuna norma
-sanitaria, formato storage, SQL, HMAC, chiave operativa o politicaACL modificata.
+Stato: recovery qualificata su Windows/Linux; CAD03 eCAD11 DONE.
+CI42203885693 su6af5f85: tutti7job richiesti positivi, inclusi i test di
+contesa originali, journal scomparso e ACL. Evidenza integrale condivisa in
+T-CAD-11-checkout-recovery-native-ci.json. Conteggio132/140,8task aperte.
+Le precedenti prove fallite sono conservate nella cronologia qui sotto.
+Scope di recovery ordinaria del gate, nessuna norma sanitaria, formato storage,
+SQL, HMAC, chiave operativa o politica ACL modificata.
 
 ## Fallimento effettivo e isolamento
 
@@ -72,3 +76,13 @@ sqlite-probe.yml estende il filtro diagnostico a persistence:: e rende esplicito
 Non sostituisce laCI completa; dopo provaWindows positiva avviare una solaCI sul
 commit prodotto che comprende recovery+CAD03+CAD11, senza codiceCAD09 incompleto.
 LaCI iniziale fallita rimane fallita e conservata. Nessuna release/tag avviata.
+
+## Pubblicazione e fallback del dispatch diagnostico
+
+Fix trasferito senza differenze di albero7fdd1b5→aae2e12 e pubblicato sul branch
+work/p1-foundations. Tentativo sqlite-probe.yml rifiutato daGitHubHTTP422:
+«Workflow does not have workflow_dispatch trigger». Non è una provaWindows
+eseguita e non viene conteggiata come gate. Nessun cambio del branchdefault o
+delle protezioni: avviare laCIcompleta già disponibile sullo stessoaae2e12, che
+include le regressioniSQLite e le boundaryACL in tutti i gate nativi prescritti.
+Il lavoro09 resta locale; verificati9hash senza differenze dopo il trasferimento.

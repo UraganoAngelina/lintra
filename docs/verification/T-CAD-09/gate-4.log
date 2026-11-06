@@ -1,0 +1,265 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 50.86s
+     Running unittests src/lib.rs (target/debug/deps/lintra-db2ef09a1b7e8277)
+
+running 108 tests
+test application::historical_validation::tests::source_clock_handles_pre_epoch_fraction_and_rejects_out_of_calendar_range ... ok
+test domain::byte_range::tests::rejects_zero_length_and_end_overflow ... ok
+test domain::byte_range::tests::exact_end_is_valid_and_outside_record_is_none ... ok
+test domain::byte_range::tests::slices_at_byte_offsets_without_copying_or_decoding ... ok
+test domain::byte_range::tests::boundary_grid_agrees_with_checked_slice_bounds ... ok
+test domain::errors::tests::core_mapping_matches_source_and_roundtrips_without_collisions ... ok
+test domain::errors::tests::map_order_is_stable_independent_of_insertion_order ... ok
+test domain::errors::tests::rejects_legacy_malformed_and_schema_execution_symbols ... ok
+test domain::errors::tests::regulatory_codes_roundtrip_but_do_not_claim_registration ... ok
+test domain::identity::tests::absent_identity_remains_absent_and_technical_ids_are_ordered ... ok
+test domain::summary::tests::schema_keys_distinguish_flow_and_version_without_trace_identity ... ok
+test domain::ids::tests::identifiers_preserve_spelling_and_support_value_semantics ... ok
+test domain::summary_builder::tests::all_counter_overflows_are_detected_and_terminal ... ok
+test domain::summary::tests::summary_preserves_scope_order_and_orders_dataset_and_error_maps ... ok
+test engine::expression_evaluator::cause_tests::decisive_unknown_cause_survives_nested_boolean_dominance ... ok
+test engine::field_guide::tests::enum_retains_padding_and_non_enumerable_constraints_are_explicit ... ok
+test engine::field_guide::tests::ranges_are_complete_signed_and_not_machine_bounded ... ok
+test input::reader::tests::counter_overflow_is_checked_but_clean_eof_never_increments_it ... ok
+test input::audit::tests::byte_counter_overflow_is_terminal_and_does_not_hash_an_unaccounted_chunk ... ok
+test engine::field_guide::paging_tests::paging_has_no_gaps_and_rejects_wrong_continuations ... ok
+test engine::field_pipeline::tests::every_presence_violation_uses_the_same_stop_path ... ok
+test persistence::memory::tests::revision_exhaustion_and_poisoned_storage_are_technical_failures ... ok
+test persistence::protection::tests::rfc4231_case6_sha256_matches_the_independent_standard_vector ... ok
+test persistence::key_file::tests::exact_binary_key_is_redacted_and_only_the_configured_id_resolves ... ok
+test persistence::key_file::tests::portable_resolution_uses_only_the_supplied_executable_and_survives_relocation ... ok
+test persistence::key_file::tests::unix_permissions_links_fifo_and_real_replacement_are_rejected ... ok
+test persistence::key_file::tests::absent_empty_short_long_and_non_regular_files_are_never_defaults ... ok
+test persistence::sqlite::tests::disappeared_journal_before_metadata_requires_a_fresh_preflight ... ok
+test persistence::sqlite::tests::existing_journal_link_and_unexpected_names_remain_unsafe ... ok
+test persistence::sqlite::tests::metadata::metadata_restart_worker ... ignored, synthetic subprocess helper, invoked by metadata parent
+test persistence::sqlite::tests::an_unfinished_transaction_view_cannot_be_mistaken_for_publication ... ok
+test persistence::sqlite::tests::abort_drop_stale_generation_and_failure_before_commit_do_not_publish ... ok
+test persistence::sqlite::tests::ambiguous_commit_is_resolved_by_exact_immutable_candidate ... ok
+test persistence::sqlite::tests::metadata::consent_is_authenticated_and_tampering_never_turns_into_valid_metadata ... ok
+test persistence::sqlite::tests::busy_at_commit_is_unknown_until_a_fresh_connection_resolves_the_candidate ... ok
+test persistence::sqlite::tests::process_worker ... ignored, subprocess helper invoked only with a synthetic archive by parent tests
+test persistence::key_file::tests::shared_key_produces_scoped_identities_but_archives_remain_independent ... ok
+
+running 1 test
+test persistence::sqlite::tests::metadata::upgrade_preserves_all_identity_payloads_indices_and_generations ... ok
+
+running 1 test
+test persistence::sqlite::tests::protection_audit_is_loaded_from_an_empty_archive_without_silent_reinitialization ... ok
+
+running 1 test
+test persistence::sqlite::tests::metadata::metadata_restart_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 107 filtered out; finished in 0.01s
+
+test persistence::sqlite::tests::metadata::legacy_signed_metadata_stays_readable_and_upgrade_is_explicit_atomic_and_idempotent ... ok
+test persistence::sqlite::tests::qualification::export_native_snapshot_fixture ... ignored, CI exports a public synthetic database for the opposite native runner
+test persistence::sqlite::tests::qualification::import_opposite_native_snapshot_fixture ... ignored, CI reopens the actual synthetic database produced by the opposite OS
+
+running 1 test
+test persistence::sqlite::tests::process_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 107 filtered out; finished in 0.01s
+
+test persistence::sqlite::tests::metadata::upgrade_failure_before_commit_rolls_back_and_lost_ack_is_not_false_rollback ... ok
+test persistence::sqlite::tests::protection_cannot_be_bypassed_by_public_dto_or_same_label_wrong_key ... ok
+
+running 1 test
+test persistence::sqlite::tests::occurrence_query_uses_existing_indexes_and_rejects_incoherent_provenance ... ok
+test persistence::sqlite::tests::metadata::upgrade_process_interruption_recovers_the_old_or_committed_format_with_all_metadata ... ok
+
+running 1 test
+test persistence::sqlite::tests::query_plans_are_indexed_and_external_writer_contention_is_explicit ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test persistence::sqlite::tests::qualification::malformed_or_oversized_transfer_manifest_never_creates_an_archive ... ok
+test persistence::sqlite::tests::process_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 107 filtered out; finished in 0.01s
+
+
+running 1 test
+test persistence::sqlite::tests::qualification::corrupt_transfer_hash_or_database_fails_without_reinitialization ... ok
+test persistence::sqlite::tests::unsafe_paths_permissions_and_foreign_sidecars_fail_closed ... ok
+test reference_data::dataset::diagnostic_tests::bounded_dataset_pages_cover_exact_keys_and_cancel_without_fake_empty ... ok
+test report::atomic::tests::cleanup_failure_during_cancellation_is_not_silent_success ... ok
+test report::atomic::tests::cleanup_failure_keeps_original_error_and_os_cause ... ok
+test persistence::sqlite::tests::roundtrip_restart_immutable_snapshots_omission_namespace_and_settings ... ok
+test persistence::sqlite::tests::unknown_unsupported_corrupt_and_uninitialized_are_distinct_without_reinitialization ... ok
+ZipWriter::drop: failed to finalize archive: Io(Custom { kind: StorageFull, error: "synthetic output" })test report::xlsx::tests::backend_errors_include_unusable_tempdir_and_output_failure ... ok
+test persistence::sqlite::tests::qualification::closed_native_fixture_roundtrips_with_provenance_retained_keys_and_key_confirmation ... ok
+test persistence::sqlite::tests::tampered_record_or_source_is_rejected_instead_of_returning_unverified_domain_values ... ok
+test schema::compiled::compiler::tests::source_coordinates_are_checked_once_at_the_conversion_boundary ... ok
+test schema::compiled::tests::base_presence_never_ignores_compiled_conditions ... ok
+test schema::compiled::tests::compiled_integer_literals_are_exact_beyond_machine_limits ... ok
+test schema::compiled::tests::compiled_payloads_own_a_regex_and_keep_non_applicability_distinct ... ok
+test schema::compiled::tests::datatype_plan_invariants_and_date_representation_are_explicit ... ok
+test schema::compiled::tests::decimal_spec_rejects_impossible_width_scale_and_separator_metadata ... ok
+test schema::compiled::tests::decimal_validator_uses_the_plan_scale_separator_and_physical_width ... ok
+test schema::compiled::compiler::tests::construction_invariant_failures_are_typed_without_panics ... ok
+test schema::compiled::tests::derived_presence_tests::derived_unknown_stops_record_and_validator_remains_terminal ... ok
+test schema::compiled::tests::derived_presence_tests::all_derived_types_compose_under_not_and_or_without_changing_sources ... ok
+test schema::compiled::tests::derived_presence_tests::invalid_metadata_is_rejected_even_when_a_constant_dominates_the_expression ... ok
+test persistence::sqlite::tests::process_restart_and_abrupt_exit_inside_or_after_commit_recover_coherently ... ok
+test schema::compiled::tests::derived_presence_tests::field_pipeline_reports_primary_presence_and_counts_unknown_once ... ok
+test schema::compiled::tests::duplicate_ids_and_outside_ranges_cannot_create_an_inconsistent_record ... ok
+test schema::compiled::tests::empty_records_and_flows_are_not_usable_compiled_models ... ok
+test schema::compiled::tests::derived_presence_tests::real_derived_context_preserves_every_presence_state_and_base_obligation ... ok
+test schema::compiled::tests::derived_presence_tests::record_accepts_real_derived_plans_and_required_missing_is_invalid ... ok
+test schema::compiled::tests::flow_preserves_trace_order_and_rejects_duplicate_trace_ids ... ok
+test schema::compiled::tests::index_is_built_from_physical_order_and_every_entry_resolves_to_its_field ... ok
+test schema::compiled::tests::invalid_key_projection_and_identity_indexes_are_rejected ... ok
+test schema::compiled::tests::local_context_uses_the_stored_derived_plan_and_real_record_bytes ... ok
+test schema::compiled::tests::local_record_preserves_identity_and_pipeline_technical_causes ... ok
+test schema::compiled::tests::local_record_rejects_every_unimplemented_local_plan_before_processing ... ok
+test schema::compiled::tests::physical_order_gaps_overlaps_and_trailing_uncovered_bytes_are_rejected ... ok
+test schema::compiled::tests::projection_invariants_reject_omitted_dependencies_duplicate_order_and_dangling_joins ... ok
+test schema::compiled::tests::pipeline_unknown_and_unsupported_plan_boundaries_are_explicit ... ok
+test schema::derived::tests::derived_expression_lowering_is_typed_and_uses_the_same_canonical_map_indices ... ok
+test schema::derived::tests::derived_names_literals_and_integer_targets_cannot_be_guessed_or_coerced ... ok
+test report::xlsx::tests::constant_memory_workbook_preserves_text_and_shared_column_headers ... ok
+test schema::derived::tests::three_closed_plans_have_exact_local_indices_ranges_and_explicit_calendar_policy ... ok
+test schema::expression::tests::empty_boolean_and_membership_nodes_and_duplicate_sets_are_invalid ... ok
+test schema::derived::tests::missing_and_external_sources_are_explicit_and_no_leap_policy_is_defaulted ... ok
+test schema::expression::tests::every_local_leaf_lowers_to_indices_and_exact_literal_bytes ... ok
+test schema::expression::tests::nested_boolean_tree_preserves_order_and_forward_field_references ... ok
+test schema::expression::tests::named_conditions_expand_and_detect_direct_and_indirect_cycles ... ok
+test schema::derived::tests::substring_coordinates_and_field_type_errors_never_create_partial_plans ... ok
+test schema::linter::tests::checked_source_endpoint_handles_machine_boundaries ... ok
+test schema::expression::tests::unknown_local_and_external_references_never_fall_back ... ok
+
+running 1 test
+test report::xlsx::tests::native_workbook_file_with_unicode_path_is_a_readable_zip ... ok
+test schema::raw::tests::rejects_duplicate_named_nodes_and_preserves_large_integer_literals ... ok
+
+running 1 test
+
+running 1 test
+test schema::raw::tests::keeps_metadata_open_and_positions_one_based_without_interpreting_them ... ok
+test validators::date::tests::explicit_format_and_calendar_boundaries ... ok
+test validators::range::tests::exact_magnitudes_cover_zero_negative_bounds_and_unbounded_width ... ok
+test schema::raw::tests::required_nullable_fields_are_explicit_and_optional_fields_cannot_be_null ... ok
+test persistence::sqlite::tests::qualification::readers_never_observe_staged_or_uncommitted_rows_and_killed_writer_recovers ... ok
+test persistence::sqlite::tests::two_process_contenders_preserve_cas_and_resolved_retry_publishes_one_generation ... ok
+test schema::expression::tests::long_named_chain_uses_explicit_work_stack ... ok
+test schema::raw::tests::approved_examples_and_minimal_profile_roundtrip_without_loss ... ok
+test report::xlsx::tests::sequential_constant_memory_rows_survive_flushes_without_shared_string_table ... ok
+test schema::raw::tests::rejects_unknown_operational_fields_at_each_object_boundary ... ok
+
+test result: ok. 104 passed; 0 failed; 4 ignored; 0 measured; 0 filtered out; finished in 1.51s
+
+     Running tests/cad_age.rs (target/debug/deps/cad_age-fdd9ef09a22a6e11)
+
+running 12 tests
+test generic_format_one_calendar_join_does_not_require_a_persistence_profile ... ok
+test local_only_performs_local_checks_and_explicitly_skips_cross_derived_obligations ... ok
+test derived_unknown_provenance_preserves_false_and_true_boolean_dominance ... ok
+test declared_age_sources_really_enter_both_projection_plans_and_the_cross_pass ... ok
+test consensus_never_chooses_one_of_two_inconsistent_b1_start_dates ... ok
+test renamed_ids_and_repeated_jsonl_prove_schema_driven_deterministic_evaluation ... ok
+test parental_responsibility_is_required_through_seventeen_and_optional_after ... ok
+test wrong_namespace_or_duplicate_parent_cannot_supply_a_reliable_birth_date ... ok
+test actual_calendar_thresholds_two_three_five_six_do_not_use_the_birthday ... ok
+test invalid_or_missing_dates_do_not_turn_into_an_age_or_a_second_presence_error ... ok
+test unavailable_target_is_unknown_but_available_empty_parent_uses_the_declared_policy ... ok
+test unsupported_local_presence_set_predicate_and_non_date_bindings_fail_at_compile_time ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests/cad_sessions.rs (target/debug/deps/cad_sessions-973d2bba3bf2cd76)
+
+running 6 tests
+test cad_policy_binds_the_approved_scope_without_enabling_incomplete_runtime ... ok
+test invalid_or_unbound_cad_preparations_never_receive_an_approval ... ok
+test same_quarter_is_independent_across_ulss_and_next_year_preserves_the_namespace ... ok
+test revision_before_approval_and_abort_are_private_and_the_reviewed_candidate_is_exact ... ok
+test report_failure_cancellation_and_stale_approval_leave_sqlite_generation_unchanged ... ok
+test three_quarters_survive_restart_and_cannot_be_replaced_even_by_new_schema_version ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+
+     Running tests/cross_record.rs (target/debug/deps/cross_record-ee69f2307dad4292)
+
+running 14 tests
+test compiler_projects_cross_operands_and_pass_reports_real_source_and_target_context ... ok
+test active_not_applicable_scope_is_not_hidden_by_an_independent_false_assertion ... ok
+test actual_local_only_service_reports_omitted_cross_evaluations_without_false_complete ... ok
+test consensus_empty_selection_uses_policy_and_unknown_filter_is_not_false ... ok
+test compiler_rejects_underdeclared_sets_and_unbound_diagnostic_placeholders ... ok
+test empty_available_source_still_requires_valid_explicit_run_bindings ... ok
+test consensus_proves_the_whole_tuple_and_never_mixes_values_from_different_records ... ok
+test output_is_ordered_by_source_line_then_compiled_rule_and_local_rules_stay_local ... ok
+test scalar_cardinality_violation_and_missing_target_value_are_not_not_applicable ... ok
+test report_and_observer_failures_are_technical_and_missing_source_is_not_an_empty_run ... ok
+test self_join_pass_preserves_multiple_candidates_instead_of_selecting_the_current_or_first_row ... ok
+test declared_missing_policies_are_disjoint_and_unknown_does_not_emit_validation_errors ... ok
+test nested_boolean_cause_uses_the_determining_join_not_an_earlier_dominated_branch ... ok
+test record_exists_and_set_exists_use_complete_sets_and_preserve_unknown_predicates ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/derived_rules.rs (target/debug/deps/derived_rules-fc0ccb8a1b991dff)
+
+running 12 tests
+test compiler_retains_every_declared_supported_capability_and_real_derived_plan ... ok
+test known_failed_assertion_dominates_an_earlier_unknown_derived_obligation ... ok
+test condition_true_derived_eq_uses_the_real_plan_and_failure_context ... ok
+test derived_guard_reports_actual_primary_and_all_source_bytes_once_in_order ... ok
+test derived_rules_resolve_by_id_across_reversed_physical_layouts ... ok
+test public_presence_path_uses_compiled_derived_plan_and_preserves_conflict ... ok
+test derived_profile_roundtrips_and_unreachable_bad_definitions_are_rejected ... ok
+test year_assertion_validates_source_date_and_preserves_two_or_four_digits ... ok
+test static_conflicts_are_proved_without_guessing_the_truth_of_a_derived_condition ... ok
+test invalid_derivation_bindings_types_ranges_and_templates_fail_before_records ... ok
+test derived_assertions_cover_all_operators_exact_integer_and_byte_results ... ok
+test unknown_reasons_survive_guard_and_assertion_and_false_guard_does_not_invent_a_violation ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/flow_validator.rs (target/debug/deps/flow_validator-b1bc4bef1e6ccc36)
+
+running 14 tests
+test bundle_errors_and_namespace_fail_before_opening_any_file ... ok
+test already_invalid_local_record_is_not_reclassified_twice ... ok
+test existence_positive_survives_partial_index_negative_is_unknown ... ok
+test bad_target_width_prevents_false_missing_but_does_not_hide_local_errors ... ok
+test cancellation_at_each_phase_preserves_observed_audit_and_atomic_record ... ok
+test explicit_coverage_must_match_availability_before_lookup ... ok
+test multiple_cross_failures_reclassify_a_source_once ... ok
+test sink_failure_before_acknowledgement_does_not_increase_cross_counts ... ok
+test set_predicate_negative_on_partial_context_is_not_a_violation ... ok
+test observer_failure_is_technical_and_cannot_finalize_a_full_summary ... ok
+test record_keys_are_trace_local_and_do_not_deduplicate_join_parents ... ok
+test full_pass_one_uses_real_reference_snapshot_and_separate_trace_observers ... ok
+test real_two_pass_order_audit_and_no_local_only_skips ... ok
+test cancellation_during_pass_one_does_not_drain_for_an_eof_digest ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/namespace_bindings.rs (target/debug/deps/namespace_bindings-c769498ed4d8d073)
+
+running 17 tests
+test a_started_record_executor_cannot_switch_organizational_context ... ok
+test binding_changes_fingerprint_and_cross_version_compatibility_but_run_values_do_not ... ok
+test budget_and_dynamic_cancellation_keep_the_sequential_contract ... ok
+test binding_contract_rejects_old_formats_bad_references_types_duplicates_and_capabilities ... ok
+test historical_binding_mismatch_never_produces_a_preview_or_mutates_storage ... ok
+test compatibility_checks_bound_field_value_semantics_even_outside_the_pk ... ok
+test context_cannot_be_reused_with_another_compiled_artifact_having_the_same_key ... ok
+test cad_component_compiles_normative_keys_namespace_and_quarter_without_claiming_full_runtime ... ok
+test local_without_namespace_is_diagnostic_including_empty_input ... ok
+test logical_comparison_uses_padding_but_never_numeric_coercion ... ok
+test optional_missing_namespace_field_is_not_a_positive_namespace_verification ... ok
+test match_mismatch_and_primary_error_preserve_real_summary_jsonl_and_order ... ok
+test validation_and_storage_share_namespace_structural_validity ... ok
+test wrong_namespace_parent_cannot_satisfy_a_child_join ... ok
+test missing_parent_trace_empty_parent_and_real_parent_keep_existing_join_semantics ... ok
+test historical_uses_the_same_namespace_for_validation_review_and_commit ... ok
+test full_missing_and_supplied_invalid_parameters_fail_before_input_or_callbacks ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

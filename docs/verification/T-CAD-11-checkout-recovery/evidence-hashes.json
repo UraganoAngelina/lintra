@@ -1,4 +1,5 @@
 {
   "docs/verification/T-CAD-11-checkout-recovery/native-ci-before.json": "41e38c49efb9b7bde9310f75e5703512251002e6be270ddfc7f35eaaae6296b3",
-  "docs/verification/T-CAD-11-checkout-recovery/native-failed.log": "efb3508bc0ade6552306c712ec3b1cc3c83003603fd6dd02521e6f4a94b68953"
+  "docs/verification/T-CAD-11-checkout-recovery/native-failed.log": "efb3508bc0ade6552306c712ec3b1cc3c83003603fd6dd02521e6f4a94b68953",
+  "docs/verification/T-CAD-11-checkout-recovery/native-success.log": "eec32472a83954790b34a708d7225a87b539d6a00765bf92200186c749d9532c"
 }

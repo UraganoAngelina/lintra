@@ -1,6 +1,9 @@
 # T-CAD-09 — età cross-trace, 6 novembre 2026
 
-IN_PROGRESS. Gate locali completi in corso in `T-CAD-09-local-gates.json`.
+DONE. CI42231182241 positiva sullo SHA1740a6dd29ac705d29b0cb0425daacf919a6b17e,
+con tutti i7job richiesti passati (Linux/MSVC, confronti e riaperture crossOS).
+Tutti gli 11 gate locali conclusi positivamente
+in `T-CAD-09-local-gates.json`, con impronte delle sorgenti invariate.
 La suite workspace è conclusa: 943 test passati, 0 falliti, 6 ignorati.
 Il processo dei test allfeatures della prima esecuzione non aveva un risultato
 registrato alla ripresa: log conservato come `gate-3-interrupted-no-result.log`.
@@ -192,3 +195,51 @@ incompleto dichiarato positivo. I comandi3–10 restano obbligatori e proseguono
 in foreground sugli stessi input SHA256; il cambiamentoHEAD influisce soltanto
 sulla provenienza della build. La nuova CI verifica lo SHA pubblicato completo,
 non eredita il risultato CAD03/11 e non sostituisce i gate locali ancora aperti.
+
+
+## Percorso dei dati verificato
+
+```mermaid
+flowchart TD
+    S[Schema e riferimenti alle date] --> C[ReferenceBindings: tipi, join e cardinalità]
+    C --> P[Piano compilato e proiezioni minime]
+    P --> L[Passata 1: validazione locale e proiezione]
+    L --> J[Passata 2: risoluzione join e consenso]
+    J --> D[CalendarYearDelta: anno di riferimento meno anno di nascita]
+    D --> E[Espressione con eventuale causa Unknown]
+    E --> R[FieldPresent e policy dichiarate nello schema]
+```
+
+Il controllo dei metadati non legge record e non anticipa le join. La prima
+passata conserva soltanto i campi richiesti dai piani; la seconda usa quel
+contesto per valutare le date. Un risultato Unknown conserva la join decisiva
+solo quando il motivo riguarda quella join. Una data invalida non viene
+trasformata in assenza del record collegato. Se un altro operando determina
+il risultato booleano, la causa non decisiva viene scartata prima delle policy.
+
+
+## Chiusura dei gate locali e attesa remota
+
+Tutti gli 11 comandi hanno exit0. Workspace standard e allfeatures:943esiti
+positivi ciascuna,0falliti,6ignored (somme dei riepiloghi, inclusi sottoprocessi).
+Core senza bundle:182pass/0fail/4ignored. Tooling:18pass/0fail/0ignored, compreso
+il test che richiede l'eseguibile nativo. Fmt, Clippy, release, Python e boundary
+positivi. Source_before/after identici; log e inventarioSHA256 in T-CAD-09/.
+La build release comprende il codice pubblicato1740a6d; le provenienze delle
+precedenti suite restano descritte sopra. Nessuna modifica funzionale dopo il gate.
+
+CI42231182241 sulloSHA1740a6dd29ac705d29b0cb0425daacf919a6b17e ancora in corso
+alla seconda lettura: Linux in build release riproducibile, Windows in test
+allfeatures. NessunDONE nativo anticipato. CAD04 può entrare in preflight perché
+dipende daCAD03/PERSIST08 giàDONE, senza dipendenza da09.
+
+
+## Esito finale nativo
+
+CI42231182241 completed/success sul commit1740a6dd29ac705d29b0cb0425daacf919a6b17e.
+Sette job richiesti positivi: due verifiche native, due riaperture degli snapshot
+prodotti dall'altro sistema, confrontoJSONL e due confronti grafici. PackagingUI
+opzionale skipped. Risultato completo in T-CAD-09-native-ci.json e log nativo
+nella cartellaT-CAD-09. Tutti i gate locali erano già conclusi positivamente;
+nessun esito parziale o interrotto è stato promosso a successo.133/140DONE,
+7task aperte. CAD04 pronta e già in preflight; nessuna dipendenza aggirata.

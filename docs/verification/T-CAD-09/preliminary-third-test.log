@@ -1,0 +1,19 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 29.24s
+     Running tests/cad_age.rs (target/debug/deps/cad_age-fa175813cf36121e)
+
+running 11 tests
+test derived_unknown_provenance_preserves_false_and_true_boolean_dominance ... ok
+test consensus_never_chooses_one_of_two_inconsistent_b1_start_dates ... ok
+test declared_age_sources_really_enter_both_projection_plans_and_the_cross_pass ... ok
+test local_only_performs_local_checks_and_explicitly_skips_cross_derived_obligations ... ok
+test renamed_ids_and_repeated_jsonl_prove_schema_driven_deterministic_evaluation ... ok
+test parental_responsibility_is_required_through_seventeen_and_optional_after ... ok
+test invalid_or_missing_dates_do_not_turn_into_an_age_or_a_second_presence_error ... ok
+test wrong_namespace_or_duplicate_parent_cannot_supply_a_reliable_birth_date ... ok
+test unavailable_target_is_unknown_but_available_empty_parent_uses_the_declared_policy ... ok
+test unsupported_local_presence_set_predicate_and_non_date_bindings_fail_at_compile_time ... ok
+test actual_calendar_thresholds_two_three_five_six_do_not_use_the_birthday ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+

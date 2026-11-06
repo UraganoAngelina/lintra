@@ -1,0 +1,13 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 24.75s
+     Running unittests src/lib.rs (target/debug/deps/lintra-11c5387571c140d2)
+
+running 5 tests
+test schema::derived::tests::derived_expression_lowering_is_typed_and_uses_the_same_canonical_map_indices ... ok
+test schema::derived::tests::derived_names_literals_and_integer_targets_cannot_be_guessed_or_coerced ... ok
+test schema::derived::tests::three_closed_plans_have_exact_local_indices_ranges_and_explicit_calendar_policy ... ok
+test schema::derived::tests::missing_and_external_sources_are_explicit_and_no_leap_policy_is_defaulted ... ok
+test schema::derived::tests::substring_coordinates_and_field_type_errors_never_create_partial_plans ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 103 filtered out; finished in 0.01s
+
