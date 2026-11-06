@@ -8,7 +8,8 @@ CNF-CAD-NAMESPACE-BINDING-01. Nessuna modifica dei file ricevuti o FROZEN.
 Non è un flow schema eseguibile completo. I test lo assemblano con campi
 sintetici per verificare riferimenti, PK e piano; non dichiarano validazione
 CAD clinica o riconciliazione snapshot già eseguita. La policy snapshot è una
-dichiarazione già compilabile; attivazione operativa in T-CAD-03 e successive.
+dichiarazione già compilabile; coordinamento approvazioni qualificato separatamente in T-CAD-03; integrazione
+operativa completa nelle task successive. Vedi [SESSIONS.md](SESSIONS.md).
 Il warning W_CAD_MISSING_TRACE è l'etichetta dichiarata del consenso esistente.
 
 sending_ulss è stringa 501–509; anno e trimestre non entrano nel namespace.

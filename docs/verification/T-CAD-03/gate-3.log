@@ -1,0 +1,58 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 33.25s
+     Running tests/cad_sessions.rs (target/debug/deps/cad_sessions-fd9110338a61af15)
+
+running 6 tests
+test cad_policy_binds_the_approved_scope_without_enabling_incomplete_runtime ... ok
+test invalid_or_unbound_cad_preparations_never_receive_an_approval ... ok
+test same_quarter_is_independent_across_ulss_and_next_year_preserves_the_namespace ... ok
+test report_failure_cancellation_and_stale_approval_leave_sqlite_generation_unchanged ... ok
+test revision_before_approval_and_abort_are_private_and_the_reviewed_candidate_is_exact ... ok
+test three_quarters_survive_restart_and_cannot_be_replaced_even_by_new_schema_version ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+     Running tests/namespace_bindings.rs (target/debug/deps/namespace_bindings-8c63b61be0ab16d5)
+
+running 17 tests
+test a_started_record_executor_cannot_switch_organizational_context ... ok
+test binding_contract_rejects_old_formats_bad_references_types_duplicates_and_capabilities ... ok
+test binding_changes_fingerprint_and_cross_version_compatibility_but_run_values_do_not ... ok
+test compatibility_checks_bound_field_value_semantics_even_outside_the_pk ... ok
+test historical_binding_mismatch_never_produces_a_preview_or_mutates_storage ... ok
+test budget_and_dynamic_cancellation_keep_the_sequential_contract ... ok
+test context_cannot_be_reused_with_another_compiled_artifact_having_the_same_key ... ok
+test local_without_namespace_is_diagnostic_including_empty_input ... ok
+test optional_missing_namespace_field_is_not_a_positive_namespace_verification ... ok
+test cad_component_compiles_normative_keys_namespace_and_quarter_without_claiming_full_runtime ... ok
+test logical_comparison_uses_padding_but_never_numeric_coercion ... ok
+test match_mismatch_and_primary_error_preserve_real_summary_jsonl_and_order ... ok
+test wrong_namespace_parent_cannot_satisfy_a_child_join ... ok
+test validation_and_storage_share_namespace_structural_validity ... ok
+test full_missing_and_supplied_invalid_parameters_fail_before_input_or_callbacks ... ok
+test historical_uses_the_same_namespace_for_validation_review_and_commit ... ok
+test missing_parent_trace_empty_parent_and_real_parent_keep_existing_join_semantics ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/session_approval.rs (target/debug/deps/session_approval-3e449c9c322fbe86)
+
+running 15 tests
+test foreign_clock_values_outside_chrono_range_are_rejected_without_panicking ... ok
+test draft_binding_validates_every_parameter_inventory_and_provenance ... ok
+test fractional_pre_epoch_clock_is_compared_exactly_without_calendar_conversion ... ok
+test schema_version_change_does_not_unlock_a_session_and_cancelled_preview_is_read_only ... ok
+test preview_abort_drop_report_error_and_cooperative_cancel_publish_nothing ... ok
+test outcome_failures_mismatch_cancel_and_missing_consent_never_become_validated ... ok
+test immutable_old_session_exact_retry_and_namespace_isolation ... ok
+test changing_the_period_of_an_approved_submission_is_a_normative_rejection ... ok
+test explicit_policy_lowering_rejects_invalid_variants_and_keeps_runtime_gate ... ok
+test stale_preview_and_double_transaction_do_not_publish_second_approval ... ok
+test storage_failure_and_ambiguous_commit_require_explicit_read_only_resolution ... ok
+test nonempty_candidate_requires_declared_verified_identities_before_sqlite_sees_it ... ok
+test sqlite_restart_metadata_cursor_and_legacy_history_fail_closed ... ok
+test corrupt_metadata_indexes_cannot_masquerade_as_an_empty_or_different_session ... ok
+test sqlite_cursor_crosses_page_boundaries_without_loading_record_payloads ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.86s
+

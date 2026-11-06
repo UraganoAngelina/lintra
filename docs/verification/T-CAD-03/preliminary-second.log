@@ -1,0 +1,52 @@
+    Blocking waiting for file lock on build directory
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 33.73s
+     Running tests/cad_sessions.rs (target/debug/deps/cad_sessions-fdb15522d02b601f)
+
+running 6 tests
+test revision_before_approval_and_abort_are_private_and_the_reviewed_candidate_is_exact ... FAILED
+test report_failure_cancellation_and_stale_approval_leave_sqlite_generation_unchanged ... FAILED
+test three_quarters_survive_restart_and_cannot_be_replaced_even_by_new_schema_version ... FAILED
+test same_quarter_is_independent_across_ulss_and_next_year_preserves_the_namespace ... FAILED
+test invalid_or_unbound_cad_preparations_never_receive_an_approval ... FAILED
+test cad_policy_binds_the_approved_scope_without_enabling_incomplete_runtime ... ok
+
+failures:
+
+---- revision_before_approval_and_abort_are_private_and_the_reviewed_candidate_is_exact stdout ----
+
+thread 'revision_before_approval_and_abort_are_private_and_the_reviewed_candidate_is_exact' (137) panicked at tests/cad_sessions.rs:397:81:
+called `Result::unwrap()` on an `Err` value: UnsupportedStorageFilesystem
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- report_failure_cancellation_and_stale_approval_leave_sqlite_generation_unchanged stdout ----
+
+thread 'report_failure_cancellation_and_stale_approval_leave_sqlite_generation_unchanged' (136) panicked at tests/cad_sessions.rs:464:81:
+called `Result::unwrap()` on an `Err` value: UnsupportedStorageFilesystem
+
+---- three_quarters_survive_restart_and_cannot_be_replaced_even_by_new_schema_version stdout ----
+
+thread 'three_quarters_survive_restart_and_cannot_be_replaced_even_by_new_schema_version' (139) panicked at tests/cad_sessions.rs:335:78:
+called `Result::unwrap()` on an `Err` value: UnsupportedStorageFilesystem
+
+---- same_quarter_is_independent_across_ulss_and_next_year_preserves_the_namespace stdout ----
+
+thread 'same_quarter_is_independent_across_ulss_and_next_year_preserves_the_namespace' (138) panicked at tests/cad_sessions.rs:220:24:
+called `Result::unwrap()` on an `Err` value: InconsistentFullAudit
+
+---- invalid_or_unbound_cad_preparations_never_receive_an_approval stdout ----
+
+thread 'invalid_or_unbound_cad_preparations_never_receive_an_approval' (135) panicked at tests/cad_sessions.rs:220:24:
+called `Result::unwrap()` on an `Err` value: InconsistentFullAudit
+
+
+failures:
+    invalid_or_unbound_cad_preparations_never_receive_an_approval
+    report_failure_cancellation_and_stale_approval_leave_sqlite_generation_unchanged
+    revision_before_approval_and_abort_are_private_and_the_reviewed_candidate_is_exact
+    same_quarter_is_independent_across_ulss_and_next_year_preserves_the_namespace
+    three_quarters_survive_restart_and_cannot_be_replaced_even_by_new_schema_version
+
+test result: FAILED. 1 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `--test cad_sessions`

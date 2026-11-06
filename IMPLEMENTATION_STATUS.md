@@ -2,21 +2,29 @@
 
 Consuntivo aggiornato al **2026-11-06**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD-02 DONE, avvio CAD-03
+## Frontiera corrente — CAD-02 DONE, CAD-03 WAITING_GATE
 
 **130/140 DONE = 92,9%**; restano10task (CAD03–09/11/12 eP18-04).
 Ripresa autore6novembre: sviluppo autonomo secondo workflow single-agent.
 CAD02 qualificata daCI42067927663 completed/success sul commit esatto
 5dbfc1747ca64163d110bc2192af1ca0ead0995c. Settejob richiesti positivi:
 Linux/MSVC, tre confronti cross-OS, due riapertureSQLite; packagingUI opzionale
-skipped. Gate default/allfeatures/core/tooling e delta finale coperti realmente.
-Ledger T-CAD-02-native-ci.json, report02 aggiornato. Nessuna nuova release.
-T-CAD-03 READY→PREFLIGHT: profilo snapshot già dichiarato nel componente02;
-verificare sessioni CAD T1/T2/T3 con coordinatore core, approve/abort/revisione
-prima dell'approvazione/immutabilità/idempotenza/restartSQLite. Reconciliation
-progressivi/eventi resta04, nessuna rimozione del gate runtimeCAD completo.
+skipped. Risultato T-CAD-02-native-ci.json; report aggiornato, nessuna release.
+
+CAD03 locale verificata: policy snapshot del componente02 qualificata sul
+coordinatore core;6nuovi test, T1/T2/T3 con riapertureSQLite reali, approvazione,
+revisione privata pre-approvazione, abort/reportfailure/cancel/CAS, immutabilità,
+retry esatto dopoT3/restart/cambio versione schema, isolamentoULSS/continuità anni.
+Outcome Full di componente espliciti, non esecuzione clinica/storicaCAD completa.
+Reconciliation progressivi/eventi resta04, missing operativo05, golden completi12.
+Nessuna rimozione del gate compilerCAD completo, nuova API/SQL/HMAC o norma.
+Sei gate locali exit0: fmt/Clippyworkspace,922workspace/0fail/6ignored,
+38mirati allfeatures/0fail, release eboundary; hash prima/dopo identici.
+Report T-CAD-03-sessions.md eledger T-CAD-03-local-gates.json. CAD03 nonDONE:
+commit/push/CI nativa in avvio.04 attende03;11 indipendente può proseguire durante
+attesa remota senza aggirare dipendenze.130/140DONE invariato.
 Branch work/p1-foundations, docs/migration preesistente preservata/esclusa.
-AUTO_CONTINUE; commit/push/CI autorizzati, nessuna delega/background.
+WAITING_GATE; commit/push/CI autorizzati, nessuna delega/background.
 
 ## Registro precedente — T-CAD-02 WAITING_GATE, DEC-17 chiusa
 
@@ -6441,3 +6449,16 @@ permesso di piattaforma, nessuna modificaTLS/credential.130/140DONE92,9%.
 CAD03 in preflight, prerequisiti02/PERSIST07 qualificati; scope approvazioni
 trimestrali core, test sintetici CAD, nessun profilo clinico completo anticipato.
 AUTO_CONTINUE single-agent; docs/migration preservata, no nuova release.
+
+
+## HANDOFF §15.3 — CAD-03 locale verificata / WAITING_GATE, 2026-11-06
+
+Policy snapshot CAD del componente02 qualificata con6test eSQLite reale;
+SESSIONS.md e report spiegano confine/component fixture, senza fingere pipeline
+FullCAD clinica o riconciliazione. Sei gate exit0,922workspace/38allfeatures,
+0fail/6ignored, hash invariati; preliminary falliti conservati efix distinti.
+Test/runtime/schema normativi produttivi invariati, soli test/documentazione.
+Necessari commit/push eCI propria prima diDONE03; Windows locale non eseguito.
+Next03gate; durante attesa iniziare11 indipendente suP11/P10/G0 già qualificati.
+CAD04 resta vincolata al gate03, nessuna release o nuova campagna prestazionale.
+130/140DONE,10aperte. Single-agent; docs/migration preservata/esclusa.

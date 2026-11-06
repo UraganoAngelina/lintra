@@ -1,0 +1,16 @@
+    Blocking waiting for file lock on build directory
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+error[E0599]: no method named `as_bytes` found for reference `&TraceId` in the current scope
+   --> tests/cad_sessions.rs:127:63
+    |
+127 |                     Some(Sha256Digest(sha2::Sha256::digest(id.as_bytes()).into()))
+    |                                                               ^^^^^^^^ method not found in `&TraceId`
+    |
+help: one of the expressions' fields has a method of the same name
+    |
+127 |                     Some(Sha256Digest(sha2::Sha256::digest(id.0.as_bytes()).into()))
+    |                                                               ++
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `lintra` (test "cad_sessions") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

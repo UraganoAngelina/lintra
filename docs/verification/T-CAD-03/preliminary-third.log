@@ -1,0 +1,14 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 28.77s
+     Running tests/cad_sessions.rs (target/debug/deps/cad_sessions-fdb15522d02b601f)
+
+running 6 tests
+test cad_policy_binds_the_approved_scope_without_enabling_incomplete_runtime ... ok
+test invalid_or_unbound_cad_preparations_never_receive_an_approval ... ok
+test report_failure_cancellation_and_stale_approval_leave_sqlite_generation_unchanged ... ok
+test same_quarter_is_independent_across_ulss_and_next_year_preserves_the_namespace ... ok
+test revision_before_approval_and_abort_are_private_and_the_reviewed_candidate_is_exact ... ok
+test three_quarters_survive_restart_and_cannot_be_replaced_even_by_new_schema_version ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
