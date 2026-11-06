@@ -1,8 +1,24 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-11-05**. Piano v1.1; governance GOV-2026-10-26-01.
+Consuntivo aggiornato al **2026-11-06**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — T-CAD-02 WAITING_GATE, DEC-17 chiusa
+## Frontiera corrente — CAD-02 DONE, avvio CAD-03
+
+**130/140 DONE = 92,9%**; restano10task (CAD03–09/11/12 eP18-04).
+Ripresa autore6novembre: sviluppo autonomo secondo workflow single-agent.
+CAD02 qualificata daCI42067927663 completed/success sul commit esatto
+5dbfc1747ca64163d110bc2192af1ca0ead0995c. Settejob richiesti positivi:
+Linux/MSVC, tre confronti cross-OS, due riapertureSQLite; packagingUI opzionale
+skipped. Gate default/allfeatures/core/tooling e delta finale coperti realmente.
+Ledger T-CAD-02-native-ci.json, report02 aggiornato. Nessuna nuova release.
+T-CAD-03 READY→PREFLIGHT: profilo snapshot già dichiarato nel componente02;
+verificare sessioni CAD T1/T2/T3 con coordinatore core, approve/abort/revisione
+prima dell'approvazione/immutabilità/idempotenza/restartSQLite. Reconciliation
+progressivi/eventi resta04, nessuna rimozione del gate runtimeCAD completo.
+Branch work/p1-foundations, docs/migration preesistente preservata/esclusa.
+AUTO_CONTINUE; commit/push/CI autorizzati, nessuna delega/background.
+
+## Registro precedente — T-CAD-02 WAITING_GATE, DEC-17 chiusa
 
 **129/140 DONE = 92,1%** (conteggio task, non stima dello sforzo).
 T-P17-05 DONE: valutazione sperimentale completata, prototipo non adottato,
@@ -6415,3 +6431,13 @@ negativa riprodotta prima del fix e positiva dopo;54test standard/17allfeatures
 mirati e fmt/Clippy positivi,330hash invariati. Gate completi915/915/872precedenti
 distinti dal delta, descritto nel ledgerrefinement. Prova bundle reale positiva;
 nessun nuovo tag/release. Attendere il gate nativo sul commit finale prima diDONE.
+
+
+## HANDOFF §15.3 — CAD-02 DONE / avvio CAD-03, 2026-11-06
+
+CI42067927663 success su5dbfc174, settejob richiesti tutti positivi; risultato
+nativo conservato in T-CAD-02-native-ci.json. Risolto accesso rete mediante
+permesso di piattaforma, nessuna modificaTLS/credential.130/140DONE92,9%.
+CAD03 in preflight, prerequisiti02/PERSIST07 qualificati; scope approvazioni
+trimestrali core, test sintetici CAD, nessun profilo clinico completo anticipato.
+AUTO_CONTINUE single-agent; docs/migration preservata, no nuova release.

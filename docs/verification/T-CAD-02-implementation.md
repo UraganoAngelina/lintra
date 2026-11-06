@@ -173,3 +173,13 @@ per invocazione automatica ordinaria helper di subprocess/trasporto cross-OS,
 qualificazione manuale del workbook sorgente e memory probe XLSX; i job nativi
 eseguono separatamente i controlli cross-OS previsti. Non è stata avviata una
 nuova campagna prestazionale. Non ci sono gate locali falliti ancora irrisolti.
+
+## Gate nativo conclusivo — 6 novembre 2026
+
+T-CAD-02 DONE. CI42067927663 completed/success sul commit esatto
+5dbfc1747ca64163d110bc2192af1ca0ead0995c: sette job richiesti positivi,
+Linux/MSVC, tre confronti cross-OS e due riapertureSQLite. Il packagingUI
+opzionale è skipped, non conteggiato come successo. Risultato integrale con
+step/job: T-CAD-02-native-ci.json. Nessuna nuova release pubblicata.
+I gate nativi coprono anche l'affinamento finale che i gate completi locali
+precedevano.130/140DONE; prossima CAD03 con prerequisiti effettivi.

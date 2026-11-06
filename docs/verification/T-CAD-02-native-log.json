@@ -1,0 +1,8 @@
+{
+  "run_id": 42067927663,
+  "head_sha": "5dbfc1747ca64163d110bc2192af1ca0ead0995c",
+  "raw_log_bytes": 2136660,
+  "raw_log_sha256": "07b2d19b6375a97a6d7933b8388e9ac3daf6caf71daf74753ce44f2fa5895ee7",
+  "raw_log_local": "/tmp/lintra-cad02-native-ci.log",
+  "note": "Raw log retained locally; versioned native-ci.json records all job/step results."
+}
