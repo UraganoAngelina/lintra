@@ -1,0 +1,699 @@
+{
+  "dataset": "cad-needs-70-positions",
+  "source": "2025-05-14_FLUSSO_ADI.pdf",
+  "source_page": 6,
+  "status": "SOURCE_EXTRACTED_REVIEWED",
+  "field_id": "2.22",
+  "entries": [
+    {
+      "position": 1,
+      "label": "Valutazione monoprofessionale",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 2,
+      "label": "Valutazione multidisciplinare",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 3,
+      "label": "Interventi di educazione terapeutica teorica e pratica / counselling (almeno 15 minuti)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 4,
+      "label": "Assistenza per rischio infettivo e gestione procedure di prevenzione",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 5,
+      "label": "Interventi di educazione terapeutica teorica e pratica / counselling (almeno 15 minuti)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 6,
+      "label": "Gestione O2 terapia",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 7,
+      "label": "Gestione tracheostomia",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 8,
+      "label": "Gestione ventilazione invasiva",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 9,
+      "label": "Gestione broncoaspirazione / drenaggio posturale",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 10,
+      "label": "Interventi di educazione terapeutica teorica e pratica / counselling (almeno 15 minuti)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 11,
+      "label": "Gestione alimentazione per OS",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 12,
+      "label": "Gestione S.N.G.",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 13,
+      "label": "Gestione P.E.G.",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 14,
+      "label": "Gestione alimentazione parenterale",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 15,
+      "label": "Interventi di educazione terapeutica teorica e pratica / counselling (almeno 15 minuti)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 16,
+      "label": "Gestione cateterismo vescicale",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 17,
+      "label": "Gestione urostomia",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 18,
+      "label": "Dialisi",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 19,
+      "label": "Clistere evacuativo",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 20,
+      "label": "Gestione stomia (ileo/colon)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 21,
+      "label": "Interventi di educazione terapeutica teorica e pratica / counselling (almeno 15 minuti)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 22,
+      "label": "Trattamenti lesioni decubito I e II grado",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 23,
+      "label": "Trattamenti lesioni decubito III e IV grado",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 24,
+      "label": "Trattamenti lesioni decubito III e IV grado multiple",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 25,
+      "label": "Trattamenti ulcere trofiche",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 26,
+      "label": "Trattamenti ferite chirurgiche",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 27,
+      "label": "Assistenza per alterazione del ritmo sonno veglia",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 28,
+      "label": "Gestione dolore (oncologico e non oncologico)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 29,
+      "label": "Assistenza relativa allo stato di terminalità oncologica",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 30,
+      "label": "Assistenza relativa allo stato di terminalità non oncologica",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 31,
+      "label": "Supporto al caregiver (compreso supporto al lutto)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 32,
+      "label": "Supporto al paziente",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 33,
+      "label": "Interventi di educazione terapeutica teorica e pratica / counselling (almeno 15 minuti)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 34,
+      "label": "Rilevazione parametri vitali e fisici",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 35,
+      "label": "Prelievo venoso (non occasionale)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 36,
+      "label": "Prelievo materiale organico per microbiologia",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 37,
+      "label": "Prelievo arterioso per emogasanalisi",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 38,
+      "label": "E.C.G.",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 39,
+      "label": "Telemetria",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 40,
+      "label": "Interventi di educazione terapeutica teorica e pratica / counselling (almeno 15 minuti)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 41,
+      "label": "Terapia intramuscolare e sottocutanea",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 42,
+      "label": "Gestione C.V.C. / Porth-cath",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 43,
+      "label": "Gestione terapia infusiva periferica",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 44,
+      "label": "Gestione cateterismo peridurale",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 45,
+      "label": "Gestione terapia con microinfusori / elastomeri",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 46,
+      "label": "Trasfusioni",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 47,
+      "label": "Prescrizione, addestramento, collaudo ausili",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 48,
+      "label": "Trattam. riabilitativo post acuto paz. Neurologico",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 49,
+      "label": "Trattam. riabilitativo post acuto paz. Ortopedico",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 50,
+      "label": "disabilità / handicap con potenziale Trattam. riabilitativo post acuto paz. altre patologie",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 51,
+      "label": "Trattamento patologie della comunicazione",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 52,
+      "label": "Trattamento riattivativo di sindr. da allettamento recente",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 53,
+      "label": "Cicli riabilitativi di mantenimento in presenza di disabilità per prevenzione di complicanze",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 54,
+      "label": "Educazione ed addestramento",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 55,
+      "label": "Supervisione continua",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 56,
+      "label": "Assistenza nelle ADL (bagno, igiene, vestirsi, mangiare, trasferimenti)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 57,
+      "label": "Assistenza nelle iADL (pulizia casa, acquisti, preparazione pasti, lavanderia)",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 58,
+      "label": "Accompagnamento/trasporti fuori casa",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 59,
+      "label": "Covid",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 60,
+      "label": "Cure palliative: aspettativa di vita presumibilmente molto breve all’attivazione UCPDOM (adulto Karnofsky <= 30), PAI immediato di Cure di Fine Vita",
+      "default_domain": [
+        "1",
+        "2"
+      ],
+      "conditional": "UCPDOM only (2.3=2); exact outside-UCPDOM representation pending",
+      "source_page": 6
+    },
+    {
+      "position": 61,
+      "label": "vuoto",
+      "default_domain": [
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 62,
+      "label": "vuoto",
+      "default_domain": [
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 63,
+      "label": "vuoto",
+      "default_domain": [
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 64,
+      "label": "vuoto",
+      "default_domain": [
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 65,
+      "label": "vuoto",
+      "default_domain": [
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 66,
+      "label": "vuoto",
+      "default_domain": [
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 67,
+      "label": "vuoto",
+      "default_domain": [
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 68,
+      "label": "vuoto",
+      "default_domain": [
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 69,
+      "label": "vuoto",
+      "default_domain": [
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    },
+    {
+      "position": 70,
+      "label": "vuoto",
+      "default_domain": [
+        "2"
+      ],
+      "conditional": null,
+      "source_page": 6
+    }
+  ]
+}

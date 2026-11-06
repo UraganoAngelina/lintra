@@ -1,0 +1,454 @@
+{
+  "dataset": "cad-icd9-cm-clinical-signs",
+  "source": "2025-05-14_FLUSSO_ADI.pdf",
+  "source_page": 7,
+  "status": "SOURCE_EXTRACTED_REVIEWED",
+  "normalization": "remove literal period only; preserve V-prefix where present; note source contradicts numeric-only wording",
+  "entries": [
+    {
+      "description": "Affezioni pruriginose non specificate (Prurito SAI)",
+      "source_code": "698.9",
+      "transmitted_code_no_dot": "6989",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Alterazione (o perdita) temporanea della coscienza (Confusione)",
+      "source_code": "780.02",
+      "transmitted_code_no_dot": "78002",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Altra e specificata ritenzione urinaria",
+      "source_code": "788.29",
+      "transmitted_code_no_dot": "78829",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Altra incontinenza urinaria",
+      "source_code": "788.39",
+      "transmitted_code_no_dot": "78839",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Altra Stipsi",
+      "source_code": "564.09",
+      "transmitted_code_no_dot": "56409",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Altre alterazioni della coscienza (Sonnolenza, sopore, stupore)",
+      "source_code": "780.09",
+      "transmitted_code_no_dot": "78009",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Altre dispnee e anomalie respiratorie",
+      "source_code": "786.09",
+      "transmitted_code_no_dot": "78609",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Altro dolore Toracico",
+      "source_code": "786.59",
+      "transmitted_code_no_dot": "78659",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Altro intasamento dell‟intestino (Subocclusione/Occlusione intestinale)",
+      "source_code": "560.39",
+      "transmitted_code_no_dot": "56039",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Altro malessere ed affaticamento (Astenia SAI)",
+      "source_code": "780.79",
+      "transmitted_code_no_dot": "78079",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Anoressia (Perdita di appetito)",
+      "source_code": "783.0",
+      "transmitted_code_no_dot": "7830",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Ascite",
+      "source_code": "789.5",
+      "transmitted_code_no_dot": "7895",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Cachessia",
+      "source_code": "799.4",
+      "transmitted_code_no_dot": "7994",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Cefalea",
+      "source_code": "784.0",
+      "transmitted_code_no_dot": "7840",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Cervicalgia (Dolore Capo-Collo)",
+      "source_code": "723.1",
+      "transmitted_code_no_dot": "7231",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Cianosi",
+      "source_code": "782.5",
+      "transmitted_code_no_dot": "7825",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Coma",
+      "source_code": "780.01",
+      "transmitted_code_no_dot": "78001",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Cure palliative",
+      "source_code": "V66.7",
+      "transmitted_code_no_dot": "V667",
+      "source_page": 7,
+      "contains_alpha_prefix": true
+    },
+    {
+      "description": "Delirium da condizioni patologiche classificate altrove",
+      "source_code": "293.0",
+      "transmitted_code_no_dot": "2930",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Diarrea",
+      "source_code": "787.91",
+      "transmitted_code_no_dot": "78791",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Dolore Addome di altre sedi specificate",
+      "source_code": "789.09",
+      "transmitted_code_no_dot": "78909",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Dolore correlato a neoplasia (acuto, cronico)",
+      "source_code": "338.3",
+      "transmitted_code_no_dot": "3383",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Dolore degli arti",
+      "source_code": "729.5",
+      "transmitted_code_no_dot": "7295",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Dolore Generalizzato",
+      "source_code": "780.96",
+      "transmitted_code_no_dot": "78096",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Ecchimosi spontanee",
+      "source_code": "782.7",
+      "transmitted_code_no_dot": "7827",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Edema (cute)",
+      "source_code": "782.3",
+      "transmitted_code_no_dot": "7823",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Ematemesi",
+      "source_code": "578.0",
+      "transmitted_code_no_dot": "5780",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Emoftoe",
+      "source_code": "786.3",
+      "transmitted_code_no_dot": "7863",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Espettorato abnorme",
+      "source_code": "786.4",
+      "transmitted_code_no_dot": "7864",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Emorragia del retto e dell‟ano",
+      "source_code": "569.3",
+      "transmitted_code_no_dot": "5693",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Emorragia non specificata",
+      "source_code": "459.0",
+      "transmitted_code_no_dot": "4590",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Incontinenza fecale",
+      "source_code": "787.6",
+      "transmitted_code_no_dot": "7876",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Insonnia non specificata",
+      "source_code": "780.52",
+      "transmitted_code_no_dot": "78052",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Iperidrosi generalizzata (Sudorazione eccessiva)",
+      "source_code": "780.8",
+      "transmitted_code_no_dot": "7808",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Ittero non specificato",
+      "source_code": "782.4",
+      "transmitted_code_no_dot": "7824",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Melena e rettorragia",
+      "source_code": "578.1",
+      "transmitted_code_no_dot": "5781",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Movimenti involontari anormali (Tremori)",
+      "source_code": "781.0",
+      "transmitted_code_no_dot": "7810",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Nausea (solo)",
+      "source_code": "787.02",
+      "transmitted_code_no_dot": "78702",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Oliguria, anuria",
+      "source_code": "788.5",
+      "transmitted_code_no_dot": "7885",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Rachialgia dorsale (Dolore Rachide)",
+      "source_code": "724.1",
+      "transmitted_code_no_dot": "7241",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Singhiozzo",
+      "source_code": "786.8",
+      "transmitted_code_no_dot": "7868",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Difficoltà dell'alimentazione ed errori nella somministrazione degli alimenti",
+      "source_code": "783.3",
+      "transmitted_code_no_dot": "7833",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Dimagrimento anomalo",
+      "source_code": "783.21",
+      "transmitted_code_no_dot": "78321",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Sottopeso",
+      "source_code": "783.22",
+      "transmitted_code_no_dot": "78322",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Polidipsia",
+      "source_code": "783.5",
+      "transmitted_code_no_dot": "7835",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Disfagia",
+      "source_code": "787.2",
+      "transmitted_code_no_dot": "7872",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Dispepsia e altri disturbi specificati della funzione gastrica",
+      "source_code": "536.8",
+      "transmitted_code_no_dot": "5368",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Disturbi del sonno non specificati",
+      "source_code": "780.50",
+      "transmitted_code_no_dot": "78050",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Disturbi della secrezione salivare (Xerostomia-Scialorrea)",
+      "source_code": "527.7",
+      "transmitted_code_no_dot": "5277",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Disturbi della sensibilità cutanea",
+      "source_code": "782.0",
+      "transmitted_code_no_dot": "7820",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Disturbo distimico (depressione reattiva, scadimento di umore)",
+      "source_code": "300.4",
+      "transmitted_code_no_dot": "3004",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Stati di ansia non specificato (Ansia)",
+      "source_code": "300.00",
+      "transmitted_code_no_dot": "30000",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Stordimento e capogiro (Vertigini)",
+      "source_code": "780.4",
+      "transmitted_code_no_dot": "7804",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Tosse",
+      "source_code": "786.2",
+      "transmitted_code_no_dot": "7862",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Ulcerazione da decubito (altri siti)",
+      "source_code": "707.09",
+      "transmitted_code_no_dot": "70709",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Vomito (solo)",
+      "source_code": "787.03",
+      "transmitted_code_no_dot": "78703",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Vomito con nausea",
+      "source_code": "787.01",
+      "transmitted_code_no_dot": "78701",
+      "source_page": 7,
+      "contains_alpha_prefix": false
+    },
+    {
+      "description": "Abitazione inadeguata",
+      "source_code": "V60.1",
+      "transmitted_code_no_dot": "V601",
+      "source_page": 7,
+      "contains_alpha_prefix": true
+    },
+    {
+      "description": "Altre ragioni per entrare in contatto con i servizi (Scelta del malato come luogo di assistenza)",
+      "source_code": "V65.8",
+      "transmitted_code_no_dot": "V658",
+      "source_page": 7,
+      "contains_alpha_prefix": true
+    },
+    {
+      "description": "Assenza del caregiver",
+      "source_code": "V60.4",
+      "transmitted_code_no_dot": "V604",
+      "source_page": 7,
+      "contains_alpha_prefix": true
+    },
+    {
+      "description": "Persona che vive da solo",
+      "source_code": "V60.3",
+      "transmitted_code_no_dot": "V603",
+      "source_page": 7,
+      "contains_alpha_prefix": true
+    },
+    {
+      "description": "Problema psicosociale non specificato (sofferenza psicoesistenziale)",
+      "source_code": "V62.9",
+      "transmitted_code_no_dot": "V629",
+      "source_page": 7,
+      "contains_alpha_prefix": true
+    },
+    {
+      "description": "Ricovero di sollievo temporaneo (famiglia)",
+      "source_code": "V60.5",
+      "transmitted_code_no_dot": "V605",
+      "source_page": 7,
+      "contains_alpha_prefix": true
+    }
+  ],
+  "open_catalogue_fallbacks": [
+    "Altri segni o sintomi: codificare con ICD9 CM",
+    "Altri motivi non clinici: codificare con ICD9 CM"
+  ]
+}

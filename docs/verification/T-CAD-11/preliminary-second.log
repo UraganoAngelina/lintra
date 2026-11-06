@@ -1,0 +1,31 @@
+    Blocking waiting for file lock on build directory
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 45.58s
+     Running tests/cad_lookups.rs (target/debug/deps/cad_lookups-a2ac4a151c38f25a)
+
+running 7 tests
+test reviewed_source_inventories_match_exact_membership_bytes_and_preserve_prefixes ... ok
+test all_63_icd_codes_validate_in_each_of_the_five_real_b1_slots ... ok
+test missing_or_degraded_official_membership_stays_technical_or_non_definitive ... ok
+test all_33_prestations_validate_at_the_real_d_coordinates_and_other_codes_fail ... FAILED
+test network_type_required_and_forbidden_conditions_follow_both_controlling_fields ... ok
+test icd_membership_is_exact_without_input_dot_removal_numeric_or_case_coercion ... ok
+test optional_symptoms_are_fac_only_inside_ucpdom_with_primary_presence_diagnostics ... ok
+
+failures:
+
+---- all_33_prestations_validate_at_the_real_d_coordinates_and_other_codes_fail stdout ----
+
+thread 'all_33_prestations_validate_at_the_real_d_coordinates_and_other_codes_fail' (137) panicked at tests/cad_lookups.rs:321:9:
+assertion `left == right` failed: 99
+  left: CompletedValid
+ right: CompletedInvalid
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    all_33_prestations_validate_at_the_real_d_coordinates_and_other_codes_fail
+
+test result: FAILED. 6 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+error: test failed, to rerun pass `--test cad_lookups`

@@ -1,0 +1,1063 @@
+{
+  "component_version": "2024-06.clinical-lookups.1",
+  "scope": "B1 2.3/2.27-2.33, D 5.5 and reviewed needs catalog only; not a complete executable CAD schema",
+  "schema_format_version": 1,
+  "full_normative_compliance": false,
+  "source": {
+    "pdf_sha256": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29",
+    "trace_sha256": {
+      "b1": "a6726cf3b2365c7b230c2b1e82b0ba00d8ba18d504c1f3aa3ec9c008674238a3",
+      "d": "47f6d04d94f63ecdbdcce629615f715e0ec3332ff1b25405256c350f4034db32"
+    },
+    "dataset_sha256": {
+      "cad_icd9_cm_symptoms_page7.json": "8c19447ca64a28e736eb5012c11fb22ba8e55367c59bb81537b25fc2b11b7a96",
+      "cad_prestations_type_5_5_page5.json": "9edbedc9c86c1ed53537c7259ae9d42a897ffa2424bb53fb3388131545a2ab0a",
+      "cad_needs_70_positions_page6.json": "87b889d437275582fb521221d05b0b0598e66a9553b02581daa39b0c704fbf45"
+    },
+    "decisions": [
+      "CAD-10/16",
+      "CAD-11",
+      "G-05"
+    ],
+    "regulatory_version": "2024-06"
+  },
+  "required_capabilities": [
+    "local.v1",
+    "expressions.v1"
+  ],
+  "reference_data": [
+    {
+      "id": "ICD9",
+      "dataset_id": "cad-icd9-cm-clinical-signs",
+      "version": "2024-06.pdf7.1",
+      "path": "data/icd9-membership.json",
+      "sha256": "645ebe2d375842055ff579fcddac44343ca3843cf474697cb23448d87d14bff6",
+      "metadata_attributes": []
+    },
+    {
+      "id": "PRESTATIONS",
+      "dataset_id": "cad-prestation-types",
+      "version": "2024-06.pdf5.1",
+      "path": "data/prestations-membership.json",
+      "sha256": "2c7b12dac959b89f5f0e93c1324b2b38ffffee5d62a45a2ada0b699c430512a6",
+      "metadata_attributes": []
+    }
+  ],
+  "traces": {
+    "B1": {
+      "record_length": 198,
+      "fields": [
+        {
+          "id": "2.3",
+          "name": "Tipologia presa in carico",
+          "physical": {
+            "type": "numeric",
+            "start": 15,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2"
+              ],
+              "target": "raw"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.3",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica la tipologia di presa in carico. I valori ammessi sono i seguenti: 1 - Cure domiciliari (DPCM 12 gennaio 2017 art. 22), 2 - UCPDOM",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.27",
+          "name": "Appartenente alla rete",
+          "physical": {
+            "type": "numeric",
+            "start": 158,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "condition": "is_ucpdom"
+              }
+            ],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "9"
+              ],
+              "target": "raw"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.27",
+            "source_obligation": "NBB",
+            "source_nsis_obligation": "NBB",
+            "resolved_obligation": "NBB",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica se l’erogatore appartiene alla rete.\nValori ammessi:1 - Si, 2 - No, 9 - non disponibile\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.28",
+          "name": "Tipo rete",
+          "physical": {
+            "type": "numeric",
+            "start": 159,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "and": [
+                  {
+                    "condition": "is_ucpdom"
+                  },
+                  {
+                    "condition": "belongs_to_network"
+                  }
+                ]
+              }
+            ],
+            "forbidden_if": [
+              {
+                "not": {
+                  "and": [
+                    {
+                      "condition": "is_ucpdom"
+                    },
+                    {
+                      "condition": "belongs_to_network"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3",
+                "9"
+              ],
+              "target": "raw"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.28",
+            "source_obligation": "NBB",
+            "source_nsis_obligation": "NBB",
+            "resolved_obligation": "NBB",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica a quale rete appartiene l’erogatore. Valori ammessi:1 - RLCP (rete locale di cure palliative), 2 - RCPPTD (rete di cure palliative\npediatriche e terapia del dolore), 3 - RLTD (rete locale di terapia del dolore), 9 - non disponibile*\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM e se l’erogatore appartiene alla rete",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.29",
+          "name": "Segno/sintomo clinico 1",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 160,
+            "length": 5,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "condition": "is_ucpdom"
+              }
+            ],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "ICD9"
+              ],
+              "fallback_values": [],
+              "metadata_bindings": []
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.29",
+            "source_obligation": "NBB",
+            "source_nsis_obligation": "NBB",
+            "resolved_obligation": "NBB",
+            "source_page": 3,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+            "source_note": "I valori ammessi sono riportati nella tabella di riferimento 5.1 (ICD 9 CM)\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.30",
+          "name": "Segno/sintomo clinico 2",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 165,
+            "length": 5,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "ICD9"
+              ],
+              "fallback_values": [],
+              "metadata_bindings": []
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.30",
+            "source_obligation": "FAC",
+            "source_nsis_obligation": "FAC",
+            "resolved_obligation": "FAC",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+            "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo può essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.31",
+          "name": "Segno/sintomo clinico 3",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 170,
+            "length": 5,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "ICD9"
+              ],
+              "fallback_values": [],
+              "metadata_bindings": []
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.31",
+            "source_obligation": "FAC",
+            "source_nsis_obligation": "FAC",
+            "resolved_obligation": "FAC",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+            "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo può essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.32",
+          "name": "Segno/sintomo clinico 4",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 175,
+            "length": 5,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "ICD9"
+              ],
+              "fallback_values": [],
+              "metadata_bindings": []
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.32",
+            "source_obligation": "FAC",
+            "source_nsis_obligation": "FAC",
+            "resolved_obligation": "FAC",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+            "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo può essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.33",
+          "name": "Segno/sintomo clinico 5",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 180,
+            "length": 5,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "ICD9"
+              ],
+              "fallback_values": [],
+              "metadata_bindings": []
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.33",
+            "source_obligation": "FAC",
+            "source_nsis_obligation": "FAC",
+            "resolved_obligation": "FAC",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+            "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo può essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        }
+      ],
+      "named_conditions": {
+        "is_ucpdom": {
+          "eq": {
+            "ref": {
+              "field": "2.3"
+            },
+            "value": "2"
+          }
+        },
+        "belongs_to_network": {
+          "eq": {
+            "ref": {
+              "field": "2.27"
+            },
+            "value": "1"
+          }
+        }
+      }
+    },
+    "D": {
+      "record_length": 39,
+      "fields": [
+        {
+          "id": "5.5",
+          "name": "Tipo prestazione",
+          "physical": {
+            "type": "numeric",
+            "start": 24,
+            "length": 2,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "00"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "PRESTATIONS"
+              ],
+              "fallback_values": [],
+              "metadata_bindings": []
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "5.5",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica le informazioni inerenti le prestazioni.I valori ammessi sono:\n1 - Visita domiciliare (comprensiva di valutazione clinica/funzionale/ sociale e monitoraggio )\n2 - Prelievo ematico\n3 - Esami strumentali\n4 - Trasferimento competenze/educazione del care giver/colloqui/nursering/ addestramento\n5 - Supporto psicologico équipes-paziente-famiglia\n6 - Terapie iniettive attraverso le diverse vie di somministrazione\n7 - Terapia infusionale SC e EV\n8 - Emotrasfusione\n9 - Paracentesi, Toracentesi e altre manovre invasive, gestione di cateteri spinali o sistemi di neuromodulazione del dolore\n10 - Gestione ventilazione meccanica - tracheostomia - sostituzione canula - broncoaspirazione - ossigenoterapia\n11 - Gestione nutrizione enterale ( SNG PEG)\n12 - Gestione nutrizione parenterale - gestione cvc\n13 - Gestione cateterismo urinario comprese le derivazioni urinarie\n14 - Gestione alvo comprese le enterostomie\n15 - Igiene personale e mobilizzazione\n16 - Medicazioni semplici\n17 - Medicazioni complesse\n18 - Fasciature semplici, bendaggi, bendaggi adesivo elastici\n19 - Trattamento di rieducazione motoria – respiratoria\n20 - Trattamento di rieducazione del linguaggio\n21 - Trattamento di rieducazione dei disturbi neuropsicologici\n22 - Controllo dolore\n23 - Controllo dispnea\n24 - Controllo sintomi gastro enterici (nausea, vomito, ecc.)\n25 - Controllo sintomi psicocomportamentali (ansia,angoscia, agitazione, delirium, ecc.)\n26 - Sedazione terminale/palliativa\n27 - Gestione di quadri clinici complessi (fistole, masse ulcerate, stomie, drenaggi,vaste lesioni cutanee, etc.)\n28 - Accudimento del paziente (con autonomia ridotta o assente)\n71 - Televisita\n72 - Teleassistenza\n73 - Telemonitoraggio\n74 - Teleconsulto/Teleconsulenza\n99 - non disponibile *",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        }
+      ],
+      "named_conditions": {}
+    }
+  },
+  "source_fields": {
+    "B1": [
+      {
+        "id": "2.3",
+        "name": "Tipologia presa in carico",
+        "physical": {
+          "start": 15,
+          "length": 1,
+          "type": "numeric",
+          "source_type": "N",
+          "alignment": {
+            "kind": "right",
+            "pad": "0"
+          }
+        },
+        "missing_value": {
+          "kind": "exact",
+          "raw": "0"
+        },
+        "presence": {
+          "base": "required",
+          "required_if": [],
+          "forbidden_if": []
+        },
+        "constraints": [
+          {
+            "kind": "allowed_values",
+            "values": [
+              "1",
+              "2"
+            ]
+          },
+          {
+            "kind": "digits_only_if_present"
+          }
+        ],
+        "regulatory_metadata": {
+          "source_id": "2.3",
+          "source_obligation": "SI",
+          "source_nsis_obligation": "SI",
+          "resolved_obligation": "SI",
+          "source_page": 2,
+          "source": "2025-05-14_FLUSSO_ADI.pdf",
+          "source_key_marker": false,
+          "source_note": "Indica la tipologia di presa in carico. I valori ammessi sono i seguenti: 1 - Cure domiciliari (DPCM 12 gennaio 2017 art. 22), 2 - UCPDOM",
+          "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+        }
+      },
+      {
+        "id": "2.27",
+        "name": "Appartenente alla rete",
+        "physical": {
+          "start": 158,
+          "length": 1,
+          "type": "numeric",
+          "source_type": "N",
+          "alignment": {
+            "kind": "right",
+            "pad": "0"
+          }
+        },
+        "missing_value": {
+          "kind": "exact",
+          "raw": "0"
+        },
+        "presence": {
+          "base": "optional",
+          "required_if": [
+            {
+              "condition": "is_ucpdom"
+            }
+          ],
+          "forbidden_if": [
+            {
+              "ne": {
+                "ref": {
+                  "field": "2.3"
+                },
+                "value": "2"
+              }
+            }
+          ]
+        },
+        "constraints": [
+          {
+            "kind": "allowed_values",
+            "values": [
+              "1",
+              "2",
+              "9"
+            ]
+          },
+          {
+            "kind": "digits_only_if_present"
+          }
+        ],
+        "regulatory_metadata": {
+          "source_id": "2.27",
+          "source_obligation": "NBB",
+          "source_nsis_obligation": "NBB",
+          "resolved_obligation": "NBB",
+          "source_page": 2,
+          "source": "2025-05-14_FLUSSO_ADI.pdf",
+          "source_key_marker": false,
+          "source_note": "Indica se l’erogatore appartiene alla rete.\nValori ammessi:1 - Si, 2 - No, 9 - non disponibile\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM.",
+          "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+        }
+      },
+      {
+        "id": "2.28",
+        "name": "Tipo rete",
+        "physical": {
+          "start": 159,
+          "length": 1,
+          "type": "numeric",
+          "source_type": "N",
+          "alignment": {
+            "kind": "right",
+            "pad": "0"
+          }
+        },
+        "missing_value": {
+          "kind": "exact",
+          "raw": "0"
+        },
+        "presence": {
+          "base": "optional",
+          "required_if": [
+            {
+              "and": [
+                {
+                  "condition": "is_ucpdom"
+                },
+                {
+                  "condition": "belongs_to_network"
+                }
+              ]
+            }
+          ],
+          "forbidden_if": [
+            {
+              "not": {
+                "and": [
+                  {
+                    "condition": "is_ucpdom"
+                  },
+                  {
+                    "condition": "belongs_to_network"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "constraints": [
+          {
+            "kind": "allowed_values",
+            "values": [
+              "1",
+              "2",
+              "3",
+              "9"
+            ]
+          },
+          {
+            "kind": "digits_only_if_present"
+          }
+        ],
+        "regulatory_metadata": {
+          "source_id": "2.28",
+          "source_obligation": "NBB",
+          "source_nsis_obligation": "NBB",
+          "resolved_obligation": "NBB",
+          "source_page": 2,
+          "source": "2025-05-14_FLUSSO_ADI.pdf",
+          "source_key_marker": false,
+          "source_note": "Indica a quale rete appartiene l’erogatore. Valori ammessi:1 - RLCP (rete locale di cure palliative), 2 - RCPPTD (rete di cure palliative\npediatriche e terapia del dolore), 3 - RLTD (rete locale di terapia del dolore), 9 - non disponibile*\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM e se l’erogatore appartiene alla rete",
+          "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+        }
+      },
+      {
+        "id": "2.29",
+        "name": "Segno/sintomo clinico 1",
+        "physical": {
+          "start": 160,
+          "length": 5,
+          "type": "alphanumeric",
+          "source_type": "AN",
+          "alignment": {
+            "kind": "left",
+            "pad": " "
+          }
+        },
+        "missing_value": {
+          "kind": "spaces",
+          "raw": "     "
+        },
+        "presence": {
+          "base": "optional",
+          "required_if": [
+            {
+              "condition": "is_ucpdom"
+            }
+          ],
+          "forbidden_if": [
+            {
+              "ne": {
+                "ref": {
+                  "field": "2.3"
+                },
+                "value": "2"
+              }
+            }
+          ]
+        },
+        "constraints": [
+          {
+            "kind": "reference_data_if_present",
+            "dataset": "cad-icd9-cm-clinical-signs"
+          }
+        ],
+        "regulatory_metadata": {
+          "source_id": "2.29",
+          "source_obligation": "NBB",
+          "source_nsis_obligation": "NBB",
+          "resolved_obligation": "NBB",
+          "source_page": 3,
+          "source": "2025-05-14_FLUSSO_ADI.pdf",
+          "source_key_marker": false,
+          "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+          "source_note": "I valori ammessi sono riportati nella tabella di riferimento 5.1 (ICD 9 CM)\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+          "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+        }
+      },
+      {
+        "id": "2.30",
+        "name": "Segno/sintomo clinico 2",
+        "physical": {
+          "start": 165,
+          "length": 5,
+          "type": "alphanumeric",
+          "source_type": "AN",
+          "alignment": {
+            "kind": "left",
+            "pad": " "
+          }
+        },
+        "missing_value": {
+          "kind": "spaces",
+          "raw": "     "
+        },
+        "presence": {
+          "base": "optional",
+          "required_if": [],
+          "forbidden_if": [
+            {
+              "ne": {
+                "ref": {
+                  "field": "2.3"
+                },
+                "value": "2"
+              }
+            }
+          ]
+        },
+        "constraints": [
+          {
+            "kind": "reference_data_if_present",
+            "dataset": "cad-icd9-cm-clinical-signs"
+          }
+        ],
+        "regulatory_metadata": {
+          "source_id": "2.30",
+          "source_obligation": "FAC",
+          "source_nsis_obligation": "FAC",
+          "resolved_obligation": "FAC",
+          "source_page": 4,
+          "source": "2025-05-14_FLUSSO_ADI.pdf",
+          "source_key_marker": false,
+          "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+          "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo può essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+          "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+        }
+      },
+      {
+        "id": "2.31",
+        "name": "Segno/sintomo clinico 3",
+        "physical": {
+          "start": 170,
+          "length": 5,
+          "type": "alphanumeric",
+          "source_type": "AN",
+          "alignment": {
+            "kind": "left",
+            "pad": " "
+          }
+        },
+        "missing_value": {
+          "kind": "spaces",
+          "raw": "     "
+        },
+        "presence": {
+          "base": "optional",
+          "required_if": [],
+          "forbidden_if": [
+            {
+              "ne": {
+                "ref": {
+                  "field": "2.3"
+                },
+                "value": "2"
+              }
+            }
+          ]
+        },
+        "constraints": [
+          {
+            "kind": "reference_data_if_present",
+            "dataset": "cad-icd9-cm-clinical-signs"
+          }
+        ],
+        "regulatory_metadata": {
+          "source_id": "2.31",
+          "source_obligation": "FAC",
+          "source_nsis_obligation": "FAC",
+          "resolved_obligation": "FAC",
+          "source_page": 4,
+          "source": "2025-05-14_FLUSSO_ADI.pdf",
+          "source_key_marker": false,
+          "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+          "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo può essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+          "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+        }
+      },
+      {
+        "id": "2.32",
+        "name": "Segno/sintomo clinico 4",
+        "physical": {
+          "start": 175,
+          "length": 5,
+          "type": "alphanumeric",
+          "source_type": "AN",
+          "alignment": {
+            "kind": "left",
+            "pad": " "
+          }
+        },
+        "missing_value": {
+          "kind": "spaces",
+          "raw": "     "
+        },
+        "presence": {
+          "base": "optional",
+          "required_if": [],
+          "forbidden_if": [
+            {
+              "ne": {
+                "ref": {
+                  "field": "2.3"
+                },
+                "value": "2"
+              }
+            }
+          ]
+        },
+        "constraints": [
+          {
+            "kind": "reference_data_if_present",
+            "dataset": "cad-icd9-cm-clinical-signs"
+          }
+        ],
+        "regulatory_metadata": {
+          "source_id": "2.32",
+          "source_obligation": "FAC",
+          "source_nsis_obligation": "FAC",
+          "resolved_obligation": "FAC",
+          "source_page": 4,
+          "source": "2025-05-14_FLUSSO_ADI.pdf",
+          "source_key_marker": false,
+          "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+          "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo può essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+          "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+        }
+      },
+      {
+        "id": "2.33",
+        "name": "Segno/sintomo clinico 5",
+        "physical": {
+          "start": 180,
+          "length": 5,
+          "type": "alphanumeric",
+          "source_type": "AN",
+          "alignment": {
+            "kind": "left",
+            "pad": " "
+          }
+        },
+        "missing_value": {
+          "kind": "spaces",
+          "raw": "     "
+        },
+        "presence": {
+          "base": "optional",
+          "required_if": [],
+          "forbidden_if": [
+            {
+              "ne": {
+                "ref": {
+                  "field": "2.3"
+                },
+                "value": "2"
+              }
+            }
+          ]
+        },
+        "constraints": [
+          {
+            "kind": "reference_data_if_present",
+            "dataset": "cad-icd9-cm-clinical-signs"
+          }
+        ],
+        "regulatory_metadata": {
+          "source_id": "2.33",
+          "source_obligation": "FAC",
+          "source_nsis_obligation": "FAC",
+          "resolved_obligation": "FAC",
+          "source_page": 4,
+          "source": "2025-05-14_FLUSSO_ADI.pdf",
+          "source_key_marker": false,
+          "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+          "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo può essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+          "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+        }
+      }
+    ],
+    "D": [
+      {
+        "id": "5.5",
+        "name": "Tipo prestazione",
+        "physical": {
+          "start": 24,
+          "length": 2,
+          "type": "numeric",
+          "source_type": "N",
+          "alignment": {
+            "kind": "right",
+            "pad": "0"
+          }
+        },
+        "missing_value": {
+          "kind": "exact",
+          "raw": "00"
+        },
+        "presence": {
+          "base": "required",
+          "required_if": [],
+          "forbidden_if": []
+        },
+        "constraints": [
+          {
+            "kind": "reference_data",
+            "dataset": "cad-prestation-types"
+          },
+          {
+            "kind": "digits_only_if_present"
+          }
+        ],
+        "regulatory_metadata": {
+          "source_id": "5.5",
+          "source_obligation": "SI",
+          "source_nsis_obligation": "SI",
+          "resolved_obligation": "SI",
+          "source_page": 5,
+          "source": "2025-05-14_FLUSSO_ADI.pdf",
+          "source_key_marker": false,
+          "source_note": "Indica le informazioni inerenti le prestazioni.I valori ammessi sono:\n1 - Visita domiciliare (comprensiva di valutazione clinica/funzionale/ sociale e monitoraggio )\n2 - Prelievo ematico\n3 - Esami strumentali\n4 - Trasferimento competenze/educazione del care giver/colloqui/nursering/ addestramento\n5 - Supporto psicologico équipes-paziente-famiglia\n6 - Terapie iniettive attraverso le diverse vie di somministrazione\n7 - Terapia infusionale SC e EV\n8 - Emotrasfusione\n9 - Paracentesi, Toracentesi e altre manovre invasive, gestione di cateteri spinali o sistemi di neuromodulazione del dolore\n10 - Gestione ventilazione meccanica - tracheostomia - sostituzione canula - broncoaspirazione - ossigenoterapia\n11 - Gestione nutrizione enterale ( SNG PEG)\n12 - Gestione nutrizione parenterale - gestione cvc\n13 - Gestione cateterismo urinario comprese le derivazioni urinarie\n14 - Gestione alvo comprese le enterostomie\n15 - Igiene personale e mobilizzazione\n16 - Medicazioni semplici\n17 - Medicazioni complesse\n18 - Fasciature semplici, bendaggi, bendaggi adesivo elastici\n19 - Trattamento di rieducazione motoria – respiratoria\n20 - Trattamento di rieducazione del linguaggio\n21 - Trattamento di rieducazione dei disturbi neuropsicologici\n22 - Controllo dolore\n23 - Controllo dispnea\n24 - Controllo sintomi gastro enterici (nausea, vomito, ecc.)\n25 - Controllo sintomi psicocomportamentali (ansia,angoscia, agitazione, delirium, ecc.)\n26 - Sedazione terminale/palliativa\n27 - Gestione di quadri clinici complessi (fistole, masse ulcerate, stomie, drenaggi,vaste lesioni cutanee, etc.)\n28 - Accudimento del paziente (con autonomia ridotta o assente)\n71 - Televisita\n72 - Teleassistenza\n73 - Telemonitoraggio\n74 - Teleconsulto/Teleconsulenza\n99 - non disponibile *",
+          "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+        }
+      }
+    ]
+  },
+  "lowering": "Exact one/two-byte numeric domains; right space padding stripped only as declared for five-byte ICD text. Offline source dots removed; V prefixes preserved. No input dot removal, case/numeric coercion, ISTAT or ICPC lookup. Needs source catalog describes T70 positions already implemented in 2024-06.t70.1; not an extra membership validator."
+}

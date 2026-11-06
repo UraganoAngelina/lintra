@@ -1,0 +1,10 @@
+{
+  "source_pdf": "2025-05-14_FLUSSO_ADI.pdf",
+  "source_pdf_sha256": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29",
+  "command": "pdftotext -layout <source PDF> /tmp/lintra-cad-source.txt",
+  "nonempty_pages": 7,
+  "extracted_text_sha256": "9257fe04df0aaa50c7206475929e39105592bf33ddb3042fca12e1d98f1f20bd",
+  "check": "literal source_code presence on page 7, not a fresh semantic review of descriptions",
+  "icd_source_codes_checked": 63,
+  "source_codes_not_found": []
+}

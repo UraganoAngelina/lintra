@@ -6462,3 +6462,31 @@ Necessari commit/push eCI propria prima diDONE03; Windows locale non eseguito.
 Next03gate; durante attesa iniziare11 indipendente suP11/P10/G0 già qualificati.
 CAD04 resta vincolata al gate03, nessuna release o nuova campagna prestazionale.
 130/140DONE,10aperte. Single-agent; docs/migration preservata/esclusa.
+
+
+## CAD03 CI avviata / preflight CAD11, 2026-11-06
+
+Commit42f92ed pubblicato sul branch concordato insieme alla chiusura02dee2a87.
+CI42190202683 avviata, prima lettura sullo SHAesatto ancora in corso; ledger
+T-CAD-03-native-ci.json. NonDONE03;130/140DONE,10task aperte invariato.
+Sospesa03 durante attesa remota, avviata11 indipendente (P11/P10/G0 qualificati).
+Fonti dataset disponibili:63ICD9,33prestazioni,70posizioni bisogno; confermati
+CAD10/16, CAD11 eG05. Nessuna nuova norma o lookupISTAT/ICPC. Scopecomponente
+clinico versionato/provider reale/presenza condizionale, non conformitàCADglobale.
+Single-agent, no background;04 attende03, docs/migration preservata/esclusa.
+
+
+## HANDOFF §15.3 — CAD11 locale verificata, pubblicazione / WAITING_GATE
+
+Componente2024-06.clinical-lookups.1 con63ICD9/33prestazioni/70posizioni catalogo,
+fonti/hash/campi/condizioniCAD approvate; provider/ValidationService/summary/JSONL
+reali suB1/D sintetici.315lookupICD definitivi; FAC/forbidden/required, dominio
+prestazioni01–28/71–74/99, inputbyteesatto eavailability preservati.7test nuovi.
+Cinque gate exit0,58regressione e30allfeatures,0fail/0ignored, hash invariati;
+fmt/Clippyworkspace/boundary positivi. Report T-CAD-11-lookups.md eledger11.
+Gateworkspace922/release precedente03 distinto, non attribuito al delta11;
+src/Cargo/UI/CI produttivi invariati verso42f92ed. Nessuna norma nuova/FROZEN.
+03 ancoraCI42190202683 in corso all'ultima lettura (2ordinarie), nonDONE03/11.
+Pubblicare11 senza dispatch duplicato che annullerebbe03; dispatchCI11 appena
+03terminale. Durante attesa preflight09 indipendente;04/05 attendono03DONE.
+130/140DONE,10aperte. Single-agent, nessun background; docs/migration esclusa.

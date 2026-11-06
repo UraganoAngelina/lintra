@@ -1,0 +1,91 @@
+    Blocking waiting for file lock on build directory
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 01s
+     Running tests/cad_composite.rs (target/debug/deps/cad_composite-7f767e0f835a21f9)
+
+running 5 tests
+test invalid_control_values_cannot_make_the_record_valid ... ok
+test actual_source_coordinates_exact_raw_width_and_both_valid_contexts ... ok
+test zero_fill_space_fill_and_a_blank_tail_never_receive_numeric_or_text_fallback ... ok
+test conditional_position_60_has_real_coordinates_context_and_deterministic_jsonl ... ok
+test all_256_byte_values_at_each_of_70_positions_match_the_source_domains ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.54s
+
+     Running tests/cad_lookups.rs (target/debug/deps/cad_lookups-a2ac4a151c38f25a)
+
+running 7 tests
+test reviewed_source_inventories_match_exact_membership_bytes_and_preserve_prefixes ... ok
+test missing_or_degraded_official_membership_stays_technical_or_non_definitive ... ok
+test all_63_icd_codes_validate_in_each_of_the_five_real_b1_slots ... ok
+test all_33_prestations_validate_at_the_real_d_coordinates_and_other_codes_fail ... ok
+test optional_symptoms_are_fac_only_inside_ucpdom_with_primary_presence_diagnostics ... ok
+test network_type_required_and_forbidden_conditions_follow_both_controlling_fields ... ok
+test icd_membership_is_exact_without_input_dot_removal_numeric_or_case_coercion ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests/conditional_presence.rs (target/debug/deps/conditional_presence-bc923cc9833f14b4)
+
+running 8 tests
+test failed_pipeline_never_queries_another_context ... ok
+test named_conditions_compile_into_the_actual_presence_plan ... ok
+test required_condition_reads_later_field_without_mutating_it ... ok
+test undecidable_record_returns_typed_terminal_error_instead_of_valid_or_invalid ... ok
+test required_unless_is_explicit_not_and_conditions_are_retained ... ok
+test unknown_stops_field_and_counts_one_skip_without_fabricating_violation ... ok
+test required_forbidden_and_conflict_stop_before_datatype_and_domains ... ok
+test presence_state_matrix_covers_base_and_every_required_forbidden_truth_combination ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/reference_filesystem.rs (target/debug/deps/reference_filesystem-8e4ca6c5a1023120)
+
+running 22 tests
+test explicit_normalization_preserves_verified_degraded_and_unavailable_evidence ... ok
+test bare_reference_constraint_rejects_invalid_plans_before_a_matching_fallback ... ok
+test empty_dataset_is_verified_but_absent_dataset_never_becomes_an_empty_set ... ok
+test digest_mismatch_is_degraded_with_both_hashes_and_never_leaks_through_strict_api ... ok
+test malformed_hash_mismatch_keeps_both_anomalies_and_the_original_digest ... ok
+test continuation_preserves_healthy_degraded_and_missing_dependencies_in_declaration_order ... ok
+test missing_root_and_empty_plan_have_explicit_different_meanings ... ok
+test file_and_directory_symlink_escape_is_fatal_under_both_policies ... ok
+test original_byte_digest_changes_with_whitespace_even_when_membership_is_identical ... ok
+test non_regular_files_and_intermediate_files_cannot_be_read_as_datasets ... ok
+test compiler_checks_reference_bindings_resolution_fallback_and_last_stage ... ok
+test inconsistent_preparation_and_observer_failure_are_technical_and_terminal ... ok
+test invalid_bindings_unsupported_metadata_and_duplicate_keys_are_fatal_before_reads ... ok
+test reliable_identity_is_required_even_when_the_file_hash_matches ... ok
+test verified_dataset_preserves_bytes_empty_key_and_independently_known_digest ... ok
+test verified_match_dominates_earlier_degraded_match_and_preserves_match_provenance ... ok
+test union_uses_verified_provisional_and_inconclusive_evidence_without_false_absence ... ok
+test malformed_documents_are_classified_without_permissive_or_selective_recovery ... ok
+test rule_reference_unknown_continues_and_a_real_assertion_violation_remains_normative ... ok
+test snapshots_outlive_provider_and_files_and_lookup_never_reopens_them ... ok
+test reference_records_continue_independent_checks_and_keep_nondefinitive_results_out_of_errors ... ok
+test reference_loop_uses_only_snapshot_and_preserves_independent_stage_priority ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/reference_service.rs (target/debug/deps/reference_service-d87f72a0dbff7c14)
+
+running 16 tests
+test all_missing_continues_without_normative_errors_or_false_full_conformance ... ok
+test inconsistent_preparation_policy_is_rejected_before_input_access ... ok
+test degraded_matches_are_provisional_negatives_inconclusive_and_independent_errors_remain ... ok
+test legacy_version_map_omits_ambiguous_ids_but_full_audit_keeps_both_verified_versions ... ok
+test explicit_summary_finish_cannot_erase_a_record_observed_non_definitive_marker ... ok
+test rule_reference_predicates_use_the_same_audit_and_unknown_propagation ... ok
+test reference_warnings_do_not_spend_the_optional_normative_error_budget ... ok
+test malformed_and_wrong_identity_are_unavailable_but_independent_validation_continues ... ok
+test verified_positive_proves_union_even_when_other_datasets_are_missing ... ok
+test summary_validation_rejects_forged_trust_completeness_counts_and_legacy_versions ... ok
+test strict_and_unconfigured_fail_before_input_open_or_progress_events ... ok
+test symlink_boundary_is_fatal_in_continue_and_strict_service_modes ... ok
+test verified_union_fallback_real_violations_and_actual_audit_are_preserved ... ok
+test cancellation_remains_distinct_from_completed_partial_validation ... ok
+test cli_wires_reference_root_and_publishes_partial_summary_with_no_error_jsonl ... ok
+test many_warnings_are_aggregated_without_jsonl_errors_or_report_growth_per_record ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+

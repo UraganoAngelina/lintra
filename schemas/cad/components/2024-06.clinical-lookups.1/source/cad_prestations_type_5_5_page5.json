@@ -1,0 +1,208 @@
+{
+  "dataset": "cad-prestation-types",
+  "source": "2025-05-14_FLUSSO_ADI.pdf",
+  "source_page": 5,
+  "status": "SOURCE_EXTRACTED_REVIEWED",
+  "field_id": "5.5",
+  "physical_width": 2,
+  "entries": [
+    {
+      "code": "01",
+      "source_code": "1",
+      "label": "Visita domiciliare (comprensiva di valutazione clinica/funzionale/ sociale e monitoraggio )",
+      "source_page": 5
+    },
+    {
+      "code": "02",
+      "source_code": "2",
+      "label": "Prelievo ematico",
+      "source_page": 5
+    },
+    {
+      "code": "03",
+      "source_code": "3",
+      "label": "Esami strumentali",
+      "source_page": 5
+    },
+    {
+      "code": "04",
+      "source_code": "4",
+      "label": "Trasferimento competenze/educazione del care giver/colloqui/nursering/ addestramento",
+      "source_page": 5
+    },
+    {
+      "code": "05",
+      "source_code": "5",
+      "label": "Supporto psicologico équipes-paziente-famiglia",
+      "source_page": 5
+    },
+    {
+      "code": "06",
+      "source_code": "6",
+      "label": "Terapie iniettive attraverso le diverse vie di somministrazione",
+      "source_page": 5
+    },
+    {
+      "code": "07",
+      "source_code": "7",
+      "label": "Terapia infusionale SC e EV",
+      "source_page": 5
+    },
+    {
+      "code": "08",
+      "source_code": "8",
+      "label": "Emotrasfusione",
+      "source_page": 5
+    },
+    {
+      "code": "09",
+      "source_code": "9",
+      "label": "Paracentesi, Toracentesi e altre manovre invasive, gestione di cateteri spinali o sistemi di neuromodulazione del dolore",
+      "source_page": 5
+    },
+    {
+      "code": "10",
+      "source_code": "10",
+      "label": "Gestione ventilazione meccanica - tracheostomia - sostituzione canula - broncoaspirazione - ossigenoterapia",
+      "source_page": 5
+    },
+    {
+      "code": "11",
+      "source_code": "11",
+      "label": "Gestione nutrizione enterale ( SNG PEG)",
+      "source_page": 5
+    },
+    {
+      "code": "12",
+      "source_code": "12",
+      "label": "Gestione nutrizione parenterale - gestione cvc",
+      "source_page": 5
+    },
+    {
+      "code": "13",
+      "source_code": "13",
+      "label": "Gestione cateterismo urinario comprese le derivazioni urinarie",
+      "source_page": 5
+    },
+    {
+      "code": "14",
+      "source_code": "14",
+      "label": "Gestione alvo comprese le enterostomie",
+      "source_page": 5
+    },
+    {
+      "code": "15",
+      "source_code": "15",
+      "label": "Igiene personale e mobilizzazione",
+      "source_page": 5
+    },
+    {
+      "code": "16",
+      "source_code": "16",
+      "label": "Medicazioni semplici",
+      "source_page": 5
+    },
+    {
+      "code": "17",
+      "source_code": "17",
+      "label": "Medicazioni complesse",
+      "source_page": 5
+    },
+    {
+      "code": "18",
+      "source_code": "18",
+      "label": "Fasciature semplici, bendaggi, bendaggi adesivo elastici",
+      "source_page": 5
+    },
+    {
+      "code": "19",
+      "source_code": "19",
+      "label": "Trattamento di rieducazione motoria – respiratoria",
+      "source_page": 5
+    },
+    {
+      "code": "20",
+      "source_code": "20",
+      "label": "Trattamento di rieducazione del linguaggio",
+      "source_page": 5
+    },
+    {
+      "code": "21",
+      "source_code": "21",
+      "label": "Trattamento di rieducazione dei disturbi neuropsicologici",
+      "source_page": 5
+    },
+    {
+      "code": "22",
+      "source_code": "22",
+      "label": "Controllo dolore",
+      "source_page": 5
+    },
+    {
+      "code": "23",
+      "source_code": "23",
+      "label": "Controllo dispnea",
+      "source_page": 5
+    },
+    {
+      "code": "24",
+      "source_code": "24",
+      "label": "Controllo sintomi gastro enterici (nausea, vomito, ecc.)",
+      "source_page": 5
+    },
+    {
+      "code": "25",
+      "source_code": "25",
+      "label": "Controllo sintomi psicocomportamentali (ansia,angoscia, agitazione, delirium, ecc.)",
+      "source_page": 5
+    },
+    {
+      "code": "26",
+      "source_code": "26",
+      "label": "Sedazione terminale/palliativa",
+      "source_page": 5
+    },
+    {
+      "code": "27",
+      "source_code": "27",
+      "label": "Gestione di quadri clinici complessi (fistole, masse ulcerate, stomie, drenaggi,vaste lesioni cutanee, etc.)",
+      "source_page": 5
+    },
+    {
+      "code": "28",
+      "source_code": "28",
+      "label": "Accudimento del paziente (con autonomia ridotta o assente)",
+      "source_page": 5
+    },
+    {
+      "code": "71",
+      "source_code": "71",
+      "label": "Televisita",
+      "source_page": 5
+    },
+    {
+      "code": "72",
+      "source_code": "72",
+      "label": "Teleassistenza",
+      "source_page": 5
+    },
+    {
+      "code": "73",
+      "source_code": "73",
+      "label": "Telemonitoraggio",
+      "source_page": 5
+    },
+    {
+      "code": "74",
+      "source_code": "74",
+      "label": "Teleconsulto/Teleconsulenza",
+      "source_page": 5
+    },
+    {
+      "code": "99",
+      "source_code": "99",
+      "label": "non disponibile *",
+      "source_page": 5
+    }
+  ]
+}
