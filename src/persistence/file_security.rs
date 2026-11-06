@@ -60,6 +60,20 @@ pub(super) fn root(path: &Path, create: bool) -> Result<RootGuard, PersistenceEr
     })
 }
 pub(super) fn check_files(root: &Path, create: bool) -> Result<(), PersistenceError> {
+    check_files_with_hook(root, create, |_, _| {})
+}
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub(super) enum FileCheckStage {
+    BeforeMetadata,
+    BeforePrivacy,
+}
+/// The production callback is empty; tests can make the short-lived journal
+/// disappear at the precise preflight boundary instead of relying on timing.
+pub(super) fn check_files_with_hook(
+    root: &Path,
+    create: bool,
+    mut hook: impl FnMut(&Path, FileCheckStage),
+) -> Result<(), PersistenceError> {
     let entries = fs::read_dir(root).map_err(|_| PersistenceError::StorageUnavailable)?;
     for entry in entries {
         let entry = entry.map_err(|_| PersistenceError::StorageUnavailable)?;
@@ -70,11 +84,34 @@ pub(super) fn check_files(root: &Path, create: bool) -> Result<(), PersistenceEr
         if name != "lintra.db" && name != "lintra.db-journal" {
             return Err(bad());
         }
-        let meta = fs::symlink_metadata(entry.path()).map_err(|_| bad())?;
+        let journal = name == "lintra.db-journal";
+        hook(&entry.path(), FileCheckStage::BeforeMetadata);
+        let meta = fs::symlink_metadata(entry.path()).map_err(|error| {
+            // SQLite legitimately deletes its optional rollback journal. The
+            // inventory was invalidated: fail this open and require a fresh
+            // complete preflight, rather than accepting an unchecked entry.
+            if journal && error.kind() == std::io::ErrorKind::NotFound {
+                PersistenceError::StorageBusy
+            } else {
+                bad()
+            }
+        })?;
         if !meta.is_file() || meta.file_type().is_symlink() || reparse(&meta) {
             return Err(bad());
         }
-        check_private(&entry.path(), &meta, false)?;
+        hook(&entry.path(), FileCheckStage::BeforePrivacy);
+        let privacy = check_private(&entry.path(), &meta, false);
+        // Windows queries the named ACL after metadata. Preserve every ACL or
+        // permission rejection while the object exists; only a confirmed
+        // disappeared journal can make this failed check transient. Keys,
+        // directory handles and mandatory database checks are unchanged.
+        if privacy.is_err()
+            && journal
+            && matches!(fs::symlink_metadata(entry.path()), Err(error) if error.kind() == std::io::ErrorKind::NotFound)
+        {
+            return Err(PersistenceError::StorageBusy);
+        }
+        privacy?;
     }
     Ok(())
 }

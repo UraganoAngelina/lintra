@@ -984,6 +984,76 @@ fn resolve_finished_contender(root: &Path, candidate: &HistoricalSnapshot) -> i3
     }
 }
 
+/// SQLite removes rollback journals during completion/recovery. A failed
+/// preflight must report this transient disappearance without ever accepting
+/// an unchecked object or retrying a publication.
+fn disappear_during_preflight(stage: security::FileCheckStage) {
+    let dir = parent();
+    let root = dir.path().join("archive");
+    let repo = create(&root);
+    let journal = root.join("lintra.db-journal");
+    let mut options = std::fs::OpenOptions::new();
+    options.write(true).create_new(true);
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::OpenOptionsExt;
+        options.mode(0o600);
+    }
+    drop(options.open(&journal).unwrap());
+    let result = security::check_files_with_hook(&root, false, |path, current| {
+        if path == journal && current == stage {
+            fs::remove_file(path).unwrap();
+        }
+    });
+    assert_eq!(result, Err(PersistenceError::StorageBusy));
+    // A fresh preflight must still validate the ordinary DB and private root.
+    security::check_files(&root, false).unwrap();
+    assert_eq!(repo.settings().unwrap().format_version, 2);
+}
+#[test]
+fn disappeared_journal_before_metadata_requires_a_fresh_preflight() {
+    disappear_during_preflight(security::FileCheckStage::BeforeMetadata);
+}
+#[cfg(windows)]
+#[test]
+fn disappeared_journal_before_named_acl_requires_a_fresh_preflight() {
+    disappear_during_preflight(security::FileCheckStage::BeforePrivacy);
+}
+
+#[test]
+fn existing_journal_link_and_unexpected_names_remain_unsafe() {
+    let dir = parent();
+    let root = dir.path().join("archive");
+    let _repo = create(&root);
+    let journal = root.join("lintra.db-journal");
+    #[cfg(unix)]
+    std::os::unix::fs::symlink(root.join("lintra.db"), &journal).unwrap();
+    #[cfg(windows)]
+    std::os::windows::fs::symlink_file(root.join("lintra.db"), &journal)
+        .expect("native Windows qualification permits fixture symlinks");
+    assert_eq!(
+        security::check_files(&root, false),
+        Err(PersistenceError::UnsafeStorageLocation)
+    );
+    fs::remove_file(&journal).unwrap();
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        fs::write(&journal, []).unwrap();
+        fs::set_permissions(&journal, fs::Permissions::from_mode(0o644)).unwrap();
+        assert_eq!(
+            security::check_files(&root, false),
+            Err(PersistenceError::UnsafeStorageLocation)
+        );
+        fs::remove_file(&journal).unwrap();
+    }
+    fs::write(root.join("unexpected.tmp"), []).unwrap();
+    assert_eq!(
+        security::check_files(&root, false),
+        Err(PersistenceError::UnsafeStorageLocation)
+    );
+}
+
 #[test]
 fn busy_at_commit_is_unknown_until_a_fresh_connection_resolves_the_candidate() {
     let dir = parent();

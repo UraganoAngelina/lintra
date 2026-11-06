@@ -1,0 +1,75 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra-sqlite-recovery-20261106)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 25.43s
+     Running unittests src/lib.rs (/home/alberto/Desktop/LINTRA/lintra/target/debug/deps/lintra-a6cb4b0a3881ea6d)
+
+running 29 tests
+test persistence::sqlite::tests::existing_journal_link_and_unexpected_names_remain_unsafe ... ok
+test persistence::sqlite::tests::metadata::metadata_restart_worker ... ignored, synthetic subprocess helper, invoked by metadata parent
+test persistence::sqlite::tests::disappeared_journal_before_metadata_requires_a_fresh_preflight ... ok
+test persistence::sqlite::tests::an_unfinished_transaction_view_cannot_be_mistaken_for_publication ... ok
+test persistence::sqlite::tests::abort_drop_stale_generation_and_failure_before_commit_do_not_publish ... ok
+
+running 1 test
+test persistence::sqlite::tests::ambiguous_commit_is_resolved_by_exact_immutable_candidate ... ok
+test persistence::sqlite::tests::busy_at_commit_is_unknown_until_a_fresh_connection_resolves_the_candidate ... ok
+test persistence::sqlite::tests::process_worker ... ignored, subprocess helper invoked only with a synthetic archive by parent tests
+test persistence::sqlite::tests::metadata::consent_is_authenticated_and_tampering_never_turns_into_valid_metadata ... ok
+
+running 1 test
+test persistence::sqlite::tests::metadata::upgrade_preserves_all_identity_payloads_indices_and_generations ... ok
+test persistence::sqlite::tests::metadata::metadata_restart_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 107 filtered out; finished in 0.01s
+
+test persistence::sqlite::tests::metadata::legacy_signed_metadata_stays_readable_and_upgrade_is_explicit_atomic_and_idempotent ... ok
+
+running 1 test
+test persistence::sqlite::tests::protection_audit_is_loaded_from_an_empty_archive_without_silent_reinitialization ... ok
+test persistence::sqlite::tests::qualification::export_native_snapshot_fixture ... ignored, CI exports a public synthetic database for the opposite native runner
+test persistence::sqlite::tests::qualification::import_opposite_native_snapshot_fixture ... ignored, CI reopens the actual synthetic database produced by the opposite OS
+
+running 1 test
+test persistence::sqlite::tests::process_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 107 filtered out; finished in 0.01s
+
+test persistence::sqlite::tests::occurrence_query_uses_existing_indexes_and_rejects_incoherent_provenance ... ok
+test persistence::sqlite::tests::protection_cannot_be_bypassed_by_public_dto_or_same_label_wrong_key ... 
+running 1 test
+ok
+test persistence::sqlite::tests::metadata::upgrade_failure_before_commit_rolls_back_and_lost_ack_is_not_false_rollback ... ok
+test persistence::sqlite::tests::metadata::upgrade_process_interruption_recovers_the_old_or_committed_format_with_all_metadata ... ok
+
+running 1 test
+test persistence::sqlite::tests::query_plans_are_indexed_and_external_writer_contention_is_explicit ... ok
+test persistence::sqlite::tests::qualification::malformed_or_oversized_transfer_manifest_never_creates_an_archive ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test persistence::sqlite::tests::process_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 107 filtered out; finished in 0.01s
+
+test persistence::sqlite::tests::roundtrip_restart_immutable_snapshots_omission_namespace_and_settings ... ok
+test persistence::sqlite::tests::tampered_record_or_source_is_rejected_instead_of_returning_unverified_domain_values ... ok
+
+running 1 test
+test persistence::sqlite::tests::qualification::corrupt_transfer_hash_or_database_fails_without_reinitialization ... ok
+test persistence::sqlite::tests::unknown_unsupported_corrupt_and_uninitialized_are_distinct_without_reinitialization ... ok
+test persistence::sqlite::tests::unsafe_paths_permissions_and_foreign_sidecars_fail_closed ... ok
+test persistence::sqlite::tests::qualification::closed_native_fixture_roundtrips_with_provenance_retained_keys_and_key_confirmation ... ok
+test persistence::sqlite::tests::process_restart_and_abrupt_exit_inside_or_after_commit_recover_coherently ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test persistence::sqlite::tests::qualification::readers_never_observe_staged_or_uncommitted_rows_and_killed_writer_recovers ... ok
+test persistence::sqlite::tests::two_process_contenders_preserve_cas_and_resolved_retry_publishes_one_generation ... ok
+
+test result: ok. 25 passed; 0 failed; 4 ignored; 0 measured; 79 filtered out; finished in 0.29s
+

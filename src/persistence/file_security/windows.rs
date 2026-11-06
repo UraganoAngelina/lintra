@@ -416,6 +416,24 @@ mod tests {
         );
     }
     #[test]
+    fn existing_journal_with_bad_acl_is_not_transient_contention() {
+        let base = std::env::current_dir()
+            .unwrap()
+            .join("target/sqlite-journal-acl-tests");
+        fs::create_dir_all(&base).unwrap();
+        let temp = tempfile::tempdir_in(base).unwrap();
+        let path = temp.path().join("archive");
+        let _root = super::super::root(&path, true).unwrap();
+        let _database = super::super::database(&path, true).unwrap();
+        let journal = path.join("lintra.db-journal");
+        fs::write(&journal, []).unwrap();
+        set_world_acl(&journal);
+        assert_eq!(
+            super::super::check_files(&path, false),
+            Err(PersistenceError::UnsafeStorageLocation)
+        );
+    }
+    #[test]
     fn file_and_volume_boundaries_on_native_windows() {
         // Exercise each boundary independently. Diagnostics contain only static
         // stage labels/results, never paths, SIDs, keys or persisted values.

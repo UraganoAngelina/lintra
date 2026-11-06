@@ -1,0 +1,220 @@
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	﻿2026-11-06T09:07:03.7674798Z ##[group]Run cargo test -p lintra --no-default-features --target x86_64-pc-windows-msvc --locked
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:03.7675835Z ^[[36;1mcargo test -p lintra --no-default-features --target x86_64-pc-windows-msvc --locked^[[0m
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:03.7835387Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:03.7835861Z env:
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:03.7836091Z   CARGO_TERM_COLOR: always
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:03.7836534Z   CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS: -C target-feature=+crt-static
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:03.7837150Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.13.17\x64
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:03.7837749Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.13.17\x64/lib/pkgconfig
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:03.7838363Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.17\x64
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:03.7839016Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.17\x64
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:03.7839700Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.17\x64
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:03.7840151Z ##[endgroup]
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:05.2501680Z ^[[1m^[[92m   Compiling^[[0m proc-macro2 v1.0.107
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:05.2504263Z ^[[1m^[[92m   Compiling^[[0m quote v1.0.47
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:05.2505236Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.17.1
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:05.2510877Z ^[[1m^[[92m   Compiling^[[0m zlib-rs v0.6.8
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:05.6786298Z ^[[1m^[[92m   Compiling^[[0m log v0.4.34
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:06.0002795Z ^[[1m^[[92m   Compiling^[[0m simd-adler32 v0.3.10
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:06.4465913Z ^[[1m^[[92m   Compiling^[[0m zopfli v0.8.4
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:06.5752238Z ^[[1m^[[92m   Compiling^[[0m indexmap v2.14.2
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:07.7528991Z ^[[1m^[[92m   Compiling^[[0m num-traits v0.2.19
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:08.0408259Z ^[[1m^[[92m   Compiling^[[0m syn v3.0.6
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:08.1106406Z ^[[1m^[[92m   Compiling^[[0m windows-sys v0.61.2
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:08.4670132Z ^[[1m^[[92m   Compiling^[[0m once_cell v1.21.4
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:10.0726890Z ^[[1m^[[92m   Compiling^[[0m hashlink v0.12.2
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:10.6016963Z ^[[1m^[[92m   Compiling^[[0m flate2 v1.1.10
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:11.6175514Z ^[[1m^[[92m   Compiling^[[0m zip v9.0.5
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:11.6971767Z ^[[1m^[[92m   Compiling^[[0m zip v8.6.0
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:11.8652234Z ^[[1m^[[92m   Compiling^[[0m tempfile v3.27.0
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:12.7565292Z ^[[1m^[[92m   Compiling^[[0m smallvec v1.16.2
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:13.0608374Z ^[[1m^[[92m   Compiling^[[0m lintra v0.1.1-rc.3 (D:\a\lintra\lintra)
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:13.5433671Z ^[[1m^[[92m   Compiling^[[0m bitflags v2.13.2
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:13.8971166Z ^[[1m^[[92m   Compiling^[[0m rusqlite v0.41.0
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:14.1985029Z ^[[1m^[[92m   Compiling^[[0m rust_xlsxwriter v0.100.0
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:14.4423800Z ^[[1m^[[92m   Compiling^[[0m serde_derive v1.0.229
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:15.6718458Z ^[[1m^[[92m   Compiling^[[0m ctrlc v3.5.2
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:15.8925525Z ^[[1m^[[92m   Compiling^[[0m chrono v0.4.45
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:19.8242854Z ^[[1m^[[92m   Compiling^[[0m serde v1.0.229
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:07:20.7024298Z ^[[1m^[[92m   Compiling^[[0m calamine v0.36.1
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.3317093Z ^[[1m^[[92m    Finished^[[0m `test` profile [unoptimized + debuginfo] target(s) in 3m 14s
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4005637Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\x86_64-pc-windows-msvc\debug\deps\lintra-a5b65e1bd2c7eb8e.exe)
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4129162Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4129577Z running 108 tests
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4137169Z test application::historical_validation::tests::source_clock_handles_pre_epoch_fraction_and_rejects_out_of_calendar_range ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4138897Z test domain::byte_range::tests::rejects_zero_length_and_end_overflow ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4141010Z test domain::byte_range::tests::exact_end_is_valid_and_outside_record_is_none ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4142256Z test domain::byte_range::tests::boundary_grid_agrees_with_checked_slice_bounds ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4143805Z test domain::byte_range::tests::slices_at_byte_offsets_without_copying_or_decoding ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4147332Z test domain::errors::tests::regulatory_codes_roundtrip_but_do_not_claim_registration ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4152471Z test domain::errors::tests::core_mapping_matches_source_and_roundtrips_without_collisions ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4154594Z test domain::errors::tests::rejects_legacy_malformed_and_schema_execution_symbols ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4156229Z test domain::errors::tests::map_order_is_stable_independent_of_insertion_order ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4157359Z test domain::ids::tests::identifiers_preserve_spelling_and_support_value_semantics ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4160223Z test domain::summary::tests::schema_keys_distinguish_flow_and_version_without_trace_identity ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4161762Z test domain::identity::tests::absent_identity_remains_absent_and_technical_ids_are_ordered ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4164122Z test domain::summary::tests::summary_preserves_scope_order_and_orders_dataset_and_error_maps ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4165272Z test domain::summary_builder::tests::all_counter_overflows_are_detected_and_terminal ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4166518Z test engine::expression_evaluator::cause_tests::decisive_unknown_cause_survives_nested_boolean_dominance ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4168667Z test engine::field_guide::tests::enum_retains_padding_and_non_enumerable_constraints_are_explicit ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4171241Z test engine::field_guide::tests::ranges_are_complete_signed_and_not_machine_bounded ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4175825Z test input::reader::tests::counter_overflow_is_checked_but_clean_eof_never_increments_it ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4178721Z test input::audit::tests::byte_counter_overflow_is_terminal_and_does_not_hash_an_unaccounted_chunk ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4179973Z test engine::field_guide::paging_tests::paging_has_no_gaps_and_rejects_wrong_continuations ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4197535Z test engine::field_pipeline::tests::every_presence_violation_uses_the_same_stop_path ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4225126Z test persistence::file_security::windows::tests::inherited_private_acl_is_required_and_world_access_is_rejected ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4279894Z test persistence::file_security::windows::tests::file_and_volume_boundaries_on_native_windows ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4340458Z test persistence::key_file::tests::exact_binary_key_is_redacted_and_only_the_configured_id_resolves ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4491924Z test persistence::key_file::tests::portable_resolution_uses_only_the_supplied_executable_and_survives_relocation ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4511164Z test persistence::memory::tests::revision_exhaustion_and_poisoned_storage_are_technical_failures ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4516515Z test persistence::protection::tests::rfc4231_case6_sha256_matches_the_independent_standard_vector ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4523451Z test persistence::file_security::windows::tests::opened_key_acl_links_and_replacement_are_checked_without_weakening_storage ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.4624892Z test persistence::key_file::tests::absent_empty_short_long_and_non_regular_files_are_never_defaults ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.5405823Z test persistence::sqlite::tests::an_unfinished_transaction_view_cannot_be_mistaken_for_publication ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.5703433Z test persistence::sqlite::tests::abort_drop_stale_generation_and_failure_before_commit_do_not_publish ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.6000009Z test persistence::sqlite::tests::ambiguous_commit_is_resolved_by_exact_immutable_candidate ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.6641924Z test persistence::key_file::tests::shared_key_produces_scoped_identities_but_archives_remain_independent ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.6663530Z test persistence::sqlite::tests::metadata::metadata_restart_worker ... ignored, synthetic subprocess helper, invoked by metadata parent
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.8262666Z test persistence::sqlite::tests::metadata::consent_is_authenticated_and_tampering_never_turns_into_valid_metadata ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.8280116Z test persistence::sqlite::tests::busy_at_commit_is_unknown_until_a_fresh_connection_resolves_the_candidate ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.8412664Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.8413994Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.8475538Z test persistence::sqlite::tests::metadata::metadata_restart_worker ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.8476504Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.8477058Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 107 filtered out; finished in 0.01s
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.8477782Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.8675461Z test persistence::sqlite::tests::metadata::legacy_signed_metadata_stays_readable_and_upgrade_is_explicit_atomic_and_idempotent ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.8813227Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.8813548Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.9021264Z test persistence::sqlite::tests::metadata::upgrade_failure_before_commit_rolls_back_and_lost_ack_is_not_false_rollback ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.9347056Z test persistence::sqlite::tests::metadata::upgrade_preserves_all_identity_payloads_indices_and_generations ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:18.9356251Z test persistence::sqlite::tests::process_worker ... ignored, subprocess helper invoked only with a synthetic archive by parent tests
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.0482919Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.0483529Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.0495835Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.0496173Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.0567289Z test persistence::sqlite::tests::process_worker ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.0568054Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.0568717Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 107 filtered out; finished in 0.01s
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.0569569Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.0651981Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.0652654Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.1486735Z test persistence::sqlite::tests::protection_audit_is_loaded_from_an_empty_archive_without_silent_reinitialization ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.1521126Z test persistence::sqlite::tests::occurrence_query_uses_existing_indexes_and_rejects_incoherent_provenance ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.1608084Z test persistence::sqlite::tests::metadata::upgrade_process_interruption_recovers_the_old_or_committed_format_with_all_metadata ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.1947522Z test persistence::sqlite::tests::protection_cannot_be_bypassed_by_public_dto_or_same_label_wrong_key ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.1949345Z test persistence::sqlite::tests::qualification::export_native_snapshot_fixture ... ignored, CI exports a public synthetic database for the opposite native runner
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.1951534Z test persistence::sqlite::tests::qualification::import_opposite_native_snapshot_fixture ... ignored, CI reopens the actual synthetic database produced by the opposite OS
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.3436955Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.3437332Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.3495384Z test persistence::sqlite::tests::process_worker ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.3495887Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.3496531Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 107 filtered out; finished in 0.01s
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.3496962Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.3585254Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.3585564Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.5272338Z test persistence::sqlite::tests::process_restart_and_abrupt_exit_inside_or_after_commit_recover_coherently ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.5459990Z test persistence::sqlite::tests::qualification::malformed_or_oversized_transfer_manifest_never_creates_an_archive ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.5602200Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.5603259Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.5614451Z test persistence::sqlite::tests::qualification::corrupt_transfer_hash_or_database_fails_without_reinitialization ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.5664671Z test persistence::sqlite::tests::query_plans_are_indexed_and_external_writer_contention_is_explicit ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.5768050Z test persistence::sqlite::tests::qualification::closed_native_fixture_roundtrips_with_provenance_retained_keys_and_key_confirmation ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7147977Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7154132Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7189379Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7190351Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7324010Z test persistence::sqlite::tests::roundtrip_restart_immutable_snapshots_omission_namespace_and_settings ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7332286Z test persistence::sqlite::tests::tampered_record_or_source_is_rejected_instead_of_returning_unverified_domain_values ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7458455Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7458845Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7638914Z test persistence::sqlite::tests::unsafe_paths_permissions_and_foreign_sidecars_fail_closed ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7670089Z test reference_data::dataset::diagnostic_tests::bounded_dataset_pages_cover_exact_keys_and_cancel_without_fake_empty ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7690110Z test report::atomic::tests::cleanup_failure_during_cancellation_is_not_silent_success ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7707791Z test report::atomic::tests::cleanup_failure_keeps_original_error_and_os_cause ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7757597Z test report::xlsx::tests::backend_errors_include_unusable_tempdir_and_output_failure ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7850094Z test persistence::sqlite::tests::unknown_unsupported_corrupt_and_uninitialized_are_distinct_without_reinitialization ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7854573Z test report::xlsx::tests::constant_memory_workbook_preserves_text_and_shared_column_headers ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7980235Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7981758Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7996732Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.7997561Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8017642Z test report::xlsx::tests::native_workbook_file_with_unicode_path_is_a_readable_zip ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8064985Z test schema::compiled::compiler::tests::construction_invariant_failures_are_typed_without_panics ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8067937Z test schema::compiled::compiler::tests::source_coordinates_are_checked_once_at_the_conversion_boundary ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8070767Z test schema::compiled::tests::base_presence_never_ignores_compiled_conditions ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8073927Z test schema::compiled::tests::compiled_integer_literals_are_exact_beyond_machine_limits ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8088249Z test schema::compiled::tests::compiled_payloads_own_a_regex_and_keep_non_applicability_distinct ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8090953Z test schema::compiled::tests::datatype_plan_invariants_and_date_representation_are_explicit ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8093617Z test schema::compiled::tests::decimal_spec_rejects_impossible_width_scale_and_separator_metadata ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8096128Z test schema::compiled::tests::decimal_validator_uses_the_plan_scale_separator_and_physical_width ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8106795Z test schema::compiled::tests::derived_presence_tests::all_derived_types_compose_under_not_and_or_without_changing_sources ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8113399Z test schema::compiled::tests::derived_presence_tests::derived_unknown_stops_record_and_validator_remains_terminal ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8154693Z test schema::compiled::tests::derived_presence_tests::field_pipeline_reports_primary_presence_and_counts_unknown_once ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8193997Z test schema::compiled::tests::derived_presence_tests::invalid_metadata_is_rejected_even_when_a_constant_dominates_the_expression ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8206526Z ZipWriter::drop: failed to finalize archive: Io(Custom { kind: StorageFull, error: "synthetic output" })
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8207982Z test persistence::sqlite::tests::process_worker ... FAILED
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8210660Z thread 'persistence::sqlite::tests::process_worker' (7284) panicked at src\persistence\sqlite\tests.rs:982:27:
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8212440Z test schema::compiled::tests::derived_presence_tests::real_derived_context_preserves_every_presence_state_and_base_obligation ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8214803Z contender resolution failed: unsafe persistence root, permissions, or filesystem boundary
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8215868Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8216401Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8227139Z failures:
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8228124Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8228582Z failures:
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8231322Z     persistence::sqlite::tests::process_worker
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8231731Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8232598Z test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 107 filtered out; finished in 0.02s
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8233279Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8234222Z test schema::compiled::tests::derived_presence_tests::record_accepts_real_derived_plans_and_required_missing_is_invalid ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8236118Z test schema::compiled::tests::duplicate_ids_and_outside_ranges_cannot_create_an_inconsistent_record ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8237866Z test schema::compiled::tests::empty_records_and_flows_are_not_usable_compiled_models ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8239783Z test schema::compiled::tests::flow_preserves_trace_order_and_rejects_duplicate_trace_ids ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8243487Z test schema::compiled::tests::index_is_built_from_physical_order_and_every_entry_resolves_to_its_field ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8246638Z test schema::compiled::tests::invalid_key_projection_and_identity_indexes_are_rejected ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8252921Z test schema::compiled::tests::local_context_uses_the_stored_derived_plan_and_real_record_bytes ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8257004Z test schema::compiled::tests::local_record_preserves_identity_and_pipeline_technical_causes ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8261608Z test schema::compiled::tests::local_record_rejects_every_unimplemented_local_plan_before_processing ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8264627Z test schema::compiled::tests::physical_order_gaps_overlaps_and_trailing_uncovered_bytes_are_rejected ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8267989Z test schema::compiled::tests::pipeline_unknown_and_unsupported_plan_boundaries_are_explicit ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8272444Z test schema::compiled::tests::projection_invariants_reject_omitted_dependencies_duplicate_order_and_dangling_joins ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8282775Z test schema::derived::tests::derived_expression_lowering_is_typed_and_uses_the_same_canonical_map_indices ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8284959Z test persistence::sqlite::tests::two_process_contenders_preserve_cas_and_resolved_retry_publishes_one_generation ... FAILED
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8295259Z test schema::derived::tests::derived_names_literals_and_integer_targets_cannot_be_guessed_or_coerced ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8310418Z test schema::derived::tests::missing_and_external_sources_are_explicit_and_no_leap_policy_is_defaulted ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8320311Z test schema::derived::tests::three_closed_plans_have_exact_local_indices_ranges_and_explicit_calendar_policy ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8330404Z test schema::expression::tests::empty_boolean_and_membership_nodes_and_duplicate_sets_are_invalid ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8336799Z test schema::expression::tests::every_local_leaf_lowers_to_indices_and_exact_literal_bytes ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8338834Z test schema::derived::tests::substring_coordinates_and_field_type_errors_never_create_partial_plans ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8345126Z test schema::expression::tests::named_conditions_expand_and_detect_direct_and_indirect_cycles ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8350779Z test schema::expression::tests::nested_boolean_tree_preserves_order_and_forward_field_references ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8357787Z test schema::expression::tests::unknown_local_and_external_references_never_fall_back ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8360700Z test schema::linter::tests::checked_source_endpoint_handles_machine_boundaries ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8662100Z test schema::expression::tests::long_named_chain_uses_explicit_work_stack ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8714319Z test schema::raw::tests::keeps_metadata_open_and_positions_one_based_without_interpreting_them ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8724981Z test schema::raw::tests::rejects_duplicate_named_nodes_and_preserves_large_integer_literals ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8820261Z test schema::raw::tests::approved_examples_and_minimal_profile_roundtrip_without_loss ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8928468Z test schema::raw::tests::required_nullable_fields_are_explicit_and_optional_fields_cannot_be_null ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8933092Z test validators::date::tests::explicit_format_and_calendar_boundaries ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.8938404Z test validators::range::tests::exact_magnitudes_cover_zero_negative_bounds_and_unbounded_width ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:19.9075821Z test persistence::sqlite::tests::qualification::readers_never_observe_staged_or_uncommitted_rows_and_killed_writer_recovers ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.0400451Z test report::xlsx::tests::sequential_constant_memory_rows_survive_flushes_without_shared_string_table ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6166829Z test schema::raw::tests::rejects_unknown_operational_fields_at_each_object_boundary ... ok
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6167584Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6167727Z failures:
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6167931Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6169015Z ---- persistence::sqlite::tests::two_process_contenders_preserve_cas_and_resolved_retry_publishes_one_generation stdout ----
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6170270Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6171236Z thread 'persistence::sqlite::tests::two_process_contenders_preserve_cas_and_resolved_retry_publishes_one_generation' (8436) panicked at src\persistence\sqlite\tests.rs:751:9:
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6172561Z assertion `left == right` failed
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6173065Z   left: [Some(3), Some(101)]
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6173527Z  right: [Some(3), Some(3)]
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6173788Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6173797Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6173974Z failures:
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6174813Z     persistence::sqlite::tests::two_process_contenders_preserve_cas_and_resolved_retry_publishes_one_generation
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6176102Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6176595Z test result: FAILED. 103 passed; 1 failed; 4 ignored; 0 measured; 0 filtered out; finished in 2.20s
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6177256Z 
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.6246084Z ^[[1m^[[91merror^[[0m: test failed, to rerun pass `-p lintra --lib`
+Verify (x86_64-pc-windows-msvc)	Test core without embedded bundle	2026-11-06T09:10:20.7597277Z ##[error]Process completed with exit code 1.

@@ -1,0 +1,95 @@
+{
+  "scope": "isolated recovery on d81b520; CAD09 changes excluded",
+  "source_before": {
+    "src/persistence/file_security.rs": "5ba08afbf01ef3ecda0df101e9db0c2672c8eed7104a2453989cdfb6febca148",
+    "src/persistence/file_security/windows.rs": "9e1eb7216a87fc4d114fe06366696b48a963669630ac882751b06f643f762beb",
+    "src/persistence/sqlite/tests.rs": "0f08f8df02dbf0a71a286ce3e04e8805f3d6447ce24f1be5d47f6d2c5fd683d1",
+    ".github/workflows/sqlite-probe.yml": "3735f74f6e15441cd572d492fdef651413b42f06afa780070570f1c240cdc60b"
+  },
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 1.936,
+      "log": "docs/verification/CAD03_SQLITE_RECOVERY/gate-0.log"
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "-p",
+        "lintra",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 21.111,
+      "log": "docs/verification/CAD03_SQLITE_RECOVERY/gate-1.log"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "lintra",
+        "--no-default-features",
+        "--locked",
+        "--offline",
+        "--lib",
+        "persistence::",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 25.699,
+      "log": "docs/verification/CAD03_SQLITE_RECOVERY/gate-2.log",
+      "tests": {
+        "passed": 35,
+        "failed": 0,
+        "ignored": 4
+      }
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "lintra",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--lib",
+        "persistence::sqlite",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 25.798,
+      "log": "docs/verification/CAD03_SQLITE_RECOVERY/gate-3.log",
+      "tests": {
+        "passed": 28,
+        "failed": 0,
+        "ignored": 4
+      }
+    }
+  ],
+  "source_after": {
+    "src/persistence/file_security.rs": "5ba08afbf01ef3ecda0df101e9db0c2672c8eed7104a2453989cdfb6febca148",
+    "src/persistence/file_security/windows.rs": "9e1eb7216a87fc4d114fe06366696b48a963669630ac882751b06f643f762beb",
+    "src/persistence/sqlite/tests.rs": "0f08f8df02dbf0a71a286ce3e04e8805f3d6447ce24f1be5d47f6d2c5fd683d1",
+    ".github/workflows/sqlite-probe.yml": "3735f74f6e15441cd572d492fdef651413b42f06afa780070570f1c240cdc60b"
+  },
+  "source_unchanged": true,
+  "complete": true
+}

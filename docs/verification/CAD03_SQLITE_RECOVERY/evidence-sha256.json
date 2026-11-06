@@ -1,0 +1,10 @@
+{
+  "docs/verification/CAD03_SQLITE_RECOVERY/before-source-sha256.json": "45f451e6093409b536bfb078d5f832529f976d66af011185100a7537ab375a3c",
+  "docs/verification/CAD03_SQLITE_RECOVERY/gate-0.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "docs/verification/CAD03_SQLITE_RECOVERY/gate-1.log": "59b8e7b621be294d0628d7b5e2d10b3b130ed42f82b76a51ca7e26e740f777c4",
+  "docs/verification/CAD03_SQLITE_RECOVERY/gate-2.log": "b18a61b48f015e38802f415abc6532bd39aae18130fdefeb748582ab8eb18c12",
+  "docs/verification/CAD03_SQLITE_RECOVERY/gate-3.log": "36c67fd4ca2c822db1cd3195a836e94ae8f15c0369d6212986eec27e988be839",
+  "docs/verification/CAD03_SQLITE_RECOVERY/original-native-ci.json": "6901dd130a16a1b72039f73300e595f1774add88b5b8a983954ef3cb9a3e50a8",
+  "docs/verification/CAD03_SQLITE_RECOVERY/regression-before.log": "59573192794984bdea7961d084d36c47f5735408300c9a149f5e2a8e56f9bbaa",
+  "docs/verification/CAD03_SQLITE_RECOVERY/windows-original-failure.log": "3a2c283b0d41788c40aca91058f0781d1c257183820ca40e1c616ea529c03fc3"
+}

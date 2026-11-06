@@ -1,0 +1,4 @@
+{
+  "src/persistence/file_security.rs": "b7f9d8b645c1054d4291d38f98196d7235a2b0b65561e7ece230c251f33cccd4",
+  "src/persistence/sqlite/tests.rs": "1d4cffc6bd2f7e5e872b25e06f4f9487b9309d8d08ed66962b4a750fabb4c3ef"
+}

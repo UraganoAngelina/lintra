@@ -20,4 +20,4 @@ jobs:
         run: rustup target add x86_64-pc-windows-msvc
       # Diagnostic only. This does not replace CI or the release/volume gate.
       - name: Exercise real Windows boundaries and transaction recovery
-        run: cargo test -p lintra --lib persistence::sqlite --target x86_64-pc-windows-msvc --locked -- --nocapture
+        run: cargo test -p lintra --no-default-features --lib persistence:: --target x86_64-pc-windows-msvc --locked -- --nocapture
