@@ -1,0 +1,77 @@
+{
+  "purpose": "Reproduce Windows core.autocrlf checkout and verify exact-byte Git attributes",
+  "cases": [
+    {
+      "policy": "before",
+      "core.autocrlf": true,
+      "files": [
+        {
+          "path": "schemas/cad/components/2024-06.clinical-lookups.1/source/cad_icd9_cm_symptoms_page7.json",
+          "expected_sha256": "8c19447ca64a28e736eb5012c11fb22ba8e55367c59bb81537b25fc2b11b7a96",
+          "checkout_sha256": "d324f83a26e914563380ea2bc6b498c0fb1db9b5d47da1a7e2a0aa8806fb420b",
+          "equal": false
+        },
+        {
+          "path": "schemas/cad/components/2024-06.clinical-lookups.1/source/cad_needs_70_positions_page6.json",
+          "expected_sha256": "87b889d437275582fb521221d05b0b0598e66a9553b02581daa39b0c704fbf45",
+          "checkout_sha256": "b94a99e36808d66beeb776c96033d9f657b90acaf3abf4a0c1d738a3e16779a9",
+          "equal": false
+        },
+        {
+          "path": "schemas/cad/components/2024-06.clinical-lookups.1/source/cad_prestations_type_5_5_page5.json",
+          "expected_sha256": "9edbedc9c86c1ed53537c7259ae9d42a897ffa2424bb53fb3388131545a2ab0a",
+          "checkout_sha256": "64129a254659701be9cef1a2ac17f5fc53b2f8b8de28b396066c1bca35170ad9",
+          "equal": false
+        },
+        {
+          "path": "schemas/cad/components/2024-06.clinical-lookups.1/data/icd9-membership.json",
+          "expected_sha256": "645ebe2d375842055ff579fcddac44343ca3843cf474697cb23448d87d14bff6",
+          "checkout_sha256": "4683262c4e519bd1556c8214615ca85060661092168449b8e2aeb34a105aa200",
+          "equal": false
+        },
+        {
+          "path": "schemas/cad/components/2024-06.clinical-lookups.1/data/prestations-membership.json",
+          "expected_sha256": "2c7b12dac959b89f5f0e93c1324b2b38ffffee5d62a45a2ada0b699c430512a6",
+          "checkout_sha256": "f4258fa695181cc7771fd804cfa032a16803bd347a509af61a09d43d0f3f2e1d",
+          "equal": false
+        }
+      ]
+    },
+    {
+      "policy": "after",
+      "core.autocrlf": true,
+      "files": [
+        {
+          "path": "schemas/cad/components/2024-06.clinical-lookups.1/source/cad_icd9_cm_symptoms_page7.json",
+          "expected_sha256": "8c19447ca64a28e736eb5012c11fb22ba8e55367c59bb81537b25fc2b11b7a96",
+          "checkout_sha256": "8c19447ca64a28e736eb5012c11fb22ba8e55367c59bb81537b25fc2b11b7a96",
+          "equal": true
+        },
+        {
+          "path": "schemas/cad/components/2024-06.clinical-lookups.1/source/cad_needs_70_positions_page6.json",
+          "expected_sha256": "87b889d437275582fb521221d05b0b0598e66a9553b02581daa39b0c704fbf45",
+          "checkout_sha256": "87b889d437275582fb521221d05b0b0598e66a9553b02581daa39b0c704fbf45",
+          "equal": true
+        },
+        {
+          "path": "schemas/cad/components/2024-06.clinical-lookups.1/source/cad_prestations_type_5_5_page5.json",
+          "expected_sha256": "9edbedc9c86c1ed53537c7259ae9d42a897ffa2424bb53fb3388131545a2ab0a",
+          "checkout_sha256": "9edbedc9c86c1ed53537c7259ae9d42a897ffa2424bb53fb3388131545a2ab0a",
+          "equal": true
+        },
+        {
+          "path": "schemas/cad/components/2024-06.clinical-lookups.1/data/icd9-membership.json",
+          "expected_sha256": "645ebe2d375842055ff579fcddac44343ca3843cf474697cb23448d87d14bff6",
+          "checkout_sha256": "645ebe2d375842055ff579fcddac44343ca3843cf474697cb23448d87d14bff6",
+          "equal": true
+        },
+        {
+          "path": "schemas/cad/components/2024-06.clinical-lookups.1/data/prestations-membership.json",
+          "expected_sha256": "2c7b12dac959b89f5f0e93c1324b2b38ffffee5d62a45a2ada0b699c430512a6",
+          "checkout_sha256": "2c7b12dac959b89f5f0e93c1324b2b38ffffee5d62a45a2ada0b699c430512a6",
+          "equal": true
+        }
+      ]
+    }
+  ]
+}

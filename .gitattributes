@@ -21,3 +21,7 @@ spikes/ui-prototype/ui/fonts/*.ttf -text
 # Prevent core.autocrlf from changing their digests on a Windows checkout.
 ui/ui/fonts/OFL.md text eol=lf
 ui/licenses/SLINT-ROYALTY-FREE-2.0.md text eol=lf
+
+# Approved CAD source datasets and hashed membership assets retain exact bytes.
+schemas/cad/components/2024-06.clinical-lookups.1/source/** -text
+schemas/cad/components/2024-06.clinical-lookups.1/data/** -text
