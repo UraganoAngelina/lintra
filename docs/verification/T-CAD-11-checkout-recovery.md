@@ -29,3 +29,11 @@ Nuova CI Linux/MSVC sul commit pubblicato richiesta prima di DONE.
 Log del fallimento e risultato remoto preservati nella cartella omonima;
 SHA256 dei file di evidenza in evidence-hashes.json. Nessuna fonte CAD originale
 riscritta, nessun dato paziente. CAD09 locale resta separata dal gate fallito.
+
+## Esito nativo finale
+
+CI42203885693 sullo SHA6af5f856c4c4a680d593fe8fe48d8ebc1ef831d2 completata
+con successo: Linux/MSVC, confrontoJSONL, due confrontipixel e due riaperture
+SQLite crossOS. Tutti7job richiesti positivi; archiviUI opzionali skipped.
+Risultato integrale in T-CAD-11-checkout-recovery-native-ci.json. Le precedenti
+CI fallite sono preservate, non riclassificate. CAD03 eCAD11 chiuseDONE.

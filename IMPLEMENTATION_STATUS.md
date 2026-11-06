@@ -2,29 +2,36 @@
 
 Consuntivo aggiornato al **2026-11-06**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD-02 DONE, CAD-03 WAITING_GATE
+## Frontiera corrente — recovery SQLite per CAD03, CAD11 locale, CAD09 sospesa
 
 **130/140 DONE = 92,9%**; restano10task (CAD03–09/11/12 eP18-04).
-Ripresa autore6novembre: sviluppo autonomo secondo workflow single-agent.
-CAD02 qualificata daCI42067927663 completed/success sul commit esatto
-5dbfc1747ca64163d110bc2192af1ca0ead0995c. Settejob richiesti positivi:
-Linux/MSVC, tre confronti cross-OS, due riapertureSQLite; packagingUI opzionale
-skipped. Risultato T-CAD-02-native-ci.json; report aggiornato, nessuna release.
+CAD02 DONE/CI42067927663 su5dbfc174. CAD03 locale qualificata922workspace/38mirati,
+ma CI42190202683 su42f92ed ècompleted/failure: Linuxsuccess, Windowsworkspace e
+allfeatures positivi, core senza bundle fallito in contesaSQLite con journal
+scomparso durante preflight. Jobdipendenti skipped, non success. NonDONE03.
 
-CAD03 locale verificata: policy snapshot del componente02 qualificata sul
-coordinatore core;6nuovi test, T1/T2/T3 con riapertureSQLite reali, approvazione,
-revisione privata pre-approvazione, abort/reportfailure/cancel/CAS, immutabilità,
-retry esatto dopoT3/restart/cambio versione schema, isolamentoULSS/continuità anni.
-Outcome Full di componente espliciti, non esecuzione clinica/storicaCAD completa.
-Reconciliation progressivi/eventi resta04, missing operativo05, golden completi12.
-Nessuna rimozione del gate compilerCAD completo, nuova API/SQL/HMAC o norma.
-Sei gate locali exit0: fmt/Clippyworkspace,922workspace/0fail/6ignored,
-38mirati allfeatures/0fail, release eboundary; hash prima/dopo identici.
-Report T-CAD-03-sessions.md eledger T-CAD-03-local-gates.json. CAD03 nonDONE:
-commit/push/CI nativa in avvio.04 attende03;11 indipendente può proseguire durante
-attesa remota senza aggirare dipendenze.130/140DONE invariato.
-Branch work/p1-foundations, docs/migration preesistente preservata/esclusa.
-WAITING_GATE; commit/push/CI autorizzati, nessuna delega/background.
+Recovery isolata su d81b520, senza core09: regressione reale eliminandojournal
+prima dimetadata falliscevaUnsafeanzichéBusy; oraBusy richiede apertura fallita e
+preflightnuova completa. ACL/link/nomeinatteso/permesse/root/chiave invariati.
+TestWindows aggiuntivi per journal sparito primaACL e journalconDACL errata.
+Quattro gate isolati positivi:fmt/Clippyroot,35persistence senza bundle e28esiti
+SQLite allfeatures (25principali+3subprocess),0fail/4ignored. Report/ledger
+CAD03_SQLITE_RECOVERY. Commitisolato7fdd1b5 trasferito comeaae2e12; hash09preservati.
+Push/provaWindows dedicata inavvio; poiCIcompleta su03+11+fix, senza duplicazioni.
+
+CAD11 d81b520 pubblicata e locale qualificata: componente lookup63ICD9,
+33prestazioni01–28/71–74/99 e70posizioni catalogo, condizioni UCPDOM/rete approvate,
+7nuovitest/315lookupdefinitivi;58regressione e30allfeatures,0fail. Ledger/report11,
+nessun nuovo gate nativo11 ancora dichiarato. NonDONE11.
+
+CAD09 indipendente IN_PROGRESS/sospesa per recovery: scalar/consensus refsdate
+calendar_year_delta, APIpubbliche invariate,11testservizio reale positivi eClippy
+workspace positivo. Core09 nonpubblicato né qualificato globalmente: guardare
+preflight09 efilelocali, hash prima/dopo in target/cad09-suspended-sha256.json.
+Riprendere gatecompleti09 durante attesa remota dopo dispatchprobe recovery.
+04/05 attendono03DONE. NessunaFROZEN/release/tag o chiaveoperativa generata.
+Single-agent, no background/delega; docs/migration preesistente preservata/esclusa.
+WAITING_GATE recovery,130/140DONE invariato, nessuna conferma ordinaria richiesta.
 
 ## Registro precedente — T-CAD-02 WAITING_GATE, DEC-17 chiusa
 
@@ -6490,3 +6497,70 @@ src/Cargo/UI/CI produttivi invariati verso42f92ed. Nessuna norma nuova/FROZEN.
 Pubblicare11 senza dispatch duplicato che annullerebbe03; dispatchCI11 appena
 03terminale. Durante attesa preflight09 indipendente;04/05 attendono03DONE.
 130/140DONE,10aperte. Single-agent, nessun background; docs/migration esclusa.
+
+
+## Avvio CAD09 indipendente — 2026-11-06
+
+CAD11 d81b520 pubblicata, CI non ancora dispatch per non cancellare03.
+CAD03 terza lettura: Linuxsuccess, Windowsin_progress, packagingUI opzionale
+skipped; nonDONE03 e130/140 invariato.09READY suP9/P10/G0/authoring ratificati.
+Preflight T-CAD-09-preflight.md: manca lowering di calendar_year_delta suRef
+esterne; pipelineFull sa già proiettare/risolvere i campi, servono metadata guard
+eprovenienzaUnknown deterministiche. Nessuna nuova norma/APIpubblica/DSL;
+substring/anni compiuti restano locali, implementazione single-agent in avvio.
+Soglie fonte3/6/17 confermate dalle note. Nessun first(), normale join/consensus.
+
+
+## Recovery gate03 — Windows fallita / CAD09 sospesa, 2026-11-06
+
+CI42190202683 completed/failure su42f92ed: Linuxsuccess, Windows default/allfeatures
+positivi ma core senza bundle fallito in contesaSQLite. Workerresolve riapre
+archivio mentre un journal viene eliminato; UnsafeStorageLocation invece diBusy.
+Logreale preservato e regressione deterministica riprodotta con attesaStorageBusy
+prima del fix (risultatoUnsafe). NessunDONE03/11,130/140immutato, nessunCI duplicata.
+09ha11test mirati reali passati eClippy positivo, ma è sospesa prima dei gatecompleti
+per correggere il gate effettivo. Hash del lavoro09 in target/cad09-suspended-sha256.json.
+Recovery isolata worktree d81b520, senza trasferire core09 incompleto; classificare
+soltanto scomparsa confermata del journal opzionale comeBusy, sempre fallendo
+l'apertura e ripetendo preflight completo. ACL/link/root/chiave immutati.
+Nuova provaWindows necessaria, nessun cambiamento di norma o consenso presunto.
+
+
+## Recovery pubblicata / fallbackCIcompleta — 2026-11-06
+
+aae2e12 pubblicato, core09 escluso e9hashlocali invariati. Dispatchsqlite-probe
+HTTP422 (trigger non disponibile): nessuna prova nativa svolta, nessun gateinventato.
+Fallback autonomo allaCIcompleta disponibile sul medesimoSHA, senza cambiare
+defaultbranch/protezioni o saltaretest.03/11 ancora nonDONE;130/140invariato.
+Riprendere09in sequenza durante attesa remota, poi gatecompleti09 su sorgenti
+che comprendono il fixfilesystem e senza attribuirgli prematuramenteWindows.
+
+
+## Recovery checkout CAD11 / gate CAD09 locale in corso —2026-11-06
+
+CI42197434407 terminata failure: Linux positivo, Windows108library pass/4ignored,
+compresa contesaSQLite originaria e nuove prove journal/ACL. Fallimento successivo
+CAD11 dovuto a conversione Git LF→CRLF: hashWindows riprodotti esattamente.
+Regola.gitattributes -text limitata ai5artefatti source/data clinici; provaGit
+core.autocrlf=true rossa5/5prima, verde5/5dopo. Integrità/provider non indeboliti.
+Report T-CAD-11-checkout-recovery.md/json; nessunDONE anticipato:130/140,10aperte.
+CAD09 ripresa con12test mirati, gate completi su sorgenti fermi attualmente in
+esecuzione; fmt/Clippyworkspaceallfeatures positivi. Attendere testcompleti/release
+prima di commit09; nuova CI nativa deve includere il fixcheckout e lo SHA corretto.
+
+
+## QUALITY GATE / HANDOFF — CAD03 eCAD11 DONE, 2026-11-06
+
+CI42203885693 su6af5f856c4c4a680d593fe8fe48d8ebc1ef831d2 completed/success.
+Tutti7job richiesti positivi: Linux, MSVC,3confrontiJSONL/pixel,2riapertureSQLite
+traOS. Solo packagingUI opzionale skipped come previsto, non gate del deltaCAD.
+Qualificati sessioni trimestrali03, membership/presenza11 e recoverySQLite/checkout
+senza indebolimenti d'integrità o sicurezza. Risultato completo nel file
+T-CAD-11-checkout-recovery-native-ci.json. CAD03 eCAD11DONE:132/140(94.3%),8aperte.
+Recap03: tests/cad_sessions.rs, documentazione componente namespace/SESSIONS;
+recap11: componenteclinical-lookups.1, tests/cad_lookups.rs, attributi byteesatti.
+CAD09: suiteworkspace943pass/0fail/6ignored, fmt/Clippy positivi. Alla ripresa il
+processo locale precedente non è più disponibile, allfeatures senza esito: non
+conteggiato. Tutti gli input del ledger sono ancora invariati; riprendere dal
+comando3, preservando loginterrotto. NessunDONE09 oCI09 impliciti. Gate native09
+sul futuroSHAcompleto ancora richiesto; docs/migration preservata ed esclusa.

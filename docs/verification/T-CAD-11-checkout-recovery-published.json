@@ -1,0 +1,8 @@
+{
+  "commit": "6af5f856c4c4a680d593fe8fe48d8ebc1ef831d2",
+  "run_id": 42203885693,
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/42203885693",
+  "status": "in_progress",
+  "ordinary_reads": 1,
+  "scope": "CAD03/CAD11/SQLite journal recovery and exact-byte checkout; excludes uncommitted CAD09"
+}

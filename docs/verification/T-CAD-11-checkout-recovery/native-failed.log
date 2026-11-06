@@ -1,0 +1,597 @@
+Verify (x86_64-pc-windows-msvc)	Test	﻿2026-11-06T09:48:45.4758025Z ##[group]Run cargo test --workspace --target x86_64-pc-windows-msvc --locked
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:45.4758572Z ^[[36;1mcargo test --workspace --target x86_64-pc-windows-msvc --locked^[[0m
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:45.4815830Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:45.4816269Z env:
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:45.4816441Z   CARGO_TERM_COLOR: always
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:45.4816718Z   CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS: -C target-feature=+crt-static
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:45.4817093Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.13.17\x64
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:45.4817447Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.13.17\x64/lib/pkgconfig
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:45.4817787Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.17\x64
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:45.4818096Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.17\x64
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:45.4818409Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.17\x64
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:45.4818648Z ##[endgroup]
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:46.3197027Z ^[[1m^[[92m   Compiling^[[0m cfg-if v1.0.5
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:46.3199886Z ^[[1m^[[92m   Compiling^[[0m windows-link v0.2.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:46.3203175Z ^[[1m^[[92m   Compiling^[[0m serde_core v1.0.229
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:46.3203652Z ^[[1m^[[92m   Compiling^[[0m smallvec v1.16.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:46.3727940Z ^[[1m^[[92m   Compiling^[[0m simd-adler32 v0.3.10
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:46.3803178Z ^[[1m^[[92m   Compiling^[[0m critical-section v1.2.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:46.4546083Z ^[[1m^[[92m   Compiling^[[0m portable-atomic v1.15.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:46.5270722Z ^[[1m^[[92m   Compiling^[[0m adler2 v2.0.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:46.5888571Z ^[[1m^[[92m   Compiling^[[0m memchr v2.8.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:46.6364396Z ^[[1m^[[92m   Compiling^[[0m crc32fast v1.5.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:46.8958665Z ^[[1m^[[92m   Compiling^[[0m log v0.4.34
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:46.9544181Z ^[[1m^[[92m   Compiling^[[0m foldhash v0.2.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:47.1073280Z ^[[1m^[[92m   Compiling^[[0m once_cell v1.21.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:47.1135294Z ^[[1m^[[92m   Compiling^[[0m miniz_oxide v0.9.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:47.3015971Z ^[[1m^[[92m   Compiling^[[0m zlib-rs v0.6.8
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:47.5329769Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.17.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:48.0884472Z ^[[1m^[[92m   Compiling^[[0m libm v0.2.16
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:48.2112838Z ^[[1m^[[92m   Compiling^[[0m equivalent v1.0.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:48.2664831Z ^[[1m^[[92m   Compiling^[[0m windows-sys v0.61.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:48.9525138Z ^[[1m^[[92m   Compiling^[[0m bitflags v2.13.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:49.2098507Z ^[[1m^[[92m   Compiling^[[0m num-traits v0.2.19
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:49.7820224Z ^[[1m^[[92m   Compiling^[[0m serde v1.0.229
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:50.0449795Z ^[[1m^[[92m   Compiling^[[0m typenum v1.20.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:50.4359643Z ^[[1m^[[92m   Compiling^[[0m chrono v0.4.45
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:51.1784244Z ^[[1m^[[92m   Compiling^[[0m flate2 v1.1.10
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:51.7181900Z ^[[1m^[[92m   Compiling^[[0m hybrid-array v0.4.15
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:51.9709962Z ^[[1m^[[92m   Compiling^[[0m bumpalo v3.20.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:52.0934937Z ^[[1m^[[92m   Compiling^[[0m indexmap v2.14.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:52.2382267Z ^[[1m^[[92m   Compiling^[[0m zopfli v0.8.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:52.4154585Z ^[[1m^[[92m   Compiling^[[0m cmov v0.5.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:52.6248779Z ^[[1m^[[92m   Compiling^[[0m typed-path v0.12.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:52.8173385Z ^[[1m^[[92m   Compiling^[[0m zeroize v1.9.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:53.0101106Z ^[[1m^[[92m   Compiling^[[0m block-buffer v0.12.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:53.1395783Z ^[[1m^[[92m   Compiling^[[0m ctutils v0.4.6
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:53.2586162Z ^[[1m^[[92m   Compiling^[[0m crypto-common v0.2.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:53.3633128Z ^[[1m^[[92m   Compiling^[[0m encoding_rs v0.8.35
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:54.4090749Z ^[[1m^[[92m   Compiling^[[0m digest v0.11.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:54.5561185Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.4.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:54.7014184Z ^[[1m^[[92m   Compiling^[[0m aho-corasick v1.1.5
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:54.7124942Z ^[[1m^[[92m   Compiling^[[0m clap_lex v1.1.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:54.7709474Z ^[[1m^[[92m   Compiling^[[0m fastrand v2.5.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:54.9839706Z ^[[1m^[[92m   Compiling^[[0m debug_unsafe v0.1.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:55.0118243Z ^[[1m^[[92m   Compiling^[[0m anstyle v1.0.14
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:55.0432662Z ^[[1m^[[92m   Compiling^[[0m regex-syntax v0.8.11
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:55.2307946Z ^[[1m^[[92m   Compiling^[[0m clap_builder v4.6.7
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:55.9242306Z ^[[1m^[[92m   Compiling^[[0m atoi_simd v0.18.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:56.1197737Z ^[[1m^[[92m   Compiling^[[0m tempfile v3.27.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:56.6986706Z ^[[1m^[[92m   Compiling^[[0m zmij v1.0.23
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:57.0377025Z ^[[1m^[[92m   Compiling^[[0m regex-automata v0.4.18
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:57.8799276Z ^[[1m^[[92m   Compiling^[[0m libsqlite3-sys v0.39.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:58.1133513Z ^[[1m^[[92m   Compiling^[[0m codepage v0.1.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:58.1960311Z ^[[1m^[[92m   Compiling^[[0m quick-xml v0.41.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:59.2488417Z ^[[1m^[[92m   Compiling^[[0m zip v8.6.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:48:59.7592719Z ^[[1m^[[92m   Compiling^[[0m zip v9.0.5
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:00.8530295Z ^[[1m^[[92m   Compiling^[[0m hashlink v0.12.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:00.8638186Z ^[[1m^[[92m   Compiling^[[0m fallible-streaming-iterator v0.1.9
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:00.9807013Z ^[[1m^[[92m   Compiling^[[0m byteorder v1.5.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:01.1587426Z ^[[1m^[[92m   Compiling^[[0m lintra v0.1.1-rc.3 (D:\a\lintra\lintra)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:01.2249995Z ^[[1m^[[92m   Compiling^[[0m cpufeatures v0.3.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:01.2756558Z ^[[1m^[[92m   Compiling^[[0m fast-float2 v0.2.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:01.4825880Z ^[[1m^[[92m   Compiling^[[0m fallible-iterator v0.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:01.5132898Z ^[[1m^[[92m   Compiling^[[0m itoa v1.0.18
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:01.6892853Z ^[[1m^[[92m   Compiling^[[0m serde_json v1.0.151
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:01.8311225Z ^[[1m^[[92m   Compiling^[[0m rusqlite v0.41.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:02.4118211Z ^[[1m^[[92m   Compiling^[[0m calamine v0.36.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:02.6825421Z ^[[1m^[[92m   Compiling^[[0m sha2 v0.11.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:03.5144688Z ^[[1m^[[92m   Compiling^[[0m rust_xlsxwriter v0.100.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:03.8194123Z ^[[1m^[[92m   Compiling^[[0m regex v1.13.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:03.8356427Z ^[[1m^[[92m   Compiling^[[0m clap v4.6.7
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:03.8858305Z ^[[1m^[[92m   Compiling^[[0m hmac v0.13.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:04.0242251Z ^[[1m^[[92m   Compiling^[[0m ctrlc v3.5.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:04.1797845Z ^[[1m^[[92m   Compiling^[[0m stable_deref_trait v1.2.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:04.2324225Z ^[[1m^[[92m   Compiling^[[0m zerofrom v0.1.8
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:04.3416965Z ^[[1m^[[92m   Compiling^[[0m yoke v0.8.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:04.4088725Z ^[[1m^[[92m   Compiling^[[0m writeable v0.6.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:04.5400837Z ^[[1m^[[92m   Compiling^[[0m zerovec v0.11.8
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:04.8284927Z ^[[1m^[[92m   Compiling^[[0m bytemuck v1.25.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:05.1076411Z ^[[1m^[[92m   Compiling^[[0m litemap v0.8.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:05.1456920Z ^[[1m^[[92m   Compiling^[[0m zerotrie v0.2.5
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:05.3232870Z ^[[1m^[[92m   Compiling^[[0m arrayvec v0.7.8
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:05.5111430Z ^[[1m^[[92m   Compiling^[[0m utf8_iter v1.0.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:05.6406946Z ^[[1m^[[92m   Compiling^[[0m tinystr v0.8.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:05.6473457Z ^[[1m^[[92m   Compiling^[[0m potential_utf v0.1.6
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:05.7923907Z ^[[1m^[[92m   Compiling^[[0m icu_locale_core v2.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:05.8274308Z ^[[1m^[[92m   Compiling^[[0m icu_collections v2.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:06.1600111Z ^[[1m^[[92m   Compiling^[[0m font-types v0.12.6
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:06.6650038Z ^[[1m^[[92m   Compiling^[[0m read-fonts v0.41.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:08.2365070Z ^[[1m^[[92m   Compiling^[[0m icu_provider v2.3.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:09.0019599Z ^[[1m^[[92m   Compiling^[[0m windows-result v0.4.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:09.2821412Z ^[[1m^[[92m   Compiling^[[0m windows-strings v0.5.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:09.6800461Z ^[[1m^[[92m   Compiling^[[0m windows-core v0.62.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:10.2781868Z ^[[1m^[[92m   Compiling^[[0m icu_properties_data v2.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:10.4199653Z ^[[1m^[[92m   Compiling^[[0m icu_normalizer_data v2.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:10.4722822Z ^[[1m^[[92m   Compiling^[[0m icu_properties v2.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:12.3758520Z ^[[1m^[[92m   Compiling^[[0m miniz_oxide v0.8.9
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:13.3116731Z ^[[1m^[[92m   Compiling^[[0m fdeflate v0.3.7
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:13.8577581Z ^[[1m^[[92m   Compiling^[[0m float-cmp v0.9.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:13.8787288Z ^[[1m^[[92m   Compiling^[[0m skrifa v0.44.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:13.9571223Z ^[[1m^[[92m   Compiling^[[0m strict-num v0.1.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:14.0788316Z ^[[1m^[[92m   Compiling^[[0m icu_locale_fallback_data v2.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:14.1245093Z ^[[1m^[[92m   Compiling^[[0m icu_normalizer v2.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:14.9369881Z ^[[1m^[[92m   Compiling^[[0m slotmap v1.1.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:15.4345046Z ^[[1m^[[92m   Compiling^[[0m polycool v0.4.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:15.9404138Z ^[[1m^[[92m   Compiling^[[0m windows-threading v0.2.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:16.0661264Z ^[[1m^[[92m   Compiling^[[0m arrayref v0.3.9
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:16.1533205Z ^[[1m^[[92m   Compiling^[[0m tiny-skia-path v0.12.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:17.1299118Z ^[[1m^[[92m   Compiling^[[0m windows-future v0.3.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:17.8992236Z ^[[1m^[[92m   Compiling^[[0m kurbo v0.13.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:19.8668042Z ^[[1m^[[92m   Compiling^[[0m icu_locale_fallback v2.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:20.2872164Z ^[[1m^[[92m   Compiling^[[0m harfrust v0.12.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:21.3763850Z ^[[1m^[[92m   Compiling^[[0m png v0.18.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:22.2573584Z ^[[1m^[[92m   Compiling^[[0m windows-collections v0.3.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:22.7588167Z ^[[1m^[[92m   Compiling^[[0m windows-numerics v0.3.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:22.9411986Z ^[[1m^[[92m   Compiling^[[0m euclid v0.22.14
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:23.1173542Z ^[[1m^[[92m   Compiling^[[0m zune-core v0.5.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:23.4169738Z ^[[1m^[[92m   Compiling^[[0m tinyvec v1.13.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:23.7600572Z ^[[1m^[[92m   Compiling^[[0m byteorder-lite v0.1.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:23.8035467Z ^[[1m^[[92m   Compiling^[[0m siphasher v1.0.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:23.9930125Z ^[[1m^[[92m   Compiling^[[0m svgtypes v0.16.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:23.9970983Z ^[[1m^[[92m   Compiling^[[0m fontdb v0.24.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:24.7705453Z ^[[1m^[[92m   Compiling^[[0m lyon_geom v1.0.19
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:24.8858029Z ^[[1m^[[92m   Compiling^[[0m zune-jpeg v0.5.15
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:25.2371946Z ^[[1m^[[92m   Compiling^[[0m memoffset v0.9.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:25.2942393Z ^[[1m^[[92m   Compiling^[[0m windows v0.62.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:25.9956436Z ^[[1m^[[92m   Compiling^[[0m roxmltree v0.21.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:27.1416694Z ^[[1m^[[92m   Compiling^[[0m simplecss v0.2.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:27.2454435Z ^[[1m^[[92m   Compiling^[[0m unicode-segmentation v1.13.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:27.7447291Z ^[[1m^[[92m   Compiling^[[0m data-url v0.3.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:27.7624016Z ^[[1m^[[92m   Compiling^[[0m memmap2 v0.9.11
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:27.9659718Z ^[[1m^[[92m   Compiling^[[0m weezl v0.1.12
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:28.1733878Z ^[[1m^[[92m   Compiling^[[0m color_quant v1.1.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:28.3783170Z ^[[1m^[[92m   Compiling^[[0m unicode-bidi v0.3.18
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:28.5416507Z ^[[1m^[[92m   Compiling^[[0m quick-error v2.0.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:28.6100112Z ^[[1m^[[92m   Compiling^[[0m pico-args v0.5.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:28.8690844Z ^[[1m^[[92m   Compiling^[[0m parlance v0.1.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:29.1801863Z ^[[1m^[[92m   Compiling^[[0m imagesize v0.15.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:29.2989496Z ^[[1m^[[92m   Compiling^[[0m unicode-vo v0.1.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:29.3807450Z ^[[1m^[[92m   Compiling^[[0m base64 v0.23.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:29.8928260Z ^[[1m^[[92m   Compiling^[[0m unicode-script v0.5.8
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:29.9333837Z ^[[1m^[[92m   Compiling^[[0m xmlwriter v0.1.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:30.1973791Z ^[[1m^[[92m   Compiling^[[0m linebender_resource_handle v0.1.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:30.3388820Z ^[[1m^[[92m   Compiling^[[0m usvg v0.48.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:30.3497659Z ^[[1m^[[92m   Compiling^[[0m image-webp v0.2.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:32.2925383Z ^[[1m^[[92m   Compiling^[[0m gif v0.14.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:33.3827643Z ^[[1m^[[92m   Compiling^[[0m icu_decimal_data v2.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:33.4365128Z ^[[1m^[[92m   Compiling^[[0m field-offset v0.3.6
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:33.5123014Z ^[[1m^[[92m   Compiling^[[0m lyon_path v1.0.19
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:34.2334653Z ^[[1m^[[92m   Compiling^[[0m icu_segmenter_data v2.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:34.3988618Z ^[[1m^[[92m   Compiling^[[0m thiserror v2.0.21
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:34.4768817Z ^[[1m^[[92m   Compiling^[[0m tiny-skia v0.12.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:36.9998170Z ^[[1m^[[92m   Compiling^[[0m fontique v0.11.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:37.5480461Z ^[[1m^[[92m   Compiling^[[0m rgb v0.8.53
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:37.9067183Z ^[[1m^[[92m   Compiling^[[0m fixed_decimal v0.7.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:38.5119992Z ^[[1m^[[92m   Compiling^[[0m pxfm v0.1.30
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:39.3216938Z ^[[1m^[[92m   Compiling^[[0m allocator-api2 v0.2.21
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:39.4325669Z ^[[1m^[[92m   Compiling^[[0m unicase v2.10.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:39.6217340Z ^[[1m^[[92m   Compiling^[[0m hashbrown v0.16.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:39.6594313Z ^[[1m^[[92m   Compiling^[[0m pulldown-cmark v0.13.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:40.0585084Z ^[[1m^[[92m   Compiling^[[0m const-field-offset v0.2.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:40.1196344Z ^[[1m^[[92m   Compiling^[[0m icu_decimal v2.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:40.3056655Z ^[[1m^[[92m   Compiling^[[0m resvg v0.48.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:40.5434055Z ^[[1m^[[92m   Compiling^[[0m icu_segmenter v2.3.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:41.6355372Z ^[[1m^[[92m   Compiling^[[0m moxcms v0.8.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:41.9227713Z ^[[1m^[[92m   Compiling^[[0m windows_x86_64_msvc v0.53.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:41.9647329Z ^[[1m^[[92m   Compiling^[[0m windows_x86_64_msvc v0.52.6
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:42.0069663Z ^[[1m^[[92m   Compiling^[[0m idna_adapter v1.2.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:42.1141018Z ^[[1m^[[92m   Compiling^[[0m parley_data v0.11.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:42.2409426Z ^[[1m^[[92m   Compiling^[[0m derive_more v2.1.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:42.3377784Z ^[[1m^[[92m   Compiling^[[0m yazi v0.2.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:42.6833472Z ^[[1m^[[92m   Compiling^[[0m percent-encoding v2.3.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:42.8875083Z ^[[1m^[[92m   Compiling^[[0m pin-project-lite v0.2.17
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:42.9782079Z ^[[1m^[[92m   Compiling^[[0m zeno v0.3.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:43.0437728Z ^[[1m^[[92m   Compiling^[[0m htmlparser v0.2.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:43.0954775Z ^[[1m^[[92m   Compiling^[[0m tracing-core v0.1.36
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:43.5798314Z ^[[1m^[[92m   Compiling^[[0m tracing v0.1.44
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:43.7291570Z ^[[1m^[[92m   Compiling^[[0m swash v0.2.10
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:43.7321549Z ^[[1m^[[92m   Compiling^[[0m i-slint-common v1.18.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:43.7857102Z ^[[1m^[[92m   Compiling^[[0m form_urlencoded v1.2.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:43.9449197Z ^[[1m^[[92m   Compiling^[[0m vtable v0.5.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:44.0964479Z ^[[1m^[[92m   Compiling^[[0m pin-project v1.1.13
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:44.1611244Z ^[[1m^[[92m   Compiling^[[0m parley v0.11.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:44.6632204Z ^[[1m^[[92m   Compiling^[[0m idna v1.1.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:45.8181253Z ^[[1m^[[92m   Compiling^[[0m image v0.25.10
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:46.0337674Z ^[[1m^[[92m   Compiling^[[0m windows-targets v0.52.6
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:46.0773193Z ^[[1m^[[92m   Compiling^[[0m windows-targets v0.53.5
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:46.1235055Z ^[[1m^[[92m   Compiling^[[0m clru v0.6.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:46.3371657Z ^[[1m^[[92m   Compiling^[[0m crossbeam-utils v0.8.23
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:46.9583496Z ^[[1m^[[92m   Compiling^[[0m lyon_extra v1.1.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:47.1266917Z ^[[1m^[[92m   Compiling^[[0m lyon_algorithms v1.0.21
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:47.7470408Z ^[[1m^[[92m   Compiling^[[0m taffy v0.10.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:48.5552509Z ^[[1m^[[92m   Compiling^[[0m strum v0.28.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:48.6358577Z ^[[1m^[[92m   Compiling^[[0m dpi v0.1.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:48.7967779Z ^[[1m^[[92m   Compiling^[[0m scopeguard v1.2.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:48.8658267Z ^[[1m^[[92m   Compiling^[[0m error-code v3.4.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:49.0255306Z ^[[1m^[[92m   Compiling^[[0m raw-window-handle v0.6.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:49.2608988Z ^[[1m^[[92m   Compiling^[[0m sys-locale v0.3.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:49.4010748Z ^[[1m^[[92m   Compiling^[[0m slab v0.4.12
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:49.5628193Z ^[[1m^[[92m   Compiling^[[0m pin-weak v1.1.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:49.6298337Z ^[[1m^[[92m   Compiling^[[0m unicode-linebreak v0.1.5
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:49.8758967Z ^[[1m^[[92m   Compiling^[[0m i-slint-core v1.18.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:50.0379330Z ^[[1m^[[92m   Compiling^[[0m clipboard-win v5.4.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:50.5284706Z ^[[1m^[[92m   Compiling^[[0m crossbeam-channel v0.5.17
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:51.0774846Z ^[[1m^[[92m   Compiling^[[0m windows-sys v0.60.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:53.3920001Z ^[[1m^[[92m   Compiling^[[0m windows-sys v0.52.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:53.6608798Z ^[[1m^[[92m   Compiling^[[0m url v2.5.8
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:54.3995833Z ^[[1m^[[92m   Compiling^[[0m keyboard-types v0.7.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:54.7819601Z ^[[1m^[[92m   Compiling^[[0m smol_str v0.2.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:55.0381662Z ^[[1m^[[92m   Compiling^[[0m cursor-icon v1.2.0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:55.1364962Z ^[[1m^[[92m   Compiling^[[0m webbrowser v1.2.4
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:55.4410267Z ^[[1m^[[92m   Compiling^[[0m muda v0.19.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:56.0578544Z ^[[1m^[[92m   Compiling^[[0m i-slint-renderer-software v1.18.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:57.5909890Z ^[[1m^[[92m   Compiling^[[0m winit v0.30.13
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:58.1356843Z ^[[1m^[[92m   Compiling^[[0m arboard v3.6.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:58.4698592Z ^[[1m^[[92m   Compiling^[[0m softbuffer v0.4.8
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:59.3440074Z ^[[1m^[[92m   Compiling^[[0m imgref v1.12.3
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:59.5608361Z ^[[1m^[[92m   Compiling^[[0m scoped-tls-hkt v0.1.5
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:49:59.6692405Z ^[[1m^[[92m   Compiling^[[0m i-slint-backend-winit v1.18.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:50:00.9455863Z ^[[1m^[[92m   Compiling^[[0m lintra-ui v0.1.1-rc.3 (D:\a\lintra\lintra\ui)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:50:01.5796903Z ^[[1m^[[92m   Compiling^[[0m i-slint-backend-selector v1.18.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:50:02.3079506Z ^[[1m^[[92m   Compiling^[[0m slint v1.18.1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:50:02.8689715Z ^[[1m^[[92m   Compiling^[[0m bitflags v1.3.2
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:50:02.9221157Z ^[[1m^[[92m   Compiling^[[0m png v0.17.16
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:47.9887689Z ^[[1m^[[92m    Finished^[[0m `test` profile [unoptimized + debuginfo] target(s) in 4m 02s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0837428Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\x86_64-pc-windows-msvc\debug\deps\lintra-b3aa1ef880534e7f.exe)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0938534Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0938750Z running 112 tests
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0942882Z test domain::byte_range::tests::rejects_zero_length_and_end_overflow ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0944631Z test application::historical_validation::tests::source_clock_handles_pre_epoch_fraction_and_rejects_out_of_calendar_range ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0946289Z test domain::byte_range::tests::exact_end_is_valid_and_outside_record_is_none ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0947545Z test domain::byte_range::tests::boundary_grid_agrees_with_checked_slice_bounds ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0948374Z test domain::byte_range::tests::slices_at_byte_offsets_without_copying_or_decoding ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0950915Z test domain::errors::tests::core_mapping_matches_source_and_roundtrips_without_collisions ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0952476Z test domain::errors::tests::regulatory_codes_roundtrip_but_do_not_claim_registration ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0953216Z test domain::errors::tests::map_order_is_stable_independent_of_insertion_order ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0953897Z test domain::errors::tests::rejects_legacy_malformed_and_schema_execution_symbols ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0955686Z test domain::ids::tests::identifiers_preserve_spelling_and_support_value_semantics ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0957250Z test domain::identity::tests::absent_identity_remains_absent_and_technical_ids_are_ordered ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0958358Z test domain::summary::tests::schema_keys_distinguish_flow_and_version_without_trace_identity ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0959270Z test domain::summary::tests::summary_preserves_scope_order_and_orders_dataset_and_error_maps ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0960669Z test domain::summary_builder::tests::all_counter_overflows_are_detected_and_terminal ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0962026Z test engine::expression_evaluator::cause_tests::decisive_unknown_cause_survives_nested_boolean_dominance ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0964422Z test engine::field_guide::tests::enum_retains_padding_and_non_enumerable_constraints_are_explicit ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0965332Z test engine::field_guide::tests::ranges_are_complete_signed_and_not_machine_bounded ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0968389Z test input::reader::tests::counter_overflow_is_checked_but_clean_eof_never_increments_it ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0970901Z test engine::field_guide::paging_tests::paging_has_no_gaps_and_rejects_wrong_continuations ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0972728Z test input::audit::tests::byte_counter_overflow_is_terminal_and_does_not_hash_an_unaccounted_chunk ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.0984100Z test engine::field_pipeline::tests::every_presence_violation_uses_the_same_stop_path ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.1001422Z test persistence::file_security::windows::tests::inherited_private_acl_is_required_and_world_access_is_rejected ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.1016855Z test persistence::file_security::windows::tests::existing_journal_with_bad_acl_is_not_transient_contention ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.1033435Z test persistence::file_security::windows::tests::file_and_volume_boundaries_on_native_windows ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.1097943Z test persistence::key_file::tests::exact_binary_key_is_redacted_and_only_the_configured_id_resolves ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.1180864Z test persistence::key_file::tests::portable_resolution_uses_only_the_supplied_executable_and_survives_relocation ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.1182224Z test persistence::file_security::windows::tests::opened_key_acl_links_and_replacement_are_checked_without_weakening_storage ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.1185967Z test persistence::protection::tests::rfc4231_case6_sha256_matches_the_independent_standard_vector ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.1196289Z test persistence::memory::tests::revision_exhaustion_and_poisoned_storage_are_technical_failures ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.1462464Z test persistence::key_file::tests::absent_empty_short_long_and_non_regular_files_are_never_defaults ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.1807316Z test persistence::sqlite::tests::an_unfinished_transaction_view_cannot_be_mistaken_for_publication ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.1808482Z test persistence::sqlite::tests::ambiguous_commit_is_resolved_by_exact_immutable_candidate ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.1814655Z test persistence::sqlite::tests::abort_drop_stale_generation_and_failure_before_commit_do_not_publish ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2123246Z test persistence::key_file::tests::shared_key_produces_scoped_identities_but_archives_remain_independent ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2131658Z test persistence::sqlite::tests::disappeared_journal_before_metadata_requires_a_fresh_preflight ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2137070Z test persistence::sqlite::tests::disappeared_journal_before_named_acl_requires_a_fresh_preflight ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2191896Z test persistence::sqlite::tests::existing_journal_link_and_unexpected_names_remain_unsafe ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2193494Z test persistence::sqlite::tests::metadata::metadata_restart_worker ... ignored, synthetic subprocess helper, invoked by metadata parent
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2394814Z test persistence::sqlite::tests::busy_at_commit_is_unknown_until_a_fresh_connection_resolves_the_candidate ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2412533Z test persistence::sqlite::tests::metadata::consent_is_authenticated_and_tampering_never_turns_into_valid_metadata ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2527035Z test persistence::sqlite::tests::metadata::upgrade_preserves_all_identity_payloads_indices_and_generations ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2557427Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2558067Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2573749Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2574333Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2616529Z test persistence::sqlite::tests::metadata::metadata_restart_worker ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2617020Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2621060Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 111 filtered out; finished in 0.01s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2622107Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2640222Z test persistence::sqlite::tests::metadata::legacy_signed_metadata_stays_readable_and_upgrade_is_explicit_atomic_and_idempotent ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2683267Z test persistence::sqlite::tests::occurrence_query_uses_existing_indexes_and_rejects_incoherent_provenance ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2685013Z test persistence::sqlite::tests::process_worker ... ignored, subprocess helper invoked only with a synthetic archive by parent tests
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2701476Z test persistence::sqlite::tests::metadata::upgrade_failure_before_commit_rolls_back_and_lost_ack_is_not_false_rollback ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2913042Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2913379Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2953171Z test persistence::sqlite::tests::process_worker ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2953544Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2953894Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 111 filtered out; finished in 0.00s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.2954392Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3016619Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3016921Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3023656Z test persistence::sqlite::tests::protection_audit_is_loaded_from_an_empty_archive_without_silent_reinitialization ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3108304Z test persistence::sqlite::tests::protection_cannot_be_bypassed_by_public_dto_or_same_label_wrong_key ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3114422Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3114649Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3507824Z test persistence::sqlite::tests::metadata::upgrade_process_interruption_recovers_the_old_or_committed_format_with_all_metadata ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3508856Z test persistence::sqlite::tests::qualification::export_native_snapshot_fixture ... ignored, CI exports a public synthetic database for the opposite native runner
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3509751Z test persistence::sqlite::tests::qualification::import_opposite_native_snapshot_fixture ... ignored, CI reopens the actual synthetic database produced by the opposite OS
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3734055Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3734626Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3793626Z test persistence::sqlite::tests::process_worker ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3794018Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3797228Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 111 filtered out; finished in 0.01s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3816351Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3869416Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3870772Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3882698Z test persistence::sqlite::tests::qualification::malformed_or_oversized_transfer_manifest_never_creates_an_archive ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.3913388Z test persistence::sqlite::tests::qualification::corrupt_transfer_hash_or_database_fails_without_reinitialization ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.5107883Z test persistence::sqlite::tests::qualification::closed_native_fixture_roundtrips_with_provenance_retained_keys_and_key_confirmation ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.5275723Z test persistence::sqlite::tests::process_restart_and_abrupt_exit_inside_or_after_commit_recover_coherently ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.5325346Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.5325660Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.5402788Z test persistence::sqlite::tests::query_plans_are_indexed_and_external_writer_contention_is_explicit ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.5539838Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.5540195Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.5550934Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.5551178Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7495831Z test persistence::sqlite::tests::tampered_record_or_source_is_rejected_instead_of_returning_unverified_domain_values ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7670340Z test persistence::sqlite::tests::roundtrip_restart_immutable_snapshots_omission_namespace_and_settings ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7726539Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7728221Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7750647Z test persistence::sqlite::tests::unsafe_paths_permissions_and_foreign_sidecars_fail_closed ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7781410Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7785122Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7790352Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7793962Z running 1 test
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7797312Z test reference_data::dataset::diagnostic_tests::bounded_dataset_pages_cover_exact_keys_and_cancel_without_fake_empty ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7800257Z test persistence::sqlite::tests::unknown_unsupported_corrupt_and_uninitialized_are_distinct_without_reinitialization ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7808663Z test report::atomic::tests::cleanup_failure_during_cancellation_is_not_silent_success ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7812486Z test report::atomic::tests::cleanup_failure_keeps_original_error_and_os_cause ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7850518Z test report::xlsx::tests::backend_errors_include_unusable_tempdir_and_output_failure ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7914703Z test report::xlsx::tests::constant_memory_workbook_preserves_text_and_shared_column_headers ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7965649Z test report::xlsx::tests::native_workbook_file_with_unicode_path_is_a_readable_zip ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7989777Z test schema::compiled::compiler::tests::construction_invariant_failures_are_typed_without_panics ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7991896Z test schema::compiled::compiler::tests::source_coordinates_are_checked_once_at_the_conversion_boundary ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7994367Z test schema::compiled::tests::base_presence_never_ignores_compiled_conditions ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.7996675Z test schema::compiled::tests::compiled_integer_literals_are_exact_beyond_machine_limits ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8008879Z test schema::compiled::tests::compiled_payloads_own_a_regex_and_keep_non_applicability_distinct ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8011087Z test schema::compiled::tests::datatype_plan_invariants_and_date_representation_are_explicit ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8013127Z test schema::compiled::tests::decimal_spec_rejects_impossible_width_scale_and_separator_metadata ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8015055Z test schema::compiled::tests::decimal_validator_uses_the_plan_scale_separator_and_physical_width ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8022665Z test schema::compiled::tests::derived_presence_tests::all_derived_types_compose_under_not_and_or_without_changing_sources ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8028702Z test schema::compiled::tests::derived_presence_tests::derived_unknown_stops_record_and_validator_remains_terminal ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8061019Z test schema::compiled::tests::derived_presence_tests::field_pipeline_reports_primary_presence_and_counts_unknown_once ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8087681Z test schema::compiled::tests::derived_presence_tests::invalid_metadata_is_rejected_even_when_a_constant_dominates_the_expression ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8095622Z test schema::compiled::tests::derived_presence_tests::real_derived_context_preserves_every_presence_state_and_base_obligation ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8097015Z test persistence::sqlite::tests::two_process_contenders_preserve_cas_and_resolved_retry_publishes_one_generation ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8098938Z test schema::compiled::tests::duplicate_ids_and_outside_ranges_cannot_create_an_inconsistent_record ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8100893Z test schema::compiled::tests::empty_records_and_flows_are_not_usable_compiled_models ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8104025Z test schema::compiled::tests::derived_presence_tests::record_accepts_real_derived_plans_and_required_missing_is_invalid ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8105100Z test schema::compiled::tests::flow_preserves_trace_order_and_rejects_duplicate_trace_ids ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8106395Z test schema::compiled::tests::index_is_built_from_physical_order_and_every_entry_resolves_to_its_field ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8107323Z test schema::compiled::tests::invalid_key_projection_and_identity_indexes_are_rejected ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8110100Z test schema::compiled::tests::local_record_preserves_identity_and_pipeline_technical_causes ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8111895Z test schema::compiled::tests::local_context_uses_the_stored_derived_plan_and_real_record_bytes ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8113711Z test schema::compiled::tests::local_record_rejects_every_unimplemented_local_plan_before_processing ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8114885Z test schema::compiled::tests::physical_order_gaps_overlaps_and_trailing_uncovered_bytes_are_rejected ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8116431Z test schema::compiled::tests::pipeline_unknown_and_unsupported_plan_boundaries_are_explicit ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8117557Z test schema::compiled::tests::projection_invariants_reject_omitted_dependencies_duplicate_order_and_dangling_joins ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8125012Z test schema::derived::tests::derived_names_literals_and_integer_targets_cannot_be_guessed_or_coerced ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8126033Z test schema::derived::tests::derived_expression_lowering_is_typed_and_uses_the_same_canonical_map_indices ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8142580Z test schema::derived::tests::missing_and_external_sources_are_explicit_and_no_leap_policy_is_defaulted ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8150688Z test schema::derived::tests::three_closed_plans_have_exact_local_indices_ranges_and_explicit_calendar_policy ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8156068Z test schema::derived::tests::substring_coordinates_and_field_type_errors_never_create_partial_plans ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8159393Z test schema::expression::tests::empty_boolean_and_membership_nodes_and_duplicate_sets_are_invalid ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8161445Z test schema::expression::tests::every_local_leaf_lowers_to_indices_and_exact_literal_bytes ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8165875Z test schema::expression::tests::named_conditions_expand_and_detect_direct_and_indirect_cycles ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8170364Z test schema::expression::tests::nested_boolean_tree_preserves_order_and_forward_field_references ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8175956Z test schema::expression::tests::unknown_local_and_external_references_never_fall_back ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8177719Z test schema::linter::tests::checked_source_endpoint_handles_machine_boundaries ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8392719Z test schema::expression::tests::long_named_chain_uses_explicit_work_stack ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8438673Z test schema::raw::tests::keeps_metadata_open_and_positions_one_based_without_interpreting_them ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8448633Z test schema::raw::tests::rejects_duplicate_named_nodes_and_preserves_large_integer_literals ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8535636Z test schema::raw::tests::approved_examples_and_minimal_profile_roundtrip_without_loss ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8614203Z test schema::raw::tests::required_nullable_fields_are_explicit_and_optional_fields_cannot_be_null ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8615987Z test validators::date::tests::explicit_format_and_calendar_boundaries ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.8618588Z test validators::range::tests::exact_magnitudes_cover_zero_negative_bounds_and_unbounded_width ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.9005248Z test persistence::sqlite::tests::qualification::readers_never_observe_staged_or_uncommitted_rows_and_killed_writer_recovers ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:48.9628867Z test report::xlsx::tests::sequential_constant_memory_rows_survive_flushes_without_shared_string_table ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.3995724Z test schema::raw::tests::rejects_unknown_operational_fields_at_each_object_boundary ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.3996097Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.3996352Z test result: ok. 108 passed; 0 failed; 4 ignored; 0 measured; 0 filtered out; finished in 1.31s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.3996669Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4035308Z ZipWriter::drop: failed to finalize archive: Io(Custom { kind: StorageFull, error: "synthetic output" })^[[1m^[[92m     Running^[[0m unittests src\main.rs (target\x86_64-pc-windows-msvc\debug\deps\lintra-f2933eecf72a0160.exe)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4130109Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4130334Z running 26 tests
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4153001Z test cli::error_spool::tests::temporary_spool_reopens_from_zero_and_explicitly_removes_its_file ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4253239Z {"event":"run_started"}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4253773Z {"event":"trace_started"}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4255046Z {"event":"run_completed"}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4292130Z Result: CANCELLED
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4292525Z Mode: LocalOnly (local checks)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4292876Z Flow: SYNTHETIC
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4293188Z Trace: T1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4293466Z Schema version: v1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4293794Z Input: "input.txt" (trace T1, 7 bytes)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4294200Z Records processed: 0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4294509Z Valid records: 0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4294814Z Invalid records: 0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4295105Z Errors: 0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4295392Z Skipped rules: 0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4295681Z Truncated: false
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4295988Z Elapsed: 0.000281500s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4296199Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4296363Z Validation cancelled; results are incomplete.
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4371127Z {"event":"run_started"}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4371523Z {"event":"trace_started"}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4373384Z {"event":"run_completed"}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4412056Z Result: CANCELLED
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4412809Z Mode: LocalOnly (local checks)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4413618Z Flow: SYNTHETIC
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4413919Z Trace: T1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4414191Z Schema version: v1
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4414511Z Input: "input.txt" (trace T1, 7 bytes)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4414905Z Records processed: 0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4415192Z Valid records: 0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4415488Z Invalid records: 0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4415793Z Errors: 0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4416074Z Skipped rules: 0
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4416400Z Truncated: false
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4416674Z Elapsed: 0.000128200s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4416874Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4417035Z Validation cancelled; results are incomplete.
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4436855Z test cli::command::cancellation_tests::controlled_cancellation_never_publishes_complete_reports ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4638817Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4642482Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4720395Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.4787704Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.5208815Z test cli::historical::tests::ambiguous_ack_is_reported_without_retry_or_a_false_success_or_rollback ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.5430440Z test cli::historical::tests::failed_report_creation_and_failed_approval_publication_leave_history_unchanged ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.5492959Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.5551101Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.5592281Z test cli::historical::tests::concurrent_approval_after_review_triggers_cas_and_never_loses_the_winner ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.5611976Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.5833284Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.5881410Z test cli::historical::tests::incomplete_reference_evidence_does_not_become_a_successful_historical_command ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.5972836Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.6110688Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.6370615Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.6380073Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.6524641Z test cli::historical::tests::normative_invalidity_has_no_audit_and_missing_or_wrong_key_never_initializes ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.6739524Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.6769722Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7114631Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7234284Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7263637Z {"event":"local_archive_created","format_version":1}
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7267634Z test cli::historical::tests::secret_file_cannot_be_parsed_as_an_explicit_or_implicit_bundle_manifest ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7280042Z test cli::review_input::tests::native_console_worker ... ignored, parent invokes this helper in an isolated synthetic native console
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7403295Z test cli::historical::tests::key_input_archive_output_and_part_collisions_are_rejected_before_writes ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7406701Z test cli::review_input::tests::review_text_is_bounded_ascii_and_never_trims_a_mismatched_approval ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7433626Z test cli::historical::tests::preview_publishes_real_audit_without_approval_and_explicit_review_commits ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7436973Z test cli::signal::tests::callback_cancels_shared_token_idempotently_and_keeps_other_runs_independent ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7498481Z test cli::tests::complete_pairs_resolve_at_each_level_with_strict_priority ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7505768Z test cli::tests::controlled_outcomes_have_the_documented_distinct_codes ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7568724Z test cli::tests::incomplete_pairs_never_mix_levels_or_fall_back ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7604213Z test cli::tests::no_bundle_and_invalid_executable_do_not_discover_cwd_or_home ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7658789Z test cli::tests::nonexistent_empty_and_file_roots_fail_without_fallback ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7669685Z test cli::tests::output_alias_and_explicit_directory_paths_preserve_spaces ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7677170Z test cli::tests::parsed_arguments_map_exactly_to_local_request_and_native_outputs ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7701768Z test cli::historical::tests::abort_eof_wrong_confirmation_and_cancellation_never_publish_or_commit ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7703576Z test cli::tests::syntax_errors_are_technical_and_help_is_successful ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7717735Z test cli::tooling::tests::listing_propagates_stdout_io_failure ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7736015Z test cli::tooling::tests::invalid_catalog_never_touches_output ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.7797334Z test cli::review_input::tests::native_windows_pipe_readiness_eof_and_cancellation_are_real ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9707945Z test cli::review_input::tests::windows_console_events_and_idle_cancellation_run_in_an_isolated_process ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9709657Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9712186Z test result: ok. 25 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.56s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9713038Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9768586Z ^[[1m^[[92m     Running^[[0m tests\allowed_values.rs (target\x86_64-pc-windows-msvc\debug\deps\allowed_values-c642e6bb60fd18a9.exe)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9898496Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9898985Z running 10 tests
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9932653Z test compiled_domain_keeps_declaration_order_and_bytes ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9933928Z test domain_violation_integrates_with_error_factory ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9934677Z test byte_membership_is_not_text_normalization ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9936094Z test literal_width_is_bytes_not_unicode_characters ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9940538Z test logical_target_uses_only_explicit_extraction ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9948285Z test malformed_domains_and_incompatible_widths_are_compile_errors ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9949381Z test preserve_width_keeps_zero_codes_and_requires_full_width_literals ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9949999Z test raw_membership_never_trims_pads_or_parses ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9954027Z test logical_literals_are_canonical_without_implicit_rewriting ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9958105Z test unsupported_constraints_are_still_explicitly_rejected ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9958563Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9958936Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9959374Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:49.9977426Z ^[[1m^[[92m     Running^[[0m tests\atomic_report.rs (target\x86_64-pc-windows-msvc\debug\deps\atomic_report-9cc4b5df40674f01.exe)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.0067922Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.0068767Z running 13 tests
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.0200993Z test empty_completed_report_is_published ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.0209722Z test drop_and_panic_cleanup_default_parts ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.0216132Z test diagnostic_retention_is_explicit_and_never_publishes ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.0256069Z test invalid_destination_and_missing_parent_never_run_the_producer ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.0517192Z test preexisting_part_is_neither_truncated_nor_cleaned_up ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.0536988Z test jsonl_is_invisible_until_successful_publication ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.0974727Z test existing_destination_is_replaced_only_at_success ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.0989893Z test rename_failure_is_technical_and_preserves_destination_directory ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.0996016Z test cancelled_and_truncated_runs_never_replace_a_definitive_report ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1003204Z test sink_error_discards_partial_bytes_and_preserves_previous_report ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1015401Z test upstream_read_error_can_abort_without_publishing ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1428929Z test windows_locked_destination_is_preserved_without_delete_fallback ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1440239Z test summary_encoder_integrates_without_format_changes ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1440873Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1441196Z test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1441664Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1459694Z ^[[1m^[[92m     Running^[[0m tests\bundle_cli.rs (target\x86_64-pc-windows-msvc\debug\deps\bundle_cli-32ff9044b59cd027.exe)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1557634Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1558034Z running 10 tests
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1905030Z test explicit_manifest_without_external_roots_is_not_ignored ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1940661Z test embedded_missing_version_is_an_error_without_any_guessed_latest ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1944224Z test external_missing_selected_schema_does_not_fall_back ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.1946539Z test explicit_manifest_is_protected_against_output_collision ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.2051321Z test manifest_reference_guard_keeps_actual_byte_anomalies_in_provider_policy ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.3708086Z test legacy_external_audit_explicitly_lacks_version_and_does_not_discover_cwd_manifest ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.3710070Z test implicit_manifest_and_explicit_manifest_with_separate_parents_work ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.4175834Z test invalid_explicit_or_present_manifest_and_schema_hash_fail_preserving_reports ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.4834040Z test real_embedded_cli_matches_external_errors_and_schema_hash ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.7192389Z test real_cli_manifest_preserves_partial_reference_evidence_and_strict ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.7192718Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.7193024Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.56s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.7193322Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.7208812Z ^[[1m^[[92m     Running^[[0m tests\cad_composite.rs (target\x86_64-pc-windows-msvc\debug\deps\cad_composite-18092ff3a9cfb503.exe)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.7291301Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.7291612Z running 5 tests
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.7431828Z test invalid_control_values_cannot_make_the_record_valid ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.7439196Z test actual_source_coordinates_exact_raw_width_and_both_valid_contexts ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.7446937Z test conditional_position_60_has_real_coordinates_context_and_deterministic_jsonl ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:50.7474809Z test zero_fill_space_fill_and_a_blank_tail_never_receive_numeric_or_text_fallback ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.4482354Z test all_256_byte_values_at_each_of_70_positions_match_the_source_domains ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.4482717Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.4482963Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.72s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.4483244Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.4508489Z ^[[1m^[[92m     Running^[[0m tests\cad_lookups.rs (target\x86_64-pc-windows-msvc\debug\deps\cad_lookups-e5a606db7d289dbd.exe)
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.4641124Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.4641582Z running 7 tests
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5049446Z test all_63_icd_codes_validate_in_each_of_the_five_real_b1_slots ... FAILED
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5050282Z test icd_membership_is_exact_without_input_dot_removal_numeric_or_case_coercion ... FAILED
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5051078Z test all_33_prestations_validate_at_the_real_d_coordinates_and_other_codes_fail ... FAILED
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5076593Z test reviewed_source_inventories_match_exact_membership_bytes_and_preserve_prefixes ... FAILED
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5134909Z test optional_symptoms_are_fac_only_inside_ucpdom_with_primary_presence_diagnostics ... FAILED
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5152263Z test network_type_required_and_forbidden_conditions_follow_both_controlling_fields ... FAILED
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5221158Z test missing_or_degraded_official_membership_stays_technical_or_non_definitive ... ok
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5221610Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5225277Z failures:
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5225502Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5226260Z ---- all_63_icd_codes_validate_in_each_of_the_five_real_b1_slots stdout ----
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5227187Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5227706Z thread 'all_63_icd_codes_validate_in_each_of_the_five_real_b1_slots' (7040) panicked at tests\cad_lookups.rs:322:10:
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5230994Z called `Result::unwrap()` on an `Err` value: ReferenceData(Provider(StrictPreparation { evidence: DatasetEvidence { key: DatasetKey { id: DatasetId("cad-icd9-cm-clinical-signs"), version: DatasetVersion("2024-06.pdf7.1") }, expected_sha256: Sha256Digest([100, 94, 190, 45, 55, 88, 66, 5, 95, 245, 121, 252, 221, 172, 68, 52, 60, 163, 132, 60, 244, 116, 105, 124, 178, 52, 72, 216, 125, 20, 191, 246]), actual_sha256: Some(Sha256Digest([70, 131, 38, 44, 78, 81, 155, 209, 85, 108, 130, 20, 97, 92, 168, 80, 96, 102, 16, 146, 22, 132, 73, 184, 226, 174, 179, 74, 16, 90, 162, 0])), declared_key: Some(DatasetKey { id: DatasetId("cad-icd9-cm-clinical-signs"), version: DatasetVersion("2024-06.pdf7.1") }), availability: Degraded, policy: Strict, anomalies: [IntegrityMismatch] } }))
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5233023Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5233283Z ---- icd_membership_is_exact_without_input_dot_removal_numeric_or_case_coercion stdout ----
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5233581Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5233923Z thread 'icd_membership_is_exact_without_input_dot_removal_numeric_or_case_coercion' (3780) panicked at tests\cad_lookups.rs:474:14:
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5235954Z called `Result::unwrap()` on an `Err` value: ReferenceData(Provider(StrictPreparation { evidence: DatasetEvidence { key: DatasetKey { id: DatasetId("cad-icd9-cm-clinical-signs"), version: DatasetVersion("2024-06.pdf7.1") }, expected_sha256: Sha256Digest([100, 94, 190, 45, 55, 88, 66, 5, 95, 245, 121, 252, 221, 172, 68, 52, 60, 163, 132, 60, 244, 116, 105, 124, 178, 52, 72, 216, 125, 20, 191, 246]), actual_sha256: Some(Sha256Digest([70, 131, 38, 44, 78, 81, 155, 209, 85, 108, 130, 20, 97, 92, 168, 80, 96, 102, 16, 146, 22, 132, 73, 184, 226, 174, 179, 74, 16, 90, 162, 0])), declared_key: Some(DatasetKey { id: DatasetId("cad-icd9-cm-clinical-signs"), version: DatasetVersion("2024-06.pdf7.1") }), availability: Degraded, policy: Strict, anomalies: [IntegrityMismatch] } }))
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5237845Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5238094Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5238329Z ---- all_33_prestations_validate_at_the_real_d_coordinates_and_other_codes_fail stdout ----
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5238628Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5238938Z thread 'all_33_prestations_validate_at_the_real_d_coordinates_and_other_codes_fail' (8488) panicked at tests\cad_lookups.rs:371:10:
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5240935Z called `Result::unwrap()` on an `Err` value: ReferenceData(Provider(StrictPreparation { evidence: DatasetEvidence { key: DatasetKey { id: DatasetId("cad-icd9-cm-clinical-signs"), version: DatasetVersion("2024-06.pdf7.1") }, expected_sha256: Sha256Digest([100, 94, 190, 45, 55, 88, 66, 5, 95, 245, 121, 252, 221, 172, 68, 52, 60, 163, 132, 60, 244, 116, 105, 124, 178, 52, 72, 216, 125, 20, 191, 246]), actual_sha256: Some(Sha256Digest([70, 131, 38, 44, 78, 81, 155, 209, 85, 108, 130, 20, 97, 92, 168, 80, 96, 102, 16, 146, 22, 132, 73, 184, 226, 174, 179, 74, 16, 90, 162, 0])), declared_key: Some(DatasetKey { id: DatasetId("cad-icd9-cm-clinical-signs"), version: DatasetVersion("2024-06.pdf7.1") }), availability: Degraded, policy: Strict, anomalies: [IntegrityMismatch] } }))
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5242590Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5243091Z ---- reviewed_source_inventories_match_exact_membership_bytes_and_preserve_prefixes stdout ----
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5243487Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5243814Z thread 'reviewed_source_inventories_match_exact_membership_bytes_and_preserve_prefixes' (7132) panicked at tests\cad_lookups.rs:190:9:
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5244332Z assertion `left == right` failed
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5244693Z   left: "d324f83a26e914563380ea2bc6b498c0fb1db9b5d47da1a7e2a0aa8806fb420b"
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5245318Z  right: "8c19447ca64a28e736eb5012c11fb22ba8e55367c59bb81537b25fc2b11b7a96"
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5245667Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5245917Z ---- optional_symptoms_are_fac_only_inside_ucpdom_with_primary_presence_diagnostics stdout ----
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5246207Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5246550Z thread 'optional_symptoms_are_fac_only_inside_ucpdom_with_primary_presence_diagnostics' (3580) panicked at tests\cad_lookups.rs:394:14:
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5248537Z called `Result::unwrap()` on an `Err` value: ReferenceData(Provider(StrictPreparation { evidence: DatasetEvidence { key: DatasetKey { id: DatasetId("cad-icd9-cm-clinical-signs"), version: DatasetVersion("2024-06.pdf7.1") }, expected_sha256: Sha256Digest([100, 94, 190, 45, 55, 88, 66, 5, 95, 245, 121, 252, 221, 172, 68, 52, 60, 163, 132, 60, 244, 116, 105, 124, 178, 52, 72, 216, 125, 20, 191, 246]), actual_sha256: Some(Sha256Digest([70, 131, 38, 44, 78, 81, 155, 209, 85, 108, 130, 20, 97, 92, 168, 80, 96, 102, 16, 146, 22, 132, 73, 184, 226, 174, 179, 74, 16, 90, 162, 0])), declared_key: Some(DatasetKey { id: DatasetId("cad-icd9-cm-clinical-signs"), version: DatasetVersion("2024-06.pdf7.1") }), availability: Degraded, policy: Strict, anomalies: [IntegrityMismatch] } }))
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5250180Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5250421Z ---- network_type_required_and_forbidden_conditions_follow_both_controlling_fields stdout ----
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5250725Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5251032Z thread 'network_type_required_and_forbidden_conditions_follow_both_controlling_fields' (924) panicked at tests\cad_lookups.rs:446:18:
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5253216Z called `Result::unwrap()` on an `Err` value: ReferenceData(Provider(StrictPreparation { evidence: DatasetEvidence { key: DatasetKey { id: DatasetId("cad-icd9-cm-clinical-signs"), version: DatasetVersion("2024-06.pdf7.1") }, expected_sha256: Sha256Digest([100, 94, 190, 45, 55, 88, 66, 5, 95, 245, 121, 252, 221, 172, 68, 52, 60, 163, 132, 60, 244, 116, 105, 124, 178, 52, 72, 216, 125, 20, 191, 246]), actual_sha256: Some(Sha256Digest([70, 131, 38, 44, 78, 81, 155, 209, 85, 108, 130, 20, 97, 92, 168, 80, 96, 102, 16, 146, 22, 132, 73, 184, 226, 174, 179, 74, 16, 90, 162, 0])), declared_key: Some(DatasetKey { id: DatasetId("cad-icd9-cm-clinical-signs"), version: DatasetVersion("2024-06.pdf7.1") }), availability: Degraded, policy: Strict, anomalies: [IntegrityMismatch] } }))
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5254911Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5254915Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5255017Z failures:
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5255309Z     all_33_prestations_validate_at_the_real_d_coordinates_and_other_codes_fail
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5255704Z     all_63_icd_codes_validate_in_each_of_the_five_real_b1_slots
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5256091Z     icd_membership_is_exact_without_input_dot_removal_numeric_or_case_coercion
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5256527Z     network_type_required_and_forbidden_conditions_follow_both_controlling_fields
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5257000Z     optional_symptoms_are_fac_only_inside_ucpdom_with_primary_presence_diagnostics
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5257444Z     reviewed_source_inventories_match_exact_membership_bytes_and_preserve_prefixes
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5257772Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5258152Z test result: FAILED. 1 passed; 6 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5258522Z 
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.5271390Z ^[[1m^[[91merror^[[0m: test failed, to rerun pass `-p lintra --test cad_lookups`
+Verify (x86_64-pc-windows-msvc)	Test	2026-11-06T09:52:53.9097680Z ##[error]Process completed with exit code 1.
