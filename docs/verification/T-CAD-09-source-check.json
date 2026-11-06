@@ -1,0 +1,78 @@
+{
+  "purpose": "Verify CAD09 provenance without changing sources or runtime component",
+  "component_sha256": "cbb3e37028abbaad763105962ca0b52c8e6d0115adbac9d64b2c07a3cb510fe0",
+  "pdf": {
+    "actual_sha256": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29",
+    "declared_sha256": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29"
+  },
+  "traces": [
+    {
+      "id": "A",
+      "actual_sha256": "1b7850af503c0f832f3add306a997e2b3a9f072b590d46a34c6f7783dbf00876",
+      "declared_sha256": "1b7850af503c0f832f3add306a997e2b3a9f072b590d46a34c6f7783dbf00876",
+      "fields": [
+        {
+          "id": "1.1",
+          "source_metadata_equal": true,
+          "start": 1,
+          "length": 3
+        },
+        {
+          "id": "1.11",
+          "source_metadata_equal": true,
+          "start": 149,
+          "length": 8
+        },
+        {
+          "id": "1.23",
+          "source_metadata_equal": true,
+          "start": 206,
+          "length": 12
+        },
+        {
+          "id": "1.24",
+          "source_metadata_equal": true,
+          "start": 218,
+          "length": 1
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "actual_sha256": "a6726cf3b2365c7b230c2b1e82b0ba00d8ba18d504c1f3aa3ec9c008674238a3",
+      "declared_sha256": "a6726cf3b2365c7b230c2b1e82b0ba00d8ba18d504c1f3aa3ec9c008674238a3",
+      "fields": [
+        {
+          "id": "2.1",
+          "source_metadata_equal": true,
+          "start": 1,
+          "length": 12
+        },
+        {
+          "id": "2.4",
+          "source_metadata_equal": true,
+          "start": 16,
+          "length": 8
+        },
+        {
+          "id": "2.17",
+          "source_metadata_equal": true,
+          "start": 62,
+          "length": 1
+        },
+        {
+          "id": "2.18",
+          "source_metadata_equal": true,
+          "start": 63,
+          "length": 1
+        },
+        {
+          "id": "2.36",
+          "source_metadata_equal": true,
+          "start": 187,
+          "length": 12
+        }
+      ]
+    }
+  ]
+}

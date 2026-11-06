@@ -147,6 +147,107 @@ pub(crate) fn local_derived_type(
         .then_some(ValueType::Integer),
     }
 }
+
+/// Pass one validates the metadata of cross-derived definitions, without
+/// evaluating them or following a join. Local rules/presence still use the
+/// stricter local guard. Only the newly supported calendar-year plan can use
+/// external dates; every index and scalar/consensus binding is checked here.
+pub(crate) fn flow_derived_type(
+    plan: &DerivedValuePlan,
+    schema: &CompiledRecordSchema,
+    flow: &CompiledFlowSchema,
+) -> Option<ValueType> {
+    if let Some(kind) = local_derived_type(plan, schema) {
+        return Some(kind);
+    }
+    let DerivedValuePlan::CalendarYearDelta {
+        birth,
+        reference,
+        format,
+    } = plan
+    else {
+        return None;
+    };
+    let field = |reference: &ResolvedFieldRef| {
+        let (trace, index, id) = match reference {
+            ResolvedFieldRef::Local {
+                field_index,
+                field_id,
+            } => (schema, *field_index, field_id),
+            ResolvedFieldRef::External {
+                trace_index,
+                field_index,
+                field_id,
+                join_index,
+                join_id,
+            } => {
+                let join = flow.cross_record_plan().joins.get(*join_index)?;
+                if &join.id != join_id
+                    || join.target_trace != *trace_index
+                    || flow.traces().get(join.source_trace)?.id() != schema.id()
+                    || !(join.consensus.as_ref().map_or(
+                        matches!(
+                            join.cardinality,
+                            JoinCardinality::ZeroOrOne | JoinCardinality::ExactlyOne
+                        ),
+                        |consensus| consensus.fields.contains(field_index),
+                    ))
+                {
+                    return None;
+                }
+                (flow.traces().get(*trace_index)?, *field_index, field_id)
+            }
+        };
+        trace.fields().get(index).filter(|field| field.id() == id)
+    };
+    (field(birth)?.field_type() == FieldType::Date(*format)
+        && field(reference)?.field_type() == FieldType::Date(*format))
+    .then_some(ValueType::Integer)
+}
+
+/// Recover the decisive join only for a join-related Unknown. Date parsing
+/// failures never acquire a missing-record policy from an unrelated source.
+/// Sources are inspected in the evaluator's exact order and target mode.
+pub(crate) fn failure_join(
+    plan: &DerivedValuePlan,
+    ctx: &EvaluationContext<'_>,
+    reason: UnknownReason,
+) -> Option<usize> {
+    if !matches!(
+        reason,
+        UnknownReason::RelatedRecordMissing
+            | UnknownReason::TraceInputUnavailable
+            | UnknownReason::AmbiguousJoin
+            | UnknownReason::IncompleteRelatedContext
+    ) {
+        return None;
+    }
+    let (first, second, raw) = match plan {
+        DerivedValuePlan::Substring { source, target, .. } => {
+            (source, None, *target == ValueTarget::Raw)
+        }
+        DerivedValuePlan::AgeInCompletedYears {
+            birth, reference, ..
+        }
+        | DerivedValuePlan::CalendarYearDelta {
+            birth, reference, ..
+        } => (birth, Some(reference), false),
+    };
+    for reference in std::iter::once(first).chain(second) {
+        let value = if raw {
+            ctx.fields.resolve_raw_field(reference)
+        } else {
+            ctx.fields.resolve_field(reference)
+        };
+        if value == ResolvedFieldValue::Unavailable(reason) {
+            return match reference {
+                ResolvedFieldRef::External { join_index, .. } => Some(*join_index),
+                _ => None,
+            };
+        }
+    }
+    None
+}
 pub(crate) fn compare_derived(
     value: DerivedValue<'_>,
     operator: ComparisonOperator,

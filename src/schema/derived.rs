@@ -4,10 +4,21 @@ use super::{
     linter::SchemaIssueCode as Code, raw::*,
 };
 type Issue = (Code, String);
+#[cfg(test)]
 pub(crate) fn compile_derived_values(
     record: &RawRecordSchema,
 ) -> Result<Vec<DerivedValuePlan>, Issue> {
-    record
+    compile_scoped(&super::reference_binding::ReferenceBindings::local(record))
+}
+
+/// Calendar-year differences may use one checked scalar/consensus join. Other
+/// derived operations retain their existing local-only boundary. The binder
+/// checks trace/field/join ownership before a plan can reach either pass.
+pub(crate) fn compile_scoped(
+    bindings: &super::reference_binding::ReferenceBindings<'_>,
+) -> Result<Vec<DerivedValuePlan>, Issue> {
+    bindings
+        .record
         .derived_values
         .iter()
         .map(|(id, raw)| {
@@ -17,11 +28,90 @@ pub(crate) fn compile_derived_values(
                     "derived IDs must be nonempty and unpadded".into(),
                 ));
             }
-            compile_plan(raw, record)
+            compile_plan(raw, bindings)
         })
         .collect()
 }
-fn compile_plan(raw: &RawDerived, record: &RawRecordSchema) -> Result<DerivedValuePlan, Issue> {
+
+/// Local presence and set predicates cannot read a cross-pass derived value.
+/// Walk every node, even behind a constant guard, so metadata cannot silently
+/// turn an unsupported obligation into a local success.
+pub(crate) fn expression_is_local(
+    expression: &CompiledExpr,
+    plans: &[DerivedValuePlan],
+) -> Result<bool, Issue> {
+    let local = |reference: &ResolvedFieldRef| matches!(reference, ResolvedFieldRef::Local { .. });
+    let mut pending = vec![expression];
+    while let Some(node) = pending.pop() {
+        let index = match node {
+            CompiledExpr::Const(_) => continue,
+            CompiledExpr::And(nodes) | CompiledExpr::Or(nodes) => {
+                pending.extend(nodes);
+                continue;
+            }
+            CompiledExpr::Not(node) => {
+                pending.push(node);
+                continue;
+            }
+            CompiledExpr::Eq(reference, _)
+            | CompiledExpr::Ne(reference, _)
+            | CompiledExpr::In(reference, _)
+            | CompiledExpr::NotIn(reference, _)
+            | CompiledExpr::IsPresent(reference)
+            | CompiledExpr::IsMissing(reference) => {
+                if !local(reference) {
+                    return Ok(false);
+                }
+                continue;
+            }
+            CompiledExpr::DerivedEq {
+                field,
+                derived_index,
+            } => {
+                if !local(field) {
+                    return Ok(false);
+                }
+                *derived_index
+            }
+            CompiledExpr::DerivedCompare { derived_index, .. } => *derived_index,
+        };
+        let plan = plans.get(index).ok_or((
+            Code::InternalCompilerInvariant,
+            "derived expression index is inconsistent".into(),
+        ))?;
+        let valid = match plan {
+            DerivedValuePlan::Substring { source, .. } => local(source),
+            DerivedValuePlan::AgeInCompletedYears {
+                birth, reference, ..
+            }
+            | DerivedValuePlan::CalendarYearDelta {
+                birth, reference, ..
+            } => local(birth) && local(reference),
+        };
+        if !valid {
+            return Ok(false);
+        }
+    }
+    Ok(true)
+}
+fn compile_plan(
+    raw: &RawDerived,
+    bindings: &super::reference_binding::ReferenceBindings<'_>,
+) -> Result<DerivedValuePlan, Issue> {
+    let record = bindings.record;
+    let scoped_date = |reference: &RawRef| {
+        let resolved = bindings.resolve(reference)?;
+        if !matches!(
+            bindings.field(&resolved)?.physical,
+            RawPhysical::Date { .. }
+        ) {
+            return Err((
+                Code::ConstraintTypeMismatch,
+                "derived calendar operations require date fields".into(),
+            ));
+        }
+        Ok(resolved)
+    };
     Ok(match raw {
         RawDerived::Substring {
             source_ref,
@@ -85,8 +175,8 @@ fn compile_plan(raw: &RawDerived, record: &RawRecordSchema) -> Result<DerivedVal
             reference_date_ref,
             date_format,
         } => DerivedValuePlan::CalendarYearDelta {
-            birth: date_ref(birth_date_ref, record)?,
-            reference: date_ref(reference_date_ref, record)?,
+            birth: scoped_date(birth_date_ref)?,
+            reference: scoped_date(reference_date_ref)?,
             format: date_format_plan(date_format),
         },
     })

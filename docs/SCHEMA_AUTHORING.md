@@ -627,3 +627,22 @@ lo stesso costruttore di dominio usato dallo storico: etichette vuote/solo spazi
 o con controlli sono rifiutate senza alterarne il testo. Full richiede tutti i
 componenti del namespace dichiarato; LocalOnly verifica quelli presenti. Questa
 validazione tecnica non modifica domini clinici o formati di storage.
+
+## Attuazione calendar_year_delta cross-trace — T-CAD-09
+
+Il lowering tipizzato accetta le Refdate esterne già previste dal contratto per
+calendar_year_delta nelle regolecross della seconda passata. ReferenceBindings
+verifica trace/field/join e consente solo cardinalità scalare o un campo nella
+tupla consenso; entrambi i campi devono essereDate. Source/target sono inclusi
+nella chiusura delle proiezioni. Substring/age_in_completed_years restano locali.
+Nessuna nuova proprietàJSON, formato, capability o APIpubblica. Le forme1/2/3 e
+le baselineFROZEN non sono riscritte. Questa nota descrive l'implementazione; il
+gate di consegna09 è tracciato separatamente nel report di verifica.
+
+Un obbligo di presenza che usa questo derivato deve essere una regola di passata2
+con assertionFieldPresent. Usarlo direttamente nella presence locale o in un
+predicato setlocale produce schema error, anche sotto guardie costanti. LocalOnly
+conta i controlli crosssaltati e conservaPartial; non valuta join o età simulate.
+Unknown da refesterna conserva la joincausale deterministica per le missing policy,
+senza convertire date invalide in un parentmancante o in un'etàzero.
+Componente esplicitoCAD: schemas/cad/components/2024-06.calendar-age.1.

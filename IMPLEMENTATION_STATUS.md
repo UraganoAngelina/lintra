@@ -2,36 +2,32 @@
 
 Consuntivo aggiornato al **2026-11-06**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — recovery SQLite per CAD03, CAD11 locale, CAD09 sospesa
+## Frontiera corrente — CAD03/11 DONE, CAD09 in verifica locale
 
-**130/140 DONE = 92,9%**; restano10task (CAD03–09/11/12 eP18-04).
-CAD02 DONE/CI42067927663 su5dbfc174. CAD03 locale qualificata922workspace/38mirati,
-ma CI42190202683 su42f92ed ècompleted/failure: Linuxsuccess, Windowsworkspace e
-allfeatures positivi, core senza bundle fallito in contesaSQLite con journal
-scomparso durante preflight. Jobdipendenti skipped, non success. NonDONE03.
+**132/140 DONE = 94,3%**; restano8task (CAD04–09/12 eP18-04).
+CAD02 DONE conCI42067927663. CAD03(sessioni trimestrali immutabili) eCAD11
+(membership cliniche/presenza condizionale) DONE conCI42203885693 sullo SHA
+6af5f856c4c4a680d593fe8fe48d8ebc1ef831d2: Linux/MSVC,3confrontiJSONL/pixel,
+2riapertureSQLite crossOS tutti positivi. PackagingUI opzionale skipped.
+Evidenze integrali: T-CAD-11-checkout-recovery-native-ci.json e report03/11.
 
-Recovery isolata su d81b520, senza core09: regressione reale eliminandojournal
-prima dimetadata falliscevaUnsafeanzichéBusy; oraBusy richiede apertura fallita e
-preflightnuova completa. ACL/link/nomeinatteso/permesse/root/chiave invariati.
-TestWindows aggiuntivi per journal sparito primaACL e journalconDACL errata.
-Quattro gate isolati positivi:fmt/Clippyroot,35persistence senza bundle e28esiti
-SQLite allfeatures (25principali+3subprocess),0fail/4ignored. Report/ledger
-CAD03_SQLITE_RECOVERY. Commitisolato7fdd1b5 trasferito comeaae2e12; hash09preservati.
-Push/provaWindows dedicata inavvio; poiCIcompleta su03+11+fix, senza duplicazioni.
+Le dueCI precedenti fallite sono preservate: racejournalSQLite classificataBusy
+solo per scomparsa confermata; ACL/link/chiave/root immutati. CheckoutWindows
+convertiva i5JSONclinici LF→CRLF: regoleGit -text sui soli source/data approvati,
+nessuna normalizzazione/provider indebolito. Commitfixaae2e12 e6af5f85 qualificati.
 
-CAD11 d81b520 pubblicata e locale qualificata: componente lookup63ICD9,
-33prestazioni01–28/71–74/99 e70posizioni catalogo, condizioni UCPDOM/rete approvate,
-7nuovitest/315lookupdefinitivi;58regressione e30allfeatures,0fail. Ledger/report11,
-nessun nuovo gate nativo11 ancora dichiarato. NonDONE11.
+CAD09 IN_PROGRESS: calendar_year_delta cross-trace conRefdate scalar/consensus,
+APIpubbliche invariate, componenteA/B1 distinto da uno schemaCADcompleto.
+12testservizio reale positivi; fmt/Clippyworkspaceallfeatures eworkspace completo
+943pass/0fail/6ignored. Ripresa dal testallfeatures dopo interruzione del processo,
+nessun esito inventato: tutti gli inputhashdelledger confermati immutati.
+Gateallfeatures/core/release/tooling/Python/boundary e nuovaCIsulloSHA09completo
+ancora richiesti. Ledger T-CAD-09-local-gates.json e reportcalendar-age.md.
 
-CAD09 indipendente IN_PROGRESS/sospesa per recovery: scalar/consensus refsdate
-calendar_year_delta, APIpubbliche invariate,11testservizio reale positivi eClippy
-workspace positivo. Core09 nonpubblicato né qualificato globalmente: guardare
-preflight09 efilelocali, hash prima/dopo in target/cad09-suspended-sha256.json.
-Riprendere gatecompleti09 durante attesa remota dopo dispatchprobe recovery.
-04/05 attendono03DONE. NessunaFROZEN/release/tag o chiaveoperativa generata.
-Single-agent, no background/delega; docs/migration preesistente preservata/esclusa.
-WAITING_GATE recovery,130/140DONE invariato, nessuna conferma ordinaria richiesta.
+04READY su03/PERSIST08DONE;05attende04.06/07READY indipendenti su02/P10/P13.
+Completare il delta09 già avviato prima di cambiare task; poi prosecuzione
+single-agent conREADY. NessunaFROZEN/release/tag o chiaveoperativa generata.
+Nessun background/delega; docs/migration preesistente preservata/esclusa.
 
 ## Registro precedente — T-CAD-02 WAITING_GATE, DEC-17 chiusa
 
@@ -6564,3 +6560,12 @@ processo locale precedente non è più disponibile, allfeatures senza esito: non
 conteggiato. Tutti gli input del ledger sono ancora invariati; riprendere dal
 comando3, preservando loginterrotto. NessunDONE09 oCI09 impliciti. Gate native09
 sul futuroSHAcompleto ancora richiesto; docs/migration preservata ed esclusa.
+
+
+## CAD09 — pubblicazione e verifica nativa con gate locali in corso
+
+Codice completo,12casi mirati e943esitiworkspace positivi, fmt/Clippy positivi.
+Avviare CI sul commit09 per sovrapporla al completamento locale3–10, senza
+ridurre test o anticipareDONE. Inputhash del ledger tutti invariati prima della
+pubblicazione; sorgenti restano ferme fino a chiusura della sequenza.132/140,
+8task aperte. Nessuna nuova task implementata prima della qualificazione del delta.

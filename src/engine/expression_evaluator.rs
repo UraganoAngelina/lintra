@@ -236,6 +236,16 @@ impl ExpressionEvaluator {
         expression: &CompiledExpr,
         ctx: &EvaluationContext<'_>,
     ) -> EvaluatedTruth {
+        self.evaluate_with_derived_cause(expression, ctx, &[])
+    }
+    /// Private pass-2 context: public resolver/context/value APIs remain intact.
+    /// Plans are supplied by the same source schema used to compile the rule.
+    pub(crate) fn evaluate_with_derived_cause(
+        &self,
+        expression: &CompiledExpr,
+        ctx: &EvaluationContext<'_>,
+        plans: &[crate::schema::compiled::DerivedValuePlan],
+    ) -> EvaluatedTruth {
         let mut work = vec![EvalStep::Expr(expression)];
         let mut values = Vec::new();
         while let Some(step) = work.pop() {
@@ -320,7 +330,15 @@ impl ExpressionEvaluator {
                             ResolvedFieldValue::Present(bytes) => {
                                 match ctx.fields.resolve_derived(*derived_index) {
                                     DerivedValue::Bytes(value) => truth(bytes == value),
-                                    DerivedValue::Unknown(reason) => TruthValue::Unknown(reason),
+                                    DerivedValue::Unknown(reason) => {
+                                        external_cause =
+                                            plans.get(*derived_index).and_then(|plan| {
+                                                super::derived_evaluator::failure_join(
+                                                    plan, ctx, reason,
+                                                )
+                                            });
+                                        TruthValue::Unknown(reason)
+                                    }
                                     DerivedValue::Integer(value) => {
                                         if bytes.is_empty() || !bytes.iter().all(u8::is_ascii_digit)
                                         {
@@ -343,14 +361,25 @@ impl ExpressionEvaluator {
                         derived_index,
                         operator,
                         value,
-                    } => values.push(
-                        compare_derived(
+                    } => {
+                        let result = compare_derived(
                             ctx.fields.resolve_derived(*derived_index),
                             *operator,
                             value,
-                        )
-                        .into(),
-                    ),
+                        );
+                        let external_cause = match result {
+                            TruthValue::Unknown(reason) => {
+                                plans.get(*derived_index).and_then(|plan| {
+                                    super::derived_evaluator::failure_join(plan, ctx, reason)
+                                })
+                            }
+                            _ => None,
+                        };
+                        values.push(EvaluatedTruth {
+                            truth: result,
+                            external_cause,
+                        });
+                    }
                 },
                 EvalStep::Group { and, count } => {
                     let Some(start) = values.len().checked_sub(count) else {

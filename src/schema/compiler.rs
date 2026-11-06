@@ -114,7 +114,10 @@ impl Checks<'_> {
             None,
             "repeated_groups",
         );
-        if let Err((code, message)) = crate::schema::derived::compile_derived_values(record) {
+        if let Err((code, message)) =
+            crate::schema::reference_binding::ReferenceBindings::cross(self.raw, trace_index, joins)
+                .and_then(|bindings| crate::schema::derived::compile_scoped(&bindings))
+        {
             self.error(code, trace, None, message);
         }
         // Validate every declared definition, including unused ones. Presence
@@ -647,7 +650,11 @@ impl SchemaCompiler {
         let derived_tables = raw
             .traces
             .iter()
-            .map(crate::schema::derived::compile_derived_values)
+            .enumerate()
+            .map(|(index, _)| {
+                crate::schema::reference_binding::ReferenceBindings::cross(&raw, index, &joins)
+                    .and_then(|bindings| crate::schema::derived::compile_scoped(&bindings))
+            })
             .collect::<Result<Vec<_>, _>>()
             .map_err(|(code, message)| fail(None, None, code, message))?;
         let mut local_rules = vec![Vec::new(); raw.traces.len()];
@@ -1165,6 +1172,21 @@ fn compile_record(
         .map(|id| index(raw, id))
         .collect::<Result<Vec<_>, _>>()?;
     let derived_values = lowering.derived;
+    for field in &fields {
+        for expression in field
+            .presence_policy()
+            .required_if
+            .iter()
+            .chain(&field.presence_policy().forbidden_if)
+        {
+            if !crate::schema::derived::expression_is_local(expression, &derived_values)? {
+                return Err((
+                    Code::UnsupportedConstruct,
+                    "cross-derived conditional presence requires an explicit pass-2 rule".into(),
+                ));
+            }
+        }
+    }
     let projection_plan = projection::compile(
         raw,
         lowering.trace_index,

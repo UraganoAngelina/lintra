@@ -245,9 +245,17 @@ fn compile_assertion(
             let (join_index, plan) = bindings.join(join)?;
             let target = bindings.target(plan.target_trace)?;
             // Predicates are explicitly local to the target, not nested joins.
+            let predicate = compile_local_expr(predicate, target.record)?;
+            let plans = crate::schema::derived::compile_scoped(&target)?;
+            if !crate::schema::derived::expression_is_local(&predicate, &plans)? {
+                return Err((
+                    Code::UnsupportedConstruct,
+                    "set predicates require local derived sources".into(),
+                ));
+            }
             CompiledAssertion::SetExists {
                 join_index,
-                predicate: compile_local_expr(predicate, target.record)?,
+                predicate,
             }
         }
     })

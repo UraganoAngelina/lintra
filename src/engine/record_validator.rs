@@ -150,7 +150,7 @@ impl<'schema> RecordValidator<'schema> {
         let schema = flow
             .trace(trace_id)
             .ok_or_else(|| RecordValidationError::TraceNotFound(trace_id.clone()))?;
-        check_local_plan(schema, references)?;
+        check_local_plan(flow, schema, references)?;
         Ok(Self {
             flow,
             context_frozen: false,
@@ -481,6 +481,7 @@ impl<'schema> RecordValidator<'schema> {
 /// boundary as it evolves: a future compiled local obligation cannot disappear
 /// merely because the current executor does not know how to evaluate it.
 fn check_local_plan(
+    flow: &CompiledFlowSchema,
     schema: &CompiledRecordSchema,
     references: bool,
 ) -> Result<(), RecordValidationError> {
@@ -496,10 +497,9 @@ fn check_local_plan(
             UnsupportedLocalFeature::Rules,
         ),
         (
-            schema
-                .derived_values()
-                .iter()
-                .any(|plan| super::derived_evaluator::local_derived_type(plan, schema).is_none()),
+            schema.derived_values().iter().any(|plan| {
+                super::derived_evaluator::flow_derived_type(plan, schema, flow).is_none()
+            }),
             UnsupportedLocalFeature::DerivedValues,
         ),
         (

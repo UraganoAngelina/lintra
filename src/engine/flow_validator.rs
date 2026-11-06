@@ -359,7 +359,11 @@ fn assertion<'a>(
             predicate,
         } => existence(flow, context, *join_index, Some(predicate), rule),
         CompiledAssertion::ConditionTrue(condition) => {
-            let result = ExpressionEvaluator.evaluate_with_cause(condition, &fields);
+            let result = ExpressionEvaluator.evaluate_with_derived_cause(
+                condition,
+                &fields,
+                source_schema.derived_values(),
+            );
             match result.truth {
                 TruthValue::True => Ok(Decision::Passed),
                 TruthValue::False => Ok(Decision::Failure {
@@ -407,8 +411,11 @@ fn evaluate_rule<'a>(
     let schema = flow
         .trace(&source.trace_id)
         .ok_or(CrossRecordValidationError::InvalidPlan)?;
-    let when =
-        ExpressionEvaluator.evaluate_with_cause(&rule.when, &EvaluationContext { fields: context });
+    let when = ExpressionEvaluator.evaluate_with_derived_cause(
+        &rule.when,
+        &EvaluationContext { fields: context },
+        schema.derived_values(),
+    );
     if when.truth == TruthValue::False {
         return Ok(CrossRuleOutcome::Satisfied);
     }
