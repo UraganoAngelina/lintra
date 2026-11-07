@@ -44,3 +44,8 @@ dei record attivi/annullati/riattivati e il vincolo progressivo-evento apparteng
 aCAD04; la conservazione dei trace assenti aCAD05, temporali alle task pertinenti
 e integrazione/golden complete aCAD12. Una preview di candidato03 non deve essere
 presentata come una preview di riconciliazione completa o conformitàCAD globale.
+
+
+T-CAD-05 qualifica warning/consenso e conservazione dei file assenti nella
+composizione protetta CAD: vedere [MISSING_TRACES.md](MISSING_TRACES.md).
+La distinzione Present(0)/Absent non cambia snapshot/periodo, HMAC o PK.

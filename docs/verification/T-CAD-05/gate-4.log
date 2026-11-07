@@ -1,0 +1,90 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 34.96s
+     Running tests/cad_progressives.rs (target/debug/deps/cad_progressives-65de0bc0dea3847c)
+
+running 21 tests
+test invalid_current_evidence_is_technical_before_binding_comparison ... ok
+test cancellation_report_failure_and_cas_preserve_the_checked_event_binding ... ok
+test incomplete_secondary_history_is_not_accepted_as_a_verified_baseline ... ok
+test component_provenance_and_unsupported_declarations_are_checked_before_input ... ok
+test incompatible_key_or_schema_history_is_a_technical_preflight_failure ... ok
+test missing_trace_acceptance::b2_warning_is_available_before_review_and_missing_consent_cannot_enter_it ... ok
+test missing_trace_acceptance::wire_has_only_present_or_absent_and_abort_cannot_deserialize_as_durable_proceed ... ok
+test missing_trace_acceptance::abort_of_b2_omission_draft_and_review_preserves_the_approved_history ... ok
+test exact_old_quarter_retry_after_later_updates_does_not_publish_again ... ok
+test complete_pk_audit_and_progressive_audit_have_explicit_distinct_meanings ... ok
+test missing_trace_acceptance::every_omission_needs_consent_and_present_unknown_duplicate_or_empty_acknowledgements_fail ... ok
+test raw_tokens_missing_projections_and_ambiguous_secondary_keys_cannot_enter_approval ... ok
+test original_line_and_private_deterministic_jsonl_survive_projection ... ok
+test one_submission_cannot_bind_the_same_progressive_to_two_different_events ... ok
+test renamed_generic_flow_traces_fields_and_error_code_use_the_same_invariant_engine ... ok
+test missing_trace_acceptance::present_empty_b2_is_not_missing_and_only_it_can_annul_the_previous_b2 ... ok
+test missing_trace_acceptance::proceed_persists_b2_absence_and_choice_with_file_key_and_no_annulment_after_restart ... ok
+test omitted_files_are_not_reported_as_progressive_annulments ... ok
+test real_quarterly_progressive_diffs_survive_restarts_and_attribute_changes_in_complete_pk ... ok
+test trace_and_ulss_scope_are_independent_and_event_binding_continues_between_years ... ok
+test every_trace_rejects_reassignment_before_and_after_annulment_with_no_commit ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.28s
+
+     Running tests/cad_sessions.rs (target/debug/deps/cad_sessions-973d2bba3bf2cd76)
+
+running 6 tests
+test cad_policy_binds_the_approved_scope_without_enabling_incomplete_runtime ... ok
+test invalid_or_unbound_cad_preparations_never_receive_an_approval ... ok
+test report_failure_cancellation_and_stale_approval_leave_sqlite_generation_unchanged ... ok
+test same_quarter_is_independent_across_ulss_and_next_year_preserves_the_namespace ... ok
+test revision_before_approval_and_abort_are_private_and_the_reviewed_candidate_is_exact ... ok
+test three_quarters_survive_restart_and_cannot_be_replaced_even_by_new_schema_version ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+     Running tests/cli_history.rs (target/debug/deps/cli_history-345dbb70448093c4)
+
+running 2 tests
+test synthetic_record_and_key_sentinels_never_reach_cli_logs_or_historical_audit ... ok
+test actual_binary_preview_review_abort_and_exit_codes_preserve_local_history ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+
+     Running tests/history_audit.rs (target/debug/deps/history_audit-97ef0ae08026e7e9)
+
+running 14 tests
+test concurrent_occurrence_lookup_and_unavailable_provenance_are_not_insertions ... ok
+test cancellation_sink_failure_and_generation_changes_never_return_complete_summary ... ok
+test incompatible_version_and_source_hash_fail_explicitly ... ok
+test declared_group_uses_compiler_verified_member_hashes ... ok
+test namespace_isolation_and_wrong_key_never_look_like_new_local_history ... ok
+test order_is_deterministic_for_reversed_rows_and_policy_trace_order ... ok
+test absent_files_preserve_per_trace_baselines_across_other_flows ... ok
+test retained_key_without_a_present_baseline_is_not_reported_as_new_or_reactivated ... ok
+test unattested_rows_and_changed_projection_definition_are_rejected ... ok
+test undeclared_audit_invalid_namespace_and_unknown_trace_are_explicit_errors ... ok
+test multiple_quarters_classify_every_change_without_publishing_the_preview ... ok
+test present_empty_disappears_and_later_reactivation_survives_real_sqlite_restart ... ok
+test retained_absent_trace_rows_are_valid_history_without_inventing_presence ... ok
+test metadata_cursor_covers_more_than_one_page_without_loading_all_snapshots ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+     Running tests/session_approval.rs (target/debug/deps/session_approval-4ed38f3a12ce3dca)
+
+running 15 tests
+test draft_binding_validates_every_parameter_inventory_and_provenance ... ok
+test foreign_clock_values_outside_chrono_range_are_rejected_without_panicking ... ok
+test fractional_pre_epoch_clock_is_compared_exactly_without_calendar_conversion ... ok
+test preview_abort_drop_report_error_and_cooperative_cancel_publish_nothing ... ok
+test outcome_failures_mismatch_cancel_and_missing_consent_never_become_validated ... ok
+test changing_the_period_of_an_approved_submission_is_a_normative_rejection ... ok
+test explicit_policy_lowering_rejects_invalid_variants_and_keeps_runtime_gate ... ok
+test immutable_old_session_exact_retry_and_namespace_isolation ... ok
+test schema_version_change_does_not_unlock_a_session_and_cancelled_preview_is_read_only ... ok
+test stale_preview_and_double_transaction_do_not_publish_second_approval ... ok
+test storage_failure_and_ambiguous_commit_require_explicit_read_only_resolution ... ok
+test nonempty_candidate_requires_declared_verified_identities_before_sqlite_sees_it ... ok
+test sqlite_restart_metadata_cursor_and_legacy_history_fail_closed ... ok
+test corrupt_metadata_indexes_cannot_masquerade_as_an_empty_or_different_session ... ok
+test sqlite_cursor_crosses_page_boundaries_without_loading_record_payloads ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.25s
+

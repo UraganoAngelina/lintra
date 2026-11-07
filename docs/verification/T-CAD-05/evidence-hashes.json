@@ -1,0 +1,13 @@
+{
+  "docs/verification/T-CAD-05/gate-0.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "docs/verification/T-CAD-05/gate-1.log": "c7d27bf464df1ed683c20f2ccf91ce1d12b79661385131a168a1e4376871da77",
+  "docs/verification/T-CAD-05/gate-2.log": "3ade9140d376552791ff5faa5987e5a05eea1cd006c136904a63a2b7bc5f39d6",
+  "docs/verification/T-CAD-05/gate-3.log": "6485f8facfba0bcdcc439375bd393e1731875a895d76ef7f42597b2bea37c4a3",
+  "docs/verification/T-CAD-05/gate-4.log": "5a0f57b87e917b7eb9fce507b5808fc9e91aa444c78393d0485234f8d4a7b3be",
+  "docs/verification/T-CAD-05/gate-5.log": "203c19e045abe8a8716154d78c18ccc4ae190341fe18fec5a9e87d790abe7d3b",
+  "docs/verification/T-CAD-05/gate-6.log": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f",
+  "docs/verification/T-CAD-05/preliminary-clippy.log": "dfc9f766bce6874839479740792bf020ad8be95b509abf25c179b042ef632048",
+  "docs/verification/T-CAD-05/preliminary-final-targeted.log": "fdf4e7ff9fcb97cd1247a0540cfd0c79e692fabef68c92eef4e5ed859f7fda89",
+  "docs/verification/T-CAD-05/preliminary-first-tests.log": "2f716d198f5f5168c3284390befacfe3c5416a311b1b0d411b1d0861db86fbe1",
+  "docs/verification/T-CAD-05/preliminary-targeted.log": "f16d0eb214cd3620462eb6d51cde0c1586df86d3fd3ab67e4eaa5a8704493b78"
+}

@@ -1,0 +1,42 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 34.09s
+     Running tests/cad_progressives.rs (target/debug/deps/cad_progressives-346e310cad95efcd)
+
+running 21 tests
+test invalid_current_evidence_is_technical_before_binding_comparison ... ok
+test cancellation_report_failure_and_cas_preserve_the_checked_event_binding ... ok
+test incomplete_secondary_history_is_not_accepted_as_a_verified_baseline ... ok
+test component_provenance_and_unsupported_declarations_are_checked_before_input ... ok
+test incompatible_key_or_schema_history_is_a_technical_preflight_failure ... ok
+test missing_trace_acceptance::b2_warning_is_available_before_review_and_missing_consent_cannot_enter_it ... ok
+test missing_trace_acceptance::wire_has_only_present_or_absent_and_abort_cannot_deserialize_as_durable_proceed ... ok
+test complete_pk_audit_and_progressive_audit_have_explicit_distinct_meanings ... ok
+test exact_old_quarter_retry_after_later_updates_does_not_publish_again ... ok
+test missing_trace_acceptance::abort_of_b2_omission_draft_and_review_preserves_the_approved_history ... ok
+test missing_trace_acceptance::every_omission_needs_consent_and_present_unknown_duplicate_or_empty_acknowledgements_fail ... ok
+test raw_tokens_missing_projections_and_ambiguous_secondary_keys_cannot_enter_approval ... ok
+test original_line_and_private_deterministic_jsonl_survive_projection ... ok
+test missing_trace_acceptance::proceed_persists_b2_absence_and_choice_with_file_key_and_no_annulment_after_restart ... FAILED
+test one_submission_cannot_bind_the_same_progressive_to_two_different_events ... ok
+test renamed_generic_flow_traces_fields_and_error_code_use_the_same_invariant_engine ... ok
+test omitted_files_are_not_reported_as_progressive_annulments ... ok
+test missing_trace_acceptance::present_empty_b2_is_not_missing_and_only_it_can_annul_the_previous_b2 ... ok
+test real_quarterly_progressive_diffs_survive_restarts_and_attribute_changes_in_complete_pk ... ok
+test trace_and_ulss_scope_are_independent_and_event_binding_continues_between_years ... ok
+test every_trace_rejects_reassignment_before_and_after_annulment_with_no_commit ... ok
+
+failures:
+
+---- missing_trace_acceptance::proceed_persists_b2_absence_and_choice_with_file_key_and_no_annulment_after_restart stdout ----
+
+thread 'missing_trace_acceptance::proceed_persists_b2_absence_and_choice_with_file_key_and_no_annulment_after_restart' (243) panicked at tests/cad_progressives.rs:1432:42:
+called `Result::unwrap()` on an `Err` value: Unattested
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    missing_trace_acceptance::proceed_persists_b2_absence_and_choice_with_file_key_and_no_annulment_after_restart
+
+test result: FAILED. 20 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.35s
+
+error: test failed, to rerun pass `-p lintra --test cad_progressives`

@@ -1,0 +1,16 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+error[E0599]: no associated function or constant named `now` found for struct `chrono::Utc` in the current scope
+    --> tests/cad_progressives.rs:1549:62
+     |
+1549 |         assert!(MissingTraceProceedConsent::new(vec![], Utc::now()).is_err());
+     |                                                              ^^^ associated function or constant not found in `chrono::Utc`
+
+error[E0599]: no associated function or constant named `now` found for struct `chrono::Utc` in the current scope
+    --> tests/cad_progressives.rs:1553:22
+     |
+1553 |                 Utc::now()
+     |                      ^^^ associated function or constant not found in `chrono::Utc`
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `lintra` (test "cad_progressives") due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

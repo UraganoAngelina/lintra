@@ -1232,3 +1232,368 @@ fn invalid_current_evidence_is_technical_before_binding_comparison() {
         SessionApprovalError::InvalidValidationEvidence
     ));
 }
+
+/// CAD05 qualifies the existing warning/consent/omission contract. The public
+/// Full summaries remain explicit component fixtures, not clinical executions.
+mod missing_trace_acceptance {
+    use super::*;
+    use std::{
+        fs,
+        io::Write,
+        path::{Path, PathBuf},
+    };
+
+    /// Obtain the same private inherited directory policy used by the qualified
+    /// CLI fixture. All key bytes are PUBLIC synthetic material. The key bundle
+    /// is distinct from the actual archive; no production credential is made.
+    fn portable_archive() -> (tempfile::TempDir, PathBuf, PathBuf) {
+        let (dir, root) = archive();
+        let bundle = dir.path().join("public synthetic portable bundle");
+        drop(SQLitePersistenceAdapter::create(&bundle, Some(KEY_ID), &Provider(0xaa)).unwrap());
+        let path = portable_persistence_key_path(&bundle.join("lintra-ui.exe")).unwrap();
+        let mut options = fs::OpenOptions::new();
+        options.write(true).create_new(true);
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::OpenOptionsExt;
+            options.mode(0o600);
+        }
+        options.open(&path).unwrap().write_all(&[0xaa; 32]).unwrap();
+        (dir, root, path)
+    }
+    fn provider(path: &Path) -> FilePersistenceKeyProvider {
+        FilePersistenceKeyProvider::load(KEY_ID, path).unwrap()
+    }
+    /// Reuse the exact qualified projection profile and original-width rows;
+    /// do not delete snapshot/invariant obligations to make Full appear runnable.
+    fn prepared(
+        p: &CompiledPersistenceProfile,
+        key: &IdentityProtector,
+        data: &Rows,
+        id: &str,
+        quarter: i64,
+        absent: &[&str],
+    ) -> (
+        ApprovalDraft,
+        ValidationRunOutcome,
+        Vec<ProjectedHistoricalRecord>,
+    ) {
+        let params = parameters("501", 2026, quarter);
+        let source = parts(p, data, "501", id, 2026, quarter, absent);
+        let result = outcome(&source, &params, data);
+        let draft = ApprovalDraft::new(p, params, source, None).unwrap();
+        (draft, result, projected(p, key, data, "501", absent))
+    }
+    fn decision(traces: &[&str], quarter: u32) -> MissingTraceProceedConsent {
+        MissingTraceProceedConsent::new(
+            traces.iter().map(|id| TraceId((*id).into())).collect(),
+            Utc.with_ymd_and_hms(2026, quarter * 3, 1, 0, 1, 0).unwrap(),
+        )
+        .unwrap()
+    }
+
+    #[test]
+    fn b2_warning_is_available_before_review_and_missing_consent_cannot_enter_it() {
+        let (_dir, root, key_path) = portable_archive();
+        let provider = provider(&key_path);
+        let key = IdentityProtector::preflight(Some(KEY_ID), &provider, None).unwrap();
+        let repo = SQLitePersistenceAdapter::open(&root, Some(KEY_ID), &provider).unwrap();
+        let p = profile(model());
+        let data = rows("501");
+        let (draft, result, records) = prepared(&p, &key, &data, "missing-B2", 1, &["B2"]);
+        assert_eq!(
+            draft.missing_trace_warning_code(),
+            Some("W_CAD_MISSING_TRACE")
+        );
+        assert_eq!(
+            draft
+                .absent_traces()
+                .map(|id| id.0.as_str())
+                .collect::<Vec<_>>(),
+            ["B2"]
+        );
+        assert!(matches!(
+            draft.validated_with_identity_records(&result, records, &key),
+            Err(SessionApprovalError::Rejected(
+                SessionRejection::MissingProceedConsent
+            ))
+        ));
+        assert_eq!(repo.current_generation(&namespace("501")).unwrap(), None);
+        assert!(
+            repo.load_submission_page(&namespace("501"), None)
+                .unwrap()
+                .is_empty()
+        );
+    }
+
+    #[test]
+    fn abort_of_b2_omission_draft_and_review_preserves_the_approved_history() {
+        let (_dir, root, key_path) = portable_archive();
+        let provider = provider(&key_path);
+        let key = IdentityProtector::preflight(Some(KEY_ID), &provider, None).unwrap();
+        let p = profile(model());
+        let data = rows("501");
+        {
+            let repo = SQLitePersistenceAdapter::open(&root, Some(KEY_ID), &provider).unwrap();
+            approve(
+                &candidate(&p, &key, &data, "501", "baseline", (2026, 1), &[]).unwrap(),
+                &repo,
+            );
+            let (draft, _, _) = prepared(&p, &key, &data, "abort-draft", 2, &["B2"]);
+            assert_eq!(
+                draft.missing_trace_warning_code(),
+                Some("W_CAD_MISSING_TRACE")
+            );
+            draft.cancel();
+            let (draft, result, records) = prepared(&p, &key, &data, "abort-review", 2, &["B2"]);
+            let value = draft
+                .with_proceed_consent(decision(&["B2"], 2))
+                .unwrap()
+                .validated_with_identity_records(&result, records, &key)
+                .unwrap();
+            let mut review = value.preview(&repo).unwrap();
+            review.cancel().unwrap();
+            assert!(
+                review
+                    .approve_commit(&CancellationToken::default(), |_| panic!(
+                        "ABORT must not publish a report"
+                    ))
+                    .is_err()
+            );
+            assert_eq!(
+                repo.current_generation(&namespace("501")).unwrap(),
+                Some(SnapshotRevision::new(1))
+            );
+        }
+        let repo = SQLitePersistenceAdapter::open(&root, Some(KEY_ID), &provider).unwrap();
+        let page = repo.load_submission_page(&namespace("501"), None).unwrap();
+        assert_eq!(page.len(), 1);
+        assert_eq!(page[0].1.submission_id(), "baseline");
+        assert!(page[0].1.missing_trace_consent().is_none());
+    }
+
+    #[test]
+    fn proceed_persists_b2_absence_and_choice_with_file_key_and_no_annulment_after_restart() {
+        let (_dir, root, key_path) = portable_archive();
+        let p = profile(model());
+        let data = rows("501");
+        let consent = decision(&["B2"], 2);
+        {
+            let provider = provider(&key_path);
+            let key = IdentityProtector::preflight(Some(KEY_ID), &provider, None).unwrap();
+            let repo = SQLitePersistenceAdapter::open(&root, Some(KEY_ID), &provider).unwrap();
+            approve(
+                &candidate(&p, &key, &data, "501", "T1-all", (2026, 1), &[]).unwrap(),
+                &repo,
+            );
+            let (draft, result, records) = prepared(&p, &key, &data, "T2-without-B2", 2, &["B2"]);
+            let value = draft
+                .with_proceed_consent(consent.clone())
+                .unwrap()
+                .validated_with_identity_records(&result, records, &key)
+                .unwrap();
+            let preview = value.preview(&repo).unwrap();
+            let (counts, items) = diffs(&p, &key, &repo, &preview);
+            assert_eq!((counts.unchanged, counts.disappeared), (3, 0));
+            assert!(
+                items
+                    .iter()
+                    .all(|item| item.identity().trace_id().0 != "B2")
+            );
+            assert_eq!(
+                preview.snapshot().source().missing_trace_consent(),
+                Some(&consent)
+            );
+            approve(&value, &repo);
+        }
+        // Reload the provider from the explicit portable file as well as SQLite.
+        let provider = provider(&key_path);
+        let key = IdentityProtector::preflight(Some(KEY_ID), &provider, None).unwrap();
+        let repo = SQLitePersistenceAdapter::open(&root, Some(KEY_ID), &provider).unwrap();
+        let current = repo
+            .load_current_snapshot(&namespace("501"))
+            .unwrap()
+            .unwrap();
+        let source = current.source();
+        assert_eq!(source.missing_trace_consent(), Some(&consent));
+        for trace in source.traces() {
+            if trace.trace_id.0 == "B2" {
+                assert_eq!(trace.presence, TracePresence::Absent);
+                assert!(trace.input_sha256.is_none());
+            } else {
+                assert_eq!(trace.presence, TracePresence::Present { record_count: 1 });
+                assert!(trace.input_sha256.is_some());
+            }
+        }
+        key.verify_submission(source).unwrap();
+        let wire = serde_json::to_value(source).unwrap();
+        assert_eq!(wire["missing_trace_consent"]["decision"], "proceed");
+        let restored: SourceSubmission = serde_json::from_value(wire.clone()).unwrap();
+        assert_eq!(restored.missing_trace_consent(), Some(&consent));
+        // Public JSON intentionally drops the private proof. It remains data,
+        // never a restored approval/protection capability, even if unmodified.
+        assert!(matches!(
+            key.verify_submission(&restored),
+            Err(ProtectionError::Unattested)
+        ));
+        assert!(matches!(
+            key.protect_submission(&restored),
+            Err(ProtectionError::Unattested)
+        ));
+        let mut tampered = wire;
+        tampered["missing_trace_consent"]["recorded_at"] = json!("2026-06-01T00:02:00Z");
+        let tampered: SourceSubmission = serde_json::from_value(tampered).unwrap();
+        assert!(key.verify_submission(&tampered).is_err());
+        let value = candidate(&p, &key, &data, "501", "T3-B2-returns", (2026, 3), &[]).unwrap();
+        let preview = value.preview(&repo).unwrap();
+        let counts = diffs(&p, &key, &repo, &preview).0;
+        assert_eq!(
+            (counts.unchanged, counts.reactivated, counts.disappeared),
+            (4, 0, 0)
+        );
+    }
+
+    #[test]
+    fn present_empty_b2_is_not_missing_and_only_it_can_annul_the_previous_b2() {
+        let (_dir, root, key_path) = portable_archive();
+        let provider = provider(&key_path);
+        let key = IdentityProtector::preflight(Some(KEY_ID), &provider, None).unwrap();
+        let p = profile(model());
+        let data = rows("501");
+        {
+            let repo = SQLitePersistenceAdapter::open(&root, Some(KEY_ID), &provider).unwrap();
+            approve(
+                &candidate(&p, &key, &data, "501", "T1-all", (2026, 1), &[]).unwrap(),
+                &repo,
+            );
+            let mut empty = data.clone();
+            empty.insert("B2".into(), vec![]);
+            let (draft, _, _) = prepared(&p, &key, &empty, "wrong-empty-consent", 2, &[]);
+            assert_eq!(draft.missing_trace_warning_code(), None);
+            assert_eq!(draft.absent_traces().count(), 0);
+            assert!(draft.with_proceed_consent(decision(&["B2"], 2)).is_err());
+            let (draft, result, records) = prepared(&p, &key, &empty, "T2-B2-empty", 2, &[]);
+            let value = draft
+                .validated_with_identity_records(&result, records, &key)
+                .unwrap();
+            let preview = value.preview(&repo).unwrap();
+            let (counts, items) = diffs(&p, &key, &repo, &preview);
+            assert_eq!(counts.disappeared, 1);
+            assert_eq!(
+                items
+                    .iter()
+                    .filter(|item| item.change() == HistoricalChange::Removed)
+                    .count(),
+                1
+            );
+            assert!(
+                preview
+                    .snapshot()
+                    .source()
+                    .missing_trace_consent()
+                    .is_none()
+            );
+            approve(&value, &repo);
+        }
+        let repo = SQLitePersistenceAdapter::open(&root, Some(KEY_ID), &provider).unwrap();
+        let current = repo
+            .load_current_snapshot(&namespace("501"))
+            .unwrap()
+            .unwrap();
+        let trace = current
+            .source()
+            .traces()
+            .iter()
+            .find(|t| t.trace_id.0 == "B2")
+            .unwrap();
+        assert_eq!(trace.presence, TracePresence::Present { record_count: 0 });
+        assert_eq!(
+            trace.input_sha256,
+            Some(Sha256Digest(Sha256::digest(b"").into()))
+        );
+        assert!(current.source().missing_trace_consent().is_none());
+        let value = candidate(&p, &key, &data, "501", "T3-reactivation", (2026, 3), &[]).unwrap();
+        let preview = value.preview(&repo).unwrap();
+        let counts = diffs(&p, &key, &repo, &preview).0;
+        assert_eq!((counts.reactivated, counts.disappeared), (1, 0));
+    }
+
+    #[test]
+    fn every_omission_needs_consent_and_present_unknown_duplicate_or_empty_acknowledgements_fail() {
+        let (_dir, _root, key_path) = portable_archive();
+        let provider = provider(&key_path);
+        let key = IdentityProtector::preflight(Some(KEY_ID), &provider, None).unwrap();
+        let p = profile(model());
+        let data = rows("501");
+        for ids in [&["A"][..], &["UNKNOWN"][..]] {
+            let (draft, _, _) = prepared(&p, &key, &data, "invalid-ack", 1, &["B1", "B2"]);
+            assert!(draft.with_proceed_consent(decision(ids, 1)).is_err());
+        }
+        let (draft, result, records) = prepared(&p, &key, &data, "partial-ack", 1, &["B1", "B2"]);
+        assert!(matches!(
+            draft
+                .with_proceed_consent(decision(&["B2"], 1))
+                .unwrap()
+                .validated_with_identity_records(&result, records, &key),
+            Err(SessionApprovalError::Rejected(
+                SessionRejection::MissingProceedConsent
+            ))
+        ));
+        let (draft, result, records) = prepared(&p, &key, &data, "complete-ack", 1, &["B1", "B2"]);
+        assert_eq!(
+            draft
+                .absent_traces()
+                .map(|id| id.0.as_str())
+                .collect::<Vec<_>>(),
+            ["B1", "B2"]
+        );
+        let value = draft
+            .with_proceed_consent(decision(&["B2", "B1"], 1))
+            .unwrap()
+            .validated_with_identity_records(&result, records, &key)
+            .unwrap();
+        assert_eq!(
+            value.source().missing_trace_consent().unwrap().traces(),
+            [TraceId("B1".into()), TraceId("B2".into())]
+        );
+        assert!(
+            MissingTraceProceedConsent::new(
+                vec![],
+                Utc.with_ymd_and_hms(2026, 3, 1, 0, 1, 0).unwrap()
+            )
+            .is_err()
+        );
+        assert!(
+            MissingTraceProceedConsent::new(
+                vec![TraceId("B2".into()), TraceId("B2".into())],
+                Utc.with_ymd_and_hms(2026, 3, 1, 0, 1, 0).unwrap()
+            )
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn wire_has_only_present_or_absent_and_abort_cannot_deserialize_as_durable_proceed() {
+        assert_eq!(
+            serde_json::to_value(TracePresence::Present { record_count: 0 }).unwrap(),
+            json!({"kind":"present","record_count":0})
+        );
+        assert_eq!(
+            serde_json::to_value(TracePresence::Absent).unwrap(),
+            json!({"kind":"absent"})
+        );
+        for value in [
+            json!({"kind":"partial","record_count":1}),
+            json!({"kind":"absent","record_count":0}),
+        ] {
+            assert!(serde_json::from_value::<TracePresence>(value).is_err());
+        }
+        assert!(
+            serde_json::from_value::<MissingTraceProceedConsent>(
+                json!({"decision":"abort","traces":["B2"],"recorded_at":"2026-06-01T00:01:00Z"})
+            )
+            .is_err()
+        );
+        assert!(serde_json::from_value::<MissingTraceProceedConsent>(json!({"decision":"proceed","traces":["B2"],"recorded_at":"2026-06-01T00:01:00Z","implicit":true})).is_err());
+    }
+}
