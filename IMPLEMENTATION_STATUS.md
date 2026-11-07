@@ -2,9 +2,9 @@
 
 Consuntivo aggiornato al **2026-11-07**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD09 DONE, CAD04 WAITING_GATE
+## Frontiera corrente — CAD04 DONE, CAD06 in verifica locale
 
-**133/140 DONE = 95,0%**; restano 7 task: CAD04–08, CAD12 e P18-04.
+**134/140 DONE = 95,7%**; restano 6 task: CAD05–08, CAD12 e P18-04.
 CAD02 DONE con CI42067927663. CAD03 e CAD11 DONE con CI42203885693 su6af5f85.
 CAD09 DONE con CI42231182241 sullo SHA1740a6dd29ac705d29b0cb0425daacf919a6b17e:
 Linux/MSVC, tre confronti JSONL/pixel e due riaperture SQLite crossOS positivi.
@@ -18,15 +18,22 @@ fmt/Clippy/release/boundary positivi. Dossier T-CAD-09-calendar-age.md,
 T-CAD-09-local-gates.json, T-CAD-09-native-ci.json e log/inventario omonimi.
 Non è uno schemaCAD completo/FROZEN; integrazione clinica/storica resta al12.
 
-CAD04 WAITING_GATE: implementazione locale finale qualificata,15test nuovi.
-Piani compilati, proiezioni PK/progressivo/evento, controllo dei binding correnti
-e storici, preview protetta e audit esplicito. Base:11gate exit0; affinamento:
-6gate exit0,924core allfeatures/916senza bundle,0fail/6ignored per suite.
-Impronte finali e log verificati alla ripresa del7novembre. Componente
-progressives.1 con20campi originali; storage/HMAC invariati. Commit/push e
-CI nativa completa sullo SHA finale ancora necessari prima di DONE04.
-Report T-CAD-04-progressives.md e ledger base/finale separati.
-CAD05attende04;06/07READY indipendenti su02/P10/P13.
+CAD04 DONE: commit b59a5b905ae9f82baf5ce23bbc4eb8564fa5cd22, CI42368062138
+completed/success con sette job richiesti positivi: Linux/MSVC, tre confronti
+JSONL/pixel e due riaperture SQLite crossOS. Quindici test CAD04 qualificati;
+base11gate e affinamento6gate locali distinti, sorgenti finali verificate.
+Report T-CAD-04-progressives.md e risultato T-CAD-04-native-ci.json.
+
+CAD06 WAITING_GATE: implementazione locale qualificata,11test nuovi+51regressione.
+Undici gate finali positivi:970workspace standard e970allfeatures,927core senza
+bundle,18tooling e24Python;0fail finali.464impronte sorgenti invariate, log e
+conteggi verificati. Retry8per variabile LINTRA_TEST_BIN omessa nel runner,
+tentativo fallito conservato; nessuna modifica prodotto per il retry.
+Componente A/B2/C con13campi originali e PK complete, compilatore/seconda passata
+generici. Fonte/report/ledger in docs/verification/T-CAD-06-*. CI nativa propria
+ancora necessaria primaDONE06.134/140DONEinvariato.
+CAD05READY su04; CAD07indipendenteREADY. Prossima durante attesa remota06,
+una task alla volta con prerequisiti/gate reali.
 
 Single-agent, nessun background/delega. NessunaFROZEN/release/tag o chiave
 operativa generata; docs/migration preesistente preservata ed esclusa.
@@ -6605,3 +6612,59 @@ corrente e della precedenza tecnica;924/916esiti finali core. Non ripetuta una
 suite già positiva senza nuovi cambiamenti. Report/recovery aggiornati, sorgenti
 immutate dalla qualificazione finale. Pubblicare solo04e relative evidenze;
 docs/migration esclusa. CI completa Linux/MSVC necessaria;133/140invariato.
+
+
+## CAD04 pubblicata / CAD06 indipendente in sviluppo — 2026-11-07
+
+Commit b59a5b905ae9f82baf5ce23bbc4eb8564fa5cd22 pubblicato. CI42368062138
+avviata sullo SHA esatto; seconda lettura: Linux/MSVC in_progress. NonDONE04.
+Dossier T-CAD-04-native-ci.json. Durante attesa sospesa04, avviata06 su
+02/P10/P13/G0 qualificati. Preflight T-CAD-06-preflight.md: lowering del piano
+interval_exclusion esistente nella seconda passata, componente A/B2/C e test
+sintetici di servizio. Nessuna storia cumulativa, snapshot o altro piano
+temporale abilitato. Test iniziali in corso, non qualificati;133/140immutato.
+
+
+## CAD06 — regressione mirata positiva / gate locali in corso
+
+Undici nuovi test CAD06 e51di regressione positivi,0fail/0ignored. Scope
+current-input di sola lettura, non storia cumulativa. Guardia when indirettamente
+esterno riprodotta in fallimento e corretta col visitatore di località esistente;
+log red/green conservati. FontePDF e13campi/PK/coordinate verificati.
+Sequenza finale11comandi su input fermi: T-CAD-06-local-gates.json e log06,
+runner foreground python3 /tmp/lintra-cad06-local-gates.py. Nessuna modifica
+sorgente/authoring/indice durante i gate. CAD04 CI42368062138 ancora pendente
+all'ultima lettura:3ordinarie usate, lettura finale aggiuntiva motivata quando
+necessaria. Non dispatchCI06 finché04 non è terminale per non annullarne la run.
+133/140DONEinvariato. Nessuna release, namespace/storage/HMAC invariati.
+
+
+## QUALITY GATE / HANDOFF — CAD04 DONE, 7 novembre 2026
+
+CI42368062138 completed/success su b59a5b905ae9f82baf5ce23bbc4eb8564fa5cd22.
+Tutti7job richiesti positivi, packagingUI opzionale skipped. Letture finali
+aggiuntive motivate dai job effettivamente pendenti, senza pipeline duplicate.
+Risultato completo in T-CAD-04-native-ci.json, conservata anche ultima rispostaAPI.
+134/140DONE95,7%,6aperte. Recap04: schema persistence_profile/piani di proiezione,
+application historical_identity/session/history_audit, join_key canoniche,
+componenteprogressives.1 e15test SQLite reali. Storage/HMAC/PK/FROZEN invariati.
+
+CAD06 resta attiva sui gate locali foreground; nessuna modifica sorgente dopo
+inizio sequenza. Fmt/Clippyworkspace positivi, workspace sta eseguendo le suiteUI
+all'ultima lettura. Aggiornamenti documentali04 esclusi dagli input di build.
+Commit documentale04 dopo i gate06 per non mutare indice/HEAD osservati da build.rs.
+CAD05 oraREADY ma non avviata durante gate locali06. AUTO_CONTINUE single-agent,
+nessun background; docs/migration preservata ed esclusa.
+
+
+## HANDOFF locale CAD06 / pubblicazione e WAITING_GATE
+
+Tutti11gate positivi su464input invariati.970/970workspace e927core,0fail/6ignored;
+18tooling inclusiignored e24Python, fmt/Clippy/release/boundary exit0. Il primo
+tentativotooling fallito per mancanza LINTRA_TEST_BIN è preservato, retry sul
+vero binariorelease positivo senza modifiche sorgente. Log/ledger e inventario
+verificati. FontePDF/13campi/PK/coordinate verificati. NessunDONE06 primaCI.
+Chiudere documenti04 in commit proprio, poi commit/push06 con percorsi espliciti
+eCI completaLinux/MSVC. Durante attesa avviare preflight07 indipendente.
+Nessun nuovo crate o storage/HMAC, nessunaFROZEN/release/tag; docs/migration
+preservata ed esclusa. AUTO_CONTINUE single-agent.

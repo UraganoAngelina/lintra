@@ -119,3 +119,12 @@ coincidono. Log test e inventario base verificati, inventario finale aggiunto.
 locale ancora attiva. I temporanei /tmp red/green non sono più disponibili:
 non ricostruirli né dichiararli conservati. Pubblicare il codice qualificato,
 poi CI completa sullo SHA finale; attendere sette job prima di DONE.
+
+
+## STATO TERMINALE — CAD04 DONE, 7 novembre 2026
+
+CI42368062138 success sullo SHA b59a5b905ae9f82baf5ce23bbc4eb8564fa5cd22,
+sette job richiesti positivi, risultato completo nel native-ci.json.
+134/140DONE95,7%. Nessuna nuova implementazione04 da riprendere. CAD06 attiva
+in test locale, leggere la sua recovery; documenti04 da committare dopo i gate06
+per preservare indice/HEAD durante la qualificazione corrente.

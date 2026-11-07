@@ -1,8 +1,8 @@
 # T-CAD-04 — progressivi ed evento, 6 novembre 2026
 
-WAITING_GATE. Implementazione finale con15test CAD04. Qualificazione locale
-conclusa e verificata sulle impronte correnti; CI nativa da avviare sul commit
-definitivo. I risultati della base e del successivo affinamento sono distinti. CAD09 è già DONE sulla CI42231182241;133/140 task completate,7aperte.
+DONE. Implementazione finale con15test CAD04. CI42368062138 success sullo SHA
+b59a5b905ae9f82baf5ce23bbc4eb8564fa5cd22, tutti7job richiesti positivi.
+I risultati locali della base e del successivo affinamento sono distinti. CAD09 è già DONE sulla CI42231182241;134/140 task completate,6aperte.
 
 ## Contratto e confine
 
@@ -251,3 +251,11 @@ I log red/green temporanei citati nella recovery non sono più disponibili in
 /tmp alla ripresa: non vengono ricostruiti né dichiarati archiviati. Restano la
 registrazione storica della riproduzione e le suite finali effettive conservate.
 Nessun gate Windows locale attribuito; nuova CI completa obbligatoria prima DONE.
+
+
+## Quality Gate finale — 7 novembre 2026
+
+CI42368062138 completed/success sul commit b59a5b905ae9f82baf5ce23bbc4eb8564fa5cd22.
+Linux/MSVC, tre confronti JSONL/pixel e due riaperture SQLite crossOS positivi;
+packagingUI opzionale skipped, non parte di questo gate. Risultato completo in
+T-CAD-04-native-ci.json. Task04DONE;134/140 complessive. Nessuna release nuova.
