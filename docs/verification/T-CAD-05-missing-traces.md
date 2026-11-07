@@ -1,8 +1,9 @@
 # T-CAD-05 — file mancanti, warning e consenso
 
-WAITING_GATE, 7 novembre2026. Sei casi nuovi e52regressioni =58test positivi,
+DONE, 7 novembre2026. Sei casi nuovi e52regressioni =58test positivi,
 0fail/0ignored. Clippyworkspacealltargetsallfeatures positivo. Sette gate locali
-finali conclusi positivamente; nessunaCI05 oDONE attribuiti.
+finali conclusi positivamente; CI42394000741 avviata sul commit
+84444c2c12ec235f32fcf4d1c750229e5c7db490, completed/success con sette job obbligatori positivi.
 Prerequisiti reali03/PERSIST10 verificati nel preflight;04qualificata usata
 per la prova aggiuntiva sui progressivi, senza dipendenza pendente.
 
@@ -104,3 +105,14 @@ che src/UI/Cargo/build/workflow non abbiano alcuna modifica rispetto6477bb2.
 La CI05propria deve ancora qualificare nuovi casi suLinux/MSVC, workspace
 completo default/allfeatures/core e confronti traOS. NonDONE05 prima degli
 esiti effettivi, nessuna nuova release o chiave operativa.
+
+
+## Quality gate e handoff effettivi
+
+CI42394000741 completed/success sullo SHA84444c2c12ec235f32fcf4d1c750229e5c7db490
+verificato esattamente: Linux/MSVC, tre confronti JSONL/pixel e due riaperture
+SQLite crossOS tutti positivi. Packaging UI opzionale skipped come richiesto.
+Tre letture ordinarie e letture finali aggiuntive distanziate per acquisire gli
+esiti mancanti; nessuna pipeline duplicata. Evidenze complete nei due JSON CI.
+137/140 DONE (97,9%). Prossima T-CAD-08: dipendenze05/06/07/P9 qualificate,
+preflight obbligatorio, prosecuzione automatica single-agent.

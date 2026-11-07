@@ -71,3 +71,23 @@ Le precedenti frasi08READY erano imprecise, corrette prima di scrivere codice08.
 AttendereCI05, non dichiarareDONEnéBLOCKED per sola attesa. Poi aggiornare
 indice/status/report e iniziare08automaticamente. Nessun'altra buildlocale
 attiva. Fonti econtratti8/12letti solo per audit dipendenze, non implementati.
+
+
+## QUALITY GATE / HANDOFF — CAD05 DONE, prosecuzione CAD08
+
+CI42394000741 completed/success sullo SHA esatto
+84444c2c12ec235f32fcf4d1c750229e5c7db490. Sette job obbligatori positivi:
+Linux/MSVC, tre confronti JSONL/pixel, due riaperture SQLite crossOS. Packaging UI
+opzionale skipped. Letture finali aggiuntive necessarie per gli esiti mancanti,
+nessuna pipeline duplicata. Dossier T-CAD-05-native-ci.json e latest.
+137/140 DONE,97,9%; restano08,12,P18-04.
+
+Recap05: sei nuove prove di consenso/abort/omissione contro filevuoto, provider
+file portabile e riapertura SQLite in tests/cad_progressives.rs; guida
+MISSING_TRACES.md e collegamento SESSIONS.md, report/preflight/gate/evidenze.
+Prodotto, storage/HMAC/wire e norme invariati. Sette gate locali positivi,
+987workspace/58mirati allfeatures/58core.
+
+T-CAD-08 ora READY su05/06/07/P9 verificati: avviare preflight e audit dei
+contratti temporali/periodo prima di implementare. AUTO_CONTINUE single-agent,
+nessun background/delega; docs/migration preservata ed esclusa.
