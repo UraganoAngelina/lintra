@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-07",
+  "traces": {
+    "A": {
+      "source_sha256": "1b7850af503c0f832f3add306a997e2b3a9f072b590d46a34c6f7783dbf00876",
+      "record_length": 218,
+      "record_key": [
+        "1.1",
+        "1.23"
+      ],
+      "verified_field_ids": [
+        "1.1",
+        "1.23"
+      ]
+    },
+    "B2": {
+      "source_sha256": "daa651271ca210485a9cd4b46c469a8364b807fd78adb6089cb6c76cb86cd148",
+      "record_length": 41,
+      "record_key": [
+        "3.1",
+        "3.5"
+      ],
+      "verified_field_ids": [
+        "3.1",
+        "3.2",
+        "3.3",
+        "3.4",
+        "3.5"
+      ]
+    },
+    "C": {
+      "source_sha256": "0ffcf4f83bdb391485c9963125dbcb18cbffc5370d46e26e99449d4e52677b9c",
+      "record_length": 45,
+      "record_key": [
+        "4.1",
+        "4.2",
+        "4.4",
+        "4.5",
+        "4.11"
+      ],
+      "verified_field_ids": [
+        "4.1",
+        "4.2",
+        "4.4",
+        "4.5",
+        "4.7",
+        "4.11"
+      ]
+    }
+  },
+  "source_fields_original": true,
+  "pdf_sha256": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29"
+}

@@ -688,3 +688,39 @@ diversi per lo stesso progressivo producono il codice dichiarato sulla seconda
 riga. Una duplicazione secondaria sullo stesso evento resta strutturalmente
 ambigua e viene rifiutata. I token vengono autenticati prima del confronto;
 errori di evidenza o protezione non diventano riassegnazioni normative.
+
+
+## T-CAD-06 — interval_exclusion di sola lettura sui file correnti
+
+La capability esistente temporal.intervals.v1 abilita il piano raw già
+formalizzato, senza nuovo nodo DSL o formato. Il profilo eseguibile ordinario
+non può contenere snapshot, cross_run_audit o history_identity_invariants:
+questi obblighi rimangono rifiutati e non vengono cancellati dal compiler.
+Il servizio storico audit-only continua a rifiutare le policy temporali.
+
+Il compiler verifica owner, riferimenti fisici Date, join dello stesso owner
+con cardinalità zero_or_many senza riduzione e when esclusivamente locale.
+Il piano e il join devono dichiarare la stessa on_missing_trace Unknown;
+altre policy non implementate sono rifiutate. Join/history e piani after-date
+o inattività restano unsupported. La ricerca vuota su file presente completo
+prova l'assenza di intervalli; on_missing_record del join non impone sospensioni
+a tutti gli eventi. Un file assente rimane Unknown, distinto dal file vuoto.
+
+Il lowering crea il controllo compilato temporal.interval_exclusion.<indice>,
+con indice nella lista temporal_rules e codice errore dichiarato. Un ID regola
+omonimo è rifiutato. L'ordine nella seconda passata è trace/linea/regole ordinarie
+poi piani temporali nell'ordine dichiarato. Il raccoglitore delle dipendenze
+include point/start/end e tutti i campi di when, senza proiettare l'intera riga.
+
+Per ogni record che soddisfa when si verificano tutti gli intervalli correlati:
+start < point < end. End Missing apre l'intervallo sulle date selezionate per
+questa validazione; non si consulta l'orologio host né si costruisce uno storico.
+Date invalide, start successivo a end o start mancante danno Unknown. Un
+controesempio certo prevale sulle altre incertezze; per provare l'assenza di
+violazioni occorrono tutti gli intervalli interpretabili e coverage completa.
+Confini uguali non bloccano; nessun intervallo o motivo viene scelto con first().
+
+Sono riusati sink, observer, summary, budget e cancellazione fra record della
+seconda passata. Nessuna nuova API applicativa/CLI/UI, apertura storage o chiave.
+Il componente CAD sospensioni è una configurazione parziale dichiarata; lo
+storico cumulativo e la conformità CAD completa rimangono al gate T-CAD-12.

@@ -1,0 +1,27 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+   Compiling xtask v0.1.0 (/home/alberto/Desktop/LINTRA/lintra/xtask)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 20.68s
+     Running unittests src/main.rs (xtask/target/debug/deps/xtask-e2f0cea8e6e8d097)
+
+running 18 tests
+test artifact::desktop_policy_tests::desktop_libraries_do_not_relax_cli_or_allow_non_system_dependencies ... ok
+test artifact::tests::openssl_detection_matches_package_identity_not_substrings ... ok
+test artifact::tests::malformed_wrong_format_and_empty_inputs_fail ... ok
+test artifact::tests::strict_library_boundaries_and_case_insensitive_windows_names ... ok
+test bundle_data::tests::bundle_cli_requires_explicit_unique_options ... ok
+test artifact::x11_runtime_path_tests::only_the_bounded_x11_protocol_literal_is_allowed_and_all_matches_are_scanned ... ok
+test artifact::tests::verification_cli_requires_explicit_unique_selectors ... ok
+test artifact::tests::synthetic_static_elf_and_pe_boundaries ... ok
+test artifact::tests::ascii_and_wide_host_paths_are_detected_without_rejecting_virtual_paths ... ok
+test desktop_selector_tests::desktop_product_is_explicit_and_unknown_or_duplicate_products_fail ... ok
+test tests::remapping_preserves_space_containing_flags_as_one_argument ... ok
+test tests::native_selector_required_and_no_silent_options ... ok
+test bundle_data::tests::existing_target_and_input_output_collision_preserve_inputs ... ok
+test bundle_data::tests::symlink_file_and_directory_are_not_packaged ... ok
+test bundle_data::tests::corrupt_missing_unsafe_and_ambiguous_inputs_leave_no_archive_or_staging ... ok
+test bundle_data::tests::deterministic_zip_has_exact_inventory_and_verified_checksums ... ok
+test bundle_data::tests::extracted_bundle_is_accepted_by_existing_executable ... ok
+test artifact::tests::native_executable_import_tables_are_parsed_and_modified_imports_rejected ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.03s
+

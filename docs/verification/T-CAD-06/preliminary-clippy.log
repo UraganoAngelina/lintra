@@ -1,0 +1,15 @@
+    Blocking waiting for file lock on build directory
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+   Compiling lintra-ui v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra/ui)
+error: unnecessary use of `clone` to create a slice from a reference
+   --> tests/cad_suspensions.rs:332:29
+    |
+332 |     let (out, s) = run(Some(&[short.clone()]), &[access("15012026", b'1', 1)]);
+    |                             ^^^^^^^^^^^^^^^^ help: try: `std::slice::from_ref(&short)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#cloned_ref_to_slice_refs
+    = note: `-D clippy::cloned-ref-to-slice-refs` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::cloned_ref_to_slice_refs)]`
+
+error: could not compile `lintra` (test "cad_suspensions") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

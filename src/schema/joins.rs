@@ -167,7 +167,7 @@ pub(super) fn compile_joins(raw: &RawFlowSchema) -> Result<Vec<CompiledJoinSpec>
     }
     Ok(joins)
 }
-fn policy(raw: &RawRelatedPolicy) -> Result<RelatedPolicy, (Code, String)> {
+pub(super) fn policy(raw: &RawRelatedPolicy) -> Result<RelatedPolicy, (Code, String)> {
     let diagnostic = diagnostic(&raw.diagnostic)?;
     Ok(match (&raw.policy, &raw.error_code) {
         (RawRelatedPolicyPolicy::Violation, Some(code)) => RelatedPolicy::Violation {

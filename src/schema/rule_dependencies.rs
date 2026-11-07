@@ -135,6 +135,20 @@ impl RuleDependencies {
         dependencies.expression(&rule.when, source, tables)?;
         for assertion in &rule.assertions {
             match assertion {
+                CompiledAssertion::IntervalExclusion(plan) => {
+                    dependencies.joins.insert(plan.interval_join);
+                    let join = joins.get(plan.interval_join).ok_or((
+                        Code::InternalCompilerInvariant,
+                        "temporal join is inconsistent".into(),
+                    ))?;
+                    dependencies.fields.insert((source, plan.point_field));
+                    dependencies
+                        .fields
+                        .insert((join.target_trace, plan.start_field));
+                    dependencies
+                        .fields
+                        .insert((join.target_trace, plan.end_field));
+                }
                 CompiledAssertion::FieldPresent(field) => dependencies.field(field, source),
                 CompiledAssertion::Constraint { field, constraint } => {
                     dependencies.field(field, source);

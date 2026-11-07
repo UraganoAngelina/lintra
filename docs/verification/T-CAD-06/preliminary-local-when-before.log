@@ -1,0 +1,23 @@
+    Blocking waiting for file lock on build directory
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 29.91s
+     Running tests/cad_suspensions.rs (target/debug/deps/cad_suspensions-4de79ba6b7429dff)
+
+running 1 test
+test temporal_when_cannot_hide_an_external_derived_dependency ... FAILED
+
+failures:
+
+---- temporal_when_cannot_hide_an_external_derived_dependency stdout ----
+
+thread 'temporal_when_cannot_hide_an_external_derived_dependency' (145) panicked at tests/cad_suspensions.rs:64:58:
+called `Result::unwrap()` on an `Err` value: Error("unknown variant `eq`, expected one of `==`, `!=`, `<`, `<=`, `>`, `>=`", line: 0, column: 0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    temporal_when_cannot_hide_an_external_derived_dependency
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p lintra --test cad_suspensions`

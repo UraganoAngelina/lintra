@@ -1,0 +1,33 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+error[E0599]: `ValidationCode` doesn't implement `std::fmt::Display`
+    --> tests/cad_suspensions.rs:205:28
+     |
+ 205 |         .filter(|e| e.code.to_string() == CODE)
+     |                            ^^^^^^^^^ method cannot be called on `ValidationCode` due to unsatisfied trait bounds
+     |
+    ::: src/domain/errors.rs:177:9
+     |
+ 177 |         pub enum ValidationCode {
+     |         ----------------------- doesn't satisfy `ValidationCode: ToString` or `ValidationCode: std::fmt::Display`
+     |
+     = note: the following trait bounds were not satisfied:
+             `ValidationCode: std::fmt::Display`
+             which is required by `ValidationCode: ToString`
+note: the method `to_string` exists on the type `Arc<str>`
+    --> /home/alberto/.rustup/toolchains/1.99.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/string.rs:2917:5
+     |
+2917 |     fn to_string(&self) -> String;
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0609]: no field `full` on type `ValidationSummary`
+   --> tests/cad_suspensions.rs:210:10
+    |
+210 |         .full
+    |          ^^^^ unknown field
+    |
+    = note: available fields are: `started_at`, `validation_mode`, `run_status`, `schema_key`, `scope_summary` ... and 14 others
+
+Some errors have detailed explanations: E0599, E0609.
+For more information about an error, try `rustc --explain E0599`.
+error: could not compile `lintra` (test "cad_suspensions") due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

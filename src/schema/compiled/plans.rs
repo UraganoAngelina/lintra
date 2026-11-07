@@ -467,6 +467,9 @@ pub enum CompiledConstraint {
 
 #[derive(Debug, Clone)]
 pub enum CompiledAssertion {
+    /// Lowered from the existing temporal declaration, never a new raw DSL node.
+    /// Iterates the whole related set; field indexes belong to its target trace.
+    IntervalExclusion(IntervalExclusionPlan),
     Constraint {
         field: ResolvedFieldRef,
         constraint: CompiledConstraint,

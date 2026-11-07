@@ -1,0 +1,93 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 25.39s
+     Running tests/cad_age.rs (target/debug/deps/cad_age-fa175813cf36121e)
+
+running 12 tests
+test generic_format_one_calendar_join_does_not_require_a_persistence_profile ... ok
+test local_only_performs_local_checks_and_explicitly_skips_cross_derived_obligations ... ok
+test derived_unknown_provenance_preserves_false_and_true_boolean_dominance ... ok
+test declared_age_sources_really_enter_both_projection_plans_and_the_cross_pass ... ok
+test consensus_never_chooses_one_of_two_inconsistent_b1_start_dates ... ok
+test parental_responsibility_is_required_through_seventeen_and_optional_after ... ok
+test renamed_ids_and_repeated_jsonl_prove_schema_driven_deterministic_evaluation ... ok
+test wrong_namespace_or_duplicate_parent_cannot_supply_a_reliable_birth_date ... ok
+test actual_calendar_thresholds_two_three_five_six_do_not_use_the_birthday ... ok
+test invalid_or_missing_dates_do_not_turn_into_an_age_or_a_second_presence_error ... ok
+test unavailable_target_is_unknown_but_available_empty_parent_uses_the_declared_policy ... ok
+test unsupported_local_presence_set_predicate_and_non_date_bindings_fail_at_compile_time ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+     Running tests/cad_suspensions.rs (target/debug/deps/cad_suspensions-4de79ba6b7429dff)
+
+running 10 tests
+test active_historical_obligations_cannot_be_bypassed_by_interval_support ... ok
+test generic_renaming_uses_declarations_instead_of_cad_identifiers ... ok
+test error_limit_and_precancelled_run_never_claim_complete_execution ... ok
+test open_end_overlaps_and_other_events_use_entire_related_set ... ok
+test original_source_order_and_deterministic_jsonl_are_preserved ... ok
+test absent_input_is_unknown_but_present_empty_or_unmatched_is_proven_clear ... ok
+test partial_target_cannot_prove_clear_but_a_valid_witness_still_proves_violation ... ok
+test compiler_rejects_invalid_temporal_references_types_cardinality_and_policy ... ok
+test invalid_dates_are_unknown_and_valid_counterexample_dominates_uncertainty ... ok
+test all_six_reasons_exclude_only_strict_interior_home_access ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.02s
+
+     Running tests/cross_record.rs (target/debug/deps/cross_record-f4be07c8a49c7891)
+
+running 14 tests
+test compiler_projects_cross_operands_and_pass_reports_real_source_and_target_context ... ok
+test consensus_empty_selection_uses_policy_and_unknown_filter_is_not_false ... ok
+test empty_available_source_still_requires_valid_explicit_run_bindings ... ok
+test active_not_applicable_scope_is_not_hidden_by_an_independent_false_assertion ... ok
+test actual_local_only_service_reports_omitted_cross_evaluations_without_false_complete ... ok
+test compiler_rejects_underdeclared_sets_and_unbound_diagnostic_placeholders ... ok
+test declared_missing_policies_are_disjoint_and_unknown_does_not_emit_validation_errors ... ok
+test output_is_ordered_by_source_line_then_compiled_rule_and_local_rules_stay_local ... ok
+test scalar_cardinality_violation_and_missing_target_value_are_not_not_applicable ... ok
+test report_and_observer_failures_are_technical_and_missing_source_is_not_an_empty_run ... ok
+test self_join_pass_preserves_multiple_candidates_instead_of_selecting_the_current_or_first_row ... ok
+test consensus_proves_the_whole_tuple_and_never_mixes_values_from_different_records ... ok
+test nested_boolean_cause_uses_the_determining_join_not_an_earlier_dominated_branch ... ok
+test record_exists_and_set_exists_use_complete_sets_and_preserve_unknown_predicates ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/namespace_bindings.rs (target/debug/deps/namespace_bindings-36c72e5befd1985c)
+
+running 17 tests
+test a_started_record_executor_cannot_switch_organizational_context ... ok
+test context_cannot_be_reused_with_another_compiled_artifact_having_the_same_key ... ok
+test compatibility_checks_bound_field_value_semantics_even_outside_the_pk ... ok
+test binding_contract_rejects_old_formats_bad_references_types_duplicates_and_capabilities ... ok
+test budget_and_dynamic_cancellation_keep_the_sequential_contract ... ok
+test binding_changes_fingerprint_and_cross_version_compatibility_but_run_values_do_not ... ok
+test cad_component_compiles_normative_keys_namespace_and_quarter_without_claiming_full_runtime ... ok
+test historical_binding_mismatch_never_produces_a_preview_or_mutates_storage ... ok
+test optional_missing_namespace_field_is_not_a_positive_namespace_verification ... ok
+test local_without_namespace_is_diagnostic_including_empty_input ... ok
+test logical_comparison_uses_padding_but_never_numeric_coercion ... ok
+test match_mismatch_and_primary_error_preserve_real_summary_jsonl_and_order ... ok
+test validation_and_storage_share_namespace_structural_validity ... ok
+test wrong_namespace_parent_cannot_satisfy_a_child_join ... ok
+test full_missing_and_supplied_invalid_parameters_fail_before_input_or_callbacks ... ok
+test missing_parent_trace_empty_parent_and_real_parent_keep_existing_join_semantics ... ok
+test historical_uses_the_same_namespace_for_validation_review_and_commit ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/persistence_profile.rs (target/debug/deps/persistence_profile-73a10d0c9a563085)
+
+running 8 tests
+test disabled_policy_does_not_activate_persistence_or_remove_existing_pk ... ok
+test compile_explicit_namespace_pk_order_and_audit_without_enabling_execution ... ok
+test key_may_move_in_a_version_without_changing_its_named_logical_projection ... ok
+test group_cannot_alias_a_different_or_disabled_namespace ... ok
+test group_rejects_changed_key_logical_semantics_and_namespace_type ... ok
+test group_compatibility_requires_actual_member_schemas_and_retains_their_hashes ... ok
+test reject_unknown_format_missing_namespace_unknown_refs_and_duplicates ... ok
+test unsupported_history_snapshot_temporal_features_are_not_silently_dropped ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+

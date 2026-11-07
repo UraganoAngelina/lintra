@@ -351,6 +351,7 @@ fn assertion<'a>(
         .ok_or(CrossRecordValidationError::InvalidPlan)?;
     let fields = EvaluationContext { fields: context };
     match current {
+        CompiledAssertion::IntervalExclusion(plan) => interval_exclusion(flow, context, plan, rule),
         CompiledAssertion::RecordExists { join_index } => {
             existence(flow, context, *join_index, None, rule)
         }
@@ -401,6 +402,123 @@ fn assertion<'a>(
             }
         },
     }
+}
+
+/// Existential counterexample search: a proven interior point is a violation
+/// even if another interval is unavailable. A clean result requires every
+/// related interval and complete target coverage. No interval vector is built.
+fn interval_exclusion<'a>(
+    flow: &'a CompiledFlowSchema,
+    context: &ProjectedEvaluationContext<'_>,
+    plan: &IntervalExclusionPlan,
+    rule: &'a CompiledRule,
+) -> Result<Decision<'a>, CrossRecordValidationError> {
+    let lookup = context
+        .related(plan.interval_join)
+        .ok_or(CrossRecordValidationError::InvalidPlan)?;
+    let source = flow
+        .traces()
+        .get(plan.owner_trace)
+        .ok_or(CrossRecordValidationError::InvalidPlan)?;
+    let target = flow
+        .traces()
+        .get(lookup.join.target_trace)
+        .ok_or(CrossRecordValidationError::InvalidPlan)?;
+    let reference = |schema: &CompiledRecordSchema, index| {
+        schema
+            .fields()
+            .get(index)
+            .map(|f| ResolvedFieldRef::Local {
+                field_index: index,
+                field_id: f.id().clone(),
+            })
+            .ok_or(CrossRecordValidationError::InvalidPlan)
+    };
+    let parse = |value: ResolvedFieldValue<'_>| match value {
+        ResolvedFieldValue::Present(bytes) => {
+            DateLiteral::from_ddmmyyyy(bytes).ok_or(UnknownReason::InvalidFieldValue)
+        }
+        ResolvedFieldValue::Missing => Err(UnknownReason::FieldUnavailable),
+        ResolvedFieldValue::Unavailable(reason) => Err(reason),
+    };
+    let join = flow
+        .cross_record_plan()
+        .joins
+        .get(plan.interval_join)
+        .ok_or(CrossRecordValidationError::InvalidPlan)?;
+    let unknown = |reason| Decision::Unknown {
+        reason,
+        join_id: Some(&join.id),
+        diagnostic: None,
+    };
+    let point = match parse(context.resolve_field(&reference(source, plan.point_field)?)) {
+        Ok(date) => date,
+        Err(reason) => return Ok(unknown(reason)),
+    };
+    let records = match &lookup.resolution {
+        RelatedResolution::Records(records) => records,
+        RelatedResolution::Unavailable(reason) => {
+            return indeterminate(
+                flow,
+                EvaluatedTruth {
+                    truth: TruthValue::Unknown(*reason),
+                    external_cause: Some(plan.interval_join),
+                },
+            );
+        }
+    };
+    let start_ref = reference(target, plan.start_field)?;
+    let end_ref = reference(target, plan.end_field)?;
+    let mut uncertain = None;
+    for record in records.iter() {
+        let fields = ProjectedFieldContext {
+            schema: target,
+            record,
+        };
+        let start = parse(fields.resolve_field(&start_ref));
+        let end = match fields.resolve_field(&end_ref) {
+            ResolvedFieldValue::Missing => Ok(None),
+            value => parse(value).map(Some),
+        };
+        let (start, end) = match (start, end) {
+            (Ok(start), Ok(end)) if end.is_none_or(|end| start <= end) => (start, end),
+            (Err(reason), _) | (_, Err(reason)) => {
+                uncertain.get_or_insert(reason);
+                continue;
+            }
+            _ => {
+                uncertain.get_or_insert(UnknownReason::InvalidFieldValue);
+                continue;
+            }
+        };
+        if start < point && end.is_none_or(|end| point < end) {
+            return Ok(Decision::Failure {
+                violation: FieldViolation {
+                    code: rule.error_code.clone(),
+                    expected: Some(
+                        "point outside the strict interior of every exclusion interval".into(),
+                    ),
+                    reason: String::new(),
+                    diagnostic_context: vec![],
+                },
+                template: &rule.message_template,
+                join: None,
+            });
+        }
+    }
+    if let Some(reason) = uncertain {
+        return Ok(unknown(reason));
+    }
+    if context.lookup_coverage(plan.interval_join) == Some(crate::TraceContextCoverage::Partial) {
+        return indeterminate(
+            flow,
+            EvaluatedTruth {
+                truth: TruthValue::Unknown(UnknownReason::IncompleteRelatedContext),
+                external_cause: Some(plan.interval_join),
+            },
+        );
+    }
+    Ok(Decision::Passed)
 }
 fn evaluate_rule<'a>(
     flow: &'a CompiledFlowSchema,

@@ -14,6 +14,8 @@ mod persistence_profile;
 mod projection;
 #[path = "reference.rs"]
 mod reference;
+#[path = "temporal.rs"]
+mod temporal;
 pub(crate) use persistence_profile::CanonicalKeyField;
 pub use persistence_profile::CompiledPersistenceProfile;
 
@@ -505,7 +507,7 @@ impl SchemaCompiler {
         &self,
         raw: RawFlowSchema,
     ) -> Result<CompiledFlowSchema, SchemaCompilationError> {
-        if crate::schema::namespace_binding::binding_only(&raw) {
+        if crate::schema::namespace_binding::binding_only(&raw) || temporal::read_only(&raw) {
             let profile = self.compile_persistence_profile(&raw, &[])?;
             self.compile_scoped(raw, profile.policy().cloned())
         } else {
@@ -513,7 +515,8 @@ impl SchemaCompiler {
         }
     }
     /// A checked historical or namespace-only profile supplies policy metadata.
-    /// Snapshot/temporal executors remain gated; a binding never authorizes them.
+    /// Snapshot/historical producers remain gated; read-only interval checks use
+    /// the existing second pass. A namespace binding alone authorizes neither.
     pub(crate) fn compile_scoped(
         &self,
         raw: RawFlowSchema,
@@ -582,6 +585,8 @@ impl SchemaCompiler {
                     | RawFlowSchemaRequiredCapabilitiesItem::PersistenceNamespaceBindingV1
             ) && !(audit_policy.is_some()
                 && *capability == RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1)
+                && !(temporal::read_only(&raw)
+                    && *capability == RawFlowSchemaRequiredCapabilitiesItem::TemporalIntervalsV1)
             {
                 checks.error(
                     Code::UnsupportedCapability,
@@ -760,6 +765,54 @@ impl SchemaCompiler {
                 }
             }
         }
+        // Temporal declarations join the existing deterministic second pass.
+        // Reuse its dependency closure, observer, sink and interruption gates.
+        if let Some(policy) = &audit_policy {
+            for (index, plan) in policy.temporal_rules.iter().enumerate() {
+                let TemporalPlan::IntervalExclusion(plan) = plan else {
+                    return Err(fail(
+                        None,
+                        None,
+                        Code::UnsupportedConstruct,
+                        "temporal executor is not implemented".into(),
+                    ));
+                };
+                let rule = CompiledRule {
+                    id: format!("temporal.interval_exclusion.{index}").into(),
+                    when: plan.when.clone(),
+                    assertions: vec![CompiledAssertion::IntervalExclusion(plan.clone())],
+                    error_code: plan.error_code.clone(),
+                    message_template: "Point falls strictly inside a declared exclusion interval."
+                        .into(),
+                };
+                if raw.traces[plan.owner_trace]
+                    .rules
+                    .iter()
+                    .any(|r| r.id == rule.id.as_ref())
+                {
+                    return Err(fail(
+                        None,
+                        None,
+                        Code::InvalidSchemaValue,
+                        "temporal control ID conflicts with a declared rule".into(),
+                    ));
+                }
+                let deps = crate::schema::rule_dependencies::RuleDependencies::collect(
+                    &rule,
+                    plan.owner_trace,
+                    &joins,
+                    &derived_tables,
+                )
+                .map_err(|(code, message)| fail(None, None, code, message))?;
+                for (trace, field) in deps.fields {
+                    cross_fields[trace].insert(field);
+                }
+                cross_rules.push(CompiledCrossRecordRule {
+                    source_trace: plan.owner_trace,
+                    rule,
+                });
+            }
+        }
         let mut traces = Vec::with_capacity(raw.traces.len());
         for (trace_index, ((record, rules), derived)) in raw
             .traces
@@ -843,6 +896,11 @@ impl SchemaCompiler {
                         }
                         RawFlowSchemaRequiredCapabilitiesItem::PersistenceNamespaceBindingV1 => {
                             Capability::PersistenceNamespaceBindingV1
+                        }
+                        RawFlowSchemaRequiredCapabilitiesItem::TemporalIntervalsV1
+                            if temporal::read_only(&raw) =>
+                        {
+                            Capability::TemporalIntervalsV1
                         }
                         RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1
                             if audit_policy.is_some() =>

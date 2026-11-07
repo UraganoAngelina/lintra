@@ -1,0 +1,51 @@
+    Blocking waiting for file lock on build directory
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 28.56s
+     Running tests/cad_suspensions.rs (target/debug/deps/cad_suspensions-4de79ba6b7429dff)
+
+running 5 tests
+test compiler_rejects_invalid_temporal_references_types_cardinality_and_policy ... FAILED
+test absent_input_is_unknown_but_present_empty_or_unmatched_is_proven_clear ... FAILED
+test open_end_overlaps_and_other_events_use_entire_related_set ... FAILED
+test all_six_reasons_exclude_only_strict_interior_home_access ... FAILED
+test invalid_dates_are_unknown_and_valid_counterexample_dominates_uncertainty ... FAILED
+
+failures:
+
+---- compiler_rejects_invalid_temporal_references_types_cardinality_and_policy stdout ----
+
+thread 'compiler_rejects_invalid_temporal_references_types_cardinality_and_policy' (146) panicked at tests/cad_suspensions.rs:77:58:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+---- absent_input_is_unknown_but_present_empty_or_unmatched_is_proven_clear stdout ----
+
+thread 'absent_input_is_unknown_but_present_empty_or_unmatched_is_proven_clear' (144) panicked at tests/cad_suspensions.rs:155:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- open_end_overlaps_and_other_events_use_entire_related_set stdout ----
+
+thread 'open_end_overlaps_and_other_events_use_entire_related_set' (148) panicked at tests/cad_suspensions.rs:155:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+---- all_six_reasons_exclude_only_strict_interior_home_access stdout ----
+
+thread 'all_six_reasons_exclude_only_strict_interior_home_access' (145) panicked at tests/cad_suspensions.rs:155:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+---- invalid_dates_are_unknown_and_valid_counterexample_dominates_uncertainty stdout ----
+
+thread 'invalid_dates_are_unknown_and_valid_counterexample_dominates_uncertainty' (147) panicked at tests/cad_suspensions.rs:155:47:
+called `Result::unwrap()` on an `Err` value: Error("missing field `calendar_valid`", line: 0, column: 0)
+
+
+failures:
+    absent_input_is_unknown_but_present_empty_or_unmatched_is_proven_clear
+    all_six_reasons_exclude_only_strict_interior_home_access
+    compiler_rejects_invalid_temporal_references_types_cardinality_and_policy
+    invalid_dates_are_unknown_and_valid_counterexample_dominates_uncertainty
+    open_end_overlaps_and_other_events_use_entire_related_set
+
+test result: FAILED. 0 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p lintra --test cad_suspensions`

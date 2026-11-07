@@ -631,8 +631,9 @@ impl SchemaCompiler {
     /// actual PKs and explicit sources for other group versions. The existing
     /// runtime `compile` gate continues to reject active persistence until its
     /// execution/storage prerequisites are implemented. No profile is runnable.
-    /// Snapshot declarations support the approval coordinator. Historical identity
-    /// and temporal execution remain explicitly rejected; no Full capability added.
+    /// Snapshot and identity declarations support the approval coordinator.
+    /// Interval checks are compiled only for current-input read-only profiles;
+    /// combining them with historical obligations remains explicitly rejected.
     pub fn compile_persistence_profile(
         &self,
         raw: &RawFlowSchema,
@@ -674,12 +675,14 @@ impl SchemaCompiler {
                 }
                 return Ok(profile);
             };
-            if !policy.temporal_rules.is_empty() {
+            if !policy.temporal_rules.is_empty() && !super::temporal::read_only(raw) {
                 return Err((
                     Code::UnsupportedConstruct,
-                    "temporal persistence plans require their later implementation tasks".into(),
+                    "temporal validation cannot yet qualify snapshot or historical obligations"
+                        .into(),
                 ));
             }
+            let temporal_rules = super::temporal::compile(raw)?;
             if (!policy.cross_run_audit.is_empty()
                 || !policy.history_identity_invariants.is_empty())
                 && !raw
@@ -707,7 +710,7 @@ impl SchemaCompiler {
                 cross_run_audit,
                 history_identity_invariants,
                 snapshot: compile_snapshot(raw, policy)?,
-                temporal_rules: vec![],
+                temporal_rules,
             });
             Ok(profile)
         };

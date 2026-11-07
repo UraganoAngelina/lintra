@@ -91,7 +91,9 @@ impl ErrorFactory<'_> {
         if let Some(assertion) = assertion
             && !matches!(
                 assertion,
-                CompiledAssertion::RecordExists { .. } | CompiledAssertion::SetExists { .. }
+                CompiledAssertion::RecordExists { .. }
+                    | CompiledAssertion::SetExists { .. }
+                    | CompiledAssertion::IntervalExclusion(_)
             )
         {
             assertion_refs(assertion, schema, &mut references)?;
