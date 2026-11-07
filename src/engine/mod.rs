@@ -20,6 +20,7 @@ pub(crate) mod cross_diagnostics;
 pub(crate) mod flow_validator;
 pub(crate) mod projected_context;
 pub(crate) mod reference_execution;
+mod temporal_context;
 
 pub(crate) mod flow_execution;
 

@@ -9,6 +9,22 @@ pub(crate) struct RuleDependencies {
     pub joins: BTreeSet<usize>,
 }
 impl RuleDependencies {
+    /// Dependency indexes for a proven-local target predicate. The synthetic
+    /// scope is only compiler bookkeeping; no runtime trace is fabricated.
+    pub(crate) fn local_fields(
+        expression: &CompiledExpr,
+        derived: &[DerivedValuePlan],
+    ) -> Result<BTreeSet<usize>, Issue> {
+        let mut deps = Self::default();
+        deps.expression(expression, 0, &[derived.to_vec()])?;
+        if !deps.joins.is_empty() || deps.fields.iter().any(|(scope, _)| *scope != 0) {
+            return Err((
+                Code::UnsupportedConstruct,
+                "predicate must remain local".into(),
+            ));
+        }
+        Ok(deps.fields.into_iter().map(|(_, index)| index).collect())
+    }
     fn field(&mut self, reference: &ResolvedFieldRef, scope: usize) {
         match reference {
             ResolvedFieldRef::Local { field_index, .. } => {
@@ -135,6 +151,19 @@ impl RuleDependencies {
         dependencies.expression(&rule.when, source, tables)?;
         for assertion in &rule.assertions {
             match assertion {
+                CompiledAssertion::AfterDateRestriction(plan) => {
+                    dependencies.joins.insert(plan.conclusion_join);
+                    let join = joins.get(plan.conclusion_join).ok_or((
+                        Code::InternalCompilerInvariant,
+                        "temporal join is inconsistent".into(),
+                    ))?;
+                    dependencies.fields.insert((source, plan.date_field));
+                    dependencies.fields.insert((source, plan.restricted_field));
+                    dependencies
+                        .fields
+                        .insert((join.target_trace, plan.conclusion_date_field));
+                    dependencies.expression(&plan.target_when, join.target_trace, tables)?;
+                }
                 CompiledAssertion::IntervalExclusion(plan) => {
                     dependencies.joins.insert(plan.interval_join);
                     let join = joins.get(plan.interval_join).ok_or((

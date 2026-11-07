@@ -1,0 +1,42 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+warning: function `compile` is never used
+  --> tests/cad_conclusions.rs:63:4
+   |
+63 | fn compile(v: Value) -> Result<CompiledFlowSchema, SchemaCompilationError> {
+   |    ^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `lintra` (test "cad_conclusions") generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 37.94s
+     Running tests/cad_conclusions.rs (target/debug/deps/cad_conclusions-8a257598f5849739)
+
+running 6 tests
+test open_event_is_clear_but_absent_empty_or_unmatched_evidence_is_unknown ... FAILED
+test identical_conclusions_are_qualified_and_conflicts_are_never_filtered_away ... FAILED
+test calendar_ordering_handles_year_changes_and_leap_days ... ok
+test invalid_dates_and_partial_target_never_become_an_open_or_qualified_event ... ok
+test four_death_codes_restrict_five_sites_but_preserve_condolence_and_same_day ... ok
+test every_valid_conclusion_reason_forbids_only_strictly_later_home_visits ... ok
+
+failures:
+
+---- open_event_is_clear_but_absent_empty_or_unmatched_evidence_is_unknown stdout ----
+
+thread 'open_event_is_clear_but_absent_empty_or_unmatched_evidence_is_unknown' (185) panicked at tests/cad_conclusions.rs:191:10:
+called `Result::unwrap()` on an `Err` value: Record(UndeterminedRule { rule_id: "CAD-R-2.7-CD-13", reason: FieldUnavailable })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- identical_conclusions_are_qualified_and_conflicts_are_never_filtered_away stdout ----
+
+thread 'identical_conclusions_are_qualified_and_conflicts_are_never_filtered_away' (183) panicked at tests/cad_conclusions.rs:191:10:
+called `Result::unwrap()` on an `Err` value: Record(UndeterminedRule { rule_id: "CAD-R-2.7-CD-13", reason: FieldUnavailable })
+
+
+failures:
+    identical_conclusions_are_qualified_and_conflicts_are_never_filtered_away
+    open_event_is_clear_but_absent_empty_or_unmatched_evidence_is_unknown
+
+test result: FAILED. 4 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+
+error: test failed, to rerun pass `-p lintra --test cad_conclusions`

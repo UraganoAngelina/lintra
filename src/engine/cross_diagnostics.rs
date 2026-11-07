@@ -43,7 +43,25 @@ impl ErrorFactory<'_> {
                     .ok_or(RuleDiagnosticError::InvalidPlan)
             })
             .transpose()?;
-        let primary_ref = assertion.and_then(CompiledAssertion::primary_ref);
+        // The temporal plan already binds the restricted source field. Attach
+        // its actual source coordinates without borrowing a target row or
+        // adding redundant field IDs to the compiled temporal contract.
+        let temporal_primary = match assertion {
+            Some(CompiledAssertion::AfterDateRestriction(plan)) => {
+                let field = schema
+                    .fields()
+                    .get(plan.restricted_field)
+                    .ok_or(RuleDiagnosticError::InvalidPlan)?;
+                Some(ResolvedFieldRef::Local {
+                    field_index: plan.restricted_field,
+                    field_id: field.id().clone(),
+                })
+            }
+            _ => None,
+        };
+        let primary_ref = assertion
+            .and_then(CompiledAssertion::primary_ref)
+            .or(temporal_primary.as_ref());
         let primary = primary_ref
             .map(|reference| {
                 match reference {
@@ -94,6 +112,7 @@ impl ErrorFactory<'_> {
                 CompiledAssertion::RecordExists { .. }
                     | CompiledAssertion::SetExists { .. }
                     | CompiledAssertion::IntervalExclusion(_)
+                    | CompiledAssertion::AfterDateRestriction(_)
             )
         {
             assertion_refs(assertion, schema, &mut references)?;

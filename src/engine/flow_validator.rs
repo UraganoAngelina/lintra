@@ -351,6 +351,9 @@ fn assertion<'a>(
         .ok_or(CrossRecordValidationError::InvalidPlan)?;
     let fields = EvaluationContext { fields: context };
     match current {
+        CompiledAssertion::AfterDateRestriction(plan) => {
+            after_date_restriction(flow, context, plan, rule)
+        }
         CompiledAssertion::IntervalExclusion(plan) => interval_exclusion(flow, context, plan, rule),
         CompiledAssertion::RecordExists { join_index } => {
             existence(flow, context, *join_index, None, rule)
@@ -520,6 +523,136 @@ fn interval_exclusion<'a>(
     }
     Ok(Decision::Passed)
 }
+/// The conclusion is read from the already qualified tuple. Filtering a death
+/// code before consensus could silently discard a conflicting conclusion.
+fn after_date_restriction<'a>(
+    flow: &'a CompiledFlowSchema,
+    context: &ProjectedEvaluationContext<'_>,
+    plan: &AfterDateRestrictionPlan,
+    rule: &'a CompiledRule,
+) -> Result<Decision<'a>, CrossRecordValidationError> {
+    let join = flow
+        .cross_record_plan()
+        .joins
+        .get(plan.conclusion_join)
+        .ok_or(CrossRecordValidationError::InvalidPlan)?;
+    let source = flow
+        .traces()
+        .get(plan.owner_trace)
+        .ok_or(CrossRecordValidationError::InvalidPlan)?;
+    let target = flow
+        .traces()
+        .get(join.target_trace)
+        .ok_or(CrossRecordValidationError::InvalidPlan)?;
+    let reference = |schema: &CompiledRecordSchema, index| {
+        schema
+            .fields()
+            .get(index)
+            .map(|field| ResolvedFieldRef::Local {
+                field_index: index,
+                field_id: field.id().clone(),
+            })
+            .ok_or(CrossRecordValidationError::InvalidPlan)
+    };
+    let unknown = |reason, cause| {
+        indeterminate(
+            flow,
+            EvaluatedTruth {
+                truth: TruthValue::Unknown(reason),
+                external_cause: cause,
+            },
+        )
+    };
+    match context.resolve_field(&reference(source, plan.restricted_field)?) {
+        ResolvedFieldValue::Present(value) => {
+            if !plan
+                .forbidden_values
+                .iter()
+                .any(|candidate| candidate == value)
+            {
+                return Ok(Decision::Passed);
+            }
+        }
+        ResolvedFieldValue::Missing => return unknown(UnknownReason::FieldUnavailable, None),
+        ResolvedFieldValue::Unavailable(reason) => return unknown(reason, None),
+    }
+    let lookup = context
+        .related(plan.conclusion_join)
+        .ok_or(CrossRecordValidationError::InvalidPlan)?;
+    match &lookup.resolution {
+        RelatedResolution::Unavailable(reason) => {
+            return unknown(*reason, Some(plan.conclusion_join));
+        }
+        RelatedResolution::Records(records) if records.is_empty() => {
+            let reason = if context.lookup_coverage(plan.conclusion_join)
+                == Some(crate::TraceContextCoverage::Partial)
+            {
+                UnknownReason::IncompleteRelatedContext
+            } else {
+                UnknownReason::RelatedRecordMissing
+            };
+            return unknown(reason, Some(plan.conclusion_join));
+        }
+        RelatedResolution::Records(_) => {}
+    }
+    let qualified = super::temporal_context::QualifiedTarget {
+        context,
+        schema: target,
+        join,
+        join_index: plan.conclusion_join,
+    };
+    let conclusion = match qualified.resolve_field(&reference(target, plan.conclusion_date_field)?)
+    {
+        // With complete nonempty related evidence, no qualifying tuple (the
+        // declared include_if filtered every row) proves there is no conclusion.
+        ResolvedFieldValue::Missing
+        | ResolvedFieldValue::Unavailable(UnknownReason::RelatedRecordMissing) => {
+            return Ok(Decision::Passed);
+        }
+        ResolvedFieldValue::Unavailable(reason) => {
+            return unknown(reason, Some(plan.conclusion_join));
+        }
+        ResolvedFieldValue::Present(bytes) => match DateLiteral::from_ddmmyyyy(bytes) {
+            Some(date) => date,
+            None => return unknown(UnknownReason::InvalidFieldValue, Some(plan.conclusion_join)),
+        },
+    };
+    let point = match context.resolve_field(&reference(source, plan.date_field)?) {
+        ResolvedFieldValue::Present(bytes) => match DateLiteral::from_ddmmyyyy(bytes) {
+            Some(date) => date,
+            None => return unknown(UnknownReason::InvalidFieldValue, None),
+        },
+        ResolvedFieldValue::Missing => return unknown(UnknownReason::FieldUnavailable, None),
+        ResolvedFieldValue::Unavailable(reason) => return unknown(reason, None),
+    };
+    if point <= conclusion {
+        return Ok(Decision::Passed);
+    }
+    match ExpressionEvaluator
+        .evaluate_with_derived_cause(
+            &plan.target_when,
+            &EvaluationContext { fields: &qualified },
+            target.derived_values(),
+        )
+        .truth
+    {
+        TruthValue::False => Ok(Decision::Passed),
+        TruthValue::Unknown(reason) => unknown(reason, Some(plan.conclusion_join)),
+        TruthValue::True => Ok(Decision::Failure {
+            violation: FieldViolation {
+                code: rule.error_code.clone(),
+                expected: Some(
+                    "declared value permitted strictly after the qualified conclusion date".into(),
+                ),
+                reason: String::new(),
+                diagnostic_context: vec![],
+            },
+            template: &rule.message_template,
+            join: None,
+        }),
+    }
+}
+
 fn evaluate_rule<'a>(
     flow: &'a CompiledFlowSchema,
     source: &ProjectedRecord,

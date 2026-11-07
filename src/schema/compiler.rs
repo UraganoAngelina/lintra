@@ -515,7 +515,7 @@ impl SchemaCompiler {
         }
     }
     /// A checked historical or namespace-only profile supplies policy metadata.
-    /// Snapshot/historical producers remain gated; read-only interval checks use
+    /// Snapshot/historical producers remain gated; read-only temporal checks use
     /// the existing second pass. A namespace binding alone authorizes neither.
     pub(crate) fn compile_scoped(
         &self,
@@ -586,7 +586,11 @@ impl SchemaCompiler {
             ) && !(audit_policy.is_some()
                 && *capability == RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1)
                 && !(temporal::read_only(&raw)
-                    && *capability == RawFlowSchemaRequiredCapabilitiesItem::TemporalIntervalsV1)
+                    && matches!(
+                        capability,
+                        RawFlowSchemaRequiredCapabilitiesItem::TemporalIntervalsV1
+                            | RawFlowSchemaRequiredCapabilitiesItem::TemporalAfterDateV1
+                    ))
             {
                 checks.error(
                     Code::UnsupportedCapability,
@@ -769,23 +773,40 @@ impl SchemaCompiler {
         // Reuse its dependency closure, observer, sink and interruption gates.
         if let Some(policy) = &audit_policy {
             for (index, plan) in policy.temporal_rules.iter().enumerate() {
-                let TemporalPlan::IntervalExclusion(plan) = plan else {
-                    return Err(fail(
-                        None,
-                        None,
-                        Code::UnsupportedConstruct,
-                        "temporal executor is not implemented".into(),
-                    ));
+                let (owner, when, error_code, assertion, kind, message) = match plan {
+                    TemporalPlan::IntervalExclusion(plan) => (
+                        plan.owner_trace,
+                        &plan.when,
+                        &plan.error_code,
+                        CompiledAssertion::IntervalExclusion(plan.clone()),
+                        "interval_exclusion",
+                        "Point falls strictly inside a declared exclusion interval.",
+                    ),
+                    TemporalPlan::AfterDateRestriction(plan) => (
+                        plan.owner_trace,
+                        &plan.when,
+                        &plan.error_code,
+                        CompiledAssertion::AfterDateRestriction(Box::new(plan.clone())),
+                        "after_date_restriction",
+                        "Value is forbidden strictly after the qualified conclusion date.",
+                    ),
+                    TemporalPlan::InactivityWithPauses(_) => {
+                        return Err(fail(
+                            None,
+                            None,
+                            Code::UnsupportedConstruct,
+                            "temporal executor is not implemented".into(),
+                        ));
+                    }
                 };
                 let rule = CompiledRule {
-                    id: format!("temporal.interval_exclusion.{index}").into(),
-                    when: plan.when.clone(),
-                    assertions: vec![CompiledAssertion::IntervalExclusion(plan.clone())],
-                    error_code: plan.error_code.clone(),
-                    message_template: "Point falls strictly inside a declared exclusion interval."
-                        .into(),
+                    id: format!("temporal.{kind}.{index}").into(),
+                    when: when.clone(),
+                    assertions: vec![assertion],
+                    error_code: error_code.clone(),
+                    message_template: message.into(),
                 };
-                if raw.traces[plan.owner_trace]
+                if raw.traces[owner]
                     .rules
                     .iter()
                     .any(|r| r.id == rule.id.as_ref())
@@ -799,7 +820,7 @@ impl SchemaCompiler {
                 }
                 let deps = crate::schema::rule_dependencies::RuleDependencies::collect(
                     &rule,
-                    plan.owner_trace,
+                    owner,
                     &joins,
                     &derived_tables,
                 )
@@ -808,7 +829,7 @@ impl SchemaCompiler {
                     cross_fields[trace].insert(field);
                 }
                 cross_rules.push(CompiledCrossRecordRule {
-                    source_trace: plan.owner_trace,
+                    source_trace: owner,
                     rule,
                 });
             }
@@ -901,6 +922,11 @@ impl SchemaCompiler {
                             if temporal::read_only(&raw) =>
                         {
                             Capability::TemporalIntervalsV1
+                        }
+                        RawFlowSchemaRequiredCapabilitiesItem::TemporalAfterDateV1
+                            if temporal::read_only(&raw) =>
+                        {
+                            Capability::TemporalAfterDateV1
                         }
                         RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1
                             if audit_policy.is_some() =>

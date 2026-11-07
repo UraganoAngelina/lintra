@@ -470,6 +470,8 @@ pub enum CompiledAssertion {
     /// Lowered from the existing temporal declaration, never a new raw DSL node.
     /// Iterates the whole related set; field indexes belong to its target trace.
     IntervalExclusion(IntervalExclusionPlan),
+    /// Reads a qualified scalar/consensus tuple, never an arbitrary target row.
+    AfterDateRestriction(Box<AfterDateRestrictionPlan>),
     Constraint {
         field: ResolvedFieldRef,
         constraint: CompiledConstraint,

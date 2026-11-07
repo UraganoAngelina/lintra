@@ -724,3 +724,43 @@ Sono riusati sink, observer, summary, budget e cancellazione fra record della
 seconda passata. Nessuna nuova API applicativa/CLI/UI, apertura storage o chiave.
 Il componente CAD sospensioni è una configurazione parziale dichiarata; lo
 storico cumulativo e la conformità CAD completa rimangono al gate T-CAD-12.
+
+
+## T-CAD-07 — after_date_restriction di sola lettura
+
+La capability già formalizzata temporal.after_date.v1 abilita il piano raw
+after_date_restriction sui soli input correnti. Si estende il sottoinsieme06;
+snapshot/audit/invarianti restano rifiutati e inactivity_with_pauses rimane
+unsupported. Nessun nuovo formato, nodo raw, APIapplicativa o storage.
+
+Owner/date/conclusion_date/restricted_field e join sono risolti dal compiler.
+Le due date devono essere fisicheDate. when e target_when restano locali ai
+rispettivi contesti anche attraverso derivati; il secondo legge la tupla
+qualificata del join, non una riga arbitraria. I join scalari richiedono
+cardinalità zero_or_one/exactly_one; i join a insieme richiedono consensus
+esplicito contenente la data e ogni dipendenza diretta/derivata di target_when.
+Anche include_if del consenso deve essere locale. Il piano e il join devono
+concordare sulla policyUnknown per file assente. forbidden_values è una lista
+non vuota e unica di byte logici UTF8 esatti, senza trim o conversioni implicite.
+
+Il controllo compilato è temporal.after_date_restriction.<indice>, mantenendo
+l'ordine dichiarato. Nessuna conclusione può essere selezionata con first().
+Conflitto di tupla -> Unknown/AmbiguousJoin e diagnostico del consenso; coverage
+Partial -> Unknown prima di fidarsi della tupla. Filetargetassente e assenza di
+righe correlate sono Unknown secondo policyjoin. Evidenza correlata completa
+ma senza data di conclusione qualificata significa evento aperto, non file
+assente. Date non interpretabili rimangono Unknown; non diventano Missing.
+
+Solo i valori sorgente dichiarati forbidden sono soggetti alla restrizione.
+Point <= conclusion è ammesso; per Point > conclusion si applica target_when
+alla tupla qualificata. Gli operandi target dei derivati sono riassociati al
+join verificato dal resolver privato, conservando separazione raw/logical.
+L'errore riporta il campo restricted_field e le sue vere coordinate sorgente,
+con lo stesso sink/observer/budget/cancellazione della seconda passata.
+
+Il componenteCAD2024-06.conclusions.1 usa consenso su2.6/2.7 con include_if
+data presente; sede1vietata dopo ogni conclusione, sedi2/4/5/6aggiunte per
+03/04/07/82. Sede3ammessa; il primo piano già copre1, evitando duplicati nel
+secondo. Codice normativo E_CAD_ACCESS_AFTER_CONCLUSION già esistente, nessun
+nuovo codice decesso inventato. Il componente resta parziale; integrazione
+clinica e storico cumulativo restano a CAD12.

@@ -30,11 +30,13 @@ riaperture SQLite crossOS. Undici test nuovi,11gate locali con464hash invariati;
 970/970workspace,927core,18tooling,24Python. Retrytooling per ambiente omesso
 conservato separatamente, nessun indebolimento dei controlli.
 
-CAD07 IN_PROGRESS: compilazione/esecuzione after_date su contesto qualificato,
-componente A/B1/C con consenso data/motivo prima del filtrodecesso. Dieci test
-iniziali+62regressione positivi; aggiunta verifica di rinomina e campo diagnostico
-ristretto, regressione finale in corso. Ancora da qualificare con gate completi
-locali e CI propria; nessunDONE07 implicito. CAD05READY su04,08dipende da06/07.
+CAD07 WAITING_GATE: after_date su contesto qualificato, componente A/B1/C con
+consenso data/motivo prima del filtrodecesso.11testnuovi+62regressione positivi.
+Undici gate locali exit0:981/981workspace,938core senza bundle,18tooling e
+24Python;0fail finali,468impronte invariate. Log/conteggi/inventario verificati.
+Campodiagnostico con coordinate sorgente, nessun first o nuova norma.
+Ancora necessarie pubblicazione/CIpropria sullo SHAfinale primaDONE07.
+CAD05READY su04,08dipende da06/07;135/140DONEinvariato.
 
 Single-agent, nessun background/delega. NessunaFROZEN/release/tag o chiave
 operativa generata; docs/migration preesistente preservata ed esclusa.
@@ -6699,3 +6701,30 @@ alterata la semantica engine. Nuova verifica generica di rinomina/campo fonte
 in esecuzione; gate completi non ancora avviati. Proseguire07 dopo regressione
 e documentazione con scope current-input, niente storia cumulativa simulata.
 Single-agent, no background; docs/migration preservata/esclusa.
+
+
+## CAD07 — gate locali finali in avvio
+
+73test mirati positivi (11nuovi+62regressione), Clippyworkspace positivo.
+FontePDF/tracciati/profiloruntime,13campi/PK/coordinate e unione dei divieti
+verificati nel source-check07. Report dettagliato/authoring/README aggiornati.
+Runnerforeground python3 /tmp/lintra-cad07-local-gates.py,11comandi, job di
+compilazione limitati a2per contenere pressione memoria; nessun test omesso.
+LINTRA_TEST_BIN esplicita per il tooling, riuso del binariorelease costruito
+nella sequenza. Non modificare source/authoring/indiceGit/HEAD durante i gate.
+CAD06DONE e chiusuradocumentale a59ae04 già pubblicata;135/140immutato.
+Nessuna CI07 ancora avviata, nessunDONE07 prima della qualificazione completa.
+
+
+## HANDOFF locale CAD07 / pubblicazione e WAITING_GATE
+
+11gate finali positivi su468input invariati:981/981workspace e938core,
+0fail/6ignored;18tooling inclusiignored e24Python, fmt/Clippy/release/boundary
+exit0. Log/conteggi e inventario16log verificati.13campi/PK/coordinate/fonti e
+unione dei divieti uguale alla policyfonte. Preliminari falliti separati,
+nessuna modifica source dopo l'inizio della sequenza.
+Commit/push07 con percorsi espliciti eCI completa Linux/MSVC necessaria;
+nessunDONE07 anticipato. Durante sola attesa remota, preflight05indipendente
+su04/PERSIST09 qualificati;08attende07DONE. Scope current-input, nessuno
+storico cumulativo simulato. Docs/migration preesistente esclusa.
+AUTO_CONTINUE single-agent, nessun background/delega o nuova release.

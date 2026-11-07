@@ -632,7 +632,7 @@ impl SchemaCompiler {
     /// runtime `compile` gate continues to reject active persistence until its
     /// execution/storage prerequisites are implemented. No profile is runnable.
     /// Snapshot and identity declarations support the approval coordinator.
-    /// Interval checks are compiled only for current-input read-only profiles;
+    /// Temporal checks are compiled only for current-input read-only profiles;
     /// combining them with historical obligations remains explicitly rejected.
     pub fn compile_persistence_profile(
         &self,

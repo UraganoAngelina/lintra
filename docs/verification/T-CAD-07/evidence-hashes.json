@@ -1,0 +1,18 @@
+{
+  "docs/verification/T-CAD-07/gate-0.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "docs/verification/T-CAD-07/gate-1.log": "eac5f1e8be541de3300b89eba03e4bebcc134471149dcb83f2904d9d33499275",
+  "docs/verification/T-CAD-07/gate-10.log": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f",
+  "docs/verification/T-CAD-07/gate-2.log": "ea3c4855a6caa322df6414696ce64c1d77f9c9a77470ea6796b42900623f3008",
+  "docs/verification/T-CAD-07/gate-3.log": "9652be7105c70ca78d9fc73e9b233ac28eba3b24643fe5b2f0a3b293e2d482ae",
+  "docs/verification/T-CAD-07/gate-4.log": "00a9082cdc15d8c0dd3c534d3644af2734455944cbc3f90ad00ba5c108e451a3",
+  "docs/verification/T-CAD-07/gate-5.log": "07c024723afe7855d72084c16d730f7bd449124d3fa54620cdde6c4a22ca6804",
+  "docs/verification/T-CAD-07/gate-6.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "docs/verification/T-CAD-07/gate-7.log": "872b05b0163d573ba7cb7e383277f4624182b040f4a4b41b8bd596e4069c2174",
+  "docs/verification/T-CAD-07/gate-8.log": "139b44631eeeaa4390ec73e31a00d798d9c2d09f9549630569596ba736d244e6",
+  "docs/verification/T-CAD-07/gate-9.log": "5e6a9e6d14026ac7767735f1edfa0449ee3df39e9d52fcf7cae33c5756604075",
+  "docs/verification/T-CAD-07/preliminary-check.log": "5d4c976b4a5cb85194671c5b6e7d4000b7754ddddef749324d5d032dea3cbbf5",
+  "docs/verification/T-CAD-07/preliminary-clippy.log": "4d9c604b17f9144363e7a55d78d59801fe86755fa37ead06073fe8e471b65217",
+  "docs/verification/T-CAD-07/preliminary-final-targeted.log": "c12afd24b8af494aac86326a304fd1a651908a78d463f11e4798fb83d3775c6a",
+  "docs/verification/T-CAD-07/preliminary-first-tests.log": "5fb601d2bfd1eab39bd626b4c39a8307ec86603c407db1a0c0abc189de8018ba",
+  "docs/verification/T-CAD-07/preliminary-regression.log": "d717cbc2369699302e56e2139eb877aa1b19ff3ffda6b77ab16357bbfc227309"
+}
