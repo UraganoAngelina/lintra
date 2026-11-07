@@ -3,12 +3,16 @@
 use super::{SchemaCompilationError, SchemaCompiler, joins};
 use crate::schema::{
     compiled::{
-        ParameterDefinition, PersistencePolicy, PolicyKey, SnapshotPlan, VersionCompatibility,
+        AlignmentRule, HistoricalIdentityInvariant, MissingValuePolicy, ParameterDefinition,
+        PersistencePolicy, PolicyKey, SnapshotPlan, VersionCompatibility,
     },
     linter::{SchemaIssue, SchemaIssueCode as Code, SchemaIssueSeverity, lint_raw_schema},
     raw::*,
 };
-use crate::{FlowId, SchemaKey, SchemaVersion, Sha256Digest, ValidationCode, schema_fingerprint};
+use crate::{
+    ByteRange, FieldId, FlowId, SchemaKey, SchemaVersion, Sha256Digest, ValidationCode,
+    schema_fingerprint,
+};
 use std::collections::{BTreeMap, HashSet};
 
 /// Compiler-owned profile bindings. This artifact contains no executable flow
@@ -29,6 +33,33 @@ pub struct CompiledPersistenceProfile {
     compatible_schemas: Vec<(SchemaVersion, Sha256Digest)>,
     trace_ids: Vec<crate::TraceId>,
     namespace_bindings: Vec<crate::NamespaceBindingPlan>,
+    identity_projections: BTreeMap<usize, IdentityProjection>,
+}
+
+/// Physical key extraction metadata only, never a partially validated field.
+/// All offsets, policies and identifiers are bound once by the profile compiler.
+#[derive(Debug, Clone)]
+pub(crate) struct CanonicalKeyField {
+    pub(crate) id: FieldId,
+    pub(crate) range: ByteRange,
+    pub(crate) alignment: AlignmentRule,
+    pub(crate) missing: MissingValuePolicy,
+}
+
+#[derive(Debug, Clone)]
+pub(crate) struct InvariantProjection {
+    pub(crate) progressive: Vec<CanonicalKeyField>,
+    pub(crate) event: Vec<CanonicalKeyField>,
+    pub(crate) on_reassignment_error: ValidationCode,
+}
+
+/// PK and secondary projections refer to the same physical record definition.
+/// This cannot be deserialized or supplied as proof of clinical validation.
+#[derive(Debug, Clone)]
+pub(crate) struct IdentityProjection {
+    pub(crate) record_length: usize,
+    pub(crate) record_key: Vec<CanonicalKeyField>,
+    pub(crate) invariant: Option<InvariantProjection>,
 }
 impl CompiledPersistenceProfile {
     pub fn namespace_bindings(&self) -> &[crate::NamespaceBindingPlan] {
@@ -58,6 +89,9 @@ impl CompiledPersistenceProfile {
     /// Labels alone never certify equivalence between two different PK layouts.
     pub fn compatible_schemas(&self) -> &[(SchemaVersion, Sha256Digest)] {
         &self.compatible_schemas
+    }
+    pub(crate) fn identity_projections(&self) -> &BTreeMap<usize, IdentityProjection> {
+        &self.identity_projections
     }
 }
 
@@ -184,6 +218,187 @@ fn keys(
             ))?;
             bindings.insert(index, key_fields(&raw.traces[index])?);
             Ok(PolicyKey { trace_index: index })
+        })
+        .collect()
+}
+
+/// An invariant selects two nonempty exact tuples, independently of the PK.
+/// The first implementation supports the approved immutable binding contract:
+/// one invariant per trace, same-version scope, same-event reactivation allowed.
+/// Other declarations fail before input instead of gaining invented semantics.
+fn invariants(
+    raw: &RawFlowSchema,
+    policy: &RawPersistence,
+    record_keys: &mut BTreeMap<usize, Vec<usize>>,
+) -> Result<Vec<HistoricalIdentityInvariant>, Failure> {
+    if policy.history_identity_invariants.is_empty() {
+        return Ok(vec![]);
+    }
+    if !matches!(
+        policy.version_compatibility,
+        RawPersistenceVersionCompatibility::SameSchemaVersion {}
+    ) {
+        return Err((Code::UnsupportedConstruct, "historical identity invariants require same_schema_version until their projection compatibility is qualified".into()));
+    }
+    let mut traces = HashSet::new();
+    policy
+        .history_identity_invariants
+        .iter()
+        .map(|entry| {
+            if !entry.reactivate_same_event {
+                return Err((
+                    Code::UnsupportedConstruct,
+                    "this invariant implementation requires explicit same-event reactivation"
+                        .into(),
+                ));
+            }
+            let trace_index = raw
+                .traces
+                .iter()
+                .position(|trace| trace.id == entry.trace)
+                .ok_or((
+                    Code::MissingTraceReference,
+                    "identity invariant references an undeclared trace".into(),
+                ))?;
+            if !traces.insert(trace_index) {
+                return Err((
+                    Code::UnsupportedConstruct,
+                    "multiple identity invariants on one trace are not supported".into(),
+                ));
+            }
+            let trace = &raw.traces[trace_index];
+            let resolve = |ids: &[String]| -> Result<Vec<usize>, Failure> {
+                if ids.is_empty() {
+                    return Err(invalid("identity invariant tuples must not be empty"));
+                }
+                let mut seen = HashSet::new();
+                ids.iter()
+                    .map(|id| {
+                        if !label(id) || !seen.insert(id) {
+                            return Err(invalid(
+                                "identity invariant fields must be unique and unpadded",
+                            ));
+                        }
+                        trace
+                            .fields
+                            .iter()
+                            .position(|field| &field.id == id)
+                            .ok_or((
+                                Code::MissingFieldReference,
+                                "identity invariant references an undeclared field".into(),
+                            ))
+                    })
+                    .collect()
+            };
+            let progressive_fields = resolve(&entry.progressive_fields)?;
+            let event_fields = resolve(&entry.event_fields)?;
+            let on_reassignment_error = entry
+                .on_reassignment_error
+                .parse::<ValidationCode>()
+                .map_err(|_| {
+                    (
+                        Code::InvalidDiagnosticCode,
+                        "identity invariant requires a valid declared error code".into(),
+                    )
+                })?;
+            record_keys.insert(trace_index, key_fields(trace)?);
+            Ok(HistoricalIdentityInvariant {
+                trace_index,
+                progressive_fields,
+                event_fields,
+                on_reassignment_error,
+                reactivate_same_event: true,
+            })
+        })
+        .collect()
+}
+
+fn canonical_fields(
+    trace: &RawRecordSchema,
+    indexes: &[usize],
+) -> Result<Vec<CanonicalKeyField>, Failure> {
+    indexes
+        .iter()
+        .map(|&index| {
+            let field = trace.fields.get(index).ok_or((
+                Code::InternalCompilerInvariant,
+                "identity projection index is inconsistent".into(),
+            ))?;
+            let (start, length, alignment) = match &field.physical {
+                RawPhysical::Numeric {
+                    start,
+                    length,
+                    alignment,
+                    ..
+                }
+                | RawPhysical::Alphanumeric {
+                    start,
+                    length,
+                    alignment,
+                    ..
+                } => (*start, *length, super::alignment(alignment)),
+                RawPhysical::Date { start, length, .. }
+                | RawPhysical::Decimal { start, length, .. } => {
+                    (*start, *length, AlignmentRule::Exact)
+                }
+            };
+            let missing = match &field.missing_value {
+                RawMissing::Spaces {} => MissingValuePolicy::Spaces,
+                RawMissing::NeverMissing {} => MissingValuePolicy::NeverMissing,
+                RawMissing::Exact { raw } => MissingValuePolicy::Exact(raw.as_bytes().to_vec()),
+                RawMissing::AnyOf { raw_values } => MissingValuePolicy::AnyOf(
+                    raw_values
+                        .iter()
+                        .map(|value| value.as_bytes().to_vec())
+                        .collect(),
+                ),
+            };
+            Ok(CanonicalKeyField {
+                id: FieldId(field.id.clone()),
+                range: super::source_range(start, length)
+                    .map_err(|code| (code, "identity projection range is invalid".into()))?,
+                alignment,
+                missing,
+            })
+        })
+        .collect()
+}
+
+fn identity_projections(
+    raw: &RawFlowSchema,
+    keys: &BTreeMap<usize, Vec<usize>>,
+    invariants: &[HistoricalIdentityInvariant],
+) -> Result<BTreeMap<usize, IdentityProjection>, Failure> {
+    if invariants.is_empty() {
+        return Ok(BTreeMap::new());
+    }
+    keys.iter()
+        .map(|(&index, fields)| {
+            let trace = &raw.traces[index];
+            let invariant = invariants
+                .iter()
+                .find(|plan| plan.trace_index == index)
+                .map(|plan| {
+                    Ok::<_, Failure>(InvariantProjection {
+                        progressive: canonical_fields(trace, &plan.progressive_fields)?,
+                        event: canonical_fields(trace, &plan.event_fields)?,
+                        on_reassignment_error: plan.on_reassignment_error.clone(),
+                    })
+                })
+                .transpose()?;
+            Ok((
+                index,
+                IdentityProjection {
+                    record_length: usize::try_from(trace.record_length).map_err(|_| {
+                        (
+                            Code::RangeOverflow,
+                            "identity record length overflows".into(),
+                        )
+                    })?,
+                    record_key: canonical_fields(trace, fields)?,
+                    invariant,
+                },
+            ))
         })
         .collect()
 }
@@ -443,6 +658,7 @@ impl SchemaCompiler {
                 policy: None,
                 namespace_bindings,
                 record_keys: BTreeMap::new(),
+                identity_projections: BTreeMap::new(),
                 compatible_schemas: vec![],
                 trace_ids: raw
                     .traces
@@ -458,22 +674,29 @@ impl SchemaCompiler {
                 }
                 return Ok(profile);
             };
-            if !policy.history_identity_invariants.is_empty() || !policy.temporal_rules.is_empty() {
-                return Err((Code::UnsupportedConstruct, "historical identity and temporal persistence plans require their later implementation tasks".into()));
+            if !policy.temporal_rules.is_empty() {
+                return Err((
+                    Code::UnsupportedConstruct,
+                    "temporal persistence plans require their later implementation tasks".into(),
+                ));
             }
-            if !policy.cross_run_audit.is_empty()
+            if (!policy.cross_run_audit.is_empty()
+                || !policy.history_identity_invariants.is_empty())
                 && !raw
                     .required_capabilities
                     .contains(&RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1)
             {
                 return Err((
                     Code::MissingCapability,
-                    "cross-run audit declarations require persistence.audit.v1".into(),
+                    "historical comparison declarations require persistence.audit.v1".into(),
                 ));
             }
             let namespace_parameters = namespace(raw, &policy.namespace_parameters)?;
             let run_uniqueness = keys(raw, &policy.run_uniqueness, &mut profile.record_keys)?;
             let cross_run_audit = keys(raw, &policy.cross_run_audit, &mut profile.record_keys)?;
+            let history_identity_invariants = invariants(raw, policy, &mut profile.record_keys)?;
+            profile.identity_projections =
+                identity_projections(raw, &profile.record_keys, &history_identity_invariants)?;
             let (version_compatibility, fingerprints) =
                 compatibility(raw, policy, other_versions, &profile.record_keys)?;
             profile.compatible_schemas = fingerprints;
@@ -482,7 +705,7 @@ impl SchemaCompiler {
                 version_compatibility,
                 run_uniqueness,
                 cross_run_audit,
-                history_identity_invariants: vec![],
+                history_identity_invariants,
                 snapshot: compile_snapshot(raw, policy)?,
                 temporal_rules: vec![],
             });

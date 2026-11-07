@@ -14,6 +14,7 @@ mod persistence_profile;
 mod projection;
 #[path = "reference.rs"]
 mod reference;
+pub(crate) use persistence_profile::CanonicalKeyField;
 pub use persistence_profile::CompiledPersistenceProfile;
 
 /// DEC-18 tooling validates only reference declarations. No CompiledFlowSchema

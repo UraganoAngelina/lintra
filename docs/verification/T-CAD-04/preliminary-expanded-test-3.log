@@ -1,0 +1,20 @@
+    Blocking waiting for file lock on build directory
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 53.27s
+     Running tests/cad_progressives.rs (target/debug/deps/cad_progressives-346e310cad95efcd)
+
+running 11 tests
+test cancellation_report_failure_and_cas_preserve_the_checked_event_binding ... ok
+test incompatible_key_or_schema_history_is_a_technical_preflight_failure ... ok
+test component_provenance_and_unsupported_declarations_are_checked_before_input ... ok
+test incomplete_secondary_history_is_not_accepted_as_a_verified_baseline ... ok
+test original_line_and_private_deterministic_jsonl_survive_projection ... ok
+test complete_pk_audit_and_progressive_audit_have_explicit_distinct_meanings ... ok
+test raw_tokens_missing_projections_and_ambiguous_secondary_keys_cannot_enter_approval ... ok
+test omitted_files_are_not_reported_as_progressive_annulments ... ok
+test trace_and_ulss_scope_are_independent_and_event_binding_continues_between_years ... ok
+test real_quarterly_progressive_diffs_survive_restarts_and_attribute_changes_in_complete_pk ... ok
+test every_trace_rejects_reassignment_before_and_after_annulment_with_no_commit ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.18s
+

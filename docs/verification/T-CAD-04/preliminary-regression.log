@@ -1,0 +1,89 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 27.36s
+     Running tests/cad_progressives.rs (target/debug/deps/cad_progressives-346e310cad95efcd)
+
+running 13 tests
+test cancellation_report_failure_and_cas_preserve_the_checked_event_binding ... ok
+test incompatible_key_or_schema_history_is_a_technical_preflight_failure ... ok
+test component_provenance_and_unsupported_declarations_are_checked_before_input ... ok
+test incomplete_secondary_history_is_not_accepted_as_a_verified_baseline ... ok
+test complete_pk_audit_and_progressive_audit_have_explicit_distinct_meanings ... ok
+test exact_old_quarter_retry_after_later_updates_does_not_publish_again ... ok
+test raw_tokens_missing_projections_and_ambiguous_secondary_keys_cannot_enter_approval ... ok
+test renamed_generic_flow_traces_fields_and_error_code_use_the_same_invariant_engine ... ok
+test original_line_and_private_deterministic_jsonl_survive_projection ... ok
+test omitted_files_are_not_reported_as_progressive_annulments ... ok
+test trace_and_ulss_scope_are_independent_and_event_binding_continues_between_years ... ok
+test real_quarterly_progressive_diffs_survive_restarts_and_attribute_changes_in_complete_pk ... ok
+test every_trace_rejects_reassignment_before_and_after_annulment_with_no_commit ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.15s
+
+     Running tests/history_audit.rs (target/debug/deps/history_audit-0648b21ae9c29a23)
+
+running 14 tests
+test concurrent_occurrence_lookup_and_unavailable_provenance_are_not_insertions ... ok
+test cancellation_sink_failure_and_generation_changes_never_return_complete_summary ... ok
+test incompatible_version_and_source_hash_fail_explicitly ... ok
+test declared_group_uses_compiler_verified_member_hashes ... ok
+test absent_files_preserve_per_trace_baselines_across_other_flows ... ok
+test namespace_isolation_and_wrong_key_never_look_like_new_local_history ... ok
+test order_is_deterministic_for_reversed_rows_and_policy_trace_order ... ok
+test retained_key_without_a_present_baseline_is_not_reported_as_new_or_reactivated ... ok
+test unattested_rows_and_changed_projection_definition_are_rejected ... ok
+test multiple_quarters_classify_every_change_without_publishing_the_preview ... ok
+test undeclared_audit_invalid_namespace_and_unknown_trace_are_explicit_errors ... ok
+test present_empty_disappears_and_later_reactivation_survives_real_sqlite_restart ... ok
+test retained_absent_trace_rows_are_valid_history_without_inventing_presence ... ok
+test metadata_cursor_covers_more_than_one_page_without_loading_all_snapshots ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+     Running tests/join_key.rs (target/debug/deps/join_key-99b37b67b93c949b)
+
+running 7 tests
+test keys_are_byte_exact_owned_and_use_host_independent_length_prefixes ... ok
+test only_declared_alignment_changes_key_components_and_never_normalizes_zeros_or_case ... ok
+test compound_keys_do_not_collide_when_concatenated_values_would ... ok
+test namespace_and_consensus_definitions_are_preserved_without_runtime_defaults ... ok
+test unavailable_missing_and_invalid_plans_never_become_empty_join_keys ... ok
+test malformed_join_references_policies_and_capabilities_are_schema_errors ... ok
+test compiler_preserves_all_cardinalities_policies_and_ordered_field_pairs ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/persistence_profile.rs (target/debug/deps/persistence_profile-73a10d0c9a563085)
+
+running 8 tests
+test disabled_policy_does_not_activate_persistence_or_remove_existing_pk ... ok
+test compile_explicit_namespace_pk_order_and_audit_without_enabling_execution ... ok
+test group_cannot_alias_a_different_or_disabled_namespace ... ok
+test key_may_move_in_a_version_without_changing_its_named_logical_projection ... ok
+test group_rejects_changed_key_logical_semantics_and_namespace_type ... ok
+test group_compatibility_requires_actual_member_schemas_and_retains_their_hashes ... ok
+test reject_unknown_format_missing_namespace_unknown_refs_and_duplicates ... ok
+test unsupported_history_snapshot_temporal_features_are_not_silently_dropped ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/session_approval.rs (target/debug/deps/session_approval-3083918db6bff742)
+
+running 15 tests
+test draft_binding_validates_every_parameter_inventory_and_provenance ... ok
+test fractional_pre_epoch_clock_is_compared_exactly_without_calendar_conversion ... ok
+test foreign_clock_values_outside_chrono_range_are_rejected_without_panicking ... ok
+test preview_abort_drop_report_error_and_cooperative_cancel_publish_nothing ... ok
+test outcome_failures_mismatch_cancel_and_missing_consent_never_become_validated ... ok
+test schema_version_change_does_not_unlock_a_session_and_cancelled_preview_is_read_only ... ok
+test changing_the_period_of_an_approved_submission_is_a_normative_rejection ... ok
+test stale_preview_and_double_transaction_do_not_publish_second_approval ... ok
+test explicit_policy_lowering_rejects_invalid_variants_and_keeps_runtime_gate ... ok
+test immutable_old_session_exact_retry_and_namespace_isolation ... ok
+test storage_failure_and_ambiguous_commit_require_explicit_read_only_resolution ... ok
+test nonempty_candidate_requires_declared_verified_identities_before_sqlite_sees_it ... ok
+test sqlite_restart_metadata_cursor_and_legacy_history_fail_closed ... ok
+test corrupt_metadata_indexes_cannot_masquerade_as_an_empty_or_different_session ... ok
+test sqlite_cursor_crosses_page_boundaries_without_loading_record_payloads ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.36s
+

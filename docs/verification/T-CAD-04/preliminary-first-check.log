@@ -1,0 +1,65 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+warning: unused imports: `CanonicalKeyField` and `IdentityProjection`
+  --> src/schema/compiler.rs:18:38
+   |
+18 | pub(crate) use persistence_profile::{CanonicalKeyField, IdentityProjection};
+   |                                      ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: fields `id`, `range`, `alignment`, and `missing` are never read
+  --> src/schema/persistence_profile.rs:43:16
+   |
+42 | pub(crate) struct CanonicalKeyField {
+   |                   ----------------- fields in this struct
+43 |     pub(crate) id: FieldId,
+   |                ^^
+44 |     pub(crate) range: ByteRange,
+   |                ^^^^^
+45 |     pub(crate) alignment: AlignmentRule,
+   |                ^^^^^^^^^
+46 |     pub(crate) missing: MissingValuePolicy,
+   |                ^^^^^^^
+   |
+   = note: `CanonicalKeyField` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: fields `progressive`, `event`, and `on_reassignment_error` are never read
+  --> src/schema/persistence_profile.rs:51:16
+   |
+50 | pub(crate) struct InvariantProjection {
+   |                   ------------------- fields in this struct
+51 |     pub(crate) progressive: Vec<CanonicalKeyField>,
+   |                ^^^^^^^^^^^
+52 |     pub(crate) event: Vec<CanonicalKeyField>,
+   |                ^^^^^
+53 |     pub(crate) on_reassignment_error: ValidationCode,
+   |                ^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `InvariantProjection` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: fields `record_length`, `record_key`, and `invariant` are never read
+  --> src/schema/persistence_profile.rs:60:16
+   |
+59 | pub(crate) struct IdentityProjection {
+   |                   ------------------ fields in this struct
+60 |     pub(crate) record_length: usize,
+   |                ^^^^^^^^^^^^^
+61 |     pub(crate) record_key: Vec<CanonicalKeyField>,
+   |                ^^^^^^^^^^
+62 |     pub(crate) invariant: Option<InvariantProjection>,
+   |                ^^^^^^^^^
+   |
+   = note: `IdentityProjection` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: method `identity_projections` is never used
+  --> src/schema/persistence_profile.rs:93:19
+   |
+64 | impl CompiledPersistenceProfile {
+   | ------------------------------- method in this implementation
+...
+93 |     pub(crate) fn identity_projections(&self) -> &BTreeMap<usize, IdentityProjection> {
+   |                   ^^^^^^^^^^^^^^^^^^^^
+
+warning: `lintra` (lib) generated 5 warnings (run `cargo fix --lib -p lintra` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 9.83s

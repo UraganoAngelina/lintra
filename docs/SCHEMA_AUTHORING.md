@@ -646,3 +646,45 @@ conta i controlli crosssaltati e conservaPartial; non valuta join o età simulat
 Unknown da refesterna conserva la joincausale deterministica per le missing policy,
 senza convertire date invalide in un parentmancante o in un'etàzero.
 Componente esplicitoCAD: schemas/cad/components/2024-06.calendar-age.1.
+
+### Invarianti storiche del progressivo — perimetro T-CAD-04
+
+Il compiler di `CompiledPersistenceProfile` risolve `history_identity_invariants`
+con tuple non vuote di `progressive_fields` ed `event_fields`, codice simbolico
+`on_reassignment_error` e `reactivate_same_event: true`. Il perimetro qualificabile
+corrente richiede una sola invariante per trace, `same_schema_version` e la
+capability `persistence.audit.v1`. Gli altri casi restano schema error prima
+dell'input. Non si modifica la PK normativa né la sua dichiarazione di unicità.
+
+I riferimenti producono metadati tipizzati di estrazione, non un artefatto di
+validazione clinica. `ProjectedHistoricalRecord::project` usa i range, le missing
+policy e gli allineamenti compilati per estrarre PK, progressivo ed evento dalla
+stessa riga. Conserva i token protetti e l'origine diagnostica in memoria; lo
+storage riceve soltanto identità/fingerprint opachi nel protocollo esistente.
+I conteggi fisici del file restano distinti dal numero di token degli indici.
+
+Il percorso `ApprovalDraft::validated_with_identity_records` richiede queste
+proiezioni indivisibili e l'outcome della validazione. Le proiezioni non attestano
+una validazione clinica. La preview qualifica chiave, fonti, versione/hash e
+completezza degli indici sulla generazione osservata; una riassegnazione produce
+il codice dichiarato dallo schema e l'origine fornita dal produttore. Il CAS
+esistente impedisce il commit se la base cambia. Il percorso precedente che
+accetta liste di token rifiuta i profili con invarianti.
+
+`HistoricalAuditService::for_identity_invariants` seleziona esplicitamente il
+confronto sui progressivi. `HistoricalAuditService::new` continua a rispettare
+`cross_run_audit` e `record_key`. Per C/D una modifica ad altri campi della PK
+può quindi risultare un aggiornamento del progressivo nel primo confronto,
+mentre il confronto sulla PK completa mantiene la propria semantica.
+
+L'integrazione del produttore Full con snapshot/temporali e la riconciliazione
+cumulativa rimangono ai rispettivi gate. I compiler ordinario e storico audit-only
+continuano a rifiutare tali profili incompleti. Nessuno schema CAD completo o
+FROZEN viene ricavato automaticamente dal componente di accettazione.
+
+Il binding viene controllato anche fra righe dello stesso candidato, dopo la
+verifica delle evidenze e prima della creazione dello snapshot. Due eventi
+diversi per lo stesso progressivo producono il codice dichiarato sulla seconda
+riga. Una duplicazione secondaria sullo stesso evento resta strutturalmente
+ambigua e viene rifiutata. I token vengono autenticati prima del confronto;
+errori di evidenza o protezione non diventano riassegnazioni normative.

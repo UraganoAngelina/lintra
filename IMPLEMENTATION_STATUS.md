@@ -1,8 +1,8 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-11-06**. Piano v1.1; governance GOV-2026-10-26-01.
+Consuntivo aggiornato al **2026-11-07**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD09 DONE, CAD04 in preflight
+## Frontiera corrente — CAD09 DONE, CAD04 WAITING_GATE
 
 **133/140 DONE = 95,0%**; restano 7 task: CAD04–08, CAD12 e P18-04.
 CAD02 DONE con CI42067927663. CAD03 e CAD11 DONE con CI42203885693 su6af5f85.
@@ -18,12 +18,15 @@ fmt/Clippy/release/boundary positivi. Dossier T-CAD-09-calendar-age.md,
 T-CAD-09-local-gates.json, T-CAD-09-native-ci.json e log/inventario omonimi.
 Non è uno schemaCAD completo/FROZEN; integrazione clinica/storica resta al12.
 
-CAD04 IN_PROGRESS / PREFLIGHT:03 ePERSIST08DONE. Fonti e contratti letti;
-compilatore attualmente rifiuta history_identity_invariants. Distinguere il
-vincolo progressivo–evento dal confronto sullaPK completa e dagli attributi
-modificabili. Proiezioni protette e guardie prima del commit in verifica;
-nessun nuovo formato storage/HMAC, norma o API è stato ancora introdotto.
-Preflight T-CAD-04-preflight.md.05attende04;06/07READY indipendenti su02/P10/P13.
+CAD04 WAITING_GATE: implementazione locale finale qualificata,15test nuovi.
+Piani compilati, proiezioni PK/progressivo/evento, controllo dei binding correnti
+e storici, preview protetta e audit esplicito. Base:11gate exit0; affinamento:
+6gate exit0,924core allfeatures/916senza bundle,0fail/6ignored per suite.
+Impronte finali e log verificati alla ripresa del7novembre. Componente
+progressives.1 con20campi originali; storage/HMAC invariati. Commit/push e
+CI nativa completa sullo SHA finale ancora necessari prima di DONE04.
+Report T-CAD-04-progressives.md e ledger base/finale separati.
+CAD05attende04;06/07READY indipendenti su02/P10/P13.
 
 Single-agent, nessun background/delega. NessunaFROZEN/release/tag o chiave
 operativa generata; docs/migration preesistente preservata ed esclusa.
@@ -6590,3 +6593,15 @@ guardie e evaluator/flowvalidator, authoring, componente calendar-age.1 e12test
 in cad_age.rs.133/140DONE(95,0%),7aperte. Nessuna modifica funzionale dopo1740a6d.
 CAD04 già in preflight su prerequisiti verificati: proseguire con invarianti e
 proiezioni generiche, preservando PK complete/namespace/approvazione/CAS/privacy.
+
+
+## Ripresa autore / CAD04 qualificata localmente — 2026-11-07
+
+Ripresa esplicita del workflow concordato. Nessuna nuova ratifica necessaria.
+Ledger finale completo con tutti6comandi exit0; impronte correnti verificate,
+conteggi dei log verificati e inventario finale conservato. Base11gate completa
+distinta dal delta.13test iniziali diventati15con il controllo del candidato
+corrente e della precedenza tecnica;924/916esiti finali core. Non ripetuta una
+suite già positiva senza nuovi cambiamenti. Report/recovery aggiornati, sorgenti
+immutate dalla qualificazione finale. Pubblicare solo04e relative evidenze;
+docs/migration esclusa. CI completa Linux/MSVC necessaria;133/140invariato.

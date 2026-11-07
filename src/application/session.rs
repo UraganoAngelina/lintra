@@ -37,6 +37,8 @@ impl SessionRejection {
 #[non_exhaustive]
 pub enum SessionApprovalError {
     Rejected(SessionRejection),
+    InvariantRejected(Box<crate::ValidationError>),
+    HistoricalContext(crate::HistoricalAuditError),
     InvalidBinding,
     InvalidValidationEvidence,
     UnsupportedSessionPolicy,
@@ -54,6 +56,8 @@ impl fmt::Display for SessionApprovalError {
             Self::Rejected(SessionRejection::ApprovedSessionImmutable) => "E_APPROVED_SESSION_IMMUTABLE: the session is already approved",
             Self::Rejected(SessionRejection::ValidationNotSuccessful) => "approval requires a successful validation",
             Self::Rejected(SessionRejection::MissingProceedConsent) => "explicit PROCEED is required for every absent trace",
+            Self::InvariantRejected(_) => "historical identity is already bound to a different declared event",
+            Self::HistoricalContext(_) => "historical identity context could not be qualified",
             Self::InvalidBinding => "session parameters or source metadata disagree with the compiled profile",
             Self::InvalidValidationEvidence => "validation evidence does not match the prepared submission",
             Self::UnsupportedSessionPolicy => "the compiled profile has no supported session approval policy",
@@ -73,7 +77,17 @@ impl Error for SessionApprovalError {
             Self::Metadata(e) => Some(e),
             Self::Persistence(e) => Some(e),
             Self::Report(e) => Some(e),
+            Self::HistoricalContext(e) => Some(e),
             _ => None,
+        }
+    }
+}
+impl SessionApprovalError {
+    /// Normative row diagnostics remain distinct from technical archive errors.
+    pub fn validation_errors(&self) -> &[crate::ValidationError] {
+        match self {
+            Self::InvariantRejected(error) => std::slice::from_ref(error.as_ref()),
+            _ => &[],
         }
     }
 }
@@ -419,11 +433,127 @@ impl ApprovalDraft {
     /// attestation of Full execution. Callers must use the actual validation
     /// service (integration tasks remain separate).
     pub fn validated(
-        mut self,
+        self,
         outcome: &ValidationRunOutcome,
         identities: Vec<StoredIdentity>,
         protector: &IdentityProtector,
     ) -> Result<ValidatedApproval, SessionApprovalError> {
+        self.validated_inner(outcome, identities, protector, false)
+    }
+
+    /// Secondary identities can enter approval only as inseparable projections
+    /// of actual source rows. The returned wrapper keeps the verifier and source
+    /// locations until the historical binding check has passed at a pinned base.
+    pub fn validated_with_identity_records<'protector>(
+        self,
+        outcome: &ValidationRunOutcome,
+        mut records: Vec<crate::ProjectedHistoricalRecord>,
+        protector: &'protector IdentityProtector,
+    ) -> Result<
+        super::historical_identity::InvariantValidatedApproval<'protector>,
+        SessionApprovalError,
+    > {
+        use super::historical_identity::{InvariantAnchor, InvariantValidatedApproval};
+        verify_outcome(&self, outcome)?;
+        if !self
+            .profile
+            .policy()
+            .is_some_and(|policy| !policy.history_identity_invariants.is_empty())
+        {
+            return Err(SessionApprovalError::UnsupportedSessionPolicy);
+        }
+        let profile = self.profile.clone();
+        records.sort_by_key(|record| (record.trace_index, record.line_number));
+        let mut counts = vec![0u64; profile.trace_ids().len()];
+        let mut previous = None;
+        let mut identities = Vec::new();
+        let mut anchors = Vec::new();
+        for record in records {
+            let origin = (record.trace_index, record.line_number);
+            if previous == Some(origin) || record.profile_hash != *profile.schema_hash() {
+                return Err(SessionApprovalError::InvalidValidationEvidence);
+            }
+            previous = Some(origin);
+            let plan = profile
+                .identity_projections()
+                .get(&record.trace_index)
+                .ok_or(SessionApprovalError::InvalidBinding)?;
+            let expected = if plan.invariant.is_some() { 3 } else { 1 };
+            if record.tokens.len() != expected || record.line_number == 0 {
+                return Err(SessionApprovalError::InvalidValidationEvidence);
+            }
+            if !record.tokens.first().is_some_and(|row| {
+                row.identity().namespace() == &self.parts.namespace
+                    && row.identity().flow_id() == &profile.schema_key().flow_id
+                    && profile.trace_ids().get(record.trace_index)
+                        == Some(row.identity().trace_id())
+            }) {
+                return Err(SessionApprovalError::InvalidBinding);
+            }
+            let count = counts
+                .get_mut(record.trace_index)
+                .ok_or(SessionApprovalError::InvalidBinding)?;
+            *count = count
+                .checked_add(1)
+                .ok_or(SessionApprovalError::InvalidBinding)?;
+            if plan.invariant.is_some() {
+                anchors.push(InvariantAnchor {
+                    trace_index: record.trace_index,
+                    line_number: record.line_number,
+                    event_index: identities
+                        .len()
+                        .checked_add(2)
+                        .ok_or(SessionApprovalError::InvalidBinding)?,
+                });
+            }
+            identities.extend(record.tokens);
+        }
+        for (index, trace) in profile.trace_ids().iter().enumerate() {
+            let presence = self
+                .parts
+                .traces
+                .iter()
+                .find(|source| &source.trace_id == trace)
+                .ok_or(SessionApprovalError::InvalidValidationEvidence)?
+                .presence;
+            let expected = match presence {
+                TracePresence::Present { record_count } => record_count,
+                TracePresence::Absent => 0,
+            };
+            if counts[index] != expected {
+                return Err(SessionApprovalError::InvalidValidationEvidence);
+            }
+        }
+        super::historical_identity::check_current_bindings(
+            &profile,
+            &identities,
+            &anchors,
+            protector,
+        )?;
+        let base = self.validated_inner(outcome, identities, protector, true)?;
+        Ok(InvariantValidatedApproval::new(
+            base, profile, anchors, protector,
+        ))
+    }
+
+    fn validated_inner(
+        mut self,
+        outcome: &ValidationRunOutcome,
+        identities: Vec<StoredIdentity>,
+        protector: &IdentityProtector,
+        identity_records: bool,
+    ) -> Result<ValidatedApproval, SessionApprovalError> {
+        // Raw token lists do not prove that secondary invariant projections
+        // were produced from the same source rows. Keep this path closed until
+        // the typed invariant preparation path supplies that evidence.
+        if !identity_records
+            && self
+                .profile
+                .policy()
+                .is_some_and(|policy| !policy.history_identity_invariants.is_empty())
+        {
+            return Err(SessionApprovalError::UnsupportedSessionPolicy);
+        }
         verify_outcome(&self, outcome)?;
         let absent: Vec<_> = self
             .parts
@@ -479,8 +609,26 @@ impl ApprovalDraft {
             };
             if id.flow_id() != &self.profile.schema_key().flow_id
                 || !scope_matches
-                || id.key_kind() != "record_key"
+                || !(id.key_kind() == "record_key"
+                    || (identity_records
+                        && matches!(
+                            id.key_kind(),
+                            super::historical_identity::PROGRESSIVE_RECORD
+                                | super::historical_identity::EVENT_BINDING
+                        )
+                        && trace_index
+                            .and_then(|index| self.profile.identity_projections().get(&index))
+                            .is_some_and(|plan| plan.invariant.is_some())))
                 || !trace_index.is_some_and(|index| self.profile.record_key_fields(index).is_some())
+            {
+                return Err(SessionApprovalError::InvalidBinding);
+            }
+            if identity_records
+                && identity.record_fingerprint().protection_scheme()
+                    != format!(
+                        "lintra.hmac-sha256.record.v1:{}",
+                        self.profile.schema_hash()
+                    )
             {
                 return Err(SessionApprovalError::InvalidBinding);
             }

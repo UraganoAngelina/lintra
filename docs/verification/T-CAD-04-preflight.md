@@ -70,3 +70,13 @@ PKC/D complete; annullamenti solo su file presente, mai su file assente.
 Provare esiti deterministici, provenienza/integrità, token incompleti, generazione
 concorrente, cancellazione e reportfailure. Scope di componente distinto dalla
 validazione clinicaCAD completa, che resta al gate12. Locali eCI reali primaDONE.
+
+
+## Passaggio a implementazione
+
+Il disegno è stato concretizzato nei piani tipizzati, proiettore indivisibile,
+wrapper di approvazione con verificatore in prestito e selezione esplicita del
+diff sul progressivo. Formato storage/HMAC invariati. Fonte e20campi verificati;
+13test nuovi e57esiti di regressione mirata positivi. Report dettagliato nel
+T-CAD-04-progressives.md; sequenza finale su input fermi attualmente in corso.
+NessunDONE o supporto clinicoCAD globale anticipato.

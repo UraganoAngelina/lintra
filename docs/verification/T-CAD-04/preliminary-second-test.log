@@ -1,0 +1,30 @@
+    Blocking waiting for file lock on build directory
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 41.28s
+     Running tests/cad_progressives.rs (target/debug/deps/cad_progressives-346e310cad95efcd)
+
+running 2 tests
+test real_quarterly_progressive_diffs_survive_restarts_and_attribute_changes_in_complete_pk ... FAILED
+test every_trace_rejects_reassignment_before_and_after_annulment_with_no_commit ... FAILED
+
+failures:
+
+---- real_quarterly_progressive_diffs_survive_restarts_and_attribute_changes_in_complete_pk stdout ----
+
+thread 'real_quarterly_progressive_diffs_survive_restarts_and_attribute_changes_in_complete_pk' (127) panicked at tests/cad_progressives.rs:275:73:
+called `Result::unwrap()` on an `Err` value: StorageUninitialized
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- every_trace_rejects_reassignment_before_and_after_annulment_with_no_commit stdout ----
+
+thread 'every_trace_rejects_reassignment_before_and_after_annulment_with_no_commit' (126) panicked at tests/cad_progressives.rs:275:73:
+called `Result::unwrap()` on an `Err` value: StorageUninitialized
+
+
+failures:
+    every_trace_rejects_reassignment_before_and_after_annulment_with_no_commit
+    real_quarterly_progressive_diffs_survive_restarts_and_attribute_changes_in_complete_pk
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+error: test failed, to rerun pass `--test cad_progressives`

@@ -133,6 +133,7 @@ pub struct HistoricalAuditService<'a> {
     profile: &'a CompiledPersistenceProfile,
     protector: &'a IdentityProtector,
     repository: &'a dyn PersistentContextRepository,
+    key_kind: &'static str,
 }
 impl<'a> HistoricalAuditService<'a> {
     pub fn new(
@@ -144,6 +145,24 @@ impl<'a> HistoricalAuditService<'a> {
             profile,
             protector,
             repository,
+            key_kind: "record_key",
+        }
+    }
+
+    /// Explicitly compare the progressive identities declared by invariants.
+    /// This does not reinterpret cross_run_audit's record_key declarations.
+    /// The returned diff identities name their progressive key kind, while
+    /// ordinary `new` continues comparing complete normative record keys.
+    pub fn for_identity_invariants(
+        profile: &'a CompiledPersistenceProfile,
+        protector: &'a IdentityProtector,
+        repository: &'a dyn PersistentContextRepository,
+    ) -> Self {
+        Self {
+            profile,
+            protector,
+            repository,
+            key_kind: super::historical_identity::PROGRESSIVE_RECORD,
         }
     }
 
@@ -160,7 +179,13 @@ impl<'a> HistoricalAuditService<'a> {
         let policy = self
             .profile
             .policy()
-            .filter(|p| !p.cross_run_audit.is_empty())
+            .filter(|p| {
+                if self.key_kind == "record_key" {
+                    !p.cross_run_audit.is_empty()
+                } else {
+                    !p.history_identity_invariants.is_empty()
+                }
+            })
             .ok_or(HistoricalAuditError::AuditNotDeclared)?;
         check_namespace(self.profile, candidate.namespace())?;
         if candidate.source().schema_key() != self.profile.schema_key()
@@ -169,11 +194,24 @@ impl<'a> HistoricalAuditService<'a> {
             return Err(HistoricalAuditError::IncompatibleSchema);
         }
         let mut traces = Vec::new();
-        for key in &policy.cross_run_audit {
+        let selected: Vec<_> = if self.key_kind == "record_key" {
+            policy
+                .cross_run_audit
+                .iter()
+                .map(|key| key.trace_index)
+                .collect()
+        } else {
+            policy
+                .history_identity_invariants
+                .iter()
+                .map(|plan| plan.trace_index)
+                .collect()
+        };
+        for index in selected {
             let trace = self
                 .profile
                 .trace_ids()
-                .get(key.trace_index)
+                .get(index)
                 .ok_or(HistoricalAuditError::InvalidBinding)?;
             let presence = candidate
                 .source()
@@ -203,6 +241,7 @@ impl<'a> HistoricalAuditService<'a> {
             profile: self.profile,
             protector: self.protector,
             repository: self.repository,
+            key_kind: self.key_kind,
             candidate,
             baselines: BTreeMap::new(),
             metadata: HistoricalAuditMetadata {
@@ -301,6 +340,7 @@ pub struct PreparedHistoricalAudit<'a> {
     profile: &'a CompiledPersistenceProfile,
     protector: &'a IdentityProtector,
     repository: &'a dyn PersistentContextRepository,
+    key_kind: &'static str,
     candidate: &'a HistoricalSnapshot,
     metadata: HistoricalAuditMetadata,
     baselines: BTreeMap<u64, HistoricalSnapshot>,
@@ -346,6 +386,22 @@ impl PreparedHistoricalAudit<'_> {
         cancellation: &CancellationToken,
     ) -> Result<(), HistoricalAuditError> {
         self.check_source(snapshot.source())?;
+        let has_invariants = self
+            .profile
+            .policy()
+            .is_some_and(|policy| !policy.history_identity_invariants.is_empty());
+        let mut roles = vec![
+            [0u64; 3];
+            if has_invariants {
+                self.profile.trace_ids().len()
+            } else {
+                0
+            }
+        ];
+        let definition = format!(
+            "lintra.hmac-sha256.record.v1:{}",
+            self.profile.schema_hash()
+        );
         for row in snapshot.identities() {
             checkpoint(cancellation)?;
             self.protector.verify_stored_identity(row)?;
@@ -355,6 +411,26 @@ impl PreparedHistoricalAudit<'_> {
                 .traces
                 .iter()
                 .any(|t| &t.trace_id == id.trace_id());
+            let invariant_trace = if has_invariants {
+                self.profile
+                    .trace_ids()
+                    .iter()
+                    .position(|trace| trace == id.trace_id())
+                    .filter(|index| {
+                        self.profile
+                            .identity_projections()
+                            .get(index)
+                            .is_some_and(|plan| plan.invariant.is_some())
+                    })
+            } else {
+                None
+            };
+            let secondary = invariant_trace.is_some()
+                && matches!(
+                    id.key_kind(),
+                    super::historical_identity::PROGRESSIVE_RECORD
+                        | super::historical_identity::EVENT_BINDING
+                );
             if id.namespace() != self.candidate.namespace()
                 || id.flow_id() != &self.profile.schema_key().flow_id
                 || id.schema_scope() != &self.metadata.schema_scope
@@ -363,9 +439,50 @@ impl PreparedHistoricalAudit<'_> {
                     .traces()
                     .iter()
                     .any(|t| &t.trace_id == id.trace_id())
-                || (selected && id.key_kind() != "record_key")
+                || (selected && id.key_kind() != "record_key" && !secondary)
             {
                 return Err(HistoricalAuditError::InvalidBinding);
+            }
+            if secondary && row.record_fingerprint().protection_scheme() != definition {
+                return Err(HistoricalAuditError::IncompatibleProjection);
+            }
+            if let Some(index) = invariant_trace {
+                let role = match id.key_kind() {
+                    "record_key" => Some(0),
+                    super::historical_identity::PROGRESSIVE_RECORD => Some(1),
+                    super::historical_identity::EVENT_BINDING => Some(2),
+                    _ => None,
+                };
+                if let Some(role) = role {
+                    roles[index][role] = roles[index][role]
+                        .checked_add(1)
+                        .ok_or(HistoricalAuditError::CountOverflow)?;
+                }
+            }
+        }
+        // Physical input counts remain independent of the number of protected
+        // index entries. A retained absent trace has no new input count, but
+        // its three kinds must still be complete and balanced.
+        for (index, counts) in roles.iter().enumerate() {
+            if !self
+                .profile
+                .identity_projections()
+                .get(&index)
+                .is_some_and(|plan| plan.invariant.is_some())
+            {
+                continue;
+            }
+            let trace = snapshot
+                .source()
+                .traces()
+                .iter()
+                .find(|trace| trace.trace_id == self.profile.trace_ids()[index])
+                .ok_or(HistoricalAuditError::InvalidBinding)?;
+            if counts[0] != counts[1]
+                || counts[0] != counts[2]
+                || matches!(trace.presence, crate::TracePresence::Present { record_count } if record_count != counts[0])
+            {
+                return Err(HistoricalAuditError::InconsistentHistory);
             }
         }
         Ok(())
@@ -391,14 +508,20 @@ impl PreparedHistoricalAudit<'_> {
                 .candidate
                 .identities()
                 .iter()
-                .filter(|r| r.identity().trace_id() == &trace.trace_id)
+                .filter(|r| {
+                    r.identity().trace_id() == &trace.trace_id
+                        && r.identity().key_kind() == self.key_kind
+                })
                 .collect();
             let mut previous: Vec<_> = trace
                 .revision
                 .and_then(|r| self.baselines.get(&r.value()))
                 .into_iter()
                 .flat_map(|s| s.identities())
-                .filter(|r| r.identity().trace_id() == &trace.trace_id)
+                .filter(|r| {
+                    r.identity().trace_id() == &trace.trace_id
+                        && r.identity().key_kind() == self.key_kind
+                })
                 .collect();
             current.sort_unstable_by(|a, b| compare_identity(a, b));
             previous.sort_unstable_by(|a, b| compare_identity(a, b));

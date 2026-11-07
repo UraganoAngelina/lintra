@@ -1,0 +1,29 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+warning: fields `profile_hash`, `trace_index`, and `tokens` are never read
+  --> src/application/historical_identity.rs:48:16
+   |
+47 | pub struct ProjectedHistoricalRecord {
+   |            ------------------------- fields in this struct
+48 |     pub(crate) profile_hash: Sha256Digest,
+   |                ^^^^^^^^^^^^
+49 |     pub(crate) trace_index: usize,
+   |                ^^^^^^^^^^^
+50 |     pub(crate) line_number: u64,
+51 |     pub(crate) tokens: Vec<StoredIdentity>,
+   |                ^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `on_reassignment_error` is never read
+  --> src/schema/persistence_profile.rs:53:16
+   |
+50 | pub(crate) struct InvariantProjection {
+   |                   ------------------- field in this struct
+...
+53 |     pub(crate) on_reassignment_error: ValidationCode,
+   |                ^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `InvariantProjection` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: `lintra` (lib) generated 2 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 10.43s

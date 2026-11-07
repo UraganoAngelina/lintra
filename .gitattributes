@@ -25,3 +25,6 @@ ui/licenses/SLINT-ROYALTY-FREE-2.0.md text eol=lf
 # Approved CAD source datasets and hashed membership assets retain exact bytes.
 schemas/cad/components/2024-06.clinical-lookups.1/source/** -text
 schemas/cad/components/2024-06.clinical-lookups.1/data/** -text
+# Progressive provenance cites these exact versioned component bytes.
+schemas/cad/components/2024-06.namespace.1/component.json -text
+schemas/cad/components/2024-06.progressives.1/component.json -text

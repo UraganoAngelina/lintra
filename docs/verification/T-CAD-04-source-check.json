@@ -1,0 +1,183 @@
+{
+  "task": "T-CAD-04",
+  "component_sha256": "8d1d23969c290065f5d2c04a98c36c94983999db19ecc668490b12342647e5d0",
+  "traces": [
+    {
+      "id": "A",
+      "source_sha256": "1b7850af503c0f832f3add306a997e2b3a9f072b590d46a34c6f7783dbf00876",
+      "fields": [
+        {
+          "id": "1.1",
+          "start": 1,
+          "length": 3,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "1.23",
+          "start": 206,
+          "length": 12,
+          "original_metadata_equal": true
+        }
+      ],
+      "record_key": [
+        "1.1",
+        "1.23"
+      ]
+    },
+    {
+      "id": "B1",
+      "source_sha256": "a6726cf3b2365c7b230c2b1e82b0ba00d8ba18d504c1f3aa3ec9c008674238a3",
+      "fields": [
+        {
+          "id": "2.1",
+          "start": 1,
+          "length": 12,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "2.3",
+          "start": 15,
+          "length": 1,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "2.36",
+          "start": 187,
+          "length": 12,
+          "original_metadata_equal": true
+        }
+      ],
+      "record_key": [
+        "2.1",
+        "2.36"
+      ]
+    },
+    {
+      "id": "B2",
+      "source_sha256": "daa651271ca210485a9cd4b46c469a8364b807fd78adb6089cb6c76cb86cd148",
+      "fields": [
+        {
+          "id": "3.1",
+          "start": 1,
+          "length": 12,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "3.4",
+          "start": 29,
+          "length": 1,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "3.5",
+          "start": 30,
+          "length": 12,
+          "original_metadata_equal": true
+        }
+      ],
+      "record_key": [
+        "3.1",
+        "3.5"
+      ]
+    },
+    {
+      "id": "C",
+      "source_sha256": "0ffcf4f83bdb391485c9963125dbcb18cbffc5370d46e26e99449d4e52677b9c",
+      "fields": [
+        {
+          "id": "4.1",
+          "start": 1,
+          "length": 12,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "4.2",
+          "start": 13,
+          "length": 8,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "4.4",
+          "start": 22,
+          "length": 1,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "4.5",
+          "start": 23,
+          "length": 2,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "4.7",
+          "start": 26,
+          "length": 1,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "4.11",
+          "start": 34,
+          "length": 12,
+          "original_metadata_equal": true
+        }
+      ],
+      "record_key": [
+        "4.1",
+        "4.2",
+        "4.4",
+        "4.5",
+        "4.11"
+      ]
+    },
+    {
+      "id": "D",
+      "source_sha256": "47f6d04d94f63ecdbdcce629615f715e0ec3332ff1b25405256c350f4034db32",
+      "fields": [
+        {
+          "id": "5.1",
+          "start": 1,
+          "length": 12,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "5.2",
+          "start": 13,
+          "length": 8,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "5.3",
+          "start": 21,
+          "length": 1,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "5.4",
+          "start": 22,
+          "length": 2,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "5.6",
+          "start": 26,
+          "length": 2,
+          "original_metadata_equal": true
+        },
+        {
+          "id": "5.7",
+          "start": 28,
+          "length": 12,
+          "original_metadata_equal": true
+        }
+      ],
+      "record_key": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4",
+        "5.7"
+      ]
+    }
+  ],
+  "pdf_sha256": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29"
+}

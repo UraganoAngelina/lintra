@@ -339,6 +339,9 @@ pub use schema::authoring::{
 };
 
 // Persistence data contracts, never an executable historical-validation proof.
+pub use application::historical_identity::{
+    HistoricalProjectionError, InvariantValidatedApproval, ProjectedHistoricalRecord,
+};
 pub use application::historical_validation::{
     HistoricalAuditSink, HistoricalReview, HistoricalTextValidationRequest,
     HistoricalValidationError, HistoricalValidationOutcome, HistoricalValidationPreview,

@@ -78,24 +78,34 @@ pub fn build_join_key(
     fields: &[usize],
     schema: &CompiledRecordSchema,
 ) -> Result<JoinKey, JoinKeyError> {
-    if fields.is_empty() {
-        return Err(JoinKeyError::EmptyFields);
-    }
+    build_join_key_from_components(fields.iter().map(|&index| component(record, index, schema)))
+}
+
+/// Share the exact v1 length frames with compiler-bound persistence projections.
+/// Two immutable traversals avoid cloning source values or maintaining a second
+/// tuple protocol. A zero-length value still has its eight-byte frame; only an
+/// empty list of fields is rejected here.
+pub(crate) fn build_join_key_from_components<'a>(
+    components: impl Iterator<Item = Result<&'a [u8], JoinKeyError>> + Clone,
+) -> Result<JoinKey, JoinKeyError> {
     let mut length = 0usize;
-    for &index in fields {
-        let value = component(record, index, schema)?;
+    for value in components.clone() {
+        let value = value?;
         u64::try_from(value.len()).map_err(|_| JoinKeyError::LengthOverflow)?;
         length = length
             .checked_add(8)
             .and_then(|length| length.checked_add(value.len()))
             .ok_or(JoinKeyError::LengthOverflow)?;
     }
+    if length == 0 {
+        return Err(JoinKeyError::EmptyFields);
+    }
     let mut encoded = Vec::new();
     encoded
         .try_reserve_exact(length)
         .map_err(JoinKeyError::Allocation)?;
-    for &index in fields {
-        let value = component(record, index, schema)?;
+    for value in components {
+        let value = value?;
         let length = u64::try_from(value.len()).map_err(|_| JoinKeyError::LengthOverflow)?;
         encoded.extend_from_slice(&length.to_be_bytes());
         encoded.extend_from_slice(value);
