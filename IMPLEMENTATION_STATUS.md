@@ -2,9 +2,9 @@
 
 Consuntivo aggiornato al **2026-11-07**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD06 DONE, CAD07 in sviluppo
+## Frontiera corrente — CAD07 DONE, CAD05 in verifica locale
 
-**135/140 DONE = 96,4%**; restano 5 task: CAD05, CAD07–08, CAD12 e P18-04.
+**136/140 DONE = 97,1%**; restano 4 task: CAD05, CAD08, CAD12 e P18-04.
 CAD02 DONE con CI42067927663. CAD03 e CAD11 DONE con CI42203885693 su6af5f85.
 CAD09 DONE con CI42231182241 sullo SHA1740a6dd29ac705d29b0cb0425daacf919a6b17e:
 Linux/MSVC, tre confronti JSONL/pixel e due riaperture SQLite crossOS positivi.
@@ -30,13 +30,18 @@ riaperture SQLite crossOS. Undici test nuovi,11gate locali con464hash invariati;
 970/970workspace,927core,18tooling,24Python. Retrytooling per ambiente omesso
 conservato separatamente, nessun indebolimento dei controlli.
 
-CAD07 WAITING_GATE: after_date su contesto qualificato, componente A/B1/C con
-consenso data/motivo prima del filtrodecesso.11testnuovi+62regressione positivi.
-Undici gate locali exit0:981/981workspace,938core senza bundle,18tooling e
-24Python;0fail finali,468impronte invariate. Log/conteggi/inventario verificati.
-Campodiagnostico con coordinate sorgente, nessun first o nuova norma.
-Ancora necessarie pubblicazione/CIpropria sullo SHAfinale primaDONE07.
-CAD05READY su04,08dipende da06/07;135/140DONEinvariato.
+CAD07 DONE:6477bb28165026236933e9aeef70478350ab97d5, CI42390593313success
+con sette job richiesti positivi, incluse entrambe riaperture SQLite crossOS.
+Undici nuovi test,11gate locali su468input invariati:981/981workspace,938core,
+18tooling/24Python. Nessun first; consenso qualificato prima del filtrodecesso.
+
+CAD05 WAITING_GATE:6testnuovi+52regressione positivi, solo accettazione e
+documentazione, codiceproduttivo invariato. Sette gate finali exit0 su469input
+invariati:987workspace/0fail/6ignored,58allfeatures e58core senza bundle/0fail;
+fmt/Clippy/release/boundary positivi. Log/conteggi/inventario verificati.
+Providerfile/SQLite reali, ABORT/PROCEED e B2Absent contro Present(0).
+Pubblicazione/CIpropria sullo SHAfinale ancora necessarie primaDONE05.
+08READY su06/07qualificate, da avviare durante attesa remota05.
 
 Single-agent, nessun background/delega. NessunaFROZEN/release/tag o chiave
 operativa generata; docs/migration preesistente preservata ed esclusa.
@@ -6728,3 +6733,68 @@ nessunDONE07 anticipato. Durante sola attesa remota, preflight05indipendente
 su04/PERSIST09 qualificati;08attende07DONE. Scope current-input, nessuno
 storico cumulativo simulato. Docs/migration preesistente esclusa.
 AUTO_CONTINUE single-agent, nessun background/delega o nuova release.
+
+
+## CAD07 pubblicata / preflight CAD05 — 7 novembre 2026
+
+6477bb28165026236933e9aeef70478350ab97d5 pubblicato, CI42390593313 avviata sullo
+SHAesatto; prima lettura in_progress, nessunDONE07 e135/140invariato. Timeout
+revisione automatica GitHub risolto con unico retry consentito; non un giudizio
+di insicurezza né una qualifica, nessuna nuova conferma ordinaria necessaria.
+
+Avviata05indipendente: prerequisiti corretti da prompt03/PERSIST10 realmente
+qualificati (i precedenti riferimenti04/09 erano imprecisi).04giàDONE supporta
+la prova più forte sui progressivi. Corewarning/consenso/inventario già esistenti:
+qualificare composizioneCAD con providerfile reale e SQLite, non duplicare
+API/UI o simulare FullCAD clinico. T-CAD-05-preflight.md. AUTO_CONTINUE
+single-agent, niente background, docs/migration preservata/esclusa.
+
+
+## CAD05 — accettazione locale positiva / gate finali
+
+Sei casi nuovi in cad_progressives.rs+52regressione=58positivi; Clippyworkspace
+allfeatures positivo. Si riusano warning/consenso/SourceWire/proiezioni/SQLite
+esistenti e providerfile reale su materiale pubblico sintetico. Nessun codice
+produttivo modificato. Due errori preliminari dei test corretti: orologiohost
+non disponibile e mancata distinzione JSONpubblico/prova privata; log preservati,
+nessuna protezione indebolita. Nuova guida MISSING_TRACES.md e report05dettagliato.
+
+Sette gate finali appropriati al delta tests/docs: fmt, Clippyworkspace,
+workspace intero, regressioneallfeatures ecore senza bundle, release, boundary.
+Nessun test UIallfeatures ripetuto localmente sullo stesso codiceprodotto;
+CI05completa default/allfeatures/core suLinux/MSVC ancora obbligatoria.
+Runnerforeground python3 /tmp/lintra-cad05-local-gates.py; jobcompilazione2,
+sourcehashprima/dopo. Non mutare source/docscomponente/indice/HEAD durante i gate.
+
+CAD07terza lettura: entrambi nativi e confronti positivi, resta riapertura
+SQLite Windows dallo snapshotLinux. NonDONE07 e135/140immutato; letturafinale
+aggiuntiva motivata autorizzata, nessuna pipeline duplicata.
+
+
+## QUALITY GATE / HANDOFF — CAD07 DONE, prosecuzione CAD05
+
+CI42390593313completed/success su6477bb28165026236933e9aeef70478350ab97d5:
+Linux/MSVC,3confronti JSONL/pixel e2riapertureSQLite crossOS tutti positivi.
+PackagingUI opzionale skipped. Letturafinaleaggiuntiva necessaria dopo terza
+lettura con riaperturaWindowspendente; nessuna pipeline duplicata. Dossier
+T-CAD-07-native-ci.json.136/140DONE97,1%,4aperte.
+Recap07: compiler temporal/capability/dependencies/plans, QualifiedTarget e
+seconda passata/diagnostica, componenteconclusions.1 con13campi e11testnuovi.
+Nessun codice normativo inventato o storage/HMAC/FROZEN modificato.
+
+05prosegue in gate locale:58testmirati positivi e solo modulo accettazione/
+documenti cambiati. Non mutare indice/HEAD finché il runner05termina; chiusura
+07documentale sarà committata dopo il gate05.08èREADY ma non avviata durante
+gate locali. AUTO_CONTINUE single-agent, no background; docs/migration esclusa.
+
+
+## HANDOFF locale CAD05 / pubblicazione e WAITING_GATE
+
+Sette gate positivi,469impronte finali invariate;987workspace,58regressione
+allfeatures e58core senza bundle,0fail finali. Fmt/Clippy/release/boundary
+exit0.11log/inventario e conteggi verificati, codiceprodotto invariato.
+Commit di chiusura07documentale, poi05test/guide/dossier con pathespliciti
+escludendo docs/migration. CI05completa Linux/MSVC propria necessaria prima
+DONE.136/140invariato. Durante attesa05iniziare08READY su06/07qualificate.
+Nessun nuovo stato partial, policy/crypto/API/FROZEN alterata, credenziale
+operativa o dato reale. AUTO_CONTINUE single-agent, no background.

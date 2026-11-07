@@ -67,3 +67,11 @@ verificati. Nessun processo di build attivo. Ora si può modificare indice/HEAD.
 Report/status aggiornati, pubblicare07 con pathespliciti ed escludere
 docs/migration. DispatchCI Linux/MSVC, registrareSHA/runID; nonDONE07.
 Poi preflight05 indipendente. Nessuna release o codice privato/paziente.
+
+
+## STATO TERMINALE — CAD07 DONE
+
+CI42390593313success su6477bb2 esatto, settejob positivi.136/140DONE97,1%.
+Nessun codice07da riprendere.05attiva in gate locale, leggere recovery05.
+Chiusuradocumentale07 pronta da committare dopo la sequenza05 per conservare
+indice/HEAD osservati da build.rs.08READY dopo05pubblicata/in attesa remota.

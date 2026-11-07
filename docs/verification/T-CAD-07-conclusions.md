@@ -1,8 +1,8 @@
 # T-CAD-07 — conclusioni e decesso sui file correnti
 
-WAITING_GATE, 7 novembre 2026. Undici test nuovi+62regressione=73positivi,
+DONE, 7 novembre 2026. Undici test nuovi+62regressione=73positivi,
 0fail/0ignored; Clippyworkspacealltargetsallfeatures positivo. Undici gate completi
-locali conclusi positivamente; nessunDONE07 o gate nativo proprio ancora attribuito.
+locali conclusi positivamente; CI42390593313 success sullo SHA6477bb2 con sette job richiesti positivi.
 Prontezza/fonti/limiti nel preflight07. CAD06 giàDONE sulla CI42372080602.
 
 ## Compilazione
@@ -128,3 +128,11 @@ Nessuna modifica sorgente durante l'intera sequenza.
 
 Pubblicazione e CIpropria Linux/MSVC ancora necessarie primaDONE07; gli esiti
 06non vengono attribuiti a questo delta. Nessuna release/tag nuova.
+
+
+## Quality Gate finale
+
+CI42390593313completed/success su6477bb28165026236933e9aeef70478350ab97d5.
+Sette job richiesti positivi:Linux/MSVC,3confronti e2riapertureSQLite crossOS.
+PackagingUI opzionale skipped. Fonte completa T-CAD-07-native-ci.json, ultima
+rispostaAPI conservata separatamente. Task07DONE,136/140complessive.
