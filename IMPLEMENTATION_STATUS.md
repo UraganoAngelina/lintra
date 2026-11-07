@@ -2,9 +2,9 @@
 
 Consuntivo aggiornato al **2026-11-07**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD04 DONE, CAD06 in verifica locale
+## Frontiera corrente — CAD06 DONE, CAD07 in sviluppo
 
-**134/140 DONE = 95,7%**; restano 6 task: CAD05–08, CAD12 e P18-04.
+**135/140 DONE = 96,4%**; restano 5 task: CAD05, CAD07–08, CAD12 e P18-04.
 CAD02 DONE con CI42067927663. CAD03 e CAD11 DONE con CI42203885693 su6af5f85.
 CAD09 DONE con CI42231182241 sullo SHA1740a6dd29ac705d29b0cb0425daacf919a6b17e:
 Linux/MSVC, tre confronti JSONL/pixel e due riaperture SQLite crossOS positivi.
@@ -24,16 +24,17 @@ JSONL/pixel e due riaperture SQLite crossOS. Quindici test CAD04 qualificati;
 base11gate e affinamento6gate locali distinti, sorgenti finali verificate.
 Report T-CAD-04-progressives.md e risultato T-CAD-04-native-ci.json.
 
-CAD06 WAITING_GATE: implementazione locale qualificata,11test nuovi+51regressione.
-Undici gate finali positivi:970workspace standard e970allfeatures,927core senza
-bundle,18tooling e24Python;0fail finali.464impronte sorgenti invariate, log e
-conteggi verificati. Retry8per variabile LINTRA_TEST_BIN omessa nel runner,
-tentativo fallito conservato; nessuna modifica prodotto per il retry.
-Componente A/B2/C con13campi originali e PK complete, compilatore/seconda passata
-generici. Fonte/report/ledger in docs/verification/T-CAD-06-*. CI nativa propria
-ancora necessaria primaDONE06.134/140DONEinvariato.
-CAD05READY su04; CAD07indipendenteREADY. Prossima durante attesa remota06,
-una task alla volta con prerequisiti/gate reali.
+CAD06 DONE:3719d147f20eb07026342a8f0722f71aa5486c4b, CI42372080602 success
+con sette job richiesti positivi: Linux/MSVC, tre confronti JSONL/pixel e due
+riaperture SQLite crossOS. Undici test nuovi,11gate locali con464hash invariati;
+970/970workspace,927core,18tooling,24Python. Retrytooling per ambiente omesso
+conservato separatamente, nessun indebolimento dei controlli.
+
+CAD07 IN_PROGRESS: compilazione/esecuzione after_date su contesto qualificato,
+componente A/B1/C con consenso data/motivo prima del filtrodecesso. Dieci test
+iniziali+62regressione positivi; aggiunta verifica di rinomina e campo diagnostico
+ristretto, regressione finale in corso. Ancora da qualificare con gate completi
+locali e CI propria; nessunDONE07 implicito. CAD05READY su04,08dipende da06/07.
 
 Single-agent, nessun background/delega. NessunaFROZEN/release/tag o chiave
 operativa generata; docs/migration preesistente preservata ed esclusa.
@@ -6668,3 +6669,33 @@ Chiudere documenti04 in commit proprio, poi commit/push06 con percorsi espliciti
 eCI completaLinux/MSVC. Durante attesa avviare preflight07 indipendente.
 Nessun nuovo crate o storage/HMAC, nessunaFROZEN/release/tag; docs/migration
 preservata ed esclusa. AUTO_CONTINUE single-agent.
+
+
+## CAD06 pubblicata / preflight CAD07 — 7 novembre 2026
+
+Chiusura04documentale31f1d56 e implementazione06 3719d147f20eb07026342a8f0722f71aa5486c4b
+pubblicate sul branch concordato. CI06 42372080602 prima lettura in_progress
+sullo SHA esatto, nessunDONE06;134/140invariato. Git pulito salvo docs/migration
+preesistente esclusa prima dei nuovi documenti di sessione.
+Durante attesa remota avviata07indipendente su02/P10/P13/G0: preflight07letto,
+consenso qualificato suconclusione prima del filtrodecesso, nessun first o
+nuovo codice normativo. Fonte e perimetro in T-CAD-07-preflight.md.
+AUTO_CONTINUE single-agent, no background; nessuna nuova release/tag.
+
+
+## QUALITY GATE / HANDOFF — CAD06 DONE, prosecuzione CAD07
+
+CI42372080602 completed/success su3719d147f20eb07026342a8f0722f71aa5486c4b,
+sette job richiesti tutti positivi e packagingUI opzionale skipped. Evidenza
+completa T-CAD-06-native-ci.json;135/140DONE96,4%,5aperte. Recap06: schema
+temporal/compiler/plans/dependencies e engine flow_validator/cross_diagnostics,
+componente2024-06.suspensions.1 e11testcad_suspensions. Nessuna APIapplicativa
+nuova, norma hardcoded, storage/HMAC o FROZEN modificata.
+
+CAD07 già avviata indipendente,10testnuovi+62di regressione positivi. I primi
+due fallimenti erano dovuti alla normalizzazione di un vincolo su codice
+facoltativo mancante: aggiunta guardia di presenza nella configurazione, non
+alterata la semantica engine. Nuova verifica generica di rinomina/campo fonte
+in esecuzione; gate completi non ancora avviati. Proseguire07 dopo regressione
+e documentazione con scope current-input, niente storia cumulativa simulata.
+Single-agent, no background; docs/migration preservata/esclusa.

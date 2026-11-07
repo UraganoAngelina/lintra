@@ -69,3 +69,12 @@ runner: ledger/log originali preservati, retry8senza cambi prodotto poi9/10
 positivi. Nessun processo di build attivo. Ora si può aggiornare indice/HEAD.
 Report/status/inventario aggiornati. Pubblicare chiusura04e06con pathespliciti
 escludendo docs/migration, dispatchCI06 e registrareSHA/runID. NonDONE06.
+
+
+## STATO TERMINALE — CAD06 DONE
+
+CI42372080602 success sullo SHA3719d14 esatto, settejob positivi e soli
+packagingUI opzionali skipped.135/140DONE96,4%. Nessun codice06da riprendere.
+CAD07attiva con compiler/engine/componenti/test modificati; usare sua recovery.
+Documenti06da committare dopo il test mirato07 corrente, per non mutare HEAD
+mentre build.rs è attivo. Nessun processo06 ancora in esecuzione.

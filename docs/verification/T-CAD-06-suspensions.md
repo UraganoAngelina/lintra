@@ -1,9 +1,9 @@
 # T-CAD-06 — sospensioni su input correnti
 
-WAITING_GATE, 7 novembre 2026. Prerequisiti/fonti/perimetro nel preflight06.
+DONE, 7 novembre 2026. Prerequisiti/fonti/perimetro nel preflight06.
 Undici test CAD06 e51test di regressione positivi,0fallimenti/0ignored.
 Gli11gate locali sono conclusi positivamente su input fermi.
-Nessun gate nativo06 eseguito né DONE anticipato.
+CI42372080602 success sullo SHA3719d14 con sette job richiesti positivi.
 
 ## Compilazione e guardie
 
@@ -157,3 +157,11 @@ Il ledger corrente conserva il motivo del retry e l'ambiente esplicito.
 
 Ancora necessaria CI completa sul commit pubblicato prima di DONE06.
 Nessun Windows locale eseguito, nessuna attribuzione aCI04 del nuovo codice.
+
+
+## Quality Gate finale
+
+CI42372080602 completed/success sullo SHA3719d147f20eb07026342a8f0722f71aa5486c4b.
+Linux/MSVC, tre confronti JSONL/pixel e due riaperture SQLite crossOS positivi;
+packagingUI opzionale skipped. Risultato completo in T-CAD-06-native-ci.json.
+Task06DONE;135/140complessive. Nessuna nuova release o chiave operativa.
