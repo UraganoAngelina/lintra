@@ -59,3 +59,15 @@ per non mutare HEAD/indice nella sequenza corrente. Nessun'altraCI pendente.
 cambiamento prodotto. Ora consentite modifiche indice/HEAD. Chiudere07docs
 poi pubblicare05test/guide/dossier, CIpropria obbligatoria, nonDONE05.
 08READY può avviarsi durante attesa remota05. Nessuna buildlocale ancora attiva.
+
+
+## Pubblicata05 / prerequisiti08 corretti
+
+Chiusura07documentale baae406 e05 84444c2c12ec235f32fcf4d1c750229e5c7db490
+pubblicate. CI05 42394000741 prima lettura in_progress sullo SHA esatto.
+Il prompt08richiede anche05DONE, oltre06/07/P9. NON iniziare08prima del gate05.
+Le precedenti frasi08READY erano imprecise, corrette prima di scrivere codice08.
+12e18-04dipendono a loro volta da tutte: nessun'altra task indipendenteREADY.
+AttendereCI05, non dichiarareDONEnéBLOCKED per sola attesa. Poi aggiornare
+indice/status/report e iniziare08automaticamente. Nessun'altra buildlocale
+attiva. Fonti econtratti8/12letti solo per audit dipendenze, non implementati.

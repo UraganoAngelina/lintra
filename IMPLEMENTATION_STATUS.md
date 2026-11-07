@@ -41,7 +41,8 @@ invariati:987workspace/0fail/6ignored,58allfeatures e58core senza bundle/0fail;
 fmt/Clippy/release/boundary positivi. Log/conteggi/inventario verificati.
 Providerfile/SQLite reali, ABORT/PROCEED e B2Absent contro Present(0).
 Pubblicazione/CIpropria sullo SHAfinale ancora necessarie primaDONE05.
-08READY su06/07qualificate, da avviare durante attesa remota05.
+08attende anche05DONE secondo il prompt: nessuna implementazione prima del
+suo gate nativo.06/07/P9giàqualificate;12eP18-04non indipendenti.
 
 Single-agent, nessun background/delega. NessunaFROZEN/release/tag o chiave
 operativa generata; docs/migration preesistente preservata ed esclusa.
@@ -6798,3 +6799,18 @@ escludendo docs/migration. CI05completa Linux/MSVC propria necessaria prima
 DONE.136/140invariato. Durante attesa05iniziare08READY su06/07qualificate.
 Nessun nuovo stato partial, policy/crypto/API/FROZEN alterata, credenziale
 operativa o dato reale. AUTO_CONTINUE single-agent, no background.
+
+
+## CAD05 CI avviata / audit prontezza residui
+
+84444c2c12ec235f32fcf4d1c750229e5c7db490 pubblicato, CI42394000741 prima
+lettura in_progress sullo SHA esatto. NessunDONE05;136/140invariato.
+Ricontrollati i prompt:08richiede05/06/07/P9 (non soltanto06/07),12richiede
+04..11/PERSIST12 eP18-04richiede tutte. Corrette le precedenti indicazioni
+di prontezza08 formulate prima della lettura del prompt: nessun codice08
+è stato iniziato e nessuna dipendenza è stata aggirata.
+
+Non c'è altra implementazione indipendente READY durante questaCI. Stato
+WAITING_GATE con prosecuzione automatica dopo qualifica05;08resta NOT_STARTED,
+non un nuovo blocco normativo o una richiesta di consenso all'autore.
+Docs/migration preservata/esclusa; niente background/delega o pipeline duplicate.
