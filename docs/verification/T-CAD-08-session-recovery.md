@@ -45,3 +45,8 @@ P18-04richiede tutte. Nessun’altra task indipendenteREADY: WAITING_GATE,
 nessun consenso ordinario necessario. Dopo gate08effettivo aggiornare index/
 stato/report/handoff, poi avviare preflight12su tutte le dipendenze verificate.
 Docs/migration sempre esclusa; niente background/delega o nuova release/tag.
+
+
+AGGIORNAMENTO FINALE: CAD08DONE, CI42476999364success sullo SHA3388527 esatto,
+7job/step/log e due JSONimport verificati. Dossierquality-gate completo.
+138/140DONE; prossimo passo preflightCAD12, non ulteriori lettureCI08.

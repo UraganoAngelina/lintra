@@ -1,0 +1,113 @@
+{
+  "task": "T-CAD-08",
+  "date": "2026-11-08",
+  "run": 42476999364,
+  "sha": "3388527a2d4a8feee3e37acc1a4c56a753d5f7e1",
+  "status": "DONE",
+  "required_jobs": [
+    {
+      "databaseId": 128720461650,
+      "name": "Verify (x86_64-pc-windows-msvc)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "databaseId": 128720461785,
+      "name": "Verify (x86_64-unknown-linux-gnu)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "databaseId": 128728441297,
+      "name": "Compare production UI regression pixels",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "databaseId": 128728441331,
+      "name": "Compare native desktop theme pixels",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "databaseId": 128728441358,
+      "name": "Reopen counterpart snapshot (x86_64-pc-windows-msvc)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "databaseId": 128728441382,
+      "name": "Compare Linux and Windows JSONL bytes",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "databaseId": 128728442482,
+      "name": "Reopen counterpart snapshot (x86_64-unknown-linux-gnu)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "required_steps": {
+    "Verify (x86_64-pc-windows-msvc)": [
+      "Test",
+      "Test all features",
+      "Test core without embedded bundle",
+      "Test tooling and extracted data bundle",
+      "Build reproducible release and verify artifact"
+    ],
+    "Verify (x86_64-unknown-linux-gnu)": [
+      "Test",
+      "Test all features",
+      "Test core without embedded bundle",
+      "Test tooling and extracted data bundle",
+      "Build reproducible release and verify artifact"
+    ],
+    "Compare production UI regression pixels": [
+      "Compare actual production pixels in both themes and scales"
+    ],
+    "Compare native desktop theme pixels": [
+      "Compare both themes at 1x and 2x without tolerance"
+    ],
+    "Compare Linux and Windows JSONL bytes": [
+      "Compare exact inventory, UTF-8 LF and unmodified bytes"
+    ],
+    "Reopen counterpart snapshot (x86_64-pc-windows-msvc)": [
+      "Reopen and authenticate the database produced by the opposite OS"
+    ],
+    "Reopen counterpart snapshot (x86_64-unknown-linux-gnu)": [
+      "Reopen and authenticate the database produced by the opposite OS"
+    ]
+  },
+  "log_sha256": "69d244b9a776f46bf21a5cc5d77704895f5d75723e3479eca5cee6b6d44d4508",
+  "log_positive_checks": [
+    "two exact pixel comparisons, themes and scales",
+    "packaging cross-OS probe: PASS",
+    "two import_opposite_native_snapshot_fixture tests passed"
+  ],
+  "sqlite_imports": [
+    {
+      "consumer_os": "windows",
+      "fixture_kind": "lintra.synthetic-sqlite-transfer.v1",
+      "namespaces_verified": 2,
+      "producer_os": "linux",
+      "protection_verified": true,
+      "retained_occurrence_verified": true,
+      "snapshots_verified": 3,
+      "source_db_sha256": "a133f9e523e240e303be3ad9fa43cce2968d0187cc53f5f944f47e71f5e59a3a"
+    },
+    {
+      "consumer_os": "linux",
+      "fixture_kind": "lintra.synthetic-sqlite-transfer.v1",
+      "namespaces_verified": 2,
+      "producer_os": "windows",
+      "protection_verified": true,
+      "retained_occurrence_verified": true,
+      "snapshots_verified": 3,
+      "source_db_sha256": "a133f9e523e240e303be3ad9fa43cce2968d0187cc53f5f944f47e71f5e59a3a"
+    }
+  ],
+  "local_commands_verified": 11,
+  "current_source_hashes_verified": 475,
+  "optional_ui_packaging": "skipped, excluded from required seven jobs"
+}

@@ -53,7 +53,7 @@ restano nel kit storico. Nessuna conclusione di task impone lo stop della sessio
 | T-CAD-05 | DONE | [prompt](TASK_PROMPTS/T-CAD-05.md) |
 | T-CAD-06 | DONE | [prompt](TASK_PROMPTS/T-CAD-06.md) |
 | T-CAD-07 | DONE | [prompt](TASK_PROMPTS/T-CAD-07.md) |
-| T-CAD-08 | IN_PROGRESS | [prompt](TASK_PROMPTS/T-CAD-08.md) |
+| T-CAD-08 | DONE | [prompt](TASK_PROMPTS/T-CAD-08.md) |
 | T-CAD-09 | DONE | [prompt](TASK_PROMPTS/T-CAD-09.md) |
 | T-CAD-10 | DONE | [prompt](TASK_PROMPTS/T-CAD-10.md) |
 | T-CAD-11 | DONE | [prompt](TASK_PROMPTS/T-CAD-11.md) |

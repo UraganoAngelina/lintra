@@ -1,6 +1,6 @@
 # T-CAD-08 — tre mesi calendario e sospensioni
 
-IN_PROGRESS / gate locali qualificati, 8 novembre 2026.23prove nuove positive;
+DONE, 8 novembre 2026.23prove nuove positive;
 11gate finali exit0 con475impronte sorgenti invariate. Prerequisiti verificati nel preflight. Nessun gate
 nativo08 attribuito e nessuna conformità CAD completa dichiarata.
 
@@ -182,3 +182,14 @@ prima lettura in_progress sullo SHA esatto, Linux/MSVC in_progress,
 packagingUI opzionale skipped. Nessun risultato Windows anticipato.
 T-CAD-08 WAITING_GATE,137/140DONE invariato. T-CAD-12 attende questo gate;
 nessuna implementazione indipendenteREADY e nessuna nuova decisione richiesta.
+
+
+## Quality Gate finale — 8 novembre 2026
+
+CI42476999364 completed/success sullo SHA3388527a2d4a8feee3e37acc1a4c56a753d5f7e1.
+Sette job/step obbligatori verificati, log positivi dei confronti pixel/JSONL
+e delle due importSQLite. JSONimport conservati:3snapshot/2namespace/protezione/
+retained occurrence per direzione. Dossier T-CAD-08-quality-gate.json con jobID,
+step richiesti e impronta log.11gate locali e475hashcorrenti confermati.
+PackagingUI opzionale skipped. DONE08,138/140; preflight12. Le attese sopra
+sono cronologia e non lo stato corrente. Nessuna falsa qualifica CAD completa.

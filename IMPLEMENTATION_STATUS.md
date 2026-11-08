@@ -2,29 +2,17 @@
 
 Consuntivo aggiornato al **2026-11-08**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD05 DONE, CAD08 WAITING_GATE
+## Frontiera corrente — CAD08 DONE, CAD12 READY
 
-**137/140 DONE = 97,9%**; restano CAD08, CAD12 e P18-04.
-CAD05 DONE: commit84444c2c12ec235f32fcf4d1c750229e5c7db490,
-CI42394000741 completed/success con tutti i sette job richiesti positivi.
-Dossier T-CAD-05-native-ci.json; chiusura documentale792e734 pubblicata.
+**138/140 DONE = 98,6%**; restano CAD12 e P18-04 (conteggio task, non sforzo).
+CI42476999364 completed/success sullo SHA3388527a2d4a8feee3e37acc1a4c56a753d5f7e1.
+Sette job e step richiesti verificati: Linux/MSVC, tre confronti JSONL/pixel,
+due riapertureSQLite crossOS. Log positivi e due JSONimport conservati: ciascuno
+verifica3snapshot,2namespace, protezione e retained occurrence. PackagingUI
+opzionale skipped.11gate locali e475improntecorrenti ricontrollati.
+Dossier T-CAD-08-quality-gate.json. CAD12READY: avviare preflight integrato.
+P18-04attende12e risoluzione conflitti applicabili; nessunFROZEN implicito.
 
-CAD08 IN_PROGRESS:23prove nuove preliminari positive; la prima suite completa
-ha rilevato una regressione nel rifiuto della capability snapshot senza piano.
-Riprodotta e corretta richiedendo il piano snapshot compilato effettivo;
-14test SIOC persistence positivi dopo il fix. Gate finali11comandi exit0
-su475input invariati, ledger T-CAD-08-local-gates.json:1010/1010workspace,
-967core,18tooling e24Python,0fail; fmt/Clippy/release/boundary positivi.
-Commit3388527a2d4a8feee3e37acc1a4c56a753d5f7e1 pubblicato;CI42476999364 in_progress sullo SHA esatto.
-Prima lettura: Linux/MSVC in_progress, packagingUI opzionale skipped.
-Gate nativo ancora necessario primaDONE; nessuna nuova implementazioneREADY. NessunDONE08 o gate nativo
-anticipato. Provenienza25campi/5trace/PK complete/PDF/runtime verificata.
-CAD12 attende08DONE; P18-04 attende tutte. Single-agent, nessun background,
-docs/migration preesistente esclusa.
-
-## Registro precedente — CAD07 DONE, CAD05 in verifica locale
-
-**136/140 DONE = 97,1%**; restavano 4 task: CAD05, CAD08, CAD12 e P18-04.
 CAD02 DONE con CI42067927663. CAD03 e CAD11 DONE con CI42203885693 su6af5f85.
 CAD09 DONE con CI42231182241 sullo SHA1740a6dd29ac705d29b0cb0425daacf919a6b17e:
 Linux/MSVC, tre confronti JSONL/pixel e due riaperture SQLite crossOS positivi.
@@ -6916,3 +6904,17 @@ ordinarie, distanziate almeno60secondi. Diagnosi/log/letturefinali mancanti
 sono già autorizzati. Dopo sette job richiesti success, chiudere08e avviare12.
 Docs/migration preesistente preservata ed esclusa da tutti i commit.
 CI: https://github.com/UraganoAngelina/lintra/actions/runs/42476999364
+
+
+## QUALITY GATE / HANDOFF — CAD08 DONE, prosecuzione CAD12 — 8 novembre 2026
+
+Run42476999364 completed/success su3388527a2d4a8feee3e37acc1a4c56a753d5f7e1.
+Sette job richiesti verificati tramiteAPI, step e log: Linux/MSVC, pixel temi1x/2x,
+pixel UIproduttiva, JSONLbyte-esatti, SQLite Linux→Windows e inversa. Due JSONimport
+scaricati:3snapshot/2namespace/protezione/retained occurrence per direzione.
+11gate locali positivi e475improntecorrenti confermate. Nessuna nuova pipeline.
+CAD08DONE,138/140(98,6%). Recap: compiler/piani/dipendenze, periodo esplicito,
+calendario/unione/proroga, seconda passata, componente25campi e23prove.
+Nessuna modifica produttiva dopo3388527. CAD12READY, avvio preflight;
+P18-04non ancoraREADY. AUTO_CONTINUE single-agent, no background.
+Docs/migration preesistente esclusa; nessun nuovo contratto o FROZEN approvato.
