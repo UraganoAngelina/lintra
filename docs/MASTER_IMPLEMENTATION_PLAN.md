@@ -98,7 +98,7 @@ Ogni riga è un vincolo da rispettare. Modificarne uno richiede una nuova decisi
 | N-09 | DSL come AST controllato; vietati `eval`, scripting, codice dinamico | ARCH §11 |
 | N-10 | Logica a tre valori (`TruthValue::Unknown`); un valore non disponibile non è `false` | DET §19 |
 | N-11 | Violazione normativa ≠ errore di esecuzione: `Ok(CompletedInvalid)` vs `Err(ValidationRunError)`; `Cancelled` è un esito controllato | DET §3.3, §59–61, §159 |
-| N-12 | Ordine degli errori deterministico e contrattuale (trace → riga → campo → stage → regola) | DET §78–79, §161 |
+| N-12 | Ordine deterministico per passata e precedenze interne verificate del piano compilato (CNF-DIAGNOSTIC-ORDER-01 A; DET §79) | DET §78–79, §161 |
 | N-13 | Nessuna nota in linguaggio naturale diventa regola senza revisione; nessun LLM nel runtime normativo | ARCH §5.7, §36; DET §144 |
 | N-14 | Dato normativo mancante: boundary esplicita, mai assunzione | DET §146, §165 |
 | N-15 | Cross-record in due passate; il Context Index conserva solo i campi richiesti; `ProjectedRecord` è l'unico dato posseduto oltre la riga | ARCH §21; DET §68–73 |

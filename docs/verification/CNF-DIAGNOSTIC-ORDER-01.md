@@ -1,6 +1,7 @@
 # CNF-DIAGNOSTIC-ORDER-01 — ordine delle diagnostiche
 
-Stato: OPEN, registrato il 5 novembre 2026 durante T-P17-05; risoluzione separata.
+Stato corrente: A RATIFICATA, gate locali positivi, CI propria da qualificare.
+Registrato il 5 novembre 2026 durante T-P17-05; storia originale preservata.
 Fonti: DET §79 e §115, contratto a due passate, audit T-P17-05 e ratifica conclusiva DEC-17.
 
 Il runtime sequenziale emette per passata: prima locali/PK di tutti i tracciati,
@@ -15,3 +16,17 @@ riconciliare esplicitamente le fonti e preservare tracciabilità/determinismo/go
 Qualunque modifica del contratto pubblico o dell'output osservabile richiede il
 normale processo di approvazione architetturale. Il conflitto non blocca CAD-02
 che deve preservare il comportamento corrente senza risolverlo implicitamente.
+
+
+## Attuazione della ratifica A — 8 novembre 2026
+
+Ratifica umana con condizioni in CNF-DIAGNOSTIC-ORDER-01-ratification.md.
+Audit e quattro prove sintetiche nuove in dossier audit e tests/diagnostic_order.rs:
+ordine interno effettivo documentato, schemaorder, eventi senza campo, JSONLbyte
+identico, prefissi budget nelle due passate e cancellazione ai checkpoint reali.
+Nessun runtime, sink, algoritmo, golden o codice diagnostico modificato.
+DET79/115 e riferimenti necessari ARCH17/N12 allineati alla ratifica.
+Cinque gate locali exit0,477impronteferme:957core/0fail/6ignored e47regressioni
+allfeatures/0fail; fmt/Clippyworkspaceallfeatures/boundary/pixel positivi.
+Ledger/inventario verificati. La chiusura tecnica RESOLVED attende i gate nativi
+pertinenti sul proprioSHA; nessuna chiusuraP18-04/M9 o DONE12 implicita.

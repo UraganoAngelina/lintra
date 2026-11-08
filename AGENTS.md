@@ -427,3 +427,40 @@ automatica: prima profiling reale CAD/SIOC e proposta autorizzata. Conflitto
 d’ordine separato aperto, senza modifica prodotto. Gate finale42038174791 positivo
 sullo SHA esatto; T-P17-05 DONE come valutazione, non feature parallela.
 Proseguire T-CAD-02 con prerequisiti verificati e successive READY; single-agent.
+
+## Ratifiche dell'autore — 8 novembre 2026
+
+CNF-DIAGNOSTIC-ORDER-01 A ratificata con condizioni vincolanti: verificare ordine
+interno reale prima di DET79/115; solo documentazione e test mirati, nessuna
+modifica funzionale a runtime/sink/ordinamento/budget/cancellazione. Prove S0/T1,
+prefissi in entrambe le passate, cancellazione e regressione. Chiudere il CNF
+solo dopo gate effettivi; nessuna chiusura automaticaP18-04. Fonte operativa:
+docs/verification/CNF-DIAGNOSTIC-ORDER-01-ratification.md e messaggio autore.
+
+ADR-HISTORY-EXISTENCE-001 A ratificata esclusivamente per contratto attuativo,
+analisi/versionamento proposto, modello fatti/copertura/provenienza/query/
+lifecycle/transazioni/privacy/compatibilità e matrice verificabile. STOP al
+limite della specifica e relativo handoff: NON implementare codec/storage/fatti
+persistenti/crypto/runtimehistory né disabilitare fail-closed senza successiva
+autorizzazione separata. Positive witness non richiede universo completo; False
+richiede copertura normativa qualificata, non prima sessioneDB. Legacy/missing/
+incompatibilità semantica danno Unknown secondo causa; errori tecnici distinti.
+Annullamenti di iniziali non determinati dai contratti e nuovi usi del segreto
+richiedono decisioni materiali separate. Nessuna nuova normaCAD, migrazione,
+FROZEN/CAD12DONE/M9 impliciti. Fonte operativa:
+docs/verification/ADR-HISTORY-EXISTENCE-001-ratification.md e messaggio autore.
+Proseguire soltanto attività indipendentiREADY nel loro scope; single-agent.
+
+### Ratifica sostitutiva ADR-HISTORY-EXISTENCE-001 — successiva, 8 novembre2026
+
+Il limite alla sola specifica scritto sopra è REVOCATO dal successivo messaggio
+dell'autore. Autorizzati specifica tecnica breve→implementazione generica→codec/
+fatti/copertura/transazioni→integrazione applicativa realeCAD83→golden→gate→
+CAD12DONE→P18-04quandoREADY→M9effettiva. Nessuna seconda approvazione ordinaria
+né rinvio postM9/fase nuova. Restano True con prova valida, False con universo
+completo provato, Unknown se manca base affidabile; no migrazione automatica,
+archivi approvati invariati, privacy/HMACv1/ACL/chiavi immutati. Se l'autenticità
+richiede davvero un nuovo protocolloCrypto, sospendere solo quel punto e chiedere
+scelta mirata; stessa regola per casi normativi realmente non coperti. Nessuna
+nuova norma implicita. Fonte operativa completa: docs/verification/
+ADR-HISTORY-EXISTENCE-001-implementation-ratification.md e messaggio autore.

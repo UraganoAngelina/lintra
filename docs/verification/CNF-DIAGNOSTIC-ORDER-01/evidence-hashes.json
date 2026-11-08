@@ -1,0 +1,38 @@
+{
+  "docs/verification/CNF-DIAGNOSTIC-ORDER-01/gate-0.log": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "docs/verification/CNF-DIAGNOSTIC-ORDER-01/gate-1.log": {
+    "sha256": "601d1f2ce3f18e313e2eb5801dbcb617224beb699014feebd8cd6c46cd34585c",
+    "bytes": 273
+  },
+  "docs/verification/CNF-DIAGNOSTIC-ORDER-01/gate-2.log": {
+    "sha256": "e61b13fcd2d3228f2bac33f5d11e13ad4acacade21a47889f45fed9f6e9e04ad",
+    "bytes": 103569
+  },
+  "docs/verification/CNF-DIAGNOSTIC-ORDER-01/gate-3.log": {
+    "sha256": "79bdd958662cca11ef282dfdbeadd12d2b035e3e79891e3f84e0eb8fcbd46b1d",
+    "bytes": 4899
+  },
+  "docs/verification/CNF-DIAGNOSTIC-ORDER-01/gate-4.log": {
+    "sha256": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f",
+    "bytes": 60
+  },
+  "docs/verification/CNF-DIAGNOSTIC-ORDER-01/preliminary-compile.log": {
+    "sha256": "626e3f84e4610b2bceb8dc6b4f72f2bd94838e261bc2a3f64e59fb0a7e1d95a5",
+    "bytes": 743
+  },
+  "docs/verification/CNF-DIAGNOSTIC-ORDER-01/preliminary-domain-symbol.log": {
+    "sha256": "4a3f453bc7bd655de6f7a38c0f98e558303e1f50a53c9c8027019dff11a5c5ed",
+    "bytes": 2177
+  },
+  "docs/verification/CNF-DIAGNOSTIC-ORDER-01/preliminary-real-elapsed.log": {
+    "sha256": "acfeea0e76a8875a35baaa774721abdf2ae4d411baf208ba3c72544920b3361d",
+    "bytes": 18425
+  },
+  "docs/verification/CNF-DIAGNOSTIC-ORDER-01/preliminary.log": {
+    "sha256": "f6fd2b05506f358f5d8a97d6d39c642578f677c82b301f0d1d4cfd6883448ba1",
+    "bytes": 668
+  }
+}

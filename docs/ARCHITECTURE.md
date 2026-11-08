@@ -714,6 +714,12 @@ Ordine raccomandato:
 
 L'ordine deve ridurre gli errori derivati.
 
+La lista descrive responsabilità della pipeline, non una chiave globale di
+ordinamento del report. Il contratto osservabile Full è per passata secondo
+DET §79 e la ratifica CNF-DIAGNOSTIC-ORDER-01 A dell'8 novembre2026: locali/PK
+prima delle cross, con le precedenze interne effettivamente verificate e
+senza riordinare gli errori fra campi, regole locali e PK.
+
 Esempio: se la riga è più corta del previsto, non fare slicing fuori range.
 
 ---

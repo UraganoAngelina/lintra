@@ -242,3 +242,26 @@ confronto locale del testo logico prima della proiezione e nessun bypass storico
 [Implementazione, componenti, comportamento e limiti](../verification/T-CAD-02-implementation.md).
 Nessuna nuova norma CAD, variazione di PK, DSL Parameter generale o parallelismo.
 I gate di questa consegna sono distinti dalla precedente rc.2 e da DEC-17.
+
+## CNF-DIAGNOSTIC-ORDER-01 — A RATIFICATA CON CONDIZIONI, 2026-11-08
+
+Autore: ordine esterno per passata, comportamento sequenziale invariato.
+Prima di DET79/115 audit interno effettivo, test S0/T1/prefissi/cancellazione e
+Quality Gate. Ratifica non chiude automaticamente il CNF e non completaP18-04.
+[Condizioni vincolanti](../verification/CNF-DIAGNOSTIC-ORDER-01-ratification.md).
+
+## ADR-HISTORY-EXISTENCE-001 — A RATIFICATA PER LA SOLA SPECIFICA, 2026-11-08
+
+Fatti minimali generici, copertura/provenienza, True con prova autonoma, False
+solo con universo completo, Unknown distinto da errore tecnico. Autorizzata la
+specifica attuativa e matrice di verifica; non codec, crypto, migrazione o runtime.
+Compilerhistory resta fail-closed; CAD12nonDONE, nessunFROZEN/M9.
+[Condizioni vincolanti](../verification/ADR-HISTORY-EXISTENCE-001-ratification.md).
+
+### ADR-HISTORY-EXISTENCE-001 — autorizzazione implementativa sostitutiva, 2026-11-08
+
+Successivo messaggio dell'autore: revocato il limite alla sola specifica; autorizzati
+implementazione/integrità/copertura/versioning/transazioni e qualifica reale dentro
+T-CAD-12, senza rinvii postM9 o conferme ordinarie. Privacy/crypto/norma/fail-closed
+non implementati preservati. [Ratifica sostitutiva](../verification/ADR-HISTORY-EXISTENCE-001-implementation-ratification.md).
+La voce precedente resta storia e non costituisce più uno stop implementativo.

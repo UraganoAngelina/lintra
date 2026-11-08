@@ -2315,23 +2315,52 @@ Per reproducibilità:
 
 # 79. Ordine deterministico degli errori
 
-Per lo stesso input/schema, il report deve avere ordine stabile.
+Ratifica CNF-DIAGNOSTIC-ORDER-01 A dell'8 novembre 2026: per gli stessi input,
+schema compilato, reference data e opzioni, le diagnostiche seguono un ordine
+deterministico. In Full la precedenza esterna è la passata: prima locali e
+unicità PK di tutti i tracciati, poi controlli cross-record/cross-trace.
+Non è previsto un riordinamento globale per tracciato fra le passate.
 
-Ordine minimo:
+Le precedenze interne verificate nel runtime sequenziale sono:
 
-```text
-trace order
-→ line number
-→ field physical order
-→ validation stage order
-→ rule declaration order
-```
+1. **PASS 1:** tracciati nell'ordine dello schema, righe fisiche in ordine di lettura.
+   Una riga di larghezza errata emette soltanto il relativo errore record-level.
+   Per una riga utilizzabile, campi nell'ordine fisico compilato; per ogni campo
+   presenza, estrazione logica, datatype e constraint nell'ordine compilato, con
+   arresto al primo errore primario. Il compiler colloca i constraint non-reference
+   prima dei reference, conservando l'ordine relativo nei due gruppi. L'eventuale
+   binding namespace segue la pipeline valida del proprio campo. Dopo tutti i
+   campi: regole locali nell'ordine relativo di dichiarazione, quindi controllo
+   PK del collector. Non riordinare un errore di regola o di PK davanti agli
+   errori di campo già emessi solo perché cita un campo fisicamente precedente.
+2. **PASS 2:** tracciati nell'ordine dello schema, righe delle proiezioni disponibili
+   in ordine del loro numero reale, regole nell'ordine del piano cross compilato.
+   Il piano conserva l'ordine delle regole cross dichiarate e aggiunge i controlli
+   temporali nell'ordine della policy; non è ordinato per campo diagnostico.
+   Le assertion seguono il loro ordine; la regola produce la propria diagnostica
+   secondo le precedenze violation/indeterminatezza già contrattualizzate.
+3. I controlli di evento restano nel rispettivo piano e nell'iterazione delle
+   entità reali. In assenza di campo locale pertinente, field è assente; nessuna
+   posizione, riga o identificativo clinico viene inventato. Errori tecnici di
+   preflight/I/O/schema/sink sono errori di esecuzione, non falsi record-level.
 
-Questo è essenziale per:
+Questa gerarchia descrive le precedenze effettive: la vecchia formula sintetica
+trace → line → field → stage → rule non costituiva una chiave globale valida
+per tutti i controlli. È intenzionale che locale T1 preceda cross S0 quando
+S0 è il primo tracciato. Nessun nuovo sort, spool, buffer globale di errori,
+rilettura o passata normativa viene introdotto per questa ratifica.
 
-- golden tests;
-- diff di report;
-- audit.
+Budget e cancellazione mantengono le semantiche approvate. max_errors seleziona
+il prefisso effettivamente emesso, con contatori/truncated/Partial reali. La
+cancellazione è osservata ai checkpoint esistenti: in PASS2 il checkpoint di
+cancellazione è prima della riga, mentre il budget è verificato anche fra le
+regole; non si promette interruzione fra assertion o emissione di regole mai
+eseguite. Elapsed resta una metrica monotona realmente misurata, non un valore
+da normalizzare per rendere riproducibili i report diagnostici.
+
+Ratifica e verifica consultabili: verification/CNF-DIAGNOSTIC-ORDER-01-ratification.md,
+verification/CNF-DIAGNOSTIC-ORDER-01-audit.md e tests/diagnostic_order.rs.
+La chiusura tecnica del CNF è registrata nel dossier solo dopo i gate effettivi.
 
 ---
 
@@ -3186,8 +3215,10 @@ Ratifica conclusiva DEC-17 del 5 novembre 2026: esito D, prototipo non adottato.
 Runtime sequenziale e architettura a due passate invariati; nessuna attivazione
 implicita cfg(test). Eventuali nuove ottimizzazioni richiedono profiling reale e
 nuove evidenze/approvazioni: verification/DEC-17-final-ratification.md.
-Conflitto d’ordine separato: verification/CNF-DIAGNOSTIC-ORDER-01.md, aperto;
-nessun cambiamento dei contratti osservabili in questa chiusura.
+Ordine per passata ratificato con CNF-DIAGNOSTIC-ORDER-01 A l'8 novembre2026:
+§79 documenta le precedenze interne effettive, senza modificare il runtime.
+Qualifica tecnica ed evidenze nel dossier verification/CNF-DIAGNOSTIC-ORDER-01.md.
+La ratifica non autorizza parallelismo né riordinamento globale.
 
 Ratifica DEC-17 del5novembre2026: autorizzata esclusivamente la valutazione
 isolata A1LocalOnly/A2Full con prima passata selettivamente parallela e seconda

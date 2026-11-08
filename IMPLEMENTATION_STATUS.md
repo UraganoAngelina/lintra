@@ -6952,3 +6952,26 @@ Single-agent, no background/delega, nessunFROZEN/release o nuovaCI duplicata.
 Docs/migration preesistente preservata/esclusa. Dopo ratificaA storico completare
 specifica attuativa prima del codec e riprendere12; dopo12DONE valutareP18-04
 con tutti i CNF realmente risolti. Non avviare P18-04 anticipatamente.
+
+
+## Ratifiche sostitutive e CNF ordine locale qualificato — 8 novembre 2026
+
+CNF-DIAGNOSTIC-ORDER-01 A ratificata con audit interno obbligatorio: eseguito.
+Verificati traceordine schema, righe, pipeline/constraint reference raggruppati,
+regolelocali dopo campi, PKdopo locali, cross pertrace/riga/piano, eventi senza
+campo e run/technicaldistinti.4nuovi test conoracle indipendente, JSONLbyte,
+prefissi budgetPASS1/PASS2 e cancellazioneperrecord. DET79/115, ARCH17 eN12
+allineati senza modifiche produttive.5gate exit0 su477impronteferme:957core e
+47regressioneallfeatures,0fail; fmt/Clippy/boundary/pixel positivi. CNF non ancora
+RESOLVEDtecnico primaCIpropria. NessunaP18-04 anticipata,138/140invariato.
+
+ADR-HISTORY-EXISTENCE-001: successiva ratifica implementativa dell'autore revoca
+lo stopallaspecifica. Autorizzati codec/versioning/fatti/copertura/runtimegenerico/
+integrazioneCAD83/qualifica dentroCAD12, senza nuova fase o confermeordinarie.
+Privacy/HMACv1/ACL/archiviimmutabili/norma preservati. Contratto tecnico adottato
+scritto prima del codice; nessun nuovo Macpurpose o algoritmo previsto: uso della
+primitiva di proiezione selettiva già qualificata per i payload tecnici e root,
+con verifica della proiezione oltre al tokenidentità. CasoC1A approvato: attestazione
+qualificata di origine esplicita, fonte/hash/responsabilità/approval e bindingallo
+snapshot; mai primaDB=origine. CasoL1normativo ancora in attesa; altri lavori
+indipendenti proseguono. Nessuna risposta presunta né annullamento semanticoinventato.
