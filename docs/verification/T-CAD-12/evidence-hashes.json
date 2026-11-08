@@ -1,0 +1,46 @@
+{
+  "docs/verification/T-CAD-12/groundwork-0.log": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "docs/verification/T-CAD-12/groundwork-1.log": {
+    "sha256": "d8408418daca3e1ca69649eaa0bf9ddee62d95fb0fb7cf4fbf5f79f25b99590e",
+    "bytes": 16189
+  },
+  "docs/verification/T-CAD-12/groundwork-2.log": {
+    "sha256": "20f568bc5749dc3253927bc0e120328e6c6bb11bb7f54f695181144dd83e7904",
+    "bytes": 7257
+  },
+  "docs/verification/T-CAD-12/groundwork-3.log": {
+    "sha256": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f",
+    "bytes": 60
+  },
+  "docs/verification/T-CAD-12/preflight-clippy.log": {
+    "sha256": "8ad08bc99657bded5d3b2ecf6521acd2fd37ae2fbf534268403ea7ee9dee872b",
+    "bytes": 219
+  },
+  "docs/verification/T-CAD-12/preliminary-83-field-probe.log": {
+    "sha256": "dccb292a196fb1fe52ccf537197becdfafa40ec12fd06452ea77d2e0a4b5363b",
+    "bytes": 318
+  },
+  "docs/verification/T-CAD-12/preliminary-four-tests.log": {
+    "sha256": "3a06ab9933c7c3c8854f188c9ee6a28f6b15ea3feba52a832aaf8efaddeade5d",
+    "bytes": 938
+  },
+  "docs/verification/T-CAD-12/preliminary-integration-compile.log": {
+    "sha256": "ec792cbdc5081052ded410ccd8a6c49cf7afa053acfe2edbe0e4c47397bfe80d",
+    "bytes": 3714
+  },
+  "docs/verification/T-CAD-12/preliminary-integration.log": {
+    "sha256": "41fceb138d71c9399c2f52db82e3ad7bd149d4807fbbd72903ab36afb4ac7130",
+    "bytes": 485
+  },
+  "docs/verification/T-CAD-12/preliminary-jsonl-compile.log": {
+    "sha256": "89f28e44ce237de15665562063c0086acf77baec3f7d20474cff88f62b14dc61",
+    "bytes": 2241
+  },
+  "docs/verification/T-CAD-12/preliminary-three-tests.log": {
+    "sha256": "678fee873e07ba7f721b78f8905a58be61f3953c8c46d943d390f3c3d850818d",
+    "bytes": 786
+  }
+}

@@ -2,7 +2,7 @@
 
 Consuntivo aggiornato al **2026-11-08**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD08 DONE, CAD12 READY
+## Frontiera corrente — CAD08 DONE, CAD12: contratto storico da ratificare
 
 **138/140 DONE = 98,6%**; restano CAD12 e P18-04 (conteggio task, non sforzo).
 CI42476999364 completed/success sullo SHA3388527a2d4a8feee3e37acc1a4c56a753d5f7e1.
@@ -10,7 +10,8 @@ Sette job e step richiesti verificati: Linux/MSVC, tre confronti JSONL/pixel,
 due riapertureSQLite crossOS. Log positivi e due JSONimport conservati: ciascuno
 verifica3snapshot,2namespace, protezione e retained occurrence. PackagingUI
 opzionale skipped.11gate locali e475improntecorrenti ricontrollati.
-Dossier T-CAD-08-quality-gate.json. CAD12READY: avviare preflight integrato.
+Dossier T-CAD-08-quality-gate.json. CAD12IN_PROGRESS:4prove reali preliminari
+positive; contratto esistenza storica e conflitto ordine in proposta, non ratificati.
 P18-04attende12e risoluzione conflitti applicabili; nessunFROZEN implicito.
 
 CAD02 DONE con CI42067927663. CAD03 e CAD11 DONE con CI42203885693 su6af5f85.
@@ -6918,3 +6919,36 @@ calendario/unione/proroga, seconda passata, componente25campi e23prove.
 Nessuna modifica produttiva dopo3388527. CAD12READY, avvio preflight;
 P18-04non ancoraREADY. AUTO_CONTINUE single-agent, no background.
 Docs/migration preesistente esclusa; nessun nuovo contratto o FROZEN approvato.
+
+
+## CAD12 — groundwork qualificato / contratto storico necessario — 8 novembre 2026
+
+CAD08DONE confermata,138/140invariato. CAD12avviata su prerequisiti reali.
+Quattro nuove prove private: Full reale→proiezioni→approvalSQLiteT1/T2/T3,
+B2Absent/PROCEED/Partial, privacy; D→C sui4campi senza progressivi; JSONL
+byteidentico e riproduzione CNFordine; historyscope rifiutato precisamente.
+Quattro comandi finali exit0 con476impronte ferme:131library+3subprocess,
+68regressioneCAD, fmt/boundary/pixel; Clippyworkspaceallfeatures separato exit0.
+Ledger/report/sourcecomposition/dossier omonimi. Non sono goldenCAD83completi:
+componente25campi con filler esplicito. Bozza83campi in target ancora non
+eseguibile, nessun requisito convertito in deferred per farla compilare.
+
+BLOCCO CIRCOSCRITTO CAD12: DEC-05 richiede2.8=1 nello storico incluso corrente;
+joinhistory/capability rimangono UnsupportedConstruct e gli indici attuali
+conservano solo fingerprint/identitàHMAC, non prova del predicato. Per completare
+l'esecutore senza righe grezze, corrente spacciato per storia o indici assenti
+interpretati come assenza, manca il contratto di evidenza/copertura persistente.
+ADR-HISTORY-EXISTENCE-001-proposal pronta per sceltaA fact-only/protezione/
+versioningesplicito/atomicità oB rinvio. Nessuna scelta è stata presunta.
+Non è riaperta la decisione normativa iniziale né il backendSQLite/HMACv1.
+Conflitto d'ordine giàOPEN separato: propostaA in CNF-DIAGNOSTIC-ORDER-01-proposal,
+DET79 contro emissione perpassata preservata daDEC17. Due richieste asincrone
+presentate all'autore; nessuna risposta registrata. Richiesta di ratifica solo
+per contratti reali, non per commit/push/CI ordinari.12nonDONE, P18-04nonREADY.
+
+Recap: src/schema/cad_golden_tests.rs e inclusione cfgtest privata; documenti
+preflight/report/ledger/composition e due proposte. Codice produttivo immutato.
+Single-agent, no background/delega, nessunFROZEN/release o nuovaCI duplicata.
+Docs/migration preesistente preservata/esclusa. Dopo ratificaA storico completare
+specifica attuativa prima del codec e riprendere12; dopo12DONE valutareP18-04
+con tutti i CNF realmente risolti. Non avviare P18-04 anticipatamente.

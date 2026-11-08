@@ -584,3 +584,6 @@ fn inactivity_error_budget_stops_the_shared_second_pass_without_losing_determini
         jsonl(repeated.sink.errors())
     );
 }
+
+#[path = "cad_golden_tests.rs"]
+mod cad_golden_tests;
