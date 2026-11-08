@@ -701,8 +701,8 @@ Il servizio storico audit-only continua a rifiutare le policy temporali.
 Il compiler verifica owner, riferimenti fisici Date, join dello stesso owner
 con cardinalità zero_or_many senza riduzione e when esclusivamente locale.
 Il piano e il join devono dichiarare la stessa on_missing_trace Unknown;
-altre policy non implementate sono rifiutate. Join/history e piani after-date
-o inattività restano unsupported. La ricerca vuota su file presente completo
+altre policy non implementate sono rifiutate. Join/history resta unsupported in questo ingresso; per after-date e
+inattività vedere i sottoinsiemi successivi07/08. La ricerca vuota su file presente completo
 prova l'assenza di intervalli; on_missing_record del join non impone sospensioni
 a tutti gli eventi. Un file assente rimane Unknown, distinto dal file vuoto.
 
@@ -730,8 +730,8 @@ storico cumulativo e la conformità CAD completa rimangono al gate T-CAD-12.
 
 La capability già formalizzata temporal.after_date.v1 abilita il piano raw
 after_date_restriction sui soli input correnti. Si estende il sottoinsieme06;
-snapshot/audit/invarianti restano rifiutati e inactivity_with_pauses rimane
-unsupported. Nessun nuovo formato, nodo raw, APIapplicativa o storage.
+snapshot/audit/invarianti restano rifiutati dall’ingresso ordinario; per
+inactivity_with_pauses vedere la qualifica interna08 seguente. Nessun nuovo formato, nodo raw, APIapplicativa o storage.
 
 Owner/date/conclusion_date/restricted_field e join sono risolti dal compiler.
 Le due date devono essere fisicheDate. when e target_when restano locali ai
@@ -764,3 +764,56 @@ data presente; sede1vietata dopo ogni conclusione, sedi2/4/5/6aggiunte per
 secondo. Codice normativo E_CAD_ACCESS_AFTER_CONCLUSION già esistente, nessun
 nuovo codice decesso inventato. Il componente resta parziale; integrazione
 clinica e storico cumulativo restano a CAD12.
+
+
+## T-CAD-08 — inactivity_with_pauses e periodo esplicito
+
+La capability esistente temporal.inactivity.v1 compila il piano già previsto
+nel raw DSL. L’orizzonte session_quarter_end riusa esclusivamente il binding
+snapshot.period.year_parameter/quarter_parameter, risolto a indici Integer
+distinti: nessun parametro implicito per nome, default o orologio host.
+
+Il compilatore dei profili restituisce metadati, non un flusso eseguibile o
+un token di approvazione. Ora qualifica anche questi piani con snapshot,
+conservando integralmente gli obblighi. SchemaCompiler.compile e
+compile_historical_audit rimangono fail-closed sui profili snapshot combinati.
+La qualifica08 usa compile_scoped privato e il vero motore a due passate con
+fixture di componente: il produttore storico integrato e il collaudo CAD
+completo rimangono CAD12. Non rimuovere snapshot per simulare eseguibilità.
+
+Quattro join distinti zero_or_many, owner comune, input corrente e policy
+Unknown concorde. Valutazioni con consenso esplicito sulla tupla start/end/code,
+include_if const true per non nascondere date iniziali confliggenti; gli altri
+insiemi non hanno riduzioni. Correlazione access_fields/provision_fields
+non vuota, stessa arità, campi unici e tipi compatibili. Date fisiche, mesi
+positivi e limitati, codice conclusione dichiarato. Nessun identificativo CAD
+è riconosciuto dal core.
+
+Anno1..9999 e trimestre1..4 obbligatori in Full anche senza record e prima di
+I/O/cancellazione; LocalOnly non richiede i parametri temporali. Il contesto
+proiettato conserva solo l’orizzonte risolto. Un input assente/parziale o una
+data/correlazione indispensabile inutilizzabile produce Unknown. Un insieme
+completo vuoto dimostra invece assenza di attività/pausa; B1 vuoto Unknown.
+Date invalide nei campi di correlazione non provano assenza di prestazioni.
+
+Ultima data accesso entro l’orizzonte con almeno una prestazione corrispondente
+alla tupla dichiarata, altrimenti start B1. Nel componente CAD le tuple usano
+evento/data/tipo/figura, mai i progressivi. Conclusione valida entro l’orizzonte
+evita una seconda chiusura; data/motivo discordanti o date confliggenti Unknown.
+Conclusione futura non chiude retroattivamente la sessione. Nessuna norma
+aggiuntiva sulla precocità di una chiusura amministrativa viene inventata.
+
+Aggiunta mesi calendario con clamp al fine mese. Ogni pausa viene convertita
+nei giorni interni inclusivi; estremi dichiarati esclusi, fine mancante copre
+anche l’orizzonte. Unione dei giorni, non doppio conteggio delle sovrapposizioni;
+un punto condiviso fra due intervalli aperti resta escluso da entrambi. Giorni
+precedenti/uguali alla base non prorogano l’inattività. Scansione ordinata delle
+pause disgiunte equivale alla proroga a punto fisso, senza reset e senza loop
+per ogni giorno. Soglia <= fine trimestre e nessuna conclusione: violazione
+con il codice dello schema.
+
+Dipendenze esplicite di tutti i campi/insiemi, controllo
+temporal.inactivity_with_pauses.<indice> nella seconda passata esistente,
+stessi sink/observer/summary/budget/cancellazione tra record. Nessuna scrittura
+storica, formato storage/HMAC o nuova API applicativa/CLI/UI. Componente
+2024-06.inactivity.1 parziale dichiarato, non nuovo freeze normativo.

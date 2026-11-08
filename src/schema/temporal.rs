@@ -1,9 +1,11 @@
-//! Lower only ratified interval and after-date plans. No clinical field IDs, storage
+//! Lower ratified interval, after-date and inactivity plans. No clinical field IDs, storage
 //! lookups, schema edits or fallback executors belong to this compiler module.
 use super::*;
 use crate::schema::{expression::compile_local_expr, reference_binding::ReferenceBindings};
 
 type Issue = (Code, String);
+#[path = "inactivity.rs"]
+mod inactivity;
 fn invalid(message: &str) -> Issue {
     (Code::InvalidSchemaValue, message.into())
 }
@@ -58,6 +60,13 @@ pub(super) fn compile(raw: &RawFlowSchema) -> Result<Vec<TemporalPlan>, Issue> {
                 .iter()
                 .any(|p| matches!(p, RawTemporal::AfterDateRestriction { .. })),
         ),
+        (
+            RawFlowSchemaRequiredCapabilitiesItem::TemporalInactivityV1,
+            policy
+                .temporal_rules
+                .iter()
+                .any(|p| matches!(p, RawTemporal::InactivityWithPauses { .. })),
+        ),
     ] {
         if raw.required_capabilities.contains(&capability) != declared {
             return Err((
@@ -74,6 +83,9 @@ pub(super) fn compile(raw: &RawFlowSchema) -> Result<Vec<TemporalPlan>, Issue> {
         .temporal_rules
         .iter()
         .map(|plan| {
+            if matches!(plan, RawTemporal::InactivityWithPauses { .. }) {
+                return inactivity::compile(raw, &joins, plan);
+            }
             if matches!(plan, RawTemporal::AfterDateRestriction { .. }) {
                 return after_date(raw, &joins, plan);
             }

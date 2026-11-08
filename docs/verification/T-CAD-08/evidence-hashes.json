@@ -1,0 +1,105 @@
+{
+  "date": "2026-11-08",
+  "files": {
+    "docs/verification/T-CAD-08/failed-sequence-1-gate-0.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/verification/T-CAD-08/failed-sequence-1-gate-1.log": {
+      "sha256": "a97252e4de12c15e443bb30ca9d54b6b283e84436f98c043db026528adafeba1",
+      "bytes": 219
+    },
+    "docs/verification/T-CAD-08/failed-sequence-1-gate-2.log": {
+      "sha256": "56ecaf0db6ad117b081d85ad844e0d5208072444def588ff9e3ee31477f6c25b",
+      "bytes": 98027
+    },
+    "docs/verification/T-CAD-08/failed-sequence-1.json": {
+      "sha256": "f1c56f386aa4542ddf887850880462b363b88c48b2ff7c94b7be8017488ba963",
+      "bytes": 53102
+    },
+    "docs/verification/T-CAD-08/gate-0.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/verification/T-CAD-08/gate-1.log": {
+      "sha256": "474a26378b1deb1ac70a0222865e4ba4279fdca202fd19c16a96c00c7b6bef90",
+      "bytes": 219
+    },
+    "docs/verification/T-CAD-08/gate-10.log": {
+      "sha256": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f",
+      "bytes": 60
+    },
+    "docs/verification/T-CAD-08/gate-2.log": {
+      "sha256": "cf62058353eb079951a3c7afe896d0911f073142c4fdd8dabfc3530dd66af3ae",
+      "bytes": 111244
+    },
+    "docs/verification/T-CAD-08/gate-3.log": {
+      "sha256": "64a3891cf3e2472445066c1ac8abfb7e44b9f1a73f428c60f2598f3bce525316",
+      "bytes": 111189
+    },
+    "docs/verification/T-CAD-08/gate-4.log": {
+      "sha256": "a27499489bfc1d5ae46250beb360bed7d72edd025517a774db603b3829f085fc",
+      "bytes": 104110
+    },
+    "docs/verification/T-CAD-08/gate-5.log": {
+      "sha256": "1163879e03e2ec73c7736252bd5bdef7ac733b0cdbbdd7ff4e68242925b79f4b",
+      "bytes": 133
+    },
+    "docs/verification/T-CAD-08/gate-6.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/verification/T-CAD-08/gate-7.log": {
+      "sha256": "59227867b3243f06de7c3c4aa98c13ba6cfcee726dfa464937b87811c193e7ff",
+      "bytes": 212
+    },
+    "docs/verification/T-CAD-08/gate-8.log": {
+      "sha256": "13f684fa707be19302de38469e4198845a1478fa6802ef6b51cc4b1672acf26d",
+      "bytes": 2021
+    },
+    "docs/verification/T-CAD-08/gate-9.log": {
+      "sha256": "7626561196dc1377f5d7d2544924283f8acbcc6b6b3f0c6dfd8f9a27ba851b96",
+      "bytes": 3919
+    },
+    "docs/verification/T-CAD-08/preliminary-audit-capability-green.log": {
+      "sha256": "8ddb859a45d8c59e60e2249ef16562ce4a8fce9f3d7fc9db30e8c39b2188922c",
+      "bytes": 1542
+    },
+    "docs/verification/T-CAD-08/preliminary-audit-capability-red.log": {
+      "sha256": "6bdc961b002559007c0faa5624a688248914e4b64a64e50a741beb4b0b9bcb08",
+      "bytes": 1074
+    },
+    "docs/verification/T-CAD-08/preliminary-check.log": {
+      "sha256": "ac4f1a222ff62eb96b5ed4e247033955b7723d4136cfb4466f78b55d243bd94d",
+      "bytes": 197
+    },
+    "docs/verification/T-CAD-08/preliminary-clippy.log": {
+      "sha256": "80ef7eedad63285706efe3d330c95a16c9429f45e7380a0640ea301647b411bd",
+      "bytes": 143
+    },
+    "docs/verification/T-CAD-08/preliminary-inactivity-tests-first-compile.log": {
+      "sha256": "f32fe8aa201d2561aff349ff01b290515ce9c3a9372645e5b66a9f2acc1f8ef6",
+      "bytes": 1033
+    },
+    "docs/verification/T-CAD-08/preliminary-inactivity-tests-open-fixture.log": {
+      "sha256": "58dc9d2f2d727d0218a7324999da0edb111c34cb39def7cb5fb7fbb25bd3cb33",
+      "bytes": 4936
+    },
+    "docs/verification/T-CAD-08/preliminary-inactivity-tests-partial-red.log": {
+      "sha256": "09654a6472611cbcb82709b945f71c01224593671470342f509d5dab3274b834",
+      "bytes": 3313
+    },
+    "docs/verification/T-CAD-08/preliminary-inactivity-tests-summary-fixture.log": {
+      "sha256": "d268416c4c78a0c9df677fb4ce67f47d56b0620696b498a8753bc646d81bcc99",
+      "bytes": 2960
+    },
+    "docs/verification/T-CAD-08/preliminary-inactivity-tests.log": {
+      "sha256": "eab282f852a2827253911fb0cb9185f58dba3331c39ccc28e58371166ab9be2a",
+      "bytes": 3174
+    },
+    "docs/verification/T-CAD-08/preliminary-partial-debug.log": {
+      "sha256": "69aa21ec0fc144d44843dde237925626ba223f91c47c5f70a4633e3bad315f45",
+      "bytes": 2327
+    }
+  }
+}

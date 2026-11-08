@@ -97,6 +97,7 @@ pub struct ProjectedEvaluationContext<'a> {
     related: BTreeMap<usize, RelatedLookup<'a>>,
     scalar: BTreeMap<usize, ScalarResolution<'a>>,
     coverage: BTreeMap<usize, crate::TraceContextCoverage>,
+    session_horizon: Option<crate::DateLiteral>,
 }
 enum ScalarResolution<'a> {
     Record(&'a ProjectedRecord),
@@ -143,6 +144,7 @@ impl<'a> ProjectedEvaluationContext<'a> {
             return Err(RelatedContextError::InvalidSourcePosition);
         }
         let available = validate_cross_inputs(flow, &inputs)?;
+        let session_horizon = session_horizon(flow, inputs.parameters)?;
         if let Some(coverage) = coverage {
             validate_trace_coverage(flow, &inputs, coverage)?;
         }
@@ -236,7 +238,11 @@ impl<'a> ProjectedEvaluationContext<'a> {
             related,
             scalar,
             coverage: lookup_coverage,
+            session_horizon,
         })
+    }
+    pub(super) fn session_horizon(&self) -> Option<crate::DateLiteral> {
+        self.session_horizon
     }
     pub fn related(&self, join_index: usize) -> Option<&RelatedLookup<'a>> {
         self.related.get(&join_index)
@@ -554,6 +560,52 @@ pub(crate) fn validate_cross_inputs<'a>(
         }
     }
     Ok(available)
+}
+
+/// An inactivity horizon comes solely from the existing compiled snapshot
+/// period. Required values are checked even for empty inputs, before I/O.
+pub(super) fn session_horizon(
+    flow: &CompiledFlowSchema,
+    parameters: &BTreeMap<String, JoinParameterValue>,
+) -> Result<Option<crate::DateLiteral>, RelatedContextError> {
+    let Some(policy) = flow.persistence_policy().as_ref() else {
+        return Ok(None);
+    };
+    let mut horizon = None;
+    for plan in &policy.temporal_rules {
+        let crate::schema::compiled::TemporalPlan::InactivityWithPauses(plan) = plan else {
+            continue;
+        };
+        let integer = |index| -> Result<u32, RelatedContextError> {
+            let Some(ParameterDefinition::Integer { id, .. }) = flow.parameters().get(index) else {
+                return Err(RelatedContextError::InvalidParameter);
+            };
+            match parameters.get(id.as_ref()) {
+                Some(JoinParameterValue::Integer(value)) => value
+                    .to_string()
+                    .parse()
+                    .map_err(|_| RelatedContextError::InvalidParameter),
+                _ => Err(RelatedContextError::InvalidParameter),
+            }
+        };
+        let year = integer(plan.year_parameter)?;
+        let quarter = integer(plan.quarter_parameter)?;
+        if !(1..=9999).contains(&year) || !(1..=4).contains(&quarter) {
+            return Err(RelatedContextError::InvalidParameter);
+        }
+        let month = (quarter * 3) as u8;
+        let day = if matches!(quarter, 1 | 4) { 31 } else { 30 };
+        let value = crate::DateLiteral {
+            year: year as u16,
+            month,
+            day,
+        };
+        if horizon.is_some_and(|previous| previous != value) {
+            return Err(RelatedContextError::InvalidParameter);
+        }
+        horizon = Some(value);
+    }
+    Ok(horizon)
 }
 
 /// Explicit maps are exhaustive: omission cannot silently claim Complete.

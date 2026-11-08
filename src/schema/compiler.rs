@@ -585,12 +585,18 @@ impl SchemaCompiler {
                     | RawFlowSchemaRequiredCapabilitiesItem::PersistenceNamespaceBindingV1
             ) && !(audit_policy.is_some()
                 && *capability == RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1)
-                && !(temporal::read_only(&raw)
+                && !(audit_policy.is_some()
                     && matches!(
                         capability,
                         RawFlowSchemaRequiredCapabilitiesItem::TemporalIntervalsV1
                             | RawFlowSchemaRequiredCapabilitiesItem::TemporalAfterDateV1
+                            | RawFlowSchemaRequiredCapabilitiesItem::TemporalInactivityV1
                     ))
+                // Internal inactivity qualification needs an actual checked
+                // period/snapshot plan. An audit-only policy must not enable
+                // a declared but unimplemented snapshot capability.
+                && !(*capability == RawFlowSchemaRequiredCapabilitiesItem::PersistenceSnapshotV1
+                    && audit_policy.as_ref().is_some_and(|policy| policy.snapshot.is_some()))
             {
                 checks.error(
                     Code::UnsupportedCapability,
@@ -790,14 +796,14 @@ impl SchemaCompiler {
                         "after_date_restriction",
                         "Value is forbidden strictly after the qualified conclusion date.",
                     ),
-                    TemporalPlan::InactivityWithPauses(_) => {
-                        return Err(fail(
-                            None,
-                            None,
-                            Code::UnsupportedConstruct,
-                            "temporal executor is not implemented".into(),
-                        ));
-                    }
+                    TemporalPlan::InactivityWithPauses(plan) => (
+                        plan.owner_trace,
+                        &CompiledExpr::Const(true),
+                        &plan.error_code,
+                        CompiledAssertion::InactivityWithPauses(plan.clone()),
+                        "inactivity_with_pauses",
+                        "Calendar inactivity threshold requires a declared administrative closure.",
+                    ),
                 };
                 let rule = CompiledRule {
                     id: format!("temporal.{kind}.{index}").into(),
@@ -919,14 +925,26 @@ impl SchemaCompiler {
                             Capability::PersistenceNamespaceBindingV1
                         }
                         RawFlowSchemaRequiredCapabilitiesItem::TemporalIntervalsV1
-                            if temporal::read_only(&raw) =>
+                            if audit_policy.is_some() =>
                         {
                             Capability::TemporalIntervalsV1
                         }
                         RawFlowSchemaRequiredCapabilitiesItem::TemporalAfterDateV1
-                            if temporal::read_only(&raw) =>
+                            if audit_policy.is_some() =>
                         {
                             Capability::TemporalAfterDateV1
+                        }
+                        RawFlowSchemaRequiredCapabilitiesItem::TemporalInactivityV1
+                            if audit_policy.is_some() =>
+                        {
+                            Capability::TemporalInactivityV1
+                        }
+                        RawFlowSchemaRequiredCapabilitiesItem::PersistenceSnapshotV1
+                            if audit_policy
+                                .as_ref()
+                                .is_some_and(|policy| policy.snapshot.is_some()) =>
+                        {
+                            Capability::PersistenceSnapshotV1
                         }
                         RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1
                             if audit_policy.is_some() =>
@@ -1392,3 +1410,7 @@ mod tests {
 
 #[path = "rules.rs"]
 mod rules;
+
+#[cfg(test)]
+#[path = "inactivity_tests.rs"]
+mod inactivity_tests;

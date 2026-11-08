@@ -151,6 +151,37 @@ impl RuleDependencies {
         dependencies.expression(&rule.when, source, tables)?;
         for assertion in &rule.assertions {
             match assertion {
+                CompiledAssertion::InactivityWithPauses(plan) => {
+                    for (index, fields) in [
+                        (
+                            plan.evaluations_join,
+                            vec![
+                                plan.start_field,
+                                plan.conclusion_date_field,
+                                plan.conclusion_code_field,
+                            ],
+                        ),
+                        (
+                            plan.suspensions_join,
+                            vec![plan.suspension_start_field, plan.suspension_end_field],
+                        ),
+                        (plan.accesses_join, {
+                            let mut fields = plan.access_fields.clone();
+                            fields.push(plan.access_date_field);
+                            fields
+                        }),
+                        (plan.provisions_join, plan.provision_fields.clone()),
+                    ] {
+                        let join = joins.get(index).ok_or((
+                            Code::InternalCompilerInvariant,
+                            "inactivity dependency join is inconsistent".into(),
+                        ))?;
+                        dependencies.joins.insert(index);
+                        dependencies
+                            .fields
+                            .extend(fields.into_iter().map(|field| (join.target_trace, field)));
+                    }
+                }
                 CompiledAssertion::AfterDateRestriction(plan) => {
                     dependencies.joins.insert(plan.conclusion_join);
                     let join = joins.get(plan.conclusion_join).ok_or((

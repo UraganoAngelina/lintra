@@ -1,10 +1,28 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-11-07**. Piano v1.1; governance GOV-2026-10-26-01.
+Consuntivo aggiornato al **2026-11-08**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD07 DONE, CAD05 in verifica locale
+## Frontiera corrente — CAD05 DONE, CAD08 in verifica locale
 
-**136/140 DONE = 97,1%**; restano 4 task: CAD05, CAD08, CAD12 e P18-04.
+**137/140 DONE = 97,9%**; restano CAD08, CAD12 e P18-04.
+CAD05 DONE: commit84444c2c12ec235f32fcf4d1c750229e5c7db490,
+CI42394000741 completed/success con tutti i sette job richiesti positivi.
+Dossier T-CAD-05-native-ci.json; chiusura documentale792e734 pubblicata.
+
+CAD08 IN_PROGRESS:23prove nuove preliminari positive; la prima suite completa
+ha rilevato una regressione nel rifiuto della capability snapshot senza piano.
+Riprodotta e corretta richiedendo il piano snapshot compilato effettivo;
+14test SIOC persistence positivi dopo il fix. Gate finali11comandi exit0
+su475input invariati, ledger T-CAD-08-local-gates.json:1010/1010workspace,
+967core,18tooling e24Python,0fail; fmt/Clippy/release/boundary positivi.
+Pubblicazione eCI nativa08 ancora necessarie primaDONE. NessunDONE08 o gate nativo
+anticipato. Provenienza25campi/5trace/PK complete/PDF/runtime verificata.
+CAD12 attende08DONE; P18-04 attende tutte. Single-agent, nessun background,
+docs/migration preesistente esclusa.
+
+## Registro precedente — CAD07 DONE, CAD05 in verifica locale
+
+**136/140 DONE = 97,1%**; restavano 4 task: CAD05, CAD08, CAD12 e P18-04.
 CAD02 DONE con CI42067927663. CAD03 e CAD11 DONE con CI42203885693 su6af5f85.
 CAD09 DONE con CI42231182241 sullo SHA1740a6dd29ac705d29b0cb0425daacf919a6b17e:
 Linux/MSVC, tre confronti JSONL/pixel e due riaperture SQLite crossOS positivi.
@@ -6834,3 +6852,47 @@ Prodotto, storage/HMAC/wire e norme invariati. Sette gate locali positivi,
 T-CAD-08 ora READY su05/06/07/P9 verificati: avviare preflight e audit dei
 contratti temporali/periodo prima di implementare. AUTO_CONTINUE single-agent,
 nessun background/delega; docs/migration preservata ed esclusa.
+
+
+## PREFLIGHT CAD08 — IN_PROGRESS
+
+Prerequisiti05/06/07/P9 verificati; preflight T-CAD-08-preflight.md.
+Piano calendario e motore generici, periodo da snapshot.period esistente;
+qualifica interna senza abilitare falsamente il profilo storico completo.
+137/140DONE invariato. AUTO_CONTINUE single-agent, nessuna nuova CI attiva.
+
+
+## Ripresa autore / recovery gate CAD08 — 8 novembre 2026
+
+Workflow concordato confermato. La sequenza precedente si è conclusa con
+exit101 al workspace:905pass/1fail/5ignored prima dell'arresto, non completa.
+La regressione SIOC è riprodotta isolatamente: audit-only con capability
+snapshot senza piano veniva accettato. Core/compiler richiede ora snapshot
+compilato effettivo nella validazione e nel lowering capability;14test SIOC
+persistence positivi. Nessun test o obbligo storico rimosso. Log e ledger della
+sequenza fallita preservati separatamente. Report funzioni/condizioni aggiornato.
+Avviata nuova sequenza foreground11comandi, impronte/indice/HEAD fermi; nessuna
+altra implementazione o nuova CI prima dei gate. Provenienza25campi/5trace,
+PK/coordinate/tipi/metadati/PDF/runtime verificata.137/140DONE invariato.
+
+
+## HANDOFF locale CAD08 / pubblicazione e WAITING_GATE — 8 novembre 2026
+
+Task T-CAD-08 IN_PROGRESS, locali qualificati.11comandi exit0 su475input
+invariati con indice/HEADfermi.1010workspace/1010allfeatures/967core,
+0fail/6ignored per suite;18tooling inclusiignored e24Python positivi.
+Fmt/Clippyworkspaceallfeatures e tooling/release/boundary/pixel positivi.
+Conteggi e25file inventario verificati; prima sequenza fallita preservata.
+
+Recap file: compiler temporal/inactivity/persistence_profile/plans/dependencies;
+engine inactivity_calendar/inactivity/projected_context/namespace_context/
+flow_validator/cross_diagnostics;23prove private reali e componente25campi,
+authoring e report dettagliato funzioni/condizioni/fonti. Corretta la capability
+snapshot senza piano senza indebolire il rifiuto pubblico dei profili storici.
+Nessuna API applicativa/CLI/UI, storage/HMAC/dipendenza/FROZEN o dato reale.
+
+Commit/push08 con percorsi espliciti escludendo docs/migration;CI completa
+Linux/MSVC propria necessaria primaDONE.137/140invariato. Nessuna altra task
+indipendenteREADY:12dipende08DONE eP18-04richiede tutte. WAITING_GATE,
+prosecuzione automatica12dopo sette job richiesti positivi sullo SHA esatto.
+Nessun nuovo consenso richiesto; single-agent, nessun background o release/tag.

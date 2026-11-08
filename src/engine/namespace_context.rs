@@ -23,6 +23,9 @@ impl<'schema> VerifiedRunContext<'schema> {
                 parameters: &parameters,
             },
         )?;
+        if mode == ValidationMode::Full {
+            super::projected_context::session_horizon(schema, &parameters)?;
+        }
         if !schema.namespace_bindings().is_empty() {
             let policy = schema
                 .persistence_policy()

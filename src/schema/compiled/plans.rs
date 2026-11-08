@@ -472,6 +472,8 @@ pub enum CompiledAssertion {
     IntervalExclusion(IntervalExclusionPlan),
     /// Reads a qualified scalar/consensus tuple, never an arbitrary target row.
     AfterDateRestriction(Box<AfterDateRestrictionPlan>),
+    /// Session-period horizon, correlated activity and union of paused days.
+    InactivityWithPauses(Box<InactivityWithPausesPlan>),
     Constraint {
         field: ResolvedFieldRef,
         constraint: CompiledConstraint,
@@ -768,6 +770,9 @@ pub struct AfterDateRestrictionPlan {
 #[derive(Debug, Clone)]
 pub struct InactivityWithPausesPlan {
     pub owner_trace: usize,
+    /// The existing snapshot.period binding, never inferred parameter names.
+    pub year_parameter: usize,
+    pub quarter_parameter: usize,
     pub evaluations_join: usize,
     pub suspensions_join: usize,
     pub accesses_join: usize,

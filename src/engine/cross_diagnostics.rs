@@ -113,6 +113,7 @@ impl ErrorFactory<'_> {
                     | CompiledAssertion::SetExists { .. }
                     | CompiledAssertion::IntervalExclusion(_)
                     | CompiledAssertion::AfterDateRestriction(_)
+                    | CompiledAssertion::InactivityWithPauses(_)
             )
         {
             assertion_refs(assertion, schema, &mut references)?;

@@ -351,6 +351,32 @@ fn assertion<'a>(
         .ok_or(CrossRecordValidationError::InvalidPlan)?;
     let fields = EvaluationContext { fields: context };
     match current {
+        CompiledAssertion::InactivityWithPauses(plan) => {
+            let (truth, external_cause) = super::inactivity::evaluate(flow, context, plan)?;
+            match truth {
+                TruthValue::True => Ok(Decision::Passed),
+                TruthValue::False => Ok(Decision::Failure {
+                    violation: FieldViolation {
+                        code: rule.error_code.clone(),
+                        expected: Some(format!(
+                            "administrative closure code {} after the calendar inactivity threshold",
+                            String::from_utf8_lossy(&plan.required_conclusion_code)
+                        )),
+                        reason: String::new(),
+                        diagnostic_context: vec![],
+                    },
+                    template: &rule.message_template,
+                    join: None,
+                }),
+                TruthValue::Unknown(_) => indeterminate(
+                    flow,
+                    EvaluatedTruth {
+                        truth,
+                        external_cause,
+                    },
+                ),
+            }
+        }
         CompiledAssertion::AfterDateRestriction(plan) => {
             after_date_restriction(flow, context, plan, rule)
         }
@@ -798,6 +824,8 @@ pub(super) fn run_cross_record_rules(
         on_record,
     } = control;
     validate_cross_inputs(flow, &inputs).map_err(CrossRecordValidationError::Context)?;
+    super::projected_context::session_horizon(flow, inputs.parameters)
+        .map_err(CrossRecordValidationError::Context)?;
     if let Some(coverage) = coverage {
         super::projected_context::validate_trace_coverage(flow, &inputs, coverage)
             .map_err(CrossRecordValidationError::Context)?;
