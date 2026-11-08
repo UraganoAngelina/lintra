@@ -2,7 +2,7 @@
 
 Consuntivo aggiornato al **2026-11-08**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD05 DONE, CAD08 in verifica locale
+## Frontiera corrente — CAD05 DONE, CAD08 WAITING_GATE
 
 **137/140 DONE = 97,9%**; restano CAD08, CAD12 e P18-04.
 CAD05 DONE: commit84444c2c12ec235f32fcf4d1c750229e5c7db490,
@@ -15,7 +15,9 @@ Riprodotta e corretta richiedendo il piano snapshot compilato effettivo;
 14test SIOC persistence positivi dopo il fix. Gate finali11comandi exit0
 su475input invariati, ledger T-CAD-08-local-gates.json:1010/1010workspace,
 967core,18tooling e24Python,0fail; fmt/Clippy/release/boundary positivi.
-Pubblicazione eCI nativa08 ancora necessarie primaDONE. NessunDONE08 o gate nativo
+Commit3388527a2d4a8feee3e37acc1a4c56a753d5f7e1 pubblicato;CI42476999364 in_progress sullo SHA esatto.
+Prima lettura: Linux/MSVC in_progress, packagingUI opzionale skipped.
+Gate nativo ancora necessario primaDONE; nessuna nuova implementazioneREADY. NessunDONE08 o gate nativo
 anticipato. Provenienza25campi/5trace/PK complete/PDF/runtime verificata.
 CAD12 attende08DONE; P18-04 attende tutte. Single-agent, nessun background,
 docs/migration preesistente esclusa.
@@ -6896,3 +6898,21 @@ Linux/MSVC propria necessaria primaDONE.137/140invariato. Nessuna altra task
 indipendenteREADY:12dipende08DONE eP18-04richiede tutte. WAITING_GATE,
 prosecuzione automatica12dopo sette job richiesti positivi sullo SHA esatto.
 Nessun nuovo consenso richiesto; single-agent, nessun background o release/tag.
+
+
+## CAD08 pubblicata / WAITING_GATE — 8 novembre 2026
+
+Commit3388527a2d4a8feee3e37acc1a4c56a753d5f7e1 pubblicato sul branch work/p1-foundations.
+CI42476999364 avviata una sola volta con ui_packaging=false; prima lettura reale
+in_progress sullo SHA esatto: Linux/MSVC in_progress, packagingUI opzionale
+skipped. Dossier T-CAD-08-native-ci.json. NessunDONE08:137/140immutato.
+Tutti11gate locali positivi con475impronteinvariate e25fileinventario verificati.
+
+Non esistono altre implementazioni indipendentiREADY:12attende08DONE,
+P18-04richiede tutte. WAITING_GATE, nessun nuovo blocco contrattuale o consenso
+richiesto. Nessun processo locale in background, nessuna pipeline duplicata.
+Per la ripresa controllare la stessa run, non ridispatchare; restano due letture
+ordinarie, distanziate almeno60secondi. Diagnosi/log/letturefinali mancanti
+sono già autorizzati. Dopo sette job richiesti success, chiudere08e avviare12.
+Docs/migration preesistente preservata ed esclusa da tutti i commit.
+CI: https://github.com/UraganoAngelina/lintra/actions/runs/42476999364

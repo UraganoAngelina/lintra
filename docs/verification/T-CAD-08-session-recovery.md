@@ -31,11 +31,17 @@ inventario25file verificato.1010workspace/1010allfeatures/967core,0fail/6ignored
 Impronte correnti e conteggi ricalcolati prima della pubblicazione.
 Nessun processo locale lasciato in esecuzione. Sorgenti finali qualificati.
 
-Prossimo passo (locali positivi): aggiornare report con conteggi reali/inventariohash,
-commit08 con pathespliciti escludendo migration;push; avviare un'unicaCI
-workflowdispatch ci.yml branchconcordato ui_packaging=false. Tre letture
-ordinarie distanziate>=60s, log/retry/finali mancanti giàautorizzati. Controllare
-SHA esatto e7job success primaDONE08 (138/14098,6%).12dipendeanche08DONE,
-quindi non avviarla durante attesa remota08; P18-04richiede tutte. Lettura/audit
-fonti future consentita, nessuna implementazione che aggiri i prerequisiti.
-Nessuna CI attualmente in corso per08.
+Pubblicazione effettuata: commit3388527a2d4a8feee3e37acc1a4c56a753d5f7e1, push confermato
+su work/p1-foundations. CI42476999364 avviata unica con ui_packaging=false;
+prima lettura in_progress sullo SHA esatto, Linux/MSVC in_progress e packagingUI
+opzionale skipped. Dossier T-CAD-08-native-ci.json; nonDONE08,137/140invariato.
+URL: https://github.com/UraganoAngelina/lintra/actions/runs/42476999364
+
+Prossimo passo: leggere la stessa run senza ridispatch; due letture ordinarie
+ancora disponibili, almeno60s fra letture, log/retry/finali mancanti autorizzati.
+Verificare SHA e tutti7job richiesti success primaDONE08 (138/14098,6%).
+12dipende08DONE, quindi nessuna implementazione12durante attesa remota;
+P18-04richiede tutte. Nessun’altra task indipendenteREADY: WAITING_GATE,
+nessun consenso ordinario necessario. Dopo gate08effettivo aggiornare index/
+stato/report/handoff, poi avviare preflight12su tutte le dipendenze verificate.
+Docs/migration sempre esclusa; niente background/delega o nuova release/tag.

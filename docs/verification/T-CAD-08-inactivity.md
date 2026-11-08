@@ -172,3 +172,13 @@ della correzione: il nuovo controllo generico richiede policy.snapshot presente
 anche nel lowering delle capability. Il compilatore audit pubblico continua a
 rifiutare profili snapshot reali. Nessuna capability ignorata o test indebolito.
 La sequenza fallita e il red isolato restano distinti dai gate finali.
+
+
+## Pubblicazione e gate nativo pendente
+
+Commit `3388527a2d4a8feee3e37acc1a4c56a753d5f7e1` pubblicato su work/p1-foundations.
+[CI 42476999364](https://github.com/UraganoAngelina/lintra/actions/runs/42476999364), unica dispatch completa con ui_packaging=false:
+prima lettura in_progress sullo SHA esatto, Linux/MSVC in_progress,
+packagingUI opzionale skipped. Nessun risultato Windows anticipato.
+T-CAD-08 WAITING_GATE,137/140DONE invariato. T-CAD-12 attende questo gate;
+nessuna implementazione indipendenteREADY e nessuna nuova decisione richiesta.
