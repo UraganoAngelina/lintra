@@ -59,3 +59,11 @@ Release riproducibile e artifact gate positivi. Misure release100/300eventi,
 Ledger runtime-local-gates/runtime-measurements e report runtime-validation.
 Ora commit/push/CI runtime autorizzati; CAD12nonDONE finché7job nativi e
 import opposti non qualificati sullo SHA esatto. Nessuno stop ordinario.
+
+## Pubblicazione / WAITING_GATE nativo
+
+Codice c59b0def0915d8cca6dae7f59048aa38f50b6807 pubblicato insieme al dossier
+storage750b1e1; push51950af..c59b0de riuscito. Unica CI42634997501 avviata
+con ui_packaging=false; prima lettura verifica SHA/branch e stato pendente.
+Ledger runtime-native-ci.json; non DONE12, P18-04nonREADY. Normali letture
+successive distanziate e sobrie; non usare watch/pollingcontinuo.

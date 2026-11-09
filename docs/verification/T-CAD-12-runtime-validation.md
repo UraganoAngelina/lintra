@@ -75,3 +75,12 @@ La fixture crossOS ora verifica batch logici1/2 e nullable2,4snapshot/2namespace
 Nessun risultato dello storage precedente è riutilizzato come qualifica runtime.
 Dopo CI effettiva: chiusuraCAD12 e avvioP18-04 secondo il mandato, senza nuovo
 checkpoint ordinario.
+
+## Pubblicazione e CI avviata
+
+Push riuscito sul branch autorizzato: codice
+c59b0def0915d8cca6dae7f59048aa38f50b6807. Dispatch CI42634997501 riuscito,
+prima lettura SHA/branch confermati e due verifyjob attivi. Nessun esito finale
+ancora letto. Il ledger runtime-native-ci.json conserva questa prima evidenza.
+Le7qualifiche native e i due import devono ancora essere verificati; CAD12
+rimane IN_PROGRESS/WAITING_GATE. Nessuna CI duplicata.

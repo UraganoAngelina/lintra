@@ -41,8 +41,9 @@ T-CAD-12-runtime-implementation.md; stato operativo in execution-progress.md.
 Quindici gate locali positivi,504input invariati;1059esiti workspace default
 e allfeatures ciascuna,1016core no-default,0fail. Misure release CAD83 reali
 100/300eventi per namespace,6approvazioni ciascuna: p95descrittivo759/1920ms,
-RSS25936/28276KiB. Ledger e report runtime-validation.md; mancano commit/push
-e CI runtime sullo SHA finale. CAD12 non DONE, P18-04 non READY, nessun FROZEN/M9/release/tag.
+RSS25936/28276KiB. Ledger e report runtime-validation.md. Pubblicato il codice
+c59b0def0915d8cca6dae7f59048aa38f50b6807; CI42634997501 avviata e SHA verificato,
+esito ancora pendente. WAITING_GATE runtime, nessun DONE anticipato. CAD12 non DONE, P18-04 non READY, nessun FROZEN/M9/release/tag.
 
 Single-agent, nessun background/delega. docs/migration preesistente preservata
 ed esclusa. Proseguire il workflow autorizzato, senza nuovi checkpoint ordinari.
