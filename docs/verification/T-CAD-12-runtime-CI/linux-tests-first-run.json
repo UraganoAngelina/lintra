@@ -1,0 +1,48 @@
+{
+  "commit": "c59b0def0915d8cca6dae7f59048aa38f50b6807",
+  "platform": "linux",
+  "log_bytes": 698357,
+  "log_sha256": "e0fc7a2eb22b03c249e016fb6b0079ba3bfce9ff2ab33b43393b56f3aabd3600",
+  "tests": {
+    "cad_history_runtime": [
+      {
+        "passed": 9,
+        "failed": 0,
+        "ignored": 1,
+        "all_case_names_verified": true
+      },
+      {
+        "passed": 9,
+        "failed": 0,
+        "ignored": 1,
+        "all_case_names_verified": true
+      },
+      {
+        "passed": 9,
+        "failed": 0,
+        "ignored": 1,
+        "all_case_names_verified": true
+      }
+    ],
+    "history_existence": [
+      {
+        "passed": 21,
+        "failed": 0,
+        "ignored": 0,
+        "all_case_names_verified": true
+      },
+      {
+        "passed": 21,
+        "failed": 0,
+        "ignored": 0,
+        "all_case_names_verified": true
+      },
+      {
+        "passed": 21,
+        "failed": 0,
+        "ignored": 0,
+        "all_case_names_verified": true
+      }
+    ]
+  }
+}

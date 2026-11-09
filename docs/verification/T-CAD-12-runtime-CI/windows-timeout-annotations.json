@@ -1,0 +1,26 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/UraganoAngelina/lintra/blob/c59b0def0915d8cca6dae7f59048aa38f50b6807/.github",
+    "start_line": 1,
+    "start_column": null,
+    "end_line": 1,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "The job has exceeded the maximum execution time of 35m0s",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/UraganoAngelina/lintra/blob/c59b0def0915d8cca6dae7f59048aa38f50b6807/.github",
+    "start_line": 15,
+    "start_column": null,
+    "end_line": 15,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "The operation was canceled.",
+    "raw_details": ""
+  }
+]

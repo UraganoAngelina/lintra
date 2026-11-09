@@ -43,7 +43,10 @@ e allfeatures ciascuna,1016core no-default,0fail. Misure release CAD83 reali
 100/300eventi per namespace,6approvazioni ciascuna: p95descrittivo759/1920ms,
 RSS25936/28276KiB. Ledger e report runtime-validation.md. Pubblicato il codice
 c59b0def0915d8cca6dae7f59048aa38f50b6807; CI42634997501 avviata e SHA verificato,
-esito ancora pendente. WAITING_GATE runtime, nessun DONE anticipato. CAD12 non DONE, P18-04 non READY, nessun FROZEN/M9/release/tag.
+primo esito cancelled per timeout35m Windows durante packaging sonda, dopo
+test/release/README positivi. Linux success. NoveCAD83 e21storici verificati
+nei log di entrambi gliOS per3assetti. Correzione solo CI: limite45m, tutti
+i controlli invariati;504input del gate locale, solo workflow variato. Nuova CI completa necessaria, nessun DONE anticipato. CAD12 non DONE, P18-04 non READY, nessun FROZEN/M9/release/tag.
 
 Single-agent, nessun background/delega. docs/migration preesistente preservata
 ed esclusa. Proseguire il workflow autorizzato, senza nuovi checkpoint ordinari.

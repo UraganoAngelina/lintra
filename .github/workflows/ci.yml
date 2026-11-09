@@ -23,7 +23,9 @@ jobs:
     name: Verify (${{ matrix.target }})
     runs-on: ${{ matrix.os }}
     # Workspace now includes the separately compiled Slint desktop adapter.
-    timeout-minutes: 35
+    # Full CAD83/history tests plus both reproducible release builds must leave
+    # time for the final native bundle/JSONL probes (35m expired on Windows).
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:

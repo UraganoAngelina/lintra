@@ -1,0 +1,14 @@
+{
+  "previous_runtime_commit": "c59b0def0915d8cca6dae7f59048aa38f50b6807",
+  "previous_run": 42634997501,
+  "changed_inputs": [
+    ".github/workflows/ci.yml"
+  ],
+  "runtime_code_tests_schemas_unchanged": true,
+  "old_timeout_minutes": 35,
+  "new_timeout_minutes": 45,
+  "workflow_sha256": "52e512adcbf378141991eb237d821feedc47b815c4715ace6864a088a9582eba",
+  "controls_unchanged": true,
+  "cause": "GitHub check annotation: The job has exceeded the maximum execution time of 35m0s",
+  "repeat_scope": "entire native pipeline on exact new commit; do not inherit seven-job success from incomplete first run"
+}

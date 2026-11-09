@@ -1,0 +1,48 @@
+{
+  "commit": "c59b0def0915d8cca6dae7f59048aa38f50b6807",
+  "platform": "windows",
+  "log_bytes": 677945,
+  "log_sha256": "9605099fcd2a8b378285a18c53df4f325ad93c51eb5c4b61f52502205948dd0e",
+  "tests": {
+    "cad_history_runtime": [
+      {
+        "passed": 9,
+        "failed": 0,
+        "ignored": 1,
+        "all_case_names_verified": true
+      },
+      {
+        "passed": 9,
+        "failed": 0,
+        "ignored": 1,
+        "all_case_names_verified": true
+      },
+      {
+        "passed": 9,
+        "failed": 0,
+        "ignored": 1,
+        "all_case_names_verified": true
+      }
+    ],
+    "history_existence": [
+      {
+        "passed": 21,
+        "failed": 0,
+        "ignored": 0,
+        "all_case_names_verified": true
+      },
+      {
+        "passed": 21,
+        "failed": 0,
+        "ignored": 0,
+        "all_case_names_verified": true
+      },
+      {
+        "passed": 21,
+        "failed": 0,
+        "ignored": 0,
+        "all_case_names_verified": true
+      }
+    ]
+  }
+}

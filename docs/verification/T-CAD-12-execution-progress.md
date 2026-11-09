@@ -67,3 +67,17 @@ storage750b1e1; push51950af..c59b0de riuscito. Unica CI42634997501 avviata
 con ui_packaging=false; prima lettura verifica SHA/branch e stato pendente.
 Ledger runtime-native-ci.json; non DONE12, P18-04nonREADY. Normali letture
 successive distanziate e sobrie; non usare watch/pollingcontinuo.
+
+## Prima CI completa terminata / correzione ordinaria del budget
+
+CI42634997501 su c59b0de: Linux success; Windows cancelled a35,22min.
+Annotazione GitHub conferma superamento35m0s. Tutti i test/default/allfeatures/
+no-default, tool, benchmark, exportSQLite, release riproducibile/artifact e
+README Windows success; cancellata la successiva compilazione del bundle
+sintetico finale. Gate dipendenti skipped, quindi NON7job e NONCAD12DONE.
+Log reali verificati:9CAD83 e21storici in3assetti per ciascunOS; prove/hash
+in runtime-CI/. Aumentato solo timeoutverify35→45min, nessun test/contratto
+ridotto.504input congelati confrontati, solo ci.yml differisce; source/test/
+schema invariati. Ledger runtime-ci-refinement.json, fallimento iniziale
+runtime-native-initial-cancelled.json. Serve un'unica nuovaCI completa sul
+commit della correzione, non un successo ereditato o una pipeline duplicata.
