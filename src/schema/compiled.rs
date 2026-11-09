@@ -230,6 +230,7 @@ pub struct CompiledFlowSchema {
     required_capabilities: Vec<Capability>,
     persistence_policy: Option<PersistencePolicy>,
     namespace_bindings: Vec<NamespaceBindingPlan>,
+    history_existence: Vec<HistoryExistencePlan>,
 }
 
 struct FlowParts {
@@ -245,6 +246,7 @@ struct FlowParts {
     required_capabilities: Vec<Capability>,
     persistence_policy: Option<PersistencePolicy>,
     namespace_bindings: Vec<NamespaceBindingPlan>,
+    history_existence: Vec<HistoryExistencePlan>,
 }
 
 impl CompiledFlowSchema {
@@ -254,7 +256,7 @@ impl CompiledFlowSchema {
         traces: [CompiledRecordSchema], required_reference_data: [ReferenceDependency],
         cross_record_plan: CrossRecordValidationPlan, parameters: [ParameterDefinition],
         required_capabilities: [Capability], persistence_policy: Option<PersistencePolicy>,
-        namespace_bindings: [NamespaceBindingPlan],
+        namespace_bindings: [NamespaceBindingPlan], history_existence: [HistoryExistencePlan],
     }
     pub fn schema_format_version(&self) -> u32 {
         self.schema_format_version
@@ -319,6 +321,7 @@ impl CompiledFlowSchema {
             required_capabilities: parts.required_capabilities,
             persistence_policy: parts.persistence_policy,
             namespace_bindings: parts.namespace_bindings,
+            history_existence: parts.history_existence,
         })
     }
 }

@@ -1,0 +1,55 @@
+{
+  "task": "T-CAD-12",
+  "scope": "full historical runtime and actual CAD83; native CI required separately",
+  "base_head": "750b1e1d6955f4933f71af158b227d01ee9cc1fa",
+  "input_count": 504,
+  "input_manifest_sha256": "b29077c72f58cd6e561be6e7c9e3440777c3f57d2afaee3081f91e75447ca27b",
+  "gates": [
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 2.047,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final2/01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 35.249,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final2/02.log",
+      "log_sha256": "3326e074e65f5fd00d415ccd0c6d471ad5cd75394cdd955fc617cf537c57a23c"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked"
+      ],
+      "exit_code": 101,
+      "seconds": 242.69,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final2/03.log",
+      "log_sha256": "c69ffcdea56a0849d57c53dc89601e22a71fc6dc11e5a10eb967b5544a3110b1"
+    }
+  ],
+  "all_passed": false
+}

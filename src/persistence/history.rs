@@ -5,6 +5,8 @@ use crate::TraceId;
 use serde::{Deserialize, Serialize};
 use std::{collections::HashSet, fmt};
 
+pub(crate) const HISTORY_FACT_FORMAT: u32 = 2;
+
 /// Minimal authenticated inventory. Roots commit to ordered protected tokens
 /// and sorted fact batches. The record root lets a facts-only reader verify the
 /// inventory seal without loading clinical-record identities from other tables.
@@ -136,7 +138,7 @@ pub(crate) enum HistoryAssessment {
 #[derive(Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct HistoryFactRow {
-    pub(crate) entity: Fingerprint,
+    pub(crate) entity: Option<Fingerprint>,
     /// Index into the snapshot's protected-token vector, never a clinical line.
     pub(crate) witness_ordinal: u64,
     pub(crate) witness_key: Fingerprint,
@@ -310,7 +312,7 @@ fn validate(
     source: &SourceSubmission,
 ) -> Result<(), PersistenceError> {
     payload.period.validate()?;
-    if payload.format != 1
+    if !matches!(payload.format, 1 | HISTORY_FACT_FORMAT)
         || payload.revision.value() == 0
         || payload
             .base_generation
@@ -342,10 +344,19 @@ fn validate(
     }
     let mut witnesses = HashSet::with_capacity(payload.facts.len());
     for row in &payload.facts {
-        if !fingerprint(&row.entity)
-            || !fingerprint(&row.witness_key)
+        if payload.format == 1 && row.entity.is_none() {
+            return Err(PersistenceError::CorruptStorage);
+        }
+        if !row.entity.as_ref().map_or(
+            matches!(
+                row.assessment,
+                HistoryAssessment::Indeterminate {
+                    reason: HistoryIndeterminate::UnqualifiedCorrelation
+                }
+            ),
+            |entity| fingerprint(entity) && entity.key_id() == source.fingerprint().key_id(),
+        ) || !fingerprint(&row.witness_key)
             || !fingerprint(&row.witness_record)
-            || row.entity.key_id() != source.fingerprint().key_id()
             || row.witness_key.key_id() != source.fingerprint().key_id()
             || row.witness_record.key_id() != source.fingerprint().key_id()
             || !witnesses.insert(row.witness_key.as_bytes())

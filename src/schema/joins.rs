@@ -13,10 +13,16 @@ pub(super) fn compile_joins(raw: &RawFlowSchema) -> Result<Vec<CompiledJoinSpec>
                     "join IDs must be nonempty, unpadded and flow-unique",
                 ));
             }
-            if !matches!(join.scope, RawJoinSpecScope::CurrentSubmission) {
+            if !matches!(join.scope, RawJoinSpecScope::CurrentSubmission)
+                && (raw.schema_format_version != 3
+                    || !raw
+                        .required_capabilities
+                        .contains(&RawFlowSchemaRequiredCapabilitiesItem::HistoryExistenceV1))
+            {
                 return Err((
                     Code::UnsupportedConstruct,
-                    "join history requires the persistent execution contract".into(),
+                    "join history requires explicit format3 and the persistent execution contract"
+                        .into(),
                 ));
             }
             if join
@@ -157,7 +163,10 @@ pub(super) fn compile_joins(raw: &RawFlowSchema) -> Result<Vec<CompiledJoinSpec>
                 source_fields,
                 target_fields,
                 cardinality,
-                scope: JoinScope::CurrentSubmission,
+                scope: match join.scope {
+                    RawJoinSpecScope::CurrentSubmission => JoinScope::CurrentSubmission,
+                    RawJoinSpecScope::HistoryIncludingCurrent => JoinScope::HistoryIncludingCurrent,
+                },
                 namespace_parameters,
                 on_missing_record,
                 on_missing_trace,

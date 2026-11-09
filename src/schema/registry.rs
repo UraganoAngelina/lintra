@@ -109,6 +109,20 @@ impl SchemaRegistry {
         &self,
         key: &SchemaKey,
     ) -> Result<ResolvedHistoricalSchema, SchemaResolutionError> {
+        self.resolve_historical_mode(key, false)
+    }
+    /// Resolve a complete snapshot profile through its explicit producer path.
+    pub fn resolve_historical_snapshot(
+        &self,
+        key: &SchemaKey,
+    ) -> Result<ResolvedHistoricalSchema, SchemaResolutionError> {
+        self.resolve_historical_mode(key, true)
+    }
+    fn resolve_historical_mode(
+        &self,
+        key: &SchemaKey,
+        snapshot: bool,
+    ) -> Result<ResolvedHistoricalSchema, SchemaResolutionError> {
         let mut raw = self.repository.load_raw(key)?;
         check_selected(&raw, key)?;
         let schema_hash =
@@ -142,10 +156,12 @@ impl SchemaRegistry {
                 members.push(member);
             }
         }
-        let (schema, profile, definitions) = self
-            .compiler
-            .compile_historical_audit(raw, &members)?
-            .into_parts();
+        let compiled = if snapshot {
+            self.compiler.compile_historical_snapshot(raw, &members)?
+        } else {
+            self.compiler.compile_historical_audit(raw, &members)?
+        };
+        let (schema, profile, definitions) = compiled.into_parts();
         if schema.key() != key
             || profile.schema_key() != key
             || profile.schema_hash() != &schema_hash

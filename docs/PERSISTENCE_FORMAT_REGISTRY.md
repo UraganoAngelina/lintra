@@ -17,3 +17,8 @@ nei loro modi precedenti; writer di fatti deve rifiutarli prima di una mutazione
 L'operazione esistente upgrade_storage_v1_to_v2 continua a significare solo1→2.
 Non esiste qui un'autorizzazione a migrare archivi approvati o rigenerare fatti.
 Nessuna versione diventa qualificata per sola presenza in questa tabella.
+
+HistoryFactBatch2: writer della nuova integrazione esecutiva, in implementazione
+il9novembre2026. Entity nullable soltanto per correlazione non qualificata;
+reader1/2, format1immutabile e nullin1rifiutato. PhysicalSQLite3/HMAC1 invariati.
+Nessuna migrazione o qualifica implicita per la sola voce nel registro.

@@ -4,6 +4,9 @@ use super::{full::FullServicePorts, session::bind_audit_namespace};
 use crate::engine::flow_execution::FlowRecordObserver;
 use crate::*;
 use std::{collections::BTreeMap, error::Error, fmt};
+#[path = "snapshot_validation.rs"]
+mod snapshot;
+pub use snapshot::{HistoricalOriginReview, HistoricalSnapshotValidationRequest};
 
 /// The organization parameters are typed and explicit; there is no inferred
 /// period or organization, and the caller supplies a non-sensitive archive ID.
@@ -44,6 +47,11 @@ pub enum HistoricalValidationError {
     Approval(SessionApprovalError),
     Audit(HistoricalAuditError),
     Report(ReportError),
+}
+impl From<PersistenceError> for HistoricalValidationError {
+    fn from(error: PersistenceError) -> Self {
+        Self::Persistence(error)
+    }
 }
 impl fmt::Display for HistoricalValidationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -96,6 +104,8 @@ pub struct HistoricalReview {
     base_generation: Option<SnapshotRevision>,
     candidate_revision: SnapshotRevision,
     candidate_fingerprint: Fingerprint,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    history_commitment: Option<Sha256Digest>,
 }
 impl HistoricalReview {
     pub fn base_generation(&self) -> Option<SnapshotRevision> {
@@ -123,6 +133,8 @@ pub struct HistoricalValidationPreview<'repo> {
     outcome: ValidationRunOutcome,
     audit: HistoricalAuditSummary,
     approval: ApprovalPreview<'repo>,
+    history_commitment: Option<Sha256Digest>,
+    origins: Vec<HistoricalOriginReview>,
 }
 impl HistoricalValidationPreview<'_> {
     pub fn review(&self) -> HistoricalReview {
@@ -131,6 +143,7 @@ impl HistoricalValidationPreview<'_> {
             base_generation: self.audit.metadata.namespace_generation,
             candidate_revision: self.snapshot().revision(),
             candidate_fingerprint: self.snapshot().source().fingerprint().clone(),
+            history_commitment: self.history_commitment.clone(),
         }
     }
     /// UI/CLI adapters keep the descriptor actually presented to their user.
@@ -153,6 +166,9 @@ impl HistoricalValidationPreview<'_> {
     }
     pub fn outcome(&self) -> &ValidationRunOutcome {
         &self.outcome
+    }
+    pub fn history_origins(&self) -> &[HistoricalOriginReview] {
+        &self.origins
     }
     pub fn audit(&self) -> &HistoricalAuditSummary {
         &self.audit
@@ -440,6 +456,8 @@ impl<'service, 'repo> HistoricalValidationService<'service, 'repo> {
                 outcome,
                 audit,
                 approval,
+                history_commitment: None,
+                origins: Vec::new(),
             },
         )))
     }
@@ -538,6 +556,7 @@ impl FlowRecordObserver for ProtectedCollector<'_> {
         trace: &CompiledRecordSchema,
         record: &RawRecord<'_>,
         key: &JoinKey,
+        _operands: &[crate::engine::record_validator::OperandValidity],
     ) -> Result<(), Box<dyn Error + Send + Sync>> {
         if let Some((scope, definition)) = self.definitions.get(&trace.id().0) {
             self.identities.push(self.protector.protect_record_bytes(

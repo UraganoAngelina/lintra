@@ -352,7 +352,19 @@ impl<'schema> TraceValidator<'schema> {
                     }
                 };
                 collector
-                    .collect(record, local, namespace_compatible, sink, summary)
+                    .collect(
+                        record,
+                        local,
+                        namespace_compatible,
+                        match &self.record {
+                            TraceRecordExecution::Local(v) => v.operand_validity(),
+                            TraceRecordExecution::Reference { validator, .. } => {
+                                validator.operand_validity()
+                            }
+                        },
+                        sink,
+                        summary,
+                    )
                     .map_err(TraceValidationError::Collection)?;
             }
             // RecordReader already checks line-counter overflow; no unchecked
@@ -403,6 +415,7 @@ pub(crate) trait FullRecordCollector {
         record: crate::RawRecord<'_>,
         local: crate::LocalRecordValidationArtifacts,
         namespace_compatible: bool,
+        operands: &[super::record_validator::OperandValidity],
         sink: &mut dyn ValidationSink,
         summary: &mut ValidationSummaryBuilder,
     ) -> Result<(), Box<dyn Error + Send + Sync>>;

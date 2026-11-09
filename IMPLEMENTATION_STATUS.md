@@ -29,12 +29,20 @@ positivi inclusa qualifica trasferimento locale. Fixture CI ampliata a4snapshot,
 Sette gate finali locali positivi,283impronte ferme e193input test confrontati
 con HEAD; workspace default/allfeatures1028esiti ciascuna/0fail/6ignored,
 corelib141/0fail/4ignored; fmt/Clippy/release/boundary exit0. CI42592330836 del
-componente in corso sullo SHAc5266d0, non ancora qualificata. Ledger T-CAD-12-history-storage-gates.json.
+componente completed/success sullo SHAc5266d0, sette job e due import effettivi
+qualificati. Ledger T-CAD-12-history-storage-gates.json e native-ci.json.
 
-Restano compiler/piani semantici, produzione PASS1, query lifecycle L1/copertura
-C1, contesto PASS2, gate approvazione e composizione eseguibile CAD83/golden/
-performance/qualifica nativa sul codice finale. CAD12 non DONE, P18-04 non READY,
-nessun FROZEN/M9/release/tag. Non equiparare componente o test privati a CAD83.
+Runtime in working tree: compiler/piani semantici, PASS1 per-field, query L1/C1,
+PASS2, servizio pubblico snapshot e approval/replay atomici collegati. Profilo
+operativo CAD83 reale acquisito dal filesystem e due cataloghi Strict, nessun
+filler; golden T1/T2/T3 con reopen, oracle fisso e JSONL negativo deterministico.
+21test generici e9CAD83 positivi,142testlib/4ignored. Matrice e spiegazioni in
+T-CAD-12-runtime-implementation.md; stato operativo in execution-progress.md.
+Quindici gate locali positivi,504input invariati;1059esiti workspace default
+e allfeatures ciascuna,1016core no-default,0fail. Misure release CAD83 reali
+100/300eventi per namespace,6approvazioni ciascuna: p95descrittivo759/1920ms,
+RSS25936/28276KiB. Ledger e report runtime-validation.md; mancano commit/push
+e CI runtime sullo SHA finale. CAD12 non DONE, P18-04 non READY, nessun FROZEN/M9/release/tag.
 
 Single-agent, nessun background/delega. docs/migration preesistente preservata
 ed esclusa. Proseguire il workflow autorizzato, senza nuovi checkpoint ordinari.

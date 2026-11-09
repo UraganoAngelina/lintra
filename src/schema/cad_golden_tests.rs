@@ -68,6 +68,7 @@ impl crate::engine::flow_execution::FlowRecordObserver for Projector<'_> {
         trace: &CompiledRecordSchema,
         record: &RawRecord<'_>,
         _: &JoinKey,
+        _: &[crate::engine::record_validator::OperandValidity],
     ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         // Called on the SAME borrowed row used by pass one, never a second scan.
         self.records.push(ProjectedHistoricalRecord::project(
@@ -411,16 +412,17 @@ fn cad12_history_obligation_is_rejected_instead_of_replaced_with_current_input()
     join.id = "cad12_initial_evaluation_history".into();
     join.scope = RawJoinSpecScope::HistoryIncludingCurrent;
     raw.traces[0].joins.push(join);
-    // Metadata compilation must reject the history scope itself. A compiled
-    // current-only plan would not satisfy DEC-05's cross-submission obligation.
-    let error = SchemaCompiler
-        .compile_persistence_profile(&raw, &[])
-        .unwrap_err();
-    assert!(error.issues.iter().any(|issue| {
-        issue.code == SchemaIssueCode::UnsupportedConstruct
-            && issue
-                .message
-                .contains("join history requires the persistent execution contract")
-    }));
+    // Metadata may describe history, but an unused history join and ordinary
+    // execution still fail closed. No current-only plan is substituted.
+    assert!(
+        SchemaCompiler
+            .compile_persistence_profile(&raw, &[])
+            .is_ok()
+    );
+    assert!(
+        SchemaCompiler
+            .compile_historical_snapshot(raw.clone(), &[])
+            .is_err()
+    );
     assert!(SchemaCompiler.compile(raw).is_err());
 }

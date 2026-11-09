@@ -27,6 +27,16 @@ pub struct LocalRecordValidationArtifacts {
     pub valid: bool,
 }
 
+/// Evidence from the actual ordered field pipeline, valid only until the next
+/// record. Unvisited or provisional operands cannot prove a historical fact.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum OperandValidity {
+    Valid,
+    Missing,
+    Invalid,
+    Unavailable,
+}
+
 /// Features required inside the local scope that have no executor yet.
 /// Projection is deliberately absent: it belongs to Full, not to LocalOnly.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -125,6 +135,7 @@ pub struct RecordValidator<'schema> {
     factory: ErrorFactory<'schema>,
     failed: bool,
     skipped_cross_rules: usize,
+    operand_validity: Vec<OperandValidity>,
 }
 impl<'schema> RecordValidator<'schema> {
     /// Resolve a trace through its actual compiled flow, preventing inconsistent
@@ -165,6 +176,7 @@ impl<'schema> RecordValidator<'schema> {
                 })
                 .collect(),
             schema,
+            operand_validity: vec![OperandValidity::Unavailable; schema.fields().len()],
             skipped_cross_rules: flow
                 .cross_record_plan()
                 .rules
@@ -208,6 +220,9 @@ impl<'schema> RecordValidator<'schema> {
     /// into a store whose implicit scope is the request's namespace.
     pub(crate) fn namespace_compatible(&self) -> bool {
         self.namespace_compatible
+    }
+    pub(crate) fn operand_validity(&self) -> &[OperandValidity] {
+        &self.operand_validity
     }
     pub(crate) fn missing_bindings(&self) -> usize {
         self.bindings.iter().filter(|b| b.text.is_none()).count()
@@ -263,6 +278,7 @@ impl<'schema> RecordValidator<'schema> {
         phase: RecordPhase,
     ) -> Result<LocalRecordValidationArtifacts, RecordValidationError> {
         self.namespace_compatible = true;
+        self.operand_validity.fill(OperandValidity::Unavailable);
         if record.line_number == 0 {
             return Err(RecordValidationError::InvalidLineNumber);
         }
@@ -342,6 +358,16 @@ impl<'schema> RecordValidator<'schema> {
                 pipeline.run_with_presence(field, value, record.line_number, &identity, state)
             }
             .map_err(RecordValidationError::Pipeline)?;
+            self.operand_validity[field_index] = match result {
+                FieldPipelineResult::Valid if pipeline.operand_definitive() => {
+                    OperandValidity::Valid
+                }
+                FieldPipelineResult::Valid | FieldPipelineResult::SkippedDueToUnknownPresence => {
+                    OperandValidity::Unavailable
+                }
+                FieldPipelineResult::MissingOptional => OperandValidity::Missing,
+                FieldPipelineResult::Invalid => OperandValidity::Invalid,
+            };
             if let PresenceState::Unknown(reason) = state {
                 return Err(RecordValidationError::UndeterminedPresence {
                     field_id: field.id().clone(),
@@ -372,6 +398,7 @@ impl<'schema> RecordValidator<'schema> {
                         {
                             valid = false;
                             self.namespace_compatible = false;
+                            self.operand_validity[field_index] = OperandValidity::Invalid;
                         }
                     }
                     // A primary violation still counts as Invalid; no cascade.
@@ -571,6 +598,9 @@ impl<'schema, 'references> ReferenceRecordValidator<'schema, 'references> {
     }
     pub(crate) fn namespace_compatible(&self) -> bool {
         self.inner.namespace_compatible()
+    }
+    pub(crate) fn operand_validity(&self) -> &[OperandValidity] {
+        self.inner.operand_validity()
     }
     pub(crate) fn missing_bindings(&self) -> usize {
         self.inner.missing_bindings()

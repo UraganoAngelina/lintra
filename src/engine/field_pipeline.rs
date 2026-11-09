@@ -84,6 +84,7 @@ pub struct FieldPipeline<'schema, 'output> {
     sink: &'output mut dyn ValidationSink,
     summary: &'output mut ValidationSummaryBuilder,
     failed: bool,
+    operand_definitive: bool,
 }
 impl<'schema, 'output> FieldPipeline<'schema, 'output> {
     /// Own the lightweight factory and borrow sink/counters for ordered output.
@@ -97,6 +98,7 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
             sink,
             summary,
             failed: false,
+            operand_definitive: true,
         }
     }
 
@@ -232,6 +234,7 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
         identity: &RecordIdentity,
         mut references: Option<&mut super::reference_execution::ReferenceExecution<'_>>,
     ) -> Result<FieldPipelineResult, FieldPipelineError> {
+        self.operand_definitive = true;
         match presence {
             Err(violation) => return self.emit(field, raw, line_number, identity, violation),
             Ok(PresenceValidationResult::MissingOptional) => {
@@ -272,6 +275,15 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
                             },
                         )
                         .map_err(FieldPipelineError::Reference)?;
+                    if matches!(
+                        evaluation,
+                        crate::ReferenceConstraintEvaluation::Membership(
+                            crate::MembershipEvaluation::Inconclusive
+                                | crate::MembershipEvaluation::ProvisionalPresent(_)
+                        )
+                    ) {
+                        self.operand_definitive = false;
+                    }
                     if let Some(violation) = evaluation.violation() {
                         return self.emit(field, raw, line_number, identity, violation);
                     }
@@ -323,6 +335,9 @@ impl<'schema, 'output> FieldPipeline<'schema, 'output> {
 
     pub(crate) fn error_limit_reached(&self) -> bool {
         self.summary.error_limit_reached()
+    }
+    pub(crate) fn operand_definitive(&self) -> bool {
+        self.operand_definitive
     }
 
     /// Stream first, then count only successfully emitted diagnostics. Either

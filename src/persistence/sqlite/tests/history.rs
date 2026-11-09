@@ -60,7 +60,7 @@ pub(super) fn candidate(
         },
         source_period: source.period().unwrap().to_owned(),
         facts: vec![HistoryFactRow {
-            entity,
+            entity: Some(entity),
             witness_ordinal: 0,
             witness_key: record.identity().key_fingerprint().clone(),
             witness_record: record.record_fingerprint().clone(),
@@ -398,4 +398,41 @@ fn manifest_cannot_be_replayed_between_revisions() {
             .unwrap(),
         first
     );
+}
+
+#[test]
+fn logical_fact_v1_v2_are_explicit_and_v1_bytes_remain_unchanged() {
+    let dir = parent();
+    let repo = create(&dir.path().join("archive"));
+    let value = candidate(&repo, 1, "codec-versions");
+    let original = value.history_facts()[0].payload.clone();
+    let encoded = serde_json::to_value(&original).unwrap();
+    assert_eq!(
+        encoded["facts"][0]["entity"],
+        serde_json::to_value(original.facts[0].entity.as_ref().unwrap()).unwrap()
+    );
+    let decoded: HistoryBatchPayload = serde_json::from_value(encoded.clone()).unwrap();
+    assert!(serde_json::to_value(decoded).unwrap() == encoded);
+    let mut nullable = original.clone();
+    nullable.facts[0].entity = None;
+    nullable.facts[0].assessment = HistoryAssessment::Indeterminate {
+        reason: HistoryIndeterminate::UnqualifiedCorrelation,
+    };
+    assert!(HistoryFactBatch::create(nullable.clone(), value.source(), repo.protector()).is_err());
+    nullable.format = 2;
+    let batch =
+        HistoryFactBatch::create(nullable.clone(), value.source(), repo.protector()).unwrap();
+    let snapshot = value
+        .clone()
+        .with_history_facts(vec![batch], repo.protector())
+        .unwrap();
+    publish(&repo, &snapshot).unwrap();
+    assert_eq!(
+        repo.load_snapshot(&namespace("A"), SnapshotRevision::new(1))
+            .unwrap()
+            .unwrap(),
+        snapshot
+    );
+    nullable.format = 3;
+    assert!(HistoryFactBatch::create(nullable, value.source(), repo.protector()).is_err());
 }

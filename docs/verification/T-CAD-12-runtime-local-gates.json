@@ -1,0 +1,269 @@
+{
+  "task": "T-CAD-12",
+  "scope": "full historical runtime and actual CAD83; native CI required separately",
+  "base_head": "750b1e1d6955f4933f71af158b227d01ee9cc1fa",
+  "input_count": 504,
+  "input_manifest_sha256": "a66240c1d4ceed6ef496f78e542cb56fc8fddf0c1e33e323a5a1ad3d68d245da",
+  "gates": [
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 2.183,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 33.661,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/02.log",
+      "log_sha256": "c9ae98900dee6cd962251784cda4c4ec162d2234e054d968b8bb8d8e546ddd85"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "seconds": 491.877,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/03.log",
+      "log_sha256": "e229d50b8dfff28c91c158888d8a49dcf90905b80ed609353f028cb866cf5530"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "seconds": 492.055,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/04.log",
+      "log_sha256": "a79f30c156f300eaf49867332c66607228efa440bf4ce02d87c74feecb1e69b9"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "lintra",
+        "--no-default-features",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "seconds": 203.574,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/05.log",
+      "log_sha256": "4e69d5d302a201070b3bd3cb167539f8b243f2e30cf88f461f4530c45882b0aa"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.675,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/06.log",
+      "log_sha256": "39cf348cc1283c7c4a679256021bad9ec10047f37f3b6d41d91d3fec21896220"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/check_workspace.py"
+      ],
+      "exit_code": 0,
+      "seconds": 1.116,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/07.log",
+      "log_sha256": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f"
+    },
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "xtask/Cargo.toml",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.201,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/08.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--manifest-path",
+        "xtask/Cargo.toml",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 9.851,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/09.log",
+      "log_sha256": "b8be9ed414d221903e1dccd9efbd13f91df582c0d049f953cbd4ed5eb40947b4"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "xtask/Cargo.toml",
+        "--locked",
+        "--",
+        "--include-ignored"
+      ],
+      "exit_code": 0,
+      "seconds": 38.254,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/10.log",
+      "log_sha256": "91a4d3ba92c583841d240c8ed0465411148eef84dd95a3d3ea373a84b16d1b9d"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--bench",
+        "validation",
+        "--locked",
+        "--",
+        "--output",
+        "target/cad12-validation-smoke.json",
+        "--smoke"
+      ],
+      "exit_code": 0,
+      "seconds": 29.09,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/11.log",
+      "log_sha256": "5d4fa36c3b3b9c8b69d37ec17bbf203775e3e3dc77d0a0429f07433aefeefcd9"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--bench",
+        "persistence",
+        "--locked",
+        "--",
+        "--output",
+        "target/cad12-persistence-smoke.json",
+        "--smoke"
+      ],
+      "exit_code": 0,
+      "seconds": 30.363,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/12.log",
+      "log_sha256": "b343f96a2aef61aef1aa0c0a1a845c3e56757c95e2e7970ac14551814a633c82"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--bench",
+        "persistence_profiles",
+        "--locked",
+        "--",
+        "--output",
+        "target/cad12-profiles-smoke.json",
+        "--smoke"
+      ],
+      "exit_code": 0,
+      "seconds": 30.235,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/13.log",
+      "log_sha256": "9bba617f217c732a9e5fe4b8388105bd26650adedf586c9a6d18dc7065bd0729"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--test",
+        "cad_history_runtime",
+        "--no-run"
+      ],
+      "exit_code": 0,
+      "seconds": 210.361,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/14.log",
+      "log_sha256": "3d23a2edbb4a507902f0bc0d5b0efc01a5f084a5e461a077b032cd82ba7abd67"
+    },
+    {
+      "command": [
+        "cargo",
+        "xtask",
+        "build-release",
+        "--target",
+        "x86_64-unknown-linux-gnu",
+        "--verify-reproducible",
+        "--verify-artifact",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 665.764,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/15.log",
+      "log_sha256": "ca43c03af989a2dddd0ab3f754fb9676e971ed2609189d97d5ab403657983194"
+    }
+  ],
+  "all_passed": true,
+  "preliminary_failures": [
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "xtask/Cargo.toml",
+        "--locked",
+        "--",
+        "--include-ignored"
+      ],
+      "exit_code": 101,
+      "seconds": 35.828,
+      "source_unchanged": true,
+      "log": "/tmp/lintra-cad12-runtime-final3/10-missing-explicit-binary.log",
+      "log_sha256": "ddf024e052dc5e715953bde9b52b602040d990bb0d7289da06fb0e3d03561ce3"
+    }
+  ],
+  "tooling_binary": {
+    "path": "/home/alberto/Desktop/LINTRA/lintra/target/debug/lintra",
+    "sha256": "fe3272d620911ae13224cc275ac84af4f0bb2bb3deb726cb2f20d6a7f969b61a"
+  }
+}

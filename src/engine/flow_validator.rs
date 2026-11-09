@@ -242,6 +242,38 @@ fn existence<'a>(
     predicate: Option<&CompiledExpr>,
     rule: &'a CompiledRule,
 ) -> Result<Decision<'a>, CrossRecordValidationError> {
+    if flow
+        .cross_record_plan()
+        .joins
+        .get(join_index)
+        .is_some_and(|j| j.scope == JoinScope::HistoryIncludingCurrent)
+    {
+        return match context
+            .historical_truth(join_index)
+            .ok_or(CrossRecordValidationError::InvalidPlan)?
+        {
+            TruthValue::True => Ok(Decision::Passed),
+            TruthValue::False => Ok(Decision::Failure {
+                violation: FieldViolation {
+                    code: rule.error_code.clone(),
+                    expected: Some("at least one valid historical or current witness".into()),
+                    reason: String::new(),
+                    diagnostic_context: vec![],
+                },
+                template: &rule.message_template,
+                join: None,
+            }),
+            TruthValue::Unknown(reason) => Ok(Decision::Unknown {
+                reason,
+                join_id: Some(&flow.cross_record_plan().joins[join_index].id),
+                diagnostic: Some(
+                    flow.cross_record_plan().joins[join_index]
+                        .on_missing_trace
+                        .diagnostic(),
+                ),
+            }),
+        };
+    }
     let lookup = context
         .related(join_index)
         .ok_or(CrossRecordValidationError::InvalidPlan)?;
@@ -794,6 +826,7 @@ pub fn validate_cross_record_rules(
         sink,
         observer,
         CrossPassControl {
+            history: None,
             coverage: None,
             error_budget: None,
             is_cancelled: &|| false,
@@ -804,6 +837,7 @@ pub fn validate_cross_record_rules(
 }
 
 pub(super) struct CrossPassControl<'a> {
+    pub history: Option<&'a dyn super::projected_context::HistoricalSetContext>,
     pub error_budget: Option<crate::domain::ErrorBudget>,
     pub coverage: Option<&'a std::collections::HashMap<TraceId, crate::TraceContextCoverage>>,
     pub is_cancelled: &'a dyn Fn() -> bool,
@@ -818,11 +852,15 @@ pub(super) fn run_cross_record_rules(
     control: CrossPassControl<'_>,
 ) -> Result<(CrossRecordPassSummary, crate::domain::ExecutionStop), CrossRecordValidationError> {
     let CrossPassControl {
+        history,
         error_budget,
         coverage,
         is_cancelled,
         on_record,
     } = control;
+    if !flow.history_existence().is_empty() && history.is_none() {
+        return Err(CrossRecordValidationError::InvalidPlan);
+    }
     validate_cross_inputs(flow, &inputs).map_err(CrossRecordValidationError::Context)?;
     super::projected_context::session_horizon(flow, inputs.parameters)
         .map_err(CrossRecordValidationError::Context)?;
@@ -839,6 +877,14 @@ pub(super) fn run_cross_record_rules(
             .get(plan.source_trace)
             .ok_or(CrossRecordValidationError::InvalidPlan)?;
         if !inputs.available_traces.contains(source.id()) {
+            if history.is_some()
+                && flow
+                    .persistence_policy()
+                    .as_ref()
+                    .is_some_and(|p| p.snapshot.is_some())
+            {
+                continue;
+            }
             return Err(CrossRecordValidationError::Context(
                 RelatedContextError::SourceInputUnavailable,
             ));
@@ -905,7 +951,8 @@ pub(super) fn run_cross_record_rules(
                 ),
                 None => ProjectedEvaluationContext::new(flow, record, store, input),
             }
-            .map_err(CrossRecordValidationError::Context)?;
+            .map_err(CrossRecordValidationError::Context)?
+            .with_history(history);
             for plan in &rules {
                 let outcome = evaluate_rule(flow, record, &plan.rule, &context)?;
                 let next = totals.after(&outcome)?;

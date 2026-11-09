@@ -39,6 +39,9 @@ pub struct CompiledHistoricalFlowSchema {
     definitions: Vec<RecordByteProjectionDefinition>,
 }
 impl CompiledHistoricalFlowSchema {
+    pub fn history_existence(&self) -> &[crate::HistoryExistencePlan] {
+        self.schema.history_existence()
+    }
     pub fn profile(&self) -> &CompiledPersistenceProfile {
         &self.profile
     }
@@ -69,6 +72,47 @@ fn unsupported(raw: &RawFlowSchema, message: &str) -> SchemaCompilationError {
     }
 }
 impl SchemaCompiler {
+    /// Compile the explicit snapshot/history pipeline without exposing it through
+    /// ordinary resolution. The engine also requires an internal history context;
+    /// obtaining metadata never authorizes a current-only substitute execution.
+    pub fn compile_historical_snapshot(
+        &self,
+        raw: RawFlowSchema,
+        other_versions: &[RawFlowSchema],
+    ) -> Result<CompiledHistoricalFlowSchema, SchemaCompilationError> {
+        let profile = self.compile_persistence_profile(&raw, other_versions)?;
+        let policy = profile
+            .policy()
+            .cloned()
+            .filter(|p| p.snapshot.is_some())
+            .ok_or_else(|| {
+                unsupported(
+                    &raw,
+                    "snapshot validation requires an actual snapshot policy",
+                )
+            })?;
+        if !matches!(
+            policy.version_compatibility,
+            crate::VersionCompatibility::SameSchemaVersion
+        ) {
+            return Err(unsupported(
+                &raw,
+                "historical existence requires exact schema compatibility",
+            ));
+        }
+        if profile.identity_projections().len() != profile.trace_ids().len() {
+            return Err(unsupported(
+                &raw,
+                "snapshot execution requires a physical identity projection for each declared trace",
+            ));
+        }
+        let schema = self.compile_scoped(raw, Some(policy))?;
+        Ok(CompiledHistoricalFlowSchema {
+            schema,
+            profile,
+            definitions: Vec::new(),
+        })
+    }
     /// Enable only the implemented audit capability. Snapshot reconciliation,
     /// history invariants and temporal policies remain explicitly unsupported.
     /// No policy/capability is removed or rewritten to obtain an executable AST.

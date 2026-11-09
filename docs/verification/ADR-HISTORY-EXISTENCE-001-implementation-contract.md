@@ -153,3 +153,16 @@ reale; test applicativi T1/T2 con veri file, proiezione/approval/reopen/query e
 rimangono Unknown e residui visibili, non PASS. Nessun nuovo algoritmo/chiave,
 spool normativo, parallelismo o riordino diagnostico. Gate locali/native7job sullo
 SHA finale prima di CAD12DONE; poi P18-04 quando tutti i prerequisiti sono reali.
+
+
+## Precisazione codec attuativa — 9 novembre 2026
+
+La correlazione non qualificata non viene rappresentata con un evento inventato:
+il nuovo writer usa HistoryFactBatch logical format2 con entity nullable solo
+per assessment Indeterminate/UnqualifiedCorrelation. Il reader conserva format1
+con entity obbligatoria e byte canonici precedenti identici; format1+null è
+corruzione, formati ignoti errore tecnico. Physical SQLite3 e manifest restano
+immutati, nessuna migrazione o reinterpretazione degli archivi1/2 o dei fatti1.
+La revisione logica distingue il caso aggiuntivo; capability semantica e protocollo
+di proiezione HMACv1 non cambiano. Il payload versionato è già parte della
+proiezione canonica autenticata; non si introduce un nuovoMacPurpose.

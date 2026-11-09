@@ -420,6 +420,26 @@ compilazione; un motore non pubblicizza una capability implementata solo
 parzialmente. Non è sufficiente che il numero di formato sia riconosciuto.
 Nessuna di queste capability è dichiarata implementata nello scaffold attuale.
 
+#### Ingresso snapshot storico implementato in T-CAD-12
+
+Nel percorso esplicito `SchemaCompiler::compile_historical_snapshot` e
+`HistoricalValidationService::validate_snapshot`, formato3 ammette
+`history_including_current` / `set_exists` / Eq fra un campo locale target e
+un literal. Richiede policy snapshot, compatibilità esatta di schema/hash,
+namespace dichiarato, zero_or_many senza consensus e dipendenze when locali
+risolte. Una join identifica un solo predicato semantico; AST differenti,
+riduzioni scalari o temporali storiche non implementate sono rifiutate.
+I percorsi ordinario e audit-only conservano il rifiuto di questo profilo.
+
+PASS1 produce fatti minimi dalla stessa riga e validità dei singoli operandi;
+PASS2 usa il lifecycle qualificato L1. True richiede witness valido, False
+richiede origine C1 e copertura completa, altrimenti Unknown. Il primo snapshot
+non prova un'origine. Input mancante richiede consenso esatto ma resta una
+lacuna. Run non definitivo/invalid/cancelled/truncated è ValidationOnly.
+La preview impegna fatti e origini; soltanto l'approvazione esplicita li pubblica
+atomicamente. Vedere [contratto adottato](verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md)
+e [implementazione e matrice](verification/T-CAD-12-runtime-implementation.md).
+
 ### Deroga di sviluppo CNF-COMPILER-01 — approvata
 
 L’autore ha approvato la proposta A del [dossier T-P3-05](verification/T-P3-05-preflight.md):

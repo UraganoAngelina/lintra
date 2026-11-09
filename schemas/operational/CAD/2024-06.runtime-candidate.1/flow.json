@@ -1,0 +1,5588 @@
+{
+  "schema_format_version": 3,
+  "flow_id": "CAD",
+  "schema_version": "2024-06.runtime-candidate.1",
+  "regulatory_version": "2024-06",
+  "source": {
+    "scope": "Complete 83-field CAD runtime candidate; qualification recorded separately, not FROZEN",
+    "full_normative_compliance": false,
+    "legacy_flow_sha256": "74d92f8e88d1eef70dbc21e0b63fa33823c6d3d1b9bfb23803c671ecd46adb16",
+    "control_resolutions": [
+      {
+        "source_trace": "A",
+        "source_note": {
+          "id": "CAD-AGE-UNDER18",
+          "fields": [
+            "1.24"
+          ],
+          "policy": "requires_engine_extension_or_decision",
+          "reason": "Required when year(2.4)-year(1.11)<=17; cross-trace derived-year expression not present in frozen DSL. Implement via generic extension before executable freeze."
+        },
+        "status": "IMPLEMENTED_APPROVED_CONTROL",
+        "executors": [
+          "A.rules.CAD-AGE-GUARDIAN"
+        ]
+      },
+      {
+        "source_trace": "A",
+        "source_note": {
+          "id": "CAD-IDENTIFIER-CROSSCHECK",
+          "fields": [
+            "1.2",
+            "1.3"
+          ],
+          "policy": "requires_engine_extension_or_decision",
+          "reason": "Deliberately no semantic cross-field identifier check per user decision."
+        },
+        "status": "EXCLUDED_BY_EXISTING_AUTHOR_DECISION",
+        "decision_reference": "CAD-03 / docs/normative/cad/rules-and-joins.md: no semantic 1.2/1.3 or fiscal checksum check by author decision"
+      },
+      {
+        "source_trace": "B1",
+        "source_note": {
+          "id": "CAD-AGE-3-6",
+          "fields": [
+            "2.17",
+            "2.18"
+          ],
+          "policy": "requires_engine_extension_or_decision",
+          "reason": "Required if year(2.4)-year(1.11)>=3/6; requires cross-trace age-year derived expression."
+        },
+        "status": "IMPLEMENTED_APPROVED_CONTROL",
+        "executors": [
+          "B1.rules.CAD-AGE-MOBILITY",
+          "B1.rules.CAD-AGE-FUNCTION"
+        ]
+      },
+      {
+        "source_trace": "B1",
+        "source_note": {
+          "id": "CAD-17",
+          "fields": [
+            "2.4",
+            "2.6",
+            "2.7",
+            "3.2",
+            "3.3",
+            "4.2",
+            "5.2"
+          ],
+          "policy": "requires_engine_extension_or_decision",
+          "reason": "Administrative closing after 3 calendar months inactivity, calendar-month threshold + pause duration; longitudinal runtime rule. See CAD_HISTORICAL_PROFILE.md."
+        },
+        "status": "IMPLEMENTED_APPROVED_CONTROL",
+        "executors": [
+          "persistence_policy.temporal_rules.inactivity_with_pauses"
+        ]
+      },
+      {
+        "source_trace": "B1",
+        "source_note": {
+          "id": "CAD-2.11-12-ICPC",
+          "fields": [
+            "2.11",
+            "2.12"
+          ],
+          "policy": "requires_engine_extension_or_decision",
+          "reason": "No ICPC lookup per user decision; 2.12=000 reserved for absent concomitant diagnosis."
+        },
+        "status": "EXCLUDED_BY_EXISTING_AUTHOR_DECISION",
+        "decision_reference": "DEC-05-CAD-ICPC-000 / TASK_PROMPTS/T-CAD-11.md: no additional ICPC lookup, mandatory values and 000 handling preserved"
+      },
+      {
+        "source_trace": "C",
+        "source_note": {
+          "id": "CAD-14",
+          "fields": [
+            "3.1",
+            "3.2",
+            "3.3",
+            "4.1",
+            "4.2",
+            "4.7"
+          ],
+          "policy": "requires_engine_extension_or_decision",
+          "reason": "Sourced B2 suspension disallows home access 4.7=1 on interior days; temporal multi-record join context required. See CAD_HISTORICAL_PROFILE.md."
+        },
+        "status": "IMPLEMENTED_APPROVED_CONTROL",
+        "executors": [
+          "persistence_policy.temporal_rules.interval_exclusion",
+          "persistence_policy.temporal_rules.after_date_restriction"
+        ]
+      },
+      {
+        "source_trace": "C",
+        "source_note": {
+          "id": "CAD-4.5-15",
+          "fields": [
+            "4.5"
+          ],
+          "policy": "requires_engine_extension_or_decision",
+          "reason": "Code 15 not valid for care episodes starting in 2025; needs cross-trace source date."
+        },
+        "status": "IMPLEMENTED_APPROVED_CONTROL",
+        "executors": [
+          "C.rules.CAD-4.5-15"
+        ]
+      },
+      {
+        "source_trace": "C",
+        "source_note": {
+          "id": "CAD-4.9-SPECIALIST",
+          "fields": [
+            "4.5",
+            "4.9"
+          ],
+          "policy": "requires_engine_extension_or_decision",
+          "reason": "Branca specialistica only for professional code 4; no official branch lookup supplied."
+        },
+        "status": "IMPLEMENTED_APPROVED_CONTROL",
+        "executors": [
+          "C.fields.4.9.presence.forbidden_if"
+        ]
+      },
+      {
+        "source_trace": "C",
+        "source_note": {
+          "id": "CAD-4.10-OSS",
+          "fields": [
+            "4.5",
+            "4.10"
+          ],
+          "policy": "requires_engine_extension_or_decision",
+          "reason": "Duration only for OSS; relevant OSS codes need source-specific disambiguation before auto-rule."
+        },
+        "status": "IMPLEMENTED_APPROVED_CONTROL",
+        "executors": [
+          "C.fields.4.10.presence.forbidden_if"
+        ]
+      },
+      {
+        "source_trace": "D",
+        "source_note": {
+          "id": "CAD-5.4-15",
+          "fields": [
+            "5.4"
+          ],
+          "policy": "requires_engine_extension_or_decision",
+          "reason": "Code 15 not valid for care episodes starting in 2025; needs cross-trace source date."
+        },
+        "status": "IMPLEMENTED_APPROVED_CONTROL",
+        "executors": [
+          "D.rules.CAD-5.4-15"
+        ]
+      }
+    ],
+    "reference_scope": "Only the two reviewed ICD9/prestations catalogs declared by CAD11. ICPC/ISTAT excluded by decision; no unprovided specialist catalog invented."
+  },
+  "encoding": {
+    "mode": "runtime_required",
+    "position_unit": "byte"
+  },
+  "required_capabilities": [
+    "local.v1",
+    "persistence.namespace_binding.v1",
+    "persistence.snapshot.v1",
+    "persistence.audit.v1",
+    "expressions.v1",
+    "joins.v1",
+    "joins.sets.v1",
+    "joins.consensus.v1",
+    "derived.calendar_year_delta.v1",
+    "temporal.intervals.v1",
+    "temporal.after_date.v1",
+    "temporal.inactivity.v1",
+    "history.existence.v1"
+  ],
+  "parameters": [
+    {
+      "id": "sending_ulss",
+      "type": "string",
+      "allowed_values": [
+        "501",
+        "502",
+        "503",
+        "504",
+        "505",
+        "506",
+        "507",
+        "508",
+        "509"
+      ]
+    },
+    {
+      "id": "year",
+      "type": "integer",
+      "min": 1,
+      "max": 9999
+    },
+    {
+      "id": "quarter",
+      "type": "integer",
+      "min": 1,
+      "max": 4
+    }
+  ],
+  "reference_data": [
+    {
+      "id": "ICD9",
+      "dataset_id": "cad-icd9-cm-clinical-signs",
+      "version": "2024-06.pdf7.1",
+      "path": "data/icd9-membership.json",
+      "sha256": "645ebe2d375842055ff579fcddac44343ca3843cf474697cb23448d87d14bff6",
+      "metadata_attributes": []
+    },
+    {
+      "id": "PRESTATIONS",
+      "dataset_id": "cad-prestation-types",
+      "version": "2024-06.pdf5.1",
+      "path": "data/prestations-membership.json",
+      "sha256": "2c7b12dac959b89f5f0e93c1324b2b38ffffee5d62a45a2ada0b699c430512a6",
+      "metadata_attributes": []
+    }
+  ],
+  "persistence_policy": {
+    "namespace_parameters": [
+      "sending_ulss"
+    ],
+    "namespace_bindings": [
+      {
+        "trace": "A",
+        "field": "1.1",
+        "parameter": "sending_ulss",
+        "comparison": "logical_text_exact",
+        "error_code": "E_NAMESPACE_VALUE_MISMATCH",
+        "message_template": "Il codice dell\u2019organizzazione non coincide con quello dell\u2019invio."
+      }
+    ],
+    "version_compatibility": {
+      "kind": "same_schema_version"
+    },
+    "run_uniqueness": [
+      {
+        "trace": "A",
+        "key": "record_key"
+      },
+      {
+        "trace": "B1",
+        "key": "record_key"
+      },
+      {
+        "trace": "B2",
+        "key": "record_key"
+      },
+      {
+        "trace": "C",
+        "key": "record_key"
+      },
+      {
+        "trace": "D",
+        "key": "record_key"
+      }
+    ],
+    "cross_run_audit": [],
+    "history_identity_invariants": [
+      {
+        "trace": "B1",
+        "progressive_fields": [
+          "2.36"
+        ],
+        "event_fields": [
+          "2.1"
+        ],
+        "on_reassignment_error": "E_CAD_HISTORICAL_PROGRESSIVE_REUSE",
+        "reactivate_same_event": true
+      },
+      {
+        "trace": "B2",
+        "progressive_fields": [
+          "3.5"
+        ],
+        "event_fields": [
+          "3.1"
+        ],
+        "on_reassignment_error": "E_CAD_HISTORICAL_PROGRESSIVE_REUSE",
+        "reactivate_same_event": true
+      },
+      {
+        "trace": "C",
+        "progressive_fields": [
+          "4.11"
+        ],
+        "event_fields": [
+          "4.1"
+        ],
+        "on_reassignment_error": "E_CAD_HISTORICAL_PROGRESSIVE_REUSE",
+        "reactivate_same_event": true
+      },
+      {
+        "trace": "D",
+        "progressive_fields": [
+          "5.7"
+        ],
+        "event_fields": [
+          "5.1"
+        ],
+        "on_reassignment_error": "E_CAD_HISTORICAL_PROGRESSIVE_REUSE",
+        "reactivate_same_event": true
+      }
+    ],
+    "snapshot": {
+      "scope_parameters": [
+        "sending_ulss"
+      ],
+      "period": {
+        "year_parameter": "year",
+        "quarter_parameter": "quarter"
+      },
+      "approved_immutable": true,
+      "require_explicit_approval": true,
+      "commit": "atomic_idempotent",
+      "missing_trace_policy": {
+        "consent": "proceed_or_abort",
+        "warning_code": "W_CAD_MISSING_TRACE",
+        "on_absent_trace": "preserve",
+        "present_trace_is_complete": true
+      }
+    },
+    "temporal_rules": [
+      {
+        "kind": "interval_exclusion",
+        "owner_trace": "C",
+        "when": {
+          "eq": {
+            "ref": {
+              "field": "4.7"
+            },
+            "value": "1"
+          }
+        },
+        "point_field": "4.2",
+        "interval_join": "C_TO_B2_INTERVALS",
+        "start_field": "3.2",
+        "end_field": "3.3",
+        "boundaries": "open",
+        "missing_end": "open_until_horizon",
+        "on_missing_trace": {
+          "policy": "unknown",
+          "diagnostic": {
+            "code": "W_SUSPENSION_INPUT_UNAVAILABLE",
+            "message_template": "Suspension input is unavailable; temporal check cannot be completed."
+          }
+        },
+        "error_code": "E_CAD_HOME_ACCESS_DURING_SUSPENSION"
+      },
+      {
+        "kind": "after_date_restriction",
+        "owner_trace": "C",
+        "when": {
+          "const": true
+        },
+        "date_field": "4.2",
+        "conclusion_join": "C_TO_B1_CONCLUSION",
+        "conclusion_date_field": "2.6",
+        "target_when": {
+          "const": true
+        },
+        "restricted_field": "4.7",
+        "forbidden_values": [
+          "1"
+        ],
+        "comparison": "strict_after",
+        "on_missing_trace": {
+          "policy": "unknown",
+          "diagnostic": {
+            "code": "W_CONCLUSION_INPUT_UNAVAILABLE",
+            "message_template": "Conclusioni non disponibili: controllo temporale non valutabile."
+          }
+        },
+        "error_code": "E_CAD_ACCESS_AFTER_CONCLUSION"
+      },
+      {
+        "kind": "after_date_restriction",
+        "owner_trace": "C",
+        "when": {
+          "const": true
+        },
+        "date_field": "4.2",
+        "conclusion_join": "C_TO_B1_CONCLUSION",
+        "conclusion_date_field": "2.6",
+        "target_when": {
+          "in": {
+            "ref": {
+              "field": "2.7"
+            },
+            "values": [
+              "03",
+              "04",
+              "07",
+              "82"
+            ]
+          }
+        },
+        "restricted_field": "4.7",
+        "forbidden_values": [
+          "2",
+          "4",
+          "5",
+          "6"
+        ],
+        "comparison": "strict_after",
+        "on_missing_trace": {
+          "policy": "unknown",
+          "diagnostic": {
+            "code": "W_CONCLUSION_INPUT_UNAVAILABLE",
+            "message_template": "Conclusioni non disponibili: controllo temporale non valutabile."
+          }
+        },
+        "error_code": "E_CAD_ACCESS_AFTER_CONCLUSION"
+      },
+      {
+        "kind": "inactivity_with_pauses",
+        "owner_trace": "A",
+        "evaluations_join": "A_TO_B1_INACTIVITY",
+        "suspensions_join": "A_TO_B2_INACTIVITY",
+        "accesses_join": "A_TO_C_INACTIVITY",
+        "provisions_join": "A_TO_D_INACTIVITY",
+        "access_fields": [
+          "4.1",
+          "4.2",
+          "4.4",
+          "4.5"
+        ],
+        "provision_fields": [
+          "5.1",
+          "5.2",
+          "5.3",
+          "5.4"
+        ],
+        "start_field": "2.4",
+        "access_date_field": "4.2",
+        "suspension_start_field": "3.2",
+        "suspension_end_field": "3.3",
+        "conclusion_date_field": "2.6",
+        "conclusion_code_field": "2.7",
+        "required_conclusion_code": "12",
+        "threshold": {
+          "calendar_months": 3,
+          "invalid_day": "clamp_to_month_end",
+          "pause_days": "strictly_inside_union",
+          "extension": "until_fixed_point"
+        },
+        "horizon": "session_quarter_end",
+        "no_activity": "use_event_start",
+        "already_closed": "no_second_closure",
+        "on_missing_trace": {
+          "policy": "unknown",
+          "diagnostic": {
+            "code": "W_CAD_INACTIVITY_INPUT_UNAVAILABLE",
+            "message_template": "Input necessario non disponibile: inattivit\u00e0 non valutabile."
+          }
+        },
+        "error_code": "E_CAD_MISSING_ADMINISTRATIVE_CLOSURE"
+      }
+    ],
+    "storage_protection": "external_secure_configuration_required"
+  },
+  "traces": [
+    {
+      "id": "A",
+      "name": "Dati anagrafici",
+      "record_length": 218,
+      "fields": [
+        {
+          "id": "1.1",
+          "name": "Azienda ULSS erogatrice",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 1,
+            "length": 3,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "501",
+                "502",
+                "503",
+                "504",
+                "505",
+                "506",
+                "507",
+                "508",
+                "509"
+              ],
+              "target": "raw"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.1",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "source_note": "Codice dell'azienda ULSS erogatrice es. 501 ,\u2026.,509",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.2",
+          "name": "Codice fiscale o altro identificativo utente",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 4,
+            "length": 20,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "1.2",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Il campo va valorizzato con il Codice Fiscale per tutte le schede riferite a cittadini italiani. Per i cittadini stranieri, qualora non in possesso del\nCodice Fiscale, vanno indicati in alternativa tra loro il codice TEAM (Tessera europea assicurazione malattia) , o il codice ENI (Europei non\niscritti), o il codice STP (Straniero temporaneamente presente) per cittadino straniero non in regola con le norme relative all\u2019ingresso e al\nsoggiorno.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.3",
+          "name": "Tipo identificativo utente",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 24,
+            "length": 1,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "9"
+              ],
+              "target": "logical"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.3",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "1. Codice fiscale\n2. Codice ENI\n3. Codice STP\n4. Codice ID utente della Tessera Europea d\u2019Assicurazione Malattia (TEAM)\n5. Altro identificativo\n6. Soggetto che ha richiesto l'anonimato nei casi previsti dalla legge\n9. Identificativo non disponibile",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.4",
+          "name": "Codice istituzione pagatrice TEAM",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 25,
+            "length": 28,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "eq": {
+                  "ref": {
+                    "field": "1.3"
+                  },
+                  "value": "4"
+                }
+              }
+            ],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "1.4",
+            "source_obligation": "NO (1*)",
+            "source_nsis_obligation": "NBB",
+            "resolved_obligation": "NBB",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica il codice di identificazione assegnato a livello nazionale alla istituzione di assicurazione o di residenza competente ai sensi degli allegati 2\ne 3 al regolamento 574/72. Come previsto nella Tessera Europea di Assicurazione Malattia (Campo nr. 7 tessera Team). Obbligatorio per tipo\nidentificativo utente 4",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.5",
+          "name": "Data scadenza tessera TEAM",
+          "physical": {
+            "type": "date",
+            "start": 53,
+            "length": 8,
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "eq": {
+                  "ref": {
+                    "field": "1.3"
+                  },
+                  "value": "4"
+                }
+              }
+            ],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "date",
+              "format": "DDMMYYYY",
+              "calendar_valid": true
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.5",
+            "source_obligation": "NO (1*)",
+            "source_nsis_obligation": "NBB",
+            "resolved_obligation": "NBB",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indicare la data di scadenza della tessera TEAM per i cittadini comunitari non italiani. Utilizzare il formato GGMMAAAA. (Campo nr. 9\ntesssera Team). Obbligatorio per tipo identificativo utente 4",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.6",
+          "name": "MPI",
+          "physical": {
+            "type": "numeric",
+            "start": 61,
+            "length": 28,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0000000000000000000000000000"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{28}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.6",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Master Patient Index (Id regionale della posizione anagrafica).\nChiave di identificazione univoca con cui la posizione anagrafica \u00e8 stata censita in ambiente regionale (Anagrafe Unica). Disponibile per i\nresidenti e assistiti in Regione Veneto come servizio erogato dalla anagrafe unica regionale: progressivamente diventer\u00e0 il riferimento\nanagrafico per la gestione dei flussi informativi per gli assistiti.\nFino a diversa indicazione la compilazione \u00e8 facoltativa.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.7",
+          "name": "Codice sanitario",
+          "physical": {
+            "type": "numeric",
+            "start": 89,
+            "length": 9,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000000000"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{9}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.7",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Il campo va valorizzato, in combinazione con il codice fiscale, per i soli residenti in Veneto.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.8",
+          "name": "Cognome",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 98,
+            "length": 30,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "1.3"
+                  },
+                  "value": "1"
+                }
+              }
+            ],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "1.8",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Il campo va valorizzato, in combinazione con il codice fiscale, obbligatorio quando non disponibile il codice fiscale",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.9",
+          "name": "Nome",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 128,
+            "length": 20,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "1.3"
+                  },
+                  "value": "1"
+                }
+              }
+            ],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "1.9",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Il campo va valorizzato, in combinazione con il codice fiscale, obbligatorio quando non disponibile il codice fiscale",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.10",
+          "name": "Sesso",
+          "physical": {
+            "type": "numeric",
+            "start": 148,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.10",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Utilizzare i codici seguenti: 1 - maschio, 2 - femmina.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.11",
+          "name": "Data di nascita",
+          "physical": {
+            "type": "date",
+            "start": 149,
+            "length": 8,
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "date",
+              "format": "DDMMYYYY",
+              "calendar_valid": true
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.11",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Utilizzare il formato GGMMAAAA.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.12",
+          "name": "Comune o Stato estero di nascita",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 157,
+            "length": 6,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "1.12",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Codici ISTAT (primi 3 caratteri per la provincia e i rimanenti 3 caratteri per il progressivo comune). Si raccomanda di non omettere la\nrilevazione dello \u201c0\u201d costituente il primo carattere del codice provincia. Per i residenti all\u2019estero codificare 999 i primi 3 caratteri ed il codice\nstato estero nei successivi 3, utilizzando il codice stati esteri definito dal Ministero dell\u2019Interno per l\u2019anagrafe della popolazione.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.13",
+          "name": "Cittadinanza",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 163,
+            "length": 3,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "1.13",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Identifica la cittadinanza dell\u2019assistito alla fine del periodo di riferimento della rilevazione. Per i cittadini italiani codificare con 100. Per gli\napolidi codificare 999.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.14",
+          "name": "Comune o Stato estero di residenza",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 166,
+            "length": 6,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "1.14",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Codici ISTAT (primi 3 caratteri per la provincia e i rimanenti 3 caratteri per il progressivo comune). Si raccomanda di non omettere la\nrilevazione dello \u201c0\u201d costituente il primo carattere del codice provincia. Per i residenti all\u2019estero codificare 999 i primi 3 caratteri ed il codice\nstato estero nei successivi 3, utilizzando il codice stati esteri definito dal Ministero dell\u2019Interno per l\u2019anagrafe della popolazione.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.15",
+          "name": "Azienda ULSS di residenza",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 172,
+            "length": 6,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "1.15",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Utilizzare il formato RRRUUU; RRR = codici ISTAT delle regioni UUU = codice azienda sanitaria",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.16",
+          "name": "Comune di domicilio",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 178,
+            "length": 6,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "1.16",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NBB",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Codici ISTAT (primi 3 caratteri per la provincia e i rimanenti 3 caratteri per il progressivo comune). Si raccomanda di non omettere la\nrilevazione dello \u201c0\u201d costituente il primo carattere del codice provincia.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.17",
+          "name": "DSS di domicilio",
+          "physical": {
+            "type": "numeric",
+            "start": 184,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.17",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NBB",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Codice del distretto relativo al comune di domicilio",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.18",
+          "name": "Codice MMG/PLS",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 185,
+            "length": 16,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "1.18",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Codice fiscale del MMG o PLS.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.19",
+          "name": "Stato civile",
+          "physical": {
+            "type": "numeric",
+            "start": 201,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "9"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.19",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica lo stato civile dell\u2019assistito al momento della rilevazione: 1 - celibe/nubile, 2 - coniugato, 3 - separato, 4 - divorziato, 5 - vedovo, 9 - non\ndichiarato.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.20",
+          "name": "Nucleo familiare",
+          "physical": {
+            "type": "numeric",
+            "start": 202,
+            "length": 2,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "00"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{2}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.20",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica il numero dei componenti del nucleo familiare convivente, escluso l\u2019assistito e l\u2019eventuale assistente non familiare convivente\n(rientrano nel conteggio ad esempio: coniuge/partner convivente, figlio/a, fratello/sorella, nipote, genero/nuora, cognato/a).",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.21",
+          "name": "Assistente non familiare",
+          "physical": {
+            "type": "numeric",
+            "start": 204,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.21",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Asssitenza a pagamento fornita da una o pi\u00f9 persone non appartenenti al nucleo familiare: 1 \u2013 occasionale, 2 \u2013 fino a 1h/giorno, 3- da 1 a 4\nh/giorno, 4- da 4 a 8 h/giorno; 5- presenza notturna, 6 - assistenza continuativa, 7 \u2013 non presente.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.22",
+          "name": "Titolo di studio",
+          "physical": {
+            "type": "numeric",
+            "start": 205,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.22",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "1 \u2013 nessuno, 2 \u2013 licenza elementare, 3 \u2013 licenza media inferiore, 4 \u2013 diploma media superiore, 5 \u2013 diploma universitario, 6 \u2013 laurea, 7 \u2013 scuola\nprofessionale, 8 \u2013 altro",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.23",
+          "name": "Identificativo evento assistenziale di CD",
+          "physical": {
+            "type": "numeric",
+            "start": 206,
+            "length": 12,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000000000000"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{12}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.23",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "source_note": "Numero che identifica univocamente l\u2019 evento assistenziale di CD (pazienti diversi non possono avere lo stesso identificativo dell'evento\nassistenziale). Tale campo \u00e8 necessario per riunire il file Anagrafico agli altri file del flusso, separati per il trasferimento dei dati in\nottemperanza alla normativa sulla privacy. E' obbligatorio associare ad ogni evento assistenziale di CD lo stesso codice nel tempo, per\ncorrelare efficacemente i record relativi alla stesso episodio di presa in carico.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "1.24",
+          "name": "Responsabilit\u00e0 genitoriale",
+          "physical": {
+            "type": "numeric",
+            "start": 218,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "9"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "1.24",
+            "source_obligation": "NBB",
+            "source_nsis_obligation": "NBB",
+            "resolved_obligation": "NBB",
+            "source_page": 1,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica chi ha la responsabilit\u00e0 nei confronti dell\u2019assistito se minorenne. Il campo deve essere valorizzato se l\u2019et\u00e0 dell\u2019assistito (anno della data\npresa in carico -anno di nascita) \u00e8 minore o uguale a 17.\nI valori ammessi: 1 - materna, 2 - paterna, 3 - condivisa, 4 - da tutore, 5 - struttura pubblica o convenzionata, 9 - non disponibile*",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages",
+            "documented_runtime_rule": "See CAD_RUNTIME_PROFILE.json compiler_extensions_required and CAD_NOTES_AUDIT.md; not compiled by DSL v1.0.0"
+          }
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "1.1",
+          "1.23"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "age_start",
+          "target_trace": "B1",
+          "source_fields": [
+            "1.23"
+          ],
+          "target_fields": [
+            "2.1"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_AGE_CONTEXT_UNAVAILABLE",
+              "message_template": "Et\u00e0 non valutabile: contesto collegato indisponibile."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_AGE_CONTEXT_UNAVAILABLE",
+              "message_template": "Et\u00e0 non valutabile: contesto collegato indisponibile."
+            }
+          },
+          "reduction": {
+            "kind": "consensus",
+            "fields": [
+              "2.4"
+            ],
+            "include_if": {
+              "const": true
+            },
+            "on_conflict": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_AGE_CONTEXT_CONFLICT",
+              "message_template": "Date di inizio assistenza discordanti per lo stesso evento."
+            }
+          }
+        },
+        {
+          "id": "A_TO_B1_INACTIVITY",
+          "target_trace": "B1",
+          "source_fields": [
+            "1.23"
+          ],
+          "target_fields": [
+            "2.1"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_INACTIVITY_EVALUATION_MISSING",
+              "message_template": "Contesto evento non disponibile."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_INACTIVITY_INPUT_UNAVAILABLE",
+              "message_template": "Input necessario non disponibile: inattivit\u00e0 non valutabile."
+            }
+          },
+          "reduction": {
+            "kind": "consensus",
+            "fields": [
+              "2.4",
+              "2.6",
+              "2.7"
+            ],
+            "include_if": {
+              "const": true
+            },
+            "on_conflict": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_INACTIVITY_EVALUATION_CONFLICT",
+              "message_template": "Date o stati discordanti per lo stesso evento."
+            }
+          }
+        },
+        {
+          "id": "A_TO_B2_INACTIVITY",
+          "target_trace": "B2",
+          "source_fields": [
+            "1.23"
+          ],
+          "target_fields": [
+            "3.1"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_INACTIVITY_EVALUATION_MISSING",
+              "message_template": "Contesto evento non disponibile."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_INACTIVITY_INPUT_UNAVAILABLE",
+              "message_template": "Input necessario non disponibile: inattivit\u00e0 non valutabile."
+            }
+          }
+        },
+        {
+          "id": "A_TO_C_INACTIVITY",
+          "target_trace": "C",
+          "source_fields": [
+            "1.23"
+          ],
+          "target_fields": [
+            "4.1"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_INACTIVITY_EVALUATION_MISSING",
+              "message_template": "Contesto evento non disponibile."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_INACTIVITY_INPUT_UNAVAILABLE",
+              "message_template": "Input necessario non disponibile: inattivit\u00e0 non valutabile."
+            }
+          }
+        },
+        {
+          "id": "A_TO_D_INACTIVITY",
+          "target_trace": "D",
+          "source_fields": [
+            "1.23"
+          ],
+          "target_fields": [
+            "5.1"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_INACTIVITY_EVALUATION_MISSING",
+              "message_template": "Contesto evento non disponibile."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_INACTIVITY_INPUT_UNAVAILABLE",
+              "message_template": "Input necessario non disponibile: inattivit\u00e0 non valutabile."
+            }
+          }
+        }
+      ],
+      "identity": [],
+      "named_conditions": {},
+      "derived_values": {
+        "calendar_age": {
+          "kind": "calendar_year_delta",
+          "birth_date_ref": {
+            "field": "1.11"
+          },
+          "reference_date_ref": {
+            "trace": "B1",
+            "field": "2.4",
+            "join": "age_start"
+          },
+          "date_format": "DDMMYYYY"
+        }
+      },
+      "repeated_groups": [],
+      "rules": [
+        {
+          "id": "CAD-AGE-GUARDIAN",
+          "when": {
+            "derived_compare": {
+              "derived_value": "calendar_age",
+              "operator": "<=",
+              "value": 17
+            }
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "1.24"
+              }
+            }
+          ],
+          "error_code": "E_CONDITIONAL_REQUIRED",
+          "message_template": "Il campo 1.24 \u00e8 richiesto alla soglia di et\u00e0 dichiarata dallo schema."
+        }
+      ],
+      "documented_non_executable_rules": [
+        {
+          "id": "CAD-IDENTIFIER-CROSSCHECK",
+          "fields": [
+            "1.2",
+            "1.3"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Deliberately no semantic cross-field identifier check per user decision.",
+          "decision_reference": "CAD-03 / docs/normative/cad/rules-and-joins.md: no semantic 1.2/1.3 or fiscal checksum check by author decision"
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "name": "Valutazione rivalutazione conclusione",
+      "record_length": 198,
+      "fields": [
+        {
+          "id": "2.1",
+          "name": "Identificativo evento assistenziale di CD",
+          "physical": {
+            "type": "numeric",
+            "start": 1,
+            "length": 12,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000000000000"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{12}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.1",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "source_note": "Ricollega il servizio erogato all\u2019evento assistenziale di CD (vedi TRACCIATO DATI ANAGRAFICI)",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.2",
+          "name": "Soggetto richiedente cure domiciliari",
+          "physical": {
+            "type": "numeric",
+            "start": 13,
+            "length": 2,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "00"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{2}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.2",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica il soggetto richiedente la evento assistenziale di CD INIZIALE. I valori ammessi sono i seguenti: 1 - servizi sociali Comune, 2 - servizi\nsociali Az. ULSS, 3 - MMG/PLS, 4 - Ospedale, 5 - Struttura residenziale extraospedaliera, 6 - Utente/familiari, 7 - Apertura amministrativa per\nriassetto territoriale ASL, 8 - Apertura amministrativa della stessa Persona presa in carico, 9 - altro, 10 - Hospice, 11 - Servizi\nterritoriali/distrettuali, 12 - Medico specialista, 13 - Ambulatorio cure palliative, 14 Ospedale per dimissione protetta.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.3",
+          "name": "Tipologia presa in carico",
+          "physical": {
+            "type": "numeric",
+            "start": 15,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.3",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica la tipologia di presa in carico. I valori ammessi sono i seguenti: 1 - Cure domiciliari (DPCM 12 gennaio 2017 art. 22), 2 - UCPDOM",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.4",
+          "name": "Data inizio evento assistenziale di CD",
+          "physical": {
+            "type": "date",
+            "start": 16,
+            "length": 8,
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "date",
+              "format": "DDMMYYYY",
+              "calendar_valid": true
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.4",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica la data dell\u2019attuale evento assistenziale di CD (non varia fino alla chiusura dell\u2019 evento assistenziale di CD).",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.5",
+          "name": "Pianificazione condivisa delle cure",
+          "physical": {
+            "type": "numeric",
+            "start": 24,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "condition": "is_ucpdom"
+              }
+            ],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "9"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.5",
+            "source_obligation": "NBB",
+            "source_nsis_obligation": "NBB",
+            "resolved_obligation": "NBB",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica se esiste una pianificazione condivisa delle cure in cartella/fascicolo ai sensi della l.219/2017 art. 5. Valori ammessi: 1 - Si, 2 - No, 9- non\ndisponibile*\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.6",
+          "name": "Data conclusione",
+          "physical": {
+            "type": "date",
+            "start": 25,
+            "length": 8,
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "date",
+              "format": "DDMMYYYY",
+              "calendar_valid": true
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.6",
+            "source_obligation": "NBB",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "NBB",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica la data di conclusione della evento assistenziale di CD dell\u2019assistito.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.7",
+          "name": "Motivo conclusione",
+          "physical": {
+            "type": "numeric",
+            "start": 33,
+            "length": 2,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "00"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "condition": "has_conclusion"
+              }
+            ],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
+                "10",
+                "11",
+                "12",
+                "13",
+                "80",
+                "82",
+                "88",
+                "97",
+                "98",
+                "99"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{2}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.7",
+            "source_obligation": "NBB",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "NBB",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Il campo ha dominio condizionato dal tipo presa in carico.\nValori ammessi sono:\n1 - Completamento del programma assistenziale, 2 - Ricoveri in ospedale, 3 - Decesso a domicilio, 4 - Decesso in ospedale, 5 - Trasferimento in\nstruttura residenziale, 6 - Trasferimento in Hospice, 7 - Decesso in Hospice, 8 - Trasferimento in altra tipologia di cure domiciliari, 9 - Cambio\nresidenza, 10 - Cambio medico, 11 - Volont\u00e0 dell\u2019utente, 12 - Chiusura amministrativa (in assenza di sospensione, qualora non vi siano\nprestazioni per 3 mesi), 13 - Passaggio dalla rete pediatrica alla rete adulti e viceversa, 80 - trasferimento in altra struttura\nresidenziale/intermedia, 82 \u2013 Decesso (se non rientra nei casi precedenti), 88 \u2013 Trasferimento (se non rientra nei casi precedenti), 97 -\nChiusura amministrativa per riassetto territoriale ASL, 98 - Chiusura amministrativa con riapertura nell\u2019anno successivo in assenza di\nsospensione, 99 - altro\nNBB: obbligatorio se DATA_CONCLUSIONE valorizzata\nCodice 10 non valido per prese in carico di tipo UCPDOM\nCodice 13 non valido per prese in carico di tipo Cure Domiciliari",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.8",
+          "name": "Tipo valutazione",
+          "physical": {
+            "type": "numeric",
+            "start": 35,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.8",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "valori ammessi: 1 - valutazione iniziale (per ogni nuovo evento assistenziale di CD), 2 - rivalutazione.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.9",
+          "name": "Data valutazione",
+          "physical": {
+            "type": "date",
+            "start": 36,
+            "length": 8,
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "date",
+              "format": "DDMMYYYY",
+              "calendar_valid": true
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.9",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica la data nella quale \u00e8 stata effettuata la valutazione iniziale oppure una rivalutazione (data ultimo aggiornamento di un qualsiasi\nelemento di valutazione:diagnosi, svama/scheda valutazione semplificata, scheda bisogni) relativa all\u2019episodio di assistenza in corso.\nUtilizzare il formato GGMMAAAA",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.10",
+          "name": "Data ultima UVMD",
+          "physical": {
+            "type": "date",
+            "start": 44,
+            "length": 8,
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "date",
+              "format": "DDMMYYYY",
+              "calendar_valid": true
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.10",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "indicare la data dell'ultima UVMD (anche se fatta nei periodi precedenti). Utilizzare il formato GGMMAAA",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.11",
+          "name": "Patologia prevalente",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 52,
+            "length": 3,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "2.11",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Codice ICPC della diagnosi \"principale\" (quella che condiziona maggiormente il piano di assistenza).",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.12",
+          "name": "Patologia concomitante",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 55,
+            "length": 3,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [],
+          "regulatory_metadata": {
+            "source_id": "2.12",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Codice ICPC della patologia concomitante in grado di condizionare la evento assistenziale di CD, se non \u00e8 presente inserire il codice 000.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.13",
+          "name": "Profilo cognitivo",
+          "physical": {
+            "type": "numeric",
+            "start": 58,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.13",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "da Svama completa o scheda di valutazione multidimensionale semplificata: 1 - lucido, 2 - confuso, 3 - molto confuso o stuporoso.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.14",
+          "name": "Disturbi comportamentali",
+          "physical": {
+            "type": "numeric",
+            "start": 59,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.14",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "da NPI o scheda di valutazione multidimensionale semplificata: 1 - assenti / lievi, 2 - moderati, 3 - gravi.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.15",
+          "name": "Disturbi sensoriali",
+          "physical": {
+            "type": "numeric",
+            "start": 60,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.15",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "per flusso riabilitazione territoriale: 1 - assenti / lievi, 2 - moderati, 3 - gravi.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.16",
+          "name": "Disturbi comunicazione",
+          "physical": {
+            "type": "numeric",
+            "start": 61,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.16",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "per flusso riabilitazione territoriale: 1 - assenti / lievi, 2 - moderati, 3 - gravi.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.17",
+          "name": "Profilo mobilit\u00e0",
+          "physical": {
+            "type": "numeric",
+            "start": 62,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.17",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica il livello di autonomia dell\u2019assistito nell\u2019area di mobilit\u00e0 condizionato all\u2019et\u00e0 - a partire dai 3 anni. Da Svama completa o scheda di\nvalutazione multidimensionale semplificata: 1 - si sposta da solo, 2 - si sposta assistito, 3 - non si sposta.\nNBB: Il campo deve essere valorizzato se l\u2019et\u00e0 dell\u2019assistito (anno della data presa in carico -anno di nascita) \u00e8 maggiore o uguale a 3",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages",
+            "documented_runtime_rule": "See CAD_RUNTIME_PROFILE.json compiler_extensions_required and CAD_NOTES_AUDIT.md; not compiled by DSL v1.0.0"
+          }
+        },
+        {
+          "id": "2.18",
+          "name": "Profilo funzionale",
+          "physical": {
+            "type": "numeric",
+            "start": 63,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.18",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica il livello di autonomia dell\u2019assistito nell\u2019area di mobilit\u00e0 condizionato all\u2019et\u00e0 - a partire dai 6 anni. Da Svama completa o scheda di\nvalutazione multidimensionale semplificata: 1 - autonomo o quasi, 2 - dipendente, 3 - totalmente dipendente.\nNBB: Il campo deve essere valorizzato se l\u2019et\u00e0 dell\u2019assistito (anno della data presa in carico -anno di nascita) \u00e8 maggiore o uguale a 6",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages",
+            "documented_runtime_rule": "See CAD_RUNTIME_PROFILE.json compiler_extensions_required and CAD_NOTES_AUDIT.md; not compiled by DSL v1.0.0"
+          }
+        },
+        {
+          "id": "2.19",
+          "name": "Profilo sanitario",
+          "physical": {
+            "type": "numeric",
+            "start": 64,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.19",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "da Svama completa o scheda di valutazione multidimensionale semplificata: 1. bassa, 2. intermedia, 3. alta.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.20",
+          "name": "Profilo socio-assistenziale",
+          "physical": {
+            "type": "numeric",
+            "start": 65,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.20",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "da Svama completa o scheda di valutazione multidimensionale semplificata: 1 - ben assistito, 2 - parzialmente assistito, 3 - non\nsufficientemente assistito.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.21",
+          "name": "Fragilit\u00e0 familiare",
+          "physical": {
+            "type": "numeric",
+            "start": 66,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "9"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.21",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica la presenza di Fragilit\u00e0 familiare. Valore ammessi: 1 - presente, 2 -assente\n, 9- non disponibile*",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.22",
+          "name": "Problemi salute e bisogni assistenziali",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 67,
+            "length": 70,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[12]{59}[12 ]2{10}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.22",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "problemi di salute allineato con DM 17-12-2008; Codificare in questo modo: \"1\" in caso di problema presente, \"2\" in caso di problema\nassente.\nLa posizione del carattere si riferisce al \"bisogno assistenziale\" secondo la tabella allegato D - Bisogni_NEW\nI caratteri delle posizione 61-70 (bisogni \"vuoti\") vanno compilate con il carattere 2.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.23",
+          "name": "Rischio sanguinamento acuto",
+          "physical": {
+            "type": "numeric",
+            "start": 137,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "9"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.23",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica se l\u2019assistito \u00e8 a rischio sanguinamento acuto. Valori ammessi: 1 - Si, 2 - No, 9- non disponibile*",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.24",
+          "name": "Forniture sanitarie attive",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 138,
+            "length": 12,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[12][12][12][12][12][12][12][12][12][12]  \\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.24",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Codificare in questo modo:\"1\" in caso di servizio presente nel periodo\"; \"2\" in caso di servizio assente nel periodo\". La posizione del carattere\nsi riferisce alla tipologia del servizio erogato: 1 - farmaceutica ad erogazione diretta, 2 - assistenza protesica, 3 - fornitura O2 liquido, 4 -\nfornitura O2 concentratore, 5 - fornitura O2 in bombole, 6 - fornitura materiale per dialisi, 7 - fornitura alimenti per nutrizione enterale, 8 -\nfornitura presidi per nutrizione parenterale, 9 - fornitura materiale sanitario di consumo (es. medicazioni), 10 - altro.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.25",
+          "name": "Interventi servizio assistenza domiciliare",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 150,
+            "length": 4,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[12][12][12][12]\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.25",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Codificare in questo modo:\"1\" in caso di servizio presente nel periodo\"; \"2\" in caso di servizio assente nel periodo\". La posizione del carattere\nsi riferisce alla tipologia del servizio erogato: 1 - prestazioni quotidiane di base - Attivit\u00e0 di aiuto alla persona, 2 - prestazioni quotidiane di\nbase - Attivit\u00e0 tese a favorire la deambulazione e/o mobilizzazione della persona, 3 - prestazioni quotidiane strumentali, 4 - altre prestazioni.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.26",
+          "name": "Interventi sostegno domiciliarit\u00e0",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 154,
+            "length": 4,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[12][12][12][12]\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.26",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Codificare in questo modo:\"1\" in caso di servizio presente nel periodo\"; \"2\" in caso di servizio assente nel periodo\". La posizione del carattere\nsi riferisce alla tipologia del servizio erogato: 1 - telesoccorso, 2 - pasti a domicilio, 3 - trasporto / accompagnamento, 4 - contributo\neconomico straordinario.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.27",
+          "name": "Appartenente alla rete",
+          "physical": {
+            "type": "numeric",
+            "start": 158,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "condition": "is_ucpdom"
+              }
+            ],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "9"
+              ],
+              "target": "raw"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.27",
+            "source_obligation": "NBB",
+            "source_nsis_obligation": "NBB",
+            "resolved_obligation": "NBB",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica se l\u2019erogatore appartiene alla rete.\nValori ammessi:1 - Si, 2 - No, 9 - non disponibile\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.28",
+          "name": "Tipo rete",
+          "physical": {
+            "type": "numeric",
+            "start": 159,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "and": [
+                  {
+                    "condition": "is_ucpdom"
+                  },
+                  {
+                    "condition": "belongs_to_network"
+                  }
+                ]
+              }
+            ],
+            "forbidden_if": [
+              {
+                "not": {
+                  "and": [
+                    {
+                      "condition": "is_ucpdom"
+                    },
+                    {
+                      "condition": "belongs_to_network"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3",
+                "9"
+              ],
+              "target": "raw"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.28",
+            "source_obligation": "NBB",
+            "source_nsis_obligation": "NBB",
+            "resolved_obligation": "NBB",
+            "source_page": 2,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica a quale rete appartiene l\u2019erogatore. Valori ammessi:1 - RLCP (rete locale di cure palliative), 2 - RCPPTD (rete di cure palliative\npediatriche e terapia del dolore), 3 - RLTD (rete locale di terapia del dolore), 9 - non disponibile*\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM e se l\u2019erogatore appartiene alla rete",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.29",
+          "name": "Segno/sintomo clinico 1",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 160,
+            "length": 5,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "condition": "is_ucpdom"
+              }
+            ],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "ICD9"
+              ],
+              "fallback_values": [],
+              "metadata_bindings": []
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.29",
+            "source_obligation": "NBB",
+            "source_nsis_obligation": "NBB",
+            "resolved_obligation": "NBB",
+            "source_page": 3,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+            "source_note": "I valori ammessi sono riportati nella tabella di riferimento 5.1 (ICD 9 CM)\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.30",
+          "name": "Segno/sintomo clinico 2",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 165,
+            "length": 5,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "ICD9"
+              ],
+              "fallback_values": [],
+              "metadata_bindings": []
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.30",
+            "source_obligation": "FAC",
+            "source_nsis_obligation": "FAC",
+            "resolved_obligation": "FAC",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+            "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo pu\u00f2 essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.31",
+          "name": "Segno/sintomo clinico 3",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 170,
+            "length": 5,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "ICD9"
+              ],
+              "fallback_values": [],
+              "metadata_bindings": []
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.31",
+            "source_obligation": "FAC",
+            "source_nsis_obligation": "FAC",
+            "resolved_obligation": "FAC",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+            "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo pu\u00f2 essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.32",
+          "name": "Segno/sintomo clinico 4",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 175,
+            "length": 5,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "ICD9"
+              ],
+              "fallback_values": [],
+              "metadata_bindings": []
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.32",
+            "source_obligation": "FAC",
+            "source_nsis_obligation": "FAC",
+            "resolved_obligation": "FAC",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+            "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo pu\u00f2 essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.33",
+          "name": "Segno/sintomo clinico 5",
+          "physical": {
+            "type": "alphanumeric",
+            "start": 180,
+            "length": 5,
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "ICD9"
+              ],
+              "fallback_values": [],
+              "metadata_bindings": []
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.33",
+            "source_obligation": "FAC",
+            "source_nsis_obligation": "FAC",
+            "resolved_obligation": "FAC",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "dataset_scope": "PDF p7 enumerated codes; open-list phrases not automatically accepted as arbitrary national ICD-9-CM",
+            "source_note": "I valori ammessi sono riportati nella tabella di riferimento (ICD 9 CM)\nIl campo pu\u00f2 essere valorizzato solo in caso di tipo presa in carico UCPDOM",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.34",
+          "name": "Strumento identificazione bisogno CP",
+          "physical": {
+            "type": "numeric",
+            "start": 185,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "condition": "is_ucpdom"
+              }
+            ],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "9"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.34",
+            "source_obligation": "NBB",
+            "source_nsis_obligation": "NBB",
+            "resolved_obligation": "NBB",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Valori ammessi: 1 - Si, 2 - No, 9- non disponibile*\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.35",
+          "name": "Strumento valutazione multidimensionale",
+          "physical": {
+            "type": "numeric",
+            "start": 186,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [
+              {
+                "condition": "is_ucpdom"
+              }
+            ],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "9"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.35",
+            "source_obligation": "NBB",
+            "source_nsis_obligation": "NBB",
+            "resolved_obligation": "NBB",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Valori ammessi: 1 - Si, 2 - No, 9- non disponibile*\nNBB: Il campo deve essere valorizzato solo in caso di tipo presa in carico UCPDOM.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "2.36",
+          "name": "Chiave progressivo record",
+          "physical": {
+            "type": "numeric",
+            "start": 187,
+            "length": 12,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000000000000"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{12}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "2.36",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NBB",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "pk_presence_resolution": "Required for complete CAD primary key and persistent identity; REGIONAL source SI, NSIS NO",
+            "source_note": "Identificativo univoco assoluto per il tipo record, valorizzato in fase di generazione del record, da utilizzare per le tutte le operazioni di\nalimentazione e aggiornamento della base dati regionale. Successivi rinvii dello stesso record devono utilizzare lo stesso progressivo.\nProgressivi record inviati in un trimestre, se non presenti in successivi invii, si intendono annullati.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "2.1",
+          "2.36"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "age_birth",
+          "target_trace": "A",
+          "source_fields": [
+            "2.1"
+          ],
+          "target_fields": [
+            "1.23"
+          ],
+          "cardinality": "exactly_one",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "violation",
+            "error_code": "E_RELATED_RECORD_MISSING",
+            "diagnostic": {
+              "code": "E_RELATED_RECORD_MISSING",
+              "message_template": "Evento assistenziale senza anagrafica disponibile."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_AGE_CONTEXT_UNAVAILABLE",
+              "message_template": "Et\u00e0 non valutabile: contesto collegato indisponibile."
+            }
+          }
+        },
+        {
+          "id": "B1_TO_A_EVENT",
+          "target_trace": "A",
+          "source_fields": [
+            "2.1"
+          ],
+          "target_fields": [
+            "1.23"
+          ],
+          "cardinality": "exactly_one",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "violation",
+            "error_code": "E_CAD_RELATED_RECORD_MISSING",
+            "diagnostic": {
+              "code": "E_CAD_RELATED_RECORD_MISSING",
+              "message_template": "Required related record is absent."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_RELATED_TRACE_UNAVAILABLE",
+              "message_template": "Required input is unavailable."
+            }
+          }
+        },
+        {
+          "id": "B1_INITIAL_HISTORY",
+          "target_trace": "B1",
+          "source_fields": [
+            "2.1"
+          ],
+          "target_fields": [
+            "2.1"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "history_including_current",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "violation",
+            "error_code": "E_CAD_RELATED_RECORD_MISSING",
+            "diagnostic": {
+              "code": "E_CAD_RELATED_RECORD_MISSING",
+              "message_template": "Required related record is absent."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_RELATED_TRACE_UNAVAILABLE",
+              "message_template": "Required input is unavailable."
+            }
+          }
+        }
+      ],
+      "identity": [],
+      "named_conditions": {
+        "is_ucpdom": {
+          "eq": {
+            "ref": {
+              "field": "2.3"
+            },
+            "value": "2"
+          }
+        },
+        "belongs_to_network": {
+          "eq": {
+            "ref": {
+              "field": "2.27"
+            },
+            "value": "1"
+          }
+        },
+        "has_conclusion": {
+          "is_present": {
+            "ref": {
+              "field": "2.6"
+            }
+          }
+        }
+      },
+      "derived_values": {
+        "calendar_age": {
+          "kind": "calendar_year_delta",
+          "birth_date_ref": {
+            "trace": "A",
+            "field": "1.11",
+            "join": "age_birth"
+          },
+          "reference_date_ref": {
+            "field": "2.4"
+          },
+          "date_format": "DDMMYYYY"
+        }
+      },
+      "repeated_groups": [],
+      "rules": [
+        {
+          "id": "CAD-AGE-MOBILITY",
+          "when": {
+            "derived_compare": {
+              "derived_value": "calendar_age",
+              "operator": ">=",
+              "value": 3
+            }
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "2.17"
+              }
+            }
+          ],
+          "error_code": "E_CONDITIONAL_REQUIRED",
+          "message_template": "Il campo 2.17 \u00e8 richiesto alla soglia di et\u00e0 dichiarata dallo schema."
+        },
+        {
+          "id": "CAD-AGE-FUNCTION",
+          "when": {
+            "derived_compare": {
+              "derived_value": "calendar_age",
+              "operator": ">=",
+              "value": 6
+            }
+          },
+          "assertions": [
+            {
+              "kind": "field_present",
+              "field": {
+                "field": "2.18"
+              }
+            }
+          ],
+          "error_code": "E_CONDITIONAL_REQUIRED",
+          "message_template": "Il campo 2.18 \u00e8 richiesto alla soglia di et\u00e0 dichiarata dallo schema."
+        },
+        {
+          "id": "CAD-R-2.7-UC-10",
+          "when": {
+            "and": [
+              {
+                "eq": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "2"
+                }
+              },
+              {
+                "is_present": {
+                  "ref": {
+                    "field": "2.7"
+                  }
+                }
+              }
+            ]
+          },
+          "assertions": [
+            {
+              "kind": "condition_true",
+              "condition": {
+                "not_in": {
+                  "ref": {
+                    "field": "2.7"
+                  },
+                  "values": [
+                    "10"
+                  ]
+                }
+              }
+            }
+          ],
+          "error_code": "E_CAD_CONCLUSION_CODE",
+          "message_template": "Motivo conclusione non ammesso per il tipo di presa in carico."
+        },
+        {
+          "id": "CAD-R-2.7-CD-13",
+          "when": {
+            "and": [
+              {
+                "eq": {
+                  "ref": {
+                    "field": "2.3"
+                  },
+                  "value": "1"
+                }
+              },
+              {
+                "is_present": {
+                  "ref": {
+                    "field": "2.7"
+                  }
+                }
+              }
+            ]
+          },
+          "assertions": [
+            {
+              "kind": "condition_true",
+              "condition": {
+                "not_in": {
+                  "ref": {
+                    "field": "2.7"
+                  },
+                  "values": [
+                    "13"
+                  ]
+                }
+              }
+            }
+          ],
+          "error_code": "E_CAD_CONCLUSION_CODE",
+          "message_template": "Motivo conclusione non ammesso per il tipo di presa in carico."
+        },
+        {
+          "id": "CAD-B1-PARENT-EVENT",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "record_exists",
+              "join": "B1_TO_A_EVENT"
+            }
+          ],
+          "error_code": "E_CAD_EVENT_PARENT_MISSING",
+          "message_template": "Record has no parent event in its namespace."
+        },
+        {
+          "id": "CAD-INITIAL-HISTORY",
+          "when": {
+            "eq": {
+              "ref": {
+                "field": "2.8"
+              },
+              "value": "2"
+            }
+          },
+          "assertions": [
+            {
+              "kind": "set_exists",
+              "join": "B1_INITIAL_HISTORY",
+              "predicate": {
+                "eq": {
+                  "ref": {
+                    "field": "2.8"
+                  },
+                  "value": "1"
+                }
+              }
+            }
+          ],
+          "error_code": "E_CAD_INITIAL_EVALUATION_REQUIRED",
+          "message_template": "A reevaluation requires a valid initial evaluation in approved history or current input."
+        }
+      ],
+      "documented_non_executable_rules": [
+        {
+          "id": "CAD-2.11-12-ICPC",
+          "fields": [
+            "2.11",
+            "2.12"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "No ICPC lookup per user decision; 2.12=000 reserved for absent concomitant diagnosis.",
+          "decision_reference": "DEC-05-CAD-ICPC-000 / TASK_PROMPTS/T-CAD-11.md: no additional ICPC lookup, mandatory values and 000 handling preserved"
+        }
+      ]
+    },
+    {
+      "id": "B2",
+      "name": "Sospensioni",
+      "record_length": 41,
+      "fields": [
+        {
+          "id": "3.1",
+          "name": "Identificativo evento assistenziale di CD",
+          "physical": {
+            "type": "numeric",
+            "start": 1,
+            "length": 12,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000000000000"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{12}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "3.1",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "source_note": "Ricollega il servizio erogato all\u2019evento assistenziale di CD (vedi TRACCIATO DATI ANAGRAFICI)",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "3.2",
+          "name": "Data inizio sospensione",
+          "physical": {
+            "type": "date",
+            "start": 13,
+            "length": 8,
+            "format": "DDMMYYYY",
+            "alignment": {
+              "kind": "exact"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "date",
+              "format": "DDMMYYYY",
+              "calendar_valid": true
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "3.2",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica la data in cui inizia la sospensione dell\u2019erogazione delle cure domiciliari all\u2019assistito.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "3.3",
+          "name": "Data fine sospensione",
+          "physical": {
+            "type": "date",
+            "start": 21,
+            "length": 8,
+            "format": "DDMMYYYY",
+            "alignment": {
+              "kind": "exact"
+            }
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "date",
+              "format": "DDMMYYYY",
+              "calendar_valid": true
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "3.3",
+            "source_obligation": "FAC",
+            "source_nsis_obligation": "FAC",
+            "resolved_obligation": "FAC",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica la data in cui termina la sospensione dell\u2019erogazione delle cure domiciliari all\u2019assistito.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "3.4",
+          "name": "Motivo sospensione",
+          "physical": {
+            "type": "numeric",
+            "start": 29,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "7",
+                "9"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "3.4",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "I valori ammessi sono: 1 - ricovero in ospedale, 2 - allontanamento temporaneo, 3 - ricovero temporaneo in struttura residenziale, 4 -\nricovero in HOSPICE, 7 - ricovero in altra struttura residenziale/intermedia, 9 - altro.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "3.5",
+          "name": "Chiave progressivo record",
+          "physical": {
+            "type": "numeric",
+            "start": 30,
+            "length": 12,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000000000000"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{12}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "3.5",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NBB",
+            "source_page": 4,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "pk_presence_resolution": "Required for complete CAD primary key and persistent identity; REGIONAL source SI, NSIS NO",
+            "source_note": "Identificativo univoco assoluto per il tipo record, valorizzato in fase di generazione del record, da utilizzare per le tutte le operazioni di\nalimentazione e aggiornamento della base dati regionale. Successivi rinvii dello stesso record devono utilizzare lo stesso progressivo.\nProgressivi record inviati in un trimestre, se non presenti in successivi invii, si intendono annullati.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "3.1",
+          "3.5"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "B2_TO_A_EVENT",
+          "target_trace": "A",
+          "source_fields": [
+            "3.1"
+          ],
+          "target_fields": [
+            "1.23"
+          ],
+          "cardinality": "exactly_one",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "violation",
+            "error_code": "E_CAD_RELATED_RECORD_MISSING",
+            "diagnostic": {
+              "code": "E_CAD_RELATED_RECORD_MISSING",
+              "message_template": "Required related record is absent."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_RELATED_TRACE_UNAVAILABLE",
+              "message_template": "Required input is unavailable."
+            }
+          }
+        }
+      ],
+      "identity": [],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [
+        {
+          "id": "CAD-B2-PARENT-EVENT",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "record_exists",
+              "join": "B2_TO_A_EVENT"
+            }
+          ],
+          "error_code": "E_CAD_EVENT_PARENT_MISSING",
+          "message_template": "Record has no parent event in its namespace."
+        }
+      ],
+      "documented_non_executable_rules": []
+    },
+    {
+      "id": "C",
+      "name": "Accessi",
+      "record_length": 45,
+      "fields": [
+        {
+          "id": "4.1",
+          "name": "Identificativo evento assistenziale di CD",
+          "physical": {
+            "type": "numeric",
+            "start": 1,
+            "length": 12,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000000000000"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{12}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.1",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "source_note": "Ricollega il servizio erogato all\u2019evento assistenziale di CD (vedi TRACCIATO DATI ANAGRAFICI)",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "4.2",
+          "name": "Data accesso",
+          "physical": {
+            "type": "date",
+            "start": 13,
+            "length": 8,
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "date",
+              "format": "DDMMYYYY",
+              "calendar_valid": true
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.2",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "source_note": "Utilizzare il formato GGMMAAAA",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "4.3",
+          "name": "Numero accessi stessa data",
+          "physical": {
+            "type": "numeric",
+            "start": 21,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.3",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "indica il numero di accessi della stessa figura professionale nella stessa data",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "4.4",
+          "name": "Tipo accesso",
+          "physical": {
+            "type": "numeric",
+            "start": 22,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "9"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.4",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "source_note": "Valori ammessi:1 - programmato Si, 2 - programmato No, 9 - non disponibile*",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "4.5",
+          "name": "Figura professionale",
+          "physical": {
+            "type": "numeric",
+            "start": 23,
+            "length": 2,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "00"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "56",
+                "60",
+                "61",
+                "70",
+                "71",
+                "99"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{2}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.5",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "source_note": "valori ammessi: 1 - MMG, 2 - PLS, 3 - infermiere, 4 - medico specialista, 5 - medico esperto in cure palliative, 6 - medico di continuit\u00e0\nassistenziale, 7 - psicologo, 8 - fisioterapista, 9 - logopedista, 11 - dietista, 12 - assistente sociale della Az. ULSS (del SSN), 13 - assistente\nsociale del Comune (no del SSN), 14 - terapista occupazionale, 15 - Medico USCA (non valido per PIC iniziate dal 2025), 56 \u2013 infermiere solo\nprelievo, 60 \u2013 OSS della Az. ULSS (del SSN), 61 \u2013 OSS del comune (no del SSN), 70 - Infermiere di famiglia o di comunit\u00e0, 71 -UCAD Medico\nContinuit\u00e0 Assistenziale Diurna, 99 - altro soggetto.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages",
+            "documented_runtime_rule": "See CAD_RUNTIME_PROFILE.json compiler_extensions_required and CAD_NOTES_AUDIT.md; not compiled by DSL v1.0.0"
+          }
+        },
+        {
+          "id": "4.6",
+          "name": "Tipo accessi MMG/PLS",
+          "physical": {
+            "type": "numeric",
+            "start": 25,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3",
+                "9"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.6",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "1 - adimed, 2 - programmata, 3 - malati oncologici*, 9 - altro\n*Assistenza dei malati oncologici, o affetti da malattie inguaribili, nelle ultime fasi della vita, DGR 3889 del 31/12/2011",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "4.7",
+          "name": "Sede accesso",
+          "physical": {
+            "type": "numeric",
+            "start": 26,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.7",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NBB",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "sede: 1 - a domicilio, 2 \u2013 in ospedale (dimissioni protette), 3 \u2013 a domicilio per visita di cordoglio, 4 - altro, 5 - a distanza, 6 - OdC o Centro\nServizi. Il ricovero ordinario preclude la possibilit\u00e0 di fare accessi con codifica 1; il decesso preclude la possibilit\u00e0 di fare accessi con codifica 1-\n2-4-5-6)",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "4.8",
+          "name": "Titolarit\u00e0 gestione",
+          "physical": {
+            "type": "numeric",
+            "start": 27,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "3"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.8",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "valori ammessi: 1 - gestione in appalto, 2 - gestione pubblica (prevale se compresenti nella stessa giornata per la specifica figura che effettua\nl'accesso), 3 \u2013 volontariato.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "4.9",
+          "name": "Branca specialistica",
+          "physical": {
+            "type": "numeric",
+            "start": 28,
+            "length": 3,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": [
+              {
+                "ne": {
+                  "ref": {
+                    "field": "4.5"
+                  },
+                  "value": "04"
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{3}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.9",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Da utilizzare solo per il servizio 4 = medico specialista; utilizzare il codice definito nella tabella allegata, gi\u00e0 utilizzato nel modulo assist.\nspecialistica ambulatoriale",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "4.10",
+          "name": "Durata accesso minuti",
+          "physical": {
+            "type": "numeric",
+            "start": 31,
+            "length": 3,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": [
+              {
+                "not_in": {
+                  "ref": {
+                    "field": "4.5"
+                  },
+                  "values": [
+                    "60",
+                    "61"
+                  ]
+                }
+              }
+            ]
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{3}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.10",
+            "source_obligation": "NO",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NO",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Da utilizzare solo per OSS da esprimere in minuti. Nel caso di unico accesso effettuato da 2 o pi\u00f9 operatori, sommare i minuti dell'accesso",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "4.11",
+          "name": "Chiave progressivo record",
+          "physical": {
+            "type": "numeric",
+            "start": 34,
+            "length": 12,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000000000000"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{12}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "4.11",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NBB",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "pk_presence_resolution": "Required for complete CAD primary key and persistent identity; REGIONAL source SI, NSIS NO",
+            "source_note": "Identificativo univoco assoluto per il tipo record, valorizzato in fase di generazione del record, da utilizzare per le tutte le operazioni di\nalimentazione e aggiornamento della base dati regionale. Successivi rinvii dello stesso record devono utilizzare lo stesso progressivo.\nProgressivi record inviati in un trimestre, se non presenti in successivi invii, si intendono annullati.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "4.1",
+          "4.2",
+          "4.4",
+          "4.5",
+          "4.11"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "C_TO_B2_INTERVALS",
+          "target_trace": "B2",
+          "source_fields": [
+            "4.1"
+          ],
+          "target_fields": [
+            "3.1"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_SUSPENSION_INPUT_UNAVAILABLE",
+              "message_template": "Suspension input is unavailable; temporal check cannot be completed."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_SUSPENSION_INPUT_UNAVAILABLE",
+              "message_template": "Suspension input is unavailable; temporal check cannot be completed."
+            }
+          }
+        },
+        {
+          "id": "C_TO_B1_CONCLUSION",
+          "target_trace": "B1",
+          "source_fields": [
+            "4.1"
+          ],
+          "target_fields": [
+            "2.1"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CONCLUSION_EVENT_MISSING",
+              "message_template": "Nessuna evidenza B1 per questo evento."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CONCLUSION_INPUT_UNAVAILABLE",
+              "message_template": "Conclusioni non disponibili: controllo temporale non valutabile."
+            }
+          },
+          "reduction": {
+            "kind": "consensus",
+            "fields": [
+              "2.6",
+              "2.7"
+            ],
+            "include_if": {
+              "is_present": {
+                "ref": {
+                  "field": "2.6"
+                }
+              }
+            },
+            "on_conflict": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_CONCLUSION_CONTEXT_CONFLICT",
+              "message_template": "Conclusioni discordanti per lo stesso evento: impossibile scegliere una tupla."
+            }
+          }
+        },
+        {
+          "id": "C_TO_A_EVENT",
+          "target_trace": "A",
+          "source_fields": [
+            "4.1"
+          ],
+          "target_fields": [
+            "1.23"
+          ],
+          "cardinality": "exactly_one",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "violation",
+            "error_code": "E_CAD_RELATED_RECORD_MISSING",
+            "diagnostic": {
+              "code": "E_CAD_RELATED_RECORD_MISSING",
+              "message_template": "Required related record is absent."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_RELATED_TRACE_UNAVAILABLE",
+              "message_template": "Required input is unavailable."
+            }
+          }
+        },
+        {
+          "id": "C_TO_B1_START",
+          "target_trace": "B1",
+          "source_fields": [
+            "4.1"
+          ],
+          "target_fields": [
+            "2.1"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_CARE_START_UNAVAILABLE",
+              "message_template": "Care start is unavailable."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_RELATED_TRACE_UNAVAILABLE",
+              "message_template": "Required input is unavailable."
+            }
+          },
+          "reduction": {
+            "kind": "consensus",
+            "on_conflict": "unknown",
+            "fields": [
+              "2.4"
+            ],
+            "include_if": {
+              "const": true
+            },
+            "diagnostic": {
+              "code": "W_CAD_CARE_START_AMBIGUOUS",
+              "message_template": "Care start dates disagree."
+            }
+          }
+        }
+      ],
+      "identity": [],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [
+        {
+          "id": "CAD-C-PARENT-EVENT",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "record_exists",
+              "join": "C_TO_A_EVENT"
+            }
+          ],
+          "error_code": "E_CAD_EVENT_PARENT_MISSING",
+          "message_template": "Record has no parent event in its namespace."
+        },
+        {
+          "id": "CAD-4.5-15",
+          "when": {
+            "eq": {
+              "ref": {
+                "field": "4.5"
+              },
+              "value": "15"
+            }
+          },
+          "assertions": [
+            {
+              "kind": "constraint",
+              "field": {
+                "trace": "B1",
+                "field": "2.4",
+                "join": "C_TO_B1_START"
+              },
+              "constraint": {
+                "kind": "regex",
+                "match": "forbidden",
+                "target": "raw",
+                "pattern": "\\A[0-9]{4}(?:202[5-9]|20[3-9][0-9]|2[1-9][0-9]{2}|[3-9][0-9]{3})\\z"
+              }
+            }
+          ],
+          "error_code": "E_CAD_PROFESSIONAL_15_AFTER_2024",
+          "message_template": "Professional code 15 is forbidden for care episodes starting in 2025 or later."
+        }
+      ],
+      "documented_non_executable_rules": []
+    },
+    {
+      "id": "D",
+      "name": "Prestazioni",
+      "record_length": 39,
+      "fields": [
+        {
+          "id": "5.1",
+          "name": "Identificativo evento assistenziale di CD",
+          "physical": {
+            "type": "numeric",
+            "start": 1,
+            "length": 12,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000000000000"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{12}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "5.1",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "source_note": "Ricollega il servizio erogato all\u2019evento assistenziale di CD (vedi TRACCIATO DATI ANAGRAFICI)",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "5.2",
+          "name": "Data accesso",
+          "physical": {
+            "type": "date",
+            "start": 13,
+            "length": 8,
+            "alignment": {
+              "kind": "exact"
+            },
+            "format": "DDMMYYYY"
+          },
+          "missing_value": {
+            "kind": "spaces"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "date",
+              "format": "DDMMYYYY",
+              "calendar_valid": true
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "5.2",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "source_note": "Utilizzare il formato GGMMAAAA",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "5.3",
+          "name": "Tipo accesso",
+          "physical": {
+            "type": "numeric",
+            "start": 21,
+            "length": 1,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "0"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "1",
+                "2",
+                "9"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{1}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "5.3",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "source_note": "Valori ammessi:1 - programmato Si, 2 - programmato No, 9 - non disponibile*",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "5.4",
+          "name": "Figura professionale",
+          "physical": {
+            "type": "numeric",
+            "start": 22,
+            "length": 2,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "00"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "allowed_values",
+              "values": [
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "56",
+                "60",
+                "61",
+                "70",
+                "71",
+                "99"
+              ],
+              "target": "raw"
+            },
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{2}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "5.4",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "source_note": "valori ammessi: 1 - MMG, 2 - PLS, 3 - infermiere, 4 - medico specialista, 5 - medico esperto in cure palliative, 6 - medico di continuit\u00e0\nassistenziale, 7 - psicologo, 8 - fisioterapista, 9 - logopedista, 11 - dietista, 12 - assistente sociale della Az. ULSS (del SSN), 13 - assistente\nsociale del Comune (no del SSN), 14 - terapista occupazionale, 15 - Medico USCA (non valido per PIC iniziate dal 2025), 56 \u2013 infermiere solo\nprelievo, 60 \u2013 OSS della Az. ULSS (del SSN), 61 \u2013 OSS del comune (no del SSN), 70 - Infermiere di famiglia o di comunit\u00e0, 71 -UCAD Medico\nContinuit\u00e0 Assistenziale Diurna, 99 - altro soggetto.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages",
+            "documented_runtime_rule": "See CAD_RUNTIME_PROFILE.json compiler_extensions_required and CAD_NOTES_AUDIT.md; not compiled by DSL v1.0.0"
+          }
+        },
+        {
+          "id": "5.5",
+          "name": "Tipo prestazione",
+          "physical": {
+            "type": "numeric",
+            "start": 24,
+            "length": 2,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "00"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "reference_data",
+              "datasets": [
+                "PRESTATIONS"
+              ],
+              "fallback_values": [],
+              "metadata_bindings": []
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "5.5",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "SI",
+            "resolved_obligation": "SI",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica le informazioni inerenti le prestazioni.I valori ammessi sono:\n1 - Visita domiciliare (comprensiva di valutazione clinica/funzionale/ sociale e monitoraggio )\n2 - Prelievo ematico\n3 - Esami strumentali\n4 - Trasferimento competenze/educazione del care giver/colloqui/nursering/ addestramento\n5 - Supporto psicologico \u00e9quipes-paziente-famiglia\n6 - Terapie iniettive attraverso le diverse vie di somministrazione\n7 - Terapia infusionale SC e EV\n8 - Emotrasfusione\n9 - Paracentesi, Toracentesi e altre manovre invasive, gestione di cateteri spinali o sistemi di neuromodulazione del dolore\n10 - Gestione ventilazione meccanica - tracheostomia - sostituzione canula - broncoaspirazione - ossigenoterapia\n11 - Gestione nutrizione enterale ( SNG PEG)\n12 - Gestione nutrizione parenterale - gestione cvc\n13 - Gestione cateterismo urinario comprese le derivazioni urinarie\n14 - Gestione alvo comprese le enterostomie\n15 - Igiene personale e mobilizzazione\n16 - Medicazioni semplici\n17 - Medicazioni complesse\n18 - Fasciature semplici, bendaggi, bendaggi adesivo elastici\n19 - Trattamento di rieducazione motoria \u2013 respiratoria\n20 - Trattamento di rieducazione del linguaggio\n21 - Trattamento di rieducazione dei disturbi neuropsicologici\n22 - Controllo dolore\n23 - Controllo dispnea\n24 - Controllo sintomi gastro enterici (nausea, vomito, ecc.)\n25 - Controllo sintomi psicocomportamentali (ansia,angoscia, agitazione, delirium, ecc.)\n26 - Sedazione terminale/palliativa\n27 - Gestione di quadri clinici complessi (fistole, masse ulcerate, stomie, drenaggi,vaste lesioni cutanee, etc.)\n28 - Accudimento del paziente (con autonomia ridotta o assente)\n71 - Televisita\n72 - Teleassistenza\n73 - Telemonitoraggio\n74 - Teleconsulto/Teleconsulenza\n99 - non disponibile *",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "5.6",
+          "name": "Numero prestazioni",
+          "physical": {
+            "type": "numeric",
+            "start": 26,
+            "length": 2,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "00"
+          },
+          "presence": {
+            "base": "optional",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{2}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "5.6",
+            "source_obligation": "FAC",
+            "source_nsis_obligation": "FAC",
+            "resolved_obligation": "FAC",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": false,
+            "source_note": "Indica il numero di prestazioni erogate a domicilio nel caso in cui lo stesso operatore effettua nello stesso giorno pi\u00f9 accessi con la stessa\ntipologia di prestazione.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        },
+        {
+          "id": "5.7",
+          "name": "Chiave progressivo record",
+          "physical": {
+            "type": "numeric",
+            "start": 28,
+            "length": 12,
+            "alignment": {
+              "kind": "exact"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          },
+          "missing_value": {
+            "kind": "exact",
+            "raw": "000000000000"
+          },
+          "presence": {
+            "base": "required",
+            "required_if": [],
+            "forbidden_if": []
+          },
+          "constraints": [
+            {
+              "kind": "regex",
+              "match": "required",
+              "target": "raw",
+              "pattern": "\\A[0-9]{12}\\z"
+            }
+          ],
+          "regulatory_metadata": {
+            "source_id": "5.7",
+            "source_obligation": "SI",
+            "source_nsis_obligation": "NO",
+            "resolved_obligation": "NBB",
+            "source_page": 5,
+            "source": "2025-05-14_FLUSSO_ADI.pdf",
+            "source_key_marker": true,
+            "pk_presence_resolution": "Required for complete CAD primary key and persistent identity; REGIONAL source SI, NSIS NO",
+            "source_note": "Identificativo univoco assoluto per il tipo record, valorizzato in fase di generazione del record, da utilizzare per le tutte le operazioni di\nalimentazione e aggiornamento della base dati regionale. Successivi rinvii dello stesso record devono utilizzare lo stesso progressivo.\nProgressivi record inviati in un trimestre, se non presenti in successivi invii, si intendono annullati.",
+            "source_note_extraction": "PDF_table_cell_PyMuPDF_review_required_for_layout_sensitive_passages"
+          }
+        }
+      ],
+      "record_key": {
+        "fields": [
+          "5.1",
+          "5.2",
+          "5.3",
+          "5.4",
+          "5.7"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "joins": [
+        {
+          "id": "D_TO_A_EVENT",
+          "target_trace": "A",
+          "source_fields": [
+            "5.1"
+          ],
+          "target_fields": [
+            "1.23"
+          ],
+          "cardinality": "exactly_one",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "violation",
+            "error_code": "E_CAD_RELATED_RECORD_MISSING",
+            "diagnostic": {
+              "code": "E_CAD_RELATED_RECORD_MISSING",
+              "message_template": "Required related record is absent."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_RELATED_TRACE_UNAVAILABLE",
+              "message_template": "Required input is unavailable."
+            }
+          }
+        },
+        {
+          "id": "D_TO_C_ACCESS",
+          "target_trace": "C",
+          "source_fields": [
+            "5.1",
+            "5.2",
+            "5.3",
+            "5.4"
+          ],
+          "target_fields": [
+            "4.1",
+            "4.2",
+            "4.4",
+            "4.5"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "violation",
+            "error_code": "E_CAD_RELATED_RECORD_MISSING",
+            "diagnostic": {
+              "code": "E_CAD_RELATED_RECORD_MISSING",
+              "message_template": "Required related record is absent."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_RELATED_TRACE_UNAVAILABLE",
+              "message_template": "Required input is unavailable."
+            }
+          }
+        },
+        {
+          "id": "D_TO_B1_START",
+          "target_trace": "B1",
+          "source_fields": [
+            "5.1"
+          ],
+          "target_fields": [
+            "2.1"
+          ],
+          "cardinality": "zero_or_many",
+          "scope": "current_submission",
+          "namespace_parameters": [
+            "sending_ulss"
+          ],
+          "on_missing_record": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_CARE_START_UNAVAILABLE",
+              "message_template": "Care start is unavailable."
+            }
+          },
+          "on_missing_trace": {
+            "policy": "unknown",
+            "diagnostic": {
+              "code": "W_CAD_RELATED_TRACE_UNAVAILABLE",
+              "message_template": "Required input is unavailable."
+            }
+          },
+          "reduction": {
+            "kind": "consensus",
+            "on_conflict": "unknown",
+            "fields": [
+              "2.4"
+            ],
+            "include_if": {
+              "const": true
+            },
+            "diagnostic": {
+              "code": "W_CAD_CARE_START_AMBIGUOUS",
+              "message_template": "Care start dates disagree."
+            }
+          }
+        }
+      ],
+      "identity": [],
+      "named_conditions": {},
+      "derived_values": {},
+      "repeated_groups": [],
+      "rules": [
+        {
+          "id": "CAD-D-PARENT-EVENT",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "record_exists",
+              "join": "D_TO_A_EVENT"
+            }
+          ],
+          "error_code": "E_CAD_EVENT_PARENT_MISSING",
+          "message_template": "Record has no parent event in its namespace."
+        },
+        {
+          "id": "CAD-PROVISION-ACCESS",
+          "when": {
+            "const": true
+          },
+          "assertions": [
+            {
+              "kind": "set_exists",
+              "join": "D_TO_C_ACCESS",
+              "predicate": {
+                "const": true
+              }
+            }
+          ],
+          "error_code": "E_CAD_MISSING_ACCESS_FOR_PROVISION",
+          "message_template": "Provision has no related access."
+        },
+        {
+          "id": "CAD-5.4-15",
+          "when": {
+            "eq": {
+              "ref": {
+                "field": "5.4"
+              },
+              "value": "15"
+            }
+          },
+          "assertions": [
+            {
+              "kind": "constraint",
+              "field": {
+                "trace": "B1",
+                "field": "2.4",
+                "join": "D_TO_B1_START"
+              },
+              "constraint": {
+                "kind": "regex",
+                "match": "forbidden",
+                "target": "raw",
+                "pattern": "\\A[0-9]{4}(?:202[5-9]|20[3-9][0-9]|2[1-9][0-9]{2}|[3-9][0-9]{3})\\z"
+              }
+            }
+          ],
+          "error_code": "E_CAD_PROFESSIONAL_15_AFTER_2024",
+          "message_template": "Professional code 15 is forbidden for care episodes starting in 2025 or later."
+        }
+      ],
+      "documented_non_executable_rules": []
+    }
+  ]
+}

@@ -398,3 +398,10 @@ pub use engine::field_guide::{
 };
 
 pub use engine::namespace_context::VerifiedRunContext;
+
+pub use application::historical_validation::{
+    HistoricalOriginReview, HistoricalSnapshotValidationRequest,
+};
+pub use application::history_existence::{HistoricalOriginAttestation, HistoricalOriginClaim};
+/// Checked historical predicate metadata.
+pub use schema::compiled::plans::HistoryExistencePlan;

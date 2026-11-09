@@ -369,7 +369,12 @@ fn identity_projections(
     keys: &BTreeMap<usize, Vec<usize>>,
     invariants: &[HistoricalIdentityInvariant],
 ) -> Result<BTreeMap<usize, IdentityProjection>, Failure> {
-    if invariants.is_empty() {
+    if invariants.is_empty()
+        && raw
+            .persistence_policy
+            .as_ref()
+            .is_none_or(|policy| policy.snapshot.is_none())
+    {
         return Ok(BTreeMap::new());
     }
     keys.iter()

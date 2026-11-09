@@ -28,3 +28,6 @@ schemas/cad/components/2024-06.clinical-lookups.1/data/** -text
 # Progressive provenance cites these exact versioned component bytes.
 schemas/cad/components/2024-06.namespace.1/component.json -text
 schemas/cad/components/2024-06.progressives.1/component.json -text
+# Executable CAD profile and its membership hashes are portable data artifacts.
+schemas/operational/CAD/** -text
+tests/golden/cad83/**/*.dat -whitespace

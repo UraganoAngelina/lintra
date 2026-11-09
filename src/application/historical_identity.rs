@@ -206,13 +206,21 @@ impl<'protector> InvariantValidatedApproval<'protector> {
         repository: &'repo dyn PersistentContextRepository,
         cancellation: &CancellationToken,
     ) -> Result<ApprovalPreview<'repo>, SessionApprovalError> {
+        self.preview_qualified(repository, cancellation, &|snapshot| Ok(snapshot.clone()))
+    }
+    pub(super) fn preview_qualified<'repo>(
+        &self,
+        repository: &'repo dyn PersistentContextRepository,
+        cancellation: &CancellationToken,
+        qualify: &super::session::SnapshotQualification<'_>,
+    ) -> Result<ApprovalPreview<'repo>, SessionApprovalError> {
         checkpoint(cancellation)?;
         self.protector
             .verify_audit(&repository.load_protection_audit()?)
             .map_err(protection)?;
         let preview = self
             .base
-            .preview_with_cancellation(repository, cancellation)?;
+            .preview_qualified(repository, cancellation, qualify)?;
         if preview.state() == Some(SessionState::ApprovedImmutable) {
             return Ok(preview);
         }

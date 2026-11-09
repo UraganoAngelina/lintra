@@ -1,0 +1,5 @@
+[
+  {"quarter":1,"status":"completed_valid","completeness":"complete","records":{"A":1,"B1":1,"B2":0,"C":1,"D":1},"historical_facts":1},
+  {"quarter":2,"status":"completed_valid","completeness":"complete","records":{"A":1,"B1":2,"B2":0,"C":1,"D":1},"historical_facts":2},
+  {"quarter":3,"status":"completed_valid","completeness":"complete","records":{"A":1,"B1":2,"B2":0,"C":1,"D":1},"historical_facts":2}
+]

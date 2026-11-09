@@ -6,6 +6,8 @@ use crate::schema::{
     linter::{SchemaIssue, SchemaIssueCode as Code, SchemaIssueSeverity, lint_raw_schema},
     raw::*,
 };
+#[path = "history_existence.rs"]
+mod history_existence;
 #[path = "joins.rs"]
 mod joins;
 #[path = "persistence_profile.rs"]
@@ -595,6 +597,8 @@ impl SchemaCompiler {
                 // Internal inactivity qualification needs an actual checked
                 // period/snapshot plan. An audit-only policy must not enable
                 // a declared but unimplemented snapshot capability.
+                && !(*capability == RawFlowSchemaRequiredCapabilitiesItem::HistoryExistenceV1
+                    && audit_policy.as_ref().is_some_and(|policy| policy.snapshot.is_some()))
                 && !(*capability == RawFlowSchemaRequiredCapabilitiesItem::PersistenceSnapshotV1
                     && audit_policy.as_ref().is_some_and(|policy| policy.snapshot.is_some()))
             {
@@ -864,6 +868,8 @@ impl SchemaCompiler {
                 .map_err(|(code, message)| fail(Some(&record.id), None, code, message))?,
             );
         }
+        let history_existence = history_existence::compile(&raw, &traces, &joins, &cross_rules)
+            .map_err(|(code, message)| fail(None, None, code, message))?;
         CompiledFlowSchema::from_parts(FlowParts {
             key: SchemaKey {
                 flow_id: FlowId(raw.flow_id.clone()),
@@ -877,12 +883,13 @@ impl SchemaCompiler {
             required_reference_data: dependencies,
             cross_record_plan: CrossRecordValidationPlan {
                 // Format 3 honors an explicit Unknown policy for unavailable
-                // targets. A missing source is still a bundle preflight error;
-                // formats 1/2 retain their qualified bundle contract verbatim.
+                // targets. The explicit snapshot/history producer also admits
+                // source omissions with recorded consent, without fake empty
+                // files. Ordinary execution and formats1/2 retain their gate.
                 required_traces: (0..raw.traces.len())
                     .filter(|index| {
                         joins.iter().any(|join| {
-                            join.source_trace == *index
+                            (join.source_trace == *index && history_existence.is_empty())
                                 || (join.target_trace == *index
                                     && (raw.schema_format_version != 3
                                         || !matches!(
@@ -939,6 +946,13 @@ impl SchemaCompiler {
                         {
                             Capability::TemporalInactivityV1
                         }
+                        RawFlowSchemaRequiredCapabilitiesItem::HistoryExistenceV1
+                            if audit_policy
+                                .as_ref()
+                                .is_some_and(|policy| policy.snapshot.is_some()) =>
+                        {
+                            Capability::HistoryExistenceV1
+                        }
                         RawFlowSchemaRequiredCapabilitiesItem::PersistenceSnapshotV1
                             if audit_policy
                                 .as_ref()
@@ -964,6 +978,7 @@ impl SchemaCompiler {
                 .collect::<Result<Vec<_>, SchemaCompilationError>>()?,
             persistence_policy: audit_policy,
             namespace_bindings,
+            history_existence,
         })
         .map_err(|error| {
             fail(

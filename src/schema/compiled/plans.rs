@@ -704,6 +704,35 @@ pub struct CrossRecordValidationPlan {
     pub required_traces: Vec<usize>,
 }
 
+/// Compiler-owned metadata for the supported historical set predicate. No raw
+/// constructor/serde: offsets, equality bytes and semantic identity agree with
+/// the exact flow that will execute PASS1 and PASS2.
+#[derive(Debug, Clone)]
+pub struct HistoryExistencePlan {
+    pub(crate) join_index: usize,
+    pub(crate) operand: usize,
+    pub(crate) equality: Vec<u8>,
+    pub(crate) definition: crate::Sha256Digest,
+    pub(crate) source_dependencies: Vec<usize>,
+}
+impl HistoryExistencePlan {
+    pub fn join_index(&self) -> usize {
+        self.join_index
+    }
+    pub fn operand_index(&self) -> usize {
+        self.operand
+    }
+    pub fn equality_bytes(&self) -> &[u8] {
+        &self.equality
+    }
+    pub fn definition_hash(&self) -> &crate::Sha256Digest {
+        &self.definition
+    }
+    pub fn source_dependencies(&self) -> &[usize] {
+        &self.source_dependencies
+    }
+}
+
 #[derive(Debug, Clone)]
 pub enum VersionCompatibility {
     SameSchemaVersion,

@@ -335,6 +335,55 @@ pub(super) fn bind_audit_namespace(
     Ok(namespace)
 }
 
+pub(super) fn bind_snapshot_context(
+    profile: &CompiledPersistenceProfile,
+    values: &BTreeMap<String, NamespaceValue>,
+    id: &str,
+) -> Result<
+    (
+        PersistenceNamespace,
+        crate::persistence::history::HistoryPeriod,
+    ),
+    SessionApprovalError,
+> {
+    let (namespace, binding) = bind(profile, values, id)?;
+    let ApprovalBinding::Snapshot(binding) = binding else {
+        return Err(SessionApprovalError::UnsupportedSessionPolicy);
+    };
+    let period = crate::persistence::history::HistoryPeriod {
+        year: u16::try_from(binding.year.1).map_err(|_| SessionApprovalError::InvalidBinding)?,
+        quarter: u8::try_from(binding.quarter.1)
+            .map_err(|_| SessionApprovalError::InvalidBinding)?,
+    };
+    period.validate()?;
+    Ok((namespace, period))
+}
+
+/// A coherent legacy free-form period is not an origin/calendar proof. A
+/// malformed claimed session binding, or transplant across namespace/flow, is
+/// a technical error. Stored source proofs are verified by the caller first.
+pub(super) fn historical_period(
+    source: &SourceSubmission,
+) -> Result<Option<crate::persistence::history::HistoryPeriod>, PersistenceError> {
+    if !source
+        .period()
+        .is_some_and(|p| p.starts_with(PERIOD_PREFIX))
+    {
+        return Ok(None);
+    }
+    let binding =
+        SessionBinding::decode(source.period()).map_err(|_| PersistenceError::CorruptStorage)?;
+    if binding.scope != *source.namespace() || binding.flow != source.schema_key().flow_id {
+        return Err(PersistenceError::CorruptStorage);
+    }
+    let period = crate::persistence::history::HistoryPeriod {
+        year: u16::try_from(binding.year.1).map_err(|_| PersistenceError::CorruptStorage)?,
+        quarter: u8::try_from(binding.quarter.1).map_err(|_| PersistenceError::CorruptStorage)?,
+    };
+    period.validate()?;
+    Ok(Some(period))
+}
+
 /// A private preparation only. Replacing/dropping a draft has no repository
 /// effect. SourceSubmission's public metadata states are never approval tokens.
 pub struct ApprovalDraft {
@@ -808,6 +857,15 @@ impl ValidatedApproval {
         repository: &'repo dyn PersistentContextRepository,
         cancellation: &CancellationToken,
     ) -> Result<ApprovalPreview<'repo>, SessionApprovalError> {
+        self.preview_qualified(repository, cancellation, &|snapshot| Ok(snapshot.clone()))
+    }
+    /// Qualify facts before both exact replay comparison and transaction staging.
+    pub(super) fn preview_qualified<'repo>(
+        &self,
+        repository: &'repo dyn PersistentContextRepository,
+        cancellation: &CancellationToken,
+        qualify: &SnapshotQualification<'_>,
+    ) -> Result<ApprovalPreview<'repo>, SessionApprovalError> {
         if cancellation.is_cancelled() {
             return Err(SessionApprovalError::Cancelled);
         }
@@ -815,11 +873,16 @@ impl ValidatedApproval {
         let candidate = self
             .snapshot
             .with_source(SnapshotRevision::new(1), self.approved.clone())?;
-        if let Some(receipt) =
-            find_approval(repository, &candidate, &self.binding, base, cancellation)?
-        {
+        if let Some(receipt) = find_approval(
+            repository,
+            &candidate,
+            &self.binding,
+            base,
+            cancellation,
+            qualify,
+        )? {
             let revision = receipt.revision();
-            let candidate = candidate.with_source(revision, self.approved.clone())?;
+            let candidate = qualify(&candidate.with_source(revision, self.approved.clone())?)?;
             return Ok(ApprovalPreview {
                 repository,
                 snapshot: candidate.clone(),
@@ -850,7 +913,7 @@ impl ValidatedApproval {
             snapshot: self
                 .snapshot
                 .with_source(revision, self.snapshot.source().clone())?,
-            candidate: candidate.with_source(revision, self.approved.clone())?,
+            candidate: qualify(&candidate.with_source(revision, self.approved.clone())?)?,
             base,
             phase: ApprovalPhase::Validated,
         })
@@ -858,12 +921,15 @@ impl ValidatedApproval {
     pub fn cancel(self) { /* no repository has been mutated */
     }
 }
+pub(super) type SnapshotQualification<'a> =
+    dyn Fn(&HistoricalSnapshot) -> Result<HistoricalSnapshot, SessionApprovalError> + 'a;
 fn find_approval(
     repository: &dyn PersistentContextRepository,
     candidate: &HistoricalSnapshot,
     binding: &ApprovalBinding,
     upper: Option<SnapshotRevision>,
     cancellation: &CancellationToken,
+    qualify: &SnapshotQualification<'_>,
 ) -> Result<Option<CommitReceipt>, SessionApprovalError> {
     let Some(upper) = upper else {
         return Ok(None);
@@ -909,7 +975,8 @@ fn find_approval(
                     }
                     return Err(PersistenceError::DuplicateSubmission.into());
                 }
-                let original = candidate.with_source(revision, candidate.source().clone())?;
+                let original =
+                    qualify(&candidate.with_source(revision, candidate.source().clone())?)?;
                 return match repository.resolve_commit(&original)? {
                     CommitResolution::Published(receipt) => Ok(Some(receipt)),
                     _ => Err(SessionApprovalError::Rejected(
@@ -965,6 +1032,9 @@ impl fmt::Debug for ApprovalPreview<'_> {
     }
 }
 impl ApprovalPreview<'_> {
+    pub(super) fn candidate(&self) -> &HistoricalSnapshot {
+        &self.candidate
+    }
     pub fn expected_generation(&self) -> Option<SnapshotRevision> {
         self.base
     }

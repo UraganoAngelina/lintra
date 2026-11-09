@@ -164,6 +164,26 @@ fn bounded_file(path: &Path, limit: u64) -> Result<Vec<u8>, PersistenceError> {
     Ok(bytes)
 }
 fn expected_snapshots(repo: &SQLitePersistenceAdapter) -> Vec<HistoricalSnapshot> {
+    // One physical snapshot exercises both logical readers and format2's new
+    // nullable correlation across the actual Linux/MSVC database exchange.
+    let facts = super::history::candidate(repo, 3, "history-facts");
+    let legacy = facts.history_facts()[0].clone();
+    let mut payload = legacy.payload.clone();
+    payload.format = 2;
+    payload.plan_digest = Sha256Digest([6; 32]);
+    payload.facts[0].entity = None;
+    payload.facts[0].assessment = crate::persistence::history::HistoryAssessment::Indeterminate {
+        reason: crate::persistence::history::HistoryIndeterminate::UnqualifiedCorrelation,
+    };
+    let current = crate::persistence::history::HistoryFactBatch::create(
+        payload,
+        facts.source(),
+        repo.protector(),
+    )
+    .unwrap();
+    let facts = facts
+        .with_history_facts(vec![legacy, current], repo.protector())
+        .unwrap();
     vec![
         snapshot(
             repo,
@@ -189,7 +209,7 @@ fn expected_snapshots(repo: &SQLitePersistenceAdapter) -> Vec<HistoricalSnapshot
             "one",
             vec![row(repo.protector(), "B", 1, "A")],
         ),
-        super::history::candidate(repo, 3, "history-facts"),
+        facts,
     ]
 }
 /// A closed native database, not a serialized Rust snapshot standing in for it.
@@ -410,7 +430,7 @@ fn import_opposite_native_snapshot_fixture() {
     let (repo, manifest) = import_fixture(&input, &temp.path().join("imported")).unwrap();
     assert_eq!(manifest.producer_os, expected_os);
     verify_fixture(&repo);
-    let result = serde_json::json!({"fixture_kind":FIXTURE_KIND,"producer_os":manifest.producer_os,"consumer_os":std::env::consts::OS,"source_db_sha256":manifest.db_sha256,"snapshots_verified":4,"namespaces_verified":2,"retained_occurrence_verified":true,"protection_verified":true,"history_batch_verified":true,"snapshot_manifests_verified":true});
+    let result = serde_json::json!({"fixture_kind":FIXTURE_KIND,"producer_os":manifest.producer_os,"consumer_os":std::env::consts::OS,"source_db_sha256":manifest.db_sha256,"snapshots_verified":4,"namespaces_verified":2,"retained_occurrence_verified":true,"protection_verified":true,"history_batch_verified":true,"snapshot_manifests_verified":true,"logical_fact_formats_verified":[1,2],"nullable_format2_verified":true});
     let output = PathBuf::from(
         std::env::var_os("LINTRA_SQLITE_IMPORT_RESULT").expect("explicit result file"),
     );

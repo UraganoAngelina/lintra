@@ -190,7 +190,12 @@ impl FullValidationSummary {
             else {
                 return false;
             };
-            if !trace_ids.contains(&control.trace_id)
+            // Explicit snapshot producers retain declared controls for an
+            // omitted source. Its Unavailable trace and zero rows are visible;
+            // all counters below must remain zero, never a fabricated pass.
+            let absent_source =
+                trace.coverage == ContextCoverage::Unavailable && trace.records_processed == 0;
+            if (!trace_ids.contains(&control.trace_id) && !absent_source)
                 || control.rule_id.is_empty()
                 || !controls.insert((&control.trace_id, &control.rule_id))
                 || control.evaluations.checked_add(control.skipped) != Some(trace.records_processed)

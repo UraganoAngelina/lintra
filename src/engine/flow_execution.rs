@@ -18,11 +18,21 @@ type TechnicalError = Box<dyn Error + Send + Sync>;
 /// Borrowed pass-one evidence for an explicit application producer. No storage,
 /// cryptography or regulatory decision is owned by this neutral engine hook.
 pub(crate) trait FlowRecordObserver {
+    fn historical_context(&self) -> Option<&dyn super::projected_context::HistoricalSetContext> {
+        None
+    }
+    fn finish_pass_one(
+        &mut self,
+        _coverage: &[TraceCoverageEvidence],
+    ) -> Result<(), TechnicalError> {
+        Ok(())
+    }
     fn on_record(
         &mut self,
         trace: &CompiledRecordSchema,
         record: &RawRecord<'_>,
         key: &JoinKey,
+        operands: &[super::record_validator::OperandValidity],
     ) -> Result<(), TechnicalError>;
 }
 
@@ -235,6 +245,14 @@ impl<'a> FlowValidator<'a> {
         mut ports: FlowExecutionPorts<'_, '_>,
         mut record_observer: Option<&mut dyn FlowRecordObserver>,
     ) -> Result<FlowRunArtifacts, FlowValidationError> {
+        if !self.schema.history_existence().is_empty()
+            && record_observer
+                .as_deref()
+                .and_then(|o| o.historical_context())
+                .is_none()
+        {
+            return Err(FlowValidationError::InvalidPlan);
+        }
         let context = crate::VerifiedRunContext::new(
             self.schema,
             parameters.clone(),
@@ -360,6 +378,11 @@ impl<'a> FlowValidator<'a> {
             .iter()
             .map(|trace| (trace.trace_id.clone(), trace.coverage))
             .collect::<HashMap<_, _>>();
+        if let Some(producer) = record_observer.as_deref_mut() {
+            producer
+                .finish_pass_one(&state.traces)
+                .map_err(FlowValidationError::ReferenceObserver)?;
+        }
         let error_budget = ports.summary.error_budget();
         let mut observer = FullCrossObserver {
             invalid: &mut state.invalid,
@@ -379,6 +402,9 @@ impl<'a> FlowValidator<'a> {
             ports.sink,
             &mut observer,
             CrossPassControl {
+                history: record_observer
+                    .as_deref()
+                    .and_then(|o| o.historical_context()),
                 error_budget,
                 coverage: Some(&coverage),
                 is_cancelled: ports.control.is_cancelled,
@@ -493,6 +519,7 @@ impl FullRecordCollector for ProjectionCollector<'_, '_, '_> {
         record: RawRecord<'_>,
         local: LocalRecordValidationArtifacts,
         namespace_compatible: bool,
+        operands: &[super::record_validator::OperandValidity],
         sink: &mut dyn ValidationSink,
         summary: &mut ValidationSummaryBuilder,
     ) -> Result<(), TechnicalError> {
@@ -530,7 +557,7 @@ impl FullRecordCollector for ProjectionCollector<'_, '_, '_> {
                 // The exact PK already extracted for uniqueness is borrowed;
                 // the producer must finish before this row buffer is reused.
                 if let Some(observer) = self.record_observer.as_deref_mut() {
-                    observer.on_record(trace, &record, &key)?;
+                    observer.on_record(trace, &record, &key, operands)?;
                 }
                 if let Some(first) = self.keys.get(&key) {
                     key_evidence.duplicates += 1;

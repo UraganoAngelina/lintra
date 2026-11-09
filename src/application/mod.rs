@@ -11,4 +11,5 @@ pub(crate) mod full;
 pub(crate) mod historical_identity;
 pub(crate) mod historical_validation;
 pub(crate) mod history_audit;
+pub(crate) mod history_existence;
 pub(crate) mod session;

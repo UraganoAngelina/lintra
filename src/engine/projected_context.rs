@@ -83,6 +83,17 @@ pub enum RelatedResolution<'a> {
     Records(RelatedRecordSet<'a>),
     Unavailable(UnknownReason),
 }
+/// Pure, already prepared results of historical predicates. The engine receives
+/// no repository/key and cannot turn missing context into a current-only query.
+pub(crate) trait HistoricalSetContext {
+    fn exists(&self, join: usize, source: &TraceId, line: u64) -> Option<crate::TruthValue>;
+    fn operand(
+        &self,
+        source: &TraceId,
+        line: u64,
+        field: usize,
+    ) -> Option<super::record_validator::OperandValidity>;
+}
 /// The join reference retains both missing policies and diagnostics. Future
 /// cross-rule outcomes can preserve NotApplicable without calling it True.
 pub struct RelatedLookup<'a> {
@@ -98,6 +109,7 @@ pub struct ProjectedEvaluationContext<'a> {
     scalar: BTreeMap<usize, ScalarResolution<'a>>,
     coverage: BTreeMap<usize, crate::TraceContextCoverage>,
     session_horizon: Option<crate::DateLiteral>,
+    history: Option<&'a dyn HistoricalSetContext>,
 }
 enum ScalarResolution<'a> {
     Record(&'a ProjectedRecord),
@@ -193,7 +205,9 @@ impl<'a> ProjectedEvaluationContext<'a> {
                 join_id: join.id.clone(),
                 side: JoinProjectionSide::Source,
             };
-            let resolution = if !available.contains(target.id()) {
+            let resolution = if join.scope == crate::JoinScope::HistoryIncludingCurrent {
+                RelatedResolution::Unavailable(UnknownReason::IncompleteRelatedContext)
+            } else if !available.contains(target.id()) {
                 RelatedResolution::Unavailable(UnknownReason::TraceInputUnavailable)
             } else {
                 match projected
@@ -228,7 +242,7 @@ impl<'a> ProjectedEvaluationContext<'a> {
                     .copied()
                     .unwrap_or(crate::TraceContextCoverage::Complete)
             };
-            scalar.insert(index, scalar_resolution(lookup, target, status));
+            scalar.insert(index, scalar_resolution(lookup, target, status, None));
             lookup_coverage.insert(index, status);
         }
         Ok(Self {
@@ -239,7 +253,25 @@ impl<'a> ProjectedEvaluationContext<'a> {
             scalar,
             coverage: lookup_coverage,
             session_horizon,
+            history: None,
         })
+    }
+    pub(crate) fn with_history(mut self, history: Option<&'a dyn HistoricalSetContext>) -> Self {
+        self.history = history;
+        if history.is_some() {
+            for (&index, lookup) in &self.related {
+                let target = &self.flow.traces()[lookup.join.target_trace];
+                self.scalar.insert(
+                    index,
+                    scalar_resolution(lookup, target, self.coverage[&index], history),
+                );
+            }
+        }
+        self
+    }
+    pub(crate) fn historical_truth(&self, join: usize) -> Option<crate::TruthValue> {
+        self.history?
+            .exists(join, &self.projected.trace_id, self.projected.line_number)
     }
     pub(super) fn session_horizon(&self) -> Option<crate::DateLiteral> {
         self.session_horizon
@@ -256,6 +288,26 @@ impl<'a> ProjectedEvaluationContext<'a> {
         reference: &ResolvedFieldRef,
         raw_target: bool,
     ) -> ResolvedFieldValue<'_> {
+        if let ResolvedFieldRef::Local { field_index, .. } = reference
+            && self
+                .history
+                .and_then(|h| {
+                    h.operand(
+                        &self.projected.trace_id,
+                        self.projected.line_number,
+                        *field_index,
+                    )
+                })
+                .is_some_and(|v| {
+                    matches!(
+                        v,
+                        super::record_validator::OperandValidity::Invalid
+                            | super::record_validator::OperandValidity::Unavailable
+                    )
+                })
+        {
+            return ResolvedFieldValue::Unavailable(UnknownReason::InvalidFieldValue);
+        }
         let (schema, record, field_index, field_id) = match reference {
             ResolvedFieldRef::Local {
                 field_index,
@@ -321,6 +373,19 @@ impl<'a> ProjectedEvaluationContext<'a> {
                 (schema, record, *field_index, field_id)
             }
         };
+        if self
+            .history
+            .and_then(|h| h.operand(&record.trace_id, record.line_number, field_index))
+            .is_some_and(|v| {
+                matches!(
+                    v,
+                    super::record_validator::OperandValidity::Invalid
+                        | super::record_validator::OperandValidity::Unavailable
+                )
+            })
+        {
+            return ResolvedFieldValue::Unavailable(UnknownReason::InvalidFieldValue);
+        }
         projected_value(schema, record, field_index, field_id, raw_target)
     }
 }
@@ -393,10 +458,60 @@ fn owned_value(value: ResolvedFieldValue<'_>) -> Result<Option<Vec<u8>>, Unknown
         ResolvedFieldValue::Unavailable(reason) => Err(reason),
     }
 }
+/// A reduction in the explicit snapshot pipeline consumes the actual PASS1
+/// validity of each field it uses. Independent invalid fields do not poison the
+/// tuple, while a malformed date cannot become valid by matching a raw regex.
+struct QualifiedProjectedFieldContext<'a, 'b> {
+    inner: &'a ProjectedFieldContext<'b>,
+    history: &'a dyn HistoricalSetContext,
+}
+impl QualifiedProjectedFieldContext<'_, '_> {
+    fn unavailable(&self, reference: &ResolvedFieldRef) -> bool {
+        let ResolvedFieldRef::Local { field_index, .. } = reference else {
+            return false;
+        };
+        self.history
+            .operand(
+                &self.inner.record.trace_id,
+                self.inner.record.line_number,
+                *field_index,
+            )
+            .is_some_and(|v| {
+                matches!(
+                    v,
+                    super::record_validator::OperandValidity::Invalid
+                        | super::record_validator::OperandValidity::Unavailable
+                )
+            })
+    }
+}
+impl FieldValueResolver for QualifiedProjectedFieldContext<'_, '_> {
+    fn resolve_field(&self, r: &ResolvedFieldRef) -> ResolvedFieldValue<'_> {
+        if self.unavailable(r) {
+            ResolvedFieldValue::Unavailable(UnknownReason::InvalidFieldValue)
+        } else {
+            self.inner.resolve_field(r)
+        }
+    }
+    fn resolve_raw_field(&self, r: &ResolvedFieldRef) -> ResolvedFieldValue<'_> {
+        if self.unavailable(r) {
+            ResolvedFieldValue::Unavailable(UnknownReason::InvalidFieldValue)
+        } else {
+            self.inner.resolve_raw_field(r)
+        }
+    }
+    fn resolve_derived(&self, index: usize) -> DerivedValue<'_> {
+        match self.inner.schema.derived_values().get(index) {
+            Some(plan) => DerivedValueEvaluator.evaluate(plan, &EvaluationContext { fields: self }),
+            None => DerivedValue::Unknown(UnknownReason::FieldUnavailable),
+        }
+    }
+}
 fn scalar_resolution<'a>(
     lookup: &RelatedLookup<'a>,
     schema: &CompiledRecordSchema,
     coverage: crate::TraceContextCoverage,
+    history: Option<&dyn HistoricalSetContext>,
 ) -> ScalarResolution<'a> {
     let single = matches!(
         lookup.join.cardinality,
@@ -440,10 +555,17 @@ fn scalar_resolution<'a>(
             return ScalarResolution::Unavailable(UnknownReason::UnsupportedPlan);
         }
         let context = ProjectedFieldContext { schema, record };
-        match crate::ExpressionEvaluator.evaluate(
-            &consensus.include_if,
-            &EvaluationContext { fields: &context },
-        ) {
+        let qualified = history.map(|h| QualifiedProjectedFieldContext {
+            inner: &context,
+            history: h,
+        });
+        let fields: &dyn FieldValueResolver = match &qualified {
+            Some(q) => q,
+            None => &context,
+        };
+        match crate::ExpressionEvaluator
+            .evaluate(&consensus.include_if, &EvaluationContext { fields })
+        {
             crate::TruthValue::False => continue,
             crate::TruthValue::Unknown(reason) => {
                 unknown.get_or_insert(reason);
@@ -457,9 +579,12 @@ fn scalar_resolution<'a>(
             let Some(field) = schema.fields().get(index) else {
                 return ScalarResolution::Unavailable(UnknownReason::UnsupportedPlan);
             };
-            let logical_value =
-                owned_value(projected_value(schema, record, index, field.id(), false));
-            let raw_value = owned_value(projected_value(schema, record, index, field.id(), true));
+            let reference = ResolvedFieldRef::Local {
+                field_index: index,
+                field_id: field.id().clone(),
+            };
+            let logical_value = owned_value(fields.resolve_field(&reference));
+            let raw_value = owned_value(fields.resolve_raw_field(&reference));
             match (logical_value, raw_value) {
                 (Ok(value), Ok(original)) => {
                     logical.push(value);

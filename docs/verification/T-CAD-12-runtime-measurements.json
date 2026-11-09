@@ -1,0 +1,62 @@
+{
+  "task": "T-CAD-12",
+  "profile": "actual CAD83 application",
+  "build_profile": "release",
+  "host": "Linux-7.3.1-1-cachyos-x86_64-with-glibc2.44",
+  "base_head": "750b1e1d6955f4933f71af158b227d01ee9cc1fa",
+  "source_manifest_sha256": "a66240c1d4ceed6ef496f78e542cb56fc8fddf0c1e33e323a5a1ad3d68d245da",
+  "executable_sha256": "38ea77b3c7404613a3dca2e3a6cb5a43991cc5cf5e0dcc96aeb322da64ee8bdf",
+  "method": "sequential foreground public-service test; six actual approvals and SQLite reopen; sample timings exclude fixture generation; wait4 RSS/CPU/IO cover the whole test process, no compilation; Linux RSS KiB and block IO 512-byte units",
+  "threshold": "no product timing or RAM threshold defined; empirical six-sample p95 is descriptive, not a production SLA",
+  "measurements": [
+    {
+      "approved_snapshots": 6,
+      "database_bytes": 40878080,
+      "empirical_p95_ms": 758.801018,
+      "events_per_namespace": 100,
+      "namespaces": 2,
+      "profile": "CAD/2024-06.runtime-candidate.1",
+      "samples_ms": [
+        306.77289,
+        551.226568,
+        758.801018,
+        358.79846100000003,
+        587.905724,
+        631.8033720000001
+      ],
+      "wall_seconds": 3.274782079999568,
+      "peak_rss_kib": 25936,
+      "user_cpu_seconds": 2.51368,
+      "system_cpu_seconds": 0.6484679999999999,
+      "input_blocks": 96,
+      "output_blocks": 100576,
+      "log": "/tmp/lintra-cad12-runtime-measures/events-100.log",
+      "log_sha256": "9f2271a6dec981c4e6704a1321e8bf3dced295325e947f6a2d08906204821e70"
+    },
+    {
+      "approved_snapshots": 6,
+      "database_bytes": 122519552,
+      "empirical_p95_ms": 1919.524773,
+      "events_per_namespace": 300,
+      "namespaces": 2,
+      "profile": "CAD/2024-06.runtime-candidate.1",
+      "samples_ms": [
+        906.569173,
+        1565.0867289999999,
+        1728.0554989999998,
+        1072.0189110000001,
+        1732.312634,
+        1919.524773
+      ],
+      "wall_seconds": 9.086378629999672,
+      "peak_rss_kib": 28276,
+      "user_cpu_seconds": 7.051374,
+      "system_cpu_seconds": 1.777685,
+      "input_blocks": 192,
+      "output_blocks": 291144,
+      "log": "/tmp/lintra-cad12-runtime-measures/events-300.log",
+      "log_sha256": "6548b3881fd051180abc33f226c5c8cc978d0175df83b76ec1431e2f5f573f24"
+    }
+  ],
+  "source_unchanged": true
+}
