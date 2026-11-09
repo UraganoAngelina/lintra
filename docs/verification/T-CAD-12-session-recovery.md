@@ -1,3 +1,9 @@
+> Pubblicazione storage: c5266d02985f34b93c5a63a2c610a3dfe919b90f.
+> CI42592330836 già avviata una volta, prima lettura registrata sullo SHA esatto;
+> non ridispatchare. Gate locali7/7 e283hash fermi,193file test uguali al base.
+> WAITING_GATE del componente, non CAD12DONE. Dopo gate continuare compiler/
+> produttore/query lifecycle/copertura/PASS2/approval/CAD83, senza consenso nuovo.
+
 > Ripresa 9 novembre 2026: lo stato BLOCKED e le richieste di ratifica riportati
 > sotto sono storici. Ratifica implementativa sostitutiva, C1 e L1 ricevute;
 > CNF ordine RESOLVED con CI42530063288 verificata. CAD12 IN_PROGRESS, implementata

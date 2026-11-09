@@ -28,8 +28,8 @@ positivi inclusa qualifica trasferimento locale. Fixture CI ampliata a4snapshot,
 2namespace e un batch storico. Report T-CAD-12-history-storage.md.
 Sette gate finali locali positivi,283impronte ferme e193input test confrontati
 con HEAD; workspace default/allfeatures1028esiti ciascuna/0fail/6ignored,
-corelib141/0fail/4ignored; fmt/Clippy/release/boundary exit0. CI propria del
-componente ancora necessaria. Ledger T-CAD-12-history-storage-gates.json.
+corelib141/0fail/4ignored; fmt/Clippy/release/boundary exit0. CI42592330836 del
+componente in corso sullo SHAc5266d0, non ancora qualificata. Ledger T-CAD-12-history-storage-gates.json.
 
 Restano compiler/piani semantici, produzione PASS1, query lifecycle L1/copertura
 C1, contesto PASS2, gate approvazione e composizione eseguibile CAD83/golden/
@@ -6997,3 +6997,26 @@ CAD83 e golden applicativi/privacy/performance/gate sul prodotto finale.
 Non basta abilitare history scope o trattare l'inventario come ProvenComplete.
 Nessun nuovo algoritmo/chiave, PHI, migrazione, FROZEN, release o tag.
 Single-agent/no background/delega. docs/migration preesistente esclusa.
+
+
+## CAD12 — storage pubblicato / WAITING_GATE, 9 novembre 2026
+
+Commit decisioni/chiusura CNFordine3ae70dc e componente storage
+c5266d02985f34b93c5a63a2c610a3dfe919b90f pubblicati sul branch concordato.
+CI42592330836 avviata una sola volta con ui_packaging=false; prima lettura API
+sullo SHA esatto registrata in T-CAD-12-history-storage-native-ci.json.
+Stato remoto ancora non qualificato: nessun DONE del componente o CAD12.
+Tutti sette gate locali positivi e283impronte ricontrollate dopo commit/push.
+193file di test/fixture uguali aHEADbase e al controllo supplementare finale.
+Log raw conservati byte-esatti: il controllo whitespace applicato a codice/docs
+esclude soltanto i log Cargo, che terminano naturalmente con una riga vuota.
+
+Restano due letture ordinarie distanziate almeno60s; diagnosi/log/letturefinali
+necessarie autorizzati, niente ridispatch. Dopo gate del componente riprendere
+compiler/piano/produttore/query lifecycle C1/L1 e integrazione completa CAD12;
+non contare inventario_supportato come copertura normativa. Prima del produttore
+qualificare validità delle dipendenze: l'observer esistente non la trasmette ancora.
+La nuova fixture nativa deve verificare4snapshot/2namespace, batch e manifest.
+P18-04nonREADY,138/140invariato. Nessun processo locale in corso, release/tag,
+nuova chiave operativa o dato reale. docs/migration preesistente unica esclusione.
+CI: https://github.com/UraganoAngelina/lintra/actions/runs/42592330836
