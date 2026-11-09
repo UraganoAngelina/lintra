@@ -1,0 +1,27 @@
+    Blocking waiting for file lock on build directory
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+   Compiling lintra-ui v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra/ui)
+error: this `if` statement can be collapsed
+   --> src/persistence/sqlite/mod.rs:670:5
+    |
+670 | /     if let Some(manifest) = manifest {
+671 | |         if manifest != super::history::SnapshotManifest::create(&snapshot)? {
+672 | |             return Err(PersistenceError::CorruptStorage);
+673 | |         }
+674 | |     }
+    | |_____^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#collapsible_if
+    = note: `-D clippy::collapsible-if` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+    |
+670 ~     if let Some(manifest) = manifest
+671 ~         && manifest != super::history::SnapshotManifest::create(&snapshot)? {
+672 |             return Err(PersistenceError::CorruptStorage);
+673 ~         }
+    |
+
+error: could not compile `lintra` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `lintra` (lib test) due to 1 previous error

@@ -845,6 +845,7 @@ fn an_unfinished_transaction_view_cannot_be_mistaken_for_publication() {
     );
 }
 
+mod history;
 mod metadata;
 mod qualification;
 
@@ -1008,7 +1009,7 @@ fn disappear_during_preflight(stage: security::FileCheckStage) {
     assert_eq!(result, Err(PersistenceError::StorageBusy));
     // A fresh preflight must still validate the ordinary DB and private root.
     security::check_files(&root, false).unwrap();
-    assert_eq!(repo.settings().unwrap().format_version, 2);
+    assert_eq!(repo.settings().unwrap().format_version, FORMAT as u32);
 }
 #[test]
 fn disappeared_journal_before_metadata_requires_a_fresh_preflight() {

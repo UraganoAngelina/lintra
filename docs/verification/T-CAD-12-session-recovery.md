@@ -1,3 +1,11 @@
+> Ripresa 9 novembre 2026: lo stato BLOCKED e le richieste di ratifica riportati
+> sotto sono storici. Ratifica implementativa sostitutiva, C1 e L1 ricevute;
+> CNF ordine RESOLVED con CI42530063288 verificata. CAD12 IN_PROGRESS, implementata
+> la base SQLite3/fatti/manifest/query di inventario. Stato autorevole corrente
+> in IMPLEMENTATION_STATUS.md e report T-CAD-12-history-storage.md; ledger locale
+> omonimo. Restano query lifecycle/copertura, compiler/produttore/PASS2/approval
+> e CAD83/golden/qualifica finale. Nessuna nuova approvazione ordinaria richiesta.
+
 # Ripresa CAD12 — 8 novembre 2026
 
 Repo /home/alberto/Desktop/LINTRA/lintra, branch work/p1-foundations.

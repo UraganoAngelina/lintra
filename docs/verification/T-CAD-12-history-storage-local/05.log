@@ -1,0 +1,191 @@
+   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 29.44s
+     Running unittests src/lib.rs (target/debug/deps/lintra-db2ef09a1b7e8277)
+
+running 145 tests
+test domain::byte_range::tests::exact_end_is_valid_and_outside_record_is_none ... ok
+test domain::byte_range::tests::slices_at_byte_offsets_without_copying_or_decoding ... ok
+test application::historical_validation::tests::source_clock_handles_pre_epoch_fraction_and_rejects_out_of_calendar_range ... ok
+test domain::byte_range::tests::boundary_grid_agrees_with_checked_slice_bounds ... ok
+test domain::byte_range::tests::rejects_zero_length_and_end_overflow ... ok
+test domain::errors::tests::rejects_legacy_malformed_and_schema_execution_symbols ... ok
+test domain::errors::tests::regulatory_codes_roundtrip_but_do_not_claim_registration ... ok
+test domain::identity::tests::absent_identity_remains_absent_and_technical_ids_are_ordered ... ok
+test domain::errors::tests::map_order_is_stable_independent_of_insertion_order ... ok
+test domain::errors::tests::core_mapping_matches_source_and_roundtrips_without_collisions ... ok
+test domain::summary::tests::schema_keys_distinguish_flow_and_version_without_trace_identity ... ok
+test domain::ids::tests::identifiers_preserve_spelling_and_support_value_semantics ... ok
+test domain::summary_builder::tests::all_counter_overflows_are_detected_and_terminal ... ok
+test domain::summary::tests::summary_preserves_scope_order_and_orders_dataset_and_error_maps ... ok
+test engine::expression_evaluator::cause_tests::decisive_unknown_cause_survives_nested_boolean_dominance ... ok
+test engine::field_guide::tests::enum_retains_padding_and_non_enumerable_constraints_are_explicit ... ok
+test engine::field_guide::tests::ranges_are_complete_signed_and_not_machine_bounded ... ok
+test engine::inactivity_calendar::tests::calendar_months_clamp_in_leap_and_non_leap_february ... ok
+test engine::inactivity_calendar::tests::extension_reaches_later_pauses_until_fixed_point ... ok
+test engine::inactivity_calendar::tests::open_pause_covers_horizon_and_irrelevant_pauses_do_not_reset_activity ... ok
+test engine::inactivity_calendar::tests::overlapping_nested_duplicate_pauses_count_the_union_once ... ok
+test engine::inactivity_calendar::tests::touching_original_boundaries_do_not_create_a_paused_boundary_day ... ok
+test input::reader::tests::counter_overflow_is_checked_but_clean_eof_never_increments_it ... ok
+test input::audit::tests::byte_counter_overflow_is_terminal_and_does_not_hash_an_unaccounted_chunk ... ok
+test engine::field_guide::paging_tests::paging_has_no_gaps_and_rejects_wrong_continuations ... ok
+test engine::field_pipeline::tests::every_presence_violation_uses_the_same_stop_path ... ok
+test persistence::protection::tests::rfc4231_case6_sha256_matches_the_independent_standard_vector ... ok
+test persistence::memory::tests::revision_exhaustion_and_poisoned_storage_are_technical_failures ... ok
+test persistence::key_file::tests::exact_binary_key_is_redacted_and_only_the_configured_id_resolves ... ok
+test persistence::key_file::tests::portable_resolution_uses_only_the_supplied_executable_and_survives_relocation ... ok
+test persistence::key_file::tests::unix_permissions_links_fifo_and_real_replacement_are_rejected ... ok
+test persistence::key_file::tests::absent_empty_short_long_and_non_regular_files_are_never_defaults ... ok
+test persistence::sqlite::tests::existing_journal_link_and_unexpected_names_remain_unsafe ... ok
+test persistence::sqlite::tests::disappeared_journal_before_metadata_requires_a_fresh_preflight ... ok
+test persistence::sqlite::tests::an_unfinished_transaction_view_cannot_be_mistaken_for_publication ... ok
+test persistence::sqlite::tests::abort_drop_stale_generation_and_failure_before_commit_do_not_publish ... ok
+test persistence::sqlite::tests::ambiguous_commit_is_resolved_by_exact_immutable_candidate ... ok
+test persistence::key_file::tests::shared_key_produces_scoped_identities_but_archives_remain_independent ... ok
+test persistence::sqlite::tests::history::authenticated_fact_must_reference_a_physical_record_in_its_own_snapshot ... ok
+test persistence::sqlite::tests::busy_at_commit_is_unknown_until_a_fresh_connection_resolves_the_candidate ... ok
+test persistence::sqlite::tests::history::batch_order_is_canonical_and_duplicate_definitions_are_rejected ... ok
+test persistence::sqlite::tests::history::facts_only_read_has_indexed_access_and_distinguishes_missing_legacy_and_empty ... ok
+test persistence::sqlite::tests::history::history_batch_roundtrip_reopen_and_private_attestation ... ok
+test engine::inactivity_calendar::tests::union_algorithm_matches_independent_day_by_day_fixed_point ... ok
+test persistence::sqlite::tests::history::legacy_two_is_not_implicitly_upgraded_or_given_fact_coverage ... ok
+test persistence::sqlite::tests::metadata::metadata_restart_worker ... ignored, synthetic subprocess helper, invoked by metadata parent
+test persistence::sqlite::tests::history::history_facts_share_transaction_cas_and_ambiguous_commit_resolution ... ok
+test persistence::sqlite::tests::history::manifest_cannot_be_replayed_between_revisions ... ok
+test persistence::sqlite::tests::metadata::consent_is_authenticated_and_tampering_never_turns_into_valid_metadata ... ok
+
+running 1 test
+
+running 1 test
+test persistence::sqlite::tests::metadata::metadata_restart_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 144 filtered out; finished in 0.01s
+
+test persistence::sqlite::tests::metadata::legacy_signed_metadata_stays_readable_and_upgrade_is_explicit_atomic_and_idempotent ... ok
+test persistence::sqlite::tests::metadata::upgrade_preserves_all_identity_payloads_indices_and_generations ... ok
+test persistence::sqlite::tests::process_worker ... ignored, subprocess helper invoked only with a synthetic archive by parent tests
+test persistence::sqlite::tests::metadata::upgrade_failure_before_commit_rolls_back_and_lost_ack_is_not_false_rollback ... ok
+test persistence::sqlite::tests::history::deleting_batches_records_or_manifest_is_corruption_not_negative_evidence ... ok
+
+running 1 test
+test persistence::sqlite::tests::protection_audit_is_loaded_from_an_empty_archive_without_silent_reinitialization ... ok
+
+running 1 test
+test persistence::sqlite::tests::occurrence_query_uses_existing_indexes_and_rejects_incoherent_provenance ... ok
+test persistence::sqlite::tests::qualification::export_native_snapshot_fixture ... ignored, CI exports a public synthetic database for the opposite native runner
+test persistence::sqlite::tests::qualification::import_opposite_native_snapshot_fixture ... ignored, CI reopens the actual synthetic database produced by the opposite OS
+test persistence::sqlite::tests::process_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 144 filtered out; finished in 0.01s
+
+
+running 1 test
+test persistence::sqlite::tests::metadata::upgrade_process_interruption_recovers_the_old_or_committed_format_with_all_metadata ... ok
+test persistence::sqlite::tests::protection_cannot_be_bypassed_by_public_dto_or_same_label_wrong_key ... ok
+
+running 1 test
+test persistence::sqlite::tests::history::facts_only_inventory_detects_deleted_or_modified_root_and_batch ... ok
+test persistence::sqlite::tests::query_plans_are_indexed_and_external_writer_contention_is_explicit ... ok
+
+running 1 test
+test persistence::sqlite::tests::process_worker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 144 filtered out; finished in 0.02s
+
+
+running 1 test
+test persistence::sqlite::tests::history::history_payload_tampering_cannot_reuse_a_valid_identity_token ... ok
+test persistence::sqlite::tests::qualification::malformed_or_oversized_transfer_manifest_never_creates_an_archive ... ok
+test persistence::sqlite::tests::qualification::corrupt_transfer_hash_or_database_fails_without_reinitialization ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test persistence::sqlite::tests::process_restart_and_abrupt_exit_inside_or_after_commit_recover_coherently ... ok
+test reference_data::dataset::diagnostic_tests::bounded_dataset_pages_cover_exact_keys_and_cancel_without_fake_empty ... ok
+test persistence::sqlite::tests::roundtrip_restart_immutable_snapshots_omission_namespace_and_settings ... ok
+test report::atomic::tests::cleanup_failure_during_cancellation_is_not_silent_success ... ok
+test report::atomic::tests::cleanup_failure_keeps_original_error_and_os_cause ... ok
+ZipWriter::drop: failed to finalize archive: Io(Custom { kind: StorageFull, error: "synthetic output" })test report::xlsx::tests::backend_errors_include_unusable_tempdir_and_output_failure ... ok
+test persistence::sqlite::tests::tampered_record_or_source_is_rejected_instead_of_returning_unverified_domain_values ... ok
+test persistence::sqlite::tests::unsafe_paths_permissions_and_foreign_sidecars_fail_closed ... ok
+test persistence::sqlite::tests::unknown_unsupported_corrupt_and_uninitialized_are_distinct_without_reinitialization ... ok
+test report::xlsx::tests::constant_memory_workbook_preserves_text_and_shared_column_headers ... ok
+test report::xlsx::tests::native_workbook_file_with_unicode_path_is_a_readable_zip ... ok
+test schema::compiled::compiler::inactivity_tests::cad_golden_tests::cad12_history_obligation_is_rejected_instead_of_replaced_with_current_input ... ok
+test persistence::sqlite::tests::qualification::closed_native_fixture_roundtrips_with_provenance_retained_keys_and_key_confirmation ... ok
+test persistence::sqlite::tests::qualification::readers_never_observe_staged_or_uncommitted_rows_and_killed_writer_recovers ... ok
+
+running 1 test
+
+running 1 test
+test schema::compiled::compiler::inactivity_tests::cad_golden_tests::cad12_real_jsonl_is_deterministic_and_exposes_the_documented_order_conflict ... ok
+test schema::compiled::compiler::inactivity_tests::cad_golden_tests::cad12_provision_requires_access_on_four_fields_but_never_on_progressive ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_cancellation_never_emits_a_false_temporal_success ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_error_budget_stops_the_shared_second_pass_without_losing_determinism ... ok
+test persistence::sqlite::tests::two_process_contenders_preserve_cas_and_resolved_retry_publishes_one_generation ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_equal_evaluations_consensus_and_conflicting_start_or_closure_unknown ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_local_only_context_never_requires_the_cross_record_period ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_latest_matched_access_wins_independently_of_input_order ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_compiler_rejects_ambiguous_contracts_instead_of_selecting_first ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_all_quarter_boundaries_and_calendar_domain_extremes ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_invalid_partial_evidence_cannot_prove_a_clear_result ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_legitimate_conclusions_do_not_require_a_second_closure ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_parameter_and_trace_names_have_no_built_in_meaning ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_overlap_union_and_pause_extension_crossing_the_original_deadline ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_no_activity_uses_event_start_at_the_session_quarter_end ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_pauses_union_without_reset_and_open_end_covers_the_horizon ... ok
+test schema::compiled::compiler::tests::source_coordinates_are_checked_once_at_the_conversion_boundary ... ok
+test schema::compiled::tests::base_presence_never_ignores_compiled_conditions ... ok
+test schema::compiled::tests::compiled_integer_literals_are_exact_beyond_machine_limits ... ok
+test schema::compiled::compiler::tests::construction_invariant_failures_are_typed_without_panics ... ok
+test schema::compiled::tests::compiled_payloads_own_a_regex_and_keep_non_applicability_distinct ... ok
+test schema::compiled::tests::datatype_plan_invariants_and_date_representation_are_explicit ... ok
+test schema::compiled::tests::decimal_spec_rejects_impossible_width_scale_and_separator_metadata ... ok
+test schema::compiled::tests::decimal_validator_uses_the_plan_scale_separator_and_physical_width ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_preflight_rejects_missing_period_even_with_empty_inputs_and_cancelled ... ok
+test schema::compiled::tests::derived_presence_tests::all_derived_types_compose_under_not_and_or_without_changing_sources ... ok
+test schema::compiled::tests::derived_presence_tests::derived_unknown_stops_record_and_validator_remains_terminal ... ok
+test schema::compiled::tests::derived_presence_tests::real_derived_context_preserves_every_presence_state_and_base_obligation ... ok
+test schema::compiled::tests::derived_presence_tests::record_accepts_real_derived_plans_and_required_missing_is_invalid ... ok
+test schema::compiled::tests::duplicate_ids_and_outside_ranges_cannot_create_an_inconsistent_record ... ok
+test schema::compiled::tests::empty_records_and_flows_are_not_usable_compiled_models ... ok
+test schema::compiled::tests::flow_preserves_trace_order_and_rejects_duplicate_trace_ids ... ok
+test schema::compiled::tests::index_is_built_from_physical_order_and_every_entry_resolves_to_its_field ... ok
+test schema::compiled::tests::invalid_key_projection_and_identity_indexes_are_rejected ... ok
+test schema::compiled::tests::local_context_uses_the_stored_derived_plan_and_real_record_bytes ... ok
+test schema::compiled::tests::local_record_preserves_identity_and_pipeline_technical_causes ... ok
+test schema::compiled::tests::local_record_rejects_every_unimplemented_local_plan_before_processing ... ok
+test schema::compiled::tests::physical_order_gaps_overlaps_and_trailing_uncovered_bytes_are_rejected ... ok
+test schema::compiled::tests::pipeline_unknown_and_unsupported_plan_boundaries_are_explicit ... ok
+test schema::compiled::tests::projection_invariants_reject_omitted_dependencies_duplicate_order_and_dangling_joins ... ok
+test schema::derived::tests::derived_expression_lowering_is_typed_and_uses_the_same_canonical_map_indices ... ok
+test schema::derived::tests::derived_names_literals_and_integer_targets_cannot_be_guessed_or_coerced ... ok
+test schema::derived::tests::missing_and_external_sources_are_explicit_and_no_leap_policy_is_defaulted ... ok
+test schema::compiled::tests::derived_presence_tests::invalid_metadata_is_rejected_even_when_a_constant_dominates_the_expression ... ok
+test schema::derived::tests::three_closed_plans_have_exact_local_indices_ranges_and_explicit_calendar_policy ... ok
+test schema::compiled::tests::derived_presence_tests::field_pipeline_reports_primary_presence_and_counts_unknown_once ... ok
+test schema::expression::tests::empty_boolean_and_membership_nodes_and_duplicate_sets_are_invalid ... ok
+test schema::expression::tests::every_local_leaf_lowers_to_indices_and_exact_literal_bytes ... ok
+test schema::derived::tests::substring_coordinates_and_field_type_errors_never_create_partial_plans ... ok
+test schema::expression::tests::nested_boolean_tree_preserves_order_and_forward_field_references ... ok
+test schema::expression::tests::named_conditions_expand_and_detect_direct_and_indirect_cycles ... ok
+test schema::linter::tests::checked_source_endpoint_handles_machine_boundaries ... ok
+test schema::expression::tests::unknown_local_and_external_references_never_fall_back ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_missing_input_is_unknown_while_present_zero_means_no_activity ... ok
+test schema::raw::tests::rejects_duplicate_named_nodes_and_preserves_large_integer_literals ... ok
+test schema::raw::tests::keeps_metadata_open_and_positions_one_based_without_interpreting_them ... ok
+test schema::raw::tests::required_nullable_fields_are_explicit_and_optional_fields_cannot_be_null ... ok
+test validators::date::tests::explicit_format_and_calendar_boundaries ... ok
+test validators::range::tests::exact_magnitudes_cover_zero_negative_bounds_and_unbounded_width ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_profile_compiles_period_but_public_executable_entry_remains_closed ... ok
+test schema::expression::tests::long_named_chain_uses_explicit_work_stack ... ok
+test report::xlsx::tests::sequential_constant_memory_rows_survive_flushes_without_shared_string_table ... ok
+test schema::raw::tests::approved_examples_and_minimal_profile_roundtrip_without_loss ... ok
+test schema::compiled::compiler::inactivity_tests::cad_golden_tests::cad12_actual_full_projection_approval_t1_t2_t3_and_missing_pause_restart ... ok
+test schema::compiled::compiler::inactivity_tests::inactivity_serviced_access_uses_four_fields_and_not_independent_progressives ... ok
+test schema::raw::tests::rejects_unknown_operational_fields_at_each_object_boundary ... ok
+
+test result: ok. 141 passed; 0 failed; 4 ignored; 0 measured; 0 filtered out; finished in 2.45s
+

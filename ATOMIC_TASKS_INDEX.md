@@ -57,4 +57,4 @@ restano nel kit storico. Nessuna conclusione di task impone lo stop della sessio
 | T-CAD-09 | DONE | [prompt](TASK_PROMPTS/T-CAD-09.md) |
 | T-CAD-10 | DONE | [prompt](TASK_PROMPTS/T-CAD-10.md) |
 | T-CAD-11 | DONE | [prompt](TASK_PROMPTS/T-CAD-11.md) |
-| T-CAD-12 | BLOCKED — contratto esistenza storica | [prompt](TASK_PROMPTS/T-CAD-12.md) |
+| T-CAD-12 | IN_PROGRESS — implementazione storico ratificata | [prompt](TASK_PROMPTS/T-CAD-12.md) |

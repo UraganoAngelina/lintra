@@ -189,6 +189,7 @@ fn expected_snapshots(repo: &SQLitePersistenceAdapter) -> Vec<HistoricalSnapshot
             "one",
             vec![row(repo.protector(), "B", 1, "A")],
         ),
+        super::history::candidate(repo, 3, "history-facts"),
     ]
 }
 /// A closed native database, not a serialized Rust snapshot standing in for it.
@@ -264,7 +265,7 @@ fn import_fixture(
 }
 fn verify_fixture(repo: &SQLitePersistenceAdapter) {
     let settings = repo.settings().unwrap();
-    assert_eq!(settings.format_version, 2);
+    assert_eq!(settings.format_version, FORMAT as u32);
     assert_eq!(settings.journal_mode, "delete");
     assert_eq!(settings.synchronous, 3);
     repo.protector()
@@ -276,6 +277,13 @@ fn verify_fixture(repo: &SQLitePersistenceAdapter) {
             .unwrap()
             .unwrap();
         assert_eq!(actual, expected);
+        let facts = repo
+            .load_history_facts(expected.namespace(), expected.revision())
+            .unwrap()
+            .unwrap();
+        assert!(facts.inventory_supported());
+        assert_eq!(facts.batches(), expected.history_facts());
+        assert_eq!(facts.source(), expected.source());
         repo.protector().verify_submission(actual.source()).unwrap();
         for record in actual.identities() {
             repo.protector().verify_stored_identity(record).unwrap();
@@ -289,7 +297,7 @@ fn verify_fixture(repo: &SQLitePersistenceAdapter) {
     }
     assert_eq!(
         repo.current_generation(&namespace("A")).unwrap(),
-        Some(SnapshotRevision::new(2))
+        Some(SnapshotRevision::new(3))
     );
     assert_eq!(
         repo.current_generation(&namespace("B")).unwrap(),
@@ -307,7 +315,7 @@ fn verify_fixture(repo: &SQLitePersistenceAdapter) {
         repo.load_submission_page(&namespace("A"), None)
             .unwrap()
             .len(),
-        2
+        3
     );
 }
 
@@ -402,7 +410,7 @@ fn import_opposite_native_snapshot_fixture() {
     let (repo, manifest) = import_fixture(&input, &temp.path().join("imported")).unwrap();
     assert_eq!(manifest.producer_os, expected_os);
     verify_fixture(&repo);
-    let result = serde_json::json!({"fixture_kind":FIXTURE_KIND,"producer_os":manifest.producer_os,"consumer_os":std::env::consts::OS,"source_db_sha256":manifest.db_sha256,"snapshots_verified":3,"namespaces_verified":2,"retained_occurrence_verified":true,"protection_verified":true});
+    let result = serde_json::json!({"fixture_kind":FIXTURE_KIND,"producer_os":manifest.producer_os,"consumer_os":std::env::consts::OS,"source_db_sha256":manifest.db_sha256,"snapshots_verified":4,"namespaces_verified":2,"retained_occurrence_verified":true,"protection_verified":true,"history_batch_verified":true,"snapshot_manifests_verified":true});
     let output = PathBuf::from(
         std::env::var_os("LINTRA_SQLITE_IMPORT_RESULT").expect("explicit result file"),
     );

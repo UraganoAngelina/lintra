@@ -2,6 +2,34 @@
 //!
 //! These contracts store protected identities and audit facts, not original
 //! records. They do not approve a submission or apply a clinical history policy.
+pub(crate) mod history;
+pub use history::HistoryFactBatch;
+
+/// Authenticated fact inventory of one persisted source. Legacy archives report
+/// an unsupported inventory explicitly, never a proved empty historical set.
+/// Construction stays inside repository adapters; this is not a validity verdict.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct HistoricalFactSnapshot {
+    pub(crate) revision: SnapshotRevision,
+    pub(crate) source: SourceSubmission,
+    pub(crate) batches: Vec<HistoryFactBatch>,
+    pub(crate) inventory_supported: bool,
+}
+impl HistoricalFactSnapshot {
+    pub fn revision(&self) -> SnapshotRevision {
+        self.revision
+    }
+    pub fn source(&self) -> &SourceSubmission {
+        &self.source
+    }
+    pub fn batches(&self) -> &[HistoryFactBatch] {
+        &self.batches
+    }
+    pub fn inventory_supported(&self) -> bool {
+        self.inventory_supported
+    }
+}
+
 use crate::{
     Fingerprint, PersistenceNamespace, PersistentRecordIdentity, SnapshotRevision, SourceSubmission,
 };
@@ -176,6 +204,7 @@ pub struct HistoricalSnapshot {
     revision: SnapshotRevision,
     source: SourceSubmission,
     identities: Arc<[StoredIdentity]>,
+    history_facts: Arc<[HistoryFactBatch]>,
 }
 impl HistoricalSnapshot {
     pub fn new(
@@ -196,6 +225,7 @@ impl HistoricalSnapshot {
             revision,
             source,
             identities: identities.into(),
+            history_facts: Arc::from([]),
         })
     }
     pub fn revision(&self) -> SnapshotRevision {
@@ -214,6 +244,9 @@ impl HistoricalSnapshot {
         revision: SnapshotRevision,
         source: SourceSubmission,
     ) -> Result<Self, PersistenceError> {
+        if !self.history_facts.is_empty() && (revision != self.revision || source != self.source) {
+            return Err(PersistenceError::CorruptStorage);
+        }
         if source.namespace() != self.namespace() {
             return Err(PersistenceError::NamespaceMismatch);
         }
@@ -221,7 +254,32 @@ impl HistoricalSnapshot {
             revision,
             source,
             identities: self.identities.clone(),
+            history_facts: self.history_facts.clone(),
         })
+    }
+    pub fn history_facts(&self) -> &[HistoryFactBatch] {
+        &self.history_facts
+    }
+    /// Application-only attachment to the exact publication snapshot. No
+    /// public constructor/deserializer can attach an unverified fact payload.
+    pub(crate) fn with_history_facts(
+        mut self,
+        mut facts: Vec<HistoryFactBatch>,
+        protector: &IdentityProtector,
+    ) -> Result<Self, PersistenceError> {
+        let mut definitions = HashSet::new();
+        // Adapter order is lexical by definition; normalize at attachment so
+        // snapshot equality and its manifest do not depend on producer order.
+        facts.sort_by_key(|fact| fact.plan_digest().0);
+        for fact in &facts {
+            fact.verify(&self.source, protector)?;
+            if fact.payload.revision != self.revision || !definitions.insert(fact.plan_digest().0) {
+                return Err(PersistenceError::CorruptStorage);
+            }
+            fact.verify_records(&self.identities)?;
+        }
+        self.history_facts = facts.into();
+        Ok(self)
     }
     pub fn identities(&self) -> &[StoredIdentity] {
         &self.identities
@@ -243,6 +301,16 @@ impl CommitReceipt {
 /// Generic application port. No engine ContextStore dependency and no filesystem
 /// discovery. All lookups are exact, namespace-scoped and read only.
 pub trait PersistentContextRepository: Send + Sync {
+    /// Read one source's authenticated fact inventory without materializing its
+    /// stored record identities. Pin/check the namespace generation across reads.
+    /// Unsupported implementations fail technically instead of inventing absence.
+    fn load_history_facts(
+        &self,
+        _namespace: &PersistenceNamespace,
+        _revision: SnapshotRevision,
+    ) -> Result<Option<HistoricalFactSnapshot>, PersistenceError> {
+        Err(PersistenceError::StorageUnavailable)
+    }
     /// Public key-confirmation metadata from the initialized repository, never
     /// secret material. A historical producer verifies this before reading data,
     /// including when its selected namespace has no snapshots yet.

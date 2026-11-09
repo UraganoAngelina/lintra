@@ -30,3 +30,12 @@ ratificato come comportamento produttivo. Preparata proposta concreta A che
 preserva il prodotto; la scelta richiede ratifica prima di chiudere il CNF/M9.
 Le attività indipendenti CAD12 proseguono senza modificare l'ordine corrente.
 Single-agent, no background/delega; docs/migration preesistente sempre esclusa.
+
+
+## Ripresa attuativa — 9 novembre 2026
+
+Ratifica implementativa sostitutiva e C1/L1 qualificate sul piano decisionale.
+Il blocco alla sola specifica non è più vigente. CNF ordine RESOLVED con i gate
+propri. Base storage in `T-CAD-12-history-storage.md`; i compiler/esecutori non
+ancora collegati restano esplicitamente rifiutati. Nessuna approvazione o
+copertura normativa è inferita dal semplice supporto del nuovo inventario.

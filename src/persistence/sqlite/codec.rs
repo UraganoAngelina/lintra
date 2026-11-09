@@ -52,3 +52,24 @@ pub(super) fn read_source(
         .map_err(|_| PersistenceError::CorruptStorage)?;
     Ok(value)
 }
+
+/// The existing RecordWire/private proofs authenticate the technical record
+/// seal; reconstructing the selected projection additionally binds the ENTIRE
+/// fact payload. A valid identity token alone is deliberately insufficient.
+pub(super) fn read_history(
+    payload: &[u8],
+    seal: &[u8],
+    key_proof: &[u8],
+    record_proof: &[u8],
+    source: &SourceSubmission,
+    protector: &IdentityProtector,
+) -> Result<crate::HistoryFactBatch, PersistenceError> {
+    let value = crate::HistoryFactBatch {
+        payload: decode(payload)?,
+        seal: read_record(seal, key_proof, record_proof, protector)?,
+    };
+    value
+        .verify(source, protector)
+        .map_err(|_| PersistenceError::CorruptStorage)?;
+    Ok(value)
+}

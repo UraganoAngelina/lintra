@@ -366,9 +366,9 @@ pub use bundle_resolution::{
 
 /// Persistent history ports and explicit in-memory transaction test adapter.
 pub use persistence::{
-    CommitReceipt, HistoricalIdentityOccurrence, HistoricalSnapshot, InMemoryPersistenceImage,
-    InMemoryPersistenceRepository, PersistenceError, PersistenceTransaction,
-    PersistentContextRepository, StoredIdentity,
+    CommitReceipt, HistoricalFactSnapshot, HistoricalIdentityOccurrence, HistoricalSnapshot,
+    HistoryFactBatch, InMemoryPersistenceImage, InMemoryPersistenceRepository, PersistenceError,
+    PersistenceTransaction, PersistentContextRepository, StoredIdentity,
 };
 
 pub use persistence::{

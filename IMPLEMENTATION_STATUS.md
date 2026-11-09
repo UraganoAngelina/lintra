@@ -1,60 +1,44 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-11-08**. Piano v1.1; governance GOV-2026-10-26-01.
+Consuntivo aggiornato al **2026-11-09**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD08 DONE, CAD12: contratto storico da ratificare
+## Frontiera corrente — CAD12 IN_PROGRESS, contratti storici ratificati
 
 **138/140 DONE = 98,6%**; restano CAD12 e P18-04 (conteggio task, non sforzo).
-CI42476999364 completed/success sullo SHA3388527a2d4a8feee3e37acc1a4c56a753d5f7e1.
-Sette job e step richiesti verificati: Linux/MSVC, tre confronti JSONL/pixel,
-due riapertureSQLite crossOS. Log positivi e due JSONimport conservati: ciascuno
-verifica3snapshot,2namespace, protezione e retained occurrence. PackagingUI
-opzionale skipped.11gate locali e475improntecorrenti ricontrollati.
-Dossier T-CAD-08-quality-gate.json. CAD12IN_PROGRESS:4prove reali preliminari
-positive; contratto esistenza storica e conflitto ordine in proposta, non ratificati.
-P18-04attende12e risoluzione conflitti applicabili; nessunFROZEN implicito.
+CAD04..11/PERSIST12 qualificati; riferimenti SHA/run nel preflight CAD12.
+CAD08 DONE con CI42476999364 sullo SHA3388527a2d4a8feee3e37acc1a4c56a753d5f7e1:
+sette job richiesti success. Nessun riavvio di task già DONE.
 
-CAD02 DONE con CI42067927663. CAD03 e CAD11 DONE con CI42203885693 su6af5f85.
-CAD09 DONE con CI42231182241 sullo SHA1740a6dd29ac705d29b0cb0425daacf919a6b17e:
-Linux/MSVC, tre confronti JSONL/pixel e due riaperture SQLite crossOS positivi.
-Solo il packaging UI opzionale è skipped, come previsto dal perimetro.
+ADR-HISTORY-EXISTENCE-001: ratifica implementativa sostitutiva autorizza il
+percorso completo dentro CAD12. C1 A approvata, L1 precisata il9novembre:
+il witness annullato/rettificato non può essere riutilizzato da un vecchio
+snapshot; occorre altra iniziale valida. Nessun consenso ordinario mancante.
+Norme, namespace/evento, snapshot immutabili, HMAC1/ACL e Unknown invariati.
 
-CAD09: riferimenti tipizzati tra tracciati per calendar_year_delta, guardie dei
-metadati e causa Unknown preservata; componente A/B1 con soglie3/6/17,12test
-reali di servizio. Tutti gli11gate locali positivi, sorgenti con hash invariati:
-943esiti per ciascuna suite workspace,182core senza bundle,18tooling,24Python;
-fmt/Clippy/release/boundary positivi. Dossier T-CAD-09-calendar-age.md,
-T-CAD-09-local-gates.json, T-CAD-09-native-ci.json e log/inventario omonimi.
-Non è uno schemaCAD completo/FROZEN; integrazione clinica/storica resta al12.
+CNF-DIAGNOSTIC-ORDER-01 **RESOLVED**: audit/4test/5gate locali e CI42530063288
+success sullo SHAa644145b52200df33c104573559a6c044fd6d5d7. Sette job richiesti
+ricontrollati via API il9novembre; packaging opzionale skipped. Ordine invariato.
+Questa CI non qualifica il nuovo codice storico. Dossier omonimo aggiornato.
 
-CAD04 DONE: commit b59a5b905ae9f82baf5ce23bbc4eb8564fa5cd22, CI42368062138
-completed/success con sette job richiesti positivi: Linux/MSVC, tre confronti
-JSONL/pixel e due riaperture SQLite crossOS. Quindici test CAD04 qualificati;
-base11gate e affinamento6gate locali distinti, sorgenti finali verificate.
-Report T-CAD-04-progressives.md e risultato T-CAD-04-native-ci.json.
+Delta CAD12 corrente: payload fact-only, ordinal del token, proiezioni protette,
+SQLite3, manifest obbligatorio contro cancellazione di batch, query di inventario
+indicizzata senza caricare records. Reader1/2 preservati, nessuna migrazione
+implicita; upgrade consenso ancora1→2. Dieci test nuovi di storage;35testSQLite
+positivi inclusa qualifica trasferimento locale. Fixture CI ampliata a4snapshot,
+2namespace e un batch storico. Report T-CAD-12-history-storage.md.
+Sette gate finali locali positivi,283impronte ferme e193input test confrontati
+con HEAD; workspace default/allfeatures1028esiti ciascuna/0fail/6ignored,
+corelib141/0fail/4ignored; fmt/Clippy/release/boundary exit0. CI propria del
+componente ancora necessaria. Ledger T-CAD-12-history-storage-gates.json.
 
-CAD06 DONE:3719d147f20eb07026342a8f0722f71aa5486c4b, CI42372080602 success
-con sette job richiesti positivi: Linux/MSVC, tre confronti JSONL/pixel e due
-riaperture SQLite crossOS. Undici test nuovi,11gate locali con464hash invariati;
-970/970workspace,927core,18tooling,24Python. Retrytooling per ambiente omesso
-conservato separatamente, nessun indebolimento dei controlli.
+Restano compiler/piani semantici, produzione PASS1, query lifecycle L1/copertura
+C1, contesto PASS2, gate approvazione e composizione eseguibile CAD83/golden/
+performance/qualifica nativa sul codice finale. CAD12 non DONE, P18-04 non READY,
+nessun FROZEN/M9/release/tag. Non equiparare componente o test privati a CAD83.
 
-CAD07 DONE:6477bb28165026236933e9aeef70478350ab97d5, CI42390593313success
-con sette job richiesti positivi, incluse entrambe riaperture SQLite crossOS.
-Undici nuovi test,11gate locali su468input invariati:981/981workspace,938core,
-18tooling/24Python. Nessun first; consenso qualificato prima del filtrodecesso.
-
-CAD05 WAITING_GATE:6testnuovi+52regressione positivi, solo accettazione e
-documentazione, codiceproduttivo invariato. Sette gate finali exit0 su469input
-invariati:987workspace/0fail/6ignored,58allfeatures e58core senza bundle/0fail;
-fmt/Clippy/release/boundary positivi. Log/conteggi/inventario verificati.
-Providerfile/SQLite reali, ABORT/PROCEED e B2Absent contro Present(0).
-Pubblicazione/CIpropria sullo SHAfinale ancora necessarie primaDONE05.
-08attende anche05DONE secondo il prompt: nessuna implementazione prima del
-suo gate nativo.06/07/P9giàqualificate;12eP18-04non indipendenti.
-
-Single-agent, nessun background/delega. NessunaFROZEN/release/tag o chiave
-operativa generata; docs/migration preesistente preservata ed esclusa.
+Single-agent, nessun background/delega. docs/migration preesistente preservata
+ed esclusa. Proseguire il workflow autorizzato, senza nuovi checkpoint ordinari.
+I registri sottostanti conservano lo stato storico al momento di ciascun evento.
 
 ## Registro precedente — T-CAD-02 WAITING_GATE, DEC-17 chiusa
 
@@ -6975,3 +6959,41 @@ con verifica della proiezione oltre al tokenidentità. CasoC1A approvato: attest
 qualificata di origine esplicita, fonte/hash/responsabilità/approval e bindingallo
 snapshot; mai primaDB=origine. CasoL1normativo ancora in attesa; altri lavori
 indipendenti proseguono. Nessuna risposta presunta né annullamento semanticoinventato.
+
+
+## L1 — decisione ricevuta, 9 novembre 2026
+
+L’autore precisa: iniziale annullata non più utilizzabile come prova; una sola
+rivalutazione non basta, occorre un’altra iniziale valida. Alternativa B esclusa.
+Ratifica con testo originale, effetti su omissione/correzione e limiti nel dossier
+ADR-HISTORY-EXISTENCE-001-L1-ratification.md. Decision log, AGENTS e contratto
+tecnico allineati; L1 non più in attesa. Nessuna modifica al lifecycle CAD04/05,
+alla correlazione namespace/evento o alla distinzione False/Unknown.
+
+Implementazione storica ancora in corso, non qualificata dal solo chiarimento.
+CAD12 non DONE, P18-04 non READY, nessun M9/FROZEN. Riprendere la query sulla
+vista qualificata del lifecycle e le prove sintetiche di annullamento/correzione;
+non utilizzare un OR dei positivi di tutti gli snapshot immutabili.
+
+
+## CAD12 — base storage qualificata localmente, 9 novembre 2026
+
+Implementazione fact-only e manifest snapshot autenticati, SQLite3 per archivi
+nuovi, query inventario indicizzata senza records, ordinal/record binding e
+compatibilità reader1/2; upgrade1→2 esplicito preservato. Dieci nuove prove
+SQLite,35SQLite totali positivi. Sette gate finali exit0,283impronte source/UI/
+bundle/tooling ferme, HEAD/indice fermi;193file test/fixture identici al base.
+Workspace default eallfeatures1028esiti/0fail/6ignored ciascuno, corelib141/0fail/
+4ignored. Fmt/Clippy/release/boundary positivi. Preliminare Clippy separato.
+Report/ledger/log T-CAD-12-history-storage*. Fixture crossOS ampliata con batch:
+4snapshot/2namespace. Nessuna qualifica nativa nuova ancora dichiarata.
+
+CNFordine RESOLVED dopo verificaAPI della CI42530063288 sullo SHAa644145,
+sette job richiesti success. L1/C1 già ratificate, nessuna decisione ripresentata.
+Pubblicare le decisioni/evidenze e il delta storage con path espliciti, avviare
+una sola CI propria sullo SHA esatto. CAD12IN_PROGRESS,138/140invariato;
+P18-04nonREADY. Restano compiler/producer/query lifecycle/copertura/PASS2/approval,
+CAD83 e golden applicativi/privacy/performance/gate sul prodotto finale.
+Non basta abilitare history scope o trattare l'inventario come ProvenComplete.
+Nessun nuovo algoritmo/chiave, PHI, migrazione, FROZEN, release o tag.
+Single-agent/no background/delega. docs/migration preesistente esclusa.

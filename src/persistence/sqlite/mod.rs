@@ -11,8 +11,8 @@ use std::{
 };
 mod codec;
 use super::file_security as security;
-// Format2 adds explicit omission-consent metadata; legacy payloads/MACs stay valid.
-const FORMAT: i64 = 2;
+// Format3 adds sealed history batches. Legacy1/2 are read without migration.
+const FORMAT: i64 = 3;
 const APPLICATION: i64 = 0x4c4e5452;
 const SCHEMA: &str = r#"
 CREATE TABLE storage_meta(singleton INTEGER PRIMARY KEY CHECK(singleton=1),audit BLOB NOT NULL);
@@ -20,6 +20,8 @@ CREATE TABLE namespaces(ns BLOB PRIMARY KEY,generation INTEGER NOT NULL CHECK(ge
 CREATE TABLE snapshots(ns BLOB NOT NULL,revision INTEGER NOT NULL CHECK(revision>0),submission TEXT NOT NULL,source BLOB NOT NULL,proof BLOB NOT NULL CHECK(length(proof)=32),record_count INTEGER NOT NULL CHECK(record_count>=0),PRIMARY KEY(ns,revision),UNIQUE(ns,submission),FOREIGN KEY(ns) REFERENCES namespaces(ns)) WITHOUT ROWID;
 CREATE TABLE records(ns BLOB NOT NULL,revision INTEGER NOT NULL,ordinal INTEGER NOT NULL,identity BLOB NOT NULL,payload BLOB NOT NULL,key_proof BLOB NOT NULL CHECK(length(key_proof)=32),record_proof BLOB NOT NULL CHECK(length(record_proof)=32),PRIMARY KEY(ns,revision,ordinal),UNIQUE(ns,revision,identity),FOREIGN KEY(ns,revision) REFERENCES snapshots(ns,revision)) WITHOUT ROWID;
 CREATE TABLE latest(ns BLOB NOT NULL,identity BLOB NOT NULL,revision INTEGER NOT NULL,ordinal INTEGER NOT NULL,PRIMARY KEY(ns,identity),FOREIGN KEY(ns,revision,ordinal) REFERENCES records(ns,revision,ordinal)) WITHOUT ROWID;
+CREATE TABLE history_batches(ns BLOB NOT NULL,revision INTEGER NOT NULL,definition BLOB NOT NULL CHECK(length(definition)=32),payload BLOB NOT NULL,seal BLOB NOT NULL,key_proof BLOB NOT NULL CHECK(length(key_proof)=32),record_proof BLOB NOT NULL CHECK(length(record_proof)=32),PRIMARY KEY(ns,revision,definition),FOREIGN KEY(ns,revision) REFERENCES snapshots(ns,revision)) WITHOUT ROWID;
+CREATE TABLE snapshot_manifests(ns BLOB NOT NULL,revision INTEGER NOT NULL,payload BLOB NOT NULL,seal BLOB NOT NULL,key_proof BLOB NOT NULL CHECK(length(key_proof)=32),record_proof BLOB NOT NULL CHECK(length(record_proof)=32),PRIMARY KEY(ns,revision),FOREIGN KEY(ns,revision) REFERENCES snapshots(ns,revision)) WITHOUT ROWID;
 "#;
 // LEFT joins retain a corrupt/dangling latest entry so decoding fails rather
 // than misreporting a known identity as absent. Existing PKs serve every seek.
@@ -90,7 +92,7 @@ fn header(file: &File) -> Result<(), PersistenceError> {
     if word(68) != APPLICATION {
         return Err(PersistenceError::UnrecognizedStorage);
     }
-    if !matches!(word(60), 1 | FORMAT) {
+    if !matches!(word(60), 1 | 2 | FORMAT) {
         return Err(PersistenceError::UnsupportedStorageVersion { found: word(60) });
     }
     if bytes[18] != 1 || bytes[19] != 1 {
@@ -200,7 +202,7 @@ impl SQLitePersistenceAdapter {
         let version: i64 = connection
             .pragma_query_value(None, "user_version", |r| r.get(0))
             .map_err(sql)?;
-        if !matches!(version, 1 | FORMAT) {
+        if !matches!(version, 1 | 2 | FORMAT) {
             return Err(PersistenceError::UnsupportedStorageVersion { found: version });
         }
         let integrity: String = connection
@@ -289,7 +291,7 @@ impl SQLitePersistenceAdapter {
     /// No source, signature, snapshot, generation or index is rewritten.
     pub fn upgrade_storage_v1_to_v2(&self) -> Result<(), PersistenceError> {
         let mut c = self.lock()?;
-        if storage_version(&c)? == FORMAT {
+        if storage_version(&c)? >= 2 {
             return Ok(());
         }
         #[cfg(test)]
@@ -299,8 +301,9 @@ impl SQLitePersistenceAdapter {
             .map_err(sql)?;
         // Another compatible process may have upgraded before this lock.
         if storage_version(&tx)? == 1 {
-            tx.pragma_update(None, "user_version", FORMAT)
-                .map_err(sql)?;
+            // This explicit operation remains exactly v1 -> v2. It does not
+            // create fact tables, reinterpret history or upgrade to v3.
+            tx.pragma_update(None, "user_version", 2).map_err(sql)?;
         }
         #[cfg(test)]
         self.before_commit(&tx)?;
@@ -329,7 +332,7 @@ fn storage_version(c: &Connection) -> Result<i64, PersistenceError> {
     let version = c
         .pragma_query_value(None, "user_version", |r| r.get::<_, i64>(0))
         .map_err(sql)?;
-    if !matches!(version, 1 | FORMAT) {
+    if !matches!(version, 1 | 2 | FORMAT) {
         return Err(PersistenceError::UnsupportedStorageVersion { found: version });
     }
     Ok(version)
@@ -339,7 +342,7 @@ fn allow_source_version(c: &Connection, source: &SourceSubmission) -> Result<(),
     if version == 1 && source.missing_trace_consent().is_some() {
         return Err(PersistenceError::StorageUpgradeRequired {
             found: 1,
-            required: FORMAT,
+            required: 2,
         });
     }
     Ok(())
@@ -458,6 +461,41 @@ impl PersistentContextRepository for SQLitePersistenceAdapter {
                 Ok(record)
             })
             .transpose()
+    }
+    fn load_history_facts(
+        &self,
+        ns: &PersistenceNamespace,
+        revision: SnapshotRevision,
+    ) -> Result<Option<HistoricalFactSnapshot>, PersistenceError> {
+        let encoded = codec::encode(ns)?;
+        let c = self.lock()?;
+        let row: Option<(Vec<u8>, Vec<u8>)> = c
+            .prepare_cached("SELECT source,proof FROM snapshots WHERE ns=?1 AND revision=?2")
+            .map_err(sql)?
+            .query_row(params![encoded, number(revision.value())?], |row| {
+                Ok((row.get(0)?, row.get(1)?))
+            })
+            .optional()
+            .map_err(sql)?;
+        let Some((body, proof)) = row else {
+            return Ok(None);
+        };
+        let source = codec::read_source(&body, &proof, &self.inner.protector)?;
+        if source.namespace() != ns {
+            return Err(PersistenceError::CorruptStorage);
+        }
+        let inventory_supported = storage_version(&c)? == FORMAT;
+        let batches = if inventory_supported {
+            read_fact_inventory(&c, &encoded, revision, &source, &self.inner.protector)?.1
+        } else {
+            Vec::new()
+        };
+        Ok(Some(HistoricalFactSnapshot {
+            revision,
+            source,
+            batches,
+            inventory_supported,
+        }))
     }
     fn load_current_snapshot(
         &self,
@@ -620,7 +658,59 @@ fn read_snapshot(
     if records.len() as i64 != count {
         return Err(PersistenceError::CorruptStorage);
     }
-    HistoricalSnapshot::new(revision, source, records).map_err(|_| PersistenceError::CorruptStorage)
+    let (manifest, facts) = if storage_version(c)? == FORMAT {
+        let (manifest, facts) = read_fact_inventory(c, encoded, revision, &source, p)?;
+        (Some(manifest), facts)
+    } else {
+        (None, Vec::new())
+    };
+    let snapshot = HistoricalSnapshot::new(revision, source, records)
+        .and_then(|snapshot| snapshot.with_history_facts(facts, p))
+        .map_err(|_| PersistenceError::CorruptStorage)?;
+    if let Some(manifest) = manifest
+        && manifest != super::history::SnapshotManifest::create(&snapshot)?
+    {
+        return Err(PersistenceError::CorruptStorage);
+    }
+    Ok(snapshot)
+}
+/// Facts-only indexed read. The manifest is mandatory even for zero batches;
+/// it detects deletions without loading the snapshot's record identities.
+fn read_fact_inventory(
+    c: &Connection,
+    encoded: &[u8],
+    revision: SnapshotRevision,
+    source: &SourceSubmission,
+    p: &IdentityProtector,
+) -> Result<(super::history::SnapshotManifest, Vec<HistoryFactBatch>), PersistenceError> {
+    let (payload, seal, kp, rp): (Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>) = c.query_row(
+        "SELECT payload,seal,key_proof,record_proof FROM snapshot_manifests WHERE ns=?1 AND revision=?2",
+        params![encoded, number(revision.value())?], |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?)),
+    ).map_err(|_| PersistenceError::CorruptStorage)?;
+    let manifest: super::history::SnapshotManifest = codec::decode(&payload)?;
+    let stored = codec::read_record(&seal, &kp, &rp, p)?;
+    if stored != manifest.seal(source, p)? {
+        return Err(PersistenceError::CorruptStorage);
+    }
+    let mut facts = Vec::new();
+    let mut query = c.prepare("SELECT definition,payload,seal,key_proof,record_proof FROM history_batches WHERE ns=?1 AND revision=?2 ORDER BY definition").map_err(sql)?;
+    let mut rows = query
+        .query(params![encoded, number(revision.value())?])
+        .map_err(sql)?;
+    while let Some(row) = rows.next().map_err(sql)? {
+        let definition: Vec<u8> = row.get(0).map_err(sql)?;
+        let payload: Vec<u8> = row.get(1).map_err(sql)?;
+        let seal: Vec<u8> = row.get(2).map_err(sql)?;
+        let kp: Vec<u8> = row.get(3).map_err(sql)?;
+        let rp: Vec<u8> = row.get(4).map_err(sql)?;
+        let batch = codec::read_history(&payload, &seal, &kp, &rp, source, p)?;
+        if definition.as_slice() != batch.plan_digest().0 || batch.payload.revision != revision {
+            return Err(PersistenceError::CorruptStorage);
+        }
+        facts.push(batch);
+    }
+    manifest.verify_batches(revision, &facts)?;
+    Ok((manifest, facts))
 }
 struct SQLiteTransaction {
     adapter: SQLitePersistenceAdapter,
@@ -655,7 +745,22 @@ impl PersistenceTransaction for SQLiteTransaction {
                 .verify_stored_identity(record)
                 .map_err(PersistenceError::Protection)?;
         }
-        allow_source_version(&*self.adapter.lock()?, snapshot.source())?;
+        {
+            let connection = self.adapter.lock()?;
+            allow_source_version(&connection, snapshot.source())?;
+            if !snapshot.history_facts().is_empty() && storage_version(&connection)? != FORMAT {
+                return Err(PersistenceError::StorageUpgradeRequired {
+                    found: storage_version(&connection)?,
+                    required: FORMAT,
+                });
+            }
+            for batch in snapshot.history_facts() {
+                batch.verify(snapshot.source(), &self.adapter.inner.protector)?;
+                if batch.payload.revision != snapshot.revision() {
+                    return Err(PersistenceError::CorruptStorage);
+                }
+            }
+        }
         self.staged = Some(snapshot.clone());
         Ok(())
     }
@@ -670,6 +775,12 @@ impl PersistenceTransaction for SQLiteTransaction {
             .map_err(sql)?;
         check(self.expected, generation(&tx, &encoded)?)?;
         allow_source_version(&tx, snapshot.source())?;
+        if !snapshot.history_facts().is_empty() && storage_version(&tx)? != FORMAT {
+            return Err(PersistenceError::StorageUpgradeRequired {
+                found: storage_version(&tx)?,
+                required: FORMAT,
+            });
+        }
         if tx
             .prepare("SELECT 1 FROM snapshots WHERE ns=?1 AND submission=?2")
             .map_err(sql)?
@@ -731,6 +842,65 @@ impl PersistenceTransaction for SQLiteTransaction {
                     .execute(params![encoded, id, revision, index as i64])
                     .map_err(sql)?;
             }
+        }
+        if !snapshot.history_facts().is_empty() {
+            let mut insert = tx
+                .prepare_cached("INSERT INTO history_batches VALUES(?1,?2,?3,?4,?5,?6,?7)")
+                .map_err(sql)?;
+            for batch in snapshot.history_facts() {
+                batch.verify(snapshot.source(), &self.adapter.inner.protector)?;
+                let kp = batch
+                    .seal
+                    .identity()
+                    .protection_evidence
+                    .0
+                    .as_ref()
+                    .ok_or(PersistenceError::Protection(ProtectionError::Unattested))?;
+                let rp = batch
+                    .seal
+                    .protection_evidence
+                    .0
+                    .as_ref()
+                    .ok_or(PersistenceError::Protection(ProtectionError::Unattested))?;
+                insert
+                    .execute(params![
+                        encoded,
+                        revision,
+                        batch.plan_digest().0.as_slice(),
+                        codec::encode(&batch.payload)?,
+                        codec::record(&batch.seal)?,
+                        kp.as_slice(),
+                        rp.as_slice()
+                    ])
+                    .map_err(sql)?;
+            }
+        }
+        if storage_version(&tx)? == FORMAT {
+            let manifest = super::history::SnapshotManifest::create(&snapshot)?;
+            let seal = manifest.seal(snapshot.source(), &self.adapter.inner.protector)?;
+            let kp = seal
+                .identity()
+                .protection_evidence
+                .0
+                .as_ref()
+                .ok_or(PersistenceError::Protection(ProtectionError::Unattested))?;
+            let rp = seal
+                .protection_evidence
+                .0
+                .as_ref()
+                .ok_or(PersistenceError::Protection(ProtectionError::Unattested))?;
+            tx.execute(
+                "INSERT INTO snapshot_manifests VALUES(?1,?2,?3,?4,?5,?6)",
+                params![
+                    encoded,
+                    revision,
+                    codec::encode(&manifest)?,
+                    codec::record(&seal)?,
+                    kp.as_slice(),
+                    rp.as_slice()
+                ],
+            )
+            .map_err(sql)?;
         }
         #[cfg(test)]
         {
