@@ -81,3 +81,11 @@ ridotto.504input congelati confrontati, solo ci.yml differisce; source/test/
 schema invariati. Ledger runtime-ci-refinement.json, fallimento iniziale
 runtime-native-initial-cancelled.json. Serve un'unica nuovaCI completa sul
 commit della correzione, non un successo ereditato o una pipeline duplicata.
+
+## CI di completamento avviata
+
+Correzione CI d45078e153ba0455774129c9832c98eb9e90b789 pubblicata; unica
+CI42641969728, dispatch riuscito e SHA verificato. Budget45min bounded,
+stessi test/condizioni/artefatti.24Python/fmt/diff-check positivi; Rust e
+schemi invariati, nessuna ripetizione locale inutile. PrimaCI incompleta
+conservata, non sostituita da PASS. CAD12WAITING_GATE, P18-04nonREADY.

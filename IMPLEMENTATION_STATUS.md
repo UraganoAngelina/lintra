@@ -46,7 +46,9 @@ c59b0def0915d8cca6dae7f59048aa38f50b6807; CI42634997501 avviata e SHA verificato
 primo esito cancelled per timeout35m Windows durante packaging sonda, dopo
 test/release/README positivi. Linux success. NoveCAD83 e21storici verificati
 nei log di entrambi gliOS per3assetti. Correzione solo CI: limite45m, tutti
-i controlli invariati;504input del gate locale, solo workflow variato. Nuova CI completa necessaria, nessun DONE anticipato. CAD12 non DONE, P18-04 non READY, nessun FROZEN/M9/release/tag.
+i controlli invariati;504input del gate locale, solo workflow variato. Correzione d45078e153ba0455774129c9832c98eb9e90b789 pubblicata; unica nuova
+CI42641969728 avviata e SHA verificato, attesa dei7job completi. Nessun DONE
+anticipato. CAD12 non DONE, P18-04 non READY, nessun FROZEN/M9/release/tag.
 
 Single-agent, nessun background/delega. docs/migration preesistente preservata
 ed esclusa. Proseguire il workflow autorizzato, senza nuovi checkpoint ordinari.
