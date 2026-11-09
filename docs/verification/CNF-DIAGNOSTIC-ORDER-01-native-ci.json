@@ -1,0 +1,534 @@
+{
+  "run_id": 42530063288,
+  "head_sha": "a644145b52200df33c104573559a6c044fd6d5d7",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/42530063288",
+  "jobs": [
+    {
+      "name": "Verify (x86_64-pc-windows-msvc)",
+      "id": 128882061278,
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out source",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Test release tooling without credentials",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install Linux desktop build prerequisite",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Install pinned Rust toolchain",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install native target",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check formatting",
+          "conclusion": "success"
+        },
+        {
+          "name": "Clippy",
+          "conclusion": "success"
+        },
+        {
+          "name": "Test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Clippy all features",
+          "conclusion": "success"
+        },
+        {
+          "name": "Test all features",
+          "conclusion": "success"
+        },
+        {
+          "name": "Test core without embedded bundle",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify workspace and core dependency boundary",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify actual build rejects missing embedded font",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload native desktop pixels",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload production visual regression pixels",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload desktop captures and contrast evidence",
+          "conclusion": "success"
+        },
+        {
+          "name": "Smoke synthetic benchmark and verify expected validation counts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Smoke the real SQLite adapter with indexed lookups and process restart",
+          "conclusion": "success"
+        },
+        {
+          "name": "Qualify synthetic five-trace memory and SQLite profiles",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload synthetic persistence profile measurements",
+          "conclusion": "success"
+        },
+        {
+          "name": "Export a closed synthetic SQLite database for the opposite OS",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload the synthetic database and transport manifest",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check tooling formatting",
+          "conclusion": "success"
+        },
+        {
+          "name": "Clippy tooling",
+          "conclusion": "success"
+        },
+        {
+          "name": "Test tooling and extracted data bundle",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build reproducible release and verify artifact",
+          "conclusion": "success"
+        },
+        {
+          "name": "Execute README quickstart in native shell from a fresh install",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload native README acceptance evidence",
+          "conclusion": "success"
+        },
+        {
+          "name": "Package synthetic data for native bundle probe",
+          "conclusion": "success"
+        },
+        {
+          "name": "Exercise native release and executable-relative bundle resolution",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload raw JSONL from native runner",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out source",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "Verify (x86_64-unknown-linux-gnu)",
+      "id": 128882061499,
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out source",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Test release tooling without credentials",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install Linux desktop build prerequisite",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install pinned Rust toolchain",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install native target",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check formatting",
+          "conclusion": "success"
+        },
+        {
+          "name": "Clippy",
+          "conclusion": "success"
+        },
+        {
+          "name": "Test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Clippy all features",
+          "conclusion": "success"
+        },
+        {
+          "name": "Test all features",
+          "conclusion": "success"
+        },
+        {
+          "name": "Test core without embedded bundle",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify workspace and core dependency boundary",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify actual build rejects missing embedded font",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload native desktop pixels",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload production visual regression pixels",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload desktop captures and contrast evidence",
+          "conclusion": "success"
+        },
+        {
+          "name": "Smoke synthetic benchmark and verify expected validation counts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Smoke the real SQLite adapter with indexed lookups and process restart",
+          "conclusion": "success"
+        },
+        {
+          "name": "Qualify synthetic five-trace memory and SQLite profiles",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload synthetic persistence profile measurements",
+          "conclusion": "success"
+        },
+        {
+          "name": "Export a closed synthetic SQLite database for the opposite OS",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload the synthetic database and transport manifest",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check tooling formatting",
+          "conclusion": "success"
+        },
+        {
+          "name": "Clippy tooling",
+          "conclusion": "success"
+        },
+        {
+          "name": "Test tooling and extracted data bundle",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build reproducible release and verify artifact",
+          "conclusion": "success"
+        },
+        {
+          "name": "Execute README quickstart in native shell from a fresh install",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload native README acceptance evidence",
+          "conclusion": "success"
+        },
+        {
+          "name": "Package synthetic data for native bundle probe",
+          "conclusion": "success"
+        },
+        {
+          "name": "Exercise native release and executable-relative bundle resolution",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload raw JSONL from native runner",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out source",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "Qualify UI archives",
+      "id": 128882063250,
+      "conclusion": "skipped",
+      "steps": []
+    },
+    {
+      "name": "Compare production UI regression pixels",
+      "id": 128889054593,
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "conclusion": "success"
+        },
+        {
+          "name": "Compare actual production pixels in both themes and scales",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "Compare native desktop theme pixels",
+      "id": 128889054661,
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "conclusion": "success"
+        },
+        {
+          "name": "Compare both themes at 1x and 2x without tolerance",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "Compare Linux and Windows JSONL bytes",
+      "id": 128889054675,
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "conclusion": "success"
+        },
+        {
+          "name": "Compare exact inventory, UTF-8 LF and unmodified bytes",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "Reopen counterpart snapshot (x86_64-pc-windows-msvc)",
+      "id": 128889054686,
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install pinned Rust toolchain",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install native target",
+          "conclusion": "success"
+        },
+        {
+          "name": "Reopen and authenticate the database produced by the opposite OS",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload native cross-OS snapshot evidence",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "Reopen counterpart snapshot (x86_64-unknown-linux-gnu)",
+      "id": 128889054694,
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install pinned Rust toolchain",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install native target",
+          "conclusion": "success"
+        },
+        {
+          "name": "Reopen and authenticate the database produced by the opposite OS",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload native cross-OS snapshot evidence",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "full_log_sha256": "2e8b0799179bbbe6a8bce2f25005391519ba0bb254328aa03693aea72a8ae199",
+  "scope": "CNF documentation and regression tests only. Does not qualify uncommitted history code."
+}

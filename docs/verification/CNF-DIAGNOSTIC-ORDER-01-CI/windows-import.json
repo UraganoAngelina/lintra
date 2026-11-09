@@ -1,0 +1,10 @@
+{
+  "consumer_os": "windows",
+  "fixture_kind": "lintra.synthetic-sqlite-transfer.v1",
+  "namespaces_verified": 2,
+  "producer_os": "linux",
+  "protection_verified": true,
+  "retained_occurrence_verified": true,
+  "snapshots_verified": 3,
+  "source_db_sha256": "a133f9e523e240e303be3ad9fa43cce2968d0187cc53f5f944f47e71f5e59a3a"
+}

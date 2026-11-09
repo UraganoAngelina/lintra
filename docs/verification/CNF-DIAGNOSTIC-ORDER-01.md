@@ -1,6 +1,6 @@
 # CNF-DIAGNOSTIC-ORDER-01 — ordine delle diagnostiche
 
-Stato corrente: A RATIFICATA, gate locali positivi, CI propria da qualificare.
+Stato corrente: **RESOLVED**, 9 novembre 2026. A ratificata e gate effettivi positivi.
 Registrato il 5 novembre 2026 durante T-P17-05; storia originale preservata.
 Fonti: DET §79 e §115, contratto a due passate, audit T-P17-05 e ratifica conclusiva DEC-17.
 
@@ -30,3 +30,15 @@ Cinque gate locali exit0,477impronteferme:957core/0fail/6ignored e47regressioni
 allfeatures/0fail; fmt/Clippyworkspaceallfeatures/boundary/pixel positivi.
 Ledger/inventario verificati. La chiusura tecnica RESOLVED attende i gate nativi
 pertinenti sul proprioSHA; nessuna chiusuraP18-04/M9 o DONE12 implicita.
+
+
+## Quality Gate e chiusura tecnica — 9 novembre 2026
+
+CI42530063288 completed/success sullo SHA esatto
+a644145b52200df33c104573559a6c044fd6d5d7, ricontrollata via API in questa sessione.
+Sette job richiesti positivi: Linux/MSVC, tre confronti JSONL/pixel e due riaperture
+SQLite crossOS; packaging UI opzionale skipped. Dossier native-ci.json e directory
+CI omonimi conservano step, hash del log e risultati di import SQLite. Cinque gate locali e quattro nuove prove
+indipendenti già qualificati sul delta documentazione/test. CNF **RESOLVED**:
+nessun cambiamento del runtime o del riordino. La CI non qualifica il codice
+storico non committato; CAD12/P18-04/M9 rimangono aperti secondo i propri gate.

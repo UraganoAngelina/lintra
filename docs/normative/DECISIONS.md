@@ -265,3 +265,21 @@ implementazione/integrità/copertura/versioning/transazioni e qualifica reale de
 T-CAD-12, senza rinvii postM9 o conferme ordinarie. Privacy/crypto/norma/fail-closed
 non implementati preservati. [Ratifica sostitutiva](../verification/ADR-HISTORY-EXISTENCE-001-implementation-ratification.md).
 La voce precedente resta storia e non costituisce più uno stop implementativo.
+
+
+## ADR-HISTORY-EXISTENCE-001 / L1 — invalidazione del witness, 2026-11-09
+
+L’autore precisa che una valutazione iniziale annullata non può sostenere una
+rivalutazione: occorre un’altra iniziale valida. Alternativa B esclusa; snapshot
+conservato per audit non equivale a witness normativamente valido. Correlazione
+namespace/evento, Present/Absent e False/Unknown restano quelli ratificati.
+[Ratifica con testo dell’autore e casistiche](../verification/ADR-HISTORY-EXISTENCE-001-L1-ratification.md).
+Decisione ricevuta; implementazione e gate CAD12 ancora necessari.
+
+
+## CNF-DIAGNOSTIC-ORDER-01 — RESOLVED, 2026-11-09
+
+Audit interno e test richiesti dalla ratifica A qualificati. CI42530063288 success
+sullo SHA a644145b52200df33c104573559a6c044fd6d5d7, sette job richiesti positivi
+ricontrollati via API. [Chiusura ed evidenze](../verification/CNF-DIAGNOSTIC-ORDER-01.md).
+Ordine/runtime invariati; nessuna chiusura implicita CAD12/P18-04/M9.

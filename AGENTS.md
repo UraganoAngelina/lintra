@@ -464,3 +464,14 @@ richiede davvero un nuovo protocolloCrypto, sospendere solo quel punto e chieder
 scelta mirata; stessa regola per casi normativi realmente non coperti. Nessuna
 nuova norma implicita. Fonte operativa completa: docs/verification/
 ADR-HISTORY-EXISTENCE-001-implementation-ratification.md e messaggio autore.
+
+
+### Precisazione normativa L1 — 9 novembre 2026
+
+L’autore esclude il mantenimento come witness dell’iniziale annullata: per una
+rivalutazione serve un’altra iniziale valida. Audit immutabile non mantiene la
+validità del fatto annullato. Nessun OR indiscriminato di tutti i positivi storici;
+namespace/evento, Present/Absent e copertura True/False/Unknown invariati.
+Fonte: docs/verification/ADR-HISTORY-EXISTENCE-001-L1-ratification.md.
+L1 non è più in attesa di decisione. Proseguire implementazione e qualifica CAD12;
+nessun nuovo gate umano ordinario o DONE implicito.
