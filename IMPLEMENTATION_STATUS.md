@@ -7020,3 +7020,15 @@ La nuova fixture nativa deve verificare4snapshot/2namespace, batch e manifest.
 P18-04nonREADY,138/140invariato. Nessun processo locale in corso, release/tag,
 nuova chiave operativa o dato reale. docs/migration preesistente unica esclusione.
 CI: https://github.com/UraganoAngelina/lintra/actions/runs/42592330836
+
+
+## Ripresa completa / storage qualificato — 9 novembre 2026
+
+Direttiva dell'autore: proseguire fino a CAD12 realmente eseguibile/qualificata,
+poi P18-04/M9 quando READY, senza checkpoint ordinari fra componenti. C1/L1 già
+ratificate. CI42592330836 completed/success su c5266d02985f34b93c5a63a2c610a3dfe919b90f,
+sette job richiesti positivi, packaging opzionale skipped. Entrambi gli import
+SQLite nativi scaricati:4snapshot/2namespace, batch e manifest verificati.
+Componente storage qualificato, non CAD12DONE;138/140invariato. Avvio integrazione
+compiler/observer/query/PASS2/servizio nel medesimo workflow, single-agent.
+docs/migration preservata ed esclusa. Nessun nuovo consenso richiesto.

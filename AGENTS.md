@@ -475,3 +475,15 @@ namespace/evento, Present/Absent e copertura True/False/Unknown invariati.
 Fonte: docs/verification/ADR-HISTORY-EXISTENCE-001-L1-ratification.md.
 L1 non è più in attesa di decisione. Proseguire implementazione e qualifica CAD12;
 nessun nuovo gate umano ordinario o DONE implicito.
+
+
+## Mandato attuativo completo — 9 novembre 2026
+
+L'autore conferma prosecuzione immediata fino a CAD12 eseguibile e qualificata,
+poi P18-04/M9 secondo i gate. Nessuno stop ordinario fra componenti; C1 e L1
+già approvate, non ripresentarle. Qualificare storage sullo SHA esatto, completare
+compiler history/Eq/dipendenze, observer con validità degli operandi, query L1/C1,
+PASS2/Partial/ValidationOnly/approval, CAD83 effettivo e golden applicativi/nativi.
+Single-agent; test/refactoring necessari/commit/push/CI autonomi. Stop soltanto
+per conflitti sostanziali normativi/crypto/sicurezza/compatibilità non risolvibili
+con i contratti ratificati. Nessun DONE/FROZEN/release/M9 senza i rispettivi gate.
