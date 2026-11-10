@@ -61,3 +61,19 @@ Non sostituisce la prova nativa Windows né installa MinGW o nuove dipendenze.
 Task in WAITING_GATE; avviare CI del nuovo delta dopo la run U-FIX-03 già in
 corso, senza attribuirne l'esito a questo codice. Proseguire con U-OPS-01
 indipendente, poi U-NORM-01/02/05. Nessun gate tecnico non provato è PASS.
+
+## Gate nativo42834962873 e correzione fixture
+
+CI su dfc3604: Linux PASS; Windows FAIL nel test CLI
+`incomplete_reference_evidence_does_not_become_a_successful_historical_command`,
+prima della summary attesa. Il root reference sintetico ereditava la ACL del
+checkout Windows, che il nuovo controllo rifiuta correttamente. La fixture ora
+colloca i reference nella directory privata creata dal backend qualificato,
+come già fa per la chiave sintetica. Nessuna modifica al controllo runtime,
+nessun bypass ACL. Il primo controllo locale ha rilevato una collisione con
+un altro setup di test: risolta usando una sottocartella dedicata.
+
+Evidenze conservate: U-FIX-04-cli-fixture*.json/log.gz. Recheck:9 test CLI
+storici PASS, fmt verificato separatamente. Fonte CI:
+https://github.com/UraganoAngelina/lintra/actions/runs/42834962873.
+Task e T-MIG-P0-01 rimangono WAITING_GATE fino alla nuova CI pertinente.

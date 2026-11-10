@@ -36,7 +36,10 @@ impl Fixture {
         );
         write_key(&value.path("private bundle/hmac.key"));
         fs::create_dir_all(value.path("data/schemas/SYNTHETIC/v1")).unwrap();
-        fs::create_dir_all(value.path("data/reference-data")).unwrap();
+        // Reference roots must satisfy the same deployment trust boundary as
+        // real dictionaries. Inherit the bootstrap's account-private ACL,
+        // rather than the checkout's potentially shared Windows permissions.
+        fs::create_dir_all(value.path("private bundle/trusted-test-references")).unwrap();
         let mut schema: serde_json::Value = serde_json::from_slice(include_bytes!(
             "../../../tests/golden/synthetic/v1/schema.json"
         ))
@@ -89,7 +92,7 @@ impl Fixture {
             ("--schema-dir", self.path("data/schemas").into_os_string()),
             (
                 "--reference-data-dir",
-                self.path("data/reference-data").into_os_string(),
+                self.path("private bundle/trusted-test-references").into_os_string(),
             ),
             ("--key-id", "synthetic-distribution".into()),
             (
