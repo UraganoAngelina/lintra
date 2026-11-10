@@ -1,0 +1,21 @@
+{
+  "task": "U-FIX-01",
+  "head": "4c169cdde7ef126475327ed0ea5bcadf0693395a",
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "lintra",
+    "--lib",
+    "--locked",
+    "--offline",
+    "persistence::sqlite::tests::",
+    "--",
+    "--test-threads=1"
+  ],
+  "exit": 0,
+  "seconds": 45.731,
+  "completed_utc": "2026-11-10T13:22:09.525430+00:00",
+  "changed_audit_inputs": [],
+  "log_sha256": "bd622d8c49a1418372564671d351a7a815c2b64d187329fa48f1ef9525430758"
+}
