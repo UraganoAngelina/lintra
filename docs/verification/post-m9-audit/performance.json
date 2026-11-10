@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-10",
+  "host": "Linux-7.3.1-1-cachyos-x86_64-with-glibc2.44",
+  "head": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "executable_sha256": "57b4d08a2840b56682047592c8c2d10cfdc1b9d06b4821439548189756a36c54",
+  "build_profile": "release",
+  "units": "RSS KiB; Linux IO blocks of 512 bytes",
+  "thresholds": null,
+  "measurements": [
+    {
+      "approved_snapshots": 6,
+      "database_bytes": 40878080,
+      "empirical_p95_ms": 722.688717,
+      "events_per_namespace": 100,
+      "namespaces": 2,
+      "profile": "CAD/2024-06.runtime-candidate.1",
+      "samples_ms": [
+        355.315212,
+        608.232028,
+        607.740677,
+        410.192568,
+        629.176848,
+        722.688717
+      ],
+      "command": [
+        "/home/alberto/Desktop/LINTRA/lintra/target/release/deps/cad_history_runtime-a0346d44c191c67f",
+        "measure_full_cad83_history_application",
+        "--exact",
+        "--ignored",
+        "--nocapture"
+      ],
+      "exit": 0,
+      "wall_seconds": 3.431622411999342,
+      "peak_rss_kib": 25936,
+      "user_cpu_seconds": 2.705935,
+      "system_cpu_seconds": 0.570264,
+      "input_blocks": 32,
+      "output_blocks": 100296,
+      "log": "perf-cad83-100.log",
+      "log_sha256": "6a054fbddcd58f4772fe7b41a424c3c6b1c552df9cce4916dc46a2e2d7e3f2e0",
+      "archived_log": "perf-cad83-100.log.gz",
+      "archived_log_sha256": "50558e2f63121fbbc1f6d234bbcc30ad3b8f22e4627dcbc98d43bfeeedaf59cb"
+    },
+    {
+      "approved_snapshots": 6,
+      "database_bytes": 122519552,
+      "empirical_p95_ms": 2135.035089,
+      "events_per_namespace": 300,
+      "namespaces": 2,
+      "profile": "CAD/2024-06.runtime-candidate.1",
+      "samples_ms": [
+        1062.545225,
+        1771.892172,
+        1897.143145,
+        1112.758852,
+        2135.035089,
+        2115.0277260000003
+      ],
+      "command": [
+        "/home/alberto/Desktop/LINTRA/lintra/target/release/deps/cad_history_runtime-a0346d44c191c67f",
+        "measure_full_cad83_history_application",
+        "--exact",
+        "--ignored",
+        "--nocapture"
+      ],
+      "exit": 0,
+      "wall_seconds": 10.231134540000312,
+      "peak_rss_kib": 28276,
+      "user_cpu_seconds": 8.045148,
+      "system_cpu_seconds": 1.8663599999999998,
+      "input_blocks": 0,
+      "output_blocks": 288752,
+      "log": "perf-cad83-300.log",
+      "log_sha256": "2a888d9afe326dd88179845d85eb15cdbd163445e5b8f76ff1313b6dd4e24e4e",
+      "archived_log": "perf-cad83-300.log.gz",
+      "archived_log_sha256": "691d1c033f1a4c70ccf9340a3b77a3964aac21ef693af5d511b353c5fe6deaf9"
+    }
+  ],
+  "completed_utc": "2026-11-10T09:34:44.948527+00:00",
+  "sources_unchanged": true
+}

@@ -1,0 +1,20 @@
+{
+  "label": "python-tooling",
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "scripts/tests",
+    "-v"
+  ],
+  "exit": 0,
+  "seconds": 0.62,
+  "completed_utc": "2026-11-10T09:28:27.965828+00:00",
+  "head_before": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "head": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "changed_qualified_inputs_before": [],
+  "changed_qualified_inputs_after": [],
+  "log_sha256": "d29c150a723b2bf5a929f2da26bce4014b403306ec69d8069bd3bf2e5daf26fb"
+}

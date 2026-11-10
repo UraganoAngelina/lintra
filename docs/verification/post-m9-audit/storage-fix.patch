@@ -1,0 +1,133 @@
+diff --git a/src/persistence/sqlite/mod.rs b/src/persistence/sqlite/mod.rs
+index b16ceb6..f7d0c37 100644
+--- a/src/persistence/sqlite/mod.rs
++++ b/src/persistence/sqlite/mod.rs
+@@ -451,16 +451,22 @@ impl PersistentContextRepository for SQLitePersistenceAdapter {
+         let ns = codec::encode(ns)?;
+         let key = codec::encode(id)?;
+         let c = self.lock()?;
+-        let result:Option<(Vec<u8>,Vec<u8>,Vec<u8>)>=c.prepare_cached("SELECT r.payload,r.key_proof,r.record_proof FROM latest l JOIN records r ON r.ns=l.ns AND r.revision=l.revision AND r.ordinal=l.ordinal WHERE l.ns=?1 AND l.identity=?2").map_err(sql)?.query_row(params![ns,key],|r|Ok((r.get(0)?,r.get(1)?,r.get(2)?))).optional().map_err(sql)?;
+-        result
+-            .map(|(body, kp, rp)| {
+-                let record = codec::read_record(&body, &kp, &rp, &self.inner.protector)?;
+-                if record.identity() != id {
+-                    return Err(PersistenceError::CorruptStorage);
+-                }
+-                Ok(record)
+-            })
+-            .transpose()
++        // Preserve a dangling latest pointer so corruption cannot masquerade as
++        // absence. Only a missing latest entry is an ordinary unknown identity.
++        let mut statement = c.prepare_cached("SELECT r.payload,r.key_proof,r.record_proof FROM latest l LEFT JOIN records r ON r.ns=l.ns AND r.revision=l.revision AND r.ordinal=l.ordinal WHERE l.ns=?1 AND l.identity=?2").map_err(sql)?;
++        let mut rows = statement.query(params![ns, key]).map_err(sql)?;
++        let Some(row) = rows.next().map_err(sql)? else {
++            return Ok(None);
++        };
++        let blob = |index| {
++            row.get::<_, Vec<u8>>(index)
++                .map_err(|_| PersistenceError::CorruptStorage)
++        };
++        let record = codec::read_record(&blob(0)?, &blob(1)?, &blob(2)?, &self.inner.protector)?;
++        if record.identity() != id {
++            return Err(PersistenceError::CorruptStorage);
++        }
++        Ok(Some(record))
+     }
+     fn load_history_facts(
+         &self,
+@@ -556,20 +562,21 @@ impl PersistentContextRepository for SQLitePersistenceAdapter {
+     ) -> Result<Option<SnapshotRevision>, PersistenceError> {
+         let encoded = codec::encode(ns)?;
+         let c = self.lock()?;
+-        let current = generation(&c, &encoded)?;
+         // A missing/stale head cannot make existing history look empty. MAX
+         // seeks the same (ns,revision) primary key and does not load records.
+-        let latest: Option<i64> = c
++        // Both values must belong to ONE SQLite statement/read view: the local
++        // mutex cannot prevent another process committing between two SELECTs.
++        let (head, latest): (Option<i64>, Option<i64>) = c
+             .query_row(
+-                "SELECT MAX(revision) FROM snapshots WHERE ns=?1",
++                "SELECT (SELECT generation FROM namespaces WHERE ns=?1), (SELECT MAX(revision) FROM snapshots WHERE ns=?1)",
+                 [&encoded],
+-                |r| r.get(0),
++                |r| Ok((r.get(0)?, r.get(1)?)),
+             )
+             .map_err(sql)?;
+-        if latest != current.map(|r| number(r.value())).transpose()? {
++        if head != latest || head.is_some_and(|value| value <= 0) {
+             return Err(PersistenceError::CorruptStorage);
+         }
+-        Ok(current)
++        Ok(head.map(|value| SnapshotRevision::new(value as u64)))
+     }
+     fn load_submission_page(
+         &self,
+diff --git a/src/persistence/sqlite/tests.rs b/src/persistence/sqlite/tests.rs
+index a5d4ea9..9ceb41d 100644
+--- a/src/persistence/sqlite/tests.rs
++++ b/src/persistence/sqlite/tests.rs
+@@ -792,6 +792,63 @@ fn exercise_contenders(hold_reader: bool) {
+         .count();
+     assert_eq!(winners, 1);
+ }
++
++/// A writer commits when SQLite prepares the snapshot inventory read. This
++/// places publication between the old implementation's two SELECTs without
++/// sleeps or scheduling assumptions. One statement must observe one read view.
++#[test]
++fn audit_generation_read_is_coherent_across_concurrent_publication() {
++    use rusqlite::hooks::{AuthAction, AuthContext, Authorization};
++    use std::sync::atomic::{AtomicBool, Ordering};
++
++    let dir = parent();
++    let root = dir.path().join("archive");
++    let repo = create(&root);
++    publish(&repo, &snapshot(&repo, "A", 1, "one", vec![])).unwrap();
++    let writer = open(&root);
++    let candidate = snapshot(&writer, "A", 2, "two", vec![]);
++    let published = Arc::new(AtomicBool::new(false));
++    let observed = Arc::clone(&published);
++    repo.lock()
++        .unwrap()
++        .authorizer(Some(move |ctx: AuthContext<'_>| {
++            if matches!(
++                ctx.action,
++                AuthAction::Read {
++                    table_name: "snapshots",
++                    ..
++                }
++            ) && !observed.swap(true, Ordering::SeqCst)
++            {
++                publish(&writer, &candidate).unwrap();
++            }
++            Authorization::Allow
++        }))
++        .unwrap();
++    assert_eq!(
++        repo.current_generation(&namespace("A")),
++        Ok(Some(SnapshotRevision::new(2)))
++    );
++    assert!(published.load(Ordering::SeqCst));
++}
++
++/// Corruption after opening must not turn a known identity into absence.
++/// Both repository lookup APIs owe the same fail-closed storage contract.
++#[test]
++fn audit_identity_lookup_rejects_dangling_latest() {
++    let dir = parent();
++    let repo = create(&dir.path().join("archive"));
++    let record = row(repo.protector(), "A", 1, "A");
++    publish(&repo, &snapshot(&repo, "A", 1, "one", vec![record.clone()])).unwrap();
++    repo.lock()
++        .unwrap()
++        .execute_batch("PRAGMA foreign_keys=OFF; DELETE FROM records;")
++        .unwrap();
++    assert_eq!(
++        repo.lookup_identity(&namespace("A"), record.identity()),
++        Err(PersistenceError::CorruptStorage)
++    );
++}
+ #[test]
+ fn query_plans_are_indexed_and_external_writer_contention_is_explicit() {
+     let dir = parent();

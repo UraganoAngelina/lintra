@@ -1,0 +1,20 @@
+{
+  "label": "storage-red",
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "lintra",
+    "--lib",
+    "--locked",
+    "--offline",
+    "persistence::sqlite::tests::audit_",
+    "--",
+    "--test-threads=1"
+  ],
+  "exit": 101,
+  "seconds": 23.797,
+  "completed_utc": "2026-11-10T09:06:56.478428+00:00",
+  "head": "bfe51ac08c23b81244f736488c3996087fa8b2de",
+  "log_sha256": "b78231f26e16a5d48bf252eeaaa581aab41fada8b224c5f12bbabf9e4cbc1209"
+}

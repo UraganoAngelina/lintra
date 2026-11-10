@@ -1,0 +1,2057 @@
+{
+  "schemas/operational/CAD/2024-06.runtime-candidate.1/flow.json": {
+    "flow_id": "CAD",
+    "schema_version": "2024-06.runtime-candidate.1",
+    "schema_format_version": 3,
+    "required_capabilities": [
+      "local.v1",
+      "persistence.namespace_binding.v1",
+      "persistence.snapshot.v1",
+      "persistence.audit.v1",
+      "expressions.v1",
+      "joins.v1",
+      "joins.sets.v1",
+      "joins.consensus.v1",
+      "derived.calendar_year_delta.v1",
+      "temporal.intervals.v1",
+      "temporal.after_date.v1",
+      "temporal.inactivity.v1",
+      "history.existence.v1"
+    ],
+    "reference_data": [
+      {
+        "id": "ICD9",
+        "dataset_id": "cad-icd9-cm-clinical-signs",
+        "version": "2024-06.pdf7.1",
+        "path": "data/icd9-membership.json",
+        "sha256": "645ebe2d375842055ff579fcddac44343ca3843cf474697cb23448d87d14bff6",
+        "metadata_attributes": []
+      },
+      {
+        "id": "PRESTATIONS",
+        "dataset_id": "cad-prestation-types",
+        "version": "2024-06.pdf5.1",
+        "path": "data/prestations-membership.json",
+        "sha256": "2c7b12dac959b89f5f0e93c1324b2b38ffffee5d62a45a2ada0b699c430512a6",
+        "metadata_attributes": []
+      }
+    ],
+    "traces": [
+      {
+        "id": "A",
+        "width": 218,
+        "fields": 24,
+        "key": [
+          "1.1",
+          "1.23"
+        ],
+        "rules": [
+          "CAD-AGE-GUARDIAN"
+        ],
+        "not_enforced": [
+          {
+            "id": "CAD-IDENTIFIER-CROSSCHECK",
+            "fields": [
+              "1.2",
+              "1.3"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Deliberately no semantic cross-field identifier check per user decision.",
+            "decision_reference": "CAD-03 / docs/normative/cad/rules-and-joins.md: no semantic 1.2/1.3 or fiscal checksum check by author decision"
+          }
+        ]
+      },
+      {
+        "id": "B1",
+        "width": 198,
+        "fields": 36,
+        "key": [
+          "2.1",
+          "2.36"
+        ],
+        "rules": [
+          "CAD-AGE-MOBILITY",
+          "CAD-AGE-FUNCTION",
+          "CAD-R-2.7-UC-10",
+          "CAD-R-2.7-CD-13",
+          "CAD-B1-PARENT-EVENT",
+          "CAD-INITIAL-HISTORY"
+        ],
+        "not_enforced": [
+          {
+            "id": "CAD-2.11-12-ICPC",
+            "fields": [
+              "2.11",
+              "2.12"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "No ICPC lookup per user decision; 2.12=000 reserved for absent concomitant diagnosis.",
+            "decision_reference": "DEC-05-CAD-ICPC-000 / TASK_PROMPTS/T-CAD-11.md: no additional ICPC lookup, mandatory values and 000 handling preserved"
+          }
+        ]
+      },
+      {
+        "id": "B2",
+        "width": 41,
+        "fields": 5,
+        "key": [
+          "3.1",
+          "3.5"
+        ],
+        "rules": [
+          "CAD-B2-PARENT-EVENT"
+        ],
+        "not_enforced": []
+      },
+      {
+        "id": "C",
+        "width": 45,
+        "fields": 11,
+        "key": [
+          "4.1",
+          "4.2",
+          "4.4",
+          "4.5",
+          "4.11"
+        ],
+        "rules": [
+          "CAD-C-PARENT-EVENT",
+          "CAD-4.5-15"
+        ],
+        "not_enforced": []
+      },
+      {
+        "id": "D",
+        "width": 39,
+        "fields": 7,
+        "key": [
+          "5.1",
+          "5.2",
+          "5.3",
+          "5.4",
+          "5.7"
+        ],
+        "rules": [
+          "CAD-D-PARENT-EVENT",
+          "CAD-PROVISION-ACCESS",
+          "CAD-5.4-15"
+        ],
+        "not_enforced": []
+      }
+    ]
+  },
+  "schemas/sioc/2026-04-20.structural-minimal.2/flow_schema.json": {
+    "flow_id": "SIOC",
+    "schema_version": "2026-04-20.structural-minimal.2",
+    "schema_format_version": 1,
+    "required_capabilities": [
+      "local.v1",
+      "expressions.v1",
+      "joins.v1",
+      "joins.sets.v1",
+      "derived.substring.v1",
+      "persistence.audit.v1"
+    ],
+    "reference_data": [],
+    "traces": [
+      {
+        "id": "1",
+        "width": 206,
+        "fields": 18,
+        "key": [
+          "1.1",
+          "1.17",
+          "1.18"
+        ],
+        "rules": [],
+        "not_enforced": [
+          {
+            "id": "DEFER-1.1-CONSTRAINT-0",
+            "fields": [
+              "1.1"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-1.1-CONSTRAINT-1",
+            "fields": [
+              "1.1"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-1.1-CONSTRAINT-2",
+            "fields": [
+              "1.1"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-1.3-CONSTRAINT-0",
+            "fields": [
+              "1.3"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-1.7-CONSTRAINT-0",
+            "fields": [
+              "1.7"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-1.8-CONSTRAINT-0",
+            "fields": [
+              "1.8"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-1.10-CONSTRAINT-0",
+            "fields": [
+              "1.10"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-1.11-CONSTRAINT-0",
+            "fields": [
+              "1.11"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-1.12-CONSTRAINT-0",
+            "fields": [
+              "1.12"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-1.13-CONSTRAINT-0",
+            "fields": [
+              "1.13"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-1.16-CONSTRAINT-0",
+            "fields": [
+              "1.16"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-1.17-CONSTRAINT-2",
+            "fields": [
+              "1.17"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-1.18-CONSTRAINT-0",
+            "fields": [
+              "1.18"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-1.1-ADMISSION-YEAR",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-1.2-ANONYMOUS-SENTINEL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-1.7-ANONYMOUS-NAME",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-1.8-ANONYMOUS-NAME",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-1.14-FOREIGN",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-1.14-ITALIAN",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-1.15-FOREIGN",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-1.15-ITALIAN",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "POLICY-1.2-CF-SEMANTICS",
+            "fields": [
+              "1.2"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "The regional trace defines when CF/ENI/STP/TEAM/other identifiers are used but does not define a confirmed checksum/semantic-validation depth. Canonical v1 validates physical representation and identifier-type-dependent presence only.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "POLICY-1.6-VENETO-RESIDENCY",
+            "fields": [
+              "1.6"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Operational interpretation of 'in combinazione con il codice fiscale, per i soli residenti in Veneto' was not functionally confirmed; v1 preserves the note but does not infer a resident/identifier-type presence rule.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "width": 271,
+        "fields": 50,
+        "key": [
+          "2.1",
+          "2.49",
+          "2.50"
+        ],
+        "rules": [
+          "REL-trace2_to_trace1"
+        ],
+        "not_enforced": [
+          {
+            "id": "DEFER-2.1-CONSTRAINT-0",
+            "fields": [
+              "2.1"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.1-CONSTRAINT-1",
+            "fields": [
+              "2.1"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.1-CONSTRAINT-2",
+            "fields": [
+              "2.1"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.2-CONSTRAINT-0",
+            "fields": [
+              "2.2"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.3-CONSTRAINT-0",
+            "fields": [
+              "2.3"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.7-CONSTRAINT-0",
+            "fields": [
+              "2.7"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.8-CONSTRAINT-0",
+            "fields": [
+              "2.8"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.11-CONSTRAINT-0",
+            "fields": [
+              "2.11"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.12-CONSTRAINT-0",
+            "fields": [
+              "2.12"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.13-CONSTRAINT-0",
+            "fields": [
+              "2.13"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.14-CONSTRAINT-0",
+            "fields": [
+              "2.14"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.15-CONSTRAINT-0",
+            "fields": [
+              "2.15"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.16-CONSTRAINT-0",
+            "fields": [
+              "2.16"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.17-CONSTRAINT-0",
+            "fields": [
+              "2.17"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.18-CONSTRAINT-0",
+            "fields": [
+              "2.18"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.19-CONSTRAINT-0",
+            "fields": [
+              "2.19"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.20-CONSTRAINT-0",
+            "fields": [
+              "2.20"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.21-CONSTRAINT-0",
+            "fields": [
+              "2.21"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.22-CONSTRAINT-0",
+            "fields": [
+              "2.22"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.23-CONSTRAINT-0",
+            "fields": [
+              "2.23"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.24-CONSTRAINT-0",
+            "fields": [
+              "2.24"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.25-CONSTRAINT-0",
+            "fields": [
+              "2.25"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.26-CONSTRAINT-0",
+            "fields": [
+              "2.26"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.27-CONSTRAINT-1",
+            "fields": [
+              "2.27"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.28-CONSTRAINT-0",
+            "fields": [
+              "2.28"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.29-CONSTRAINT-0",
+            "fields": [
+              "2.29"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.30-CONSTRAINT-0",
+            "fields": [
+              "2.30"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.31-CONSTRAINT-0",
+            "fields": [
+              "2.31"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.32-CONSTRAINT-0",
+            "fields": [
+              "2.32"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.33-CONSTRAINT-0",
+            "fields": [
+              "2.33"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.34-CONSTRAINT-0",
+            "fields": [
+              "2.34"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.35-CONSTRAINT-0",
+            "fields": [
+              "2.35"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.36-CONSTRAINT-0",
+            "fields": [
+              "2.36"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.37-CONSTRAINT-0",
+            "fields": [
+              "2.37"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.38-CONSTRAINT-0",
+            "fields": [
+              "2.38"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.39-CONSTRAINT-0",
+            "fields": [
+              "2.39"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.40-CONSTRAINT-0",
+            "fields": [
+              "2.40"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.41-CONSTRAINT-0",
+            "fields": [
+              "2.41"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.42-CONSTRAINT-0",
+            "fields": [
+              "2.42"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.43-CONSTRAINT-0",
+            "fields": [
+              "2.43"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.44-CONSTRAINT-0",
+            "fields": [
+              "2.44"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.45-CONSTRAINT-0",
+            "fields": [
+              "2.45"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.46-CONSTRAINT-0",
+            "fields": [
+              "2.46"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.47-CONSTRAINT-0",
+            "fields": [
+              "2.47"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.48-CONSTRAINT-0",
+            "fields": [
+              "2.48"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.49-CONSTRAINT-2",
+            "fields": [
+              "2.49"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-2.50-CONSTRAINT-0",
+            "fields": [
+              "2.50"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-GROUP-socio_family_problems",
+            "fields": [
+              "2.13",
+              "2.14",
+              "2.15",
+              "2.16",
+              "2.17",
+              "2.18",
+              "2.19",
+              "2.20",
+              "2.21",
+              "2.22"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-GROUP-diagnoses",
+            "fields": [
+              "2.32",
+              "2.33",
+              "2.34",
+              "2.35",
+              "2.36",
+              "2.37"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-GROUP-procedures",
+            "fields": [
+              "2.38",
+              "2.39",
+              "2.40",
+              "2.41",
+              "2.42",
+              "2.43",
+              "2.44",
+              "2.45",
+              "2.46",
+              "2.47",
+              "2.48"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-2.1-ADMISSION-YEAR",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-2.10-SSR-PAYER",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-2.4-LE-2.5",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-2.5-LE-2.6",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "width": 135,
+        "fields": 36,
+        "key": [
+          "3.1",
+          "3.2",
+          "3.35",
+          "3.36"
+        ],
+        "rules": [
+          "REL-trace3_to_trace2",
+          "REL-trace3_to_trace1"
+        ],
+        "not_enforced": [
+          {
+            "id": "DEFER-3.1-CONSTRAINT-0",
+            "fields": [
+              "3.1"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-3.1-CONSTRAINT-1",
+            "fields": [
+              "3.1"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-3.1-CONSTRAINT-2",
+            "fields": [
+              "3.1"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-3.3-CONSTRAINT-0",
+            "fields": [
+              "3.3"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-3.5-CONSTRAINT-0",
+            "fields": [
+              "3.5"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-3.6-CONSTRAINT-0",
+            "fields": [
+              "3.6"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-3.7-CONSTRAINT-0",
+            "fields": [
+              "3.7"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-3.17-CONSTRAINT-0",
+            "fields": [
+              "3.17"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-3.35-CONSTRAINT-2",
+            "fields": [
+              "3.35"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-3.36-CONSTRAINT-0",
+            "fields": [
+              "3.36"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-DERIVED-age_at_admission_years",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.1-ADMISSION-YEAR",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.8-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.8-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.9-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.9-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.10-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.10-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.11-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.11-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.12-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.12-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.13-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.13-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.14-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.14-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.15-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.15-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.16-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.16-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.18-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.18-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.20-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.20-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.21-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.21-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.23-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.23-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.19-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.22-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.22-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.24-DEATH-TO-00",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.24-00-TO-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.24-NORMAL-RANGE",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.25-ADMISSION",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.25-DISCHARGE",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.26-ADMISSION",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.26-DISCHARGE",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.26-DEATH-TO-4",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.26-4-TO-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.27-ADMISSION",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.27-DISCHARGE",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.28-ADMISSION",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.28-DISCHARGE",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.29-ADMISSION",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.29-DISCHARGE",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.30-ADMISSION",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.30-DISCHARGE",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.31-ADMISSION",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.31-DISCHARGE",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.32-ADMISSION",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.32-DISCHARGE",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.33-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.33-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.34-AGE",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.34-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.34-NORMAL",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-3.34-999-TO-DEATH",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "POLICY-3.5-COVID-R83",
+            "fields": [
+              "3.5"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "COVID status is an internal clinical semantic convention and is not reliably derivable from the fixed-width SIOC flow.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          }
+        ]
+      },
+      {
+        "id": "4.1",
+        "width": 394,
+        "fields": 20,
+        "key": [
+          "4.1",
+          "4.7",
+          "4.8",
+          "4.19.1"
+        ],
+        "rules": [],
+        "not_enforced": [
+          {
+            "id": "DEFER-4.1-CONSTRAINT-0",
+            "fields": [
+              "4.1"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.3-CONSTRAINT-0",
+            "fields": [
+              "4.3"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.4-CONSTRAINT-0",
+            "fields": [
+              "4.4"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.5-CONSTRAINT-0",
+            "fields": [
+              "4.5"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.7-CONSTRAINT-0",
+            "fields": [
+              "4.7"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.8-CONSTRAINT-0",
+            "fields": [
+              "4.8"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.9-CONSTRAINT-0",
+            "fields": [
+              "4.9"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.11-CONSTRAINT-0",
+            "fields": [
+              "4.11"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.13-CONSTRAINT-0",
+            "fields": [
+              "4.13"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.14-CONSTRAINT-0",
+            "fields": [
+              "4.14"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.19.1-CONSTRAINT-0",
+            "fields": [
+              "4.19.1"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "R-4.18-LE-4.19",
+            "fields": [],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          }
+        ]
+      },
+      {
+        "id": "4.2",
+        "width": 67,
+        "fields": 11,
+        "key": [
+          "4.20",
+          "4.22"
+        ],
+        "rules": [
+          "R-4.30-REQUIRES-4.29",
+          "R-4.30-REFERENCES-4.22",
+          "REL-trace42_to_trace41"
+        ],
+        "not_enforced": [
+          {
+            "id": "DEFER-4.20-CONSTRAINT-0",
+            "fields": [
+              "4.20"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.23-CONSTRAINT-0",
+            "fields": [
+              "4.23"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.24-CONSTRAINT-0",
+            "fields": [
+              "4.24"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.27-CONSTRAINT-1",
+            "fields": [
+              "4.27"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "DEFER-4.28-CONSTRAINT-0",
+            "fields": [
+              "4.28"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          },
+          {
+            "id": "POLICY-4.28-PREVIOUS-ACT",
+            "fields": [
+              "4.28"
+            ],
+            "policy": "not_enforced_in_this_version",
+            "reason": "Values 2-5 refer to a previous act, but the trace does not expose a predecessor-act identifier. No cross-record relation is invented.",
+            "decision_reference": "DEC-SIOC-MINIMAL-01"
+          }
+        ]
+      }
+    ]
+  },
+  "tests/golden/cross-trace/sioc-referential/v1/schema.json": {
+    "flow_id": "SIOC",
+    "schema_version": "2026-04-20.references-golden.1",
+    "schema_format_version": 1,
+    "required_capabilities": [
+      "local.v1",
+      "expressions.v1",
+      "joins.v1",
+      "joins.sets.v1"
+    ],
+    "reference_data": [],
+    "traces": [
+      {
+        "id": "1",
+        "width": 206,
+        "fields": 4,
+        "key": [
+          "1.1",
+          "1.17",
+          "1.18"
+        ],
+        "rules": [],
+        "not_enforced": []
+      },
+      {
+        "id": "2",
+        "width": 271,
+        "fields": 4,
+        "key": [
+          "2.1",
+          "2.49",
+          "2.50"
+        ],
+        "rules": [
+          "REL-trace2_to_trace1"
+        ],
+        "not_enforced": []
+      },
+      {
+        "id": "3",
+        "width": 135,
+        "fields": 5,
+        "key": [
+          "3.1",
+          "3.2",
+          "3.35",
+          "3.36"
+        ],
+        "rules": [
+          "REL-trace3_to_trace2",
+          "REL-trace3_to_trace1"
+        ],
+        "not_enforced": []
+      },
+      {
+        "id": "4.1",
+        "width": 394,
+        "fields": 7,
+        "key": [
+          "4.1",
+          "4.7",
+          "4.8",
+          "4.19.1"
+        ],
+        "rules": [],
+        "not_enforced": []
+      },
+      {
+        "id": "4.2",
+        "width": 67,
+        "fields": 6,
+        "key": [
+          "4.20",
+          "4.22"
+        ],
+        "rules": [
+          "R-4.30-REQUIRES-4.29",
+          "R-4.30-REFERENCES-4.22",
+          "REL-trace42_to_trace41"
+        ],
+        "not_enforced": []
+      }
+    ]
+  },
+  "sioc_exclusions": {
+    "constraints": {
+      "deferred": 83,
+      "physical_only": 8,
+      "active": 29,
+      "partial_050_only": 3
+    },
+    "rules": {
+      "deferred": 70,
+      "active": 2
+    },
+    "groups": {
+      "deferred": 3
+    }
+  },
+  "sioc_deferred_constraint_kinds": {
+    "logical_length": 3,
+    "digits_only": 3,
+    "substring_not_equals": 3,
+    "allowed_values": 32,
+    "no_lowercase_if_present": 2,
+    "reference_data_or_values": 4,
+    "reference_data": 15,
+    "composite_segments_if_present": 1,
+    "numeric_range": 2,
+    "reference_data_if_present": 18
+  },
+  "sioc_deferred_reference_requirements": [
+    {
+      "trace": "1",
+      "field": "1.11",
+      "declaration": {
+        "kind": "reference_data_or_values",
+        "dataset": "foreign-country-codes",
+        "values": [
+          "100",
+          "999",
+          "998"
+        ]
+      }
+    },
+    {
+      "trace": "1",
+      "field": "1.13",
+      "declaration": {
+        "kind": "reference_data_or_values",
+        "dataset": "italian-region-codes",
+        "values": [
+          "999"
+        ]
+      }
+    },
+    {
+      "trace": "1",
+      "field": "1.18",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "sts11-structure-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.8",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "regional-udo-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.29",
+      "declaration": {
+        "kind": "reference_data_or_values",
+        "dataset": "italian-region-codes",
+        "values": [
+          "999"
+        ]
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.30",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "health-authority-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.31",
+      "declaration": {
+        "kind": "reference_data_or_values",
+        "datasets": [
+          "hsp11-structure-codes",
+          "ria11-structure-codes",
+          "sts11-structure-codes"
+        ],
+        "values": [
+          "999999"
+        ]
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.32",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "icd9-cm-diagnosis-codes",
+        "metadata_checks": {
+          "sex": true,
+          "age": true
+        }
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.33",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-diagnosis-codes",
+        "metadata_checks": {
+          "sex": true,
+          "age": true
+        }
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.34",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-diagnosis-codes",
+        "metadata_checks": {
+          "sex": true,
+          "age": true
+        }
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.35",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-diagnosis-codes",
+        "metadata_checks": {
+          "sex": true,
+          "age": true
+        }
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.36",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-diagnosis-codes",
+        "metadata_checks": {
+          "sex": true,
+          "age": true
+        }
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.37",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-diagnosis-codes",
+        "metadata_checks": {
+          "sex": true,
+          "age": true
+        }
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.38",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.39",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.40",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.41",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.42",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.43",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.44",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.45",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.46",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.47",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.48",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icd9-cm-procedure-codes"
+      }
+    },
+    {
+      "trace": "2",
+      "field": "2.50",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "sts11-structure-codes"
+      }
+    },
+    {
+      "trace": "3",
+      "field": "3.5",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "icpc-codes"
+      }
+    },
+    {
+      "trace": "3",
+      "field": "3.6",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icpc-codes"
+      }
+    },
+    {
+      "trace": "3",
+      "field": "3.7",
+      "declaration": {
+        "kind": "reference_data_if_present",
+        "dataset": "icpc-codes"
+      }
+    },
+    {
+      "trace": "3",
+      "field": "3.36",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "sts11-structure-codes"
+      }
+    },
+    {
+      "trace": "4.1",
+      "field": "4.1",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "regional-udo-codes"
+      }
+    },
+    {
+      "trace": "4.1",
+      "field": "4.7",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "italian-region-codes"
+      }
+    },
+    {
+      "trace": "4.1",
+      "field": "4.8",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "health-authority-codes"
+      }
+    },
+    {
+      "trace": "4.1",
+      "field": "4.9",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "istat-municipality-codes"
+      }
+    },
+    {
+      "trace": "4.1",
+      "field": "4.11",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "regional-entity-manager-codes-dgr-2961-2012"
+      }
+    },
+    {
+      "trace": "4.1",
+      "field": "4.14",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "istat-municipality-codes"
+      }
+    },
+    {
+      "trace": "4.1",
+      "field": "4.19.1",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "sts11-structure-codes"
+      }
+    },
+    {
+      "trace": "4.2",
+      "field": "4.20",
+      "declaration": {
+        "kind": "reference_data",
+        "dataset": "regional-udo-codes"
+      }
+    }
+  ],
+  "sioc_deferred_dataset_names": [
+    "foreign-country-codes",
+    "health-authority-codes",
+    "hsp11-structure-codes",
+    "icd9-cm-diagnosis-codes",
+    "icd9-cm-procedure-codes",
+    "icpc-codes",
+    "istat-municipality-codes",
+    "italian-region-codes",
+    "regional-entity-manager-codes-dgr-2961-2012",
+    "regional-udo-codes",
+    "ria11-structure-codes",
+    "sts11-structure-codes"
+  ]
+}

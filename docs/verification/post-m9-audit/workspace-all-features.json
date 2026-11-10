@@ -1,0 +1,16 @@
+{
+  "label": "workspace-all-features",
+  "command": [
+    "cargo",
+    "test",
+    "--workspace",
+    "--all-features",
+    "--locked",
+    "--offline"
+  ],
+  "exit": 0,
+  "seconds": 864.537,
+  "completed_utc": "2026-11-10T09:23:26.947424+00:00",
+  "head": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "log_sha256": "af7014eb1863b49fb5349b4a27378f020178e8c6f07ea66957cfa7586a87bc7e"
+}

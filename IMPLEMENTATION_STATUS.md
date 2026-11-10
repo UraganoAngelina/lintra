@@ -25,13 +25,34 @@ Dossier T-P18-04-document-sync.md e T-P18-04-doc-gates.json. Nessuna nuovaCI
 nativa duplicata per questa sincronizzazione puramente documentale.
 
 Il percorso snapshot library esegue CAD83 con C1/L1, PASS1/2 e approval/replay
-atomici. CAD resta runtime-candidate; CLI/UI storiche rimangono audit-only.
+atomici. CAD resta runtime-candidate; CLI storica audit-only e UI corrente
+Trace/LocalOnly, senza workflow storico concreto.
 Soglie prestazionali non definite con motivo, controlli/domini G0 esclusi per
 ratifica e decisioni prima dei dati reali conservati nei rispettivi documenti.
 DEC-SIOC-HIST-01 non autorizza nuovi errori cross-run. M9 non pubblica una
 release1.0 o rc.3, non congela CAD e non riscrive le release immutabili.
 Single-agent, nessun background/delega; docs/migration preesistente preservata.
 I registri sottostanti conservano il contesto storico dei rispettivi eventi.
+
+### Revisione straordinaria post-M9 — 10 novembre 2026
+
+Mandato separato dal piano completato, single-agent. Baseline verificata
+`bfe51ac`; CI CAD12 `42641969728` riletta sullo SHA esatto. Due bug SQLite
+riprodotti (vista incoerente di current_generation e falsa assenza da latest
+dangling), corretti con regressioni in `af3bccc`, pubblicato sul branch concordato.
+Nessun formato, norma, golden, chiave operativa o artefatto di migrazione modificato.
+
+Gate locali: workspace all-features 1061 esiti/124 riepiloghi, core senza default
+1018 esiti, zero fail e sette ignored in ciascun assetto; adapter 38 pass/4 ignored,
+fmt/Clippy e Python/boundary positivi. Workbook SIOC e sonda XLSX ignored eseguiti
+esplicitamente. Nuova CI nativa `42789338814` completed/success su af3bccc:
+sette job richiesti success, packaging UI opzionale skipped. Log completi,
+nuove regressioni in tre assetti per OS e due import reali verificati.
+
+Report, gap register e roadmap post-M9 nella root; evidenze in
+`docs/verification/post-m9-audit`. Audit DONE nel perimetro e con i limiti dichiarati;
+140/140 DONE e M9 invariati. Nessuna nuova task del piano READY; la roadmap è
+un handoff decisionale, non una nuova autorizzazione implementativa.
 
 ## Registro precedente — T-CAD-02 WAITING_GATE, DEC-17 chiusa
 

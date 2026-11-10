@@ -1,0 +1,27 @@
+{
+  "label": "ignored-sioc-workbook",
+  "command": [
+    "env",
+    "LINTRA_SIOC_XLSX=/home/alberto/Desktop/LINTRA/lintra/schemas/xlsx/SIOC_tracciato_regionale_20260420-definitivo_v05.xlsx",
+    "cargo",
+    "test",
+    "-p",
+    "lintra",
+    "--locked",
+    "--offline",
+    "--test",
+    "schema_importer",
+    "original_sioc_workbook_is_imported_through_the_production_adapter",
+    "--",
+    "--exact",
+    "--ignored"
+  ],
+  "exit": 0,
+  "seconds": 26.606,
+  "completed_utc": "2026-11-10T09:29:15.027331+00:00",
+  "head_before": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "head": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "changed_qualified_inputs_before": [],
+  "changed_qualified_inputs_after": [],
+  "log_sha256": "62759adc1a7d59538fc2af1403566faafd6adf083abaed0353976a33fa5126f2"
+}

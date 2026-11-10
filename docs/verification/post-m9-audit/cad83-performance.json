@@ -1,0 +1,15 @@
+{
+  "label": "cad83-performance",
+  "command": [
+    "python3",
+    "docs/verification/post-m9-audit/measure_cad83.py"
+  ],
+  "exit": 1,
+  "seconds": 3.745,
+  "completed_utc": "2026-11-10T09:33:35.329049+00:00",
+  "head_before": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "head": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "changed_qualified_inputs_before": [],
+  "changed_qualified_inputs_after": [],
+  "log_sha256": "8ce4ee1c6e6f7d34aa4bf9a144395378e5cf91f71a2868dbd730160ac747c4f7"
+}

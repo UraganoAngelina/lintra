@@ -1,0 +1,17 @@
+{
+  "label": "baseline-core",
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "lintra",
+    "--no-default-features",
+    "--locked",
+    "--offline"
+  ],
+  "exit": 0,
+  "seconds": 181.666,
+  "completed_utc": "2026-11-10T09:05:38.658963+00:00",
+  "head": "bfe51ac08c23b81244f736488c3996087fa8b2de",
+  "log_sha256": "310ded403378b4297c11eda439d573a20c4c98958b08b6b46181318bdc313a85"
+}

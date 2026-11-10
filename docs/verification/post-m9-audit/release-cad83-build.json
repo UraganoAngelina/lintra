@@ -1,0 +1,24 @@
+{
+  "label": "release-cad83-build",
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "lintra",
+    "--release",
+    "--locked",
+    "--offline",
+    "--test",
+    "cad_history_runtime",
+    "--no-run",
+    "--message-format=json"
+  ],
+  "exit": 0,
+  "seconds": 189.627,
+  "completed_utc": "2026-11-10T09:33:14.836836+00:00",
+  "head_before": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "head": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "changed_qualified_inputs_before": [],
+  "changed_qualified_inputs_after": [],
+  "log_sha256": "4061cba5e3376c24048268edad09a78fc8728e7a893e5bfc3e526ed74c7f98bb"
+}

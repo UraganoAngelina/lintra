@@ -1,0 +1,16 @@
+{
+  "attempts": [
+    {
+      "command": "cargo test -p lintra --no-default-features --locked --offline",
+      "note": "Duplicate baseline invocation interrupted with exit 130 while waiting for build lock. Not counted as a gate; completed baseline command/log has its own verified SHA256."
+    },
+    {
+      "label": "ignored-xlsx-probe",
+      "exit": 130,
+      "log": "ignored-xlsx-probe.log",
+      "log_sha256": "63e5b5475fb9cb4614cf402343d6cdbf07fc2cd4098bf3208f85969aaa99953e",
+      "note": "Interrupted compilation attempt, not PASS. Replaced by explicitly recorded ignored-xlsx-probe-final."
+    }
+  ],
+  "note": "Final gate ledger retains successful completed invocations and the expected red reproduction separately."
+}

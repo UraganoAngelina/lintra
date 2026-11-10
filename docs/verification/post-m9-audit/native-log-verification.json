@@ -1,0 +1,85 @@
+{
+  "run": 42789338814,
+  "head_sha": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "ordinary_reads": 3,
+  "additional_final_read": "Final cross-OS jobs were still pending at read3; final missing read authorized by AGENTS.md",
+  "log_fetch_attempt_before_completion": "CLI refused with exit 1; no evidence counted until run completed",
+  "native": {
+    "linux": {
+      "job_id": 129738459527,
+      "raw_log_sha256": "b05f111c4c792a96d9fbfef0028be9d5eced888b474170e53c17adab79b4f7ed",
+      "compressed_log": "native-linux.log.gz",
+      "compressed_sha256": "be157918530a3e31c5efd6d587454add3bdb1b29d7cf660ba17efdc35dedeaad",
+      "new_regressions_passed_by_step": {
+        "Test": 2,
+        "Test all features": 2,
+        "Test core without embedded bundle": 2
+      },
+      "rust_outcomes_including_subprocess_summaries_by_step": {
+        "Test": [
+          1061,
+          0,
+          7
+        ],
+        "Test all features": [
+          1061,
+          0,
+          7
+        ],
+        "Test core without embedded bundle": [
+          1018,
+          0,
+          7
+        ],
+        "Export a closed synthetic SQLite database for the opposite OS": [
+          1,
+          0,
+          0
+        ],
+        "Test tooling and extracted data bundle": [
+          18,
+          0,
+          0
+        ]
+      }
+    },
+    "windows": {
+      "job_id": 129738459135,
+      "raw_log_sha256": "c148106d16f0e0c7a56adb5832fa3603151e6f85321d068aa4f8d04a1b05e733",
+      "compressed_log": "native-windows.log.gz",
+      "compressed_sha256": "1708778634bc311436b4b4a6c560ede607cba265bb534c2e7533fcdcbfec953b",
+      "new_regressions_passed_by_step": {
+        "Test": 2,
+        "Test all features": 2,
+        "Test core without embedded bundle": 2
+      },
+      "rust_outcomes_including_subprocess_summaries_by_step": {
+        "Test": [
+          1054,
+          0,
+          8
+        ],
+        "Test all features": [
+          1054,
+          0,
+          8
+        ],
+        "Test core without embedded bundle": [
+          1011,
+          0,
+          8
+        ],
+        "Export a closed synthetic SQLite database for the opposite OS": [
+          1,
+          0,
+          0
+        ],
+        "Test tooling and extracted data bundle": [
+          17,
+          0,
+          0
+        ]
+      }
+    }
+  }
+}

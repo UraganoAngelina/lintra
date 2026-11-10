@@ -1,0 +1,23 @@
+{
+  "label": "tooling-clippy",
+  "command": [
+    "cargo",
+    "clippy",
+    "--manifest-path",
+    "xtask/Cargo.toml",
+    "--all-targets",
+    "--locked",
+    "--offline",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "exit": 0,
+  "seconds": 11.635,
+  "completed_utc": "2026-11-10T09:35:09.685813+00:00",
+  "head_before": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "head": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "changed_qualified_inputs_before": [],
+  "changed_qualified_inputs_after": [],
+  "log_sha256": "08a1dfb21d83258ead7513062f301b08442fd60107d07a4690371f919a04ac47"
+}

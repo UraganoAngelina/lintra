@@ -1,0 +1,15 @@
+{
+  "label": "workspace-boundary",
+  "command": [
+    "python3",
+    "scripts/check_workspace.py"
+  ],
+  "exit": 0,
+  "seconds": 1.09,
+  "completed_utc": "2026-11-10T09:28:32.547572+00:00",
+  "head_before": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "head": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "changed_qualified_inputs_before": [],
+  "changed_qualified_inputs_after": [],
+  "log_sha256": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f"
+}

@@ -1,0 +1,19 @@
+{
+  "label": "tooling-fmt",
+  "command": [
+    "cargo",
+    "fmt",
+    "--manifest-path",
+    "xtask/Cargo.toml",
+    "--",
+    "--check"
+  ],
+  "exit": 0,
+  "seconds": 0.212,
+  "completed_utc": "2026-11-10T09:34:52.616572+00:00",
+  "head_before": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "head": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "changed_qualified_inputs_before": [],
+  "changed_qualified_inputs_after": [],
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

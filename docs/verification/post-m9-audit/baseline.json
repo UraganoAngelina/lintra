@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-10",
+  "captured_utc": "2026-11-10T09:02:25.439689+00:00",
+  "checks": [
+    {
+      "command": "git status --porcelain=v1",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "command": "git rev-parse HEAD",
+      "exit": 0,
+      "output": "bfe51ac08c23b81244f736488c3996087fa8b2de\n"
+    },
+    {
+      "command": "git branch --show-current",
+      "exit": 0,
+      "output": "work/p1-foundations\n"
+    },
+    {
+      "command": "git remote -v",
+      "exit": 0,
+      "output": "origin\thttps://github.com/UraganoAngelina/lintra.git (fetch)\norigin\thttps://github.com/UraganoAngelina/lintra.git (push)\n"
+    },
+    {
+      "command": "git log -8 --format=\"%H %s\"",
+      "exit": 0,
+      "output": "bfe51ac08c23b81244f736488c3996087fa8b2de docs: attest completed plan publication and clean repository\nc6aa6e024bb7f8d8f5830bb107bd2bb76033dd2b docs: synchronize qualified contracts and close QG-8/M9 (T-P18-04)\nf23be6742334261fea65f0c0eaa1035ff0a953d8 docs(cad): close T-CAD-12 with verified native runtime evidence\ne42f5ab6d73d09f1739f86ba6f681d166fdc3ecc intra session commit\nd45078e153ba0455774129c9832c98eb9e90b789 ci: allow complete native history and CAD qualification within bounded runtime\n9bab987cb3ec4440b57c6a71de17f18ff5ef392c docs(cad): record runtime publication and exact native CI gate\nc59b0def0915d8cca6dae7f59048aa38f50b6807 feat(history): execute qualified snapshot predicates and full CAD83 (T-CAD-12)\n750b1e1d6955f4933f71af158b227d01ee9cc1fa docs(cad): qualify native history storage and resume full CAD12 implementation\n"
+    },
+    {
+      "command": "git diff d45078e..HEAD -- src ui scripts xtask Cargo.lock Cargo.toml .github tests bundles",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "command": "rustc -Vv",
+      "exit": 0,
+      "output": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1\n"
+    },
+    {
+      "command": "cargo -V",
+      "exit": 0,
+      "output": "cargo 1.99.1 (5f94df478 2026-08-27)\n"
+    },
+    {
+      "command": "rustup show active-toolchain",
+      "exit": 0,
+      "output": "1.99.1-x86_64-unknown-linux-gnu (overridden by '/home/alberto/Desktop/LINTRA/lintra/rust-toolchain.toml')\n"
+    },
+    {
+      "command": "uname -a",
+      "exit": 0,
+      "output": "Linux cachyos 7.3.1-1-cachyos #1 SMP PREEMPT_DYNAMIC Sat, 31 Oct 2026 20:05:28 +0000 x86_64 GNU/Linux\n"
+    },
+    {
+      "command": "git show 4e44703 -- src/persistence/sqlite/tests.rs",
+      "exit": 0,
+      "output": "commit 4e44703a50a1147acf8ca6329ca2297ee37d3c69\nAuthor: UraganoAngelina <angeonthebeat2000@gmail.com>\nDate:   Fri Oct 30 10:40:10 2026 +0100\n\n    test(persistence): cover zero-progress contention before resolved retry\n\ndiff --git a/src/persistence/sqlite/tests.rs b/src/persistence/sqlite/tests.rs\nindex 1ba2b20..146f1a9 100644\n--- a/src/persistence/sqlite/tests.rs\n+++ b/src/persistence/sqlite/tests.rs\n@@ -699,7 +699,13 @@ fn process_restart_and_abrupt_exit_inside_or_after_commit_recover_coherently() {\n     }\n }\n #[test]\n-fn two_process_contenders_publish_exactly_one_generation() {\n+fn two_process_contenders_preserve_cas_and_resolved_retry_publishes_one_generation() {\n+    exercise_contenders(false);\n+    // A real SHARED lock forces both initial publications to fail, exercising\n+    // the zero-winner branch deterministically rather than relying on timing.\n+    exercise_contenders(true);\n+}\n+fn exercise_contenders(hold_reader: bool) {\n     let dir = parent();\n     let root = dir.path().join(\"archive\");\n     let repo = create(&root);\n@@ -716,11 +722,52 @@ fn two_process_contenders_publish_exactly_one_generation() {\n         }\n         std::thread::sleep(Duration::from_millis(10));\n     }\n+    let reader = hold_reader.then(|| {\n+        let reader = Connection::open(root.join(\"lintra.db\")).unwrap();\n+        reader.execute_batch(\"BEGIN\").unwrap();\n+        reader\n+            .query_row(\"SELECT COUNT(*) FROM snapshots\", [], |row| {\n+                row.get::<_, i64>(0)\n+            })\n+            .unwrap();\n+        reader\n+    });\n     fs::write(dir.path().join(\"go\"), []).unwrap();\n     let mut codes = [a.wait().unwrap().code(), b.wait().unwrap().code()];\n     codes.sort();\n-    assert_eq!(codes, [Some(0), Some(3)]);\n+    drop(reader);\n+    if hold_reader {\n+        assert_eq!(codes, [Some(3), Some(3)]);\n+    }\n+    // With a zero busy timeout, safety does not imply that one racing attempt\n+    // must make progress. A resolver's short read lock may prevent the other\n+    // contender's COMMIT too. Both attempts can legitimately be NotPublished.\n+    // Unknown outcomes have already been resolved by each worker; no write is\n+    // replayed while its publication status remains uncertain.\n+    assert!(\n+        codes == [Some(0), Some(3)] || codes == [Some(3), Some(3)],\n+        \"unexpected contender outcomes: {codes:?}\"\n+    );\n     let repo = open(&root);\n+    if codes == [Some(3), Some(3)] {\n+        assert_eq!(\n+            repo.current_generation(&namespace(\"A\")).unwrap(),\n+            Some(SnapshotRevision::new(1))\n+        );\n+        for id in [\"a\", \"b\"] {\n+            assert!(repo.load_submission(&namespace(\"A\"), id).unwrap().is_none());\n+        }\n+        assert!(\n+            repo.load_snapshot(&namespace(\"A\"), SnapshotRevision::new(2))\n+                .unwrap()\n+                .is_none()\n+        );\n+        // All child connections have closed, and absence was checked afresh.\n+        // This is a single explicit new transaction after resolution, not an\n+        // automatic retry added to the adapter or to the racing workers.\n+        let candidate = snapshot(&repo, \"A\", 2, \"a\", vec![row(repo.protector(), \"A\", 2, \"B\")]);\n+        publish(&repo, &candidate).unwrap();\n+    }\n     assert_eq!(\n         repo.load_current_snapshot(&namespace(\"A\"))\n             .unwrap()\n@@ -790,8 +837,9 @@ fn an_unfinished_transaction_view_cannot_be_mistaken_for_publication() {\n mod metadata;\n \n /// Test harness resolution only. Retrying read/open under a transient lock is\n-/// bounded; neither staging nor COMMIT is retried. Parent assertions still require\n-/// exactly one published contender, one unpublished contender and generation2.\n+/// bounded; neither staging nor COMMIT is retried here. Parent assertions permit\n+/// at most one initial publication and require generation2 with one submission\n+/// after a possible explicit new transaction, only once absence is established.\n fn resolve_finished_contender(root: &Path, candidate: &HistoricalSnapshot) -> i32 {\n     let started = Instant::now();\n     loop {\n"
+    }
+  ],
+  "lock_sha256": "eeec45a15dfa05e3d3cc2d41c07a2a2dfa1a9b5ef64de6404fe2cfcff4bfbd21"
+}

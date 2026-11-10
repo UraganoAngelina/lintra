@@ -1,0 +1,7 @@
+{
+  "binding": "libsqlite3-sys 0.39.1",
+  "sqlite_version": "3.54.1",
+  "header_sha256": "d6c84557261893439b341d2e6c35187ae3ea24fbfd843ad94616f72d89242b8c",
+  "header_source": "/home/alberto/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libsqlite3-sys-0.39.1/sqlite3/sqlite3.h",
+  "features": "rusqlite bundled/cache/hooks; platform-specific native checks in CI"
+}

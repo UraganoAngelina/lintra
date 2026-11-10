@@ -1,0 +1,23 @@
+{
+  "label": "tooling-tests",
+  "command": [
+    "env",
+    "LINTRA_TEST_BIN=/home/alberto/Desktop/LINTRA/lintra/target/debug/lintra",
+    "cargo",
+    "test",
+    "--manifest-path",
+    "xtask/Cargo.toml",
+    "--locked",
+    "--offline",
+    "--",
+    "--include-ignored"
+  ],
+  "exit": 0,
+  "seconds": 38.409,
+  "completed_utc": "2026-11-10T09:36:19.946347+00:00",
+  "head_before": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "head": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "changed_qualified_inputs_before": [],
+  "changed_qualified_inputs_after": [],
+  "log_sha256": "fe4de70d2de718b777736c497e26643439749184435d6a932104e917153d4700"
+}

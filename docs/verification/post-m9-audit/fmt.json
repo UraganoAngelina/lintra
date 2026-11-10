@@ -1,0 +1,15 @@
+{
+  "label": "fmt",
+  "command": [
+    "cargo",
+    "fmt",
+    "--all",
+    "--",
+    "--check"
+  ],
+  "exit": 0,
+  "seconds": 2.113,
+  "completed_utc": "2026-11-10T09:08:26.322135+00:00",
+  "head": "bfe51ac08c23b81244f736488c3996087fa8b2de",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

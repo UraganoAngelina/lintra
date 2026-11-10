@@ -1,0 +1,28 @@
+{
+  "label": "ignored-xlsx-probe-final",
+  "command": [
+    "env",
+    "LINTRA_XLSX_PROBE_ROWS=10000",
+    "cargo",
+    "test",
+    "-p",
+    "lintra",
+    "--locked",
+    "--offline",
+    "--test",
+    "xlsx_writer",
+    "xlsx_memory_probe",
+    "--",
+    "--exact",
+    "--ignored",
+    "--nocapture"
+  ],
+  "exit": 0,
+  "seconds": 29.155,
+  "completed_utc": "2026-11-10T09:30:05.000975+00:00",
+  "head_before": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "head": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "changed_qualified_inputs_before": [],
+  "changed_qualified_inputs_after": [],
+  "log_sha256": "b01bbb30a34a9eb1aafda10228775bba35b65c00b878890b0d15c52f3b16ccce"
+}

@@ -1,0 +1,15 @@
+{
+  "label": "boundary-probes-final",
+  "command": [
+    "python3",
+    "docs/verification/post-m9-audit/boundary_probes.py"
+  ],
+  "exit": 0,
+  "seconds": 0.666,
+  "completed_utc": "2026-11-10T09:28:22.810975+00:00",
+  "head_before": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "head": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+  "changed_qualified_inputs_before": [],
+  "changed_qualified_inputs_after": [],
+  "log_sha256": "691f1627e32f32052a6cffaa80906686959d23126671e6435a096b3f176e2619"
+}
