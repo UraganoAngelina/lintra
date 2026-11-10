@@ -1,6 +1,14 @@
 # Regulatory Fixed-Width Validation Engine
 ## Detailed Design / Low-Level Design per agenti AI
 
+> **Delta approvato 2026-11-10:** [ADR-POST-M9-001](unified-post-m9/RATIFICATION_2026-11-10.md)
+> e [master unificato](unified-post-m9/MASTER_PLAN_UNIFICATO.md) integrano il
+> presente documento per UI Tauri/IPC bounded, file per account, export shared
+> con consenso, soft budget e recovery. Addendum B resta contratto Slint legacy;
+> firme IPC nuove si qualificano in MIG-P2. Per §170,
+> [DEC-SIOC-HIST-02](normative/DEC-SIOC-HIST-02.md) ratifica enforcement PK
+> cross-run prospettico; nessuna mutazione retroattiva di codec, HMAC o golden.
+
 > **Stato:** specifica di progettazione di dettaglio, revisione consolidata 2026-10-16.
 >
 > **Relazione con il documento architetturale:** questo documento dettaglia e concretizza `ARCHITECTURE.md`. In caso di conflitto, l'agente deve fermarsi, segnalare il conflitto e proporre una modifica esplicita all'architettura prima di procedere.

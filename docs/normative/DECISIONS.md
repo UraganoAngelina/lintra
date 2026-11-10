@@ -1,5 +1,13 @@
 # Decisioni normative ricevute
 
+## DEC-SIOC-HIST-02 — RATIFICATA, 2026-11-10
+
+La nuova [decisione versionata](DEC-SIOC-HIST-02.md) recepisce D11 dell'autore:
+non ripetizione PK fra nuove trasmissioni SIOC da implementare e collaudare.
+Supera prospetticamente DEC-SIOC-HIST-01 audit-only nei nuovi profili, mantenendo
+gli artefatti legacy. La fonte normativa indipendente e i casi dubbi sono
+oggetto di U-NORM-01/02/05; G-SIOC0/1 non sono ancora verificati.
+
 ## DEC-05-CAD-ICPC-000 — RISOLTA, 2026-10-19
 
 Ambito: CAD B1, campo `2.12`, patologia concomitante.

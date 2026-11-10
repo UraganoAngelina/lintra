@@ -1,6 +1,14 @@
 # MASTER_IMPLEMENTATION_PLAN.md
 ## Regulatory Fixed-Width Validation Engine — piano operativo di implementazione
 
+> **Piano originale concluso, 140/140 DONE.** Il delta del 10 novembre 2026 è
+> nel [master unificato](unified-post-m9/MASTER_PLAN_UNIFICATO.md), con
+> [ratifica D01–D15](unified-post-m9/RATIFICATION_2026-11-10.md) e consuntivo
+> separato `UNIFIED_IMPLEMENTATION_STATUS.md`. N-24 e le eccezioni GUI-only
+> N-19/N-20/QG-5/QG-7 si attuano nei gate MIG; DEC-SIOC-HIST-02 supera
+> prospetticamente l'audit-only per nuovi profili. Le task e milestone
+> originali sottostanti restano storicizzate, senza nuovi DONE impliciti.
+
 | | |
 |---|---|
 | **Versione del piano** | 1.1 (revisione architetturale approvata 2026-10-16) |

@@ -1,6 +1,15 @@
 # Regulatory Fixed-Width Validation Engine
 ## Guida architetturale e di implementazione per agenti AI
 
+> **Delta approvato 2026-11-10:** [ADR-POST-M9-001](unified-post-m9/RATIFICATION_2026-11-10.md)
+> e [master unificato](unified-post-m9/MASTER_PLAN_UNIFICATO.md) prevalgono sulle
+> sole parti discordanti: React/TS/Tauri 2 con coesistenza Slint (§39D), eccezioni
+> GUI-only Windows11 NSIS offline/CachyOS personale (§39A–C), policy locale e
+> export shared con consenso, soft budget e durabilità. Per §45 SIOC,
+> [DEC-SIOC-HIST-02](normative/DEC-SIOC-HIST-02.md) supera prospetticamente
+> l'audit-only nei nuovi profili. Nessun gate tecnico o runtime nuovo è già PASS.
+> I contratti legacy restano conservati per i profili e il prodotto precedenti.
+
 > **Stato:** specifica architetturale di riferimento, revisione consolidata 2026-10-16 (Lintra + persistenza core).
 >
 > Questo documento è la **source of truth** per l'implementazione del progetto. Un agente AI deve leggerlo prima di modificare il codice e trattare i principi qui descritti come decisioni architetturali deliberate.

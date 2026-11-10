@@ -8,7 +8,8 @@ Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 |---|---|---|---|---|---|
 | U-GOV-01 | — | DONE | [Dossier](docs/verification/unified-post-m9/U-GOV-01.md), baseline JSON | Baseline 7e2ff155; audit af3bccc, CI42789338814 Linux/Windows success | Acceptance PASS; G-U0 aggregato NOT_VERIFIED |
 | U-GOV-02 | U-GOV-01 | DONE | [Matrice storica/corrente](docs/verification/unified-post-m9/U-GOV-02.md) | Prerequisito 8e6bc55; CI nuova non richiesta, documenti soltanto | Acceptance PASS; G-U0 aggregato NOT_VERIFIED |
+| U-GOV-03 | U-GOV-02 | DONE | [Ratifica e prompt](docs/verification/unified-post-m9/U-GOV-03.md), ADR-POST-M9-001, DEC-SIOC-HIST-02, manifest fonti | Prerequisito bf86511; controlli documentali, nessuna CI runtime nuova | USER_APPROVED/REPOSITORY_RATIFIED; G-U0 aggregato NOT_VERIFIED |
 
 Nessun gate tecnico nuovo PASS. Commit delle task documentali risolvibili dai
 percorsi dei dossier nella cronologia Git, senza hash autoreferenziali.
-Next READY: **U-GOV-03**. AUTO_CONTINUE. Nessun blocker U-GOV-01/02.
+Next READY: **U-GOV-04**. AUTO_CONTINUE. Nessun blocker U-GOV-01/02/03.

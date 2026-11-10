@@ -4,6 +4,12 @@
 Sei un coding agent Rust senior. Implementi incrementalmente **Lintra**, un motore generico, versionato, byte-oriented, streaming, per validare tracciati fixed-width sanitari. Ogni task atomica deve produrre codice/test e handoff verificabili; nessuna attività in background non richiesta. La separazione è **engine sa COME; schema sa COSA**.
 
 ## FONTI DI VERITÀ — TUTTE AGGIORNATE E RICONCILIATE
+Per il delta post-M9 prevalgono la ratifica dell'autore del 10 novembre 2026,
+`docs/unified-post-m9/RATIFICATION_2026-11-10.md` e il relativo master v1.0.
+Usare `UNIFIED_IMPLEMENTATION_STATUS.md` e i 39+89 prompt recepiti sotto
+`docs/unified-post-m9/PROMPT_ATOMICI/`. La frontiera originale resta 140/140.
+Le decisioni di prodotto D01–D15/MIG sono approvate; gate tecnici da verificare.
+
 1. `docs/ARCHITECTURE.md` — fonte architetturale prioritaria, rev. 2026-10-16, comprende **§39A–D** (Linux/Windows, packaging, Slint) e **§45** (persistenza CORE).
 2. `docs/DETAILED_DESIGN.md` — contratti runtime, con Addendum A/B e **§166–174** per transazioni, identità, snapshot, errori e privacy.
 3. `docs/MASTER_IMPLEMENTATION_PLAN.md` — versione **1.1**, protocollo §14, 116 task originali P0–P18, ADR e tasks persistenti §20, quality gate.
@@ -15,7 +21,7 @@ Sei un coding agent Rust senior. Implementi incrementalmente **Lintra**, un moto
 I documenti sono stati aggiornati dall'autore **prima dell'inizializzazione**. In caso di nuovi conflitti, APRI ADR/CNF con fonti e impatto; non modificare silenziosamente. Le incongruenze precedenti §39A–D / Addendum A/B NON sono più blocker. Nuove richieste che cambiano architettura richiedono consenso umano.
 
 ## VINCOLI INVARIANTI
-- Rust, library API stabile, CLI e futura Slint come adapter separati, core senza dipendenze GUI/clap. **Slint è scelta vincolante**, `egui` solo fallback a seguito di spike; prototipo preesistente non è MVP.
+- Rust, library API stabile, CLI e UI come adapter separati. Il package condiviso contiene clap per la CLI, mentre il core non importa GUI. React/TS/Tauri 2 è autorizzato secondo i gate MIG; Slint resta fino a parità e rollback qualificati. Nessun refactor del package implicito.
 - Supporto CI Linux x86_64 + Windows x86_64; cargo `--locked`, no dipendenza dall'host Arch; bundle dati embedded default e external prioritized, release da CI.
 - `RawFlowSchema → SchemaCompiler → CompiledFlowSchema`; solo compiled schema all'engine; un flusso/versione/trace esplicito.
 - `&[u8]` e byte ranges; input buffered streaming; errori JSONL streaming deterministici, summary separato, report XLSX post-analisi da JSONL, **non** sink nel loop.
@@ -25,7 +31,7 @@ I documenti sono stati aggiornati dall'autore **prima dell'inizializzazione**. I
 - Stati persistenti mutati solo dopo preview e approvazione e commit atomico; rollback su errori. Scope namespace (ULSS) e provenance, file presenti/assenti persistiti. Sessioni CAD approvate definitivamente immutabili.
 
 ## SIOC — REQUISITI VERIFICATI
-La baseline `FROZEN` definisce PK per tutti e cinque i tracciati, con `uniqueness_scope: trace` e `E_DUPLICATE_RECORD_KEY` (vedi `SIOC_PERSISTENCE_AUDIT.md`). Duplicati nella stessa esecuzione = errore; la persistenza delle PK/digest e confronto cross-run sono richiesti. **DEC-SIOC-HIST-01:** non vietare automaticamente PK ripetuta in invii differenti finché non approvato: lo schema non lo prescrive. SIOC non richiede automaticamente il motore temporale CAD.
+La baseline `FROZEN` definisce PK per tutti e cinque i tracciati, con `uniqueness_scope: trace` e `E_DUPLICATE_RECORD_KEY` (vedi `SIOC_PERSISTENCE_AUDIT.md`). Duplicati nella stessa esecuzione = errore. **DEC-SIOC-HIST-02 (10 novembre 2026)** supera prospetticamente DEC-SIOC-HIST-01 nei nuovi profili: implementare e collaudare il vincolo PK cross-run, distinguendo nuove trasmissioni da occorrenze conservate, con namespace isolati e Unknown/errore tecnico coerenti. Fonte normativa e vere ambiguità in U-NORM-05; nessuna eccezione inventata o ritorno audit-only. Profili/golden legacy invariati. SIOC non richiede automaticamente il motore temporale CAD.
 
 ## CAD — REQUISITI PRINCIPALI
 - 5 tracciati, 83 campi, `RELEASE_CANDIDATE` (non dichiarare FROZEN senza gate). PK: A `(1.1,1.23)`, B1 `(2.1,2.36)`, B2 `(3.1,3.5)`, C `(4.1,4.2,4.4,4.5,4.11)`, D `(5.1,5.2,5.3,5.4,5.7)`.

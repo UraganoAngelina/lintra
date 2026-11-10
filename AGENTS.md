@@ -1,5 +1,19 @@
 # Istruzioni operative Lintra
 
+## Mandato post-M9 vigente — 10 novembre 2026
+
+L'autore ha autorizzato l'esecuzione sequenziale del master unificato v1.0 e
+ratificato D01–D15. Fonte corrente:
+[ADR-POST-M9-001](docs/unified-post-m9/RATIFICATION_2026-11-10.md),
+[master](docs/unified-post-m9/MASTER_PLAN_UNIFICATO.md) e
+[stato unificato](UNIFIED_IMPLEMENTATION_STATUS.md). Questo delta supera le
+clausole discordanti sottostanti su avvio Tauri/installer, policy dati/export,
+budget e SIOC audit-only per nuovi profili. DEC-SIOC-HIST-02 è ratificata;
+nessun gate tecnico è automaticamente PASS. Non richiedere nuove ratifiche
+D01–D15. Un solo agente, una task alla volta, nessuna delega/background.
+M9 resta 140/140 DONE; registrare le nuove task nel solo stato unificato.
+Conservare le fonti dell'autore e i checkout adiacenti.
+
 ## GLOBAL AGENT EXECUTION POLICY
 
 Revisione GOV-2026-10-26-01, approvata esplicitamente dall'autore il26 ottobre2026.
