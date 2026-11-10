@@ -1,0 +1,114 @@
+{
+  "task": "T-MIG-P0-01",
+  "captured_utc": "2026-11-10T14:33:22.583507+00:00",
+  "head": "dfc36044e0315f3ab060f98594192d3d1dfcad95",
+  "last_runtime_commit": "76fa08a11409f5d6cd67b97f025b6686d2c6902c",
+  "checks": [
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "dfc36044e0315f3ab060f98594192d3d1dfcad95\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exit": 0,
+      "stdout": "work/p1-foundations\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--name-only",
+        "539b9bc",
+        "HEAD",
+        "--",
+        "src",
+        "ui",
+        "tests",
+        "Cargo.toml",
+        "Cargo.lock",
+        "build.rs",
+        "scripts",
+        "schemas",
+        "bundles",
+        ".github"
+      ],
+      "exit": 0,
+      "stdout": "src/application/resource_budget.rs\nsrc/lib.rs\nsrc/reference_data/filesystem.rs\nsrc/reference_data/mod.rs\nsrc/reference_data/tree_security.rs\ntests/reference_filesystem.rs\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "76fa08a",
+        "HEAD",
+        "--",
+        "src",
+        "ui",
+        "tests",
+        "Cargo.toml",
+        "Cargo.lock",
+        "build.rs",
+        "scripts",
+        "schemas",
+        "bundles",
+        ".github"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "sources": {
+    "Cargo.toml": "a6e8e56b4ef8f17c50567e35547d52f720df66e8cede02163941ab94a2283799",
+    "Cargo.lock": "eeec45a15dfa05e3d3cc2d41c07a2a2dfa1a9b5ef64de6404fe2cfcff4bfbd21",
+    "rust-toolchain.toml": "9280927fc1b351fef34ce18a5428a144007f948460fdebdd03e2e56d446d5834",
+    "AGENTS.md": "9228819c2ae37fb024cacd7d475ff816d41d33438bc1403714d0a9179c96f45f",
+    "MASTER_AGENT_PROMPT.md": "48e796332842bb8eafa6746162b972772f3954d7b8150b4b89fa2c925cbe4266",
+    "docs/unified-post-m9/MASTER_PLAN_UNIFICATO.md": "3e8598bdcbcc53dbea31e60425237a496df034a7031093cb34a156e517071910"
+  },
+  "qualification": {
+    "historical_plan": "140/140 DONE preserved",
+    "audit_ci": "42789338814 af3bccc success; baseline42823787199 4c169cd success",
+    "budget_ci": "42829144043 539b9bc success, exact logs verified",
+    "reference_ci": "42834962873 pending on dfc36044e0315f3ab060f98594192d3d1dfcad95; does not inherit budget CI",
+    "local_reference": "89 targeted pass and fmt/Clippy on76fa08a",
+    "tauri": "NOT_RUN; no scaffold before G-MIG-0",
+    "windows11_cleanroom": "NOT_RUN; Windows2025 CI not equivalent"
+  }
+}
