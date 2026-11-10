@@ -4625,3 +4625,22 @@ Duplicazioni e riutilizzo normativo illecito sono `ValidationError` (ad esempio 
 # 174. Testing e implementazione incrementale
 
 Staging atomico, replay, interruzione/rollback, concurrency e restart; test SIOC intra-run e cross-run audit; CAD T1/T2/T3 reactivation, missing traces, tempo e invio approvato immutabile; test failpoint crash/recovery; benchmark memoria. Sequenza: tipi/trait minimi P2/P3/P7/P13 → task core `T-PERSIST-01..12` → profili CAD `T-CAD-01..12`; la UI e il database specifico non sono prerequisiti per definire i contratti. I test con informazioni sanitarie reali NON vanno versionati nel repository.
+
+## Riferimenti attuativi qualificati — T-P18-04, 10 novembre 2026
+
+I contratti concettuali166–174 sono attuati dalle porte Rust documentate nei
+report delle task; non vanno copiati come firme compilabili. Il percorso
+`HistoricalValidationService::validate_snapshot` usa compilazione snapshot
+esplicita, validità degli operandi per campo in PASS1, query C1/L1 e PASS2.
+`ValidationOnly` impedisce approval su Invalid/Cancelled/truncated/Unknown;
+preview, review, CAS e replay conservano l'unità autenticata snapshot/fatti.
+Un nuovo invio retrodatato viene rifiutato prima degli input; il replay immutabile
+ricostruisce la frontiera originale. Missing trace richiede consenso esatto,
+mantiene gap e non viene sostituita da un file vuoto.
+
+Piano/digest, lifecycle, codec1/2 e SQLite3, privacy e casi di errore sono descritti
+nel [contratto adottato](verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md)
+e nel [report con matrice HX01–21](verification/T-CAD-12-runtime-implementation.md).
+Evidenza finale: [CAD12](verification/T-CAD-12-runtime-native-ci.json),
+CI42641969728 su d45078e, sette job richiesti success. Nessuna norma hardcoded,
+chiave nuova, migrazione implicita o estensione della CLI audit-only.

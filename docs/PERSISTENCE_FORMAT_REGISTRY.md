@@ -1,14 +1,15 @@
 # Registro dei formati persistenti
 
-Aggiornamento attuativo 8 novembre2026, ADR-HISTORY-EXISTENCE-001 sostitutiva.
+Aggiornamento qualificato 10 novembre2026, ADR-HISTORY-EXISTENCE-001 sostitutiva.
 Le versioni fisiche SQLite sono distinte da schema normative, HMAC e DTO pubbliche.
 
 | Versione | Stato e fonte |
 |---|---|
 | SQLite1 | Legacy qualificato T-PERSIST-05; fixture immutabile storage1, codec record/source originale |
 | SQLite2 | Prima versione corrente osservata al commit a644145, constFORMAT=2; consenso omissioni, upgrade1→2 esplicito T-PERSIST-06/07 |
-| SQLite3 | In implementazione CAD12: batch fact-only e manifest snapshot protetti, collegati alla stessa transazione dello snapshot; nessuna migrazione automatica1/2→3 |
-| HistoryFactBatch1 | Nuovo payload tecnico per piano/snapshot, versione logica interna aSQLite3, qualifica ancora aperta |
+| SQLite3 | Corrente per archivi nuovi: batch fact-only e manifest snapshot protetti, nella stessa transazione dello snapshot; nessuna migrazione automatica1/2→3 |
+| HistoryFactBatch1 | Payload tecnico per piano/snapshot, versione logica interna aSQLite3; reader qualificato, byte precedenti preservati |
+| HistoryFactBatch2 | Writer corrente; correlazione nullable soltanto se non qualificata; reader1/2, null rifiutato nel formato1 |
 | HMAC1 | Invariato: stesse primitive/prove di identità, record/proiezione e source; nessun nuovo algoritmo/purpose/chiave |
 
 Il numero3 deriva dal registro/codice effettivo1/2 e dalla ricerca di versioni già
@@ -18,7 +19,9 @@ L'operazione esistente upgrade_storage_v1_to_v2 continua a significare solo1→2
 Non esiste qui un'autorizzazione a migrare archivi approvati o rigenerare fatti.
 Nessuna versione diventa qualificata per sola presenza in questa tabella.
 
-HistoryFactBatch2: writer della nuova integrazione esecutiva, in implementazione
-il9novembre2026. Entity nullable soltanto per correlazione non qualificata;
-reader1/2, format1immutabile e nullin1rifiutato. PhysicalSQLite3/HMAC1 invariati.
-Nessuna migrazione o qualifica implicita per la sola voce nel registro.
+Qualifica storage: CI42592330836 su c5266d0. Qualifica runtime completa:
+[CI42641969728](https://github.com/UraganoAngelina/lintra/actions/runs/42641969728)
+su d45078e, sette job richiesti positivi. Entrambi gli import nativi verificano
+4snapshot/2namespace, manifest e batch logici1/2 con nullable2. Prove e risultati:
+[dossier CAD12](verification/T-CAD-12-runtime-native-ci.json).
+SQLite3/HMAC1 invariati dall'integrazione; nessuna migrazione implicita.

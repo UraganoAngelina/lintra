@@ -2,30 +2,35 @@
 
 Consuntivo aggiornato al **2026-11-10**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD12 DONE, avvio P18-04
+## Frontiera corrente — piano completato, QG-8 e M9 raggiunti
 
-**139/140 DONE = 99,3%** (conteggio task, non sforzo). Rimane P18-04.
-CAD12 qualificata dalla CI [42641969728](https://github.com/UraganoAngelina/lintra/actions/runs/42641969728)
-su d45078e153ba0455774129c9832c98eb9e90b789: sette job richiesti success,
-packaging UI opzionale skipped. Verifica API, log e due import SQLite effettuata
-il 10 novembre 2026. Nove test CAD83 e21storici passati in tutti e tre gli
-assetti su entrambi gli OS; ogni import verifica4snapshot/2namespace, batch,
-manifest, formati logici1/2 e nullable2. Dossier runtime-native-ci.json e imports.
+**140/140 DONE = 100% del piano ratificato** (conteggio task, non conformità
+normativa universale). CAD12 e P18-04 DONE; M9 raggiunta il10novembre2026.
+Nessuna ulteriore task READY nel piano corrente: NO_READY_TASK.
 
-Runtime c59b0de e sola correzione timeout CI d45078e: compiler/piani generici,
-PASS1 con validità per campo, query C1/L1, PASS2, snapshot/preview/approval/replay
-atomici e profilo CAD83 acquisito da filesystem con due cataloghi Strict.
-Golden T1/T2/T3, reopen, annullamenti e rettifiche, namespace, missing B2/D,
-privacy e JSONL con oracle indipendente qualificati. Quindici gate locali:
-1059esiti workspace/default eallfeatures ciascuna,1016core,0fail;504input
-confermati salvo timeout workflow già qualificato dalla nuova CI. Misure release
-100/300eventi per namespace: p95descrittivo759/1920ms,RSS25936/28276KiB.
+CAD12: [CI42641969728](https://github.com/UraganoAngelina/lintra/actions/runs/42641969728)
+su d45078e153ba0455774129c9832c98eb9e90b789, sette job richiesti success;
+packagingUI opzionale skipped. API/log/due import reali verificati:9CAD83 e
+21history in tre assetti per OS;4snapshot/2namespace con manifest, batch1/2 e
+nullable2 per direzione. Chiusura documentale f23be67.504input locali confermati
+salvo timeoutCI già coperto dalla run finale. Runtime/fixture/schema invariati.
 
-C1/L1 ratificate; CNF-DIAGNOSTIC-ORDER-01 RESOLVED con propriaCI42530063288.
-CAD resta runtime-candidate, non FROZEN né conformità normativa universale;
-CLI/UI storiche audit-only immutate. Nessuna release/tag/M9 implicita.
-P18-04 READY: audit documenti/decisioni/CNF e QG-8 prima di M9.
-Single-agent, nessun background/delega; docs/migration preesistente esclusa.
+P18-04: allineati README/ARCH/DET/ADR/authoring, formati/compatibilità,
+CI/development e performance. Registro corrente copre tutti28ID CNF:
+nessun CNF aperto, nessun documento ancora da aggiornare per il perimetro.
+QG-8 verificato tramite inventario, link nuovi, quickstart invariato, equivalenza
+sorgenti qualificati e gate locali effettivi: fmt/Clippy workspaceallfeatures,
+1059esiti Rust in124riepiloghi/0fail/7ignored,24Python e boundary positivi.
+Dossier T-P18-04-document-sync.md e T-P18-04-doc-gates.json. Nessuna nuovaCI
+nativa duplicata per questa sincronizzazione puramente documentale.
+
+Il percorso snapshot library esegue CAD83 con C1/L1, PASS1/2 e approval/replay
+atomici. CAD resta runtime-candidate; CLI/UI storiche rimangono audit-only.
+Soglie prestazionali non definite con motivo, controlli/domini G0 esclusi per
+ratifica e decisioni prima dei dati reali conservati nei rispettivi documenti.
+DEC-SIOC-HIST-01 non autorizza nuovi errori cross-run. M9 non pubblica una
+release1.0 o rc.3, non congela CAD e non riscrive le release immutabili.
+Single-agent, nessun background/delega; docs/migration preesistente preservata.
 I registri sottostanti conservano il contesto storico dei rispettivi eventi.
 
 ## Registro precedente — T-CAD-02 WAITING_GATE, DEC-17 chiusa
@@ -3472,6 +3477,11 @@ I doctest verificano importabilità e divieto di importare `engine` e
 | Nessuna nuova dipendenza | N-26/DEC-15: lockfile contiene solo `lintra` |
 
 ## Documenti da aggiornare
+
+**Stato corrente — 10 novembre 2026: nessuno nel perimetro del piano ratificato.**
+QG-8 superato; inventario e riferimenti in docs/verification/T-P18-04-doc-gates.json.
+Le note seguenti conservano i consuntivi delle sessioni precedenti.
+
 
 T-P14-05: nessuno. DEC-18 e relativi contratti pubblici registrati nei dossier,
 README/matrice/stato/progresso allineati. Le note seguenti conservano il contesto
@@ -7036,3 +7046,42 @@ report e dossierCI con import scaricati. Nessun codice o schema modificato.
 139/140DONE99,3%; P18-04READY, avvio audit finale documentale QG-8.
 CADcandidato, FROZEN richiede il proprio gate umano, nessuna release/tag.
 Single-agent/no background; docs/migration preesistente preservata/esclusa.
+
+
+## PREFLIGHT — P18-04 IN_PROGRESS, 10 novembre 2026
+
+Prerequisito finaleCAD12 qualificato; report T-P18-04-document-sync.md.
+Allineati README/ARCH/DET/ADR/authoring, registro formati, CI/development,
+compatibilità e performance. Registro correnteCNF con ratifiche/gate, cronologia
+preservata. Nessun codice/schema/fixture/workflow/versioneCargo modificato.
+139/140invariato; QG-8 e M9 solo dopo gate documentale reale. Docs/migration
+preesistente esclusa; nessuna release/tag/freeze o nuovaCI duplicata.
+
+
+## HANDOFF finale — T-P18-04 DONE / QG-8 / M9, 10 novembre 2026
+
+Obiettivo: sincronizzazione fonti e tracciabilità delle decisioni implementate.
+Prerequisiti verificati, incluso CAD12DONE con run42641969728/d45078e.
+File: README, ARCH/DET, PERSISTENCE_CORE_SPEC e registroformati, authoring,
+compatibilità, storiaesistenza, CI/DEVELOPMENT/PERFORMANCE, matriceCNF,
+indice/stato e dossierP18-04. Nessun codice/schema/fixture/workflow/versioneCargo
+modificato; docs/migration preesistente esclusa.
+
+Gate: fmt/Clippyworkspaceallfeatures exit0; cargo test --workspace --locked
+exit0,1059esiti/124riepiloghi/0fail/7ignored, inclusiCAD83/history/Slint e doctest;
+24testPython e boundary exit0. Ignorati non convertiti inPASS: misure e scambi
+nativi qualificati separatamente nei rispettivi dossier. Inventario28CNF,
+linklocali aggiunti, quickstartbyteidentico e hash prodotto verificati.
+LedgerP18-04-doc-gates.json con comandi/hashlog e audit consultabile.
+
+140/140DONE nel perimetro approvato, QG-8 positivo e M9raggiunta. Restano
+espliciti i limiti ratificati: CADcandidato, domini/dataset non forniti esclusi,
+DEC14soglie nondefinite, SIOCcrossrun audit-only e decisioni dati reali.
+Nessuna nuova release/tag/freeze o task di migrazione autorizzata da questa
+chiusura. Nessun blocker alla task documentale e nessunCNF aperto corrente.
+
+Git: work/p1-foundations, chiusuraCAD12f23be67; commit/push documentale finale
+nel medesimo workflow, senza force o pipeline duplicate. Workingtree atteso
+pulito dopo pubblicazione; esito effettivo verificato dopo il push.
+Prossima taskREADY: nessuna nel piano140task; NO_READY_TASK.
+Single-agent, nessun processo locale in background avviato dall'agente.

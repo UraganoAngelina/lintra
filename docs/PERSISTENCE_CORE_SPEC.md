@@ -63,3 +63,23 @@ P2: tipi per identità/sessione/namespace, schema policy. P3: `PersistencePolicy
 ## 9. Decisione residua delimitata
 
 **DEC-SIOC-HIST-01 (non bloccante per P1 e per la persistenza):** stabilire se una PK SIOC già presente in una sessione precedente debba essere accettata come ritrasmissione identica, trattata come modifica, o vietata. Fino all'approvazione: solo unicità nel singolo trace + persistenza e audit cross-run, nessun errore normativo cross-run inventato.
+
+## 10. Attuazione qualificata — 10 novembre 2026
+
+Il backend SQLite statico è qualificato in T-PERSIST-05..12; il
+[registro formati](PERSISTENCE_FORMAT_REGISTRY.md) distingue SQLite1/2/3,
+reader legacy, upgrade1→2 esplicito e fatti logici1/2. HMACv1, ACL e chiave
+esterna seguono i contratti ratificati; [operazioni](PERSISTENCE_OPERATIONS.md)
+e [bundle privato](PORTABLE_KEY_BUNDLE.md) documentano i limiti per dati reali.
+
+Il percorso snapshot library di CAD12 integra Full, regole temporali e
+history.existence.v1 generiche: Eq locale/literal e set_exists senza query
+cliniche libere. Fatti minimizzati e manifest sono autenticati e committati
+nella stessa transazione dello snapshot. La vista live applica C1/L1:
+witness annullati non provano esistenza; False richiede copertura qualificata,
+altrimenti Unknown. Inventario o prima sessione DB non provano origine normativa.
+
+Contratto e matrice: [attuazione](verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md),
+[runtime](verification/T-CAD-12-runtime-implementation.md),
+[qualifica nativa](verification/T-CAD-12-runtime-native-ci.json).
+CLI e UI audit-only conservano il proprio perimetro; CAD resta candidato.

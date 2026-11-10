@@ -32,6 +32,7 @@ il proprio significato; questa task non li modifica e non li converte in SLA.
 | SQLite locale | [Linux](verification/T-PERSIST-05-native-linux-benchmark.json), [Windows](verification/T-PERSIST-05-native-windows-benchmark.json), [accettazione](verification/T-PERSIST-05-acceptance.md) | Adapter reale con 10k/100k/300k identità, lookup indicizzato, commit, riapertura/process restart, picco del processo e contesa |
 | Modello risultati UI | [Misure T-P16-05](verification/T-P16-05-local-scrolling.json), [qualifica](verification/T-P16-05-results.md) | Dataset JSONL sintetici grandi, scorrimento/filtri/cache; resta applicabile la successiva qualifica Signature documentata nello stato di progetto |
 | Audit storico | [Contratto T-PERSIST-08](verification/T-PERSIST-08-audit.md) | Costi delle API owned e letture puntuali documentati; la qualifica funzionale in corso non costituisce un benchmark esteso dell'audit |
+| CAD83 con storico | [Misure CAD12](verification/T-CAD-12-runtime-validation.md), [ledger](verification/T-CAD-12-runtime-measurements.json) | Release Linux,100/300eventi per namespace, due namespace e sei approvazioni/reopen: p95 descrittivo759/1920ms, RSS25936/28276KiB; sei campioni per volume, nessuno SLA |
 
 Le misure appartengono alle revisioni, agli ambienti e agli scope riportati nei
 rispettivi JSON. Non sono nuove misure della revisione corrente e non promettono

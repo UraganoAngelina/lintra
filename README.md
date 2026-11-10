@@ -9,8 +9,13 @@ cross-record a due passate. I record sono byte-oriented; Decimal nel formato 2
 riguarda soltanto importi dichiarati esplicitamente. Report JSONL/XLSX/summary,
 audit degli input, progress e cancellazione mantengono distinti errori normativi,
 warning e completezza. Il core include storico locale SQLite protetto e API di
-preview/audit con approvazione separata. Policy cumulative/temporali CAD, lookup
-metadata e capacità normative non ancora compilabili restano consegne future.
+preview/audit con approvazione separata. L'ingresso library
+`HistoricalValidationService::validate_snapshot` esegue il profilo CAD a83campi,
+con piani temporali, esistenza storica qualificata, preview e approvazione atomica.
+Il [profilo CAD candidato](schemas/operational/CAD/2024-06.runtime-candidate.1/README.md)
+documenta configurazione e limiti; i [gate CAD12](docs/verification/T-CAD-12-runtime-validation.md)
+qualificano Linux e Windows. I domini normativi non forniti restano esclusi
+secondo le decisioni registrate; CAD conserva lo stato candidato.
 Il consuntivo verificato è in [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md).
 
 La CLI esegue `validate` per Trace/LocalOnly e `validate-flow` per Flow/Full;

@@ -55,9 +55,12 @@ La baseline Windows della toolchain è **Windows 10 / Windows Server 2016
 o successivi**, per x86_64 (supporto ufficiale
 [GNU](https://doc.rust-lang.org/rustc/platform-support/windows-gnu.html) e
 [MSVC](https://doc.rust-lang.org/rustc/platform-support/windows-msvc.html)).
-DEC-11 resta aperta per la strategia di distribuzione
-Linux: baseline glibc oppure musl da decidere nella relativa task di packaging;
-la configurazione locale non seleziona una baseline Linux di release.
+La decisione successiva DEC-RELEASE-SETUP-01 adotta GNU per uso Linux interno;
+la distribuzione ad altri usa Windows MSVC. L'allowlist GNU ratificata contiene
+libc.so.6, libm.so.6, ld-linux-x86-64.so.2 e libgcc_s.so.1. Non viene promessa
+compatibilità glibc universale. Contratti ed evidenze nel
+[runbook release](RUNBOOK_RELEASE.md) e nella
+[ratifica Linux](verification/CNF-ARTIFACT-LINUX-01-ratification.md).
 
 ## Fixture, golden e terminatori di riga
 

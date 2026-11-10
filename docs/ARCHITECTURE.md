@@ -1938,3 +1938,22 @@ Il context store di due passate rimane una **struttura effimera di proiezione** 
 **Privacy.** Non persistere per default i record originali o identificativi in chiaro: solo proiezioni minimizzate, identità protette e metadati indispensabili; il formato di storage e la gestione chiavi devono essere scelti con evidenze prima dell'uso reale.
 
 Il requisito modifica le precedenti voci che rinviavano il *context store persistente* oltre il progetto. Documenti attuativi: `PERSISTENCE_CORE_SPEC.md`, DET §166–174 e MASTER_IMPLEMENTATION_PLAN §20. Ulteriori aggiornamenti richiedono change control, non una modifica implicita del comportamento dei flussi congelati.
+
+## Attuazione qualificata — 10 novembre 2026, T-P18-04
+
+La persistenza generica è implementata con adapter SQLite statico ratificato,
+HMACv1 e chiave esterna; versioni e compatibilità sono nel
+[registro dei formati](PERSISTENCE_FORMAT_REGISTRY.md). Nessuna migrazione tacita.
+Il percorso snapshot library seleziona esplicitamente compiler e servizio,
+produce fatti minimi dalla stessa PASS1 e qualifica il contesto per PASS2;
+preview/review/approval impegnano atomicamente snapshot, fatti e manifest.
+L'esistenza storica usa la vista live approvata e copertura qualificata C1/L1,
+senza recuperare witness annullati o trasformare Unknown in False.
+
+Contratto adottato e matrice del codice:
+[history.existence](verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md),
+[runtime CAD12](verification/T-CAD-12-runtime-implementation.md).
+Qualifica Linux/MSVC sullo SHA d45078e: CI42641969728, sette job richiesti success.
+Il profilo CAD83 rimane candidato; la qualifica tecnica non è un nuovo freeze
+normativo. CLI/UI audit-only restano nei propri confini. Questi riferimenti
+registrano decisioni già ratificate e non modificano i contratti di questo capitolo.

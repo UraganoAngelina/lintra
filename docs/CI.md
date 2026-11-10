@@ -1,5 +1,28 @@
 # Verifiche Linux e Windows
 
+## Assetto corrente — 10 novembre 2026
+
+Il workflow `.github/workflows/ci.yml` verifica nativamente Linux GNU e Windows
+MSVC, con budget45min per runner: fmt, Clippy, test workspace default e
+allfeatures, core senza bundle, boundary, tooling, smoke benchmark, release
+riproducibile, artefatto e comandi README nelle shell native. Carica evidenze
+sintetiche; la pubblicazione di release è nel workflow separato.
+Tre job confrontano JSONL e pixel, due riaprono il database prodotto dall'altro OS.
+I sette job richiesti devono riuscire sullo stesso SHA. Packaging UI è opzionale
+e il suo skip esplicito non sostituisce alcun job richiesto.
+
+Gate CAD12: [run42641969728](https://github.com/UraganoAngelina/lintra/actions/runs/42641969728)
+su d45078e, sette success. [Dossier](verification/T-CAD-12-runtime-native-ci.json)
+con log verificati e import SQLite reali. Il precedente timeout35min è
+conservato come run non qualificata, senza ridurre controlli o cambiare runtime.
+Commit/push/CI sul branch concordato sono autorizzati da AGENTS.md; autenticazione
+e stato delle nuove run si verificano realmente, senza dedurli da gate passati.
+
+## Cronologia di bootstrap — T-P1-03
+
+Le sezioni seguenti descrivono il workflow iniziale e le sue prime evidenze.
+I limiti allora riportati non rappresentano le capacità correnti descritte sopra.
+
 T-P1-03 definisce `.github/workflows/ci.yml`: pull request, push su `main`
 e avvio manuale. Il workflow ha permesso di sola lettura dei contenuti,
 cancella le esecuzioni superate sulla stessa branch/PR e non pubblica artefatti.

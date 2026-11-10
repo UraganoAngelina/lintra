@@ -5,7 +5,7 @@ Lo stato autorevole corrente è IMPLEMENTATION_STATUS.md; nessun ordine o prereq
 è modificato. I140 ID restano quelli del piano; i prompt delle task già DONE
 restano nel kit storico. Nessuna conclusione di task impone lo stop della sessione.
 
-| Task | Stato operativo (aggiornato alla recovery) | Prompt |
+| Task | Stato operativo (qualifica finale 2026-11-10) | Prompt |
 |---|---|---|
 | T-P2-03 | DONE | [prompt](TASK_PROMPTS/T-P2-03.md) |
 | T-P15-01 | DONE | [prompt](TASK_PROMPTS/T-P15-01.md) |
@@ -33,7 +33,7 @@ restano nel kit storico. Nessuna conclusione di task impone lo stop della sessio
 | T-P18-01 | DONE | [prompt](TASK_PROMPTS/T-P18-01.md) |
 | T-P18-02 | DONE | [prompt](TASK_PROMPTS/T-P18-02.md) |
 | T-P18-03 | DONE | [prompt](TASK_PROMPTS/T-P18-03.md) |
-| T-P18-04 | NOT_STARTED | [prompt](TASK_PROMPTS/T-P18-04.md) |
+| T-P18-04 | DONE | [prompt](TASK_PROMPTS/T-P18-04.md) |
 | T-PERSIST-01 | DONE | [prompt](TASK_PROMPTS/T-PERSIST-01.md) |
 | T-PERSIST-02 | DONE | [prompt](TASK_PROMPTS/T-PERSIST-02.md) |
 | T-PERSIST-03 | DONE | [prompt](TASK_PROMPTS/T-PERSIST-03.md) |

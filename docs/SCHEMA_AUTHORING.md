@@ -697,10 +697,11 @@ confronto sui progressivi. `HistoricalAuditService::new` continua a rispettare
 può quindi risultare un aggiornamento del progressivo nel primo confronto,
 mentre il confronto sulla PK completa mantiene la propria semantica.
 
-L'integrazione del produttore Full con snapshot/temporali e la riconciliazione
-cumulativa rimangono ai rispettivi gate. I compiler ordinario e storico audit-only
-continuano a rifiutare tali profili incompleti. Nessuno schema CAD completo o
-FROZEN viene ricavato automaticamente dal componente di accettazione.
+L'integrazione Full con snapshot/temporali è qualificata da T-CAD-12 attraverso
+`compile_historical_snapshot` e `HistoricalValidationService::validate_snapshot`.
+I compiler ordinario e storico audit-only mantengono i propri rifiuti espliciti.
+Il componente resta parziale; il profilo83campi è in
+`schemas/operational/CAD/2024-06.runtime-candidate.1`, senza promozione FROZEN.
 
 Il binding viene controllato anche fra righe dello stesso candidato, dopo la
 verifica delle evidenze e prima della creazione dello snapshot. Due eventi
@@ -799,7 +800,8 @@ conservando integralmente gli obblighi. SchemaCompiler.compile e
 compile_historical_audit rimangono fail-closed sui profili snapshot combinati.
 La qualifica08 usa compile_scoped privato e il vero motore a due passate con
 fixture di componente: il produttore storico integrato e il collaudo CAD
-completo rimangono CAD12. Non rimuovere snapshot per simulare eseguibilità.
+completo sono ora qualificati da CAD12 nel percorso snapshot esplicito.
+Non rimuovere snapshot per simulare eseguibilità.
 
 Quattro join distinti zero_or_many, owner comune, input corrente e policy
 Unknown concorde. Valutazioni con consenso esplicito sulla tupla start/end/code,

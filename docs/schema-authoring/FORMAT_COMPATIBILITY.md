@@ -1,6 +1,6 @@
 # Inventario compatibilità formato / eseguibile — CNF-FORMAT-01
 
-La consegna corrente del formato 3 è descritta nell’ultima sezione T-CAD-02.
+La consegna corrente del formato 3 è descritta nell’ultima sezione di qualifica.
 Le sezioni precedenti conservano baseline ed evidenze storiche, non lo stato
 dell’eseguibile di sviluppo attuale.
 
@@ -131,3 +131,15 @@ nativa resta pendente finché il report non registra il run esatto concluso.
 Gate locali T-CAD-02 completati: fmt/Clippy, workspace default/allfeatures915test
 ciascuno, core872test, Python/boundary/tooling positivi; hash sorgenti invariati.
 CI nativa ancora pendente, nessuna qualificazione rc.3 anticipata.
+
+## Qualifica corrente — 10 novembre 2026
+
+Le sezioni precedenti sono snapshot storici. Formati supportati1/2/3;
+4..u32::MAX non assegnati. Baseline sviluppo0.1.1-rc.3; la release rc.2
+rimane immutabile e non acquisisce formato3 o capability successive.
+T-CAD-02 qualificata da CI42067927663 su5dbfc1747ca64163d110bc2192af1ca0ead0995c.
+CAD12 aggiunge l'esecutore snapshot esplicito, qualificato da
+[CI42641969728](https://github.com/UraganoAngelina/lintra/actions/runs/42641969728)
+su d45078e153ba0455774129c9832c98eb9e90b789. Il numero di formato da solo
+non seleziona tale esecutore; compiler ordinario e audit-only restano distinti.
+Nessuna release rc.3 o1.0 pubblicata da questa sincronizzazione.

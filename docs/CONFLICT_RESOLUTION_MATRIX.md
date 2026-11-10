@@ -1,5 +1,43 @@
 # Matrice di riconciliazione dei documenti Lintra
 
+## Registro corrente — T-P18-04, 10 novembre 2026
+
+Nessun CNF aperto nel perimetro implementato. La cronologia successiva conserva
+proposte e stati al momento della loro emissione; fa fede questa tabella insieme
+alle ratifiche ed evidenze collegate. Un rinvio normativo esplicito non abilita
+controlli non forniti e non costituisce un conflitto documentale.
+
+| ID | Stato corrente | Evidenza della decisione e attuazione |
+|---|---|---|
+| CNF-01..11, CNF-LINTRA-SOURCE-01, CNF-PERSIST-01 | DOCUMENTED_RESOLVED | Riconciliazione originale sotto; ARCH/DET/PLAN e ADR-PERSIST-001 |
+| CNF-ALIGNMENT-01 | ARCHIVED | [T-P6-03](verification/T-P6-03.md), solo logical; contratto fisico escluso per mandato finale |
+| CNF-ARTIFACT-LINUX-01 | RESOLVED | [Ratifica](verification/CNF-ARTIFACT-LINUX-01-ratification.md), allowlist qualificata da gate artifact successivi |
+| CNF-AUDIT-01 | RESOLVED | [T-P5-05](verification/T-P5-05.md), audit EOF/overflow/cancel; CI39399359949 |
+| CNF-BUNDLE-AUDIT-01 | RESOLVED | [Ratifica](verification/CNF-BUNDLE-AUDIT-01-ratification.md), manifest esterno opzionale e null esplicito |
+| CNF-CAD-NAMESPACE-BINDING-01 | RESOLVED | [Ratifica](verification/CNF-CAD-NAMESPACE-BINDING-01-ratification.md), [CAD02](verification/T-CAD-02-implementation.md), CI42067927663 |
+| CNF-COMPILER-01 | RESOLVED | [Contratto incrementale](verification/T-P3-05-preflight.md), rifiuto costrutti esclusi; capability successive qualificate dalle proprie task |
+| CNF-DIAGNOSTIC-ORDER-01 | RESOLVED | [Audit e chiusura](verification/CNF-DIAGNOSTIC-ORDER-01.md), CI42530063288, ordine per passata invariato |
+| CNF-DOMAIN-01 | RESOLVED | [Chiusura T-P2-03](verification/T-P2-03-completion.md), CI40515191339, M1 senza residui |
+| CNF-FORMAT-01 | RESOLVED | [Mappa corrente](schema-authoring/FORMAT_COMPATIBILITY.md), formati1/2/3, capability ed esecutori espliciti |
+| CNF-LINTRA-DSL-01 | RESOLVED | [Ratifiche normative](normative/DECISIONS.md), [T-P0-07](verification/T-P0-07.md), estensioni circoscritte approvate |
+| CNF-RECORD-01 | RESOLVED | [T-P6-08](verification/T-P6-08.md), validità locale esplicita; Full qualificato successivamente |
+| CNF-REFERENCE-FORMAT-01 | RESOLVED | [Ratifica](verification/CNF-REFERENCE-FORMAT-01-ratification.md), Verified/Degraded/Unavailable e Strict/Continue espliciti |
+| CNF-RUN-SCOPE-01 | RESOLVED | [T-P7-04](verification/T-P7-04.md), mode esplicita dalla request e serializzazione verificata |
+| CNF-SERVICE-DI-01 | RESOLVED | [T-P7-05](verification/T-P7-05.md), DI reale ed handle non forgiabili; ingressi successivi espliciti |
+| CNF-SIOC-REFERENTIAL-G0-01 | RESOLVED | [Ratifica](verification/CNF-SIOC-REFERENTIAL-G0-01-ratification.md), T-P13-08/CI40192491629 e revisione operativa .2 |
+
+ADR-HISTORY-EXISTENCE-001, C1 e L1 sono ratificate e implementate in CAD12:
+[contratto](verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md),
+[gate finale](verification/T-CAD-12-runtime-native-ci.json).
+DEC-17 esito D: prototipo non adottato, runtime sequenziale;
+[ratifica conclusiva](verification/DEC-17-final-ratification.md).
+DEC-14 resta soglie non definite con motivo, come ammesso dal piano;
+DEC-SIOC-HIST-01 resta audit-only, senza nuovo errore normativo cross-run.
+Le altre esclusioni G0 e le decisioni prima dell'uso di dati reali sono nei
+rispettivi profili/runbook. Nessun consenso o supporto aggiuntivo inferito.
+
+## Cronologia della riconciliazione
+
 **Data approvazione:** 2026-10-16 · **Ambito:** precedenti conflitti tra piano, ARCH, DET e persistency CAD. La risoluzione è **documentale**: compilazione e test Rust rimangono per le task successive.
 
 | ID | Incongruenza | Risoluzione nel pacchetto | Stato |

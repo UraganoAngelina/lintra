@@ -1,9 +1,13 @@
-> Aggiornamento 9 novembre 2026: le limitazioni operative alla sola specifica e
+> Aggiornamento 10 novembre 2026: CAD12 implementata e qualificata dalla
+> [CI42641969728](https://github.com/UraganoAngelina/lintra/actions/runs/42641969728)
+> su d45078e; sette job richiesti positivi. Le limitazioni operative alla sola specifica e
 > i punti decisionali di questo documento conservano il contesto della prima
 > proposta. La ratifica implementativa sostitutiva, C1 e L1 li superano nei punti
 > esplicitamente ratificati. Contratto adottato e codice corrente sono descritti
 > in [implementation-contract](verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md)
-> e [report storage](verification/T-CAD-12-history-storage.md). Nessun DONE implicito.
+> e [report runtime](verification/T-CAD-12-runtime-implementation.md).
+> Le sezioni sottostanti sono l'analisi storica dell'8 novembre: non descrivono
+> lo stato eseguibile attuale né introducono ulteriori gate di approvazione.
 
 # HISTORY_EXISTENCE_SPEC — contratto attuativo proposto v1
 

@@ -1,0 +1,507 @@
+{
+  "task": "T-P18-04",
+  "date": "2026-11-10",
+  "base_runtime_commit": "d45078e153ba0455774129c9832c98eb9e90b789",
+  "required_native_gate": 42641969728,
+  "cnf_ids_found": [
+    "CNF-01",
+    "CNF-02",
+    "CNF-03",
+    "CNF-04",
+    "CNF-05",
+    "CNF-06",
+    "CNF-07",
+    "CNF-08",
+    "CNF-09",
+    "CNF-10",
+    "CNF-11",
+    "CNF-ALIGNMENT-01",
+    "CNF-ARTIFACT-LINUX-01",
+    "CNF-AUDIT-01",
+    "CNF-BUNDLE-AUDIT-01",
+    "CNF-CAD-NAMESPACE-BINDING-01",
+    "CNF-COMPILER-01",
+    "CNF-DIAGNOSTIC-ORDER-01",
+    "CNF-DOMAIN-01",
+    "CNF-FORMAT-01",
+    "CNF-LINTRA-DSL-01",
+    "CNF-LINTRA-SOURCE-01",
+    "CNF-PERSIST-01",
+    "CNF-RECORD-01",
+    "CNF-REFERENCE-FORMAT-01",
+    "CNF-RUN-SCOPE-01",
+    "CNF-SERVICE-DI-01",
+    "CNF-SIOC-REFERENTIAL-G0-01"
+  ],
+  "cnf_ids_covered": [
+    "CNF-01",
+    "CNF-02",
+    "CNF-03",
+    "CNF-04",
+    "CNF-05",
+    "CNF-06",
+    "CNF-07",
+    "CNF-08",
+    "CNF-09",
+    "CNF-10",
+    "CNF-11",
+    "CNF-ALIGNMENT-01",
+    "CNF-ARTIFACT-LINUX-01",
+    "CNF-AUDIT-01",
+    "CNF-BUNDLE-AUDIT-01",
+    "CNF-CAD-NAMESPACE-BINDING-01",
+    "CNF-COMPILER-01",
+    "CNF-DIAGNOSTIC-ORDER-01",
+    "CNF-DOMAIN-01",
+    "CNF-FORMAT-01",
+    "CNF-LINTRA-DSL-01",
+    "CNF-LINTRA-SOURCE-01",
+    "CNF-PERSIST-01",
+    "CNF-RECORD-01",
+    "CNF-REFERENCE-FORMAT-01",
+    "CNF-RUN-SCOPE-01",
+    "CNF-SERVICE-DI-01",
+    "CNF-SIOC-REFERENTIAL-G0-01"
+  ],
+  "uncovered_cnf_ids": [],
+  "current_open_cnf_ids": [],
+  "readme_quickstart_blocks_unchanged": true,
+  "new_local_links_verified": [
+    {
+      "file": "ATOMIC_TASKS_INDEX.md",
+      "target": "TASK_PROMPTS/T-P18-04.md"
+    },
+    {
+      "file": "README.md",
+      "target": "schemas/operational/CAD/2024-06.runtime-candidate.1/README.md"
+    },
+    {
+      "file": "README.md",
+      "target": "docs/verification/T-CAD-12-runtime-validation.md"
+    },
+    {
+      "file": "docs/ARCHITECTURE.md",
+      "target": "PERSISTENCE_FORMAT_REGISTRY.md"
+    },
+    {
+      "file": "docs/ARCHITECTURE.md",
+      "target": "verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md"
+    },
+    {
+      "file": "docs/ARCHITECTURE.md",
+      "target": "verification/T-CAD-12-runtime-implementation.md"
+    },
+    {
+      "file": "docs/CI.md",
+      "target": "verification/T-CAD-12-runtime-native-ci.json"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P6-03.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/CNF-ARTIFACT-LINUX-01-ratification.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P5-05.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/CNF-BUNDLE-AUDIT-01-ratification.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/CNF-CAD-NAMESPACE-BINDING-01-ratification.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-CAD-02-implementation.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P3-05-preflight.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/CNF-DIAGNOSTIC-ORDER-01.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P2-03-completion.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "schema-authoring/FORMAT_COMPATIBILITY.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "normative/DECISIONS.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P0-07.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P6-08.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/CNF-REFERENCE-FORMAT-01-ratification.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P7-04.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P7-05.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/CNF-SIOC-REFERENTIAL-G0-01-ratification.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-CAD-12-runtime-native-ci.json"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/DEC-17-final-ratification.md"
+    },
+    {
+      "file": "docs/DETAILED_DESIGN.md",
+      "target": "verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md"
+    },
+    {
+      "file": "docs/DETAILED_DESIGN.md",
+      "target": "verification/T-CAD-12-runtime-implementation.md"
+    },
+    {
+      "file": "docs/DETAILED_DESIGN.md",
+      "target": "verification/T-CAD-12-runtime-native-ci.json"
+    },
+    {
+      "file": "docs/DEVELOPMENT.md",
+      "target": "RUNBOOK_RELEASE.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT.md",
+      "target": "verification/CNF-ARTIFACT-LINUX-01-ratification.md"
+    },
+    {
+      "file": "docs/HISTORY_EXISTENCE_SPEC.md",
+      "target": "verification/T-CAD-12-runtime-implementation.md"
+    },
+    {
+      "file": "docs/PERFORMANCE.md",
+      "target": "verification/T-CAD-12-runtime-validation.md"
+    },
+    {
+      "file": "docs/PERFORMANCE.md",
+      "target": "verification/T-CAD-12-runtime-measurements.json"
+    },
+    {
+      "file": "docs/PERSISTENCE_CORE_SPEC.md",
+      "target": "PERSISTENCE_FORMAT_REGISTRY.md"
+    },
+    {
+      "file": "docs/PERSISTENCE_CORE_SPEC.md",
+      "target": "PERSISTENCE_OPERATIONS.md"
+    },
+    {
+      "file": "docs/PERSISTENCE_CORE_SPEC.md",
+      "target": "PORTABLE_KEY_BUNDLE.md"
+    },
+    {
+      "file": "docs/PERSISTENCE_CORE_SPEC.md",
+      "target": "verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md"
+    },
+    {
+      "file": "docs/PERSISTENCE_CORE_SPEC.md",
+      "target": "verification/T-CAD-12-runtime-implementation.md"
+    },
+    {
+      "file": "docs/PERSISTENCE_CORE_SPEC.md",
+      "target": "verification/T-CAD-12-runtime-native-ci.json"
+    },
+    {
+      "file": "docs/PERSISTENCE_FORMAT_REGISTRY.md",
+      "target": "verification/T-CAD-12-runtime-native-ci.json"
+    }
+  ],
+  "product_inputs_unchanged": true,
+  "documentation_only_changed_paths": [
+    "ATOMIC_TASKS_INDEX.md",
+    "IMPLEMENTATION_STATUS.md",
+    "README.md",
+    "docs/ARCHITECTURE.md",
+    "docs/CI.md",
+    "docs/CONFLICT_RESOLUTION_MATRIX.md",
+    "docs/DETAILED_DESIGN.md",
+    "docs/DEVELOPMENT.md",
+    "docs/HISTORY_EXISTENCE_SPEC.md",
+    "docs/PERFORMANCE.md",
+    "docs/PERSISTENCE_CORE_SPEC.md",
+    "docs/PERSISTENCE_FORMAT_REGISTRY.md",
+    "docs/SCHEMA_AUTHORING.md",
+    "docs/migration/SLINT_TO_TAURI2_PREFLIGHT_REPORT.md",
+    "docs/schema-authoring/FORMAT_COMPATIBILITY.md",
+    "docs/verification/T-CAD-12-execution-progress.md",
+    "docs/verification/T-CAD-12-runtime-native-ci.json",
+    "docs/verification/T-CAD-12-runtime-native-imports/x86_64-pc-windows-msvc.json",
+    "docs/verification/T-CAD-12-runtime-native-imports/x86_64-unknown-linux-gnu.json",
+    "docs/verification/T-CAD-12-runtime-validation.md"
+  ],
+  "migration_preserved": true,
+  "commands": [
+    {
+      "command": "cargo fmt --all -- --check",
+      "exit_code": 0,
+      "evidence": "tool completion; no output"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --all-features --locked -- -D warnings",
+      "exit_code": 0,
+      "log_path": "/tmp/lintra-p18-04-clippy.log",
+      "log_bytes": 219,
+      "log_sha256": "2cf9da0ce95b88d9a21b654fd641f026fcee9a11c7b7282928c2c327f16c0dd2"
+    },
+    {
+      "command": "cargo test --workspace --locked",
+      "exit_code": 0,
+      "log_path": "/tmp/lintra-p18-04-tests.log",
+      "log_bytes": 116536,
+      "log_sha256": "61cea8f58dea67f62e238f5a08daab98614ea6524d57c51bc47a659bdefeefa0"
+    },
+    {
+      "command": "python -m unittest discover -s scripts/tests -v",
+      "exit_code": 0,
+      "log_path": "/tmp/lintra-p18-04-python.log",
+      "log_bytes": 3919,
+      "log_sha256": "3119e8fb631f84b5a50e693b796738d314584140823c833caa53e49bda4373c2"
+    },
+    {
+      "command": "python scripts/check_workspace.py",
+      "exit_code": 0,
+      "log_path": "/tmp/lintra-p18-04-boundary.log",
+      "log_bytes": 60,
+      "log_sha256": "543f99a43ae7d8053aa12a0a77a5812330aea73b2e5f9186f309b986881bf84f"
+    }
+  ],
+  "workspace_summary": {
+    "summary_count": 124,
+    "passed_outcomes": 1059,
+    "failed": 0,
+    "ignored": 7,
+    "note": "Sum of suite/subprocess summaries; not a count of unique tests."
+  },
+  "python_tests_passed": 24,
+  "quality_gate": "QG-8 PASSED",
+  "task_status": "DONE",
+  "milestone": "M9 reached in approved scope; no release publication or CAD freeze",
+  "final_task_changed_paths": [
+    "ATOMIC_TASKS_INDEX.md",
+    "IMPLEMENTATION_STATUS.md",
+    "README.md",
+    "docs/ARCHITECTURE.md",
+    "docs/CI.md",
+    "docs/CONFLICT_RESOLUTION_MATRIX.md",
+    "docs/DETAILED_DESIGN.md",
+    "docs/DEVELOPMENT.md",
+    "docs/HISTORY_EXISTENCE_SPEC.md",
+    "docs/PERFORMANCE.md",
+    "docs/PERSISTENCE_CORE_SPEC.md",
+    "docs/PERSISTENCE_FORMAT_REGISTRY.md",
+    "docs/SCHEMA_AUTHORING.md",
+    "docs/schema-authoring/FORMAT_COMPATIBILITY.md",
+    "docs/verification/T-P18-04-doc-gates.json",
+    "docs/verification/T-P18-04-document-sync.md"
+  ],
+  "final_new_local_links_verified": [
+    {
+      "file": "ATOMIC_TASKS_INDEX.md",
+      "target": "TASK_PROMPTS/T-P18-04.md"
+    },
+    {
+      "file": "README.md",
+      "target": "schemas/operational/CAD/2024-06.runtime-candidate.1/README.md"
+    },
+    {
+      "file": "README.md",
+      "target": "docs/verification/T-CAD-12-runtime-validation.md"
+    },
+    {
+      "file": "docs/ARCHITECTURE.md",
+      "target": "PERSISTENCE_FORMAT_REGISTRY.md"
+    },
+    {
+      "file": "docs/ARCHITECTURE.md",
+      "target": "verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md"
+    },
+    {
+      "file": "docs/ARCHITECTURE.md",
+      "target": "verification/T-CAD-12-runtime-implementation.md"
+    },
+    {
+      "file": "docs/CI.md",
+      "target": "verification/T-CAD-12-runtime-native-ci.json"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P6-03.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/CNF-ARTIFACT-LINUX-01-ratification.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P5-05.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/CNF-BUNDLE-AUDIT-01-ratification.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/CNF-CAD-NAMESPACE-BINDING-01-ratification.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-CAD-02-implementation.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P3-05-preflight.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/CNF-DIAGNOSTIC-ORDER-01.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P2-03-completion.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "schema-authoring/FORMAT_COMPATIBILITY.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "normative/DECISIONS.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P0-07.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P6-08.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/CNF-REFERENCE-FORMAT-01-ratification.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P7-04.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-P7-05.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/CNF-SIOC-REFERENTIAL-G0-01-ratification.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/T-CAD-12-runtime-native-ci.json"
+    },
+    {
+      "file": "docs/CONFLICT_RESOLUTION_MATRIX.md",
+      "target": "verification/DEC-17-final-ratification.md"
+    },
+    {
+      "file": "docs/DETAILED_DESIGN.md",
+      "target": "verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md"
+    },
+    {
+      "file": "docs/DETAILED_DESIGN.md",
+      "target": "verification/T-CAD-12-runtime-implementation.md"
+    },
+    {
+      "file": "docs/DETAILED_DESIGN.md",
+      "target": "verification/T-CAD-12-runtime-native-ci.json"
+    },
+    {
+      "file": "docs/DEVELOPMENT.md",
+      "target": "RUNBOOK_RELEASE.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT.md",
+      "target": "verification/CNF-ARTIFACT-LINUX-01-ratification.md"
+    },
+    {
+      "file": "docs/HISTORY_EXISTENCE_SPEC.md",
+      "target": "verification/T-CAD-12-runtime-implementation.md"
+    },
+    {
+      "file": "docs/PERFORMANCE.md",
+      "target": "verification/T-CAD-12-runtime-validation.md"
+    },
+    {
+      "file": "docs/PERFORMANCE.md",
+      "target": "verification/T-CAD-12-runtime-measurements.json"
+    },
+    {
+      "file": "docs/PERSISTENCE_CORE_SPEC.md",
+      "target": "PERSISTENCE_FORMAT_REGISTRY.md"
+    },
+    {
+      "file": "docs/PERSISTENCE_CORE_SPEC.md",
+      "target": "PERSISTENCE_OPERATIONS.md"
+    },
+    {
+      "file": "docs/PERSISTENCE_CORE_SPEC.md",
+      "target": "PORTABLE_KEY_BUNDLE.md"
+    },
+    {
+      "file": "docs/PERSISTENCE_CORE_SPEC.md",
+      "target": "verification/ADR-HISTORY-EXISTENCE-001-implementation-contract.md"
+    },
+    {
+      "file": "docs/PERSISTENCE_CORE_SPEC.md",
+      "target": "verification/T-CAD-12-runtime-implementation.md"
+    },
+    {
+      "file": "docs/PERSISTENCE_CORE_SPEC.md",
+      "target": "verification/T-CAD-12-runtime-native-ci.json"
+    },
+    {
+      "file": "docs/PERSISTENCE_FORMAT_REGISTRY.md",
+      "target": "verification/T-CAD-12-runtime-native-ci.json"
+    }
+  ],
+  "runtime_input_manifest_count": 504,
+  "runtime_input_differences": [
+    ".github/workflows/ci.yml"
+  ],
+  "runtime_workflow_difference_already_qualified": true,
+  "git_diff_check_exit": 0,
+  "final_audit": "PASS",
+  "unupdated_documents_in_approved_scope": [],
+  "next_ready_task": null,
+  "continuation_status": "NO_READY_TASK"
+}
