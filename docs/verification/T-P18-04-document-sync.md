@@ -80,3 +80,10 @@ Nessuna ulteriore task READY; manutenzione o nuove estensioni richiedono un
 perimetro distinto. Limiti G0, dati reali, soglie non definite e audit-only SIOC
 rimangono espliciti. Git: commit/push sul branch concordato, senza force;
 nessuna nuovaCI nativa per documentazione e sorgenti prodotto invariati.
+
+
+Pubblicazione effettiva verificata: c6aa6e024bb7f8d8f5830bb107bd2bb76033dd2b
+su origin/work/p1-foundations, push exit0. HEAD e tracking remoto identici;
+working tree pulita dopo il push, prima di questa attestazione documentale.
+Chiusura CAD12 f23be67 inclusa. Nessuna run duplicata, release o tag creati.
+Stato finale DONE/QG-8/M9,140/140; NO_READY_TASK nel piano corrente.

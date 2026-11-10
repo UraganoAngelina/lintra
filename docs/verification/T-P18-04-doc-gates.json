@@ -503,5 +503,13 @@
   "final_audit": "PASS",
   "unupdated_documents_in_approved_scope": [],
   "next_ready_task": null,
-  "continuation_status": "NO_READY_TASK"
+  "continuation_status": "NO_READY_TASK",
+  "publication": {
+    "branch": "work/p1-foundations",
+    "published_commit": "c6aa6e024bb7f8d8f5830bb107bd2bb76033dd2b",
+    "origin_tracking_commit_verified": "c6aa6e024bb7f8d8f5830bb107bd2bb76033dd2b",
+    "push_exit_code": 0,
+    "working_tree_clean_after_push": true,
+    "verification_point": "after publishing completion, before recording this attestation"
+  }
 }

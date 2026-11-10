@@ -7085,3 +7085,10 @@ nel medesimo workflow, senza force o pipeline duplicate. Workingtree atteso
 pulito dopo pubblicazione; esito effettivo verificato dopo il push.
 Prossima taskREADY: nessuna nel piano140task; NO_READY_TASK.
 Single-agent, nessun processo locale in background avviato dall'agente.
+
+
+Pubblicazione effettiva verificata: c6aa6e024bb7f8d8f5830bb107bd2bb76033dd2b
+su origin/work/p1-foundations, push exit0. HEAD e tracking remoto identici;
+working tree pulita dopo il push, prima di questa attestazione documentale.
+Chiusura CAD12 f23be67 inclusa. Nessuna run duplicata, release o tag creati.
+Stato finale DONE/QG-8/M9,140/140; NO_READY_TASK nel piano corrente.
