@@ -1,0 +1,27 @@
+{
+  "task": "U-FIX-05",
+  "captured_utc": "2026-11-10T13:58:54.537275+00:00",
+  "head": "539b9bcb6a4e00de5bf2b525918e7c9595a7a8ec",
+  "original_audit_plan": {
+    "path": "docs/unified-post-m9/FONTI/RETROSPECTIVE_ENGINEERING_AUDIT_ORIGINAL.md",
+    "sha256": "e8d1e999b20a65d9f58b66a7e0058087d2e28359820dd55b2cfd7aa5154e81b7",
+    "lines": 112
+  },
+  "historical_pasted_mandate": {
+    "sha256": "24fc3db2b9129a0f2b02202d8c440802806a7c39af9562a7adef348f8afc09f7",
+    "verified_against_recorded_attachment": true,
+    "lines": 970,
+    "relation": "Expanded mandate; not byte-identical to shorter original source; semantic comparison in dossier"
+  },
+  "explicit_test_environment": {
+    "LINTRA_SIOC_XLSX": "/home/alberto/Desktop/LINTRA/lintra/schemas/xlsx/SIOC_tracciato_regionale_20260420-definitivo_v05.xlsx",
+    "LINTRA_XLSX_PROBE_ROWS": "10000"
+  },
+  "workbook_sha256": "6be8ae60a2c236e5a25b731365b42f8e7bca849066d68747abfc78b92ce273e3",
+  "oracle": "Production import test asserts this exact source_sha256, 135 fields, 130 cached formulas, 8 note updates; no normative behavior invented",
+  "native_budget_run": {
+    "id": 42829144043,
+    "head": "539b9bcb6a4e00de5bf2b525918e7c9595a7a8ec",
+    "status": "PENDING; started, not qualified"
+  }
+}
