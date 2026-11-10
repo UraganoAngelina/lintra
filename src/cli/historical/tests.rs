@@ -92,7 +92,8 @@ impl Fixture {
             ("--schema-dir", self.path("data/schemas").into_os_string()),
             (
                 "--reference-data-dir",
-                self.path("private bundle/trusted-test-references").into_os_string(),
+                self.path("private bundle/trusted-test-references")
+                    .into_os_string(),
             ),
             ("--key-id", "synthetic-distribution".into()),
             (
