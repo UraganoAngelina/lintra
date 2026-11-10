@@ -1,0 +1,16 @@
+{
+  "run": 42823787199,
+  "head": "4c169cdde7ef126475327ed0ea5bcadf0693395a",
+  "log_sha256": "31d572dd080b9810341ffc6da62364cb3644b05643140d5fe463f4cf5a6a0a8a",
+  "regression_passes_by_native_os": {
+    "x86_64-unknown-linux-gnu": {
+      "audit_generation_read_is_coherent_across_concurrent_publication": 3,
+      "audit_identity_lookup_rejects_dangling_latest": 3
+    },
+    "x86_64-pc-windows-msvc": {
+      "audit_generation_read_is_coherent_across_concurrent_publication": 3,
+      "audit_identity_lookup_rejects_dangling_latest": 3
+    }
+  },
+  "captured_utc": "2026-11-10T13:56:00.093050+00:00"
+}

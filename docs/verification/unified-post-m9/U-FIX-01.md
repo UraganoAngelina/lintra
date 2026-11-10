@@ -1,7 +1,7 @@
 # U-FIX-01 — Conservazione delle regressioni SQLite
 
 Data: 2026-11-10, Europe/Rome. Prerequisito U-GOV-01 `8e6bc55`.
-Stato: **WAITING_GATE**, locale PASS, nuova CI nativa pendente.
+Stato: **DONE**. Locale e CI nativa nuovi verificati.
 
 ## Contratto e prova
 
@@ -33,3 +33,14 @@ CI42789338814 è soltanto baseline storica e non sostituisce questo gate.
 Il delta della task è dossier/JSON/log/stato, non codice di prodotto.
 G-HARD aggregato ancora NOT_VERIFIED. SHA dossier nella cronologia Git.
 In attesa remota proseguire sequenzialmente con U-FIX-02 indipendente.
+
+## Chiusura nativa
+
+CI42823787199 completed/success sullo SHA esatto 4c169cd: sette job richiesti
+positivi, packaging UI opzionale skipped. Metadata in U-FIX-01-native-final.json;
+log completo gzip e digest in U-FIX-01-native-log-check.json. Entrambe le
+regressioni risultano effettivamente passate almeno tre volte per OS
+(standard/all-features/core senza bundle), non solo dedotte dal job verde.
+I due import reciproci SQLite sono positivi. Nessun nuovo delta SQLite.
+La CI qualifica questa baseline; il successivo codice budget 4864c34 richiede
+una propria CI. G-HARD aggregato resta NOT_VERIFIED. Next READY U-FIX-05.
