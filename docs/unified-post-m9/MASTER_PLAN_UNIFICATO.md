@@ -1,4 +1,17 @@
 # LINTRA — MASTER PLAN UNIFICATO v1.0 — DECISIONI D01–D15 RATIFICATE
+
+> **Addendum vigente DEC-SIOC-HIST-02-A01 — 10 novembre 2026.**
+> [Decisione](../normative/DEC-SIOC-HIST-02-A01.md): per SIOC1–3 la
+> ricopertura identica del cumulato approvato pertinente è ammessa; una PK
+> pregressa con contenuto diverso è rifiutata. Verificare omissioni, periodo,
+> completezza e namespace; Unknown quando la prova manca. Per4.1 la PK è
+> **(4.1,4.7,4.8,4.19.1)**: rifiutare duplicati intra-invio e riuso tra
+> invii diversi anche con contenuto identico, con violazione in seconda passata
+> e scarto dall'insieme valido. Replay idempotente della stessa sessione
+> approvata resta distinto da un nuovo invio. Nessuna estensione della
+> ricopertura a4.1/4.2/CAD. I16 scenari sintetici dell'addendum sono obbligatori.
+> Il testo ricevuto v1.0 è conservato in `history/received-2026-11-10`.
+
 ## Hardening post-M9 · SIOC cross-run · React/TypeScript/Tauri 2 · CAD storico · distribuzione interna
 
 **Decisione dell'autore:** 10 novembre 2026, ratifica puntuale D01–D15 nel messaggio che accompagna questo piano.  

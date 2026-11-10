@@ -48,3 +48,21 @@ U-NORM-03/04 dipendono dalla chiusura di05: non aggirarne il prerequisito con un
 DONE fittizio. Continuare le task indipendenti U-UI-01 e U-OPS applicabili.
 Nessun test/CI runtime nuovo per questa analisi; source hash/celle verificati.
 File: DEC aggiornata con fonte, source matrix, dossier e stato. SHA in Git.
+
+## Risoluzione successiva dell'autore — 10 novembre 2026
+
+**Stato attuale: DONE (decisione e fonti); implementazione U-NORM-03/04 aperta.**
+La precedente analisi BLOCKED resta sopra come storia della domanda. Le risposte
+sono ora recepite in [DEC-SIOC-HIST-02-A01](../../normative/DEC-SIOC-HIST-02-A01.md).
+L'autore autorizza ricopertura identica1–3, rifiuto del contenuto diverso,
+verifica omissioni e baseline approvata pertinente, Unknown se non qualificata.
+Conferma rifiuto anche fra invii diversi per4.1, inclusi aggiornamenti della
+stessa UDO; la PK definitiva include4.19.1: (4.1,4.7,4.8,4.19.1). La proposta
+intermedia a tre campi è superata, nessuna modifica delle chiavi legacy.
+
+Consegna: decision register, addendum con cinque classificazioni e16 scenari,
+matrice fonte aggiornata, master attivo e prompt03/04/05 annotati. Originali
+ricevuti archiviati con hash invariati e manifest aggiornato; kit autore intatto.
+Verifica locale: scripts/check_unified_plan.py e git diff --check. SHA nel commit
+che contiene questa risoluzione. Nessuna CI runtime attribuita a questo delta
+documentale. G-SIOC0 documentale PASS; G-SIOC1 NOT_VERIFIED. Next READY: U-NORM-03.

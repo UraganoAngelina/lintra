@@ -68,6 +68,15 @@ def check(root: Path) -> dict:
             data = text.replace(after, before).encode()
         assert hashlib.sha256(data).hexdigest() == item["source_sha256"], item
 
+    # Later author decisions amend active documents while original received
+    # bytes remain verified above at archived paths. Never rewrite provenance.
+    addenda = manifest.get("ratified_addenda", [])
+    assert len({item["id"] for item in addenda}) == len(addenda)
+    for item in addenda:
+        assert item["authority"] and (root / item["decision_path"]).is_file()
+        for path in item["amended_paths"]:
+            assert item["id"] in (root / path).read_text(), path
+
     done = []
     for line in (root / "UNIFIED_IMPLEMENTATION_STATUS.md").read_text().splitlines():
         cells = [cell.strip() for cell in line.strip("|").split("|")]

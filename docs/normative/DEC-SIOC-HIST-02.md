@@ -8,6 +8,14 @@ Fonte della decisione: messaggio utente «PROMPT ZERO AGENTE — LINTRA POST-M9
 UNIFICATO · RATIFICA 10/11/2026», D11 e master unificato §1/§3.
 [Atto di recepimento](../unified-post-m9/RATIFICATION_2026-11-10.md).
 
+## Interpretazione vigente
+
+L'autore ha risolto le ambiguità sottostanti: è vincolante
+[DEC-SIOC-HIST-02-A01](DEC-SIOC-HIST-02-A01.md). La ricopertura identica1–3
+è lecita;4.1 mantiene la PK a quattro campi e vieta il riuso fra nuovi invii.
+La sezione finale conserva la situazione precedente alla risposta dell'autore,
+non una richiesta ancora pendente. Implementazione/collaudo restano separati.
+
 ## Supersessione prospettica
 
 DEC-SIOC-HIST-01 resta la policy storica di sola osservazione per i profili

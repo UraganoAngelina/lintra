@@ -35,7 +35,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-NORM-02 | U-NORM-01 | DONE | [Freeze dataset D12](docs/verification/unified-post-m9/U-NORM-02.md) | Otto fonti con hash/versioni;12 assenze SIOC dichiarate definitive; nessun sourcing o delta runtime | Acceptance inventario PASS; G-SIOC0/1 NOT_VERIFIED |
 | U-NORM-03 | U-NORM-01, U-NORM-02, U-NORM-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-03.md) | —; Non eseguite | G-SIOC1 NOT_VERIFIED |
 | U-NORM-04 | U-NORM-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-04.md) | —; Non eseguite | G-SIOC1 NOT_VERIFIED |
-| U-NORM-05 | U-NORM-01 | BLOCKED | [C20 ricopertura e C18 aggiornamento UDO](docs/verification/unified-post-m9/U-NORM-05.md) | Workbook SHA/celle verificate; D11 resta ratificato | Solo classificazione ricopertura/aggiornamento richiede decisione; G-SIOC0/1 NOT_VERIFIED |
+| U-NORM-05 | U-NORM-01 | DONE | [Addendum autore e oracle](docs/verification/unified-post-m9/U-NORM-05.md) | DEC-SIOC-HIST-02-A01; fonte C20/C18 e PK4.19.1 confermata; check piano locale | G-SIOC0 documentale PASS; G-SIOC1 NOT_VERIFIED |
 | U-UI-01 | U-GOV-04 | DONE | [Ponte 89 MIG/post-audit](docs/verification/unified-post-m9/U-UI-01.md) | Overlay master §6, sorgenti76fa08a distinti dalla HEAD/CI; controlli grafo/documenti | Acceptance ponte PASS; G-MIG-0 NOT_VERIFIED |
 | U-UI-02 | T-MIG-P9-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-UI-02.md) | —; Non eseguite | G-MIG-9 NOT_VERIFIED |
 | U-CAD-01 | U-UI-02, U-OPS-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-01.md) | —; Non eseguite | G-CADUI0 NOT_VERIFIED |
@@ -142,9 +142,8 @@ CI audit non qualifica alcun nuovo delta runtime.
 | T-MIG-P9-07 | T-MIG-P9-01, T-MIG-P9-02, T-MIG-P9-03, T-MIG-P9-04, T-MIG-P9-05, T-MIG-P9-06, T-MIG-P9-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-07.md) | —; Non eseguite | G-MIG-9 NOT_VERIFIED |
 | T-MIG-P9-08 | T-MIG-P9-01, T-MIG-P7-09 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-08.md) | —; Non eseguite | G-MIG-9 NOT_VERIFIED |
 
-U-FIX-03 WAITING_GATE nativo; U-FIX-01 DONE con nuova CI e log verificati.
 U-FIX-03 DONE con CI propria; U-FIX-04 WAITING_GATE nativo, nessun gate ereditato.
-U-NORM-05: decisione circoscritta richiesta, U-NORM-03/04 dipendenti non READY.
+U-NORM-05 DONE: addendum cumulativo e PK4.1 completa ratificati; next READY U-NORM-03, poi04.
 T-MIG-P0-01 WAITING_GATE CI42834962873; nessun P0-02 o scaffold avviato prima del gate.
 Next READY indipendente: **U-OPS-07**; baseline MIG attende CI42834962873. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile

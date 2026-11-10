@@ -14,12 +14,19 @@
     "xl/worksheets/sheet2.xml:H82": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016).",
     "xl/worksheets/sheet2.xml:H151": "Il valore viene usato per rilevare se l'atto:\n1. E' emesso per la prima volta\n2. Modifica atto precedente integrando numero posti (in questo caso indicare nel campo XX solo il numero di posti aggiunti)\n3. Revoca atto precedente definendo un nuovo totale dei posti\n4. Rinnova atto precedente senza modificare contenuto\n5. Modifica atto precedente senza variazioni del numero di posti (es. per variazioni EG, per variazioni di sede)"
   },
-  "decision_status": "D11 binding; operational distinction for recopy/new transmission unresolved",
-  "scoped_blockers": [
+  "decision_status": "Resolved by author: DEC-SIOC-HIST-02-A01; implementation pending",
+  "no_default_exception": true,
+  "legacy_artifacts_unchanged": true,
+  "independent_work_may_continue": true,
+  "historical_scoped_blockers": [
     "Traces1-3 mandatory year-to-date ricopertura may repeat accepted PKs in physical files",
     "Trace4.1 update may preserve a UDO PK while its attributes change"
   ],
-  "no_default_exception": true,
-  "legacy_artifacts_unchanged": true,
-  "independent_work_may_continue": true
+  "scoped_blockers": [],
+  "trace_4_1_pk": [
+    "4.1",
+    "4.7",
+    "4.8",
+    "4.19.1"
+  ]
 }

@@ -47,7 +47,7 @@
     {
       "source": "MASTER_PLAN_UNIFICATO.md",
       "source_sha256": "3e8598bdcbcc53dbea31e60425237a496df034a7031093cb34a156e517071910",
-      "repository_path": "docs/unified-post-m9/MASTER_PLAN_UNIFICATO.md"
+      "repository_path": "docs/unified-post-m9/history/received-2026-11-10/MASTER_PLAN_UNIFICATO.md"
     },
     {
       "source": "PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-01.md",
@@ -152,17 +152,17 @@
     {
       "source": "PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-03.md",
       "source_sha256": "cc5d86efb4ba4fe374c01c480b29a33ed837007ac0e2b260cb4529e82c7d348d",
-      "repository_path": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-03.md"
+      "repository_path": "docs/unified-post-m9/history/received-2026-11-10/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-03.md"
     },
     {
       "source": "PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-04.md",
       "source_sha256": "95c7f2d7db5d07f6142adb61be54197c5a668da91aaaac5461168f4b79eaea6d",
-      "repository_path": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-04.md"
+      "repository_path": "docs/unified-post-m9/history/received-2026-11-10/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-04.md"
     },
     {
       "source": "PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-05.md",
       "source_sha256": "16ea6a12159716832674bb2173f125563fc260c684d67acc18444095fa673201",
-      "repository_path": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-05.md"
+      "repository_path": "docs/unified-post-m9/history/received-2026-11-10/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-05.md"
     },
     {
       "source": "PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-01.md",
@@ -795,5 +795,18 @@
     "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-06.md",
     "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-07.md",
     "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-08.md"
+  ],
+  "ratified_addenda": [
+    {
+      "id": "DEC-SIOC-HIST-02-A01",
+      "authority": "Author chat 2026-11-10, cumulative SIOC 1–3; 4.1 cross-submission rejection confirmed; final PK confirmation includes 4.19.1",
+      "decision_path": "docs/normative/DEC-SIOC-HIST-02-A01.md",
+      "amended_paths": [
+        "docs/unified-post-m9/MASTER_PLAN_UNIFICATO.md",
+        "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-03.md",
+        "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-04.md",
+        "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-05.md"
+      ]
+    }
   ]
 }

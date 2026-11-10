@@ -1,5 +1,13 @@
 # Decisioni normative ricevute
 
+## DEC-SIOC-HIST-02-A01 — RATIFICATA, 2026-11-10
+
+[Addendum dell'autore](DEC-SIOC-HIST-02-A01.md): ricopertura cumulativa
+identica ammessa nei tracciati1–3; mismatch e omissioni qualificati;4.1 PK
+(4.1,4.7,4.8,4.19.1), duplicati intra-invio e fra invii rifiutati in seconda
+passata. Non è una modifica delle chiavi o dei codec legacy. G-SIOC1 attende
+implementazione e qualifica end-to-end; nessuna nuova ratifica ordinaria.
+
 ## DEC-SIOC-HIST-02 — RATIFICATA, 2026-11-10
 
 La nuova [decisione versionata](DEC-SIOC-HIST-02.md) recepisce D11 dell'autore:
