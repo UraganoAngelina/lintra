@@ -1,0 +1,918 @@
+{
+  "task": "U-GOV-01",
+  "captured_utc": "2026-11-10T13:15:36.314807+00:00",
+  "initial_head": "7e2ff15523c8b0dd552c435eb1ebf47f80f82251",
+  "checks": [
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "7e2ff15523c8b0dd552c435eb1ebf47f80f82251\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exit": 0,
+      "stdout": "work/p1-foundations\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+        "HEAD",
+        "--",
+        "README.md",
+        "src",
+        "ui",
+        "Cargo.toml",
+        "Cargo.lock",
+        "rust-toolchain.toml",
+        ".cargo",
+        "build.rs",
+        "xtask",
+        "scripts",
+        "tests",
+        "schemas",
+        "bundles",
+        ".github"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "rustc",
+        "-V"
+      ],
+      "exit": 0,
+      "stdout": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "cargo",
+        "-V"
+      ],
+      "exit": 0,
+      "stdout": "cargo 1.99.1 (5f94df478 2026-08-27)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "42789338814",
+        "--repo",
+        "UraganoAngelina/lintra",
+        "--json",
+        "databaseId,headSha,headBranch,status,conclusion,url,jobs",
+        "--jq",
+        "{databaseId,headSha,headBranch,status,conclusion,url,jobs:[.jobs[]|{name,status,conclusion}]}"
+      ],
+      "exit": 0,
+      "stdout": {
+        "databaseId": 42789338814,
+        "headSha": "af3bcccb6246a7ff00463c595f4c780a9f5c5195",
+        "headBranch": "work/p1-foundations",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/UraganoAngelina/lintra/actions/runs/42789338814",
+        "jobs": [
+          {
+            "name": "Verify (x86_64-pc-windows-msvc)",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify (x86_64-unknown-linux-gnu)",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Qualify UI archives",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Reopen counterpart snapshot (x86_64-unknown-linux-gnu)",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Compare Linux and Windows JSONL bytes",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Reopen counterpart snapshot (x86_64-pc-windows-msvc)",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Compare native desktop theme pixels",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Compare production UI regression pixels",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      "provenance": "Live output observed earlier in this task; transcribed without additional remote polling"
+    },
+    {
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "42789338814",
+        "--repo",
+        "UraganoAngelina/lintra",
+        "--json",
+        "databaseId,headSha,headBranch,status,conclusion,url,jobs"
+      ],
+      "exit": 1,
+      "stderr": "error connecting to api.github.com; check your internet connection or https://githubstatus.com",
+      "provenance": "Subsequent evidence capture failed; no result inferred from failure"
+    }
+  ],
+  "sources": [
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/DECISION_PACK_UNICO.md",
+      "bytes": 2747,
+      "sha256": "75173f22d083110cfc720e8a846e2085e2a5d6c95a725c98053d26bd046bc7b5"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/FONTI/AUDIT_POST_M9.md",
+      "bytes": 32955,
+      "sha256": "b50d8c9678de00abfed6070d4e678240c8ea3323a7563ffb612239faa2fdfdf9"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/FONTI/GAP_REGISTER_POST_M9.md",
+      "bytes": 16655,
+      "sha256": "3ca83c14a436c57ff72648d9430046ece249d7b47d6958b408d9ab6f11b56b7e"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/FONTI/MIGRATION_DECISIONS_V1_1_2026-10-30.md",
+      "bytes": 6880,
+      "sha256": "751895428fdd7ab636d9ff078d1a484d727de1ba91cd995b6d6d5396b8e19e9b"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/FONTI/MIGRATION_PLAN_V1_1_2026-10-30.md",
+      "bytes": 51342,
+      "sha256": "1613982c6c81eca39a7dcadd2672bfc32f0d3ac66dbd2d0c621d00696101a7c6"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/FONTI/PREFLIGHT_SLINT_TAURI2_2026-10-30.md",
+      "bytes": 93605,
+      "sha256": "969f6be4a820a35ea4fa447296018144387eac23c72fa3ad041ad0cafaae364d"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/FONTI/RETROSPECTIVE_ENGINEERING_AUDIT_ORIGINAL.md",
+      "bytes": 4401,
+      "sha256": "e8d1e999b20a65d9f58b66a7e0058087d2e28359820dd55b2cfd7aa5154e81b7"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/FONTI/ROADMAP_POST_M9.md",
+      "bytes": 9479,
+      "sha256": "8941c41c34bc1e96fbcdcfbb1ade17f5f609a34bb68eec09ba527072c8b60949"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/MASTER_PLAN_UNIFICATO.md",
+      "bytes": 44388,
+      "sha256": "3e8598bdcbcc53dbea31e60425237a496df034a7031093cb34a156e517071910"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-01.md",
+      "bytes": 2915,
+      "sha256": "c1262cd0d421fe11ab0dfc85b2dc01634c7627ee416b52fce1c1e3f1d71093c7"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-02.md",
+      "bytes": 2918,
+      "sha256": "58a220e8b21b06aa9ed01bdf5130569d3eb95ce7889dbeda34c2d46e2ae867e8"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-03.md",
+      "bytes": 2934,
+      "sha256": "53efc433b0b89716eb790fe35a9d66cd33fe180ed70ba94353022d0af879d0a3"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-04.md",
+      "bytes": 2938,
+      "sha256": "8c7529bfc936a37b2c61b0273345deb49358f8c0817a32f0e178bda981ee3ac5"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-05.md",
+      "bytes": 2936,
+      "sha256": "a6576d2db09305bd4f2be420679504de241d8a04babafad427448a27d952a62d"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-06.md",
+      "bytes": 2950,
+      "sha256": "1ddcbdcb95aa5b14b516a8a66c6405cbaac7ca7e56610d37982a45b54ba83640"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-07.md",
+      "bytes": 2952,
+      "sha256": "77657f9eaebfd58e22bb096888d641686dfcdeee51b51cb72504acad1592645e"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-08.md",
+      "bytes": 2946,
+      "sha256": "2446eecca573a66459c9779b15051da7ea69165d44457012facf58bbc7886226"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-09.md",
+      "bytes": 2946,
+      "sha256": "d8acb14cfa0ea04036c31af86729eeee5228ae10b32e9e54a6f98689947b38bb"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-FIX-01.md",
+      "bytes": 2940,
+      "sha256": "6234a33a11445798a421dc3e57cccd1fd887fa0de15b2d03180b8f6438a9b96a"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-FIX-02.md",
+      "bytes": 2934,
+      "sha256": "c608455e915c04b3d4db97783441aad61c978034fede95f047e5bcb58d661ddc"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-FIX-03.md",
+      "bytes": 2984,
+      "sha256": "4e398a9015abc8e308096d977ddb19a0068ced09a8a297ec0e26025ebef01ec0"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-FIX-04.md",
+      "bytes": 2944,
+      "sha256": "3c208d978da1f2d36238786bb22d3b90e004130dfc447128c1fca504ac522582"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-FIX-05.md",
+      "bytes": 2942,
+      "sha256": "b44b5680b33b50e86606882ece8f8458fd7a0bb7a905bf59b387d5efa0d9cfd7"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-GOV-01.md",
+      "bytes": 3021,
+      "sha256": "cb6529ac5a56bac2b97d569e240e1a1496e93eec7c1d395cd7f9e4a8658c3a04"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-GOV-02.md",
+      "bytes": 2980,
+      "sha256": "419b8e92ddc304c856936e08715abbe85750624adad429b0465303308638ba98"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-GOV-03.md",
+      "bytes": 3092,
+      "sha256": "c2e5db64fece59e28b86838fab3ee3e83b095d5c596b4e8ee7476d272e8de0ef"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-GOV-04.md",
+      "bytes": 2974,
+      "sha256": "00fe408c92405a364b4ae02ebf127407230069d858b3f09b9c4a46711c644238"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-01.md",
+      "bytes": 2980,
+      "sha256": "e177505780fd2d92eca139cee3828be59015afeb13640ff11779e2cb1c89a93c"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-02.md",
+      "bytes": 2981,
+      "sha256": "d08ff57439c2491d0655e082d1dbd59cd21a013dba65ce96999c057cf703bbb8"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-03.md",
+      "bytes": 3073,
+      "sha256": "cc5d86efb4ba4fe374c01c480b29a33ed837007ac0e2b260cb4529e82c7d348d"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-04.md",
+      "bytes": 2995,
+      "sha256": "95c7f2d7db5d07f6142adb61be54197c5a668da91aaaac5461168f4b79eaea6d"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-05.md",
+      "bytes": 3015,
+      "sha256": "16ea6a12159716832674bb2173f125563fc260c684d67acc18444095fa673201"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-01.md",
+      "bytes": 2976,
+      "sha256": "cdaf384a4b62a858f8e0148f58f2b156e57872960996ae1ee7f2f771041d9141"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-02.md",
+      "bytes": 2966,
+      "sha256": "9432b15af645c9719b1007347be3095c8174874e32cd2eb85819e7eacad2bb3d"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-03.md",
+      "bytes": 2982,
+      "sha256": "357173869d2baf0179ca101ffbf4cf5f2c79a754c698bdc81dba5e3317070a19"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-04.md",
+      "bytes": 2962,
+      "sha256": "da2f102b0b48c25e211d1e06370ce0d45df17d36bbd43343e7af52cd4ed0c363"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-05.md",
+      "bytes": 2922,
+      "sha256": "838c99cb39a5bb15a2f39072aa561c4ff96a75edd1e427b138075e47c6110db2"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-06.md",
+      "bytes": 2998,
+      "sha256": "1c89b08bb4e3f3aae90d8c56b7fe2ace3a2f3ea92d9f708556ed2a965727b9b4"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-07.md",
+      "bytes": 2988,
+      "sha256": "2a74cbe926dfbf5496440ed346f10a608c8347922d04e16075651c927b5ccbb1"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-08.md",
+      "bytes": 2974,
+      "sha256": "25e3032745a082c89c19acd74bc3ad72b9a4131e84c8bc91cf549150ff9e6e10"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-09.md",
+      "bytes": 3104,
+      "sha256": "e3054049b6dff696bf489463c6a72b99032226dbd640dd47897347ecc232bf95"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-PERF-01.md",
+      "bytes": 2953,
+      "sha256": "df232b88eee6ce9d3ae952a159a77f568eecfa137765036657f0b3fec222be35"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-PERF-02.md",
+      "bytes": 2969,
+      "sha256": "ed82d10551fb6a62cf9c6164f5f21e7b1dd9383d8a1be503a5b244ab3b0765df"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-01.md",
+      "bytes": 3025,
+      "sha256": "421372046d04aef228e126aa8343d4c08954f169e8bf4b2505be235dde14f5ea"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-02.md",
+      "bytes": 3011,
+      "sha256": "7e32f9008d999d743953f7c78571baae9f69178b982db9dfdfb8ad915f19da50"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-03.md",
+      "bytes": 2997,
+      "sha256": "097b2786d33dd7520c25a775df09a1d05ab756ac1f782685fd41c9f724d43891"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-UI-01.md",
+      "bytes": 2936,
+      "sha256": "9b4a99f8f44370dd9fe5c2447f9afd80a3201f79682b442eb3febdfa8acb6792"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/INTEGRAZIONE_39/U-UI-02.md",
+      "bytes": 2985,
+      "sha256": "34ceb8e63c46cc2478138a025641bd32615c17cbb349d52f8e1a12d2b4fe422f"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-01.md",
+      "bytes": 3294,
+      "sha256": "ce5761156981dab2e8135ccacc0f31bf0e422dff294e3ce72ed00b296bea8507"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-02.md",
+      "bytes": 3318,
+      "sha256": "49b32f25400d3b6f459dc71d72bc45f0de53b0ce6e5e0796233184776b7fd2eb"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-03.md",
+      "bytes": 3320,
+      "sha256": "f21b10a49fa36f67ee1c01ba8d2d15153cd210e3184fe7fdd653515ff5c61d61"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-04.md",
+      "bytes": 3402,
+      "sha256": "1a8a4cf651a097a040899b68a56296e66b000ed00bc5e160c6ab94d65196e4a1"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-05.md",
+      "bytes": 3354,
+      "sha256": "304127f9c1b022650d4ba1403e31f6f03313952d0cdda46e19d19cbdc6f90fc4"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-06.md",
+      "bytes": 3350,
+      "sha256": "cf7eaa2e022cb67c60f35ccea19fd76a6d02044fb4336865127175c07af0c903"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-07.md",
+      "bytes": 3403,
+      "sha256": "572d5f5696442c66d73a9f0f64ff1ca838e43134a4a347ddd7a19d452e5bed54"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-08.md",
+      "bytes": 3378,
+      "sha256": "38f294d6f91e42747403e8940468c7dde4c00f8bbc1de788b00f2e4bdd5d4fb3"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-01.md",
+      "bytes": 3327,
+      "sha256": "419be8182dcb16fafdee42df79f45ea2fd50444505bb11cadf2def2f00070f14"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-02.md",
+      "bytes": 3360,
+      "sha256": "393f329a7610da1a616ab7749a840106b60064334abb30d1860dd402ad3225e9"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-03.md",
+      "bytes": 3331,
+      "sha256": "3084b9c8d602595604b29f6ae16b6dfa682c76cd74f7888405023b2ee0c20f44"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-04.md",
+      "bytes": 3348,
+      "sha256": "0593ae68901ede7e2b0bb5a6f7fc0780bfb764e96449b9a2883c9346bd9f5002"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-05.md",
+      "bytes": 3364,
+      "sha256": "e6340e27ebf35ed9db05a0126db1422be44929bed30d2fba07c44fa4e4c3ca71"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-06.md",
+      "bytes": 3373,
+      "sha256": "03295d0df06af46fa45563587461b99a50f73dfd83b6221975351e39432435cc"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-07.md",
+      "bytes": 3479,
+      "sha256": "1af9c6e7b767d65f9f549fe075a681ee103e1b5092592e1aa16a303714cf3c80"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-01.md",
+      "bytes": 3344,
+      "sha256": "115aefb1fcb6db4de77c2fa265c4f43d310684856a7c642d2ccba0a94525e90e"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-02.md",
+      "bytes": 3352,
+      "sha256": "ea85be9fab52f5270d6c01edd974744f1ea2987ca397599338c61ac4108c3f03"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-03.md",
+      "bytes": 3334,
+      "sha256": "5c826a98d7f5c9397b09fed112141af5f8b3cfad40ee7255892c880bbfcb8bfe"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-04.md",
+      "bytes": 3354,
+      "sha256": "6b0228586ad22af859c7b3c450d92c31ff9651641bce5f7b317ed918144b60a5"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-05.md",
+      "bytes": 3374,
+      "sha256": "a51286a25828fac531bb2edb74e4706a9b8f5ff20714309854c89fb5326b5467"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-06.md",
+      "bytes": 3332,
+      "sha256": "553385250e54e1bf1f3de594035dd76aff79d0d96d94ac89e7b2d86c3877e51b"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-07.md",
+      "bytes": 3333,
+      "sha256": "3f50dd58378c1a79b6de44e171623b7654891b492e9f364c257c4d7692d39075"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-08.md",
+      "bytes": 3291,
+      "sha256": "a7e4c6397e09ed250ee5d3e56656542f52519ba267f57c88599ff780987fd631"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-09.md",
+      "bytes": 3404,
+      "sha256": "41bc62a7ed8bfb058a7583456a9cb89b388a77fb61910ce6c49a0a36b64f38b4"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-10.md",
+      "bytes": 3456,
+      "sha256": "c269eab77b594c7a030bcb3e416b0e1ce2373f93027f5f2733580e9e04a6fcc9"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-11.md",
+      "bytes": 3461,
+      "sha256": "5b5e1312956719c94aabca31932641bd038922fd2b6ac7ae8b367d662dce8d4d"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-01.md",
+      "bytes": 3309,
+      "sha256": "daca70b5686b250ebfcef6c61f1460c9b11806bc43f706e73ba3c049b0af7709"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-02.md",
+      "bytes": 3303,
+      "sha256": "abebbad219ec9fcb16856aff5d810f181d2fceb062ec3abc13eb3f3d19b6c09c"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-03.md",
+      "bytes": 3296,
+      "sha256": "9a61dc71d57cb81e6ffb1a7d0865bc0248f789221a093f588f3606f460e9a5df"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-04.md",
+      "bytes": 3336,
+      "sha256": "f58551930c20fdf9158ca5fc7af75e3034292e19e1a26591749ef64341472c0f"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-05.md",
+      "bytes": 3342,
+      "sha256": "b7e620978013a9679d8140e524ea2659057ddc589973da35e3c9009b2be7d56d"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-06.md",
+      "bytes": 3377,
+      "sha256": "cbfb159496d0efe90f07bcf8d8392dabcef9edeb4050d86fb7b8b47c0e2ccdd0"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-01.md",
+      "bytes": 3312,
+      "sha256": "53c425d1399148bf0b5dc79831199124918948e41e3a667a522d0b60574fb61c"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-02.md",
+      "bytes": 3335,
+      "sha256": "c1d96c4a2b40f4582039e424169be7c626c3a40568f420715d9a78d6c33ff44c"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-03.md",
+      "bytes": 3352,
+      "sha256": "5c1387b62aa04f5c654cd7b25797d3d224d67bb74acc989c03df61758a3eaab7"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-04.md",
+      "bytes": 3301,
+      "sha256": "5e7372d508eacf91be138a1135d9d70cbe73856312b0f6a6ba88586d936728b9"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-05.md",
+      "bytes": 3327,
+      "sha256": "d5120c37f84ed1f7eb9ac7036eef9673586bb6eeaef6ebd400c72c99932e7354"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-06.md",
+      "bytes": 3345,
+      "sha256": "44d0c9bce46a9a6a6248153680cae667ccdf1650e55558af32a4e3803c58ab05"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-07.md",
+      "bytes": 3347,
+      "sha256": "873344a7d43c79a516b631eb02407ec3842549b846b033ecee87467f65a43380"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-08.md",
+      "bytes": 3348,
+      "sha256": "3171490271c97ed62b07d6d5d5a18360578d06e359d6109406d8fd0758b9bba9"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-09.md",
+      "bytes": 3371,
+      "sha256": "4bc598df18e9f2871d777ccbedbe702710fac2f8f3a2cf0b431eae5ef88ff5c0"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-10.md",
+      "bytes": 3333,
+      "sha256": "08047bcbf7341cba6e4555ef8b71376ee3ddfb646c678c0a17336eb880544adc"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-11.md",
+      "bytes": 3461,
+      "sha256": "f82d4bb44b430b2abebab9880e1c671e3863d9efda71d264f83e8aa4c4f7e9f1"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-12.md",
+      "bytes": 3415,
+      "sha256": "b3edda148c39f321a706de7c5de0e2e1b0d74f9d089374c17ce4dc0b2fd837b8"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-01.md",
+      "bytes": 3303,
+      "sha256": "bc64041057489d2e558c95f5f173be34c459e5cdfc3406be70c2d365ffe7956a"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-02.md",
+      "bytes": 3305,
+      "sha256": "85f3320c5da877c332c6a83b7285316d40e8de9e052bce502bd14651a0bd2fb2"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-03.md",
+      "bytes": 3311,
+      "sha256": "e3b84fd67d163fcb308e2438d79afcf5c5707ddd37c947292a901937f0f70b67"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-04.md",
+      "bytes": 3275,
+      "sha256": "7caa587a1fa88483aa1d6c2a04af14fe70e3de91dcf1352afbb4dad9fbb07245"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-05.md",
+      "bytes": 3268,
+      "sha256": "11dc24058c6a358ed57e36caaacfa470ba910d12065565225b33c06523a8968c"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-06.md",
+      "bytes": 3318,
+      "sha256": "d32363c8069965a21454a3d99ac9bce107346099e7c0a362f381031e3dbf002a"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-07.md",
+      "bytes": 3354,
+      "sha256": "df16c45c6e0e1d8f66cd40da3ee6813fe1c50f63f8c898bb8cfd5d0ade75265a"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-08.md",
+      "bytes": 3417,
+      "sha256": "9b56c9ea709995cccc210dc878280bb00904fa5631496b320f5c0b45eb1c215d"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-09.md",
+      "bytes": 3435,
+      "sha256": "c4c3deaf8245f9e59c3ee20358cdd0e578e36738e593b976a3703c370602be6a"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-10.md",
+      "bytes": 3387,
+      "sha256": "f26bf207b8b0f92d49cc26532d9a0a664b879822d168b5f4ba3d75e7a631ff61"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-01.md",
+      "bytes": 3319,
+      "sha256": "3b9dabea3bacb76675943d951770ff47792a465093c678c8eaa846dd95690f4f"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-02.md",
+      "bytes": 3304,
+      "sha256": "aaeaf57ff1c78e2f712f53f2320b5dacac44764b25df0512c61a40acf1f37ab6"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-03.md",
+      "bytes": 3320,
+      "sha256": "56a252ca344af4c1b1e637219802271b7833a46c9bcf6fbdd198f374779d429e"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-04.md",
+      "bytes": 3293,
+      "sha256": "bd9e4621e8fb8f93132db81d0e1bf55bc2c4f1989141b883fbb0b18238f7b423"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-05.md",
+      "bytes": 3291,
+      "sha256": "83771f2d30eb496ed49450c67e6db1503701ea815471e4b1d5cd7e27b7736518"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-06.md",
+      "bytes": 3301,
+      "sha256": "eea0278fbf53a94826604985fa79d5a1f2a46b5b25d224ba562d90b8e1c92008"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-07.md",
+      "bytes": 3353,
+      "sha256": "814b660d2cb4c3841fcf79601afa0742167e6a6a02ee0af141f8f12133238d69"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-08.md",
+      "bytes": 3256,
+      "sha256": "668fd05437546f76f5557f93968b323ddfa086c11d4d6963f35bda9536a81bd0"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-09.md",
+      "bytes": 3390,
+      "sha256": "2c356738fdf5c9b185acef4514f6f55b6782f906a60fe160838ec65ff6866c26"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-10.md",
+      "bytes": 3389,
+      "sha256": "b3db1e01acb968533c0a354eaffe002a758f26384fb2f00cfe6548d65dee5cf6"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-01.md",
+      "bytes": 3302,
+      "sha256": "d619fff0907c37b9692d0bfc1ebcfab4dfbbf860ababae0761cb9288cb01ce43"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-02.md",
+      "bytes": 3322,
+      "sha256": "2a5f127a6033e070ad8fd4cc6b068a314172798f0db485d948f9d9d912624824"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-03.md",
+      "bytes": 3326,
+      "sha256": "6a41db237d0c8a384f1cd21557dd658a586c5c94a86c7b864d621535e2aa336a"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-04.md",
+      "bytes": 3310,
+      "sha256": "afcfefafc60a4687d0c2bd455c00e80a2eaa17169851611ca37bc5c24ae20d49"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-05.md",
+      "bytes": 3342,
+      "sha256": "a50682f686e6b4b8f2f167acbe4a9f48aaf1fb2cb5e12db0c9ab063a69f82bb7"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-06.md",
+      "bytes": 3332,
+      "sha256": "71d74df774fb56c6936c18cd2d43a56cfe41997009260997c3d7baadeb13d506"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-07.md",
+      "bytes": 3351,
+      "sha256": "b290688f6ca70293e11b000ec03349d272dd4618e5cf706b171f0144592b2a8e"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-08.md",
+      "bytes": 3443,
+      "sha256": "515dd6d4a429910a62120c4b382d404a8f603542668a694fb0352ec91d857a80"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-09.md",
+      "bytes": 3429,
+      "sha256": "2b161a839c9b8a786a9b94fd76d0c8022a89be783e5c829fb036fe1a6e40be88"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-01.md",
+      "bytes": 3404,
+      "sha256": "96d7d7eb4ebf7a2118857fcc1449a58dbfc88898b4a6f42946fff07e0cefa4c5"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-02.md",
+      "bytes": 3372,
+      "sha256": "3f1b883b81e1c542cab3e68464a2a09783fba75fc57127f3bdc8e44bc94f196d"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-03.md",
+      "bytes": 3401,
+      "sha256": "35d7f40165e057fca025066061cadbeb31bed0a44d36e0778ad4ef1867e7e957"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-04.md",
+      "bytes": 3404,
+      "sha256": "e3fb03728eb147b406e95a0ba01aada0c37831ab8cc22b4c099c0ff73548bcfa"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-05.md",
+      "bytes": 3415,
+      "sha256": "6f09eaf89be488c23fc158309e878edf7cd8c35445f3b6713d9de79e58745ba2"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-06.md",
+      "bytes": 3442,
+      "sha256": "d7ec425bfe8a0f217ceaa0eeb957c811098afea6d2d07a25c8017680a7151af1"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-07.md",
+      "bytes": 3375,
+      "sha256": "4e77b2fba9293f85b3d1fa724ef8d4fabe53ed30d081c86a344d7676d7e2cb8c"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-08.md",
+      "bytes": 3479,
+      "sha256": "daa8cabaf8668fdb912f5dc530f682f0d46f681b2e2bfe4f8566b90d4cd7621f"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-01.md",
+      "bytes": 3277,
+      "sha256": "b6751a41900e7c066a282984770da003b687d2835368dccf35ce7e04cdd50ef9"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-02.md",
+      "bytes": 3347,
+      "sha256": "2a98d286d7a25278d23e86c2751e5d97bcaa02b483a9809c212dc2c2bfdef6cb"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-03.md",
+      "bytes": 3303,
+      "sha256": "5bb911535a253bb1084bffe67a21ab808d928581d9f27e6eb5e815cb32871127"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-04.md",
+      "bytes": 3349,
+      "sha256": "6d3ef8dc68a4b0811b35547939cfddb6d42f28caa7e84858e8e5a6ff63f589ca"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-05.md",
+      "bytes": 3374,
+      "sha256": "2ca4d459a24f0ac9b3d29ef964e57ee11989043b1db172f4f505001e2e0f36ae"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-06.md",
+      "bytes": 3356,
+      "sha256": "3d9655fe2e1b03352bc7390723f0bfc82febd4661fa40c375f2c8c5156e6099b"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-07.md",
+      "bytes": 3405,
+      "sha256": "16c3f77c85ccc742f0ebc5a832ad3850210982a5b7b1ec76be9206b48c55e044"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-08.md",
+      "bytes": 3425,
+      "sha256": "f528a524254e96c8abb36d8f89acf45e5d22df539e116dfe00f16321dff18b62"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/PROMPT_ZERO_AGENT.md",
+      "bytes": 8091,
+      "sha256": "ebf847aff45ec097d286b22d22433ece1bdffec0fd4d69f6da3ea828cbbc43f8"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/README.md",
+      "bytes": 1750,
+      "sha256": "413c7e4442275185fcc323c5d6e6f78d02effa3f66d53e529856aacbd6d713f9"
+    },
+    {
+      "source": "LINTRA_POST_M9_UNIFIED_KIT/UNIFIED_IMPLEMENTATION_STATUS_TEMPLATE.md",
+      "bytes": 864,
+      "sha256": "13d9edbae824c19673ddccd4c13967394e0e59ef4146ebe1a2fb4f6bef0769f8"
+    },
+    {
+      "source": "AGENTS.md",
+      "bytes": 30941,
+      "sha256": "5a4a0b5d2fe8c2efec1fe6e3418ef965a4fd82e55072844486323fb6c7739733"
+    },
+    {
+      "source": "MASTER_AGENT_PROMPT.md",
+      "bytes": 8419,
+      "sha256": "82ea3c9970a4fa191d528b20013259087a54e7367af964d118c6a6ed3f3b3a58"
+    },
+    {
+      "source": "IMPLEMENTATION_STATUS.md",
+      "bytes": 460863,
+      "sha256": "9a9cf8b4bf73c2b4af48cdbba9f10c3d29048189b6866d6b8d00c023e11f240f"
+    },
+    {
+      "source": "docs/ARCHITECTURE.md",
+      "bytes": 55786,
+      "sha256": "93749d9595a1bbef65523b68733a474372d68def7f37d2f013cff9983121b8df"
+    },
+    {
+      "source": "docs/DETAILED_DESIGN.md",
+      "bytes": 113114,
+      "sha256": "85eb136d02d291697d6aa27f0a7164fdb80953ca209d163f6f3727df5c63b9b5"
+    },
+    {
+      "source": "docs/normative/DECISIONS.md",
+      "bytes": 15688,
+      "sha256": "1bc3fce81ed228330c6a9ab6a76276c6fc465779c8e2405aa153ee2698e054aa"
+    },
+    {
+      "source": "docs/migration/SLINT_TO_TAURI2_PREFLIGHT_REPORT.md",
+      "bytes": 93605,
+      "sha256": "969f6be4a820a35ea4fa447296018144387eac23c72fa3ad041ad0cafaae364d"
+    }
+  ],
+  "limits": [
+    "Audit CI qualifies af3bccc only; no new delta inherits it",
+    "Adjacent checkouts and author kit read-only",
+    "No Windows11 clean-room/NSIS/Tauri proof yet"
+  ]
+}
