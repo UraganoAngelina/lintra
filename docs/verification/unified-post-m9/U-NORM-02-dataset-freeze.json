@@ -1,0 +1,157 @@
+{
+  "task": "U-NORM-02",
+  "date": "2026-11-10",
+  "decision": "D12: available delivered datasets definitive; no new sourcing or invented catalogues",
+  "files": [
+    {
+      "path": "../LINTRA_STARTER_KIT_FINAL_20261016/CAD_REVISED_CANDIDATE/datasets/cad_icd9_cm_symptoms_page7.json",
+      "sha256": "8c19447ca64a28e736eb5012c11fb22ba8e55367c59bb81537b25fc2b11b7a96",
+      "bytes": 13073,
+      "role": "received CAD source extract, not universal catalogue",
+      "dataset": "cad-icd9-cm-clinical-signs",
+      "status": "SOURCE_EXTRACTED_REVIEWED",
+      "source": "2025-05-14_FLUSSO_ADI.pdf",
+      "source_page": 7,
+      "entries": 63
+    },
+    {
+      "path": "../LINTRA_STARTER_KIT_FINAL_20261016/CAD_REVISED_CANDIDATE/datasets/cad_needs_70_positions_page6.json",
+      "sha256": "87b889d437275582fb521221d05b0b0598e66a9553b02581daa39b0c704fbf45",
+      "bytes": 14334,
+      "role": "received CAD source extract, not universal catalogue",
+      "dataset": "cad-needs-70-positions",
+      "status": "SOURCE_EXTRACTED_REVIEWED",
+      "source": "2025-05-14_FLUSSO_ADI.pdf",
+      "source_page": 6,
+      "entries": 70
+    },
+    {
+      "path": "../LINTRA_STARTER_KIT_FINAL_20261016/CAD_REVISED_CANDIDATE/datasets/cad_prestations_type_5_5_page5.json",
+      "sha256": "9edbedc9c86c1ed53537c7259ae9d42a897ffa2424bb53fb3388131545a2ab0a",
+      "bytes": 5066,
+      "role": "received CAD source extract, not universal catalogue",
+      "dataset": "cad-prestation-types",
+      "status": "SOURCE_EXTRACTED_REVIEWED",
+      "source": "2025-05-14_FLUSSO_ADI.pdf",
+      "source_page": 5,
+      "entries": 33
+    },
+    {
+      "path": "schemas/operational/CAD/2024-06.runtime-candidate.1/data/icd9-membership.json",
+      "sha256": "645ebe2d375842055ff579fcddac44343ca3843cf474697cb23448d87d14bff6",
+      "bytes": 1183,
+      "role": "qualified CAD membership derived from received extract",
+      "dataset_id": "cad-icd9-cm-clinical-signs",
+      "version": "2024-06.pdf7.1",
+      "format": 1,
+      "keys_count": 63
+    },
+    {
+      "path": "schemas/operational/CAD/2024-06.runtime-candidate.1/data/prestations-membership.json",
+      "sha256": "2c7b12dac959b89f5f0e93c1324b2b38ffffee5d62a45a2ada0b699c430512a6",
+      "bytes": 521,
+      "role": "qualified CAD membership derived from received extract",
+      "dataset_id": "cad-prestation-types",
+      "version": "2024-06.pdf5.1",
+      "format": 1,
+      "keys_count": 33
+    },
+    {
+      "path": "bundles/embedded/reference-data/example-codes.json",
+      "sha256": "d42577f285ce8926363ae9bf8b23ef3796512407553d9216e9bc9ee969607a5f",
+      "bytes": 106,
+      "role": "synthetic embedded demonstration",
+      "dataset_id": "SYNTHETIC_CODES",
+      "version": "v1",
+      "format": 1,
+      "keys_count": 2
+    },
+    {
+      "path": "schemas/xlsx/SIOC_tracciato_regionale_20260420-definitivo_v05.xlsx",
+      "sha256": "6be8ae60a2c236e5a25b731365b42f8e7bca849066d68747abfc78b92ce273e3",
+      "bytes": 912412,
+      "role": "received normative source, not a reference membership catalogue"
+    },
+    {
+      "path": "../LINTRA_STARTER_KIT_FINAL_20261016/SCHEMA_INPUTS/CAD_2024-06_SOURCE/2025-05-14_FLUSSO_ADI.pdf",
+      "sha256": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29",
+      "bytes": 1022175,
+      "role": "received normative source, not a reference membership catalogue"
+    }
+  ],
+  "sioc_declared_missing_datasets": [
+    {
+      "id": "foreign-country-codes",
+      "received_source_status": "PENDING_DATASET",
+      "fixed_scope_status": "NOT_AVAILABLE_IN_DELIVERED_SET; deferred, no new sourcing planned"
+    },
+    {
+      "id": "health-authority-codes",
+      "received_source_status": "PENDING_DATASET",
+      "fixed_scope_status": "NOT_AVAILABLE_IN_DELIVERED_SET; deferred, no new sourcing planned"
+    },
+    {
+      "id": "hsp11-structure-codes",
+      "received_source_status": "PENDING_DATASET",
+      "fixed_scope_status": "NOT_AVAILABLE_IN_DELIVERED_SET; deferred, no new sourcing planned"
+    },
+    {
+      "id": "icd9-cm-diagnosis-codes",
+      "received_source_status": "PENDING_DATASET",
+      "fixed_scope_status": "NOT_AVAILABLE_IN_DELIVERED_SET; deferred, no new sourcing planned"
+    },
+    {
+      "id": "icd9-cm-procedure-codes",
+      "received_source_status": "PENDING_DATASET",
+      "fixed_scope_status": "NOT_AVAILABLE_IN_DELIVERED_SET; deferred, no new sourcing planned"
+    },
+    {
+      "id": "icpc-codes",
+      "received_source_status": "PENDING_DATASET",
+      "fixed_scope_status": "NOT_AVAILABLE_IN_DELIVERED_SET; deferred, no new sourcing planned"
+    },
+    {
+      "id": "istat-municipality-codes",
+      "received_source_status": "PENDING_DATASET",
+      "fixed_scope_status": "NOT_AVAILABLE_IN_DELIVERED_SET; deferred, no new sourcing planned"
+    },
+    {
+      "id": "italian-region-codes",
+      "received_source_status": "PENDING_DATASET",
+      "fixed_scope_status": "NOT_AVAILABLE_IN_DELIVERED_SET; deferred, no new sourcing planned"
+    },
+    {
+      "id": "regional-entity-manager-codes-dgr-2961-2012",
+      "received_source_status": "PENDING_DATASET",
+      "fixed_scope_status": "NOT_AVAILABLE_IN_DELIVERED_SET; deferred, no new sourcing planned"
+    },
+    {
+      "id": "regional-udo-codes",
+      "received_source_status": "PENDING_DATASET",
+      "fixed_scope_status": "NOT_AVAILABLE_IN_DELIVERED_SET; deferred, no new sourcing planned"
+    },
+    {
+      "id": "ria11-structure-codes",
+      "received_source_status": "PENDING_DATASET",
+      "fixed_scope_status": "NOT_AVAILABLE_IN_DELIVERED_SET; deferred, no new sourcing planned"
+    },
+    {
+      "id": "sts11-structure-codes",
+      "received_source_status": "PENDING_DATASET",
+      "fixed_scope_status": "NOT_AVAILABLE_IN_DELIVERED_SET; deferred, no new sourcing planned"
+    }
+  ],
+  "other_absences": [
+    "CAD ICPC lookup not supplied/qualified",
+    "CAD ISTAT lookup not supplied/qualified",
+    "Universal ICD9/prestation catalogues not inferred from limited extracts"
+  ],
+  "root_reference_data_files": [
+    "reference-data/.gitkeep"
+  ],
+  "limits": [
+    "Hashes identify received bytes, not legal or clinical certification",
+    "Embedded SYNTHETIC is not regional production coverage",
+    "Existing deferrals remain explicit; new normative implementation only D11 or proven bugs"
+  ]
+}
