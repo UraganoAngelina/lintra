@@ -48,6 +48,10 @@ pub enum FilesystemReferenceError {
         evidence: Box<DatasetEvidence>,
     },
     InvalidPreparedState,
+    UntrustedTree {
+        key: Option<DatasetKey>,
+        violation: super::tree_security::ReferenceTreeViolation,
+    },
 }
 impl fmt::Display for FilesystemReferenceError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -62,6 +66,12 @@ impl fmt::Display for FilesystemReferenceError {
             Self::InvalidPreparedState => {
                 "reference preparation produced inconsistent internal state"
             }
+            Self::UntrustedTree { violation, .. } => match violation {
+                super::tree_security::ReferenceTreeViolation::UntrustedOwner => "reference tree is owned by an untrusted OS account",
+                super::tree_security::ReferenceTreeViolation::SharedMutation => "reference tree allows modification by other OS accounts; select a controlled local tree",
+                super::tree_security::ReferenceTreeViolation::SecurityInspection => "cannot verify reference tree ownership and OS permissions",
+                super::tree_security::ReferenceTreeViolation::UnsupportedAcl => "reference tree ACL cannot be verified by the supported permission model",
+            },
         })
     }
 }
@@ -129,6 +139,17 @@ impl FileSystemReferenceDataProvider {
             return Ok(prepared);
         }
         let root = fs::canonicalize(&self.root).map_err(Arc::new);
+        if let Ok(root) = &root {
+            let metadata = fs::metadata(root).map_err(FilesystemReferenceError::RootIo)?;
+            if metadata.is_dir() {
+                super::tree_security::check(root, &metadata).map_err(|violation| {
+                    FilesystemReferenceError::UntrustedTree {
+                        key: None,
+                        violation,
+                    }
+                })?;
+            }
+        }
         for dependency in dependencies {
             let (evidence, set) = load_one(&root, dependency, policy)?;
             append_prepared(&mut prepared, evidence, set)?;
@@ -263,6 +284,12 @@ fn load_one(
             evidence.anomalies.push(DatasetAnomaly::FileType(reason));
             return Ok((evidence, None));
         }
+        Err(PathFailure::Trust(violation)) => {
+            return Err(FilesystemReferenceError::UntrustedTree {
+                key: Some(dependency.key.clone()),
+                violation,
+            });
+        }
     };
     let bytes = match fs::read(path) {
         Ok(bytes) => bytes,
@@ -352,8 +379,14 @@ pub(crate) enum PathFailure {
     Io(DatasetIoOperation, io::Error),
     Boundary(FilesystemBoundaryViolation),
     FileType(DatasetFileTypeIssue),
+    Trust(super::tree_security::ReferenceTreeViolation),
 }
 pub(crate) fn checked_path(root: &Path, relative: &str) -> Result<PathBuf, PathFailure> {
+    let metadata = fs::metadata(root)
+        .map_err(|source| PathFailure::Io(DatasetIoOperation::InspectPath, source))?;
+    if metadata.is_dir() {
+        super::tree_security::check(root, &metadata).map_err(PathFailure::Trust)?;
+    }
     let mut path = root.to_path_buf();
     let mut parts = relative.split('/').peekable();
     while let Some(part) = parts.next() {
@@ -371,6 +404,7 @@ pub(crate) fn checked_path(root: &Path, relative: &str) -> Result<PathBuf, PathF
         if parts.peek().is_none() && !metadata.is_file() {
             return Err(PathFailure::FileType(DatasetFileTypeIssue::NonRegularFile));
         }
+        super::tree_security::check(&path, &metadata).map_err(PathFailure::Trust)?;
     }
     let resolved = fs::canonicalize(path)
         .map_err(|source| PathFailure::Io(DatasetIoOperation::ResolvePath, source))?;

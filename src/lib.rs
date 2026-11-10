@@ -216,6 +216,7 @@ pub use application::resource_budget::{
 pub use application::service::{
     ValidationRunError, ValidationService, build_default_local_service,
 };
+pub use reference_data::tree_security::ReferenceTreeViolation;
 pub use report::summary::{write_run_summary, write_run_summary_with_bundle};
 
 // Text summary adapter for CLI/UI consumers; report internals stay private.

@@ -88,6 +88,61 @@ fn format_issue(evidence: &DatasetEvidence) -> Option<&MembershipFormatIssue> {
         })
 }
 
+#[cfg(unix)]
+#[test]
+fn shared_mutation_on_root_directory_or_dataset_is_fatal_without_chmod_repair() {
+    use std::os::unix::fs::PermissionsExt;
+    for component in ["", "nested", "nested/codes.json"] {
+        for policy in [
+            DatasetPreparationPolicy::Strict,
+            DatasetPreparationPolicy::ContinueWithAvailableEvidence,
+        ] {
+            let fixture = Fixture::new();
+            let dependency =
+                fixture.put(&case("valid"), "nested/codes.json", key("synthetic", "1"));
+            let target = fixture.root.join("data").join(component);
+            let original = fs::metadata(&target).unwrap().permissions().mode();
+            fs::set_permissions(&target, fs::Permissions::from_mode(original | 0o020)).unwrap();
+            let provider = fixture.provider(vec![dependency]);
+            assert!(matches!(
+                provider.prepare(policy),
+                Err(FilesystemReferenceError::UntrustedTree {
+                    violation: ReferenceTreeViolation::SharedMutation,
+                    ..
+                })
+            ));
+            assert_eq!(
+                fs::metadata(&target).unwrap().permissions().mode(),
+                original | 0o020
+            );
+            fs::set_permissions(&target, fs::Permissions::from_mode(original)).unwrap();
+            provider.prepare(policy).unwrap();
+        }
+    }
+}
+
+#[cfg(unix)]
+#[test]
+fn read_only_shared_reference_contents_are_allowed_and_loaded_from_exact_bytes() {
+    use std::os::unix::fs::PermissionsExt;
+    let fixture = Fixture::new();
+    let dependency = fixture.put(&case("valid"), "codes.json", key("synthetic", "1"));
+    let path = fixture.root.join("data/codes.json");
+    fs::set_permissions(&path, fs::Permissions::from_mode(0o444)).unwrap();
+    let prepared = fixture
+        .provider(vec![dependency])
+        .prepare(DatasetPreparationPolicy::Strict)
+        .unwrap();
+    assert_eq!(
+        prepared.datasets()[0].availability(),
+        DatasetAvailability::Verified
+    );
+    assert_eq!(
+        fs::metadata(path).unwrap().permissions().mode() & 0o777,
+        0o444
+    );
+}
+
 #[test]
 fn explicit_normalization_preserves_verified_degraded_and_unavailable_evidence() {
     let fixture = Fixture::new();

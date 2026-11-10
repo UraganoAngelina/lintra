@@ -7,6 +7,7 @@ pub(crate) mod membership;
 mod membership_format;
 pub(crate) mod normalization;
 pub(crate) mod provider;
+pub(crate) mod tree_security;
 
 #[cfg(feature = "embedded-bundle")]
 pub(crate) mod embedded;

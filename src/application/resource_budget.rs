@@ -324,6 +324,11 @@ fn checked_reference(root: &Path, relative: &str) -> Result<(), ResourcePrefligh
         Err(PathFailure::Io(_, e)) => Err(e.into()),
         Err(PathFailure::Boundary(_)) => Err(ResourcePreflightError::ReferenceBoundary),
         Err(PathFailure::FileType(_)) => Err(ResourcePreflightError::NotRegularFile),
+        Err(PathFailure::Trust(violation)) => Err(io::Error::new(
+            io::ErrorKind::PermissionDenied,
+            format!("reference tree permissions are not controlled: {violation:?}"),
+        )
+        .into()),
     }
 }
 fn add_bytes(total: &mut u64, bytes: u64) -> Result<(), ResourcePreflightError> {
