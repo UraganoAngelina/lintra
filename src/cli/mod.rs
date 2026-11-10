@@ -8,6 +8,7 @@ mod bundle;
 mod command;
 mod error_spool;
 mod historical;
+mod resource_budget;
 mod review_input;
 mod tooling;
 

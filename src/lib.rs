@@ -209,6 +209,10 @@ pub use schema::diff::{
 pub use schema::registry::{ResolvedHistoricalSchema, ResolvedSchema};
 
 pub use application::clock::{Clock, SystemClock};
+pub use application::resource_budget::{
+    AcceptedResourcePreflight, PreparedResourcePreflight, ResourceBudget, ResourceBudgetAudit,
+    ResourcePreflightError, ResourceReferenceSource,
+};
 pub use application::service::{
     ValidationRunError, ValidationService, build_default_local_service,
 };

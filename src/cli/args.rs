@@ -11,6 +11,8 @@ use std::{
 /// Parsed adapter configuration, with real request and explicit output paths.
 /// Reference data directories describe bundle selection, not provider availability.
 pub struct ValidateArgs {
+    pub resource_budget: Option<PathBuf>,
+    pub proceed_over_budget: bool,
     pub dirs: CliDirs,
     pub bundle_manifest: Option<PathBuf>,
     pub request: ValidationRequest,
@@ -110,6 +112,16 @@ pub fn command() -> Command {
                     .value_parser(["continue", "strict"])
                     .default_value("continue"),
             );
+        // Historical preview retains its independent audit/approval contract.
+        // Normal LocalOnly/Full receive the new opt-in operational preflight.
+        let common = if name == "preview" {
+            common
+        } else {
+            common.arg(path("resource-budget").help("Configurazione JSON v1 di budget soft misurati"))
+                .arg(Arg::new("proceed-over-budget").long("proceed-over-budget")
+                    .requires("resource-budget").action(clap::ArgAction::SetTrue)
+                    .help("Procedi comunque sul budget soft per questa richiesta; non ignora errori tecnici"))
+        };
         if full {
             common
                 .arg(
@@ -336,6 +348,12 @@ where
         )
     };
     let validation = ValidateArgs {
+        resource_budget: if historical {
+            None
+        } else {
+            args.get_one::<PathBuf>("resource-budget").cloned()
+        },
+        proceed_over_budget: !historical && args.get_flag("proceed-over-budget"),
         bundle_manifest: args.get_one::<PathBuf>("bundle-manifest").cloned(),
         dirs: CliDirs {
             schema_dir: args.get_one::<PathBuf>("schema-dir").cloned(),

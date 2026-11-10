@@ -119,6 +119,9 @@ lettura in Excel. La CLI attuale espone JSONL/XLSX, senza un’opzione CSV fitti
 I percorsi degli output devono essere distinti da input e bundle dati.
 Il [contratto dei formati](docs/REPORT_FORMATS.md) distingue il CSV canonico
 dall'XLSX con celle testo e descrive l'importazione nei fogli di calcolo.
+Per i carichi misurati, `validate` e `validate-flow` offrono un
+[preflight di budget soft](docs/RESOURCE_BUDGETS.md) con conferma esplicita
+`--proceed-over-budget`; non vengono imposte soglie numeriche predefinite.
 
 ### Primo avvio Windows
 

@@ -138,7 +138,7 @@ impl FileSystemReferenceDataProvider {
 }
 
 // Shared configuration/evidence logic for real filesystem and embedded sources.
-pub(super) fn validate_bindings(
+pub(crate) fn validate_bindings(
     dependencies: &[ReferenceDependency],
 ) -> Result<HashMap<DatasetKey, usize>, FilesystemReferenceError> {
     let mut indices = HashMap::new();
@@ -348,12 +348,12 @@ pub(super) fn decode_bytes(
     ))
 }
 
-enum PathFailure {
+pub(crate) enum PathFailure {
     Io(DatasetIoOperation, io::Error),
     Boundary(FilesystemBoundaryViolation),
     FileType(DatasetFileTypeIssue),
 }
-fn checked_path(root: &Path, relative: &str) -> Result<PathBuf, PathFailure> {
+pub(crate) fn checked_path(root: &Path, relative: &str) -> Result<PathBuf, PathFailure> {
     let mut path = root.to_path_buf();
     let mut parts = relative.split('/').peekable();
     while let Some(part) = parts.next() {

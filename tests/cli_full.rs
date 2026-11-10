@@ -70,6 +70,43 @@ fn validate_flow_real_process_reports_valid_and_invalid_cross_records() {
         no_parts(&fixture);
     }
 }
+
+#[test]
+fn soft_budget_override_preserves_full_cross_trace_diagnostics_and_both_input_audits() {
+    let fixture = Fixture::new(full_schema::raw(), b"01AANO", b"11AAOK");
+    let baseline = outputs(&mut command(&fixture), &fixture);
+    assert_eq!(baseline.status.code(), Some(2));
+    let expected_jsonl = fs::read(fixture._root.path().join("errors.jsonl")).unwrap();
+    let expected_summary = summary(&fixture);
+    let budget = fixture._root.path().join("budget.json");
+    fs::write(&budget, br#"{"version":1,"measurement_source":"synthetic measured 12-byte Full fixture","input_bytes":1,"reference_bytes":null}"#).unwrap();
+    let output = outputs(
+        command(&fixture)
+            .arg("--resource-budget")
+            .arg(budget)
+            .arg("--proceed-over-budget"),
+        &fixture,
+    );
+    assert_eq!(
+        output.status.code(),
+        Some(2),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert_eq!(
+        fs::read(fixture._root.path().join("errors.jsonl")).unwrap(),
+        expected_jsonl
+    );
+    let actual = summary(&fixture);
+    assert_eq!(actual["inputs"], expected_summary["inputs"]);
+    assert_eq!(
+        actual["full_validation"],
+        expected_summary["full_validation"]
+    );
+    assert_eq!(actual["total_errors"], 1);
+    assert!(String::from_utf8_lossy(&output.stderr).contains("\"proceeded_over_budget\":true"));
+    no_parts(&fixture);
+}
 #[test]
 fn full_unknown_publishes_partial_summary_and_xlsx_without_normative_errors() {
     use calamine::{Reader, open_workbook_auto};

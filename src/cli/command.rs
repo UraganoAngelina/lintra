@@ -159,13 +159,25 @@ fn validate_with_token(
     let exe = std::env::current_exe()?;
     let source = paths::resolve_bundle_source(&args.dirs, &paths::SystemEnv, &exe)?;
     let selected = super::bundle::compose(&args, source)?;
+    let protected_configuration = args.resource_budget.iter().cloned().collect::<Vec<_>>();
     check_outputs(
         &args,
         &selected.roots,
         selected.manifest_path.as_deref(),
         &[],
-        &[],
+        &protected_configuration,
     )?;
+    let resources = match super::resource_budget::prepare(&args, &selected, cancellation) {
+        Err(error)
+            if matches!(
+                error.downcast_ref::<ResourcePreflightError>(),
+                Some(ResourcePreflightError::Cancelled)
+            ) =>
+        {
+            return Ok(RunStatus::Cancelled);
+        }
+        other => other?,
+    };
     let service = selected.service;
     let mut errors = ErrorSpool::create(args.errors.as_deref())?;
     let mut summary =
@@ -181,6 +193,9 @@ fn validate_with_token(
         None => None,
     };
     let result = (|| -> Result<ValidationRunOutcome, Failure> {
+        if let Some(resources) = &resources {
+            resources.verify_unchanged(&service, &args.request, cancellation)?;
+        }
         let mut sink = JsonlSink::new(errors.writer());
         let stderr = io::stderr();
         let mut log = stderr.lock();
@@ -230,6 +245,13 @@ fn validate_with_token(
         Err(error) => {
             let mut reports = vec![summary];
             reports.extend(xlsx);
+            if matches!(
+                error.downcast_ref::<ResourcePreflightError>(),
+                Some(ResourcePreflightError::Cancelled)
+            ) {
+                discard(errors, reports)?;
+                return Ok(RunStatus::Cancelled);
+            }
             return Err(abort(Some(errors), reports, error));
         }
     };
@@ -301,7 +323,7 @@ mod cancellation_tests {
     /// is needed on Windows to verify status 130 and atomic output preservation.
     #[test]
     fn controlled_cancellation_never_publishes_complete_reports() {
-        for persistent in [false, true] {
+        for (persistent, budget_enabled) in [(false, false), (true, false), (true, true)] {
             let root = std::env::temp_dir().join(format!(
                 "lintra cancelled {} {}",
                 std::process::id(),
@@ -321,7 +343,10 @@ mod cancellation_tests {
             fs::write(root.join("errors.jsonl"), b"old errors").unwrap();
             fs::write(root.join("summary.json"), b"old summary").unwrap();
             fs::write(root.join("report.xlsx"), b"old workbook").unwrap();
+            fs::write(root.join("budget.json"), br#"{"version":1,"measurement_source":"synthetic cancellation probe","input_bytes":1,"reference_bytes":null}"#).unwrap();
             let args = ValidateArgs {
+                resource_budget: budget_enabled.then(|| root.join("budget.json")),
+                proceed_over_budget: budget_enabled,
                 bundle_manifest: None,
                 reference_policy: DatasetPreparationPolicy::ContinueWithAvailableEvidence,
                 dirs: paths::CliDirs {
