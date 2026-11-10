@@ -1,0 +1,59 @@
+{
+  "databaseId": 42829144043,
+  "headSha": "539b9bcb6a4e00de5bf2b525918e7c9595a7a8ec",
+  "headBranch": "work/p1-foundations",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/42829144043",
+  "provenance": "Final live gh output normalized in this task",
+  "jobs": [
+    {
+      "databaseId": 129874261121,
+      "name": "Verify (x86_64-unknown-linux-gnu)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "databaseId": 129874261857,
+      "name": "Verify (x86_64-pc-windows-msvc)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "databaseId": 129874263967,
+      "name": "Qualify UI archives",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "databaseId": 129890558398,
+      "name": "Compare native desktop theme pixels",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "databaseId": 129890558412,
+      "name": "Compare production UI regression pixels",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "databaseId": 129890558430,
+      "name": "Reopen counterpart snapshot (x86_64-unknown-linux-gnu)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "databaseId": 129890558435,
+      "name": "Reopen counterpart snapshot (x86_64-pc-windows-msvc)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "databaseId": 129890558482,
+      "name": "Compare Linux and Windows JSONL bytes",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ]
+}

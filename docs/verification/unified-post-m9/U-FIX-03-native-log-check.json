@@ -1,0 +1,20 @@
+{
+  "run": 42829144043,
+  "head": "539b9bcb6a4e00de5bf2b525918e7c9595a7a8ec",
+  "log_sha256": "c7d2dd172acaa67bf0b0ca2e1a4698cabc06fe4c4654590ed64e9377ebedb198",
+  "verified_new_contract_tests_by_os": {
+    "x86_64-unknown-linux-gnu": {
+      "hard_integer_overflow_cannot_be_overridden": 3,
+      "replacement_with_identical_bytes_invalidates_the_confirmation": 3,
+      "real_cli_warning_preserves_old_reports_and_explicit_override_runs_to_eof": 3,
+      "soft_budget_override_preserves_full_cross_trace_diagnostics_and_both_input_audits": 3
+    },
+    "x86_64-pc-windows-msvc": {
+      "hard_integer_overflow_cannot_be_overridden": 3,
+      "replacement_with_identical_bytes_invalidates_the_confirmation": 3,
+      "real_cli_warning_preserves_old_reports_and_explicit_override_runs_to_eof": 3,
+      "soft_budget_override_preserves_full_cross_trace_diagnostics_and_both_input_audits": 3
+    }
+  },
+  "captured_utc": "2026-11-10T14:31:01.330023+00:00"
+}
