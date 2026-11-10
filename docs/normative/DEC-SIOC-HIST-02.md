@@ -40,3 +40,25 @@ namespace distinti, snapshot conservati, replay, intra-run, annullamenti,
 Missing/Absent, history incompatibile, restart/SQLite e report cross-OS.
 G-SIOC0/G-SIOC1 non sono chiusi da questo documento. G-SIOC1 include servizio
 reale, CLI e frontend con la stessa fonte di validazione; nessuna simulazione UI.
+
+## Verifica della fonte in U-NORM-05 — 10 novembre 2026
+
+Workbook ricevuto SIOC_tracciato_regionale_20260420-definitivo_v05.xlsx,
+SHA256 6be8ae60a2c236e5a25b731365b42f8e7bca849066d68747abfc78b92ce273e3.
+Tracciato_SIOC definitivo H8/H29/H82 prescrive unicità dell'ID episodio per
+struttura/anno. Indicazioni operative C15–17 prescrive invio mensile dei
+trace1–3 e **C20 impone ricopertura dall'inizio dell'anno**, quindi il file
+fisico nuovo può legittimamente contenere record già trasmessi. C18–19 prescrive
+aggiornamenti dei trace4.1/4.2; H151 distingue atti nuovi/modificativi/revoche.
+
+Fonte/celle e testo integrale pertinente nel
+[dossier di fonte](../verification/unified-post-m9/U-NORM-05-source-matrix.json).
+Il mero indice cumulativo non basta a identificare una nuova attribuzione PK.
+Il divieto D11 rimane ratificato, ma applicarlo a ogni presenza nel file senza
+distinguere ricopertura/aggiornamento può contraddire la fonte stessa.
+
+È richiesta una decisione **soltanto** sulla classificazione di righe riproposte
+in ricopertura e aggiornamenti della stessa UDO. Non è una riapprovazione D11,
+non autorizza eccezioni tacite per rettifica/reinvio e non ripristina audit-only.
+Fino alla decisione quei casi e il signoff G-SIOC0/1 restano bloccati; prosegue
+il lavoro indipendente. Non si modifica retroattivamente alcun profilo/golden.

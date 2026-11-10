@@ -35,7 +35,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-NORM-02 | U-NORM-01 | DONE | [Freeze dataset D12](docs/verification/unified-post-m9/U-NORM-02.md) | Otto fonti con hash/versioni;12 assenze SIOC dichiarate definitive; nessun sourcing o delta runtime | Acceptance inventario PASS; G-SIOC0/1 NOT_VERIFIED |
 | U-NORM-03 | U-NORM-01, U-NORM-02, U-NORM-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-03.md) | —; Non eseguite | G-SIOC1 NOT_VERIFIED |
 | U-NORM-04 | U-NORM-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-04.md) | —; Non eseguite | G-SIOC1 NOT_VERIFIED |
-| U-NORM-05 | U-NORM-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-05.md) | —; Non eseguite | G-SIOC0 NOT_VERIFIED |
+| U-NORM-05 | U-NORM-01 | BLOCKED | [C20 ricopertura e C18 aggiornamento UDO](docs/verification/unified-post-m9/U-NORM-05.md) | Workbook SHA/celle verificate; D11 resta ratificato | Solo classificazione ricopertura/aggiornamento richiede decisione; G-SIOC0/1 NOT_VERIFIED |
 | U-UI-01 | U-GOV-04 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-UI-01.md) | —; Non eseguite | G-MIG-0 NOT_VERIFIED |
 | U-UI-02 | T-MIG-P9-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-UI-02.md) | —; Non eseguite | G-MIG-9 NOT_VERIFIED |
 | U-CAD-01 | U-UI-02, U-OPS-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-01.md) | —; Non eseguite | G-CADUI0 NOT_VERIFIED |
@@ -144,7 +144,8 @@ CI audit non qualifica alcun nuovo delta runtime.
 
 U-FIX-03 WAITING_GATE nativo; U-FIX-01 DONE con nuova CI e log verificati.
 U-FIX-03/04 WAITING_GATE nativo; nessun gate ereditato tra i due delta.
-Next READY indipendente: **U-NORM-05**, poi U-NORM-03; U-OPS-03/04 backend rimangono READY. AUTO_CONTINUE.
+U-NORM-05: decisione circoscritta richiesta, U-NORM-03/04 dipendenti non READY.
+Next READY indipendente: **U-UI-01**; U-OPS-03/04 backend rimangono READY. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.
