@@ -1,0 +1,1555 @@
+{
+  "version": 1,
+  "authority": "MASTER_PLAN_UNIFICATO v1.0 §§6–10; ratifica 2026-11-10",
+  "execution": "single-agent sequential; no delegation/background",
+  "tasks": [
+    {
+      "id": "U-GOV-01",
+      "title": "Baseline post-audit e CI",
+      "original_dependencies": [],
+      "integration_dependencies": [],
+      "gate": "G-U0",
+      "acceptance": "HEAD/working tree, commit af3bccc e CI 42789338814 verificati, sorgenti qualificati distinguibili dalle modifiche nuove",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-GOV-01.md"
+    },
+    {
+      "id": "U-GOV-02",
+      "title": "Riconciliazione preflight 30/10 vs 10/11",
+      "original_dependencies": [
+        "U-GOV-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-U0",
+      "acceptance": "Matrice di contratti ancora validi e affermazioni obsolete, senza perdita storia",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-GOV-02.md"
+    },
+    {
+      "id": "U-GOV-03",
+      "title": "Ratifica D01–D15 e DEC SIOC",
+      "original_dependencies": [
+        "U-GOV-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-U0",
+      "acceptance": "Decisioni del messaggio utente recepite testualmente/semanticamente, DEC-SIOC-HIST-01 superseded prospetticamente; nessuna riapprovazione richiesta",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-GOV-03.md"
+    },
+    {
+      "id": "U-GOV-04",
+      "title": "Dependency map, dossier e status",
+      "original_dependencies": [
+        "U-GOV-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-U0",
+      "acceptance": "Grafo pronto per MIG+U; milestone originali conservate, nuova governance single-agent",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-GOV-04.md"
+    },
+    {
+      "id": "U-FIX-01",
+      "title": "Conservare regressioni SQLite",
+      "original_dependencies": [
+        "U-GOV-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-HARD",
+      "acceptance": "AUD-M9-001/002 riproducibili e verdi sul nuovo SHA; nessun refactoring",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-FIX-01.md"
+    },
+    {
+      "id": "U-FIX-02",
+      "title": "Consumo CSV/XLSX",
+      "original_dependencies": [
+        "U-GOV-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-HARD",
+      "acceptance": "Test/formati invariati, casi formula non interpretati come obbligo di mutare CSV",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-FIX-02.md"
+    },
+    {
+      "id": "U-FIX-03",
+      "title": "Budget soft e hard",
+      "original_dependencies": [
+        "U-GOV-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-HARD",
+      "acceptance": "Preflight + warning/override richiesta identica, overflow/hard rifiutati, no troncamento/audit alterato",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-FIX-03.md"
+    },
+    {
+      "id": "U-FIX-04",
+      "title": "Reference tree controllata",
+      "original_dependencies": [
+        "U-GOV-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-HARD",
+      "acceptance": "Permessi e symlink controllati, errori chiari se deployment non attendibile",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-FIX-04.md"
+    },
+    {
+      "id": "U-FIX-05",
+      "title": "Test ignored e fonte audit",
+      "original_dependencies": [
+        "U-GOV-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-HARD",
+      "acceptance": "Evidenze ignored e confronto retro-audit originario; nessun PASS inventato",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-FIX-05.md"
+    },
+    {
+      "id": "U-OPS-01",
+      "title": "Scope uso interno / cartelle per account",
+      "original_dependencies": [
+        "U-GOV-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-OPS0",
+      "acceptance": "Modello mono-PC/local-only, utenti autorizzati, nessun gate enterprise creato",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-01.md"
+    },
+    {
+      "id": "U-OPS-02",
+      "title": "Inventario dati/report/spool locale",
+      "original_dependencies": [
+        "U-OPS-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-OPS0",
+      "acceptance": "Mappa percorsi OS, nessun contenuto PHI in web storage/log, ownership backend",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-02.md"
+    },
+    {
+      "id": "U-OPS-03",
+      "title": "Permessi OS e continuità file locali",
+      "original_dependencies": [
+        "U-OPS-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-OPS1",
+      "acceptance": "ACL/ownership corrette su Windows/Linux target; nessun nuovo crypto/password custom",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-03.md"
+    },
+    {
+      "id": "U-OPS-04",
+      "title": "Export locale/shared",
+      "original_dependencies": [
+        "U-OPS-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-OPS1",
+      "acceptance": "Locale scrivibile libero, shared warning + conferma + receipt, failure e overwrite gestiti",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-04.md"
+    },
+    {
+      "id": "U-OPS-05",
+      "title": "Chiave comune e recovery",
+      "original_dependencies": [
+        "U-OPS-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-OPS1",
+      "acceptance": "File 32B invariato, ID/restore veri su synthetic, no auto rotation",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-05.md"
+    },
+    {
+      "id": "U-OPS-06",
+      "title": "BACKUP-B manuale consistente",
+      "original_dependencies": [
+        "U-OPS-03",
+        "U-OPS-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-OPS2",
+      "acceptance": "Backup verificato obbligatorio prima upgrade irreversibile, stop se fallito, no live-copy finta",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-06.md"
+    },
+    {
+      "id": "U-OPS-07",
+      "title": "Nessun retention/purge automatico",
+      "original_dependencies": [
+        "U-OPS-01",
+        "U-OPS-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-OPS2",
+      "acceptance": "Documentare gestione manuale, preserve immutabilità e copie, zero TTL/erase promesso",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-07.md"
+    },
+    {
+      "id": "U-OPS-08",
+      "title": "Restore isolato",
+      "original_dependencies": [
+        "U-OPS-06"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-OPS2",
+      "acceptance": "Reopen, manifest/namespace/fatti/chiave errata/danno verificati, nessuna sovrascrittura inconsapevole",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-08.md"
+    },
+    {
+      "id": "U-OPS-09",
+      "title": "Check contesto d'uso e autorizzazioni effettive",
+      "original_dependencies": [
+        "U-OPS-03",
+        "U-OPS-04",
+        "U-OPS-05",
+        "U-OPS-07",
+        "U-OPS-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-REAL",
+      "acceptance": "Checklist aziendale applicabile se si introducono dati personali; non blocca demo, GUI o gate tecnici senza motivo",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-09.md"
+    },
+    {
+      "id": "U-NORM-01",
+      "title": "Inventario SIOC PK e esclusioni esistenti",
+      "original_dependencies": [
+        "U-GOV-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-SIOC0",
+      "acceptance": "PK esatte per trace, elementi deferred storici distinguibili da norme attive",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-01.md"
+    },
+    {
+      "id": "U-NORM-02",
+      "title": "Freeze elenco dataset disponibili",
+      "original_dependencies": [
+        "U-NORM-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-SIOC0",
+      "acceptance": "Inventario fonti già consegnate con hash/versioni; niente sourcing di nuovi dataset",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-02.md"
+    },
+    {
+      "id": "U-NORM-03",
+      "title": "Enforcement generico PK cross-run SIOC",
+      "original_dependencies": [
+        "U-NORM-01",
+        "U-NORM-02",
+        "U-NORM-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-SIOC1",
+      "acceptance": "Nuovo profilo versionato; stessi event scope/namespace, duplicate nuove trasmissioni rilevate, Unknown fail-closed",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-03.md"
+    },
+    {
+      "id": "U-NORM-04",
+      "title": "Golden cross-run e regressioni",
+      "original_dependencies": [
+        "U-NORM-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-SIOC1",
+      "acceptance": "Duplicate/unique/due namespaces/legacy/restart/periodi/annullamenti e stessa CLI/UI, CI nativa",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-04.md"
+    },
+    {
+      "id": "U-NORM-05",
+      "title": "Supersessione DEC-SIOC-HIST-01",
+      "original_dependencies": [
+        "U-NORM-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-SIOC0",
+      "acceptance": "ADR/DEC con fonte normativa e semantica; casi davvero dubbi isolati, mai audit-only come criterio finale",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-05.md"
+    },
+    {
+      "id": "U-UI-01",
+      "title": "Ponte MIG v1.1→post-audit",
+      "original_dependencies": [
+        "U-GOV-04"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-0",
+      "acceptance": "Riferimenti 89 task alla HEAD post-audit, no duplicati né status stale",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-UI-01.md"
+    },
+    {
+      "id": "U-UI-02",
+      "title": "Scorecard LocalOnly/Full e CAD handoff",
+      "original_dependencies": [
+        "T-MIG-P9-07"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-9",
+      "acceptance": "Parità reale e installer qualificati, handoff a CAD senza dichiarare collega-ready",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-UI-02.md"
+    },
+    {
+      "id": "U-CAD-01",
+      "title": "Scope storico Tauri",
+      "original_dependencies": [
+        "U-UI-02",
+        "U-OPS-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-CADUI0",
+      "acceptance": "Funzioni library esatte e permessi, no duplicazione norme Rust",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-01.md"
+    },
+    {
+      "id": "U-CAD-02",
+      "title": "DTO storici / preview non forgiabile",
+      "original_dependencies": [
+        "U-CAD-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-CADUI1",
+      "acceptance": "Candidate handle backend, DTO versionati e negativi",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-02.md"
+    },
+    {
+      "id": "U-CAD-03",
+      "title": "Preflight archive+key+namespace",
+      "original_dependencies": [
+        "U-CAD-02",
+        "U-OPS-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-CADUI1",
+      "acceptance": "Identità unica e HMAC verificati; nessun path arbitario JS",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-03.md"
+    },
+    {
+      "id": "U-CAD-04",
+      "title": "Origini C1/omissioni/consenso",
+      "original_dependencies": [
+        "U-CAD-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-CADUI1",
+      "acceptance": "Origini, provenance, omissioni esatte, PROCEED non equivale Complete",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-04.md"
+    },
+    {
+      "id": "U-CAD-05",
+      "title": "Preview e gating Unknown/Partial",
+      "original_dependencies": [
+        "U-CAD-04"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-CADUI2",
+      "acceptance": "Candidate mostrato esattamente, non approvabile se inammissibile",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-05.md"
+    },
+    {
+      "id": "U-CAD-06",
+      "title": "Review esatta e CAS commit",
+      "original_dependencies": [
+        "U-CAD-05",
+        "U-OPS-04"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-CADUI2",
+      "acceptance": "Approvazione di un candidato verificato, rollback e ambiguità esplicite",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-06.md"
+    },
+    {
+      "id": "U-CAD-07",
+      "title": "History read/diff e isolamento account",
+      "original_dependencies": [
+        "U-CAD-06"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-CADUI2",
+      "acceptance": "Query provenienza/snapshot senza dati bulk nel JS, account scoping",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-07.md"
+    },
+    {
+      "id": "U-CAD-08",
+      "title": "End-to-end T1/T2/T3 cross-OS",
+      "original_dependencies": [
+        "U-CAD-07"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-CADUI3",
+      "acceptance": "2 namespace, annullamenti L1, C1, report, errori, restart, no UI fittizia",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-08.md"
+    },
+    {
+      "id": "U-CAD-09",
+      "title": "Gate CAD UI finale",
+      "original_dependencies": [
+        "U-CAD-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-CADUI3",
+      "acceptance": "CI Windows/Linux applicabili, disclosure capability, readiness interna per funzione",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-09.md"
+    },
+    {
+      "id": "U-PERF-01",
+      "title": "Volumi rappresentativi da fonte anonima",
+      "original_dependencies": [
+        "U-GOV-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-PERF",
+      "acceptance": "Carichi ragionevoli con disclosure ipotesi, non 500k come default",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-PERF-01.md"
+    },
+    {
+      "id": "U-PERF-02",
+      "title": "Profiling end-to-end/React bridge",
+      "original_dependencies": [
+        "U-PERF-01",
+        "T-MIG-P7-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-PERF",
+      "acceptance": "Costi attribuiti, regressioni motivate e DEC-17 non riaperta senza prova",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-PERF-02.md"
+    },
+    {
+      "id": "U-REL-01",
+      "title": "Scope distribuzione interna, no freeze clinico",
+      "original_dependencies": [
+        "U-UI-02",
+        "U-CAD-09",
+        "U-NORM-04",
+        "U-OPS-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-REL",
+      "acceptance": "Versione e capability effettive, nessun P0/P1; installer per colleghi autorizzati",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-01.md"
+    },
+    {
+      "id": "U-REL-02",
+      "title": "NSIS per-machine e update/uninstall conservativi",
+      "original_dependencies": [
+        "U-REL-01",
+        "U-OPS-06",
+        "U-REL-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-REL",
+      "acceptance": "Install offline Windows11 clean-room 2 account, preserva DB e backup, art SHA",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-02.md"
+    },
+    {
+      "id": "U-REL-03",
+      "title": "Power loss / durability hardening",
+      "original_dependencies": [
+        "U-OPS-01",
+        "U-FIX-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-DUR",
+      "acceptance": "Fault injection/kill/reopen/manifest/SQLite/report e matrice OS, limite hardware esplicito",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-03.md"
+    },
+    {
+      "id": "T-MIG-P0-01",
+      "title": "Fotografia Git e baseline post-WIP08",
+      "original_dependencies": [],
+      "integration_dependencies": [
+        "U-UI-01"
+      ],
+      "gate": "G-MIG-0",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-01.md"
+    },
+    {
+      "id": "T-MIG-P0-02",
+      "title": "Riconciliazione dello stato e dei riferimenti storici",
+      "original_dependencies": [
+        "T-MIG-P0-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-0",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-02.md"
+    },
+    {
+      "id": "T-MIG-P0-03",
+      "title": "ADR di sostituzione mirata N-24",
+      "original_dependencies": [
+        "T-MIG-P0-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-0",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-03.md"
+    },
+    {
+      "id": "T-MIG-P0-04",
+      "title": "Perimetro LocalOnly+Full, parità e capability future",
+      "original_dependencies": [
+        "T-MIG-P0-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-0",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-04.md"
+    },
+    {
+      "id": "T-MIG-P0-05",
+      "title": "Decisione OS minimi e distribuzione offline",
+      "original_dependencies": [
+        "T-MIG-P0-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-0",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-05.md"
+    },
+    {
+      "id": "T-MIG-P0-06",
+      "title": "Policy PHI e threat model da ratificare",
+      "original_dependencies": [
+        "T-MIG-P0-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-0",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-06.md"
+    },
+    {
+      "id": "T-MIG-P0-07",
+      "title": "Criteri di parità UX/visiva e budget prestazionale",
+      "original_dependencies": [
+        "T-MIG-P0-04",
+        "T-MIG-P0-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-0",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-07.md"
+    },
+    {
+      "id": "T-MIG-P0-08",
+      "title": "Gate governance e autorizzazione all’avvio",
+      "original_dependencies": [
+        "T-MIG-P0-01",
+        "T-MIG-P0-02",
+        "T-MIG-P0-03",
+        "T-MIG-P0-04",
+        "T-MIG-P0-05",
+        "T-MIG-P0-06",
+        "T-MIG-P0-07"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-0",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-08.md"
+    },
+    {
+      "id": "T-MIG-P1-01",
+      "title": "Spike build minimale Tauri su Linux",
+      "original_dependencies": [
+        "T-MIG-P0-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-1",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-01.md"
+    },
+    {
+      "id": "T-MIG-P1-02",
+      "title": "Spike Windows clean install e WebView2",
+      "original_dependencies": [
+        "T-MIG-P0-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-1",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-02.md"
+    },
+    {
+      "id": "T-MIG-P1-03",
+      "title": "Qualifica runtime CachyOS e dipendenze",
+      "original_dependencies": [
+        "T-MIG-P1-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-1",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-03.md"
+    },
+    {
+      "id": "T-MIG-P1-04",
+      "title": "POC zero-network, capability e CSP",
+      "original_dependencies": [
+        "T-MIG-P1-01",
+        "T-MIG-P1-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-1",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-04.md"
+    },
+    {
+      "id": "T-MIG-P1-05",
+      "title": "Profilo WebView, font e comportamento DPI",
+      "original_dependencies": [
+        "T-MIG-P1-01",
+        "T-MIG-P1-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-1",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-05.md"
+    },
+    {
+      "id": "T-MIG-P1-06",
+      "title": "Decisione GO/NO-GO piattaforme",
+      "original_dependencies": [
+        "T-MIG-P1-02",
+        "T-MIG-P1-03",
+        "T-MIG-P1-04",
+        "T-MIG-P1-05",
+        "T-MIG-P1-07"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-1",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-06.md"
+    },
+    {
+      "id": "T-MIG-P1-07",
+      "title": "Spike anticipato installer NSIS offline per-machine su Windows 11",
+      "original_dependencies": [
+        "T-MIG-P1-02",
+        "T-MIG-P1-04"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-1",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-07.md"
+    },
+    {
+      "id": "T-MIG-P2-01",
+      "title": "Contratto architetturale e ownership processo",
+      "original_dependencies": [
+        "T-MIG-P1-06"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-2",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-01.md"
+    },
+    {
+      "id": "T-MIG-P2-02",
+      "title": "Envelope JSON DTO versionati e error taxonomy",
+      "original_dependencies": [
+        "T-MIG-P2-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-2",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-02.md"
+    },
+    {
+      "id": "T-MIG-P2-03",
+      "title": "Run identity, ownership e macchina stati",
+      "original_dependencies": [
+        "T-MIG-P2-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-2",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-03.md"
+    },
+    {
+      "id": "T-MIG-P2-04",
+      "title": "Progresso bounded e terminale affidabile",
+      "original_dependencies": [
+        "T-MIG-P2-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-2",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-04.md"
+    },
+    {
+      "id": "T-MIG-P2-05",
+      "title": "Contratto risultati: paging, offset e filtri",
+      "original_dependencies": [
+        "T-MIG-P2-02",
+        "T-MIG-P2-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-2",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-05.md"
+    },
+    {
+      "id": "T-MIG-P2-06",
+      "title": "Contratto dettaglio e domini catturati",
+      "original_dependencies": [
+        "T-MIG-P2-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-2",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-06.md"
+    },
+    {
+      "id": "T-MIG-P2-07",
+      "title": "Contratto export e conferma path/overwrite",
+      "original_dependencies": [
+        "T-MIG-P2-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-2",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-07.md"
+    },
+    {
+      "id": "T-MIG-P2-08",
+      "title": "Capability, CSP, path e log policy",
+      "original_dependencies": [
+        "T-MIG-P2-02",
+        "T-MIG-P2-07"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-2",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-08.md"
+    },
+    {
+      "id": "T-MIG-P2-09",
+      "title": "Contratto di parity test/fixture sintetica",
+      "original_dependencies": [
+        "T-MIG-P2-03",
+        "T-MIG-P2-04",
+        "T-MIG-P2-05",
+        "T-MIG-P2-06",
+        "T-MIG-P2-07",
+        "T-MIG-P2-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-2",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-09.md"
+    },
+    {
+      "id": "T-MIG-P2-10",
+      "title": "Ratifica cross-contract e gate di design",
+      "original_dependencies": [
+        "T-MIG-P2-01",
+        "T-MIG-P2-02",
+        "T-MIG-P2-03",
+        "T-MIG-P2-04",
+        "T-MIG-P2-05",
+        "T-MIG-P2-06",
+        "T-MIG-P2-07",
+        "T-MIG-P2-08",
+        "T-MIG-P2-09",
+        "T-MIG-P2-11"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-2",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-10.md"
+    },
+    {
+      "id": "T-MIG-P2-11",
+      "title": "Contratto Full multi-tracciato: input, run e report coerenti",
+      "original_dependencies": [
+        "T-MIG-P2-03",
+        "T-MIG-P2-05",
+        "T-MIG-P2-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-2",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-11.md"
+    },
+    {
+      "id": "T-MIG-P3-01",
+      "title": "Scaffold Tauri affiancato non predefinito",
+      "original_dependencies": [
+        "T-MIG-P2-10"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-3",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-01.md"
+    },
+    {
+      "id": "T-MIG-P3-02",
+      "title": "Pin frontend e lockfile/supply-chain",
+      "original_dependencies": [
+        "T-MIG-P3-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-3",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-02.md"
+    },
+    {
+      "id": "T-MIG-P3-03",
+      "title": "Copia autorizzata token/font/asset",
+      "original_dependencies": [
+        "T-MIG-P3-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-3",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-03.md"
+    },
+    {
+      "id": "T-MIG-P3-04",
+      "title": "Rust app state e dispatcher senza business logic",
+      "original_dependencies": [
+        "T-MIG-P3-01",
+        "T-MIG-P3-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-3",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-04.md"
+    },
+    {
+      "id": "T-MIG-P3-05",
+      "title": "Client TS tipizzato e verifica schema bridge",
+      "original_dependencies": [
+        "T-MIG-P3-02",
+        "T-MIG-P3-04"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-3",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-05.md"
+    },
+    {
+      "id": "T-MIG-P3-06",
+      "title": "CI scaffold e verifica regressione legacy",
+      "original_dependencies": [
+        "T-MIG-P3-01",
+        "T-MIG-P3-02",
+        "T-MIG-P3-03",
+        "T-MIG-P3-04",
+        "T-MIG-P3-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-3",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-06.md"
+    },
+    {
+      "id": "T-MIG-P4-01",
+      "title": "API catalogo bundle e selezione",
+      "original_dependencies": [
+        "T-MIG-P3-06"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-4",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-01.md"
+    },
+    {
+      "id": "T-MIG-P4-02",
+      "title": "API conferma path e preflight input",
+      "original_dependencies": [
+        "T-MIG-P4-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-4",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-02.md"
+    },
+    {
+      "id": "T-MIG-P4-03",
+      "title": "Preparazione run e capture immutabile",
+      "original_dependencies": [
+        "T-MIG-P4-01",
+        "T-MIG-P4-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-4",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-03.md"
+    },
+    {
+      "id": "T-MIG-P4-04",
+      "title": "Worker nativo e start LocalOnly",
+      "original_dependencies": [
+        "T-MIG-P4-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-4",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-04.md"
+    },
+    {
+      "id": "T-MIG-P4-05",
+      "title": "Canale progresso e annullamento bounded",
+      "original_dependencies": [
+        "T-MIG-P4-04"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-4",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-05.md"
+    },
+    {
+      "id": "T-MIG-P4-06",
+      "title": "Gestione esito, report handle e cleanup",
+      "original_dependencies": [
+        "T-MIG-P4-04",
+        "T-MIG-P4-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-4",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-06.md"
+    },
+    {
+      "id": "T-MIG-P4-07",
+      "title": "Riutilizzo indice JSONL, senza bulk transfer",
+      "original_dependencies": [
+        "T-MIG-P4-06"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-4",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-07.md"
+    },
+    {
+      "id": "T-MIG-P4-08",
+      "title": "Query filtrate e pagina risultati in Rust",
+      "original_dependencies": [
+        "T-MIG-P4-07"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-4",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-08.md"
+    },
+    {
+      "id": "T-MIG-P4-09",
+      "title": "Dettagli, field guide e reference snapshot",
+      "original_dependencies": [
+        "T-MIG-P4-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-4",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-09.md"
+    },
+    {
+      "id": "T-MIG-P4-10",
+      "title": "Export, About e test bridge integrati",
+      "original_dependencies": [
+        "T-MIG-P4-06",
+        "T-MIG-P4-08",
+        "T-MIG-P4-09",
+        "T-MIG-P4-12"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-4",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-10.md"
+    },
+    {
+      "id": "T-MIG-P4-11",
+      "title": "Rust adapter Full multi-tracciato su ValidationService esistente",
+      "original_dependencies": [
+        "T-MIG-P4-06",
+        "T-MIG-P2-11"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-4",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-11.md"
+    },
+    {
+      "id": "T-MIG-P4-12",
+      "title": "Progresso, cancel e cleanup affidabili per Full",
+      "original_dependencies": [
+        "T-MIG-P4-11",
+        "T-MIG-P4-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-4",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-12.md"
+    },
+    {
+      "id": "T-MIG-P5-01",
+      "title": "Shell React responsive e tema",
+      "original_dependencies": [
+        "T-MIG-P4-10"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-5",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-01.md"
+    },
+    {
+      "id": "T-MIG-P5-02",
+      "title": "Flow/schema/trace state machine UI",
+      "original_dependencies": [
+        "T-MIG-P5-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-5",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-02.md"
+    },
+    {
+      "id": "T-MIG-P5-03",
+      "title": "Conferma file e picker sicuro",
+      "original_dependencies": [
+        "T-MIG-P5-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-5",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-03.md"
+    },
+    {
+      "id": "T-MIG-P5-04",
+      "title": "Selezione formati di report",
+      "original_dependencies": [
+        "T-MIG-P5-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-5",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-04.md"
+    },
+    {
+      "id": "T-MIG-P5-05",
+      "title": "Run screen e progress throttled",
+      "original_dependencies": [
+        "T-MIG-P5-03",
+        "T-MIG-P5-04"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-5",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-05.md"
+    },
+    {
+      "id": "T-MIG-P5-06",
+      "title": "Cancel, stato terminale e old report",
+      "original_dependencies": [
+        "T-MIG-P5-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-5",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-06.md"
+    },
+    {
+      "id": "T-MIG-P5-07",
+      "title": "Informazioni/provenienza e licenze",
+      "original_dependencies": [
+        "T-MIG-P5-01",
+        "T-MIG-P5-06"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-5",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-07.md"
+    },
+    {
+      "id": "T-MIG-P5-08",
+      "title": "Gate parità configurazione/worker/UX",
+      "original_dependencies": [
+        "T-MIG-P5-01",
+        "T-MIG-P5-02",
+        "T-MIG-P5-03",
+        "T-MIG-P5-04",
+        "T-MIG-P5-05",
+        "T-MIG-P5-06",
+        "T-MIG-P5-07",
+        "T-MIG-P5-10"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-5",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-08.md"
+    },
+    {
+      "id": "T-MIG-P5-09",
+      "title": "React: selezione Full con input esplicito per tracciato",
+      "original_dependencies": [
+        "T-MIG-P5-03",
+        "T-MIG-P4-12"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-5",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-09.md"
+    },
+    {
+      "id": "T-MIG-P5-10",
+      "title": "React: monitor Full e stati terminali multi-pass",
+      "original_dependencies": [
+        "T-MIG-P5-09",
+        "T-MIG-P5-06"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-5",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-10.md"
+    },
+    {
+      "id": "T-MIG-P6-01",
+      "title": "DataGrid DOM virtualizzata paginata",
+      "original_dependencies": [
+        "T-MIG-P5-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-6",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-01.md"
+    },
+    {
+      "id": "T-MIG-P6-02",
+      "title": "Cinque filtri paritari e query stale safe",
+      "original_dependencies": [
+        "T-MIG-P6-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-6",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-02.md"
+    },
+    {
+      "id": "T-MIG-P6-03",
+      "title": "Dettaglio diagnostico e selezione offset",
+      "original_dependencies": [
+        "T-MIG-P6-01",
+        "T-MIG-P6-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-6",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-03.md"
+    },
+    {
+      "id": "T-MIG-P6-04",
+      "title": "Field guide e posizione/schema",
+      "original_dependencies": [
+        "T-MIG-P6-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-6",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-04.md"
+    },
+    {
+      "id": "T-MIG-P6-05",
+      "title": "Dominio ammesso statico e range",
+      "original_dependencies": [
+        "T-MIG-P6-04"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-6",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-05.md"
+    },
+    {
+      "id": "T-MIG-P6-06",
+      "title": "Dominio reference/evidenza provider",
+      "original_dependencies": [
+        "T-MIG-P6-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-6",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-06.md"
+    },
+    {
+      "id": "T-MIG-P6-07",
+      "title": "Stati di risultati, malformed e partial",
+      "original_dependencies": [
+        "T-MIG-P6-01",
+        "T-MIG-P6-03",
+        "T-MIG-P6-06"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-6",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-07.md"
+    },
+    {
+      "id": "T-MIG-P6-08",
+      "title": "Export UI con receipt e overwrite",
+      "original_dependencies": [
+        "T-MIG-P6-07"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-6",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-08.md"
+    },
+    {
+      "id": "T-MIG-P6-09",
+      "title": "Verifica numerica e golden report",
+      "original_dependencies": [
+        "T-MIG-P6-02",
+        "T-MIG-P6-03",
+        "T-MIG-P6-04",
+        "T-MIG-P6-05",
+        "T-MIG-P6-06",
+        "T-MIG-P6-07",
+        "T-MIG-P6-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-6",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-09.md"
+    },
+    {
+      "id": "T-MIG-P6-10",
+      "title": "React Full: risultati cross-trace, detail ed export canonico",
+      "original_dependencies": [
+        "T-MIG-P6-09",
+        "T-MIG-P5-10"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-6",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-10.md"
+    },
+    {
+      "id": "T-MIG-P7-01",
+      "title": "Negative tests IPC e payload fuzz",
+      "original_dependencies": [
+        "T-MIG-P6-09"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-7",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-01.md"
+    },
+    {
+      "id": "T-MIG-P7-02",
+      "title": "XSS, content injection e CSP offline",
+      "original_dependencies": [
+        "T-MIG-P7-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-7",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-02.md"
+    },
+    {
+      "id": "T-MIG-P7-03",
+      "title": "Privacy DOM/log/temp/cache e crash recovery",
+      "original_dependencies": [
+        "T-MIG-P7-01",
+        "T-MIG-P7-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-7",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-03.md"
+    },
+    {
+      "id": "T-MIG-P7-04",
+      "title": "Benchmark 300k/1M e profiling end-to-end",
+      "original_dependencies": [
+        "T-MIG-P7-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-7",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-04.md"
+    },
+    {
+      "id": "T-MIG-P7-05",
+      "title": "Race/run lifecycle/cleanup/responsiveness",
+      "original_dependencies": [
+        "T-MIG-P7-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-7",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-05.md"
+    },
+    {
+      "id": "T-MIG-P7-06",
+      "title": "A11y, keyboard, DPI e localizzazione",
+      "original_dependencies": [
+        "T-MIG-P7-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-7",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-06.md"
+    },
+    {
+      "id": "T-MIG-P7-07",
+      "title": "Test regressione core/CLI/PERSIST",
+      "original_dependencies": [
+        "T-MIG-P7-03",
+        "T-MIG-P7-04",
+        "T-MIG-P7-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-7",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-07.md"
+    },
+    {
+      "id": "T-MIG-P7-08",
+      "title": "Gate sicurezza/performance e release candidate",
+      "original_dependencies": [
+        "T-MIG-P7-01",
+        "T-MIG-P7-02",
+        "T-MIG-P7-03",
+        "T-MIG-P7-04",
+        "T-MIG-P7-05",
+        "T-MIG-P7-06",
+        "T-MIG-P7-07",
+        "T-MIG-P7-09"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-7",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-08.md"
+    },
+    {
+      "id": "T-MIG-P7-09",
+      "title": "Qualifica Full end-to-end Linux/Windows con fixture sintetiche",
+      "original_dependencies": [
+        "T-MIG-P7-03",
+        "T-MIG-P7-04",
+        "T-MIG-P7-05",
+        "T-MIG-P6-10"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-7",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-09.md"
+    },
+    {
+      "id": "T-MIG-P8-01",
+      "title": "CI dual Rust + TypeScript senza abbassare gate",
+      "original_dependencies": [
+        "T-MIG-P7-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-8",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-01.md"
+    },
+    {
+      "id": "T-MIG-P8-02",
+      "title": "Audit licenze/SBOM/lock/asset",
+      "original_dependencies": [
+        "T-MIG-P8-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-8",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-02.md"
+    },
+    {
+      "id": "T-MIG-P8-03",
+      "title": "Verifier artefatti UI Linux distinto da CLI",
+      "original_dependencies": [
+        "T-MIG-P8-01",
+        "T-MIG-P8-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-8",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-03.md"
+    },
+    {
+      "id": "T-MIG-P8-04",
+      "title": "Windows NSIS offline e installazione WebView2",
+      "original_dependencies": [
+        "T-MIG-P8-01",
+        "T-MIG-P8-02"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-8",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-04.md"
+    },
+    {
+      "id": "T-MIG-P8-05",
+      "title": "UI CachyOS: build, smoke e runtime locale",
+      "original_dependencies": [
+        "T-MIG-P8-01",
+        "T-MIG-P8-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-8",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-05.md"
+    },
+    {
+      "id": "T-MIG-P8-06",
+      "title": "Immutabilità, checksum e provenienza CI",
+      "original_dependencies": [
+        "T-MIG-P8-03",
+        "T-MIG-P8-04",
+        "T-MIG-P8-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-8",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-06.md"
+    },
+    {
+      "id": "T-MIG-P8-07",
+      "title": "Smoke multi-OS estrazione e casi negativi",
+      "original_dependencies": [
+        "T-MIG-P8-04",
+        "T-MIG-P8-05",
+        "T-MIG-P8-06"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-8",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-07.md"
+    },
+    {
+      "id": "T-MIG-P8-08",
+      "title": "Gate CI/release/artifact e policy CLI intatta",
+      "original_dependencies": [
+        "T-MIG-P8-01",
+        "T-MIG-P8-02",
+        "T-MIG-P8-03",
+        "T-MIG-P8-04",
+        "T-MIG-P8-05",
+        "T-MIG-P8-06",
+        "T-MIG-P8-07"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-8",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P8-08.md"
+    },
+    {
+      "id": "T-MIG-P9-01",
+      "title": "Scorecard parità firmata",
+      "original_dependencies": [
+        "T-MIG-P8-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-9",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-01.md"
+    },
+    {
+      "id": "T-MIG-P9-02",
+      "title": "Piano rollback e coesistenza verificato",
+      "original_dependencies": [
+        "T-MIG-P9-01"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-9",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-02.md"
+    },
+    {
+      "id": "T-MIG-P9-03",
+      "title": "Cutover release controllato UI",
+      "original_dependencies": [
+        "T-MIG-P9-01",
+        "T-MIG-P9-02",
+        "T-MIG-P9-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-9",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-03.md"
+    },
+    {
+      "id": "T-MIG-P9-04",
+      "title": "Rimozione Slint in fase separata",
+      "original_dependencies": [
+        "T-MIG-P9-03"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-9",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-04.md"
+    },
+    {
+      "id": "T-MIG-P9-05",
+      "title": "Aggiornamento ARCH/DET/PLAN/ADR e status",
+      "original_dependencies": [
+        "T-MIG-P9-03",
+        "T-MIG-P9-04"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-9",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-05.md"
+    },
+    {
+      "id": "T-MIG-P9-06",
+      "title": "Release finale e prove cross-OS post cleanup",
+      "original_dependencies": [
+        "T-MIG-P9-04",
+        "T-MIG-P9-05"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-9",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-06.md"
+    },
+    {
+      "id": "T-MIG-P9-07",
+      "title": "Gate finale e handoff maintenance",
+      "original_dependencies": [
+        "T-MIG-P9-01",
+        "T-MIG-P9-02",
+        "T-MIG-P9-03",
+        "T-MIG-P9-04",
+        "T-MIG-P9-05",
+        "T-MIG-P9-06",
+        "T-MIG-P9-08"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-9",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-07.md"
+    },
+    {
+      "id": "T-MIG-P9-08",
+      "title": "Signoff autonomo Full e controllo visibilità capability",
+      "original_dependencies": [
+        "T-MIG-P9-01",
+        "T-MIG-P7-09"
+      ],
+      "integration_dependencies": [],
+      "gate": "G-MIG-9",
+      "acceptance": "Prompt canonico e delta master §6",
+      "prompt": "docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-08.md"
+    }
+  ],
+  "release_gate": {
+    "id": "G-REL",
+    "requires": [
+      "G-MIG-9",
+      "G-CADUI3",
+      "G-SIOC1",
+      "G-OPS2",
+      "G-DUR"
+    ],
+    "additional_evidence": [
+      "Windows11 clean-room offline installer tested, WebView2, two accounts/non-admin",
+      "Exact artifact SHA and native CI",
+      "No relevant open P0/P1",
+      "Publication authorization required by plan"
+    ]
+  },
+  "real_data_gate": {
+    "id": "G-REAL",
+    "scope": "Only actual company authorization needed for specific personal/work data; never blocks synthetic GUI development"
+  },
+  "cutover_boundary": "G-MIG-9/MM9 is LocalOnly+Full cutover and CAD handoff, not distribution to colleagues; no back-edge to U-CAD"
+}
