@@ -117,6 +117,8 @@ può produrre UTF16, e stdout della CLI è comunque un riepilogo testuale.
 L’XLSX mantiene i campi testuali come testo e le intestazioni; usarlo per la
 lettura in Excel. La CLI attuale espone JSONL/XLSX, senza un’opzione CSV fittizia.
 I percorsi degli output devono essere distinti da input e bundle dati.
+Il [contratto dei formati](docs/REPORT_FORMATS.md) distingue il CSV canonico
+dall'XLSX con celle testo e descrive l'importazione nei fogli di calcolo.
 
 ### Primo avvio Windows
 

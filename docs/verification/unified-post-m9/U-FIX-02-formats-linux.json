@@ -1,0 +1,21 @@
+{
+  "task": "U-FIX-02",
+  "head": "52ec3409b238479cc1210e0230613c5fcc7fc5e4",
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "lintra",
+    "--locked",
+    "--offline",
+    "--test",
+    "csv_sink",
+    "--test",
+    "xlsx",
+    "--test",
+    "xlsx_writer"
+  ],
+  "exit": 0,
+  "completed_utc": "2026-11-10T13:23:39.477247+00:00",
+  "log_sha256": "2f7e6b0580ff124fdbde6d5d581e0fd6e514473c01d1902a657fc3415ecc1987"
+}
