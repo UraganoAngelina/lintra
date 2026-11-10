@@ -1,0 +1,3172 @@
+{
+  "task": "U-NORM-01",
+  "authority": "D11/D12 ratified 2026-11-10; DEC-SIOC-HIST-02",
+  "sources": {
+    "schemas/sioc/2026-04-20.structural-minimal.2/flow_schema.json": "b1bffeb800570d8f4ac045110bf849e5380ed4062f209b4cb1f34dee3df1c33b",
+    "schemas/sioc/2026-04-20.structural-minimal.1/flow_schema.json": "2592c46889a2c06fc9dd5da5b9220f2f1c2a3ac42985f56bd24e476058128c31",
+    "../LINTRA_STARTER_KIT_FINAL_20261016/SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/flow_schema.json": "3567bafd3cb9b762becdd46a356454b89df094c7b88c5b1538c97a1bbaf26c45",
+    "tests/golden/cross-trace/sioc-referential/v1/schema.json": "b7a5a8d91ffe6aecff39065ea4cfd634551b7cc83d4ceff219bdc6bca9b96ec7",
+    "schemas/sioc/2026-04-20.structural-minimal.1/scope-ledger.json": "e5043f09dfa383ab8a14bf733f8bea2d8022b33f1acf10c7236ff558217e369f",
+    "schemas/sioc/2026-04-20.structural-minimal.2/scope-ledger.json": "9c7dc7e7977c2ee34772573594338c6985143b0f6fb75d174428beba92064c35",
+    "tests/golden/cross-trace/sioc-referential/v1/scope-ledger.json": "6d457f70882aa2947a75bcbf2ebaf08c86be21c59606e0ff87f8386775b1f25b",
+    "schemas/xlsx/SIOC_tracciato_regionale_20260420-definitivo_v05.xlsx": "6be8ae60a2c236e5a25b731365b42f8e7bca849066d68747abfc78b92ce273e3"
+  },
+  "traces": [
+    {
+      "trace": "1",
+      "record_length": 206,
+      "field_count": 18,
+      "record_key": {
+        "fields": [
+          "1.1",
+          "1.17",
+          "1.18"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "pk_fields": [
+        {
+          "id": "1.1",
+          "name": "Numero della scheda di ricovero (ex Identificativo univoco assistito per episodio di accoglimento)",
+          "physical": {
+            "start": 1,
+            "length": 20,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        },
+        {
+          "id": "1.17",
+          "name": "Codice Azienda",
+          "physical": {
+            "start": 195,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        },
+        {
+          "id": "1.18",
+          "name": "Codice Struttura",
+          "physical": {
+            "start": 201,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        }
+      ],
+      "documented_non_executable_rules": [
+        {
+          "id": "DEFER-1.1-CONSTRAINT-0",
+          "fields": [
+            "1.1"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-1.1-CONSTRAINT-1",
+          "fields": [
+            "1.1"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-1.1-CONSTRAINT-2",
+          "fields": [
+            "1.1"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-1.3-CONSTRAINT-0",
+          "fields": [
+            "1.3"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-1.7-CONSTRAINT-0",
+          "fields": [
+            "1.7"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-1.8-CONSTRAINT-0",
+          "fields": [
+            "1.8"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-1.10-CONSTRAINT-0",
+          "fields": [
+            "1.10"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-1.11-CONSTRAINT-0",
+          "fields": [
+            "1.11"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-1.12-CONSTRAINT-0",
+          "fields": [
+            "1.12"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-1.13-CONSTRAINT-0",
+          "fields": [
+            "1.13"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-1.16-CONSTRAINT-0",
+          "fields": [
+            "1.16"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-1.17-CONSTRAINT-2",
+          "fields": [
+            "1.17"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-1.18-CONSTRAINT-0",
+          "fields": [
+            "1.18"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-1.1-ADMISSION-YEAR",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-1.2-ANONYMOUS-SENTINEL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-1.7-ANONYMOUS-NAME",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-1.8-ANONYMOUS-NAME",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-1.14-FOREIGN",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-1.14-ITALIAN",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-1.15-FOREIGN",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-1.15-ITALIAN",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "POLICY-1.2-CF-SEMANTICS",
+          "fields": [
+            "1.2"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "The regional trace defines when CF/ENI/STP/TEAM/other identifiers are used but does not define a confirmed checksum/semantic-validation depth. Canonical v1 validates physical representation and identifier-type-dependent presence only.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "POLICY-1.6-VENETO-RESIDENCY",
+          "fields": [
+            "1.6"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Operational interpretation of 'in combinazione con il codice fiscale, per i soli residenti in Veneto' was not functionally confirmed; v1 preserves the note but does not infer a resident/identifier-type presence rule.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        }
+      ]
+    },
+    {
+      "trace": "2",
+      "record_length": 271,
+      "field_count": 50,
+      "record_key": {
+        "fields": [
+          "2.1",
+          "2.49",
+          "2.50"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "pk_fields": [
+        {
+          "id": "2.1",
+          "name": "Numero della scheda di ricovero (ex Identificativo univoco assistito per episodio di accoglimento)",
+          "physical": {
+            "start": 1,
+            "length": 20,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        },
+        {
+          "id": "2.49",
+          "name": "Codice Azienda",
+          "physical": {
+            "start": 260,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        },
+        {
+          "id": "2.50",
+          "name": "Codice Struttura",
+          "physical": {
+            "start": 266,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        }
+      ],
+      "documented_non_executable_rules": [
+        {
+          "id": "DEFER-2.1-CONSTRAINT-0",
+          "fields": [
+            "2.1"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.1-CONSTRAINT-1",
+          "fields": [
+            "2.1"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.1-CONSTRAINT-2",
+          "fields": [
+            "2.1"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.2-CONSTRAINT-0",
+          "fields": [
+            "2.2"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.3-CONSTRAINT-0",
+          "fields": [
+            "2.3"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.7-CONSTRAINT-0",
+          "fields": [
+            "2.7"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.8-CONSTRAINT-0",
+          "fields": [
+            "2.8"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.11-CONSTRAINT-0",
+          "fields": [
+            "2.11"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.12-CONSTRAINT-0",
+          "fields": [
+            "2.12"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.13-CONSTRAINT-0",
+          "fields": [
+            "2.13"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.14-CONSTRAINT-0",
+          "fields": [
+            "2.14"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.15-CONSTRAINT-0",
+          "fields": [
+            "2.15"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.16-CONSTRAINT-0",
+          "fields": [
+            "2.16"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.17-CONSTRAINT-0",
+          "fields": [
+            "2.17"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.18-CONSTRAINT-0",
+          "fields": [
+            "2.18"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.19-CONSTRAINT-0",
+          "fields": [
+            "2.19"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.20-CONSTRAINT-0",
+          "fields": [
+            "2.20"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.21-CONSTRAINT-0",
+          "fields": [
+            "2.21"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.22-CONSTRAINT-0",
+          "fields": [
+            "2.22"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.23-CONSTRAINT-0",
+          "fields": [
+            "2.23"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.24-CONSTRAINT-0",
+          "fields": [
+            "2.24"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.25-CONSTRAINT-0",
+          "fields": [
+            "2.25"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.26-CONSTRAINT-0",
+          "fields": [
+            "2.26"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.27-CONSTRAINT-1",
+          "fields": [
+            "2.27"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.28-CONSTRAINT-0",
+          "fields": [
+            "2.28"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.29-CONSTRAINT-0",
+          "fields": [
+            "2.29"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.30-CONSTRAINT-0",
+          "fields": [
+            "2.30"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.31-CONSTRAINT-0",
+          "fields": [
+            "2.31"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.32-CONSTRAINT-0",
+          "fields": [
+            "2.32"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.33-CONSTRAINT-0",
+          "fields": [
+            "2.33"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.34-CONSTRAINT-0",
+          "fields": [
+            "2.34"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.35-CONSTRAINT-0",
+          "fields": [
+            "2.35"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.36-CONSTRAINT-0",
+          "fields": [
+            "2.36"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.37-CONSTRAINT-0",
+          "fields": [
+            "2.37"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.38-CONSTRAINT-0",
+          "fields": [
+            "2.38"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.39-CONSTRAINT-0",
+          "fields": [
+            "2.39"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.40-CONSTRAINT-0",
+          "fields": [
+            "2.40"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.41-CONSTRAINT-0",
+          "fields": [
+            "2.41"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.42-CONSTRAINT-0",
+          "fields": [
+            "2.42"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.43-CONSTRAINT-0",
+          "fields": [
+            "2.43"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.44-CONSTRAINT-0",
+          "fields": [
+            "2.44"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.45-CONSTRAINT-0",
+          "fields": [
+            "2.45"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.46-CONSTRAINT-0",
+          "fields": [
+            "2.46"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.47-CONSTRAINT-0",
+          "fields": [
+            "2.47"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.48-CONSTRAINT-0",
+          "fields": [
+            "2.48"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.49-CONSTRAINT-2",
+          "fields": [
+            "2.49"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-2.50-CONSTRAINT-0",
+          "fields": [
+            "2.50"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-GROUP-socio_family_problems",
+          "fields": [
+            "2.13",
+            "2.14",
+            "2.15",
+            "2.16",
+            "2.17",
+            "2.18",
+            "2.19",
+            "2.20",
+            "2.21",
+            "2.22"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-GROUP-diagnoses",
+          "fields": [
+            "2.32",
+            "2.33",
+            "2.34",
+            "2.35",
+            "2.36",
+            "2.37"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-GROUP-procedures",
+          "fields": [
+            "2.38",
+            "2.39",
+            "2.40",
+            "2.41",
+            "2.42",
+            "2.43",
+            "2.44",
+            "2.45",
+            "2.46",
+            "2.47",
+            "2.48"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-2.1-ADMISSION-YEAR",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-2.10-SSR-PAYER",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-2.4-LE-2.5",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-2.5-LE-2.6",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        }
+      ]
+    },
+    {
+      "trace": "3",
+      "record_length": 135,
+      "field_count": 36,
+      "record_key": {
+        "fields": [
+          "3.1",
+          "3.2",
+          "3.35",
+          "3.36"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "pk_fields": [
+        {
+          "id": "3.1",
+          "name": "Numero della scheda di ricovero (ex Identificativo univoco assistito per episodio di accoglimento)",
+          "physical": {
+            "start": 1,
+            "length": 20,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        },
+        {
+          "id": "3.2",
+          "name": "Numero di valutazione",
+          "physical": {
+            "start": 21,
+            "length": 20,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        },
+        {
+          "id": "3.35",
+          "name": "Codice Azienda",
+          "physical": {
+            "start": 124,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        },
+        {
+          "id": "3.36",
+          "name": "Codice Struttura",
+          "physical": {
+            "start": 130,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        }
+      ],
+      "documented_non_executable_rules": [
+        {
+          "id": "DEFER-3.1-CONSTRAINT-0",
+          "fields": [
+            "3.1"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-3.1-CONSTRAINT-1",
+          "fields": [
+            "3.1"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-3.1-CONSTRAINT-2",
+          "fields": [
+            "3.1"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-3.3-CONSTRAINT-0",
+          "fields": [
+            "3.3"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-3.5-CONSTRAINT-0",
+          "fields": [
+            "3.5"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-3.6-CONSTRAINT-0",
+          "fields": [
+            "3.6"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-3.7-CONSTRAINT-0",
+          "fields": [
+            "3.7"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-3.17-CONSTRAINT-0",
+          "fields": [
+            "3.17"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-3.35-CONSTRAINT-2",
+          "fields": [
+            "3.35"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-3.36-CONSTRAINT-0",
+          "fields": [
+            "3.36"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-DERIVED-age_at_admission_years",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.1-ADMISSION-YEAR",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.8-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.8-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.9-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.9-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.10-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.10-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.11-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.11-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.12-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.12-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.13-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.13-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.14-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.14-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.15-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.15-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.16-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.16-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.18-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.18-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.20-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.20-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.21-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.21-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.23-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.23-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.19-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.22-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.22-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.24-DEATH-TO-00",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.24-00-TO-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.24-NORMAL-RANGE",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.25-ADMISSION",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.25-DISCHARGE",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.26-ADMISSION",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.26-DISCHARGE",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.26-DEATH-TO-4",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.26-4-TO-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.27-ADMISSION",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.27-DISCHARGE",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.28-ADMISSION",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.28-DISCHARGE",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.29-ADMISSION",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.29-DISCHARGE",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.30-ADMISSION",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.30-DISCHARGE",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.31-ADMISSION",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.31-DISCHARGE",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.32-ADMISSION",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.32-DISCHARGE",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.33-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.33-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.34-AGE",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.34-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.34-NORMAL",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-3.34-999-TO-DEATH",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "POLICY-3.5-COVID-R83",
+          "fields": [
+            "3.5"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "COVID status is an internal clinical semantic convention and is not reliably derivable from the fixed-width SIOC flow.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        }
+      ]
+    },
+    {
+      "trace": "4.1",
+      "record_length": 394,
+      "field_count": 20,
+      "record_key": {
+        "fields": [
+          "4.1",
+          "4.7",
+          "4.8",
+          "4.19.1"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "pk_fields": [
+        {
+          "id": "4.1",
+          "name": "Struttura erogatrice. Codice regionale dell'UDO",
+          "physical": {
+            "start": 1,
+            "length": 6,
+            "type": "numeric",
+            "alignment": {
+              "kind": "left_pad",
+              "fill_byte": 48,
+              "content_policy": "preserve_width"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        },
+        {
+          "id": "4.7",
+          "name": "Regione sede UDO",
+          "physical": {
+            "start": 145,
+            "length": 3,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        },
+        {
+          "id": "4.8",
+          "name": "ULSS sede UDO",
+          "physical": {
+            "start": 148,
+            "length": 3,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        },
+        {
+          "id": "4.19.1",
+          "name": "COD_STRUT_EROG_STS",
+          "physical": {
+            "start": 389,
+            "length": 6,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        }
+      ],
+      "documented_non_executable_rules": [
+        {
+          "id": "DEFER-4.1-CONSTRAINT-0",
+          "fields": [
+            "4.1"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.3-CONSTRAINT-0",
+          "fields": [
+            "4.3"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.4-CONSTRAINT-0",
+          "fields": [
+            "4.4"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.5-CONSTRAINT-0",
+          "fields": [
+            "4.5"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.7-CONSTRAINT-0",
+          "fields": [
+            "4.7"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.8-CONSTRAINT-0",
+          "fields": [
+            "4.8"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.9-CONSTRAINT-0",
+          "fields": [
+            "4.9"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.11-CONSTRAINT-0",
+          "fields": [
+            "4.11"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.13-CONSTRAINT-0",
+          "fields": [
+            "4.13"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.14-CONSTRAINT-0",
+          "fields": [
+            "4.14"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.19.1-CONSTRAINT-0",
+          "fields": [
+            "4.19.1"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "R-4.18-LE-4.19",
+          "fields": [],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        }
+      ]
+    },
+    {
+      "trace": "4.2",
+      "record_length": 67,
+      "field_count": 11,
+      "record_key": {
+        "fields": [
+          "4.20",
+          "4.22"
+        ],
+        "uniqueness_scope": "trace",
+        "error_code": "E_DUPLICATE_RECORD_KEY"
+      },
+      "pk_fields": [
+        {
+          "id": "4.20",
+          "name": "Struttura erogatrice. Codice regionale dell'UDO",
+          "physical": {
+            "start": 1,
+            "length": 6,
+            "type": "numeric",
+            "alignment": {
+              "kind": "left_pad",
+              "fill_byte": 48,
+              "content_policy": "preserve_width"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        },
+        {
+          "id": "4.22",
+          "name": "ID atto",
+          "physical": {
+            "start": 22,
+            "length": 10,
+            "type": "alphanumeric",
+            "alignment": {
+              "kind": "right_pad",
+              "fill_byte": 32,
+              "content_policy": "strip_trailing_fill"
+            },
+            "lexical": {
+              "kind": "encoded_text"
+            }
+          }
+        }
+      ],
+      "documented_non_executable_rules": [
+        {
+          "id": "DEFER-4.20-CONSTRAINT-0",
+          "fields": [
+            "4.20"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.23-CONSTRAINT-0",
+          "fields": [
+            "4.23"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.24-CONSTRAINT-0",
+          "fields": [
+            "4.24"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.27-CONSTRAINT-1",
+          "fields": [
+            "4.27"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "DEFER-4.28-CONSTRAINT-0",
+          "fields": [
+            "4.28"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Profilo strutturale minimale autorizzato: semantica rinviata; non equivale a conformità normativa completa.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        },
+        {
+          "id": "POLICY-4.28-PREVIOUS-ACT",
+          "fields": [
+            "4.28"
+          ],
+          "policy": "not_enforced_in_this_version",
+          "reason": "Values 2-5 refer to a previous act, but the trace does not expose a predecessor-act identifier. No cross-record relation is invented.",
+          "decision_reference": "DEC-SIOC-MINIMAL-01"
+        }
+      ]
+    }
+  ],
+  "runtime_namespace_parameters": [
+    {
+      "id": "organisation_namespace",
+      "type": "integer",
+      "min": 1,
+      "max": 4294967295
+    }
+  ],
+  "persistence_policy_legacy": {
+    "namespace_parameters": [
+      "organisation_namespace"
+    ],
+    "version_compatibility": {
+      "kind": "same_schema_version"
+    },
+    "run_uniqueness": [
+      {
+        "trace": "1",
+        "key": "record_key"
+      },
+      {
+        "trace": "2",
+        "key": "record_key"
+      },
+      {
+        "trace": "3",
+        "key": "record_key"
+      },
+      {
+        "trace": "4.1",
+        "key": "record_key"
+      },
+      {
+        "trace": "4.2",
+        "key": "record_key"
+      }
+    ],
+    "cross_run_audit": [
+      {
+        "trace": "1",
+        "key": "record_key"
+      },
+      {
+        "trace": "2",
+        "key": "record_key"
+      },
+      {
+        "trace": "3",
+        "key": "record_key"
+      },
+      {
+        "trace": "4.1",
+        "key": "record_key"
+      },
+      {
+        "trace": "4.2",
+        "key": "record_key"
+      }
+    ],
+    "history_identity_invariants": [],
+    "snapshot": null,
+    "temporal_rules": [],
+    "storage_protection": "external_secure_configuration_required"
+  },
+  "required_capabilities_legacy": [
+    "local.v1",
+    "expressions.v1",
+    "joins.v1",
+    "joins.sets.v1",
+    "derived.substring.v1",
+    "persistence.audit.v1"
+  ],
+  "runtime_reference_bindings_legacy": [],
+  "inherited_scope_counts": {
+    "constraints": {
+      "deferred": 83,
+      "physical_only": 8,
+      "active": 29,
+      "partial_050_only": 3
+    },
+    "rules": {
+      "deferred": 70,
+      "active": 2
+    },
+    "groups": {
+      "deferred": 3
+    }
+  },
+  "deferred_inventory": {
+    "constraints": [
+      {
+        "trace": "1",
+        "field": "1.1",
+        "index": 0,
+        "id": null,
+        "kind": "logical_length",
+        "source_sha256": "644860d1249f4ee770202cfe899fd0870c7d99754a9140c3eb0b125761ee63b1"
+      },
+      {
+        "trace": "1",
+        "field": "1.1",
+        "index": 1,
+        "id": null,
+        "kind": "digits_only",
+        "source_sha256": "02feba3f49118a0384e7f2da6bde8f9925d1f0e60bf7247d6732815840751209"
+      },
+      {
+        "trace": "1",
+        "field": "1.1",
+        "index": 2,
+        "id": null,
+        "kind": "substring_not_equals",
+        "source_sha256": "04468dc133275d9c2b86b275742c93c010a73752bd1a5809edb5dcd5a6883d98"
+      },
+      {
+        "trace": "1",
+        "field": "1.3",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "5748135d5c422297978f0212391ebd0796f95ce3166ccb68ceb8ddb63ce8aa03"
+      },
+      {
+        "trace": "1",
+        "field": "1.7",
+        "index": 0,
+        "id": null,
+        "kind": "no_lowercase_if_present",
+        "source_sha256": "fb43b81369796266466fa0d53fac943d86d31b73d637e781ff0127206a63c43c"
+      },
+      {
+        "trace": "1",
+        "field": "1.8",
+        "index": 0,
+        "id": null,
+        "kind": "no_lowercase_if_present",
+        "source_sha256": "fb43b81369796266466fa0d53fac943d86d31b73d637e781ff0127206a63c43c"
+      },
+      {
+        "trace": "1",
+        "field": "1.10",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "fc89bd2b0fae17fcece98efb4d3532c8ee6a6e9682b129c145f49f9f96d1b164"
+      },
+      {
+        "trace": "1",
+        "field": "1.11",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_or_values",
+        "source_sha256": "9e7ea6ea26c2afd25dfecc65ad1a77db87609710bb7af96b92f41c1dc138331a"
+      },
+      {
+        "trace": "1",
+        "field": "1.12",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "5ab108cab67ccf04a50e3d39d3e4672d9e1bff679463e121348b49734be48528"
+      },
+      {
+        "trace": "1",
+        "field": "1.13",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_or_values",
+        "source_sha256": "6cec7a842541b6f3cfe2fb8ae6475546e85c98d5bf55bc50cd07be3206179432"
+      },
+      {
+        "trace": "1",
+        "field": "1.16",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "1755b1c7ce93d36fdaa97a406b238ad40b47c4526f551348ee55dba2ad61f740"
+      },
+      {
+        "trace": "1",
+        "field": "1.18",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "659ef0465c983d937fd2ac868d2315bea169d98fd0eb5b833a2064a7347071a0"
+      },
+      {
+        "trace": "2",
+        "field": "2.1",
+        "index": 0,
+        "id": null,
+        "kind": "logical_length",
+        "source_sha256": "644860d1249f4ee770202cfe899fd0870c7d99754a9140c3eb0b125761ee63b1"
+      },
+      {
+        "trace": "2",
+        "field": "2.1",
+        "index": 1,
+        "id": null,
+        "kind": "digits_only",
+        "source_sha256": "02feba3f49118a0384e7f2da6bde8f9925d1f0e60bf7247d6732815840751209"
+      },
+      {
+        "trace": "2",
+        "field": "2.1",
+        "index": 2,
+        "id": null,
+        "kind": "substring_not_equals",
+        "source_sha256": "04468dc133275d9c2b86b275742c93c010a73752bd1a5809edb5dcd5a6883d98"
+      },
+      {
+        "trace": "2",
+        "field": "2.2",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "f46f8966f9dfc0bf13cbd27ed49f62655c2554c62f3c984656f36e8d5b3250ea"
+      },
+      {
+        "trace": "2",
+        "field": "2.3",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "3f4fdc235b7de6093a9d52a5e0aac82fe09c69ccdfd795ca227019d6c6143db7"
+      },
+      {
+        "trace": "2",
+        "field": "2.7",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "0a6856796d48a81441a6a1caca00d63641028cefdfce031ac14f66a1d0bc3b1c"
+      },
+      {
+        "trace": "2",
+        "field": "2.8",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "35709651cd163e01a2cdac0f2703d0a493a960905f3dbac6320d7f5174a0480f"
+      },
+      {
+        "trace": "2",
+        "field": "2.11",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "3c262191859d5642d31ea6489a7b493959a93c6b754a081c4a2eb3443b13ff37"
+      },
+      {
+        "trace": "2",
+        "field": "2.12",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "7acf63ad5478117317bdf2e8c3cc62fa3531507ae5f24743f510affd37d05f3b"
+      },
+      {
+        "trace": "2",
+        "field": "2.13",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "1d33457e0c44c37b3b4f27021c14c8a4f0713c07b3b2e0ec0091ec7cbf8c9626"
+      },
+      {
+        "trace": "2",
+        "field": "2.14",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "1d33457e0c44c37b3b4f27021c14c8a4f0713c07b3b2e0ec0091ec7cbf8c9626"
+      },
+      {
+        "trace": "2",
+        "field": "2.15",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "1d33457e0c44c37b3b4f27021c14c8a4f0713c07b3b2e0ec0091ec7cbf8c9626"
+      },
+      {
+        "trace": "2",
+        "field": "2.16",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "1d33457e0c44c37b3b4f27021c14c8a4f0713c07b3b2e0ec0091ec7cbf8c9626"
+      },
+      {
+        "trace": "2",
+        "field": "2.17",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "1d33457e0c44c37b3b4f27021c14c8a4f0713c07b3b2e0ec0091ec7cbf8c9626"
+      },
+      {
+        "trace": "2",
+        "field": "2.18",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "1d33457e0c44c37b3b4f27021c14c8a4f0713c07b3b2e0ec0091ec7cbf8c9626"
+      },
+      {
+        "trace": "2",
+        "field": "2.19",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "1d33457e0c44c37b3b4f27021c14c8a4f0713c07b3b2e0ec0091ec7cbf8c9626"
+      },
+      {
+        "trace": "2",
+        "field": "2.20",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "1d33457e0c44c37b3b4f27021c14c8a4f0713c07b3b2e0ec0091ec7cbf8c9626"
+      },
+      {
+        "trace": "2",
+        "field": "2.21",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "1d33457e0c44c37b3b4f27021c14c8a4f0713c07b3b2e0ec0091ec7cbf8c9626"
+      },
+      {
+        "trace": "2",
+        "field": "2.22",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "1d33457e0c44c37b3b4f27021c14c8a4f0713c07b3b2e0ec0091ec7cbf8c9626"
+      },
+      {
+        "trace": "2",
+        "field": "2.23",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "537a035c76c341c761fb7f08d682678dc06f69846d462283536c3a9d01365476"
+      },
+      {
+        "trace": "2",
+        "field": "2.24",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "880642ede4a7ff78b1f9c92d79b6913d0873af8c3ae39882be74895f468351ff"
+      },
+      {
+        "trace": "2",
+        "field": "2.25",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "7acf63ad5478117317bdf2e8c3cc62fa3531507ae5f24743f510affd37d05f3b"
+      },
+      {
+        "trace": "2",
+        "field": "2.26",
+        "index": 0,
+        "id": null,
+        "kind": "composite_segments_if_present",
+        "source_sha256": "c47c014cb911fd39bb22f6731c60a99a068e0dee18a6526d1538816febc3aec4"
+      },
+      {
+        "trace": "2",
+        "field": "2.27",
+        "index": 1,
+        "id": null,
+        "kind": "numeric_range",
+        "source_sha256": "3364b7a12716dd0102773f548997e87e4e49bcda696dfee11cf73435717d234b"
+      },
+      {
+        "trace": "2",
+        "field": "2.28",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "bd3329aa8f5e7f933e2d099593f4bad91022ceb386a60f0a754b9c9f0557a6a6"
+      },
+      {
+        "trace": "2",
+        "field": "2.29",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_or_values",
+        "source_sha256": "6cec7a842541b6f3cfe2fb8ae6475546e85c98d5bf55bc50cd07be3206179432"
+      },
+      {
+        "trace": "2",
+        "field": "2.30",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "457b610020c60bf8c38f24395cfe362295b3442fc53351633ede16f2c95eb5d5"
+      },
+      {
+        "trace": "2",
+        "field": "2.31",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_or_values",
+        "source_sha256": "8fa0f4e1740b14fa3b33c9463d0ebaeae54919b581dbafdda2cb3e39ce56fc37"
+      },
+      {
+        "trace": "2",
+        "field": "2.32",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "7188021bbe0fe2f00174d6d34ba433b0c3363683c38b6fb11ac06803146ba5df"
+      },
+      {
+        "trace": "2",
+        "field": "2.33",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "08f3fcbed5233c33be51b94a4ec09413bba69ea540bbd4e548ecc7a51031d07d"
+      },
+      {
+        "trace": "2",
+        "field": "2.34",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "08f3fcbed5233c33be51b94a4ec09413bba69ea540bbd4e548ecc7a51031d07d"
+      },
+      {
+        "trace": "2",
+        "field": "2.35",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "08f3fcbed5233c33be51b94a4ec09413bba69ea540bbd4e548ecc7a51031d07d"
+      },
+      {
+        "trace": "2",
+        "field": "2.36",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "08f3fcbed5233c33be51b94a4ec09413bba69ea540bbd4e548ecc7a51031d07d"
+      },
+      {
+        "trace": "2",
+        "field": "2.37",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "08f3fcbed5233c33be51b94a4ec09413bba69ea540bbd4e548ecc7a51031d07d"
+      },
+      {
+        "trace": "2",
+        "field": "2.38",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "edb2aa1e412cb568c54fa0846f0114cb3fb92118090296292d2ea5467d00927d"
+      },
+      {
+        "trace": "2",
+        "field": "2.39",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "edb2aa1e412cb568c54fa0846f0114cb3fb92118090296292d2ea5467d00927d"
+      },
+      {
+        "trace": "2",
+        "field": "2.40",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "edb2aa1e412cb568c54fa0846f0114cb3fb92118090296292d2ea5467d00927d"
+      },
+      {
+        "trace": "2",
+        "field": "2.41",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "edb2aa1e412cb568c54fa0846f0114cb3fb92118090296292d2ea5467d00927d"
+      },
+      {
+        "trace": "2",
+        "field": "2.42",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "edb2aa1e412cb568c54fa0846f0114cb3fb92118090296292d2ea5467d00927d"
+      },
+      {
+        "trace": "2",
+        "field": "2.43",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "edb2aa1e412cb568c54fa0846f0114cb3fb92118090296292d2ea5467d00927d"
+      },
+      {
+        "trace": "2",
+        "field": "2.44",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "edb2aa1e412cb568c54fa0846f0114cb3fb92118090296292d2ea5467d00927d"
+      },
+      {
+        "trace": "2",
+        "field": "2.45",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "edb2aa1e412cb568c54fa0846f0114cb3fb92118090296292d2ea5467d00927d"
+      },
+      {
+        "trace": "2",
+        "field": "2.46",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "edb2aa1e412cb568c54fa0846f0114cb3fb92118090296292d2ea5467d00927d"
+      },
+      {
+        "trace": "2",
+        "field": "2.47",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "edb2aa1e412cb568c54fa0846f0114cb3fb92118090296292d2ea5467d00927d"
+      },
+      {
+        "trace": "2",
+        "field": "2.48",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "edb2aa1e412cb568c54fa0846f0114cb3fb92118090296292d2ea5467d00927d"
+      },
+      {
+        "trace": "2",
+        "field": "2.50",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "659ef0465c983d937fd2ac868d2315bea169d98fd0eb5b833a2064a7347071a0"
+      },
+      {
+        "trace": "3",
+        "field": "3.1",
+        "index": 0,
+        "id": null,
+        "kind": "logical_length",
+        "source_sha256": "644860d1249f4ee770202cfe899fd0870c7d99754a9140c3eb0b125761ee63b1"
+      },
+      {
+        "trace": "3",
+        "field": "3.1",
+        "index": 1,
+        "id": null,
+        "kind": "digits_only",
+        "source_sha256": "02feba3f49118a0384e7f2da6bde8f9925d1f0e60bf7247d6732815840751209"
+      },
+      {
+        "trace": "3",
+        "field": "3.1",
+        "index": 2,
+        "id": null,
+        "kind": "substring_not_equals",
+        "source_sha256": "04468dc133275d9c2b86b275742c93c010a73752bd1a5809edb5dcd5a6883d98"
+      },
+      {
+        "trace": "3",
+        "field": "3.3",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "7acf63ad5478117317bdf2e8c3cc62fa3531507ae5f24743f510affd37d05f3b"
+      },
+      {
+        "trace": "3",
+        "field": "3.5",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "9a72ab5d8325b6424e164c6b5c15a0ad8b551771efb47edb53ffa211d7aefc4a"
+      },
+      {
+        "trace": "3",
+        "field": "3.6",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "92cfabb700ec35544a79ca0bc6784b8fbfe8300766fd5ae8645b1920f16c49e6"
+      },
+      {
+        "trace": "3",
+        "field": "3.7",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data_if_present",
+        "source_sha256": "92cfabb700ec35544a79ca0bc6784b8fbfe8300766fd5ae8645b1920f16c49e6"
+      },
+      {
+        "trace": "3",
+        "field": "3.17",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "2d9386e2e10a46f46b424f41df3237003522d0fbc8ad40e63cca478c97495ef6"
+      },
+      {
+        "trace": "3",
+        "field": "3.36",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "659ef0465c983d937fd2ac868d2315bea169d98fd0eb5b833a2064a7347071a0"
+      },
+      {
+        "trace": "4.1",
+        "field": "4.1",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "35709651cd163e01a2cdac0f2703d0a493a960905f3dbac6320d7f5174a0480f"
+      },
+      {
+        "trace": "4.1",
+        "field": "4.3",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "3f4fdc235b7de6093a9d52a5e0aac82fe09c69ccdfd795ca227019d6c6143db7"
+      },
+      {
+        "trace": "4.1",
+        "field": "4.4",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "3c262191859d5642d31ea6489a7b493959a93c6b754a081c4a2eb3443b13ff37"
+      },
+      {
+        "trace": "4.1",
+        "field": "4.5",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "7acf63ad5478117317bdf2e8c3cc62fa3531507ae5f24743f510affd37d05f3b"
+      },
+      {
+        "trace": "4.1",
+        "field": "4.7",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "a5ef1488e77e99a1982643015d59b157c02ccccfe89a9b9cff9751922a524bd0"
+      },
+      {
+        "trace": "4.1",
+        "field": "4.8",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "457b610020c60bf8c38f24395cfe362295b3442fc53351633ede16f2c95eb5d5"
+      },
+      {
+        "trace": "4.1",
+        "field": "4.9",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "189cb125a186ca3b4904ed5dc9e2cb81fd667350ff4ebf9ee1ecf9b99f2c49d4"
+      },
+      {
+        "trace": "4.1",
+        "field": "4.11",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "e6f2859f4ec4b128db4fe3d4d27ed08ab6ba0a7782d668384e10a96564b374db"
+      },
+      {
+        "trace": "4.1",
+        "field": "4.13",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "a1ff1245d970d7a3fa3a5ce73ccf4f51870643f3e7d94fcc65d97584ec493959"
+      },
+      {
+        "trace": "4.1",
+        "field": "4.14",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "189cb125a186ca3b4904ed5dc9e2cb81fd667350ff4ebf9ee1ecf9b99f2c49d4"
+      },
+      {
+        "trace": "4.1",
+        "field": "4.19.1",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "659ef0465c983d937fd2ac868d2315bea169d98fd0eb5b833a2064a7347071a0"
+      },
+      {
+        "trace": "4.2",
+        "field": "4.20",
+        "index": 0,
+        "id": null,
+        "kind": "reference_data",
+        "source_sha256": "35709651cd163e01a2cdac0f2703d0a493a960905f3dbac6320d7f5174a0480f"
+      },
+      {
+        "trace": "4.2",
+        "field": "4.23",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "7acf63ad5478117317bdf2e8c3cc62fa3531507ae5f24743f510affd37d05f3b"
+      },
+      {
+        "trace": "4.2",
+        "field": "4.24",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "7acf63ad5478117317bdf2e8c3cc62fa3531507ae5f24743f510affd37d05f3b"
+      },
+      {
+        "trace": "4.2",
+        "field": "4.27",
+        "index": 1,
+        "id": null,
+        "kind": "numeric_range",
+        "source_sha256": "3364b7a12716dd0102773f548997e87e4e49bcda696dfee11cf73435717d234b"
+      },
+      {
+        "trace": "4.2",
+        "field": "4.28",
+        "index": 0,
+        "id": null,
+        "kind": "allowed_values",
+        "source_sha256": "537a035c76c341c761fb7f08d682678dc06f69846d462283536c3a9d01365476"
+      }
+    ],
+    "rules": [
+      {
+        "trace": "1",
+        "field": null,
+        "index": null,
+        "id": "R-1.1-ADMISSION-YEAR",
+        "kind": null,
+        "source_sha256": "251a28d8e3cce4e9f18912421884afb628e88e8d0799fbf7c7ed420a732c44b8"
+      },
+      {
+        "trace": "1",
+        "field": null,
+        "index": null,
+        "id": "R-1.2-ANONYMOUS-SENTINEL",
+        "kind": null,
+        "source_sha256": "8b6202c3eb48506077d7ec05b1b4266a0b12922bf92ec77387b77229669a29b6"
+      },
+      {
+        "trace": "1",
+        "field": null,
+        "index": null,
+        "id": "R-1.7-ANONYMOUS-NAME",
+        "kind": null,
+        "source_sha256": "ac43aa6fb0099313aec9a4779d123909c364ba7072dd06040c3b4d115893f925"
+      },
+      {
+        "trace": "1",
+        "field": null,
+        "index": null,
+        "id": "R-1.8-ANONYMOUS-NAME",
+        "kind": null,
+        "source_sha256": "216cfc820e2f2be6a755a091fef4ba2a6862edcf502a815e44f33baa2bdffd61"
+      },
+      {
+        "trace": "1",
+        "field": null,
+        "index": null,
+        "id": "R-1.14-FOREIGN",
+        "kind": null,
+        "source_sha256": "8b7a12a24e4c2d6cf6d0575ae8b9fd782aad55cd7398a90f17bcddc9ee4fb47e"
+      },
+      {
+        "trace": "1",
+        "field": null,
+        "index": null,
+        "id": "R-1.14-ITALIAN",
+        "kind": null,
+        "source_sha256": "0409d350ecc1db0513539d972f2271f230b1a7075092dd0e4a569e8b59b6be96"
+      },
+      {
+        "trace": "1",
+        "field": null,
+        "index": null,
+        "id": "R-1.15-FOREIGN",
+        "kind": null,
+        "source_sha256": "157b7fc3bbbb9a1398296e1e0dd4e683ec3e0b79ec42421a88119cbe9618542b"
+      },
+      {
+        "trace": "1",
+        "field": null,
+        "index": null,
+        "id": "R-1.15-ITALIAN",
+        "kind": null,
+        "source_sha256": "90ee99501507c138c82e8cdef96c236cf24b97450782c4dcdc2600f2dcab5174"
+      },
+      {
+        "trace": "2",
+        "field": null,
+        "index": null,
+        "id": "R-2.1-ADMISSION-YEAR",
+        "kind": null,
+        "source_sha256": "3c77294ae96fcd5e5edc8c2f64b4461c2cd5684af2a49f59966800df1f41415b"
+      },
+      {
+        "trace": "2",
+        "field": null,
+        "index": null,
+        "id": "R-2.10-SSR-PAYER",
+        "kind": null,
+        "source_sha256": "17f73084fa319522eee5be356d5b15d69f8c9d203a31ffce01929343e62c3806"
+      },
+      {
+        "trace": "2",
+        "field": null,
+        "index": null,
+        "id": "R-2.4-LE-2.5",
+        "kind": null,
+        "source_sha256": "fc254bcfad33a1fa72b656ba5c1ab249f8827cab6bebd654890eec296e207300"
+      },
+      {
+        "trace": "2",
+        "field": null,
+        "index": null,
+        "id": "R-2.5-LE-2.6",
+        "kind": null,
+        "source_sha256": "b9a04c037af8b4f5cc268a145b3af2a3b45c82d260ca9e329c39d3b0ee8a6616"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.1-ADMISSION-YEAR",
+        "kind": null,
+        "source_sha256": "73c09abdafb7e85f3d31b413a6310890c7738d15e0d1e594f8ec716f81d5cfc9"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.8-DEATH",
+        "kind": null,
+        "source_sha256": "235b536660e19890b3d431b187f3582e65bd99f1578f3c2214d8ba0fa8dc4794"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.8-NORMAL",
+        "kind": null,
+        "source_sha256": "bb8366f99d7757467ce6d33366595c0b7482644f466b44695c13c5b01301f84b"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.9-DEATH",
+        "kind": null,
+        "source_sha256": "068731e41db088e951bc37337f53527cbe1507813d3ee266798b0d8193fea89a"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.9-NORMAL",
+        "kind": null,
+        "source_sha256": "f7998afab8173f3ead1e8116c80b04a845432540ce2fcebf776cb27c5684515a"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.10-DEATH",
+        "kind": null,
+        "source_sha256": "512f8b1f44cea918b0397f65e9b7a72aaa2e1367efdb6ad0d71cd625ed9a631c"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.10-NORMAL",
+        "kind": null,
+        "source_sha256": "11e71c0cb151e4c2ec22a32ad455f3749a5d4073735d5864880008822f502058"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.11-DEATH",
+        "kind": null,
+        "source_sha256": "5ab1a4aaa5441b900a458a4cabf7732477687b336064c7f200d2379a4acb7eec"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.11-NORMAL",
+        "kind": null,
+        "source_sha256": "f74a7044849a30720c5476acbfd805d7b88e734c02b747e86eae846b483b2f05"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.12-DEATH",
+        "kind": null,
+        "source_sha256": "6dab0864a63d7091b3a329cc84365ebc1bafd658419914eb06b320ed6232a72a"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.12-NORMAL",
+        "kind": null,
+        "source_sha256": "4ca7dbf962ab67219f939e5e0a8369cbfe9498694b8ec7234b085863345e32e0"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.13-DEATH",
+        "kind": null,
+        "source_sha256": "060a4e3938e6f1ea952b236b701cc5ca5e6bacf7db5c1ffed2b25ea1a27059a6"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.13-NORMAL",
+        "kind": null,
+        "source_sha256": "0607311f049a1722b12d648653c4f895a42a82566701cb0a253fdb3113535897"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.14-DEATH",
+        "kind": null,
+        "source_sha256": "f4207fb2d24d851e29f8d8c72a9d448b449d9da4cbec1da541931a93bc7a7162"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.14-NORMAL",
+        "kind": null,
+        "source_sha256": "cd40a5bb06cd471ee0bbb087486a2116c0e3e51580546d5237583a5a2fc602cf"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.15-DEATH",
+        "kind": null,
+        "source_sha256": "d178d8b6f89f252dd6362b2043df99594f69be3f0506e80ea8d6cdc0fb60f74f"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.15-NORMAL",
+        "kind": null,
+        "source_sha256": "55d49a13a47c838da6e38454d7b7e1fc52aa05795bb1181ade22d6d24ce908b6"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.16-DEATH",
+        "kind": null,
+        "source_sha256": "93d7356540be4cac95c13aa31ce3ebcbc0cefa86cce1295b908bce0d645a3710"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.16-NORMAL",
+        "kind": null,
+        "source_sha256": "e12b8447b24b81469db98f1365df6966bb072cb0460203578b3d405bf370920a"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.18-DEATH",
+        "kind": null,
+        "source_sha256": "555b657a78636c493a67c1e25da8d3ca778bdc71fe50f270cbdf40f26ca7ba87"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.18-NORMAL",
+        "kind": null,
+        "source_sha256": "e16965401b98acb8da096d7702619c9ee9ad7a49cb20683d968d1b9c98e30b56"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.20-DEATH",
+        "kind": null,
+        "source_sha256": "6641b47cf4ba09c73d27958afd5cd16c27e73e6fe2625f33d7e6dae569ce2380"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.20-NORMAL",
+        "kind": null,
+        "source_sha256": "9d04f9f0e8885753b6ceb42ca192da2fca18dffda7ab7388fee4aaf210aa1b34"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.21-DEATH",
+        "kind": null,
+        "source_sha256": "e9208600c4b620372e34ab49e6a3748c36a2a37f6584c9351e9766816a6e917c"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.21-NORMAL",
+        "kind": null,
+        "source_sha256": "bfdee61ff1c1201ff6f98fd96cfee03fbcefa3e4c8fa07e972133daa074835ba"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.23-DEATH",
+        "kind": null,
+        "source_sha256": "9be2dd89e6b457d86360fd66254a3d4b2d97dbce071ab7515f35d1dfbabfc73e"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.23-NORMAL",
+        "kind": null,
+        "source_sha256": "da30f02784f96d0206a382e0f4a7b88331e0b25e4c7c989df6a2d9f80b92be79"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.19-DEATH",
+        "kind": null,
+        "source_sha256": "033c9006a322dc487bf12865d8e97b05f27891a7e247a3946776f25e76f9db8a"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.22-DEATH",
+        "kind": null,
+        "source_sha256": "a650468383ba1496c8fe7321ff3fe82195a40705dbeca08b0f45b7fa0b7496d6"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.22-NORMAL",
+        "kind": null,
+        "source_sha256": "d1b24a2b3b6dbc26c3087988c0b4a4001439c91630a32f598339f80c3bb18b13"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.24-DEATH-TO-00",
+        "kind": null,
+        "source_sha256": "cbabf628786d720f6b53c130bc28073a74f742bbece9432d0362fd39d2600d34"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.24-00-TO-DEATH",
+        "kind": null,
+        "source_sha256": "b8eff8514e6988473d4d87b2e702b8005957f7be40c1be89f5f204f10f180299"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.24-NORMAL-RANGE",
+        "kind": null,
+        "source_sha256": "1a9f10158479852c5cb967c317d443119845782ce9c4671af97008de983584c0"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.25-ADMISSION",
+        "kind": null,
+        "source_sha256": "d9c5cc7b4b9b2f438a7ebce1711cbd2746b32939c301efb78e4f761bedc08f18"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.25-DISCHARGE",
+        "kind": null,
+        "source_sha256": "8777c21d1af5284b843eb7348ca92782f25d1f2ac9e7342000576783a5e7fcff"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.26-ADMISSION",
+        "kind": null,
+        "source_sha256": "6fc8013035efe4ed44896a84fb281faa1f612a489968a81ff240673f0609e4a9"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.26-DISCHARGE",
+        "kind": null,
+        "source_sha256": "d73d07b0cb79f7354e8bd031eae4c323de8e7b06b9ead5cd11e46ac2ec00dd79"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.26-DEATH-TO-4",
+        "kind": null,
+        "source_sha256": "7f6927b2c3f2acc40321ac6b3807b8e0fb026f8a4ddbd5b42a2e0492bc59781c"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.26-4-TO-DEATH",
+        "kind": null,
+        "source_sha256": "dcd47be8f944e69f69e54e27ec9af804c0312e37783d72552500c36367a0b219"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.27-ADMISSION",
+        "kind": null,
+        "source_sha256": "36e3be6dbecade3ef236cf8c3f8648dcbb912aaca0515276bb0ff1f9d4f0a3ac"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.27-DISCHARGE",
+        "kind": null,
+        "source_sha256": "f59724cbccd1911cc2e06f85f45a300141ce14d60cb92103fbf4c88eb7f4ad69"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.28-ADMISSION",
+        "kind": null,
+        "source_sha256": "0a9a3705d5b92cb07a6dac052f2c13ba318e896a5f9a9ea1db0f62e3a5887f5b"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.28-DISCHARGE",
+        "kind": null,
+        "source_sha256": "43eb29c384e75ea4aa20b5dec2c5c61f87f271b01f12ae44c5c6ab815a37d83a"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.29-ADMISSION",
+        "kind": null,
+        "source_sha256": "cfae6221a85f8633018f7d224bd12dd2808d400956e727abff4a69fbb0e99642"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.29-DISCHARGE",
+        "kind": null,
+        "source_sha256": "aa69d5b52b1b1b71c7a822708248ad0740d244e78657dcb30622f58488100b84"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.30-ADMISSION",
+        "kind": null,
+        "source_sha256": "2e049e531bcdab4bc92f19eea2834afbb367eefbd73b9c3327ea3187846b25b0"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.30-DISCHARGE",
+        "kind": null,
+        "source_sha256": "512dad24b85f02a9ec4f0fff64808ebee34970070051fe6a0e0764c821fd3213"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.31-ADMISSION",
+        "kind": null,
+        "source_sha256": "7031639abeff8d32a4b8fa8017eb439c8b06e9485bab798fd2d2a1a28da514fc"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.31-DISCHARGE",
+        "kind": null,
+        "source_sha256": "62097a9b6a00ca29be4ea567c36c9747e3d3455ce99c3fa7699ea099b4036aeb"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.32-ADMISSION",
+        "kind": null,
+        "source_sha256": "8a315545fdd455c26acac6300689591255dd9b1217139c484d3484f59836c02f"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.32-DISCHARGE",
+        "kind": null,
+        "source_sha256": "09f6b0fb2ec326f14d557f4d30a2892e57cf0f020e38f981bac9ce3fca95d717"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.33-DEATH",
+        "kind": null,
+        "source_sha256": "ea0dd80c7d57d6693da68bb0876c6fea787323df5d8593e6582005eedf87a92f"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.33-NORMAL",
+        "kind": null,
+        "source_sha256": "9b093f4f844a5dd364dc25a59db9c1b2c4441fffea3e1ea35e359588eb8e85b1"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.34-AGE",
+        "kind": null,
+        "source_sha256": "622ae83861888cb8837fa87ccbc5dcdf5681a69933c6790b9f86dc4a224e17f3"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.34-DEATH",
+        "kind": null,
+        "source_sha256": "4b9653e42273d205df7c8e242c08fe3b205105aece6ef5eff148d3c06e4389b8"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.34-NORMAL",
+        "kind": null,
+        "source_sha256": "ffff1a5f03d464cbc56a48b273bdf55b89953e4eacb7776e00a423abee94aba7"
+      },
+      {
+        "trace": "3",
+        "field": null,
+        "index": null,
+        "id": "R-3.34-999-TO-DEATH",
+        "kind": null,
+        "source_sha256": "2c613cf4a1726fffcd4327ea41fc3cdcc46bd341b4ac2d5f97fb901e0670d52c"
+      },
+      {
+        "trace": "4.1",
+        "field": null,
+        "index": null,
+        "id": "R-4.18-LE-4.19",
+        "kind": null,
+        "source_sha256": "0b8918f74d4c01928db170e3e889873d803b62771f15afb3fdddadc9759ac1dd"
+      }
+    ],
+    "groups": [
+      {
+        "trace": "2",
+        "field": null,
+        "index": null,
+        "id": "socio_family_problems",
+        "kind": null,
+        "source_sha256": "ba66774a75016e6c136011f115f1a61711a7d1de0ce6d021e5a1848aefa4b92f"
+      },
+      {
+        "trace": "2",
+        "field": null,
+        "index": null,
+        "id": "diagnoses",
+        "kind": null,
+        "source_sha256": "f325be1f69a4b489f649c146136b3b3b4745756fd0ef00f221f1134b65f8809b"
+      },
+      {
+        "trace": "2",
+        "field": null,
+        "index": null,
+        "id": "procedures",
+        "kind": null,
+        "source_sha256": "7546b6f977774286bf925230736fa0ee3bc2d7891b39909225bad95b7d70238f"
+      }
+    ]
+  },
+  "workbook": {
+    "sheet": "Tracciato_SIOC definitivo",
+    "annual_episode_identifier_note_cells": {
+      "H8": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016).",
+      "H29": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016).",
+      "H82": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016)."
+    },
+    "pk_field_rows": {
+      "1.1": {
+        "row": 8,
+        "key_marker": "X",
+        "note": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016)."
+      },
+      "1.17": {
+        "row": 24,
+        "key_marker": "X",
+        "note": "CAMPO CHIAVE\nIl campo deve essere valorizzato con i codici a SEI caratteri della azienda sanitaria in cui è ubicata la struttura OdC (050501,…)."
+      },
+      "1.18": {
+        "row": 25,
+        "key_marker": "X",
+        "note": "CAMPO CHIAVE\nI codici da utilizzare sono quelli indicati nei modelli ministeriali STS11"
+      },
+      "2.1": {
+        "row": 29,
+        "key_marker": "X",
+        "note": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016)."
+      },
+      "2.49": {
+        "row": 77,
+        "key_marker": "X",
+        "note": "CAMPO CHIAVE\nIl campo deve essere valorizzato con i codici a SEI  caratteri della azienda sanitaria in cui è ubicata la struttura OdC (050501,…)."
+      },
+      "2.50": {
+        "row": 78,
+        "key_marker": "X",
+        "note": "CAMPO CHIAVE\nI codici da utilizzare sono quelli indicati nei modelli ministeriali STS11"
+      },
+      "3.1": {
+        "row": 82,
+        "key_marker": "X",
+        "note": "Le prime 2 cifre identificano l'anno di ingresso, le altre 6 corrispondono alla numerazione progressiva di ricovero all'interno dell'anno. Il codice da utilizzare è articolato in: \n1) la parte numerazione (ultime 6 cifre) deve essere numerica e ≠ 0; \n2) le prime 2 cifre devono essere uguali all’anno di ricovero \nIl numero deve essere univoco per la struttura erogatrice e non deve mai ripetersi nel corso dell’anno\n\nTali istruzioni di codifica si applicano a partire dai ricoveri in ODC dell'anno 2026. I ricoveri con data inzio nel 2025, che si concluderanno nell'anno 2026, mantengono l'ID già assegnato in fase di ricovero (ex campo \"Identificativo univoco assistito per episodio di accoglimento\" come da All. B DDR n.1 del 10/10/2016)."
+      },
+      "3.2": {
+        "row": 83,
+        "key_marker": "X",
+        "note": "Codice identificativo univoco assegnato alla valutazione sull'assistito ed inserito nell'archivio aziendale delle valutazioni."
+      },
+      "3.35": {
+        "row": 116,
+        "key_marker": "X",
+        "note": "CAMPO CHIAVE\nIl campo deve essere valorizzato con i codici a sei caratteri della azienda sanitaria in cui è ubicata la struttura OdC (050501,…)."
+      },
+      "3.36": {
+        "row": 117,
+        "key_marker": "X",
+        "note": "CAMPO CHIAVE\nI codici da utilizzare sono quelli indicati nei modelli ministeriali STS11"
+      },
+      "4.1": {
+        "row": 120,
+        "key_marker": "X",
+        "note": "Indica il codice regionale provvisorio della struttura erogatrice."
+      },
+      "4.7": {
+        "row": 126,
+        "key_marker": "X",
+        "note": "Codice della Regione dove ha sede l'UDO. Il codice da utilizzare è quello a tre caratteri definito con DM 17 settembre 1986, pubblicato nella Gazzetta Ufficiale n.240 del 15 ottobre 1986, e successive modifiche, utilizzato anche nei modelli per le rilevazioni delle attività gestionali ed economiche delle Aziende unità sanitarie locali."
+      },
+      "4.8": {
+        "row": 127,
+        "key_marker": "X",
+        "note": "Codice della Azienda ULSS dove ha sede l'UDO. Il campo deve essere valorizzato con i codici a tre caratteri dell' Azienda sanitaria in cui è ubicata la struttura OdC."
+      },
+      "4.19.1": {
+        "row": 139,
+        "key_marker": "X",
+        "note": "Struttura erogatrice Codice STS11"
+      },
+      "4.20": {
+        "row": 143,
+        "key_marker": "X",
+        "note": "Indica il codice regionale provvisorio della struttura erogatrice, in correlazione con il campo 4.1."
+      },
+      "4.22": {
+        "row": 145,
+        "key_marker": "X",
+        "note": "Numero univoco del record del tracciato 4.2"
+      }
+    },
+    "limits": "Annual uniqueness of episode ID is not independent proof of prohibition on every retransmission of all five trace PKs; D11 remains binding product directive; no exception invented"
+  }
+}

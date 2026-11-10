@@ -31,7 +31,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-OPS-07 | U-OPS-01, U-OPS-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-07.md) | —; Non eseguite | G-OPS2 NOT_VERIFIED |
 | U-OPS-08 | U-OPS-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-08.md) | —; Non eseguite | G-OPS2 NOT_VERIFIED |
 | U-OPS-09 | U-OPS-03, U-OPS-04, U-OPS-05, U-OPS-07, U-OPS-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-09.md) | —; Non eseguite | G-REAL NOT_VERIFIED |
-| U-NORM-01 | U-GOV-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-01.md) | —; Non eseguite | G-SIOC0 NOT_VERIFIED |
+| U-NORM-01 | U-GOV-03 | DONE | [PK e deferred inventariati](docs/verification/unified-post-m9/U-NORM-01.md) | 10dc66b;1 oracle pass;5 tuple identiche .1/.2/FROZEN/component;83+70+3 deferred | G-SIOC0/1 NOT_VERIFIED; D11 enforcement resta richiesto |
 | U-NORM-02 | U-NORM-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-02.md) | —; Non eseguite | G-SIOC0 NOT_VERIFIED |
 | U-NORM-03 | U-NORM-01, U-NORM-02, U-NORM-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-03.md) | —; Non eseguite | G-SIOC1 NOT_VERIFIED |
 | U-NORM-04 | U-NORM-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-04.md) | —; Non eseguite | G-SIOC1 NOT_VERIFIED |
@@ -144,7 +144,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 
 U-FIX-03 WAITING_GATE nativo; U-FIX-01 DONE con nuova CI e log verificati.
 U-FIX-03/04 WAITING_GATE nativo; nessun gate ereditato tra i due delta.
-Next READY indipendente: **U-NORM-01**; U-OPS-03/04 backend rimangono READY. AUTO_CONTINUE.
+Next READY indipendente: **U-NORM-02**, poi U-NORM-05; U-OPS-03/04 backend rimangono READY. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.
