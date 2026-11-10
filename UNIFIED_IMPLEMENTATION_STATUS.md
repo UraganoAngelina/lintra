@@ -26,7 +26,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-OPS-02 | U-OPS-01 | DONE | [Inventario dati/report/spool](docs/verification/unified-post-m9/U-OPS-02.md) | Riscontri statici dei percorsi attuali, target Tauri separati; nessun delta runtime | Acceptance inventario PASS; G-OPS0 tecnico ancora NOT_VERIFIED |
 | U-OPS-03 | U-OPS-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-03.md) | —; Non eseguite | G-OPS1 NOT_VERIFIED |
 | U-OPS-04 | U-OPS-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-04.md) | —; Non eseguite | G-OPS1 NOT_VERIFIED |
-| U-OPS-05 | U-OPS-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-05.md) | —; Non eseguite | G-OPS1 NOT_VERIFIED |
+| U-OPS-05 | U-OPS-01 | DONE | [Custodia e drill sintetici](docs/verification/unified-post-m9/U-OPS-05.md) | 556c5c6;18pass, file32B/copia corretta/KeyMismatch/restore/sentinelle; crypto invariata | Acceptance provider/runbook PASS; G-OPS1 aggregato NOT_VERIFIED |
 | U-OPS-06 | U-OPS-03, U-OPS-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-06.md) | —; Non eseguite | G-OPS2 NOT_VERIFIED |
 | U-OPS-07 | U-OPS-01, U-OPS-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-07.md) | —; Non eseguite | G-OPS2 NOT_VERIFIED |
 | U-OPS-08 | U-OPS-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-08.md) | —; Non eseguite | G-OPS2 NOT_VERIFIED |
@@ -146,7 +146,7 @@ U-FIX-03 WAITING_GATE nativo; U-FIX-01 DONE con nuova CI e log verificati.
 U-FIX-03 DONE con CI propria; U-FIX-04 WAITING_GATE nativo, nessun gate ereditato.
 U-NORM-05: decisione circoscritta richiesta, U-NORM-03/04 dipendenti non READY.
 T-MIG-P0-01 WAITING_GATE CI42834962873; nessun P0-02 o scaffold avviato prima del gate.
-Next READY indipendente: **U-OPS-05**, poi U-OPS-07; altre OPS restano pronte. AUTO_CONTINUE.
+Next READY indipendente: **U-OPS-07**; baseline MIG attende CI42834962873. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.

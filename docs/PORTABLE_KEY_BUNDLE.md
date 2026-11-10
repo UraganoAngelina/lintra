@@ -133,8 +133,11 @@ Se il file manca o è danneggiato:
 
 La compromissione della chiave comune interessa potenzialmente tutte le copie
 che la usano. Qualunque rotazione richiede una procedura futura esplicita: questa
-task non la implementa. Backup/ripristino completo SQLite, cifratura a riposo,
-retention e uso di dati sanitari reali restano aperti come nella ratifica.
+task non la implementa. Il mandato del10novembre2026 ha ratificato file locali
+per account, nessuna nuova cifratura/retention automatica e BACKUP-B verificato:
+restano da completarne i collaudi operativi U-OPS. Il [runbook corrente di
+custodia/recupero](KEY_CUSTODY_RECOVERY.md) conserva chiave e Key ID; eventuali
+autorizzazioni aziendali per specifici dati personali non sono presunte.
 
 Ogni PC mantiene uno storico locale indipendente. La chiave comune rende
 confrontabili gli HMAC a parità di canonizzazione e scope; non sincronizza sessioni
