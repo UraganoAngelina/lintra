@@ -19,7 +19,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-GOV-04 | U-GOV-03 | DONE | [Dossier](docs/verification/unified-post-m9/U-GOV-04.md) | Cronologia dossier; Validatore: 128 nodi, dipendenze e fonti; nessun delta runtime | Acceptance documentale PASS; G-U0 aggregato PASS alla chiusura 04 |
 | U-FIX-01 | U-GOV-01 | WAITING_GATE | [Dossier e log](docs/verification/unified-post-m9/U-FIX-01.md) | 4c169cd; Linux 38 pass/4 ignored, 498 input identici; CI42823787199 pendente Linux/Windows | G-HARD NOT_VERIFIED; attesa nuova CI nativa |
 | U-FIX-02 | U-GOV-03 | DONE | [Dossier, contratto e log](docs/verification/unified-post-m9/U-FIX-02.md) | 52ec340; Linux 18 pass/1 ignored; delta solo documentale, CI nuova non richiesta | Acceptance PASS; G-HARD aggregato NOT_VERIFIED |
-| U-FIX-03 | U-GOV-03 | IN_PROGRESS | [Implementazione preflight e dossier](docs/verification/unified-post-m9/U-FIX-03.md) | Smoke lib145+CLI25+Full7+budget10 pass; qualifica commit/CI nuova da eseguire | G-HARD NOT_VERIFIED; dialogo React in MIG-P5-05 |
+| U-FIX-03 | U-GOV-03 | WAITING_GATE | [Preflight e qualifica locale](docs/verification/unified-post-m9/U-FIX-03.md) | 4864c34; workspace1073 pass/7 ignored, fmt/Clippy PASS; 446 input invariati; CI nativa da avviare | G-HARD NOT_VERIFIED; dialogo React in MIG-P5-05 |
 | U-FIX-04 | U-GOV-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-FIX-04.md) | —; Non eseguite | G-HARD NOT_VERIFIED |
 | U-FIX-05 | U-GOV-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-FIX-05.md) | —; Non eseguite | G-HARD NOT_VERIFIED |
 | U-OPS-01 | U-GOV-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-01.md) | —; Non eseguite | G-OPS0 NOT_VERIFIED |
@@ -142,7 +142,8 @@ CI audit non qualifica alcun nuovo delta runtime.
 | T-MIG-P9-07 | T-MIG-P9-01, T-MIG-P9-02, T-MIG-P9-03, T-MIG-P9-04, T-MIG-P9-05, T-MIG-P9-06, T-MIG-P9-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-07.md) | —; Non eseguite | G-MIG-9 NOT_VERIFIED |
 | T-MIG-P9-08 | T-MIG-P9-01, T-MIG-P7-09 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-08.md) | —; Non eseguite | G-MIG-9 NOT_VERIFIED |
 
-Task attiva: **U-FIX-03**, qualifica sul nuovo SHA. U-FIX-01 WAITING_GATE CI.
+U-FIX-03 WAITING_GATE nativo; U-FIX-01 CI success, verifica log finale in corso.
+Next READY indipendente: **U-FIX-05**. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.

@@ -1,8 +1,9 @@
 # U-FIX-03 — Preflight soft e limiti hard separati
 
 Data: 2026-11-10, Europe/Rome. Prerequisito U-GOV-03 `2cd4bdf`.
-Stato: IN_PROGRESS, codice e smoke locali positivi; qualifica finale sul commit
-e CI nativa nuova ancora necessarie. Nessun G-HARD PASS.
+Stato: WAITING_GATE. Qualifica locale finale PASS su
+`4864c344c06c54bb9cf2863426318ce2dceb255c`; CI nativa nuova ancora necessaria.
+Nessun G-HARD PASS.
 
 ## Delta attuato
 
@@ -58,3 +59,16 @@ File: resource_budget application/CLI, wiring mod/lib/args/command, visibilità
 checker reference, test resource_budget/cli_full, documenti e stato unificato.
 SHA del codice e log finali saranno collegati dopo commit; CI4c169cd non viene
 attribuita a questo delta. Next: qualifica locale sul nuovo SHA, poi CI.
+
+## Qualifica locale finale sul commit
+
+U-FIX-03-workspace-linux.json e log.gz: workspace all-features exit0,
+**1073 esiti passati / 125 riepiloghi / zero fail / 7 ignored**, incluse prove
+Slint e doctest. Sono esiti dei riepiloghi (anche helper), non 1073 test unici.
+U-FIX-03-fmt e U-FIX-03-clippy JSON/log.gz: exit0, workspace all-targets
+all-features, warnings negati. Tutte le prove su 4864c34, 446 input inventariati
+e invariati prima/dopo. Nessuna modifica ai golden per ottenere questi esiti.
+
+La task passa in WAITING_GATE per CI nativa. Il dialogo React resta acceptance
+della successiva integrazione MIG-P5-05, senza UI dichiarata già qualificata.
+Next READY indipendente: U-FIX-05 (ignored e provenienza audit), poi U-FIX-04/OPS.
