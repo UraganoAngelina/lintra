@@ -22,7 +22,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-FIX-03 | U-GOV-03 | WAITING_GATE | [Preflight e qualifica locale](docs/verification/unified-post-m9/U-FIX-03.md) | 4864c34; workspace1073 pass/7 ignored, fmt/Clippy PASS; 446 input invariati; CI42829144043 pendente su 539b9bc (sorgenti identici) | G-HARD NOT_VERIFIED; dialogo React in MIG-P5-05 |
 | U-FIX-04 | U-GOV-03 | WAITING_GATE | [Tree controllata e qualifica](docs/verification/unified-post-m9/U-FIX-04.md) | 76fa08a; 89 pass, fmt/Clippy PASS, Windows modulo type-check PASS; 447 input invariati | G-HARD NOT_VERIFIED; CI nativa nuova da avviare |
 | U-FIX-05 | U-GOV-02 | DONE | [Ignored e confronto fonte](docs/verification/unified-post-m9/U-FIX-05.md) | 539b9bc; due ignored espliciti pass, workbook SHA oracle confermato; nessun delta runtime | Acceptance PASS; G-HARD aggregato NOT_VERIFIED |
-| U-OPS-01 | U-GOV-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-01.md) | —; Non eseguite | G-OPS0 NOT_VERIFIED |
+| U-OPS-01 | U-GOV-03 | DONE | [Modello uso interno](docs/verification/unified-post-m9/U-OPS-01.md) | Scope ratificato; documenti soltanto, provisioning Tauri ancora da qualificare | Acceptance di scope PASS; G-OPS0 aggregato NOT_VERIFIED |
 | U-OPS-02 | U-OPS-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-02.md) | —; Non eseguite | G-OPS0 NOT_VERIFIED |
 | U-OPS-03 | U-OPS-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-03.md) | —; Non eseguite | G-OPS1 NOT_VERIFIED |
 | U-OPS-04 | U-OPS-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-04.md) | —; Non eseguite | G-OPS1 NOT_VERIFIED |
@@ -144,7 +144,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 
 U-FIX-03 WAITING_GATE nativo; U-FIX-01 DONE con nuova CI e log verificati.
 U-FIX-03/04 WAITING_GATE nativo; nessun gate ereditato tra i due delta.
-Next READY indipendente: **U-OPS-01**. AUTO_CONTINUE.
+Next READY indipendente: **U-OPS-02**. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.

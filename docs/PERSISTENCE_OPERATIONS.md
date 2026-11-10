@@ -1,5 +1,11 @@
 # Storico locale: conservazione, copie e ripristino
 
+Aggiornamento post-M9, 10 novembre 2026: [uso interno](INTERNAL_USE.md) e
+[ratifica D01–D15](unified-post-m9/RATIFICATION_2026-11-10.md) definiscono
+filesystem per-account, nessuna nuova cifratura/retention automatica, chiave
+comune e BACKUP-B. Le prove operative U-OPS restano distinte dalle decisioni;
+nessun wizard, backup live o readiness Tauri è dichiarato già implementato.
+
 Questo documento descrive le capacità qualificate con dati sintetici. Non
 autorizza l'uso con dati sanitari reali e non stabilisce una durata legale di
 conservazione. Fonti: ADR-PERSIST-001, ADR-PERSIST-002, DET §166–174 e
@@ -16,10 +22,10 @@ Non esistono scadenza automatica, purge, compattazione con cancellazione logica,
 rotazione o comando per riscrivere retroattivamente le sessioni. La continuità
 dei namespace attraversa aggiornamenti e cambi di directory.
 
-Questo comportamento tecnico **non è una policy di retention approvata**. Prima
-dei dati reali vanno definiti durata, responsabilità, eventuali obblighi di
-cancellazione e trattamento delle copie. Eliminare un file o una riga SQLite
-non dimostra la cancellazione sicura da filesystem, supporti o backup.
+D05 approva **assenza di retention/purge automatici** e gestione manuale di
+conservazione/copie, sotto l'operatore e le prescrizioni aziendali applicabili.
+Non si introduce una durata o un obbligo generale inventato. Eliminare un file
+o una riga SQLite non dimostra la cancellazione sicura da supporti o backup.
 
 ## Review dei dati protetti e visibili
 
@@ -110,7 +116,9 @@ errata e danno, invariabilità dell'originale e test delle sentinelle. Le fixtur
 creano una destinazione privata usa e getta tramite il backend e sostituiscono
 solo il relativo database sintetico chiuso: non espongono un'API di restore.
 
-Prima dei dati reali restano da ratificare cifratura a riposo, retention, backup
-completo (destinazioni, frequenza, accessi, custodia, verifiche e responsabilità)
-e autorizzazione all'uso operativo. Il futuro installer React/Tauri valuterà la
-migrazione del provisioning; questa versione Slint resta portabile senza wizard.
+D02/D03/D05/D06/D07 sono ratificate: uso interno autorizzato, filesystem locale
+per-account senza nuova cifratura/password custom/retention automatica, chiave
+comune invariata e BACKUP-B verificato. Restano da implementare/qualificare i
+delta operativi U-OPS e le prove installer/account. L'autorizzazione aziendale
+per specifici dati personali non viene presunta; G-REAL è circoscritto a quella
+necessità. Slint corrente resta portabile senza wizard fino al cutover Tauri.
