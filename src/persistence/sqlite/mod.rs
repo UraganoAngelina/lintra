@@ -451,16 +451,22 @@ impl PersistentContextRepository for SQLitePersistenceAdapter {
         let ns = codec::encode(ns)?;
         let key = codec::encode(id)?;
         let c = self.lock()?;
-        let result:Option<(Vec<u8>,Vec<u8>,Vec<u8>)>=c.prepare_cached("SELECT r.payload,r.key_proof,r.record_proof FROM latest l JOIN records r ON r.ns=l.ns AND r.revision=l.revision AND r.ordinal=l.ordinal WHERE l.ns=?1 AND l.identity=?2").map_err(sql)?.query_row(params![ns,key],|r|Ok((r.get(0)?,r.get(1)?,r.get(2)?))).optional().map_err(sql)?;
-        result
-            .map(|(body, kp, rp)| {
-                let record = codec::read_record(&body, &kp, &rp, &self.inner.protector)?;
-                if record.identity() != id {
-                    return Err(PersistenceError::CorruptStorage);
-                }
-                Ok(record)
-            })
-            .transpose()
+        // Preserve a dangling latest pointer so corruption cannot masquerade as
+        // absence. Only a missing latest entry is an ordinary unknown identity.
+        let mut statement = c.prepare_cached("SELECT r.payload,r.key_proof,r.record_proof FROM latest l LEFT JOIN records r ON r.ns=l.ns AND r.revision=l.revision AND r.ordinal=l.ordinal WHERE l.ns=?1 AND l.identity=?2").map_err(sql)?;
+        let mut rows = statement.query(params![ns, key]).map_err(sql)?;
+        let Some(row) = rows.next().map_err(sql)? else {
+            return Ok(None);
+        };
+        let blob = |index| {
+            row.get::<_, Vec<u8>>(index)
+                .map_err(|_| PersistenceError::CorruptStorage)
+        };
+        let record = codec::read_record(&blob(0)?, &blob(1)?, &blob(2)?, &self.inner.protector)?;
+        if record.identity() != id {
+            return Err(PersistenceError::CorruptStorage);
+        }
+        Ok(Some(record))
     }
     fn load_history_facts(
         &self,
@@ -556,20 +562,21 @@ impl PersistentContextRepository for SQLitePersistenceAdapter {
     ) -> Result<Option<SnapshotRevision>, PersistenceError> {
         let encoded = codec::encode(ns)?;
         let c = self.lock()?;
-        let current = generation(&c, &encoded)?;
         // A missing/stale head cannot make existing history look empty. MAX
         // seeks the same (ns,revision) primary key and does not load records.
-        let latest: Option<i64> = c
+        // Both values must belong to ONE SQLite statement/read view: the local
+        // mutex cannot prevent another process committing between two SELECTs.
+        let (head, latest): (Option<i64>, Option<i64>) = c
             .query_row(
-                "SELECT MAX(revision) FROM snapshots WHERE ns=?1",
+                "SELECT (SELECT generation FROM namespaces WHERE ns=?1), (SELECT MAX(revision) FROM snapshots WHERE ns=?1)",
                 [&encoded],
-                |r| r.get(0),
+                |r| Ok((r.get(0)?, r.get(1)?)),
             )
             .map_err(sql)?;
-        if latest != current.map(|r| number(r.value())).transpose()? {
+        if head != latest || head.is_some_and(|value| value <= 0) {
             return Err(PersistenceError::CorruptStorage);
         }
-        Ok(current)
+        Ok(head.map(|value| SnapshotRevision::new(value as u64)))
     }
     fn load_submission_page(
         &self,

@@ -310,8 +310,9 @@ Risoluzione di bundle esterno per coppie complete, in ordine: opzioni
 `LINTRA_REFERENCE_DATA_DIR`; directory `schemas/`/`reference-data/` accanto
 all’eseguibile. Una coppia incompleta o una directory scelta non valida produce
 errore, senza ripiego su livelli inferiori. Nessuna ricerca in cwd/home.
-Lo snapshot incorporato sarà introdotto in P15: senza bundle esterno il build
-corrente fallisce esplicitamente. Le reference membership vengono preparate dal
+Lo snapshot incorporato è disponibile con `--features embedded-bundle`; senza
+questa feature, il comando richiede un bundle esterno e fallisce se non lo trova.
+Le reference membership vengono preparate dal
 provider filesystem: `--reference-policy continue` usa le evidenze disponibili,
 con audit distinto per dataset verificati/degradati/indisponibili; `strict`
 richiede preparazione verificata. Nessun dataset normativo viene inventato.

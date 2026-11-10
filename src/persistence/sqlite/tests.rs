@@ -792,6 +792,63 @@ fn exercise_contenders(hold_reader: bool) {
         .count();
     assert_eq!(winners, 1);
 }
+
+/// A writer commits when SQLite prepares the snapshot inventory read. This
+/// places publication between the old implementation's two SELECTs without
+/// sleeps or scheduling assumptions. One statement must observe one read view.
+#[test]
+fn audit_generation_read_is_coherent_across_concurrent_publication() {
+    use rusqlite::hooks::{AuthAction, AuthContext, Authorization};
+    use std::sync::atomic::{AtomicBool, Ordering};
+
+    let dir = parent();
+    let root = dir.path().join("archive");
+    let repo = create(&root);
+    publish(&repo, &snapshot(&repo, "A", 1, "one", vec![])).unwrap();
+    let writer = open(&root);
+    let candidate = snapshot(&writer, "A", 2, "two", vec![]);
+    let published = Arc::new(AtomicBool::new(false));
+    let observed = Arc::clone(&published);
+    repo.lock()
+        .unwrap()
+        .authorizer(Some(move |ctx: AuthContext<'_>| {
+            if matches!(
+                ctx.action,
+                AuthAction::Read {
+                    table_name: "snapshots",
+                    ..
+                }
+            ) && !observed.swap(true, Ordering::SeqCst)
+            {
+                publish(&writer, &candidate).unwrap();
+            }
+            Authorization::Allow
+        }))
+        .unwrap();
+    assert_eq!(
+        repo.current_generation(&namespace("A")),
+        Ok(Some(SnapshotRevision::new(2)))
+    );
+    assert!(published.load(Ordering::SeqCst));
+}
+
+/// Corruption after opening must not turn a known identity into absence.
+/// Both repository lookup APIs owe the same fail-closed storage contract.
+#[test]
+fn audit_identity_lookup_rejects_dangling_latest() {
+    let dir = parent();
+    let repo = create(&dir.path().join("archive"));
+    let record = row(repo.protector(), "A", 1, "A");
+    publish(&repo, &snapshot(&repo, "A", 1, "one", vec![record.clone()])).unwrap();
+    repo.lock()
+        .unwrap()
+        .execute_batch("PRAGMA foreign_keys=OFF; DELETE FROM records;")
+        .unwrap();
+    assert_eq!(
+        repo.lookup_identity(&namespace("A"), record.identity()),
+        Err(PersistenceError::CorruptStorage)
+    );
+}
 #[test]
 fn query_plans_are_indexed_and_external_writer_contention_is_explicit() {
     let dir = parent();
