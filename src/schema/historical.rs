@@ -121,6 +121,41 @@ impl SchemaCompiler {
         raw: RawFlowSchema,
         other_versions: &[RawFlowSchema],
     ) -> Result<CompiledHistoricalFlowSchema, SchemaCompilationError> {
+        if raw
+            .persistence_policy
+            .as_ref()
+            .is_some_and(|p| p.cross_run_validation.is_some())
+        {
+            return Err(unsupported(
+                &raw,
+                "normative cross-run profiles require the explicit cross-run producer",
+            ));
+        }
+        self.compile_history_bytes(raw, other_versions)
+    }
+    /// Normative policy remains explicit and cannot enter an audit-only caller.
+    pub fn compile_historical_cross_run(
+        &self,
+        raw: RawFlowSchema,
+        other_versions: &[RawFlowSchema],
+    ) -> Result<CompiledHistoricalFlowSchema, SchemaCompilationError> {
+        if !raw
+            .persistence_policy
+            .as_ref()
+            .is_some_and(|p| p.cross_run_validation.is_some())
+        {
+            return Err(unsupported(
+                &raw,
+                "cross-run validation requires a declared normative policy",
+            ));
+        }
+        self.compile_history_bytes(raw, other_versions)
+    }
+    fn compile_history_bytes(
+        &self,
+        raw: RawFlowSchema,
+        other_versions: &[RawFlowSchema],
+    ) -> Result<CompiledHistoricalFlowSchema, SchemaCompilationError> {
         let profile = self.compile_persistence_profile(&raw, other_versions)?;
         let policy = profile.policy().cloned().ok_or_else(|| {
             unsupported(

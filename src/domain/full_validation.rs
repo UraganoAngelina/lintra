@@ -68,6 +68,8 @@ pub enum RunParameterAudit {
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct FullValidationSummary {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cross_run_validation: Option<CrossRunValidationSummary>,
     pub completeness: ValidationCompleteness,
     pub parameters: BTreeMap<String, RunParameterAudit>,
     pub traces: Vec<FlowTraceEvidence>,
@@ -75,7 +77,13 @@ pub struct FullValidationSummary {
 }
 impl FullValidationSummary {
     pub fn has_non_definitive_evaluations(&self) -> bool {
-        self.controls
+        self.cross_run_validation.as_ref().is_some_and(|v| {
+            v.traces
+                .iter()
+                .any(|t| t.indeterminate || t.missing_previous_records > 0)
+                || v.unreported_errors > 0
+        }) || self
+            .controls
             .iter()
             .any(|control| control.unknown > 0 || control.skipped > 0)
     }
@@ -266,7 +274,14 @@ impl FullValidationSummary {
                 .as_ref()
                 .is_some_and(|audit| audit.has_non_definitive_evaluations());
         if skipped != summary.skipped_rules
-            || normative > summary.total_errors
+            || normative
+                > summary.total_errors.saturating_add(if interrupted {
+                    self.cross_run_validation
+                        .as_ref()
+                        .map_or(0, |v| v.unreported_errors)
+                } else {
+                    0
+                })
             || self.completeness
                 != if partial {
                     ValidationCompleteness::Partial
@@ -290,4 +305,23 @@ impl FullValidationSummary {
                 }
         })
     }
+}
+
+/// Aggregate evidence only; protected PKs and clinical rows never enter reports.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Default)]
+pub struct CrossRunValidationSummary {
+    pub traces: Vec<CrossRunTraceSummary>,
+    /// Detected second-pass errors not emitted after max_errors/cancellation.
+    pub unreported_errors: u64,
+}
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+pub struct CrossRunTraceSummary {
+    pub trace_id: TraceId,
+    pub carry_forward_identical: u64,
+    pub new_records: u64,
+    pub historical_key_content_mismatch: u64,
+    pub reused_records: u64,
+    pub missing_previous_records: u64,
+    pub indeterminate: bool,
+    pub unknown_reason: Option<String>,
 }

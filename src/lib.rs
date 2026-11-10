@@ -410,3 +410,5 @@ pub use application::historical_validation::{
 pub use application::history_existence::{HistoricalOriginAttestation, HistoricalOriginClaim};
 /// Checked historical predicate metadata.
 pub use schema::compiled::plans::HistoryExistencePlan;
+
+pub use domain::{CrossRunTraceSummary, CrossRunValidationSummary};

@@ -1,0 +1,42 @@
+{
+  "decision": "DEC-SIOC-HIST-02-A01",
+  "inherits_component": "tests/golden/cross-trace/sioc-referential/v1/schema.json",
+  "component_sha256": "b7a5a8d91ffe6aecff39065ea4cfd634551b7cc83d4ceff219bdc6bca9b96ec7",
+  "parent_profile": "schemas/sioc/2026-04-20.structural-minimal.2/flow_schema.json",
+  "parent_sha256": "b1bffeb800570d8f4ac045110bf849e5380ed4062f209b4cb1f34dee3df1c33b",
+  "added_controls": [
+    "cumulative_identical:1,2,3",
+    "reject_previously_seen:4.1,4.2",
+    "deferred_second_pass_intra_duplicate:4.1"
+  ],
+  "preserved_record_keys": {
+    "1": [
+      "1.1",
+      "1.17",
+      "1.18"
+    ],
+    "2": [
+      "2.1",
+      "2.49",
+      "2.50"
+    ],
+    "3": [
+      "3.1",
+      "3.2",
+      "3.35",
+      "3.36"
+    ],
+    "4.1": [
+      "4.1",
+      "4.7",
+      "4.8",
+      "4.19.1"
+    ],
+    "4.2": [
+      "4.20",
+      "4.22"
+    ]
+  },
+  "scope": "Existing referential component and opaque spans retained; this version adds D11 only. Does not qualify the full regional workbook. Existing structural-minimal.2 deferred catalogue remains deferred.",
+  "legacy_fingerprints": "Readable unchanged; a previous non-monthly or incompatible schema binding is Unknown, never silently admitted as a qualified baseline."
+}

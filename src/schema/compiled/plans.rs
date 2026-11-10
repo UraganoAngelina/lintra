@@ -830,6 +830,7 @@ pub enum TemporalPlan {
 /// All plans require externally configured secure storage; no storage driver here.
 #[derive(Debug, Clone)]
 pub struct PersistencePolicy {
+    pub cross_run_validation: Option<CrossRunValidationPlan>,
     pub namespace_parameters: Vec<usize>,
     pub version_compatibility: VersionCompatibility,
     pub run_uniqueness: Vec<PolicyKey>,
@@ -851,6 +852,7 @@ pub enum Capability {
     DerivedCalendarYearDeltaV1,
     ReferenceMetadataV1,
     PersistenceAuditV1,
+    PersistenceCrossRunV1,
     PersistenceNamespaceBindingV1,
     PersistenceSnapshotV1,
     HistoryExistenceV1,
@@ -869,4 +871,20 @@ pub struct NamespaceBindingPlan {
     pub parameter_index: usize,
     pub error_code: ValidationCode,
     pub message_template: Arc<str>,
+}
+
+/// Bound generic cross-run obligations. No repository or crypto belongs here.
+#[derive(Debug, Clone)]
+pub struct CrossRunValidationPlan {
+    pub year_parameter: usize,
+    pub month_parameter: usize,
+    pub traces: Vec<CrossRunTracePlan>,
+}
+#[derive(Debug, Clone)]
+pub struct CrossRunTracePlan {
+    pub trace_index: usize,
+    pub mode: crate::schema::raw::RawCrossRunMode,
+    pub duplicate_in_second_pass: bool,
+    pub reuse_error: ValidationCode,
+    pub missing_error: ValidationCode,
 }

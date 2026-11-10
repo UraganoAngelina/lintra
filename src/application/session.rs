@@ -14,6 +14,7 @@ use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, error::Error, fmt};
 
 const PERIOD_PREFIX: &str = "lintra-session-v1:";
+const CROSS_RUN_PERIOD_PREFIX: &str = "lintra-cross-run-session-v1:";
 const AUDIT_PERIOD_PREFIX: &str = "lintra-audit-session-v1:";
 
 /// Normative rejection is distinct from a storage/report failure. No PHI appears
@@ -155,16 +156,29 @@ struct AuditBinding {
     scope: PersistenceNamespace,
     submission_id: String,
 }
+/// Authenticated monthly metadata uses the existing opaque source period.
+/// No HMAC framing, database version or legacy binding is changed.
+#[derive(Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub(super) struct CrossRunBinding {
+    pub flow: crate::FlowId,
+    pub scope: PersistenceNamespace,
+    pub year: (String, i64),
+    pub month: (String, i64),
+    pub submission_id: String,
+}
 #[derive(Clone, PartialEq, Eq)]
 enum ApprovalBinding {
     Snapshot(SessionBinding),
     Audit(AuditBinding),
+    CrossRun(CrossRunBinding),
 }
 impl ApprovalBinding {
     fn flow(&self) -> &crate::FlowId {
         match self {
             Self::Snapshot(v) => &v.flow,
             Self::Audit(v) => &v.flow,
+            Self::CrossRun(v) => &v.flow,
         }
     }
     fn requires_missing_consent(&self) -> bool {
@@ -173,6 +187,10 @@ impl ApprovalBinding {
     fn encode(&self) -> Result<String, SessionApprovalError> {
         match self {
             Self::Snapshot(v) => v.encode(),
+            Self::CrossRun(v) => Ok(format!(
+                "{CROSS_RUN_PERIOD_PREFIX}{}",
+                serde_json::to_string(v).map_err(|_| SessionApprovalError::InvalidBinding)?
+            )),
             Self::Audit(v) => Ok(format!(
                 "{AUDIT_PERIOD_PREFIX}{}",
                 serde_json::to_string(v).map_err(|_| SessionApprovalError::InvalidBinding)?
@@ -180,7 +198,15 @@ impl ApprovalBinding {
         }
     }
     fn decode(value: Option<&str>) -> Result<Self, SessionApprovalError> {
-        if let Some(encoded) = value.and_then(|v| v.strip_prefix(AUDIT_PERIOD_PREFIX)) {
+        if let Some(encoded) = value.and_then(|v| v.strip_prefix(CROSS_RUN_PERIOD_PREFIX)) {
+            let data: CrossRunBinding = serde_json::from_str(encoded)
+                .map_err(|_| SessionApprovalError::UnboundApprovedHistory)?;
+            let result = Self::CrossRun(data);
+            if result.encode()?.strip_prefix(CROSS_RUN_PERIOD_PREFIX) != Some(encoded) {
+                return Err(SessionApprovalError::UnboundApprovedHistory);
+            }
+            Ok(result)
+        } else if let Some(encoded) = value.and_then(|v| v.strip_prefix(AUDIT_PERIOD_PREFIX)) {
             let data: AuditBinding = serde_json::from_str(encoded)
                 .map_err(|_| SessionApprovalError::UnboundApprovedHistory)?;
             let result = Self::Audit(data);
@@ -195,6 +221,11 @@ impl ApprovalBinding {
     fn matches_source(&self, source: &SourceSubmission) -> bool {
         match self {
             Self::Snapshot(v) => v.flow == source.schema_key().flow_id,
+            Self::CrossRun(v) => {
+                v.flow == source.schema_key().flow_id
+                    && &v.scope == source.namespace()
+                    && v.submission_id == source.submission_id()
+            }
             Self::Audit(v) => {
                 v.flow == source.schema_key().flow_id
                     && &v.scope == source.namespace()
@@ -205,6 +236,12 @@ impl ApprovalBinding {
     fn same_definition(&self, other: &Self) -> bool {
         match (self, other) {
             (Self::Snapshot(a), Self::Snapshot(b)) => a.same_definition(b),
+            (Self::CrossRun(a), Self::CrossRun(b)) => {
+                a.flow == b.flow
+                    && a.scope == b.scope
+                    && a.year.0 == b.year.0
+                    && a.month.0 == b.month.0
+            }
             (Self::Audit(a), Self::Audit(b)) => {
                 a.flow == b.flow
                     && a.scope
@@ -288,6 +325,27 @@ fn bind(
             .map(|&i| get(i))
             .collect::<Result<_, _>>()?,
     )?;
+    if let Some(cross) = &policy.cross_run_validation {
+        let get_integer = |index| match get(index)? {
+            (id, NamespaceValue::Integer(value)) => Ok((id, value)),
+            _ => Err(SessionApprovalError::InvalidBinding),
+        };
+        let year = get_integer(cross.year_parameter)?;
+        let month = get_integer(cross.month_parameter)?;
+        if !(1..=9999).contains(&year.1) || !(1..=12).contains(&month.1) {
+            return Err(SessionApprovalError::InvalidBinding);
+        }
+        return Ok((
+            namespace.clone(),
+            ApprovalBinding::CrossRun(CrossRunBinding {
+                flow: profile.schema_key().flow_id.clone(),
+                scope: namespace,
+                year,
+                month,
+                submission_id: submission_id.into(),
+            }),
+        ));
+    }
     let Some(plan) = plan else {
         return Ok((
             namespace.clone(),
@@ -329,7 +387,10 @@ pub(super) fn bind_audit_namespace(
     submission_id: &str,
 ) -> Result<PersistenceNamespace, SessionApprovalError> {
     let (namespace, binding) = bind(profile, values, submission_id)?;
-    if !matches!(binding, ApprovalBinding::Audit(_)) {
+    if !matches!(
+        binding,
+        ApprovalBinding::Audit(_) | ApprovalBinding::CrossRun(_)
+    ) {
         return Err(SessionApprovalError::UnsupportedSessionPolicy);
     }
     Ok(namespace)
@@ -487,6 +548,13 @@ impl ApprovalDraft {
         identities: Vec<StoredIdentity>,
         protector: &IdentityProtector,
     ) -> Result<ValidatedApproval, SessionApprovalError> {
+        if self
+            .profile
+            .policy()
+            .is_some_and(|p| p.cross_run_validation.is_some())
+        {
+            return Err(SessionApprovalError::UnsupportedSessionPolicy);
+        }
         self.validated_inner(outcome, identities, protector, false)
     }
 
@@ -583,6 +651,17 @@ impl ApprovalDraft {
         Ok(InvariantValidatedApproval::new(
             base, profile, anchors, protector,
         ))
+    }
+
+    /// Only the real historical service calls this after its normative pass.
+    /// Public draft validation cannot manufacture a cross-run approval token.
+    pub(super) fn validated_historical(
+        self,
+        outcome: &ValidationRunOutcome,
+        identities: Vec<StoredIdentity>,
+        protector: &IdentityProtector,
+    ) -> Result<ValidatedApproval, SessionApprovalError> {
+        self.validated_inner(outcome, identities, protector, false)
     }
 
     fn validated_inner(
@@ -1124,4 +1203,39 @@ impl ApprovalPreview<'_> {
         }
         Ok(resolution)
     }
+}
+
+/// Decode only authenticated, canonical monthly sources. Absence is an
+/// unqualified legacy context, not proof of an empty normative baseline.
+pub(super) fn cross_run_binding(
+    source: &SourceSubmission,
+) -> Result<Option<CrossRunBinding>, PersistenceError> {
+    if !source
+        .period()
+        .is_some_and(|p| p.starts_with(CROSS_RUN_PERIOD_PREFIX))
+    {
+        return Ok(None);
+    }
+    let binding =
+        ApprovalBinding::decode(source.period()).map_err(|_| PersistenceError::CorruptStorage)?;
+    if !binding.matches_source(source) {
+        return Err(PersistenceError::CorruptStorage);
+    }
+    let ApprovalBinding::CrossRun(value) = binding else {
+        return Err(PersistenceError::CorruptStorage);
+    };
+    if !(1..=9999).contains(&value.year.1) || !(1..=12).contains(&value.month.1) {
+        return Err(PersistenceError::CorruptStorage);
+    }
+    Ok(Some(value))
+}
+pub(super) fn bind_cross_run_period(
+    profile: &CompiledPersistenceProfile,
+    values: &BTreeMap<String, NamespaceValue>,
+    id: &str,
+) -> Result<Option<CrossRunBinding>, SessionApprovalError> {
+    Ok(match bind(profile, values, id)?.1 {
+        ApprovalBinding::CrossRun(value) => Some(value),
+        _ => None,
+    })
 }

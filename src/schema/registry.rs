@@ -109,19 +109,27 @@ impl SchemaRegistry {
         &self,
         key: &SchemaKey,
     ) -> Result<ResolvedHistoricalSchema, SchemaResolutionError> {
-        self.resolve_historical_mode(key, false)
+        self.resolve_historical_mode(key, false, false)
     }
     /// Resolve a complete snapshot profile through its explicit producer path.
     pub fn resolve_historical_snapshot(
         &self,
         key: &SchemaKey,
     ) -> Result<ResolvedHistoricalSchema, SchemaResolutionError> {
-        self.resolve_historical_mode(key, true)
+        self.resolve_historical_mode(key, true, false)
+    }
+    /// Select the declared normative producer without weakening audit-only API.
+    pub fn resolve_historical_validation(
+        &self,
+        key: &SchemaKey,
+    ) -> Result<ResolvedHistoricalSchema, SchemaResolutionError> {
+        self.resolve_historical_mode(key, false, true)
     }
     fn resolve_historical_mode(
         &self,
         key: &SchemaKey,
         snapshot: bool,
+        allow_cross_run: bool,
     ) -> Result<ResolvedHistoricalSchema, SchemaResolutionError> {
         let mut raw = self.repository.load_raw(key)?;
         check_selected(&raw, key)?;
@@ -158,6 +166,13 @@ impl SchemaRegistry {
         }
         let compiled = if snapshot {
             self.compiler.compile_historical_snapshot(raw, &members)?
+        } else if allow_cross_run
+            && raw
+                .persistence_policy
+                .as_ref()
+                .is_some_and(|p| p.cross_run_validation.is_some())
+        {
+            self.compiler.compile_historical_cross_run(raw, &members)?
         } else {
             self.compiler.compile_historical_audit(raw, &members)?
         };

@@ -675,6 +675,12 @@ impl SchemaCompiler {
                     .collect(),
             };
             let Some(policy) = &raw.persistence_policy else {
+                if raw
+                    .required_capabilities
+                    .contains(&RawFlowSchemaRequiredCapabilitiesItem::PersistenceCrossRunV1)
+                {
+                    return Err(invalid("cross-run capability requires an explicit policy"));
+                }
                 if !other_versions.is_empty() {
                     return Err(invalid(
                         "disabled persistence has no compatibility group to resolve",
@@ -708,6 +714,11 @@ impl SchemaCompiler {
                 compatibility(raw, policy, other_versions, &profile.record_keys)?;
             profile.compatible_schemas = fingerprints;
             profile.policy = Some(PersistencePolicy {
+                cross_run_validation: crate::schema::cross_run::compile(
+                    raw,
+                    &profile.parameters,
+                    &cross_run_audit,
+                )?,
                 namespace_parameters,
                 version_compatibility,
                 run_uniqueness,

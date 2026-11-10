@@ -200,6 +200,7 @@ pub(crate) fn into_summary(
         })
         .collect();
     Ok(FullValidationSummary {
+        cross_run_validation: artifacts.cross_run_validation,
         completeness: ValidationCompleteness::Complete,
         parameters,
         traces,

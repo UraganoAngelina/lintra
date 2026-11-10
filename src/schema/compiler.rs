@@ -587,6 +587,8 @@ impl SchemaCompiler {
                     | RawFlowSchemaRequiredCapabilitiesItem::PersistenceNamespaceBindingV1
             ) && !(audit_policy.is_some()
                 && *capability == RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1)
+                && !(*capability == RawFlowSchemaRequiredCapabilitiesItem::PersistenceCrossRunV1
+                    && audit_policy.as_ref().is_some_and(|p| p.cross_run_validation.is_some()))
                 && !(audit_policy.is_some()
                     && matches!(
                         capability,
@@ -959,6 +961,13 @@ impl SchemaCompiler {
                                 .is_some_and(|policy| policy.snapshot.is_some()) =>
                         {
                             Capability::PersistenceSnapshotV1
+                        }
+                        RawFlowSchemaRequiredCapabilitiesItem::PersistenceCrossRunV1
+                            if audit_policy
+                                .as_ref()
+                                .is_some_and(|p| p.cross_run_validation.is_some()) =>
+                        {
+                            Capability::PersistenceCrossRunV1
                         }
                         RawFlowSchemaRequiredCapabilitiesItem::PersistenceAuditV1
                             if audit_policy.is_some() =>

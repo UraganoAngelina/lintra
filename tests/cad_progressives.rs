@@ -1064,6 +1064,7 @@ fn outcome(
         reference_data_versions: BTreeMap::new(),
         reference_validation: None,
         full_validation: Some(FullValidationSummary {
+            cross_run_validation: None,
             completeness: ValidationCompleteness::Complete,
             parameters: parameters
                 .iter()

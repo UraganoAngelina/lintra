@@ -93,6 +93,7 @@ pub(crate) fn compile(raw: &RawFlowSchema) -> Result<Vec<NamespaceBindingPlan>, 
 pub(crate) fn binding_only(raw: &RawFlowSchema) -> bool {
     raw.persistence_policy.as_ref().is_some_and(|p| {
         p.namespace_bindings.as_ref().is_some_and(|v| !v.is_empty())
+            && p.cross_run_validation.is_none()
             && p.cross_run_audit.is_empty()
             && p.history_identity_invariants.is_empty()
             && p.snapshot.is_none()

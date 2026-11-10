@@ -1063,6 +1063,13 @@ pub enum RawNamespaceComparison {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct RawPersistence {
+    /// Explicit format-3 normative producer, absent in every legacy profile.
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "present_cross_run"
+    )]
+    pub cross_run_validation: Option<RawCrossRunValidation>,
     /// Format 3 only. Absence preserves the canonical serialization of formats 1/2.
     #[serde(
         default,
@@ -1127,6 +1134,8 @@ pub enum RawFlowSchemaRequiredCapabilitiesItem {
     ReferenceMetadataV1,
     #[serde(rename = "persistence.audit.v1")]
     PersistenceAuditV1,
+    #[serde(rename = "persistence.cross_run.v1")]
+    PersistenceCrossRunV1,
     #[serde(rename = "persistence.namespace_binding.v1")]
     PersistenceNamespaceBindingV1,
     #[serde(rename = "persistence.snapshot.v1")]
@@ -1167,4 +1176,40 @@ fn present_namespace_bindings<'de, D: serde::Deserializer<'de>>(
     d: D,
 ) -> Result<Option<Vec<RawNamespaceBinding>>, D::Error> {
     Vec::<RawNamespaceBinding>::deserialize(d).map(Some)
+}
+
+/// Generic approved-history policy. Values identify schema bindings, not flows.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RawCrossRunValidation {
+    pub content_identity: RawCrossRunContentIdentity,
+    pub year_parameter: String,
+    pub month_parameter: String,
+    pub traces: Vec<RawCrossRunTrace>,
+}
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RawCrossRunTrace {
+    pub trace: String,
+    pub mode: RawCrossRunMode,
+    pub duplicate_in_second_pass: bool,
+    pub reuse_error: String,
+    pub missing_error: String,
+}
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum RawCrossRunMode {
+    CumulativeIdentical,
+    RejectPreviouslySeen,
+}
+fn present_cross_run<'de, D: serde::Deserializer<'de>>(
+    d: D,
+) -> Result<Option<RawCrossRunValidation>, D::Error> {
+    RawCrossRunValidation::deserialize(d).map(Some)
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum RawCrossRunContentIdentity {
+    #[serde(rename = "fixed_width_record_bytes_without_terminator.v1")]
+    FixedWidthRecordBytesWithoutTerminatorV1,
 }

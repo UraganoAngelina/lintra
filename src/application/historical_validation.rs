@@ -285,7 +285,7 @@ impl<'service, 'repo> HistoricalValidationService<'service, 'repo> {
         let resolved = self
             .validation
             .schema_registry
-            .resolve_historical_audit(&request.validation.schema_key)
+            .resolve_historical_validation(&request.validation.schema_key)
             .map_err(E::Resolution)?;
         let profile = resolved.profile();
         if let Some(text) = textual {
@@ -310,7 +310,24 @@ impl<'service, 'repo> HistoricalValidationService<'service, 'repo> {
             .load_protection_audit()
             .map_err(E::Persistence)?;
         self.protector.verify_audit(&audit).map_err(E::Protection)?;
+        let cross_run = super::session::bind_cross_run_period(
+            profile,
+            &request.parameters,
+            &request.submission_id,
+        )
+        .map_err(E::Approval)?
+        .map(|binding| {
+            super::cross_run::CrossRunEvaluator::prepare(
+                profile,
+                binding,
+                self.repository,
+                self.protector,
+                cancellation,
+            )
+        })
+        .transpose()?;
         let mut collector = ProtectedCollector::new(&resolved, namespace.clone(), self.protector)?;
+        collector.cross_run = cross_run;
         let parameters = request
             .parameters
             .iter()
@@ -414,7 +431,7 @@ impl<'service, 'repo> HistoricalValidationService<'service, 'repo> {
         };
         let validated = ApprovalDraft::new(profile, request.parameters, parts, None)
             .map_err(E::Approval)?
-            .validated(&outcome, collector.identities, self.protector)
+            .validated_historical(&outcome, collector.identities, self.protector)
             .map_err(E::Approval)?;
         let approval = validated
             .preview_with_cancellation(self.repository, cancellation)
@@ -505,6 +522,7 @@ struct ProtectedCollector<'a> {
     definitions: BTreeMap<String, (IdentityProtectionScope, Sha256Digest)>,
     protector: &'a IdentityProtector,
     identities: Vec<StoredIdentity>,
+    cross_run: Option<super::cross_run::CrossRunEvaluator<'a>>,
 }
 impl<'a> ProtectedCollector<'a> {
     fn new(
@@ -547,10 +565,34 @@ impl<'a> ProtectedCollector<'a> {
             definitions,
             protector,
             identities: Vec::new(),
+            cross_run: None,
         })
     }
 }
 impl FlowRecordObserver for ProtectedCollector<'_> {
+    fn record_eligible(&self, trace: &TraceId, line: u64) -> bool {
+        self.cross_run
+            .as_ref()
+            .is_none_or(|v| v.eligible(trace, line))
+    }
+    fn finish_pass_one(
+        &mut self,
+        coverage: &[TraceCoverageEvidence],
+    ) -> Result<(), Box<dyn Error + Send + Sync>> {
+        if let Some(value) = &mut self.cross_run {
+            value.finish(coverage)?;
+        }
+        Ok(())
+    }
+    fn begin_pass_two(&mut self) -> Result<Vec<ValidationError>, Box<dyn Error + Send + Sync>> {
+        Ok(self
+            .cross_run
+            .as_mut()
+            .map_or_else(Vec::new, |v| v.take_errors()))
+    }
+    fn cross_run_summary(&self) -> Option<CrossRunValidationSummary> {
+        self.cross_run.as_ref().map(|v| v.summary())
+    }
     fn on_record(
         &mut self,
         trace: &CompiledRecordSchema,
@@ -559,12 +601,13 @@ impl FlowRecordObserver for ProtectedCollector<'_> {
         _operands: &[crate::engine::record_validator::OperandValidity],
     ) -> Result<(), Box<dyn Error + Send + Sync>> {
         if let Some((scope, definition)) = self.definitions.get(&trace.id().0) {
-            self.identities.push(self.protector.protect_record_bytes(
-                scope,
-                key,
-                definition,
-                record.bytes,
-            )?);
+            let row = self
+                .protector
+                .protect_record_bytes(scope, key, definition, record.bytes)?;
+            if let Some(value) = &mut self.cross_run {
+                value.observe(&row, record.line_number)?;
+            }
+            self.identities.push(row);
         }
         Ok(())
     }

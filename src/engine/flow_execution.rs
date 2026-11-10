@@ -18,6 +18,16 @@ type TechnicalError = Box<dyn Error + Send + Sync>;
 /// Borrowed pass-one evidence for an explicit application producer. No storage,
 /// cryptography or regulatory decision is owned by this neutral engine hook.
 pub(crate) trait FlowRecordObserver {
+    /// Policy producers can exclude rejected rows from valid join contexts.
+    fn record_eligible(&self, _trace: &TraceId, _line: u64) -> bool {
+        true
+    }
+    fn begin_pass_two(&mut self) -> Result<Vec<ValidationError>, TechnicalError> {
+        Ok(Vec::new())
+    }
+    fn cross_run_summary(&self) -> Option<CrossRunValidationSummary> {
+        None
+    }
     fn historical_context(&self) -> Option<&dyn super::projected_context::HistoricalSetContext> {
         None
     }
@@ -163,6 +173,7 @@ pub struct FlowValidationArtifacts {
 /// into the existing summary.truncated/Partial contract.
 #[derive(Debug)]
 pub(crate) struct FlowRunArtifacts {
+    pub cross_run_validation: Option<CrossRunValidationSummary>,
     pub completion: ExecutionStop,
     pub counters: ValidationCounters,
     pub traces: Vec<TraceCoverageEvidence>,
@@ -383,6 +394,63 @@ impl<'a> FlowValidator<'a> {
                 .finish_pass_one(&state.traces)
                 .map_err(FlowValidationError::ReferenceObserver)?;
         }
+        // All normative historical errors are emitted in pass two, sharing the
+        // existing cancellation, error budget and checked record accounting.
+        let mut pending = std::mem::take(&mut state.deferred_duplicates);
+        if let Some(producer) = record_observer.as_deref_mut() {
+            pending.extend(
+                producer
+                    .begin_pass_two()
+                    .map_err(FlowValidationError::ReferenceObserver)?,
+            );
+            state.cross_run_validation = producer.cross_run_summary();
+        }
+        pending.sort_by_key(|e| {
+            (
+                self.schema
+                    .traces()
+                    .iter()
+                    .position(|t| t.id() == &e.trace_id),
+                e.line_number,
+            )
+        });
+        let mut emitted = 0;
+        for error in &pending {
+            let stop = if (ports.control.is_cancelled)() {
+                Some(ExecutionStop::Cancelled)
+            } else if ports.summary.error_limit_reached() {
+                Some(ExecutionStop::ErrorLimit)
+            } else {
+                None
+            };
+            if let Some(stop) = stop {
+                if let Some(evidence) = &mut state.cross_run_validation {
+                    evidence.unreported_errors = (pending.len() - emitted) as u64;
+                }
+                return state.finish(stop, ports);
+            }
+            ports
+                .sink
+                .on_error(error)
+                .map_err(|e| FlowValidationError::ReferenceObserver(Box::new(e)))?;
+            ports
+                .summary
+                .error_emitted(&error.code)
+                .map_err(FlowValidationError::Summary)?;
+            if state
+                .invalid
+                .insert((error.trace_id.clone(), error.line_number))
+            {
+                ports
+                    .summary
+                    .invalidate_previously_valid_record()
+                    .map_err(FlowValidationError::Summary)?;
+            }
+            emitted += 1;
+        }
+        if ports.summary.error_limit_reached() {
+            return state.finish(ExecutionStop::ErrorLimit, ports);
+        }
         let error_budget = ports.summary.error_budget();
         let mut observer = FullCrossObserver {
             invalid: &mut state.invalid,
@@ -424,6 +492,8 @@ struct FlowState {
     record_keys: Vec<RecordKeyEvidence>,
     cross: Vec<CrossControlEvidence>,
     totals: CrossRecordPassSummary,
+    deferred_duplicates: Vec<ValidationError>,
+    cross_run_validation: Option<CrossRunValidationSummary>,
 }
 impl FlowState {
     fn new(flow: &CompiledFlowSchema) -> Self {
@@ -462,6 +532,8 @@ impl FlowState {
                     non_definitive: Vec::new(),
                 })
                 .collect(),
+            deferred_duplicates: Vec::new(),
+            cross_run_validation: None,
             totals: CrossRecordPassSummary::default(),
         }
     }
@@ -496,6 +568,7 @@ impl FlowState {
             ExecutionStop::ErrorLimit => {} // No fake Completed/Cancelled event.
         }
         Ok(FlowRunArtifacts {
+            cross_run_validation: self.cross_run_validation,
             completion,
             counters: ports.summary.counters(),
             traces: self.traces,
@@ -548,6 +621,16 @@ impl FullRecordCollector for ProjectionCollector<'_, '_, '_> {
             self.state.record_keys[self.trace_index].inconclusive += 1;
             return Ok(());
         }
+        let deferred_duplicate = self
+            .flow
+            .persistence_policy()
+            .as_ref()
+            .and_then(|p| p.cross_run_validation.as_ref())
+            .is_some_and(|p| {
+                p.traces
+                    .iter()
+                    .any(|t| t.trace_index == self.trace_index && t.duplicate_in_second_pass)
+            });
         let view = RecordView::new(record.bytes);
         let identity = local.identity.unwrap_or_default();
         let key_evidence = &mut self.state.record_keys[self.trace_index];
@@ -556,7 +639,7 @@ impl FullRecordCollector for ProjectionCollector<'_, '_, '_> {
                 key_evidence.checked += 1;
                 // The exact PK already extracted for uniqueness is borrowed;
                 // the producer must finish before this row buffer is reused.
-                if let Some(observer) = self.record_observer.as_deref_mut() {
+                if !deferred_duplicate && let Some(observer) = self.record_observer.as_deref_mut() {
                     observer.on_record(trace, &record, &key, operands)?;
                 }
                 if let Some(first) = self.keys.get(&key) {
@@ -573,6 +656,12 @@ impl FullRecordCollector for ProjectionCollector<'_, '_, '_> {
                         &trace.record_key().error_code,
                         *first,
                     );
+                    if deferred_duplicate {
+                        self.state.deferred_duplicates.push(error);
+                        // Input byte/hash evidence remains physical; this row
+                        // cannot become a second logical identity or join row.
+                        return Ok(());
+                    }
                     sink.on_error(&error)?;
                     summary.error_emitted(&error.code)?;
                     if self
@@ -583,6 +672,11 @@ impl FullRecordCollector for ProjectionCollector<'_, '_, '_> {
                         summary.invalidate_previously_valid_record()?;
                     }
                 } else {
+                    if deferred_duplicate
+                        && let Some(observer) = self.record_observer.as_deref_mut()
+                    {
+                        observer.on_record(trace, &record, &key, operands)?;
+                    }
                     self.keys.insert(key, record.line_number);
                 }
             }
@@ -592,6 +686,13 @@ impl FullRecordCollector for ProjectionCollector<'_, '_, '_> {
             Err(error) => return Err(Box::new(error)),
         }
         if summary.error_limit_reached() {
+            return Ok(());
+        }
+        if self
+            .record_observer
+            .as_deref()
+            .is_some_and(|o| !o.record_eligible(trace.id(), record.line_number))
+        {
             return Ok(());
         }
         // Invalid full-width records still contribute independent byte evidence.
