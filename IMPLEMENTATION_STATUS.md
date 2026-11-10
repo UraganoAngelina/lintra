@@ -1,58 +1,32 @@
 # IMPLEMENTATION_STATUS.md — Lintra
 
-Consuntivo aggiornato al **2026-11-09**. Piano v1.1; governance GOV-2026-10-26-01.
+Consuntivo aggiornato al **2026-11-10**. Piano v1.1; governance GOV-2026-10-26-01.
 
-## Frontiera corrente — CAD12 IN_PROGRESS, contratti storici ratificati
+## Frontiera corrente — CAD12 DONE, avvio P18-04
 
-**138/140 DONE = 98,6%**; restano CAD12 e P18-04 (conteggio task, non sforzo).
-CAD04..11/PERSIST12 qualificati; riferimenti SHA/run nel preflight CAD12.
-CAD08 DONE con CI42476999364 sullo SHA3388527a2d4a8feee3e37acc1a4c56a753d5f7e1:
-sette job richiesti success. Nessun riavvio di task già DONE.
+**139/140 DONE = 99,3%** (conteggio task, non sforzo). Rimane P18-04.
+CAD12 qualificata dalla CI [42641969728](https://github.com/UraganoAngelina/lintra/actions/runs/42641969728)
+su d45078e153ba0455774129c9832c98eb9e90b789: sette job richiesti success,
+packaging UI opzionale skipped. Verifica API, log e due import SQLite effettuata
+il 10 novembre 2026. Nove test CAD83 e21storici passati in tutti e tre gli
+assetti su entrambi gli OS; ogni import verifica4snapshot/2namespace, batch,
+manifest, formati logici1/2 e nullable2. Dossier runtime-native-ci.json e imports.
 
-ADR-HISTORY-EXISTENCE-001: ratifica implementativa sostitutiva autorizza il
-percorso completo dentro CAD12. C1 A approvata, L1 precisata il9novembre:
-il witness annullato/rettificato non può essere riutilizzato da un vecchio
-snapshot; occorre altra iniziale valida. Nessun consenso ordinario mancante.
-Norme, namespace/evento, snapshot immutabili, HMAC1/ACL e Unknown invariati.
+Runtime c59b0de e sola correzione timeout CI d45078e: compiler/piani generici,
+PASS1 con validità per campo, query C1/L1, PASS2, snapshot/preview/approval/replay
+atomici e profilo CAD83 acquisito da filesystem con due cataloghi Strict.
+Golden T1/T2/T3, reopen, annullamenti e rettifiche, namespace, missing B2/D,
+privacy e JSONL con oracle indipendente qualificati. Quindici gate locali:
+1059esiti workspace/default eallfeatures ciascuna,1016core,0fail;504input
+confermati salvo timeout workflow già qualificato dalla nuova CI. Misure release
+100/300eventi per namespace: p95descrittivo759/1920ms,RSS25936/28276KiB.
 
-CNF-DIAGNOSTIC-ORDER-01 **RESOLVED**: audit/4test/5gate locali e CI42530063288
-success sullo SHAa644145b52200df33c104573559a6c044fd6d5d7. Sette job richiesti
-ricontrollati via API il9novembre; packaging opzionale skipped. Ordine invariato.
-Questa CI non qualifica il nuovo codice storico. Dossier omonimo aggiornato.
-
-Delta CAD12 corrente: payload fact-only, ordinal del token, proiezioni protette,
-SQLite3, manifest obbligatorio contro cancellazione di batch, query di inventario
-indicizzata senza caricare records. Reader1/2 preservati, nessuna migrazione
-implicita; upgrade consenso ancora1→2. Dieci test nuovi di storage;35testSQLite
-positivi inclusa qualifica trasferimento locale. Fixture CI ampliata a4snapshot,
-2namespace e un batch storico. Report T-CAD-12-history-storage.md.
-Sette gate finali locali positivi,283impronte ferme e193input test confrontati
-con HEAD; workspace default/allfeatures1028esiti ciascuna/0fail/6ignored,
-corelib141/0fail/4ignored; fmt/Clippy/release/boundary exit0. CI42592330836 del
-componente completed/success sullo SHAc5266d0, sette job e due import effettivi
-qualificati. Ledger T-CAD-12-history-storage-gates.json e native-ci.json.
-
-Runtime in working tree: compiler/piani semantici, PASS1 per-field, query L1/C1,
-PASS2, servizio pubblico snapshot e approval/replay atomici collegati. Profilo
-operativo CAD83 reale acquisito dal filesystem e due cataloghi Strict, nessun
-filler; golden T1/T2/T3 con reopen, oracle fisso e JSONL negativo deterministico.
-21test generici e9CAD83 positivi,142testlib/4ignored. Matrice e spiegazioni in
-T-CAD-12-runtime-implementation.md; stato operativo in execution-progress.md.
-Quindici gate locali positivi,504input invariati;1059esiti workspace default
-e allfeatures ciascuna,1016core no-default,0fail. Misure release CAD83 reali
-100/300eventi per namespace,6approvazioni ciascuna: p95descrittivo759/1920ms,
-RSS25936/28276KiB. Ledger e report runtime-validation.md. Pubblicato il codice
-c59b0def0915d8cca6dae7f59048aa38f50b6807; CI42634997501 avviata e SHA verificato,
-primo esito cancelled per timeout35m Windows durante packaging sonda, dopo
-test/release/README positivi. Linux success. NoveCAD83 e21storici verificati
-nei log di entrambi gliOS per3assetti. Correzione solo CI: limite45m, tutti
-i controlli invariati;504input del gate locale, solo workflow variato. Correzione d45078e153ba0455774129c9832c98eb9e90b789 pubblicata; unica nuova
-CI42641969728 avviata e SHA verificato, attesa dei7job completi. Nessun DONE
-anticipato. CAD12 non DONE, P18-04 non READY, nessun FROZEN/M9/release/tag.
-
-Single-agent, nessun background/delega. docs/migration preesistente preservata
-ed esclusa. Proseguire il workflow autorizzato, senza nuovi checkpoint ordinari.
-I registri sottostanti conservano lo stato storico al momento di ciascun evento.
+C1/L1 ratificate; CNF-DIAGNOSTIC-ORDER-01 RESOLVED con propriaCI42530063288.
+CAD resta runtime-candidate, non FROZEN né conformità normativa universale;
+CLI/UI storiche audit-only immutate. Nessuna release/tag/M9 implicita.
+P18-04 READY: audit documenti/decisioni/CNF e QG-8 prima di M9.
+Single-agent, nessun background/delega; docs/migration preesistente esclusa.
+I registri sottostanti conservano il contesto storico dei rispettivi eventi.
 
 ## Registro precedente — T-CAD-02 WAITING_GATE, DEC-17 chiusa
 
@@ -7046,3 +7020,19 @@ SQLite nativi scaricati:4snapshot/2namespace, batch e manifest verificati.
 Componente storage qualificato, non CAD12DONE;138/140invariato. Avvio integrazione
 compiler/observer/query/PASS2/servizio nel medesimo workflow, single-agent.
 docs/migration preservata ed esclusa. Nessun nuovo consenso richiesto.
+
+
+## QUALITY GATE / HANDOFF — CAD12 DONE, 10 novembre 2026
+
+Verificata run42641969728 success su d45078e: sette job richiesti, log reali
+con9CAD83+21history in tre assetti per OS, due import autentici4snapshot e
+2namespace con batch/manifest/formati1/2/null2.504input del gate locale
+ricontrollati: solo timeoutCI differente, coperto dalla run finale. PrimaCI
+cancellata conservata come fallita; nessuna pipeline nuova o gate ereditato.
+
+Recap: qualifica compiler/observer/query/servizio snapshot, profilo83campi,
+golden/reopen/privacy/misure già implementati; chiusura in indice, stato,
+report e dossierCI con import scaricati. Nessun codice o schema modificato.
+139/140DONE99,3%; P18-04READY, avvio audit finale documentale QG-8.
+CADcandidato, FROZEN richiede il proprio gate umano, nessuna release/tag.
+Single-agent/no background; docs/migration preesistente preservata/esclusa.

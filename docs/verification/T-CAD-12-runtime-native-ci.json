@@ -1040,5 +1040,127 @@
     "updatedAt": "2026-11-09T15:40:28Z",
     "url": "https://github.com/UraganoAngelina/lintra/actions/runs/42641969728"
   },
-  "final_evidence_checks": 1
+  "final_evidence_checks": 1,
+  "qualification_2026_11_10": {
+    "run": 42641969728,
+    "head_sha": "d45078e153ba0455774129c9832c98eb9e90b789",
+    "required_jobs_success": 7,
+    "optional_ui_packaging": "skipped",
+    "combined_log_bytes": 2322831,
+    "combined_log_sha256": "a99bc460906f797fa89cfc2cc61fdc95c6647dcd3daee1da86522e35446ba8b8",
+    "native_case_success_counts": {
+      "x86_64-unknown-linux-gnu": {
+        "cad_history_runtime": {
+          "complete_cad83_t1_t2_t3_with_real_catalogs_reopened_sqlite_and_independent_progressives": 3,
+          "cad83_historical_violation_jsonl_has_a_fixed_normative_oracle_and_stable_bytes": 3,
+          "missing_b2_is_partial_with_exact_consent_and_cannot_publish_facts": 3,
+          "source_mapping_retains_all_83_notes_layouts_and_complete_normative_keys": 3,
+          "cad_initial_annulled_in_t2_does_not_resurrect_for_t3_reevaluation": 3,
+          "cad_namespaces_with_the_same_event_are_independent_and_unknown_is_not_a_violation": 3,
+          "normative_dates_professional_15_and_invalid_dates_keep_distinct_outcomes": 3,
+          "all_suspension_reasons_apply_to_interior_home_access_and_boundaries_remain_allowed": 3,
+          "missing_d_with_proceed_is_partial_validation_only_and_not_a_fake_empty_file": 3
+        },
+        "history_existence": {
+          "real_snapshot_pass1_pass2_commit_reopen_absent_keeps_witness": 3,
+          "correction_invalidates_old_initial_and_c1_proves_false": 3,
+          "no_origin_or_other_namespace_remains_unknown_not_false": 3,
+          "independent_local_violation_preserves_positive_but_invalid_operand_does_not": 3,
+          "compiler_binds_semantics_and_rejects_unsupported_historical_operations": 3,
+          "invalid_when_dependency_does_not_mask_an_independent_rule_on_the_same_join": 3,
+          "incompatible_schema_or_predicate_never_uses_old_positives_as_proof": 3,
+          "approved_identity_inventory_without_predicate_facts_is_an_explicit_gap": 3,
+          "approved_annulment_t2_requires_another_initial_t3_and_allows_reactivation": 3,
+          "another_valid_initial_survives_and_missing_period_never_proves_false": 3,
+          "historical_identity_does_not_reset_at_year_boundary": 3,
+          "missing_trace_needs_consent_before_history_or_input_access": 3,
+          "cancellation_and_error_budget_never_publish_facts": 3,
+          "pass_two_and_approval_do_not_reopen_the_input_paths": 3,
+          "report_abort_cas_and_repeat_approval_preserve_the_exact_unit": 3,
+          "replay_reconstructs_original_origins_after_later_approved_attestations": 3,
+          "a_new_backdated_snapshot_cannot_read_future_facts_or_replace_live_state": 3,
+          "persisted_fact_tampering_is_technical_even_with_a_current_positive": 3,
+          "facts_and_documents_never_persist_raw_event_rows_or_key_material": 3,
+          "full_cad_candidate_compiles_83_source_fields_without_filler": 3,
+          "absent_source_in_explicit_snapshot_is_preserved_with_consent": 3
+        }
+      },
+      "x86_64-pc-windows-msvc": {
+        "cad_history_runtime": {
+          "complete_cad83_t1_t2_t3_with_real_catalogs_reopened_sqlite_and_independent_progressives": 3,
+          "cad83_historical_violation_jsonl_has_a_fixed_normative_oracle_and_stable_bytes": 3,
+          "missing_b2_is_partial_with_exact_consent_and_cannot_publish_facts": 3,
+          "source_mapping_retains_all_83_notes_layouts_and_complete_normative_keys": 3,
+          "cad_initial_annulled_in_t2_does_not_resurrect_for_t3_reevaluation": 3,
+          "cad_namespaces_with_the_same_event_are_independent_and_unknown_is_not_a_violation": 3,
+          "normative_dates_professional_15_and_invalid_dates_keep_distinct_outcomes": 3,
+          "all_suspension_reasons_apply_to_interior_home_access_and_boundaries_remain_allowed": 3,
+          "missing_d_with_proceed_is_partial_validation_only_and_not_a_fake_empty_file": 3
+        },
+        "history_existence": {
+          "real_snapshot_pass1_pass2_commit_reopen_absent_keeps_witness": 3,
+          "correction_invalidates_old_initial_and_c1_proves_false": 3,
+          "no_origin_or_other_namespace_remains_unknown_not_false": 3,
+          "independent_local_violation_preserves_positive_but_invalid_operand_does_not": 3,
+          "compiler_binds_semantics_and_rejects_unsupported_historical_operations": 3,
+          "invalid_when_dependency_does_not_mask_an_independent_rule_on_the_same_join": 3,
+          "incompatible_schema_or_predicate_never_uses_old_positives_as_proof": 3,
+          "approved_identity_inventory_without_predicate_facts_is_an_explicit_gap": 3,
+          "approved_annulment_t2_requires_another_initial_t3_and_allows_reactivation": 3,
+          "another_valid_initial_survives_and_missing_period_never_proves_false": 3,
+          "historical_identity_does_not_reset_at_year_boundary": 3,
+          "missing_trace_needs_consent_before_history_or_input_access": 3,
+          "cancellation_and_error_budget_never_publish_facts": 3,
+          "pass_two_and_approval_do_not_reopen_the_input_paths": 3,
+          "report_abort_cas_and_repeat_approval_preserve_the_exact_unit": 3,
+          "replay_reconstructs_original_origins_after_later_approved_attestations": 3,
+          "a_new_backdated_snapshot_cannot_read_future_facts_or_replace_live_state": 3,
+          "persisted_fact_tampering_is_technical_even_with_a_current_positive": 3,
+          "facts_and_documents_never_persist_raw_event_rows_or_key_material": 3,
+          "full_cad_candidate_compiles_83_source_fields_without_filler": 3,
+          "absent_source_in_explicit_snapshot_is_preserved_with_consent": 3
+        }
+      }
+    },
+    "verified_imports": {
+      "x86_64-unknown-linux-gnu": {
+        "consumer_os": "linux",
+        "fixture_kind": "lintra.synthetic-sqlite-transfer.v1",
+        "history_batch_verified": true,
+        "logical_fact_formats_verified": [
+          1,
+          2
+        ],
+        "namespaces_verified": 2,
+        "nullable_format2_verified": true,
+        "producer_os": "windows",
+        "protection_verified": true,
+        "retained_occurrence_verified": true,
+        "snapshot_manifests_verified": true,
+        "snapshots_verified": 4,
+        "source_db_sha256": "c4892d8689814cdd5fadd292e6cf8c8320e494345ed287803aae197b41b430ca"
+      },
+      "x86_64-pc-windows-msvc": {
+        "consumer_os": "windows",
+        "fixture_kind": "lintra.synthetic-sqlite-transfer.v1",
+        "history_batch_verified": true,
+        "logical_fact_formats_verified": [
+          1,
+          2
+        ],
+        "namespaces_verified": 2,
+        "nullable_format2_verified": true,
+        "producer_os": "linux",
+        "protection_verified": true,
+        "retained_occurrence_verified": true,
+        "snapshot_manifests_verified": true,
+        "snapshots_verified": 4,
+        "source_db_sha256": "c4892d8689814cdd5fadd292e6cf8c8320e494345ed287803aae197b41b430ca"
+      }
+    },
+    "local_input_differences": [
+      ".github/workflows/ci.yml"
+    ],
+    "workflow_sha256": "52e512adcbf378141991eb237d821feedc47b815c4715ace6864a088a9582eba"
+  }
 }

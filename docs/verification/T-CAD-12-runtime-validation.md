@@ -84,3 +84,16 @@ prima lettura SHA/branch confermati e due verifyjob attivi. Nessun esito finale
 ancora letto. Il ledger runtime-native-ci.json conserva questa prima evidenza.
 Le7qualifiche native e i due import devono ancora essere verificati; CAD12
 rimane IN_PROGRESS/WAITING_GATE. Nessuna CI duplicata.
+
+
+## Qualifica nativa conclusa — 10 novembre 2026
+
+CAD12 DONE. CI42641969728 su d45078e153ba0455774129c9832c98eb9e90b789
+completed/success: sette job richiesti positivi, packaging UI opzionale skipped.
+Log verificati:9CAD83+21history per ognuno dei tre assetti su entrambi gli OS.
+Due import scaricati e verificati:4snapshot/2namespace, batch, manifest,
+protection/retained occurrence, formati logici1/2 e nullable2. Prove conservate
+in runtime-native-ci.json e runtime-native-imports/.504input locali confrontati:
+solo timeoutCI differisce, già coperto dalla run finale. La CI iniziale
+cancellata rimane non qualificata. Nessun nuovo codice o schema in questa chiusura.
+139/140DONE; P18-04READY e avviata. Nessun FROZEN/release/tag/M9 implicito.
