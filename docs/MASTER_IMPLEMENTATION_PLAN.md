@@ -127,6 +127,12 @@ Ogni riga è un vincolo da rispettare. Modificarne uno richiede una nuova decisi
 | N-30 | SIOC: PK intra-trace già dichiarate FROZEN; audit persistente inter-invio non equivale automaticamente a errore sulla ripetizione cross-run | SIOC `record_key`; ADR-PERSIST-001 |
 | N-31 | Persistenza minimizzata e protetta; niente record sanitari grezzi e identificativi in chiaro nello storage default; privacy by design, test sintetici | DET §172; ADR-PERSIST-001 |
 
+Le eccezioni del nuovo desktop sono limitate alla GUI in
+[ADR-MIG-002](adr/ADR-MIG-002.md): Windows11 NSIS offline/perMachine e Linux
+personale CachyOS con dipendenze effettivamente qualificate. Le righe N-19,
+N-20 e N-23 conservano la policy core/CLI; nessun gate di release è rimosso.
+
+
 ---
 
 ## 5. Stato iniziale, evidenze e assunzioni

@@ -1522,6 +1522,12 @@ Architettura:
 
 # 39A. Requisito non funzionale: supporto multipiattaforma
 
+> **Delta GUI-only11 novembre2026:** [ADR-MIG-002](adr/ADR-MIG-002.md)
+> recepisce GUI Windows11 x86_64/NSIS offline perMachine/WebView2 offline,
+> run non-admin e due account; Linux GUI solo personale CachyOS. Le sezioni
+> core/CLI seguenti mantengono N-19/N-20/N-23. Nessun allargamento di dipendenze
+> GUI alla library/CLI né prova clean-room dedotta dal runner Windows2025.
+
 Il software deve supportare ufficialmente, già dall'MVP:
 
 - **Linux x86_64**;

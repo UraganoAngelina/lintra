@@ -4384,6 +4384,13 @@ Una feature che interagisce con filesystem, I/O, CLI, schema repository o report
 
 # Addendum A (revisione 2026-10-08): sviluppo su CachyOS e distribuzione Windows
 
+> **Delta GUI-only11 novembre2026:** [ADR-MIG-002](adr/ADR-MIG-002.md)
+> definisce il target del nuovo desktop: Windows11 x86_64 NSIS perMachine
+> offline/WebView2 offline, dati per-account e run non elevata; CachyOS solo
+> personale. I contratti core/CLI dell'Addendum restano applicabili. Qualifica
+> installer, dipendenze WebView e prove account sono gate MIG specifici;
+> non sono già soddisfatti dalla build CLI o da questo recepimento.
+
 Questo addendum concretizza `ARCHITECTURE.md` §5.8, §39A, §39B e §39C a livello di contratti.
 
 ## A.1 Origine di schemi e reference data (modulo `cli/paths.rs`)

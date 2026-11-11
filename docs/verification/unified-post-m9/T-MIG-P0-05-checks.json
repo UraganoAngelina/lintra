@@ -1,0 +1,11 @@
+{
+  "task": "T-MIG-P0-05",
+  "preflight_head": "eaf989b",
+  "adr_sha256": "cb40dc2ba3b8b9cbaa0339cf8ff9065b9eeb0368bace5700e723e9f491cdc3fa",
+  "core_CLI_norm_rows_unchanged": true,
+  "runtime_inputs_unchanged": 520,
+  "host": "CachyOS rolling",
+  "webkit2gtk_4_1": "NOT_FOUND by pkg-config; future P1 prerequisite",
+  "Win11_clean_room": "NOT_RUN",
+  "GUI_installer": "NOT_RUN"
+}
