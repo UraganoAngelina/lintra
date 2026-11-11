@@ -4,7 +4,20 @@ U-UI-01, 10 novembre 2026. Autorità: ratifica D01–D15 e master unificato v1.0
 poi le ratifiche specifiche/ARCH/DET per le parti non modificate. Le FONTI
 del 30 ottobre sono fotografie storiche e non vengono riscritte.
 
-## Baseline e registri
+## Baseline vigente — 11 novembre2026
+
+Codice qualificato cb70bee, CI42990775714 success7 job; locale1096pass/7ignored.
+U-FIX-01..05 e G-HARD PASS; SIOC03 backend DONE con63 oracle nativi per OS.
+U-NORM-05 è DONE con addendum-A01 (ricopertura1–3 e PK UDO a quattro campi),
+nessuna decisione ordinaria pendente.04 aspetta frontend/contesto referenziale,
+non un ritorno audit-only. P0-01 è DONE; G-MIG-0 attende le altre taskP0.
+
+La [riconciliazione corrente](MIGRATION_RECONCILIATION_2026-11-11.md) identifica
+outcome e destinazione di ciascun riferimento stale. Il registro autorevole
+resta UNIFIED_IMPLEMENTATION_STATUS. La fotografia seguente è conservata come
+storia della preparazione del ponte; i suoi PENDING non sono lo stato corrente.
+
+## Fotografia storica del ponte — 10 novembre2026
 
 | Elemento | Fatto corrente |
 |---|---|
@@ -56,10 +69,11 @@ qualifica UI. U-OPS-01/02 documentano scope e superfici; provisioning/ACL,
 shared warning, chiave, Backup-B/restore restano da verificare nelle task proprie.
 G-DUR richiede fault injection/kill/reopen/report, senza riscrivere SQLite.
 
-U-NORM-05 ha isolato la contraddizione fra una lettura indiscriminata di D11 e
-la ricopertura1–3/aggiornamento UDO prescritti dal workbook: decisione mirata
-pendente, nessun ritorno audit-only. Ciò blocca l'enforcement dipendente e il
-signoff SIOC, **non** preparazione/migrazione UI sintetica o LocalOnly/Full.
+La decisione mirata U-NORM-05 è ora recepita in DEC-SIOC-HIST-02-A01:
+ricopertura1–3 identica ammessa, mismatch rifiutato;4.1 PK completa e divieto
+fra nuovi invii confermati. Il backend è qualificato; UI/contesto storico
+amministrativo e G-SIOC1 finale restano da integrare. Nessun blocco alla
+migrazione UI sintetica LocalOnly/Full deriva da una ratifica già chiusa.
 G-REAL non è un gate enterprise per costruire un package tecnico funzionante.
 
 I blocchi realmente nativi (VM Windows11, offline WebView2, due account) vanno
