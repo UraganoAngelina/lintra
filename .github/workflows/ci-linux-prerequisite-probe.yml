@@ -1,6 +1,9 @@
 name: Linux prerequisite connectivity diagnostic
 
 on:
+  push:
+    branches: [work/p1-foundations]
+    paths: [.github/workflows/ci-linux-prerequisite-probe.yml]
   workflow_dispatch:
 
 permissions:
