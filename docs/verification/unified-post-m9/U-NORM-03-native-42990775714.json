@@ -1,0 +1,200 @@
+{
+  "run": 42990775714,
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/42990775714",
+  "head": "cb70bee19f2d470c3ac2e98828343b32e23b3f0a",
+  "conclusion": "success",
+  "captured_utc": "2026-11-11T09:49:06.446797+00:00",
+  "required_jobs": [
+    {
+      "id": 130422837344,
+      "name": "Verify Linux",
+      "conclusion": "success"
+    },
+    {
+      "id": 130422837837,
+      "name": "Verify Windows",
+      "conclusion": "success"
+    },
+    {
+      "id": 130435493861,
+      "name": "Compare Linux and Windows JSONL bytes",
+      "conclusion": "success"
+    },
+    {
+      "id": 130435493950,
+      "name": "Compare production UI regression pixels",
+      "conclusion": "success"
+    },
+    {
+      "id": 130435493969,
+      "name": "Reopen Windows snapshot on Linux",
+      "conclusion": "success"
+    },
+    {
+      "id": 130435494003,
+      "name": "Reopen Linux snapshot on Windows",
+      "conclusion": "success"
+    },
+    {
+      "id": 130435494369,
+      "name": "Compare native desktop theme pixels",
+      "conclusion": "success"
+    }
+  ],
+  "optional_ui_archive_job": "skipped; not requested, not an installer qualification",
+  "log_sha256": "8c52c5acecbf540895d797780f2d471c04668fabf08920298b165f39b12dc8c1",
+  "log_gzip_sha256": "1a3cf9e7c15e2d9ac32ecd16496975d4a65092f78c0a36e022f4a0ed856051d2",
+  "new_contract_tests_by_os_and_step": {
+    "x86_64-unknown-linux-gnu": {
+      "Test": {
+        "january_february_march_carry_forward_is_not_a_new_acquisition_and_replay_is_idempotent": 1,
+        "changed_content_is_rejected_in_second_pass_and_omissions_do_not_erase_history": 1,
+        "strict_reuse_including_identical_and_updated_udo_is_rejected_but_other_trace_and_namespace_are_isolated": 1,
+        "duplicates_use_second_pass_budget_and_preserve_cancellation": 1,
+        "missing_baseline_and_backward_period_are_unknown_not_new": 1,
+        "report_failure_and_cas_conflict_leave_the_approved_baseline_unchanged": 1,
+        "sqlite_reopen_uses_the_same_baseline_and_carry_does_not_multiply_acquisitions": 1,
+        "actual_sioc_profile_preserves_all_four_udo_key_fields_and_rejects_new_submission_reuse": 1,
+        "actual_sioc_udo_duplicate_is_rejected_only_after_pass_one": 1,
+        "content_identity_ignores_only_line_terminators_and_schema_capability_is_explicit": 1,
+        "unapproved_preview_is_never_a_baseline_and_legacy_snapshots_remain_unchanged": 1,
+        "year_boundary_changes_required_coverage_without_resetting_identity_history": 1,
+        "canonical_normative_jsonl_matches_the_independent_golden_on_every_os": 1,
+        "cli_uses_the_real_normative_service_for_carry_forward_and_rejection": 1,
+        "incomplete_metadata_missing_snapshot_and_failed_identity_lookup_are_technical_failures": 1,
+        "invalid_policy_bindings_fail_closed_and_sioc_source_keys_are_preserved": 1,
+        "each_udo_key_component_discriminates_records_and_cumulative_intra_file_duplicates_still_fail": 1,
+        "public_draft_api_cannot_approve_a_normative_profile_without_its_real_producer": 1,
+        "an_empty_database_does_not_prove_new_keys_even_in_january": 1,
+        "cancellation_during_pass_one_keeps_deferred_udo_errors_unreported_and_terminal": 1,
+        "real_sioc_content_mismatch_is_a_normative_rejection_with_honest_skipped_join_counts": 1
+      },
+      "Test all features": {
+        "january_february_march_carry_forward_is_not_a_new_acquisition_and_replay_is_idempotent": 1,
+        "changed_content_is_rejected_in_second_pass_and_omissions_do_not_erase_history": 1,
+        "strict_reuse_including_identical_and_updated_udo_is_rejected_but_other_trace_and_namespace_are_isolated": 1,
+        "duplicates_use_second_pass_budget_and_preserve_cancellation": 1,
+        "missing_baseline_and_backward_period_are_unknown_not_new": 1,
+        "report_failure_and_cas_conflict_leave_the_approved_baseline_unchanged": 1,
+        "sqlite_reopen_uses_the_same_baseline_and_carry_does_not_multiply_acquisitions": 1,
+        "actual_sioc_profile_preserves_all_four_udo_key_fields_and_rejects_new_submission_reuse": 1,
+        "actual_sioc_udo_duplicate_is_rejected_only_after_pass_one": 1,
+        "content_identity_ignores_only_line_terminators_and_schema_capability_is_explicit": 1,
+        "unapproved_preview_is_never_a_baseline_and_legacy_snapshots_remain_unchanged": 1,
+        "year_boundary_changes_required_coverage_without_resetting_identity_history": 1,
+        "canonical_normative_jsonl_matches_the_independent_golden_on_every_os": 1,
+        "cli_uses_the_real_normative_service_for_carry_forward_and_rejection": 1,
+        "incomplete_metadata_missing_snapshot_and_failed_identity_lookup_are_technical_failures": 1,
+        "invalid_policy_bindings_fail_closed_and_sioc_source_keys_are_preserved": 1,
+        "each_udo_key_component_discriminates_records_and_cumulative_intra_file_duplicates_still_fail": 1,
+        "public_draft_api_cannot_approve_a_normative_profile_without_its_real_producer": 1,
+        "an_empty_database_does_not_prove_new_keys_even_in_january": 1,
+        "cancellation_during_pass_one_keeps_deferred_udo_errors_unreported_and_terminal": 1,
+        "real_sioc_content_mismatch_is_a_normative_rejection_with_honest_skipped_join_counts": 1
+      },
+      "Test core without embedded bundle": {
+        "january_february_march_carry_forward_is_not_a_new_acquisition_and_replay_is_idempotent": 1,
+        "changed_content_is_rejected_in_second_pass_and_omissions_do_not_erase_history": 1,
+        "strict_reuse_including_identical_and_updated_udo_is_rejected_but_other_trace_and_namespace_are_isolated": 1,
+        "duplicates_use_second_pass_budget_and_preserve_cancellation": 1,
+        "missing_baseline_and_backward_period_are_unknown_not_new": 1,
+        "report_failure_and_cas_conflict_leave_the_approved_baseline_unchanged": 1,
+        "sqlite_reopen_uses_the_same_baseline_and_carry_does_not_multiply_acquisitions": 1,
+        "actual_sioc_profile_preserves_all_four_udo_key_fields_and_rejects_new_submission_reuse": 1,
+        "actual_sioc_udo_duplicate_is_rejected_only_after_pass_one": 1,
+        "content_identity_ignores_only_line_terminators_and_schema_capability_is_explicit": 1,
+        "unapproved_preview_is_never_a_baseline_and_legacy_snapshots_remain_unchanged": 1,
+        "year_boundary_changes_required_coverage_without_resetting_identity_history": 1,
+        "canonical_normative_jsonl_matches_the_independent_golden_on_every_os": 1,
+        "cli_uses_the_real_normative_service_for_carry_forward_and_rejection": 1,
+        "incomplete_metadata_missing_snapshot_and_failed_identity_lookup_are_technical_failures": 1,
+        "invalid_policy_bindings_fail_closed_and_sioc_source_keys_are_preserved": 1,
+        "each_udo_key_component_discriminates_records_and_cumulative_intra_file_duplicates_still_fail": 1,
+        "public_draft_api_cannot_approve_a_normative_profile_without_its_real_producer": 1,
+        "an_empty_database_does_not_prove_new_keys_even_in_january": 1,
+        "cancellation_during_pass_one_keeps_deferred_udo_errors_unreported_and_terminal": 1,
+        "real_sioc_content_mismatch_is_a_normative_rejection_with_honest_skipped_join_counts": 1
+      }
+    },
+    "x86_64-pc-windows-msvc": {
+      "Test": {
+        "january_february_march_carry_forward_is_not_a_new_acquisition_and_replay_is_idempotent": 1,
+        "changed_content_is_rejected_in_second_pass_and_omissions_do_not_erase_history": 1,
+        "strict_reuse_including_identical_and_updated_udo_is_rejected_but_other_trace_and_namespace_are_isolated": 1,
+        "duplicates_use_second_pass_budget_and_preserve_cancellation": 1,
+        "missing_baseline_and_backward_period_are_unknown_not_new": 1,
+        "report_failure_and_cas_conflict_leave_the_approved_baseline_unchanged": 1,
+        "sqlite_reopen_uses_the_same_baseline_and_carry_does_not_multiply_acquisitions": 1,
+        "actual_sioc_profile_preserves_all_four_udo_key_fields_and_rejects_new_submission_reuse": 1,
+        "actual_sioc_udo_duplicate_is_rejected_only_after_pass_one": 1,
+        "content_identity_ignores_only_line_terminators_and_schema_capability_is_explicit": 1,
+        "unapproved_preview_is_never_a_baseline_and_legacy_snapshots_remain_unchanged": 1,
+        "year_boundary_changes_required_coverage_without_resetting_identity_history": 1,
+        "canonical_normative_jsonl_matches_the_independent_golden_on_every_os": 1,
+        "cli_uses_the_real_normative_service_for_carry_forward_and_rejection": 1,
+        "incomplete_metadata_missing_snapshot_and_failed_identity_lookup_are_technical_failures": 1,
+        "invalid_policy_bindings_fail_closed_and_sioc_source_keys_are_preserved": 1,
+        "each_udo_key_component_discriminates_records_and_cumulative_intra_file_duplicates_still_fail": 1,
+        "public_draft_api_cannot_approve_a_normative_profile_without_its_real_producer": 1,
+        "an_empty_database_does_not_prove_new_keys_even_in_january": 1,
+        "cancellation_during_pass_one_keeps_deferred_udo_errors_unreported_and_terminal": 1,
+        "real_sioc_content_mismatch_is_a_normative_rejection_with_honest_skipped_join_counts": 1
+      },
+      "Test all features": {
+        "january_february_march_carry_forward_is_not_a_new_acquisition_and_replay_is_idempotent": 1,
+        "changed_content_is_rejected_in_second_pass_and_omissions_do_not_erase_history": 1,
+        "strict_reuse_including_identical_and_updated_udo_is_rejected_but_other_trace_and_namespace_are_isolated": 1,
+        "duplicates_use_second_pass_budget_and_preserve_cancellation": 1,
+        "missing_baseline_and_backward_period_are_unknown_not_new": 1,
+        "report_failure_and_cas_conflict_leave_the_approved_baseline_unchanged": 1,
+        "sqlite_reopen_uses_the_same_baseline_and_carry_does_not_multiply_acquisitions": 1,
+        "actual_sioc_profile_preserves_all_four_udo_key_fields_and_rejects_new_submission_reuse": 1,
+        "actual_sioc_udo_duplicate_is_rejected_only_after_pass_one": 1,
+        "content_identity_ignores_only_line_terminators_and_schema_capability_is_explicit": 1,
+        "unapproved_preview_is_never_a_baseline_and_legacy_snapshots_remain_unchanged": 1,
+        "year_boundary_changes_required_coverage_without_resetting_identity_history": 1,
+        "canonical_normative_jsonl_matches_the_independent_golden_on_every_os": 1,
+        "cli_uses_the_real_normative_service_for_carry_forward_and_rejection": 1,
+        "incomplete_metadata_missing_snapshot_and_failed_identity_lookup_are_technical_failures": 1,
+        "invalid_policy_bindings_fail_closed_and_sioc_source_keys_are_preserved": 1,
+        "each_udo_key_component_discriminates_records_and_cumulative_intra_file_duplicates_still_fail": 1,
+        "public_draft_api_cannot_approve_a_normative_profile_without_its_real_producer": 1,
+        "an_empty_database_does_not_prove_new_keys_even_in_january": 1,
+        "cancellation_during_pass_one_keeps_deferred_udo_errors_unreported_and_terminal": 1,
+        "real_sioc_content_mismatch_is_a_normative_rejection_with_honest_skipped_join_counts": 1
+      },
+      "Test core without embedded bundle": {
+        "january_february_march_carry_forward_is_not_a_new_acquisition_and_replay_is_idempotent": 1,
+        "changed_content_is_rejected_in_second_pass_and_omissions_do_not_erase_history": 1,
+        "strict_reuse_including_identical_and_updated_udo_is_rejected_but_other_trace_and_namespace_are_isolated": 1,
+        "duplicates_use_second_pass_budget_and_preserve_cancellation": 1,
+        "missing_baseline_and_backward_period_are_unknown_not_new": 1,
+        "report_failure_and_cas_conflict_leave_the_approved_baseline_unchanged": 1,
+        "sqlite_reopen_uses_the_same_baseline_and_carry_does_not_multiply_acquisitions": 1,
+        "actual_sioc_profile_preserves_all_four_udo_key_fields_and_rejects_new_submission_reuse": 1,
+        "actual_sioc_udo_duplicate_is_rejected_only_after_pass_one": 1,
+        "content_identity_ignores_only_line_terminators_and_schema_capability_is_explicit": 1,
+        "unapproved_preview_is_never_a_baseline_and_legacy_snapshots_remain_unchanged": 1,
+        "year_boundary_changes_required_coverage_without_resetting_identity_history": 1,
+        "canonical_normative_jsonl_matches_the_independent_golden_on_every_os": 1,
+        "cli_uses_the_real_normative_service_for_carry_forward_and_rejection": 1,
+        "incomplete_metadata_missing_snapshot_and_failed_identity_lookup_are_technical_failures": 1,
+        "invalid_policy_bindings_fail_closed_and_sioc_source_keys_are_preserved": 1,
+        "each_udo_key_component_discriminates_records_and_cumulative_intra_file_duplicates_still_fail": 1,
+        "public_draft_api_cannot_approve_a_normative_profile_without_its_real_producer": 1,
+        "an_empty_database_does_not_prove_new_keys_even_in_january": 1,
+        "cancellation_during_pass_one_keeps_deferred_udo_errors_unreported_and_terminal": 1,
+        "real_sioc_content_mismatch_is_a_normative_rejection_with_honest_skipped_join_counts": 1
+      }
+    }
+  },
+  "windows_reference_acl_negative_and_positive_passes": 3,
+  "current_head": "42620cfcfc226ce53de0c2082b5a9fe51ca64080",
+  "runtime_inputs_compared": 520,
+  "changed_runtime_inputs_since_qualified_commit": [],
+  "limits": [
+    "Windows2025 native runner, not Windows11 clean-room",
+    "No installer or two-account qualification",
+    "G-SIOC1 frontend and usable historical-reference workflow still require integration"
+  ]
+}

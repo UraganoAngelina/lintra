@@ -1,9 +1,9 @@
 # U-FIX-04 — Permessi della reference tree
 
 Data: 2026-11-10, Europe/Rome. Prerequisito U-GOV-03 `2cd4bdf`.
-Stato: WAITING_GATE. Controlli locali finali PASS sul commit
-`76fa08a11409f5d6cd67b97f025b6686d2c6902c`; CI nativa ancora necessaria.
-G-HARD NOT_VERIFIED.
+Stato corrente: DONE dopo CI42990775714; cronologia dei tentativi sotto. Controlli locali finali PASS sul commit
+`76fa08a11409f5d6cd67b97f025b6686d2c6902c`; qualifica nativa finale sucb70bee,
+CI42990775714 PASS. **G-HARD PASS**. Le attese e i FAIL sotto restano cronologia.
 
 ## Delta
 
@@ -114,3 +114,15 @@ Il PASS nativo resta da acquisire su questa correzione.
 Retry corrente CI42990775714 sucb70bee: preparazione ACL e test Python
 Windows PASS al primo riscontro; Clippy e test Rust ancora da concludere.
 Restano invariati i controlli runtime e il test negativo di scrittura condivisa.
+
+## Chiusura — CI42990775714 positiva
+
+SHAcb70bee, sette job richiesti success; test nativo
+`broad_read_is_allowed_but_broad_modification_is_rejected_without_repair`
+PASS3 volte su Windows, oltre alle suite standard/all-features/core-no-bundle.
+Log completo e conteggi in U-NORM-03-native-42990775714.*. La preparazione
+controllata del solo runner è efficace e non sostituisce il rifiuto runtime
+della scrittura condivisa. Nessuna correzione permissiva del prodotto.
+Locale1096pass/7ignored sullo stesso SHA;520 input invariati nelle HEAD
+solo documentali successive. U-FIX-04 DONE; con01/02/03/05 già DONE,
+**G-HARD PASS**. Non è una qualifica Windows11 clean-room o dell'installer.

@@ -1,10 +1,10 @@
 # U-NORM-03 — Enforcement SIOC cross-run generico
 
-Data: 11 novembre 2026, Europe/Rome. Stato corrente: **WAITING_GATE** dopo qualifica locale PASS.
+Data: 11 novembre 2026, Europe/Rome. Stato corrente: **DONE per acceptance backend**, dopo qualifica locale e nativa PASS.
 Prerequisiti DONE: U-NORM-01 `a5689ae`, U-NORM-02 `672459e`, U-NORM-05
 `d49386b6c8f5567e2131166f88704d6b494d2c97`.
 Decisione: [DEC-SIOC-HIST-02-A01](../../normative/DEC-SIOC-HIST-02-A01.md).
-G-SIOC1 **NOT_VERIFIED**: qualifica locale/nativa e bridge UI da completare.
+G-SIOC1 aggregato **NOT_VERIFIED**: backend locale/nativo PASS;04 e bridge UI usabile da completare.
 Le 140 task M9 non cambiano.
 
 ## Perimetro e provenienza
@@ -194,3 +194,23 @@ implicito. Le prime prove native standard sono verdi su entrambi gli OS;
 restano verifica finale del workflow e lettura dei log pertinenti. U-NORM-04
 non avviata prima del prerequisito. Prossima READY indipendente U-OPS-07;
 proseguire sequenzialmente durante la sola attesa remota.
+
+## Gate finale backend — CI42990775714 PASS
+
+CI success sullo SHA esatto `cb70bee19f2d470c3ac2e98828343b32e23b3f0a`:
+sette job richiesti positivi; packaging UI opzionale non richiesto, skipped.
+Log completo e digest in U-NORM-03-native-42990775714.json/log.gz.
+Il parser verifica ognuno dei21 oracle una volta per step Test/all-features/
+core-no-bundle su ciascun OS: **63 pass per OS**. Test ACL Windows positivo/
+negativo superato3 volte, senza riparazione runtime. Snapshot riaperti in
+entrambi i versi e JSONL/pixel confrontati byte per byte. Tutti520 input di
+runtime restano identici nella HEAD documentale42620cf. I precedenti FAIL
+rimangono conservati; non vengono promossi a successi.
+
+**U-NORM-03 DONE per enforcement backend**: capability, profilo versionato,
+producer Rust e rifiuto/ricopertura effettivi qualificati. G-SIOC1 aggregato
+rimane NOT_VERIFIED:04 e il bridge usabile devono includere la presentazione
+UI reale e risolvere il contesto referenziale amministrativo, distinto da un
+nuovo invio4.1/4.2. Nessuna approvazione Full fittizia viene abilitata ora:
+con contesto mancante il servizio resta Partial/ValidationOnly.
+Next READY U-NORM-04; il percorso MIG può proseguire dalla baseline qualificata.

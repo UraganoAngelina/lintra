@@ -1,9 +1,10 @@
 # T-MIG-P0-01 — Baseline tecnica post-audit
 
 Data: 2026-11-10, Europe/Rome. Prerequisito integrativo U-UI-01 `4f758d3`.
-Stato corrente11 novembre: **WAITING_GATE**. Le due CI reference sono
-fallite su Windows; anche CI42989468054 è FAIL; nuova CI42990775714 sucb70bee in corso. G-MIG-0
-NOT_VERIFIED. La fotografia del10 novembre riportata sotto resta storica.
+Stato corrente11 novembre: **DONE**. Baseline qualificata
+`cb70bee19f2d470c3ac2e98828343b32e23b3f0a`, CI42990775714 success.
+Le fotografie e i tentativi precedenti sotto restano storici.
+G-MIG-0 attende ancoraP0-02..08: nessun Tauri anticipato.
 
 Baseline esecutiva scelta: **dfc36044e0315f3ab060f98594192d3d1dfcad95**,
 branch work/p1-foundations, working tree pulita alla fotografia. af3bccc è
@@ -50,3 +51,21 @@ Frontiera successiva:97f7688 non qualificato (CI42989468054 FAIL su entrambi
 gli OS). Candidate `cb70bee19f2d470c3ac2e98828343b32e23b3f0a`,
 CI42990775714 in corso; preparazione/lettura file Windows e test Python
 superati, niente PASS nativo dedotto finché il workflow non termina.
+
+## Baseline finale qualificata e handoff
+
+CI42990775714 PASS sucb70bee:7 job richiesti success, native Linux/MSVC,
+riapertura SQLite in entrambi i versi, JSONL e pixel confrontati. Il job
+packaging UI opzionale è skipped, non una prova di installer. Locale1096pass,
+7ignored dichiarati;fmt/Clippy e24 test Python PASS. La HEAD42620cf aggiunge
+soltanto documentazione/evidenze:520 input di runtime uguali a quelli
+qualificati. af3bccc resta antenato;140/140 byte-identico; nessun checkout
+adiacente o file dell'autore modificato.
+
+Il codice qualificato comprende soft-budget, reference tree e nuovo SIOC
+cross-run. Non si riusa la fotografia dfc3604 come HEAD corrente. Log/digest e
+verifica per OS in U-NORM-03-native-42990775714.*; input qualificati in
+U-NORM-03-workspace-v2.json. Questa è la baseline di ingresso della migrazione;
+Windows11 clean-room, non-admin/due account e WebView2/NSIS restano prove future.
+U-NORM-05 è DONE e non richiede nuove decisioni D01–D15.
+Next READY T-MIG-P0-02, dopo handoff della qualifica SIOC indipendente.
