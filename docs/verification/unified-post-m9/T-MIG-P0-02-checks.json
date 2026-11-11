@@ -1,0 +1,7 @@
+{
+  "source_head": "e41e434",
+  "reconciliation_rows": 22,
+  "local_links_validated": 8,
+  "qualified_runtime_inputs_unchanged": 520,
+  "note": "First manual counter accidentally included the Markdown separator. Final counter excludes header/separator; matrix was unchanged."
+}
