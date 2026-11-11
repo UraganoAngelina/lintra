@@ -1,0 +1,33 @@
+{
+  "task": "U-PERF-01",
+  "checked_utc": "2026-11-11T15:45:53.670098+00:00",
+  "head": "34f5b719479f415c069794ee324d54a970c77009",
+  "source": {
+    "path": "../LINTRA_STARTER_KIT_FINAL_20261016/CAD_SAMPLE_ANALYSIS.md",
+    "sha256": "5ef2ad5e1e3b61cd92101f9b62639a38fdec84424006f3d9275916db8cf89fac",
+    "bytes": 3661,
+    "kind": "author_supplied_aggregate_only",
+    "raw_personal_files_read": false
+  },
+  "workload_spec_sha256": "7eb2d880a5656695ba07cffe9d1b6031d31a0889238e5c75e32f4bfbf672480f",
+  "cad_schema": {
+    "path": "schemas/operational/CAD/2024-06.runtime-candidate.1/flow.json",
+    "sha256": "7159edc14cbc1198362271a48206f301d22d530a8c8d16b41da598ca0e23ba51"
+  },
+  "checks": {
+    "source_hash": true,
+    "four_counts_and_widths_match_source": true,
+    "missing_B2_not_zero": true,
+    "all_five_widths_match_operational_schema": true,
+    "record_sum": 187926,
+    "payload_bytes": 8540805,
+    "synthetic_lf_bytes": 8728731,
+    "synthetic_crlf_bytes": 8916657,
+    "unknown_parameters_preserved": true,
+    "stress_distinct": true,
+    "no_runtime_tracked_changes": true,
+    "m9_140_unchanged_sha256": "9a9cf8b4bf73c2b4af48cdbba9f10c3d29048189b6866d6b8d00c023e11f240f"
+  },
+  "measurement_status": "NOT_MEASURED_BY_THIS_TASK",
+  "gate": "G-PERF NOT_VERIFIED"
+}

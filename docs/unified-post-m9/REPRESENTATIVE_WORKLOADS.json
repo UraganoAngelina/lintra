@@ -1,0 +1,52 @@
+{
+  "format": "lintra.unified-workload-spec.v1",
+  "task": "U-PERF-01",
+  "date": "2026-11-11",
+  "runtime_configuration": false,
+  "fixtures_must_be_fully_synthetic": true,
+  "source": {
+    "kind": "existing_author_supplied_aggregate_document",
+    "path": "../LINTRA_STARTER_KIT_FINAL_20261016/CAD_SAMPLE_ANALYSIS.md",
+    "sha256": "5ef2ad5e1e3b61cd92101f9b62639a38fdec84424006f3d9275916db8cf89fac",
+    "observation_date": "2026-10-16",
+    "observed_submissions": 1,
+    "submission_period": null,
+    "raw_records_read": false
+  },
+  "cad_observed_shape": {
+    "classification": "single_observed_submission_shape_not_population_statistics",
+    "synthetic_namespace": "synthetic-workload-unit",
+    "traces": {
+      "A": {"records": 2748, "record_bytes": 218, "source_presence": "present"},
+      "B1": {"records": 2825, "record_bytes": 198, "source_presence": "present"},
+      "B2": {"records": null, "record_bytes": 41, "source_presence": "not_supplied"},
+      "C": {"records": 45104, "record_bytes": 45, "source_presence": "present"},
+      "D": {"records": 137249, "record_bytes": 39, "source_presence": "present"}
+    },
+    "known_record_total": 187926,
+    "known_payload_bytes_excluding_terminators": 8540805,
+    "synthetic_lf_bytes_with_final_terminator_per_file": 8728731,
+    "synthetic_crlf_bytes_with_final_terminator_per_file": 8916657,
+    "observed_distinct_events": 2748,
+    "observed_diagnostic_total": null,
+    "historical_session_count": null,
+    "expected_global_conformity": null,
+    "missing_trace_requires_existing_workflow": true
+  },
+  "synthetic_diagnostic_record_variants": {
+    "classification": "test_assumptions_not_observed_rates",
+    "intentional_local_defect_record_percentages": [0, 1, 100],
+    "diagnostic_count_requires_oracle": true
+  },
+  "sioc_operational_shape": {
+    "status": "NOT_CALIBRATED",
+    "records_by_trace": null,
+    "historical_growth": null,
+    "cad_scale_must_not_be_assumed": true
+  },
+  "small_existing_oracles": {"purpose": "correctness_not_operational_performance"},
+  "diagnostic_grid_stress": {"rows": [300000, 1000000], "operational_default": false},
+  "measurement_status": "NOT_MEASURED_BY_THIS_TASK",
+  "product_thresholds": null,
+  "automatic_parallelism": false
+}

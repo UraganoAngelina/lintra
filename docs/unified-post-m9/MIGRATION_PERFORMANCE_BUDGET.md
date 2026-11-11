@@ -36,6 +36,9 @@ Rust, che include indice e contesto dichiarati.
   autorizzati e profili CAD/SIOC effettivi, raccolti in U-PERF-01. Nessuna lettura
   o copia di record sanitari reali nei test. I volumi non ancora confermati
   restano NOT_MEASURED; non vengono dichiarati realistici per intuizione.
+  [Carichi selezionati](REPRESENTATIVE_WORKLOADS.md): forma di un invio CAD
+  osservato187.926record, B2 non fornito; scala SIOC ancora non calibrata.
+  Questo dato non trasforma i benchmark già presenti in misure di quel carico.
 - Stress:300k/1M diagnostici per indice, paging, scroll e memoria della nuova
   WebView. Sono stress e non giustificano parallelismo o soglie cliniche.
 - Le misure sintetiche10k/100k già presenti in T-P17 sono riferimenti tecnici

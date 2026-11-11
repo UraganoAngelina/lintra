@@ -6,6 +6,10 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
+Conteggio unificato: **29/128 DONE;99 rimanenti** (20U-* e79MIG).
+Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
+pendente viene contato come task conclusa.
+
 Gate correnti: G-U0 PASS documentale; G-HARD PASS nativo su cb70bee/
 CI42990775714; G-SIOC0 PASS documentale; G-MIG-0 PASS governance.
 G-OPS0/1/2, G-SIOC1, G-MIG-1..9, G-CADUI0..3, G-DUR, G-PERF e G-REL:
@@ -49,7 +53,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | U-CAD-07 | U-CAD-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-07.md) | —; Non eseguite | G-CADUI2 NOT_VERIFIED |
 | U-CAD-08 | U-CAD-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-08.md) | —; Non eseguite | G-CADUI3 NOT_VERIFIED |
 | U-CAD-09 | U-CAD-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-09.md) | —; Non eseguite | G-CADUI3 NOT_VERIFIED |
-| U-PERF-01 | U-GOV-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-PERF-01.md) | —; Non eseguite | G-PERF NOT_VERIFIED |
+| U-PERF-01 | U-GOV-02 | DONE | [Volumi aggregati e oracle](docs/verification/unified-post-m9/U-PERF-01.md) | Fonte anonima CAD187926 record;conteggi/larghezze/byte verificati;SIOC non calibrato;solo documenti | Acceptance analisi PASS;G-PERF aggregato NOT_VERIFIED,misure end-to-end in02 |
 | U-PERF-02 | U-PERF-01, T-MIG-P7-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-PERF-02.md) | —; Non eseguite | G-PERF NOT_VERIFIED |
 | U-REL-01 | U-UI-02, U-CAD-09, U-NORM-04, U-OPS-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-01.md) | —; Non eseguite | G-REL NOT_VERIFIED |
 | U-REL-02 | U-REL-01, U-OPS-06, U-REL-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-02.md) | —; Non eseguite | G-REL NOT_VERIFIED |

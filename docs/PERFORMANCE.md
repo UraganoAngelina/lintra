@@ -1,5 +1,17 @@
 # Prestazioni di Lintra
 
+## Aggiornamento post-M9 — 11 novembre 2026
+
+D13 mantiene la produzione sequenziale e non introduce soglie DEC-14.
+[U-PERF-01](verification/unified-post-m9/U-PERF-01.md) identifica una fonte
+aggregata già nel kit: un invio CAD da187.926record, con B2 non fornito.
+I [carichi correnti](unified-post-m9/REPRESENTATIVE_WORKLOADS.md) distinguono
+questa forma osservata, le ipotesi sintetiche e lo stress tabella300k/1M.
+SIOC operativo e crescita storica restano non calibrati. Nessuna nuova misura
+o SLA è dichiarata; il protocollo end-to-end resta U-PERF-02/MIG-P7.
+
+La registrazione seguente conserva la decisione e le misure del30ottobre.
+
 Stato al 30 ottobre 2026: **soglie prestazionali di prodotto non definite**.
 DEC-14 resta aperta. Questa registrazione completa l'alternativa documentale
 prevista da T-P17-03 e dalla DoD di P17; non approva valori numerici.
