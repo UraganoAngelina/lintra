@@ -1,0 +1,19 @@
+{
+  "task": "T-MIG-P1-03",
+  "verdict": "PASS personal CachyOS minimal runtime only",
+  "binary_sha256": "c53fd4ba3d5c7a1409dd4a62a9fc2a5c46cdfd0f271e0159fe7bd0e1c71e6883",
+  "runtime_profile_sha256": "ac920af73a1800b213ad9c160e99198a2ef11d88956fb60afa156c11230e2575",
+  "ELF_files_checked": 151,
+  "OS_provider_packages": 99,
+  "relocated_render": "PASS exit0 actual IPC acknowledgment",
+  "missing_WebKit": "PASS exact loader dependency error exit127, no ACK, host library unchanged",
+  "host_tools_moved_without_behavior_change": [
+    "inventory",
+    "missing-library"
+  ],
+  "relocated_harness_final_path_retested": "PASS relocated-v2",
+  "production_existing_inputs_unchanged": 520,
+  "CI_Windows_scope": "No CI needed for Linux-only QA scripts; Windows application/build inputs unchanged from bdca1cf.",
+  "profile": "debug custom-protocol",
+  "G_MIG_1": "NOT_VERIFIED; no Windows11 environment"
+}

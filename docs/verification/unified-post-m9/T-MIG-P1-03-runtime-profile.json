@@ -1,0 +1,1981 @@
+{
+  "scope": "CachyOS personal build/smoke only; not an official Linux GUI release",
+  "binary_sha256": "c53fd4ba3d5c7a1409dd4a62a9fc2a5c46cdfd0f271e0159fe7bd0e1c71e6883",
+  "source_git_head": "bdca1cf00121717b3c58504127ae4ce45f806e6b",
+  "os_release": [
+    "NAME=\"CachyOS Linux\"",
+    "PRETTY_NAME=\"CachyOS\"",
+    "ID=cachyos",
+    "ID_LIKE=arch",
+    "BUILD_ID=rolling",
+    "ANSI_COLOR=\"38;2;23;147;209\"",
+    "HOME_URL=\"https://cachyos.org/\"",
+    "DOCUMENTATION_URL=\"https://wiki.cachyos.org/\"",
+    "SUPPORT_URL=\"https://discuss.cachyos.org/\"",
+    "BUG_REPORT_URL=\"https://github.com/cachyos\"",
+    "PRIVACY_POLICY_URL=\"https://terms.archlinux.org/docs/privacy-policy/\"",
+    "LOGO=cachyos"
+  ],
+  "machine": "x86_64",
+  "root_ELFs": {
+    "/home/alberto/Desktop/LINTRA/lintra/spikes/tauri-runtime/src-tauri/target/debug/lintra-runtime-spike": [
+      "\tlinux-vdso.so.1 (0x00007fc5940d7000)",
+      "\tlibgdk-3.so.0 => /usr/lib/libgdk-3.so.0 (0x00007fc5932f0000)",
+      "\tlibgdk_pixbuf-2.0.so.0 => /usr/lib/libgdk_pixbuf-2.0.so.0 (0x00007fc59404f000)",
+      "\tlibcairo.so.2 => /usr/lib/libcairo.so.2 (0x00007fc59313b000)",
+      "\tlibgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x00007fc5930c7000)",
+      "\tlibglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x00007fc592f3c000)",
+      "\tlibdbus-1.so.3 => /usr/lib/libdbus-1.so.3 (0x00007fc592edc000)",
+      "\tlibwebkit2gtk-4.1.so.0 => /usr/lib/libwebkit2gtk-4.1.so.0 (0x00007fc58d000000)",
+      "\tlibgtk-3.so.0 => /usr/lib/libgtk-3.so.0 (0x00007fc58c800000)",
+      "\tlibsoup-3.0.so.0 => /usr/lib/libsoup-3.0.so.0 (0x00007fc58c748000)",
+      "\tlibgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x00007fc58c400000)",
+      "\tlibjavascriptcoregtk-4.1.so.0 => /usr/lib/libjavascriptcoregtk-4.1.so.0 (0x00007fc589c00000)",
+      "\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x00007fc592ea4000)",
+      "\tlibm.so.6 => /usr/lib/libm.so.6 (0x00007fc58c641000)",
+      "\tlibc.so.6 => /usr/lib/libc.so.6 (0x00007fc589800000)",
+      "\t/lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00007fc5940d9000)",
+      "\tlibpango-1.0.so.0 => /usr/lib/libpango-1.0.so.0 (0x00007fc58c382000)",
+      "\tlibfribidi.so.0 => /usr/lib/libfribidi.so.0 (0x00007fc592e7f000)",
+      "\tlibcairo-gobject.so.2 => /usr/lib/libcairo-gobject.so.2 (0x00007fc592e74000)",
+      "\tlibepoxy.so.0 => /usr/lib/libepoxy.so.0 (0x00007fc589adf000)",
+      "\tlibfontconfig.so.1 => /usr/lib/libfontconfig.so.1 (0x00007fc58c2f8000)",
+      "\tlibpangocairo-1.0.so.0 => /usr/lib/libpangocairo-1.0.so.0 (0x00007fc592e61000)",
+      "\tlibxkbcommon.so.0 => /usr/lib/libxkbcommon.so.0 (0x00007fc589a71000)",
+      "\tlibwayland-client.so.0 => /usr/lib/libwayland-client.so.0 (0x00007fc592e50000)",
+      "\tlibwayland-cursor.so.0 => /usr/lib/libwayland-cursor.so.0 (0x00007fc592e45000)",
+      "\tlibwayland-egl.so.1 => /usr/lib/libwayland-egl.so.1 (0x00007fc592e40000)",
+      "\tlibX11.so.6 => /usr/lib/libX11.so.6 (0x00007fc589682000)",
+      "\tlibXi.so.6 => /usr/lib/libXi.so.6 (0x00007fc58cfe8000)",
+      "\tlibXext.so.6 => /usr/lib/libXext.so.6 (0x00007fc58cfce000)",
+      "\tlibXcursor.so.1 => /usr/lib/libXcursor.so.1 (0x00007fc58c633000)",
+      "\tlibXdamage.so.1 => /usr/lib/libXdamage.so.1 (0x00007fc592e39000)",
+      "\tlibXfixes.so.3 => /usr/lib/libXfixes.so.3 (0x00007fc58c62b000)",
+      "\tlibXcomposite.so.1 => /usr/lib/libXcomposite.so.1 (0x00007fc592e34000)",
+      "\tlibXrandr.so.2 => /usr/lib/libXrandr.so.2 (0x00007fc58c61c000)",
+      "\tlibXinerama.so.1 => /usr/lib/libXinerama.so.1 (0x00007fc58c617000)",
+      "\tlibgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x00007fc58c60e000)",
+      "\tlibglycin-2.so.0 => /usr/lib/libglycin-2.so.0 (0x00007fc589000000)",
+      "\tlibz.so.1 => /usr/lib/libz.so.1 (0x00007fc589647000)",
+      "\tlibpng16.so.16 => /usr/lib/libpng16.so.16 (0x00007fc5895ef000)",
+      "\tlibfreetype.so.6 => /usr/lib/libfreetype.so.6 (0x00007fc5894b4000)",
+      "\tlibXrender.so.1 => /usr/lib/libXrender.so.1 (0x00007fc58c2e9000)",
+      "\tlibxcb.so.1 => /usr/lib/libxcb.so.1 (0x00007fc588fd3000)",
+      "\tlibxcb-render.so.0 => /usr/lib/libxcb-render.so.0 (0x00007fc58c2d9000)",
+      "\tlibxcb-shm.so.0 => /usr/lib/libxcb-shm.so.0 (0x00007fc58c607000)",
+      "\tlibpixman-1.so.0 => /usr/lib/libpixman-1.so.0 (0x00007fc588e8c000)",
+      "\tlibffi.so.8 => /usr/lib/libffi.so.8 (0x00007fc58c2ca000)",
+      "\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x00007fc588dbc000)",
+      "\tlibsystemd.so.0 => /usr/lib/libsystemd.so.0 (0x00007fc588c72000)",
+      "\tlibharfbuzz.so.0 => /usr/lib/libharfbuzz.so.0 (0x00007fc588ac1000)",
+      "\tlibatk-1.0.so.0 => /usr/lib/libatk-1.0.so.0 (0x00007fc588a99000)",
+      "\tlibwebpmux.so.3 => /usr/lib/libwebpmux.so.3 (0x00007fc589a64000)",
+      "\tlibexpat.so.1 => /usr/lib/libexpat.so.1 (0x00007fc588a61000)",
+      "\tlibicui18n.so.78 => /usr/lib/libicui18n.so.78 (0x00007fc588600000)",
+      "\tlibjpeg.so.8 => /usr/lib/libjpeg.so.8 (0x00007fc588558000)",
+      "\tlibicuuc.so.78 => /usr/lib/libicuuc.so.78 (0x00007fc588200000)",
+      "\tlibxml2.so.16 => /usr/lib/libxml2.so.16 (0x00007fc58807d000)",
+      "\tlibsqlite3.so.0 => /usr/lib/libsqlite3.so.0 (0x00007fc587edb000)",
+      "\tlibxslt.so.1 => /usr/lib/libxslt.so.1 (0x00007fc588a20000)",
+      "\tliblcms2.so.2 => /usr/lib/liblcms2.so.2 (0x00007fc5884c4000)",
+      "\tlibgcrypt.so.20 => /usr/lib/libgcrypt.so.20 (0x00007fc587c00000)",
+      "\tlibgstallocators-1.0.so.0 => /usr/lib/libgstallocators-1.0.so.0 (0x00007fc589a58000)",
+      "\tlibgstapp-1.0.so.0 => /usr/lib/libgstapp-1.0.so.0 (0x00007fc58949b000)",
+      "\tlibgstbase-1.0.so.0 => /usr/lib/libgstbase-1.0.so.0 (0x00007fc587e53000)",
+      "\tlibgstreamer-1.0.so.0 => /usr/lib/libgstreamer-1.0.so.0 (0x00007fc587a8d000)",
+      "\tlibgstpbutils-1.0.so.0 => /usr/lib/libgstpbutils-1.0.so.0 (0x00007fc5889db000)",
+      "\tlibgstaudio-1.0.so.0 => /usr/lib/libgstaudio-1.0.so.0 (0x00007fc587a02000)",
+      "\tlibgsttag-1.0.so.0 => /usr/lib/libgsttag-1.0.so.0 (0x00007fc588485000)",
+      "\tlibgstvideo-1.0.so.0 => /usr/lib/libgstvideo-1.0.so.0 (0x00007fc587923000)",
+      "\tlibgstgl-1.0.so.0 => /usr/lib/libgstgl-1.0.so.0 (0x00007fc58788d000)",
+      "\tlibgstfft-1.0.so.0 => /usr/lib/libgstfft-1.0.so.0 (0x00007fc589a4b000)",
+      "\tlibwebpdemux.so.2 => /usr/lib/libwebpdemux.so.2 (0x00007fc5889d4000)",
+      "\tlibwebp.so.7 => /usr/lib/libwebp.so.7 (0x00007fc5877bd000)",
+      "\tlibjxl.so.0.12 => /usr/lib/libjxl.so.0.12 (0x00007fc587000000)",
+      "\tlibavif.so.16 => /usr/lib/libavif.so.16 (0x00007fc587766000)",
+      "\tlibharfbuzz-icu.so.0 => /usr/lib/libharfbuzz-icu.so.0 (0x00007fc589494000)",
+      "\tlibwayland-server.so.0 => /usr/lib/libwayland-server.so.0 (0x00007fc58846e000)",
+      "\tlibmanette-0.2.so.0 => /usr/lib/libmanette-0.2.so.0 (0x00007fc587714000)",
+      "\tlibseccomp.so.2 => /usr/lib/libseccomp.so.2 (0x00007fc5876e7000)",
+      "\tlibenchant-2.so.2 => /usr/lib/libenchant-2.so.2 (0x00007fc58845c000)",
+      "\tlibgbm.so.1 => /usr/lib/libgbm.so.1 (0x00007fc588456000)",
+      "\tlibdrm.so.2 => /usr/lib/libdrm.so.2 (0x00007fc5876ce000)",
+      "\tlibtasn1.so.6 => /usr/lib/libtasn1.so.6 (0x00007fc5876b4000)",
+      "\tlibhyphen.so.0 => /usr/lib/libhyphen.so.0 (0x00007fc5876a9000)",
+      "\tlibsecret-1.so.0 => /usr/lib/libsecret-1.so.0 (0x00007fc58765b000)",
+      "\tlibstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x00007fc586c00000)",
+      "\tlibpangoft2-1.0.so.0 => /usr/lib/libpangoft2-1.0.so.0 (0x00007fc58763b000)",
+      "\tlibatk-bridge-2.0.so.0 => /usr/lib/libatk-bridge-2.0.so.0 (0x00007fc5875f9000)",
+      "\tlibcloudproviders.so.0 => /usr/lib/libcloudproviders.so.0 (0x00007fc586fe8000)",
+      "\tlibtinysparql-3.0.so.0 => /usr/lib/libtinysparql-3.0.so.0 (0x00007fc586b29000)",
+      "\tlibpsl.so.5 => /usr/lib/libpsl.so.5 (0x00007fc586fd4000)",
+      "\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x00007fc586fc4000)",
+      "\tlibzstd.so.1 => /usr/lib/libzstd.so.1 (0x00007fc5869aa000)",
+      "\tlibgssapi_krb5.so.2 => /usr/lib/libgssapi_krb5.so.2 (0x00007fc586f6c000)",
+      "\tlibnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x00007fc586f3d000)",
+      "\tlibmount.so.1 => /usr/lib/libmount.so.1 (0x00007fc586941000)",
+      "\tlibatomic.so.1 => /usr/lib/libatomic.so.1 (0x00007fc586f32000)",
+      "\tlibthai.so.0 => /usr/lib/libthai.so.0 (0x00007fc586934000)",
+      "\tlibbz2.so.1.0 => /usr/lib/libbz2.so.1.0 (0x00007fc586920000)",
+      "\tlibXau.so.6 => /usr/lib/libXau.so.6 (0x00007fc586f2d000)",
+      "\tlibXdmcp.so.6 => /usr/lib/libXdmcp.so.6 (0x00007fc586918000)",
+      "\tlibgraphite2.so.3 => /usr/lib/libgraphite2.so.3 (0x00007fc5868f5000)",
+      "\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x00007fc584800000)",
+      "\tlibgpg-error.so.0 => /usr/lib/libgpg-error.so.0 (0x00007fc5868bf000)",
+      "\tlibunwind.so.8 => /usr/lib/libunwind.so.8 (0x00007fc5868a0000)",
+      "\tlibdw.so.1 => /usr/lib/libdw.so.1 (0x00007fc5867fe000)",
+      "\tliborc-0.4.so.0 => /usr/lib/liborc-0.4.so.0 (0x00007fc584696000)",
+      "\tlibEGL.so.1 => /usr/lib/libEGL.so.1 (0x00007fc5867ec000)",
+      "\tlibGLX.so.0 => /usr/lib/libGLX.so.0 (0x00007fc5867ba000)",
+      "\tlibX11-xcb.so.1 => /usr/lib/libX11-xcb.so.1 (0x00007fc5867b5000)",
+      "\tlibgudev-1.0.so.0 => /usr/lib/libgudev-1.0.so.0 (0x00007fc5867a7000)",
+      "\tlibsharpyuv.so.0 => /usr/lib/libsharpyuv.so.0 (0x00007fc58679b000)",
+      "\tlibjxl_cms.so.0.12 => /usr/lib/libjxl_cms.so.0.12 (0x00007fc584664000)",
+      "\tlibhwy.so.1 => /usr/lib/libhwy.so.1 (0x00007fc584654000)",
+      "\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x00007fc584554000)",
+      "\tlibyuv.so => /usr/lib/libyuv.so (0x00007fc58441d000)",
+      "\tlibdav1d.so.7 => /usr/lib/libdav1d.so.7 (0x00007fc584000000)",
+      "\tlibrav1e.so.0.8 => /usr/lib/librav1e.so.0.8 (0x00007fc583c00000)",
+      "\tlibSvtAv1Enc.so.4 => /usr/lib/libSvtAv1Enc.so.4 (0x00007fc583400000)",
+      "\tlibaom.so.3 => /usr/lib/libaom.so.3 (0x00007fc582a00000)",
+      "\tlibhidapi-hidraw.so.0 => /usr/lib/libhidapi-hidraw.so.0 (0x00007fc584415000)",
+      "\tlibevdev.so.2 => /usr/lib/libevdev.so.2 (0x00007fc5843fe000)",
+      "\tlibtss2-esys.so.0 => /usr/lib/libtss2-esys.so.0 (0x00007fc58436c000)",
+      "\tlibtss2-mu.so.0 => /usr/lib/libtss2-mu.so.0 (0x00007fc584322000)",
+      "\tlibtss2-rc.so.0 => /usr/lib/libtss2-rc.so.0 (0x00007fc584319000)",
+      "\tlibtss2-tctildr.so.0 => /usr/lib/libtss2-tctildr.so.0 (0x00007fc584311000)",
+      "\tlibatspi.so.0 => /usr/lib/libatspi.so.0 (0x00007fc5842cc000)",
+      "\tlibjson-glib-1.0.so.0 => /usr/lib/libjson-glib-1.0.so.0 (0x00007fc58429f000)",
+      "\tlibunistring.so.5 => /usr/lib/libunistring.so.5 (0x00007fc582808000)",
+      "\tlibidn2.so.0 => /usr/lib/libidn2.so.0 (0x00007fc58427a000)",
+      "\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x00007fc584257000)",
+      "\tlibkrb5.so.3 => /usr/lib/libkrb5.so.3 (0x00007fc583f31000)",
+      "\tlibk5crypto.so.3 => /usr/lib/libk5crypto.so.3 (0x00007fc583bd2000)",
+      "\tlibcom_err.so.2 => /usr/lib/libcom_err.so.2 (0x00007fc584251000)",
+      "\tlibkrb5support.so.0 => /usr/lib/libkrb5support.so.0 (0x00007fc584240000)",
+      "\tlibkeyutils.so.1 => /usr/lib/libkeyutils.so.1 (0x00007fc584239000)",
+      "\tlibresolv.so.2 => /usr/lib/libresolv.so.2 (0x00007fc583f1c000)",
+      "\tlibblkid.so.1 => /usr/lib/libblkid.so.1 (0x00007fc583b87000)",
+      "\tlibdatrie.so.1 => /usr/lib/libdatrie.so.1 (0x00007fc584230000)",
+      "\tliblzma.so.5 => /usr/lib/liblzma.so.5 (0x00007fc583b51000)",
+      "\tlibelf.so.1 => /usr/lib/libelf.so.1 (0x00007fc583b32000)",
+      "\tlibGLdispatch.so.0 => /usr/lib/libGLdispatch.so.0 (0x00007fc583387000)",
+      "\tlibudev.so.1 => /usr/lib/libudev.so.1 (0x00007fc583337000)",
+      "\tlibcrypto.so.4 => /usr/lib/libcrypto.so.4 (0x00007fc582200000)",
+      "\tlibtss2-sys.so.1 => /usr/lib/libtss2-sys.so.1 (0x00007fc583315000)"
+    ],
+    "/usr/lib/webkit2gtk-4.1/WebKitWebProcess": [
+      "\tlinux-vdso.so.1 (0x00007f24bbe0a000)",
+      "\tlibwebkit2gtk-4.1.so.0 => /usr/lib/libwebkit2gtk-4.1.so.0 (0x00007f24b5e00000)",
+      "\tlibc.so.6 => /usr/lib/libc.so.6 (0x00007f24b5a00000)",
+      "\tlibgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x00007f24b5600000)",
+      "\tlibgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x00007f24bbdce000)",
+      "\tlibepoxy.so.0 => /usr/lib/libepoxy.so.0 (0x00007f24bbcab000)",
+      "\tlibgtk-3.so.0 => /usr/lib/libgtk-3.so.0 (0x00007f24b4e00000)",
+      "\tlibgdk-3.so.0 => /usr/lib/libgdk-3.so.0 (0x00007f24b5cf0000)",
+      "\tlibpango-1.0.so.0 => /usr/lib/libpango-1.0.so.0 (0x00007f24b5c72000)",
+      "\tlibharfbuzz.so.0 => /usr/lib/libharfbuzz.so.0 (0x00007f24b584f000)",
+      "\tlibatk-1.0.so.0 => /usr/lib/libatk-1.0.so.0 (0x00007f24bbc83000)",
+      "\tlibcairo.so.2 => /usr/lib/libcairo.so.2 (0x00007f24b4c4b000)",
+      "\tlibz.so.1 => /usr/lib/libz.so.1 (0x00007f24bbc46000)",
+      "\tlibfreetype.so.6 => /usr/lib/libfreetype.so.6 (0x00007f24b4b10000)",
+      "\tlibfontconfig.so.1 => /usr/lib/libfontconfig.so.1 (0x00007f24b4a86000)",
+      "\tlibwebpmux.so.3 => /usr/lib/libwebpmux.so.3 (0x00007f24bbc39000)",
+      "\tlibexpat.so.1 => /usr/lib/libexpat.so.1 (0x00007f24b5817000)",
+      "\tlibgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x00007f24b4a12000)",
+      "\tlibjavascriptcoregtk-4.1.so.0 => /usr/lib/libjavascriptcoregtk-4.1.so.0 (0x00007f24b2200000)",
+      "\tlibicui18n.so.78 => /usr/lib/libicui18n.so.78 (0x00007f24b1e00000)",
+      "\tlibsystemd.so.0 => /usr/lib/libsystemd.so.0 (0x00007f24b1cb6000)",
+      "\tlibjpeg.so.8 => /usr/lib/libjpeg.so.8 (0x00007f24b496a000)",
+      "\tlibpng16.so.16 => /usr/lib/libpng16.so.16 (0x00007f24b4912000)",
+      "\tlibglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x00007f24b1b2d000)",
+      "\tlibicuuc.so.78 => /usr/lib/libicuuc.so.78 (0x00007f24b1800000)",
+      "\tlibxml2.so.16 => /usr/lib/libxml2.so.16 (0x00007f24b167d000)",
+      "\tlibsqlite3.so.0 => /usr/lib/libsqlite3.so.0 (0x00007f24b14db000)",
+      "\tlibxslt.so.1 => /usr/lib/libxslt.so.1 (0x00007f24b48d1000)",
+      "\tliblcms2.so.2 => /usr/lib/liblcms2.so.2 (0x00007f24b1a99000)",
+      "\tlibgcrypt.so.20 => /usr/lib/libgcrypt.so.20 (0x00007f24b1200000)",
+      "\tlibgstallocators-1.0.so.0 => /usr/lib/libgstallocators-1.0.so.0 (0x00007f24b5c68000)",
+      "\tlibgstapp-1.0.so.0 => /usr/lib/libgstapp-1.0.so.0 (0x00007f24b5c4f000)",
+      "\tlibgstbase-1.0.so.0 => /usr/lib/libgstbase-1.0.so.0 (0x00007f24b1453000)",
+      "\tlibgstreamer-1.0.so.0 => /usr/lib/libgstreamer-1.0.so.0 (0x00007f24b108d000)",
+      "\tlibgstpbutils-1.0.so.0 => /usr/lib/libgstpbutils-1.0.so.0 (0x00007f24b1a54000)",
+      "\tlibgstaudio-1.0.so.0 => /usr/lib/libgstaudio-1.0.so.0 (0x00007f24b1002000)",
+      "\tlibgsttag-1.0.so.0 => /usr/lib/libgsttag-1.0.so.0 (0x00007f24b0fc3000)",
+      "\tlibgstvideo-1.0.so.0 => /usr/lib/libgstvideo-1.0.so.0 (0x00007f24b0ee4000)",
+      "\tlibgstgl-1.0.so.0 => /usr/lib/libgstgl-1.0.so.0 (0x00007f24b0e4e000)",
+      "\tlibgstfft-1.0.so.0 => /usr/lib/libgstfft-1.0.so.0 (0x00007f24b580c000)",
+      "\tlibwebpdemux.so.2 => /usr/lib/libwebpdemux.so.2 (0x00007f24b5805000)",
+      "\tlibwebp.so.7 => /usr/lib/libwebp.so.7 (0x00007f24b0d7e000)",
+      "\tlibjxl.so.0.12 => /usr/lib/libjxl.so.0.12 (0x00007f24b0600000)",
+      "\tlibavif.so.16 => /usr/lib/libavif.so.16 (0x00007f24b0d27000)",
+      "\tlibharfbuzz-icu.so.0 => /usr/lib/libharfbuzz-icu.so.0 (0x00007f24b55fb000)",
+      "\tlibsoup-3.0.so.0 => /usr/lib/libsoup-3.0.so.0 (0x00007f24b0c6f000)",
+      "\tlibX11.so.6 => /usr/lib/libX11.so.6 (0x00007f24b0482000)",
+      "\tlibwayland-server.so.0 => /usr/lib/libwayland-server.so.0 (0x00007f24b55e4000)",
+      "\tlibwayland-client.so.0 => /usr/lib/libwayland-client.so.0 (0x00007f24b55d3000)",
+      "\tlibm.so.6 => /usr/lib/libm.so.6 (0x00007f24b037b000)",
+      "\tlibmanette-0.2.so.0 => /usr/lib/libmanette-0.2.so.0 (0x00007f24b0c1d000)",
+      "\tlibseccomp.so.2 => /usr/lib/libseccomp.so.2 (0x00007f24b21d3000)",
+      "\tlibenchant-2.so.2 => /usr/lib/libenchant-2.so.2 (0x00007f24b0c0b000)",
+      "\tlibgbm.so.1 => /usr/lib/libgbm.so.1 (0x00007f24b48cb000)",
+      "\tlibdrm.so.2 => /usr/lib/libdrm.so.2 (0x00007f24b0362000)",
+      "\tlibtasn1.so.6 => /usr/lib/libtasn1.so.6 (0x00007f24b0348000)",
+      "\tlibhyphen.so.0 => /usr/lib/libhyphen.so.0 (0x00007f24b0c00000)",
+      "\tlibsecret-1.so.0 => /usr/lib/libsecret-1.so.0 (0x00007f24b02fa000)",
+      "\tlibstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x00007f24afe00000)",
+      "\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x00007f24b02c4000)",
+      "\t/lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00007f24bbe0c000)",
+      "\tlibmount.so.1 => /usr/lib/libmount.so.1 (0x00007f24b025b000)",
+      "\tlibpangocairo-1.0.so.0 => /usr/lib/libpangocairo-1.0.so.0 (0x00007f24b0248000)",
+      "\tlibpangoft2-1.0.so.0 => /usr/lib/libpangoft2-1.0.so.0 (0x00007f24b0228000)",
+      "\tlibfribidi.so.0 => /usr/lib/libfribidi.so.0 (0x00007f24b0203000)",
+      "\tlibcairo-gobject.so.2 => /usr/lib/libcairo-gobject.so.2 (0x00007f24b0bf7000)",
+      "\tlibgdk_pixbuf-2.0.so.0 => /usr/lib/libgdk_pixbuf-2.0.so.0 (0x00007f24b01ac000)",
+      "\tlibXi.so.6 => /usr/lib/libXi.so.6 (0x00007f24b0194000)",
+      "\tlibatk-bridge-2.0.so.0 => /usr/lib/libatk-bridge-2.0.so.0 (0x00007f24b0152000)",
+      "\tlibcloudproviders.so.0 => /usr/lib/libcloudproviders.so.0 (0x00007f24b013a000)",
+      "\tlibtinysparql-3.0.so.0 => /usr/lib/libtinysparql-3.0.so.0 (0x00007f24afd29000)",
+      "\tlibXfixes.so.3 => /usr/lib/libXfixes.so.3 (0x00007f24b0132000)",
+      "\tlibxkbcommon.so.0 => /usr/lib/libxkbcommon.so.0 (0x00007f24afcbb000)",
+      "\tlibwayland-cursor.so.0 => /usr/lib/libwayland-cursor.so.0 (0x00007f24afcb2000)",
+      "\tlibwayland-egl.so.1 => /usr/lib/libwayland-egl.so.1 (0x00007f24b144e000)",
+      "\tlibXext.so.6 => /usr/lib/libXext.so.6 (0x00007f24afc98000)",
+      "\tlibXcursor.so.1 => /usr/lib/libXcursor.so.1 (0x00007f24afc8a000)",
+      "\tlibXdamage.so.1 => /usr/lib/libXdamage.so.1 (0x00007f24b012d000)",
+      "\tlibXcomposite.so.1 => /usr/lib/libXcomposite.so.1 (0x00007f24afc85000)",
+      "\tlibXrandr.so.2 => /usr/lib/libXrandr.so.2 (0x00007f24afc76000)",
+      "\tlibXinerama.so.1 => /usr/lib/libXinerama.so.1 (0x00007f24afc71000)",
+      "\tlibthai.so.0 => /usr/lib/libthai.so.0 (0x00007f24afc64000)",
+      "\tlibgraphite2.so.3 => /usr/lib/libgraphite2.so.3 (0x00007f24afc41000)",
+      "\tlibXrender.so.1 => /usr/lib/libXrender.so.1 (0x00007f24afc32000)",
+      "\tlibxcb.so.1 => /usr/lib/libxcb.so.1 (0x00007f24afc05000)",
+      "\tlibxcb-render.so.0 => /usr/lib/libxcb-render.so.0 (0x00007f24afbf5000)",
+      "\tlibxcb-shm.so.0 => /usr/lib/libxcb-shm.so.0 (0x00007f24afbf0000)",
+      "\tlibpixman-1.so.0 => /usr/lib/libpixman-1.so.0 (0x00007f24afaa9000)",
+      "\tlibbz2.so.1.0 => /usr/lib/libbz2.so.1.0 (0x00007f24afa95000)",
+      "\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x00007f24afa85000)",
+      "\tlibffi.so.8 => /usr/lib/libffi.so.8 (0x00007f24afa76000)",
+      "\tlibatomic.so.1 => /usr/lib/libatomic.so.1 (0x00007f24afa69000)",
+      "\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x00007f24af999000)",
+      "\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x00007f24ada00000)",
+      "\tlibgpg-error.so.0 => /usr/lib/libgpg-error.so.0 (0x00007f24ad9ca000)",
+      "\tlibunwind.so.8 => /usr/lib/libunwind.so.8 (0x00007f24ad9ab000)",
+      "\tlibdw.so.1 => /usr/lib/libdw.so.1 (0x00007f24ad909000)",
+      "\tliborc-0.4.so.0 => /usr/lib/liborc-0.4.so.0 (0x00007f24ad79f000)",
+      "\tlibEGL.so.1 => /usr/lib/libEGL.so.1 (0x00007f24ad78d000)",
+      "\tlibGLX.so.0 => /usr/lib/libGLX.so.0 (0x00007f24ad75b000)",
+      "\tlibX11-xcb.so.1 => /usr/lib/libX11-xcb.so.1 (0x00007f24ad756000)",
+      "\tlibgudev-1.0.so.0 => /usr/lib/libgudev-1.0.so.0 (0x00007f24ad748000)",
+      "\tlibsharpyuv.so.0 => /usr/lib/libsharpyuv.so.0 (0x00007f24ad73c000)",
+      "\tlibjxl_cms.so.0.12 => /usr/lib/libjxl_cms.so.0.12 (0x00007f24ad70a000)",
+      "\tlibhwy.so.1 => /usr/lib/libhwy.so.1 (0x00007f24ad6fa000)",
+      "\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x00007f24ad5fa000)",
+      "\tlibyuv.so => /usr/lib/libyuv.so (0x00007f24ad4c1000)",
+      "\tlibdav1d.so.7 => /usr/lib/libdav1d.so.7 (0x00007f24ad200000)",
+      "\tlibrav1e.so.0.8 => /usr/lib/librav1e.so.0.8 (0x00007f24ace00000)",
+      "\tlibSvtAv1Enc.so.4 => /usr/lib/libSvtAv1Enc.so.4 (0x00007f24ac600000)",
+      "\tlibaom.so.3 => /usr/lib/libaom.so.3 (0x00007f24abc00000)",
+      "\tlibpsl.so.5 => /usr/lib/libpsl.so.5 (0x00007f24ad4ad000)",
+      "\tlibzstd.so.1 => /usr/lib/libzstd.so.1 (0x00007f24ac481000)",
+      "\tlibgssapi_krb5.so.2 => /usr/lib/libgssapi_krb5.so.2 (0x00007f24ad453000)",
+      "\tlibnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x00007f24ad1d1000)",
+      "\tlibhidapi-hidraw.so.0 => /usr/lib/libhidapi-hidraw.so.0 (0x00007f24ad44b000)",
+      "\tlibevdev.so.2 => /usr/lib/libevdev.so.2 (0x00007f24ad434000)",
+      "\tlibtss2-esys.so.0 => /usr/lib/libtss2-esys.so.0 (0x00007f24ad13f000)",
+      "\tlibtss2-mu.so.0 => /usr/lib/libtss2-mu.so.0 (0x00007f24acdb6000)",
+      "\tlibtss2-rc.so.0 => /usr/lib/libtss2-rc.so.0 (0x00007f24ad136000)",
+      "\tlibtss2-tctildr.so.0 => /usr/lib/libtss2-tctildr.so.0 (0x00007f24ad12e000)",
+      "\tlibblkid.so.1 => /usr/lib/libblkid.so.1 (0x00007f24acd6b000)",
+      "\tlibglycin-2.so.0 => /usr/lib/libglycin-2.so.0 (0x00007f24ab600000)",
+      "\tlibatspi.so.0 => /usr/lib/libatspi.so.0 (0x00007f24acd26000)",
+      "\tlibdbus-1.so.3 => /usr/lib/libdbus-1.so.3 (0x00007f24abba0000)",
+      "\tlibjson-glib-1.0.so.0 => /usr/lib/libjson-glib-1.0.so.0 (0x00007f24ac454000)",
+      "\tlibdatrie.so.1 => /usr/lib/libdatrie.so.1 (0x00007f24ad125000)",
+      "\tlibXau.so.6 => /usr/lib/libXau.so.6 (0x00007f24ad120000)",
+      "\tlibXdmcp.so.6 => /usr/lib/libXdmcp.so.6 (0x00007f24ac44c000)",
+      "\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x00007f24abb7d000)",
+      "\tliblzma.so.5 => /usr/lib/liblzma.so.5 (0x00007f24abb47000)",
+      "\tlibelf.so.1 => /usr/lib/libelf.so.1 (0x00007f24ac42d000)",
+      "\tlibGLdispatch.so.0 => /usr/lib/libGLdispatch.so.0 (0x00007f24abace000)",
+      "\tlibudev.so.1 => /usr/lib/libudev.so.1 (0x00007f24ab5b0000)",
+      "\tlibunistring.so.5 => /usr/lib/libunistring.so.5 (0x00007f24ab3b8000)",
+      "\tlibidn2.so.0 => /usr/lib/libidn2.so.0 (0x00007f24abaab000)",
+      "\tlibkrb5.so.3 => /usr/lib/libkrb5.so.3 (0x00007f24ab2e9000)",
+      "\tlibk5crypto.so.3 => /usr/lib/libk5crypto.so.3 (0x00007f24ab2bb000)",
+      "\tlibcom_err.so.2 => /usr/lib/libcom_err.so.2 (0x00007f24acd20000)",
+      "\tlibkrb5support.so.0 => /usr/lib/libkrb5support.so.0 (0x00007f24aba9c000)",
+      "\tlibkeyutils.so.1 => /usr/lib/libkeyutils.so.1 (0x00007f24aba95000)",
+      "\tlibresolv.so.2 => /usr/lib/libresolv.so.2 (0x00007f24ab2a6000)",
+      "\tlibcrypto.so.4 => /usr/lib/libcrypto.so.4 (0x00007f24aac00000)",
+      "\tlibtss2-sys.so.1 => /usr/lib/libtss2-sys.so.1 (0x00007f24ab284000)"
+    ],
+    "/usr/lib/webkit2gtk-4.1/WebKitNetworkProcess": [
+      "\tlinux-vdso.so.1 (0x00007f9fbdf66000)",
+      "\tlibwebkit2gtk-4.1.so.0 => /usr/lib/libwebkit2gtk-4.1.so.0 (0x00007f9fb8000000)",
+      "\tlibc.so.6 => /usr/lib/libc.so.6 (0x00007f9fb7c00000)",
+      "\tlibgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x00007f9fb7800000)",
+      "\tlibgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x00007f9fbdf2a000)",
+      "\tlibepoxy.so.0 => /usr/lib/libepoxy.so.0 (0x00007f9fb7edf000)",
+      "\tlibgtk-3.so.0 => /usr/lib/libgtk-3.so.0 (0x00007f9fb7000000)",
+      "\tlibgdk-3.so.0 => /usr/lib/libgdk-3.so.0 (0x00007f9fb7af0000)",
+      "\tlibpango-1.0.so.0 => /usr/lib/libpango-1.0.so.0 (0x00007f9fbdeaa000)",
+      "\tlibharfbuzz.so.0 => /usr/lib/libharfbuzz.so.0 (0x00007f9fb6e4f000)",
+      "\tlibatk-1.0.so.0 => /usr/lib/libatk-1.0.so.0 (0x00007f9fbde82000)",
+      "\tlibcairo.so.2 => /usr/lib/libcairo.so.2 (0x00007f9fb6c9a000)",
+      "\tlibz.so.1 => /usr/lib/libz.so.1 (0x00007f9fbde45000)",
+      "\tlibfreetype.so.6 => /usr/lib/libfreetype.so.6 (0x00007f9fb6b5f000)",
+      "\tlibfontconfig.so.1 => /usr/lib/libfontconfig.so.1 (0x00007f9fb7e55000)",
+      "\tlibwebpmux.so.3 => /usr/lib/libwebpmux.so.3 (0x00007f9fbde38000)",
+      "\tlibexpat.so.1 => /usr/lib/libexpat.so.1 (0x00007f9fb7ab8000)",
+      "\tlibgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x00007f9fb7a44000)",
+      "\tlibjavascriptcoregtk-4.1.so.0 => /usr/lib/libjavascriptcoregtk-4.1.so.0 (0x00007f9fb4400000)",
+      "\tlibicui18n.so.78 => /usr/lib/libicui18n.so.78 (0x00007f9fb4000000)",
+      "\tlibsystemd.so.0 => /usr/lib/libsystemd.so.0 (0x00007f9fb3eb6000)",
+      "\tlibjpeg.so.8 => /usr/lib/libjpeg.so.8 (0x00007f9fb3e0e000)",
+      "\tlibpng16.so.16 => /usr/lib/libpng16.so.16 (0x00007f9fb6b07000)",
+      "\tlibglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x00007f9fb3c85000)",
+      "\tlibicuuc.so.78 => /usr/lib/libicuuc.so.78 (0x00007f9fb3a00000)",
+      "\tlibxml2.so.16 => /usr/lib/libxml2.so.16 (0x00007f9fb387d000)",
+      "\tlibsqlite3.so.0 => /usr/lib/libsqlite3.so.0 (0x00007f9fb36db000)",
+      "\tlibxslt.so.1 => /usr/lib/libxslt.so.1 (0x00007f9fb7a03000)",
+      "\tliblcms2.so.2 => /usr/lib/liblcms2.so.2 (0x00007f9fb3647000)",
+      "\tlibgcrypt.so.20 => /usr/lib/libgcrypt.so.20 (0x00007f9fb3200000)",
+      "\tlibgstallocators-1.0.so.0 => /usr/lib/libgstallocators-1.0.so.0 (0x00007f9fb77f6000)",
+      "\tlibgstapp-1.0.so.0 => /usr/lib/libgstapp-1.0.so.0 (0x00007f9fb77dd000)",
+      "\tlibgstbase-1.0.so.0 => /usr/lib/libgstbase-1.0.so.0 (0x00007f9fb35bf000)",
+      "\tlibgstreamer-1.0.so.0 => /usr/lib/libgstreamer-1.0.so.0 (0x00007f9fb344c000)",
+      "\tlibgstpbutils-1.0.so.0 => /usr/lib/libgstpbutils-1.0.so.0 (0x00007f9fb31bb000)",
+      "\tlibgstaudio-1.0.so.0 => /usr/lib/libgstaudio-1.0.so.0 (0x00007f9fb3130000)",
+      "\tlibgsttag-1.0.so.0 => /usr/lib/libgsttag-1.0.so.0 (0x00007f9fb30f1000)",
+      "\tlibgstvideo-1.0.so.0 => /usr/lib/libgstvideo-1.0.so.0 (0x00007f9fb3012000)",
+      "\tlibgstgl-1.0.so.0 => /usr/lib/libgstgl-1.0.so.0 (0x00007f9fb2f7c000)",
+      "\tlibgstfft-1.0.so.0 => /usr/lib/libgstfft-1.0.so.0 (0x00007f9fb77d2000)",
+      "\tlibwebpdemux.so.2 => /usr/lib/libwebpdemux.so.2 (0x00007f9fb7e4a000)",
+      "\tlibwebp.so.7 => /usr/lib/libwebp.so.7 (0x00007f9fb2eac000)",
+      "\tlibjxl.so.0.12 => /usr/lib/libjxl.so.0.12 (0x00007f9fb2800000)",
+      "\tlibavif.so.16 => /usr/lib/libavif.so.16 (0x00007f9fb2e55000)",
+      "\tlibharfbuzz-icu.so.0 => /usr/lib/libharfbuzz-icu.so.0 (0x00007f9fb6b02000)",
+      "\tlibsoup-3.0.so.0 => /usr/lib/libsoup-3.0.so.0 (0x00007f9fb2748000)",
+      "\tlibX11.so.6 => /usr/lib/libX11.so.6 (0x00007f9fb25ca000)",
+      "\tlibwayland-server.so.0 => /usr/lib/libwayland-server.so.0 (0x00007f9fb6aeb000)",
+      "\tlibwayland-client.so.0 => /usr/lib/libwayland-client.so.0 (0x00007f9fb6ada000)",
+      "\tlibm.so.6 => /usr/lib/libm.so.6 (0x00007f9fb24c3000)",
+      "\tlibmanette-0.2.so.0 => /usr/lib/libmanette-0.2.so.0 (0x00007f9fb2e03000)",
+      "\tlibseccomp.so.2 => /usr/lib/libseccomp.so.2 (0x00007f9fb43d3000)",
+      "\tlibenchant-2.so.2 => /usr/lib/libenchant-2.so.2 (0x00007f9fb3c73000)",
+      "\tlibgbm.so.1 => /usr/lib/libgbm.so.1 (0x00007f9fb6ad2000)",
+      "\tlibdrm.so.2 => /usr/lib/libdrm.so.2 (0x00007f9fb3c5a000)",
+      "\tlibtasn1.so.6 => /usr/lib/libtasn1.so.6 (0x00007f9fb24a9000)",
+      "\tlibhyphen.so.0 => /usr/lib/libhyphen.so.0 (0x00007f9fb2df8000)",
+      "\tlibsecret-1.so.0 => /usr/lib/libsecret-1.so.0 (0x00007f9fb245b000)",
+      "\tlibstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x00007f9fb2000000)",
+      "\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x00007f9fb2425000)",
+      "\t/lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00007f9fbdf68000)",
+      "\tlibmount.so.1 => /usr/lib/libmount.so.1 (0x00007f9fb23bc000)",
+      "\tlibpangocairo-1.0.so.0 => /usr/lib/libpangocairo-1.0.so.0 (0x00007f9fb23a9000)",
+      "\tlibpangoft2-1.0.so.0 => /usr/lib/libpangoft2-1.0.so.0 (0x00007f9fb2389000)",
+      "\tlibfribidi.so.0 => /usr/lib/libfribidi.so.0 (0x00007f9fb2364000)",
+      "\tlibcairo-gobject.so.2 => /usr/lib/libcairo-gobject.so.2 (0x00007f9fb235b000)",
+      "\tlibgdk_pixbuf-2.0.so.0 => /usr/lib/libgdk_pixbuf-2.0.so.0 (0x00007f9fb1fa9000)",
+      "\tlibXi.so.6 => /usr/lib/libXi.so.6 (0x00007f9fb2343000)",
+      "\tlibatk-bridge-2.0.so.0 => /usr/lib/libatk-bridge-2.0.so.0 (0x00007f9fb1f67000)",
+      "\tlibcloudproviders.so.0 => /usr/lib/libcloudproviders.so.0 (0x00007f9fb1f4f000)",
+      "\tlibtinysparql-3.0.so.0 => /usr/lib/libtinysparql-3.0.so.0 (0x00007f9fb1e78000)",
+      "\tlibXfixes.so.3 => /usr/lib/libXfixes.so.3 (0x00007f9fb3c52000)",
+      "\tlibxkbcommon.so.0 => /usr/lib/libxkbcommon.so.0 (0x00007f9fb1e0a000)",
+      "\tlibwayland-cursor.so.0 => /usr/lib/libwayland-cursor.so.0 (0x00007f9fb233a000)",
+      "\tlibwayland-egl.so.1 => /usr/lib/libwayland-egl.so.1 (0x00007f9fb2335000)",
+      "\tlibXext.so.6 => /usr/lib/libXext.so.6 (0x00007f9fb1df0000)",
+      "\tlibXcursor.so.1 => /usr/lib/libXcursor.so.1 (0x00007f9fb1de2000)",
+      "\tlibXdamage.so.1 => /usr/lib/libXdamage.so.1 (0x00007f9fb2330000)",
+      "\tlibXcomposite.so.1 => /usr/lib/libXcomposite.so.1 (0x00007f9fb1ddd000)",
+      "\tlibXrandr.so.2 => /usr/lib/libXrandr.so.2 (0x00007f9fb1dce000)",
+      "\tlibXinerama.so.1 => /usr/lib/libXinerama.so.1 (0x00007f9fb1dc9000)",
+      "\tlibthai.so.0 => /usr/lib/libthai.so.0 (0x00007f9fb1dbc000)",
+      "\tlibgraphite2.so.3 => /usr/lib/libgraphite2.so.3 (0x00007f9fb1d99000)",
+      "\tlibXrender.so.1 => /usr/lib/libXrender.so.1 (0x00007f9fb1d8a000)",
+      "\tlibxcb.so.1 => /usr/lib/libxcb.so.1 (0x00007f9fb1d5d000)",
+      "\tlibxcb-render.so.0 => /usr/lib/libxcb-render.so.0 (0x00007f9fb1d4d000)",
+      "\tlibxcb-shm.so.0 => /usr/lib/libxcb-shm.so.0 (0x00007f9fb1d48000)",
+      "\tlibpixman-1.so.0 => /usr/lib/libpixman-1.so.0 (0x00007f9fb1c01000)",
+      "\tlibbz2.so.1.0 => /usr/lib/libbz2.so.1.0 (0x00007f9fb1bed000)",
+      "\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x00007f9fb1bdd000)",
+      "\tlibffi.so.8 => /usr/lib/libffi.so.8 (0x00007f9fb1bce000)",
+      "\tlibatomic.so.1 => /usr/lib/libatomic.so.1 (0x00007f9fb1bc1000)",
+      "\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x00007f9fb1af1000)",
+      "\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x00007f9fafa00000)",
+      "\tlibgpg-error.so.0 => /usr/lib/libgpg-error.so.0 (0x00007f9fb1abb000)",
+      "\tlibunwind.so.8 => /usr/lib/libunwind.so.8 (0x00007f9fb1a9c000)",
+      "\tlibdw.so.1 => /usr/lib/libdw.so.1 (0x00007f9fb19f8000)",
+      "\tliborc-0.4.so.0 => /usr/lib/liborc-0.4.so.0 (0x00007f9faf896000)",
+      "\tlibEGL.so.1 => /usr/lib/libEGL.so.1 (0x00007f9fb19e6000)",
+      "\tlibGLX.so.0 => /usr/lib/libGLX.so.0 (0x00007f9fb19b4000)",
+      "\tlibX11-xcb.so.1 => /usr/lib/libX11-xcb.so.1 (0x00007f9fb19af000)",
+      "\tlibgudev-1.0.so.0 => /usr/lib/libgudev-1.0.so.0 (0x00007f9fb199f000)",
+      "\tlibsharpyuv.so.0 => /usr/lib/libsharpyuv.so.0 (0x00007f9faf88a000)",
+      "\tlibjxl_cms.so.0.12 => /usr/lib/libjxl_cms.so.0.12 (0x00007f9faf858000)",
+      "\tlibhwy.so.1 => /usr/lib/libhwy.so.1 (0x00007f9faf848000)",
+      "\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x00007f9faf748000)",
+      "\tlibyuv.so => /usr/lib/libyuv.so (0x00007f9faf611000)",
+      "\tlibdav1d.so.7 => /usr/lib/libdav1d.so.7 (0x00007f9faf200000)",
+      "\tlibrav1e.so.0.8 => /usr/lib/librav1e.so.0.8 (0x00007f9faee00000)",
+      "\tlibSvtAv1Enc.so.4 => /usr/lib/libSvtAv1Enc.so.4 (0x00007f9fae600000)",
+      "\tlibaom.so.3 => /usr/lib/libaom.so.3 (0x00007f9fadc00000)",
+      "\tlibpsl.so.5 => /usr/lib/libpsl.so.5 (0x00007f9faf5fd000)",
+      "\tlibzstd.so.1 => /usr/lib/libzstd.so.1 (0x00007f9faf47e000)",
+      "\tlibgssapi_krb5.so.2 => /usr/lib/libgssapi_krb5.so.2 (0x00007f9faf1a8000)",
+      "\tlibnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x00007f9faf44f000)",
+      "\tlibhidapi-hidraw.so.0 => /usr/lib/libhidapi-hidraw.so.0 (0x00007f9faf447000)",
+      "\tlibevdev.so.2 => /usr/lib/libevdev.so.2 (0x00007f9faf430000)",
+      "\tlibtss2-esys.so.0 => /usr/lib/libtss2-esys.so.0 (0x00007f9faed6e000)",
+      "\tlibtss2-mu.so.0 => /usr/lib/libtss2-mu.so.0 (0x00007f9faf15e000)",
+      "\tlibtss2-rc.so.0 => /usr/lib/libtss2-rc.so.0 (0x00007f9faf155000)",
+      "\tlibtss2-tctildr.so.0 => /usr/lib/libtss2-tctildr.so.0 (0x00007f9faf14d000)",
+      "\tlibblkid.so.1 => /usr/lib/libblkid.so.1 (0x00007f9faed23000)",
+      "\tlibglycin-2.so.0 => /usr/lib/libglycin-2.so.0 (0x00007f9fad600000)",
+      "\tlibatspi.so.0 => /usr/lib/libatspi.so.0 (0x00007f9fae5bb000)",
+      "\tlibdbus-1.so.3 => /usr/lib/libdbus-1.so.3 (0x00007f9fae55b000)",
+      "\tlibjson-glib-1.0.so.0 => /usr/lib/libjson-glib-1.0.so.0 (0x00007f9faf120000)",
+      "\tlibdatrie.so.1 => /usr/lib/libdatrie.so.1 (0x00007f9fae552000)",
+      "\tlibXau.so.6 => /usr/lib/libXau.so.6 (0x00007f9faf11b000)",
+      "\tlibXdmcp.so.6 => /usr/lib/libXdmcp.so.6 (0x00007f9fae54a000)",
+      "\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x00007f9fae527000)",
+      "\tliblzma.so.5 => /usr/lib/liblzma.so.5 (0x00007f9fae4f1000)",
+      "\tlibelf.so.1 => /usr/lib/libelf.so.1 (0x00007f9fae4d2000)",
+      "\tlibGLdispatch.so.0 => /usr/lib/libGLdispatch.so.0 (0x00007f9fae459000)",
+      "\tlibudev.so.1 => /usr/lib/libudev.so.1 (0x00007f9fadbb0000)",
+      "\tlibunistring.so.5 => /usr/lib/libunistring.so.5 (0x00007f9fad408000)",
+      "\tlibidn2.so.0 => /usr/lib/libidn2.so.0 (0x00007f9fae436000)",
+      "\tlibkrb5.so.3 => /usr/lib/libkrb5.so.3 (0x00007f9fadae1000)",
+      "\tlibk5crypto.so.3 => /usr/lib/libk5crypto.so.3 (0x00007f9fadab3000)",
+      "\tlibcom_err.so.2 => /usr/lib/libcom_err.so.2 (0x00007f9fae430000)",
+      "\tlibkrb5support.so.0 => /usr/lib/libkrb5support.so.0 (0x00007f9fadaa4000)",
+      "\tlibkeyutils.so.1 => /usr/lib/libkeyutils.so.1 (0x00007f9fada9d000)",
+      "\tlibresolv.so.2 => /usr/lib/libresolv.so.2 (0x00007f9fad3f3000)",
+      "\tlibcrypto.so.4 => /usr/lib/libcrypto.so.4 (0x00007f9face00000)",
+      "\tlibtss2-sys.so.1 => /usr/lib/libtss2-sys.so.1 (0x00007f9fad3d1000)"
+    ],
+    "/usr/lib/webkit2gtk-4.1/WebKitGPUProcess": [
+      "\tlinux-vdso.so.1 (0x00007fdf623a6000)",
+      "\tlibwebkit2gtk-4.1.so.0 => /usr/lib/libwebkit2gtk-4.1.so.0 (0x00007fdf5c400000)",
+      "\tlibc.so.6 => /usr/lib/libc.so.6 (0x00007fdf5c000000)",
+      "\tlibgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x00007fdf5bc00000)",
+      "\tlibgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x00007fdf6236a000)",
+      "\tlibepoxy.so.0 => /usr/lib/libepoxy.so.0 (0x00007fdf62247000)",
+      "\tlibgtk-3.so.0 => /usr/lib/libgtk-3.so.0 (0x00007fdf5b400000)",
+      "\tlibgdk-3.so.0 => /usr/lib/libgdk-3.so.0 (0x00007fdf5c2f0000)",
+      "\tlibpango-1.0.so.0 => /usr/lib/libpango-1.0.so.0 (0x00007fdf5c272000)",
+      "\tlibharfbuzz.so.0 => /usr/lib/libharfbuzz.so.0 (0x00007fdf5be4f000)",
+      "\tlibatk-1.0.so.0 => /usr/lib/libatk-1.0.so.0 (0x00007fdf5c24a000)",
+      "\tlibcairo.so.2 => /usr/lib/libcairo.so.2 (0x00007fdf5b24b000)",
+      "\tlibz.so.1 => /usr/lib/libz.so.1 (0x00007fdf5be14000)",
+      "\tlibfreetype.so.6 => /usr/lib/libfreetype.so.6 (0x00007fdf5b110000)",
+      "\tlibfontconfig.so.1 => /usr/lib/libfontconfig.so.1 (0x00007fdf5b086000)",
+      "\tlibwebpmux.so.3 => /usr/lib/libwebpmux.so.3 (0x00007fdf62238000)",
+      "\tlibexpat.so.1 => /usr/lib/libexpat.so.1 (0x00007fdf5b04e000)",
+      "\tlibgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x00007fdf5afda000)",
+      "\tlibjavascriptcoregtk-4.1.so.0 => /usr/lib/libjavascriptcoregtk-4.1.so.0 (0x00007fdf58800000)",
+      "\tlibicui18n.so.78 => /usr/lib/libicui18n.so.78 (0x00007fdf58400000)",
+      "\tlibsystemd.so.0 => /usr/lib/libsystemd.so.0 (0x00007fdf582b6000)",
+      "\tlibjpeg.so.8 => /usr/lib/libjpeg.so.8 (0x00007fdf5af32000)",
+      "\tlibpng16.so.16 => /usr/lib/libpng16.so.16 (0x00007fdf5aeda000)",
+      "\tlibglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x00007fdf5812d000)",
+      "\tlibicuuc.so.78 => /usr/lib/libicuuc.so.78 (0x00007fdf57e00000)",
+      "\tlibxml2.so.16 => /usr/lib/libxml2.so.16 (0x00007fdf57c7d000)",
+      "\tlibsqlite3.so.0 => /usr/lib/libsqlite3.so.0 (0x00007fdf57adb000)",
+      "\tlibxslt.so.1 => /usr/lib/libxslt.so.1 (0x00007fdf580ec000)",
+      "\tliblcms2.so.2 => /usr/lib/liblcms2.so.2 (0x00007fdf58058000)",
+      "\tlibgcrypt.so.20 => /usr/lib/libgcrypt.so.20 (0x00007fdf57800000)",
+      "\tlibgstallocators-1.0.so.0 => /usr/lib/libgstallocators-1.0.so.0 (0x00007fdf5be08000)",
+      "\tlibgstapp-1.0.so.0 => /usr/lib/libgstapp-1.0.so.0 (0x00007fdf5bbe7000)",
+      "\tlibgstbase-1.0.so.0 => /usr/lib/libgstbase-1.0.so.0 (0x00007fdf57a53000)",
+      "\tlibgstreamer-1.0.so.0 => /usr/lib/libgstreamer-1.0.so.0 (0x00007fdf5768d000)",
+      "\tlibgstpbutils-1.0.so.0 => /usr/lib/libgstpbutils-1.0.so.0 (0x00007fdf57648000)",
+      "\tlibgstaudio-1.0.so.0 => /usr/lib/libgstaudio-1.0.so.0 (0x00007fdf575bd000)",
+      "\tlibgsttag-1.0.so.0 => /usr/lib/libgsttag-1.0.so.0 (0x00007fdf5757e000)",
+      "\tlibgstvideo-1.0.so.0 => /usr/lib/libgstvideo-1.0.so.0 (0x00007fdf5749f000)",
+      "\tlibgstgl-1.0.so.0 => /usr/lib/libgstgl-1.0.so.0 (0x00007fdf57409000)",
+      "\tlibgstfft-1.0.so.0 => /usr/lib/libgstfft-1.0.so.0 (0x00007fdf5bbdc000)",
+      "\tlibwebpdemux.so.2 => /usr/lib/libwebpdemux.so.2 (0x00007fdf5bbd5000)",
+      "\tlibwebp.so.7 => /usr/lib/libwebp.so.7 (0x00007fdf57339000)",
+      "\tlibjxl.so.0.12 => /usr/lib/libjxl.so.0.12 (0x00007fdf56c00000)",
+      "\tlibavif.so.16 => /usr/lib/libavif.so.16 (0x00007fdf572e2000)",
+      "\tlibharfbuzz-icu.so.0 => /usr/lib/libharfbuzz-icu.so.0 (0x00007fdf5bbd0000)",
+      "\tlibsoup-3.0.so.0 => /usr/lib/libsoup-3.0.so.0 (0x00007fdf5722a000)",
+      "\tlibX11.so.6 => /usr/lib/libX11.so.6 (0x00007fdf56a82000)",
+      "\tlibwayland-server.so.0 => /usr/lib/libwayland-server.so.0 (0x00007fdf587e9000)",
+      "\tlibwayland-client.so.0 => /usr/lib/libwayland-client.so.0 (0x00007fdf5aec9000)",
+      "\tlibm.so.6 => /usr/lib/libm.so.6 (0x00007fdf5697b000)",
+      "\tlibmanette-0.2.so.0 => /usr/lib/libmanette-0.2.so.0 (0x00007fdf56929000)",
+      "\tlibseccomp.so.2 => /usr/lib/libseccomp.so.2 (0x00007fdf571fd000)",
+      "\tlibenchant-2.so.2 => /usr/lib/libenchant-2.so.2 (0x00007fdf587d7000)",
+      "\tlibgbm.so.1 => /usr/lib/libgbm.so.1 (0x00007fdf58052000)",
+      "\tlibdrm.so.2 => /usr/lib/libdrm.so.2 (0x00007fdf56910000)",
+      "\tlibtasn1.so.6 => /usr/lib/libtasn1.so.6 (0x00007fdf568f6000)",
+      "\tlibhyphen.so.0 => /usr/lib/libhyphen.so.0 (0x00007fdf568eb000)",
+      "\tlibsecret-1.so.0 => /usr/lib/libsecret-1.so.0 (0x00007fdf5689d000)",
+      "\tlibstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x00007fdf56400000)",
+      "\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x00007fdf56867000)",
+      "\t/lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00007fdf623a8000)",
+      "\tlibmount.so.1 => /usr/lib/libmount.so.1 (0x00007fdf567fe000)",
+      "\tlibpangocairo-1.0.so.0 => /usr/lib/libpangocairo-1.0.so.0 (0x00007fdf567eb000)",
+      "\tlibpangoft2-1.0.so.0 => /usr/lib/libpangoft2-1.0.so.0 (0x00007fdf567cb000)",
+      "\tlibfribidi.so.0 => /usr/lib/libfribidi.so.0 (0x00007fdf567a6000)",
+      "\tlibcairo-gobject.so.2 => /usr/lib/libcairo-gobject.so.2 (0x00007fdf5679d000)",
+      "\tlibgdk_pixbuf-2.0.so.0 => /usr/lib/libgdk_pixbuf-2.0.so.0 (0x00007fdf56746000)",
+      "\tlibXi.so.6 => /usr/lib/libXi.so.6 (0x00007fdf5672e000)",
+      "\tlibatk-bridge-2.0.so.0 => /usr/lib/libatk-bridge-2.0.so.0 (0x00007fdf563be000)",
+      "\tlibcloudproviders.so.0 => /usr/lib/libcloudproviders.so.0 (0x00007fdf563a6000)",
+      "\tlibtinysparql-3.0.so.0 => /usr/lib/libtinysparql-3.0.so.0 (0x00007fdf562cf000)",
+      "\tlibXfixes.so.3 => /usr/lib/libXfixes.so.3 (0x00007fdf562c7000)",
+      "\tlibxkbcommon.so.0 => /usr/lib/libxkbcommon.so.0 (0x00007fdf56259000)",
+      "\tlibwayland-cursor.so.0 => /usr/lib/libwayland-cursor.so.0 (0x00007fdf56250000)",
+      "\tlibwayland-egl.so.1 => /usr/lib/libwayland-egl.so.1 (0x00007fdf57a4c000)",
+      "\tlibXext.so.6 => /usr/lib/libXext.so.6 (0x00007fdf56236000)",
+      "\tlibXcursor.so.1 => /usr/lib/libXcursor.so.1 (0x00007fdf56228000)",
+      "\tlibXdamage.so.1 => /usr/lib/libXdamage.so.1 (0x00007fdf56223000)",
+      "\tlibXcomposite.so.1 => /usr/lib/libXcomposite.so.1 (0x00007fdf5621e000)",
+      "\tlibXrandr.so.2 => /usr/lib/libXrandr.so.2 (0x00007fdf5620f000)",
+      "\tlibXinerama.so.1 => /usr/lib/libXinerama.so.1 (0x00007fdf5620a000)",
+      "\tlibthai.so.0 => /usr/lib/libthai.so.0 (0x00007fdf561fd000)",
+      "\tlibgraphite2.so.3 => /usr/lib/libgraphite2.so.3 (0x00007fdf561da000)",
+      "\tlibXrender.so.1 => /usr/lib/libXrender.so.1 (0x00007fdf561cb000)",
+      "\tlibxcb.so.1 => /usr/lib/libxcb.so.1 (0x00007fdf5619e000)",
+      "\tlibxcb-render.so.0 => /usr/lib/libxcb-render.so.0 (0x00007fdf5618e000)",
+      "\tlibxcb-shm.so.0 => /usr/lib/libxcb-shm.so.0 (0x00007fdf56189000)",
+      "\tlibpixman-1.so.0 => /usr/lib/libpixman-1.so.0 (0x00007fdf56042000)",
+      "\tlibbz2.so.1.0 => /usr/lib/libbz2.so.1.0 (0x00007fdf5602e000)",
+      "\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x00007fdf5601e000)",
+      "\tlibffi.so.8 => /usr/lib/libffi.so.8 (0x00007fdf5600f000)",
+      "\tlibatomic.so.1 => /usr/lib/libatomic.so.1 (0x00007fdf56002000)",
+      "\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x00007fdf55f32000)",
+      "\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x00007fdf53e00000)",
+      "\tlibgpg-error.so.0 => /usr/lib/libgpg-error.so.0 (0x00007fdf55efc000)",
+      "\tlibunwind.so.8 => /usr/lib/libunwind.so.8 (0x00007fdf55edd000)",
+      "\tlibdw.so.1 => /usr/lib/libdw.so.1 (0x00007fdf55e39000)",
+      "\tliborc-0.4.so.0 => /usr/lib/liborc-0.4.so.0 (0x00007fdf53c96000)",
+      "\tlibEGL.so.1 => /usr/lib/libEGL.so.1 (0x00007fdf55e27000)",
+      "\tlibGLX.so.0 => /usr/lib/libGLX.so.0 (0x00007fdf55df5000)",
+      "\tlibX11-xcb.so.1 => /usr/lib/libX11-xcb.so.1 (0x00007fdf55df0000)",
+      "\tlibgudev-1.0.so.0 => /usr/lib/libgudev-1.0.so.0 (0x00007fdf55de0000)",
+      "\tlibsharpyuv.so.0 => /usr/lib/libsharpyuv.so.0 (0x00007fdf55dd4000)",
+      "\tlibjxl_cms.so.0.12 => /usr/lib/libjxl_cms.so.0.12 (0x00007fdf55da2000)",
+      "\tlibhwy.so.1 => /usr/lib/libhwy.so.1 (0x00007fdf53c86000)",
+      "\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x00007fdf53b86000)",
+      "\tlibyuv.so => /usr/lib/libyuv.so (0x00007fdf53a4f000)",
+      "\tlibdav1d.so.7 => /usr/lib/libdav1d.so.7 (0x00007fdf53800000)",
+      "\tlibrav1e.so.0.8 => /usr/lib/librav1e.so.0.8 (0x00007fdf53400000)",
+      "\tlibSvtAv1Enc.so.4 => /usr/lib/libSvtAv1Enc.so.4 (0x00007fdf52c00000)",
+      "\tlibaom.so.3 => /usr/lib/libaom.so.3 (0x00007fdf52200000)",
+      "\tlibpsl.so.5 => /usr/lib/libpsl.so.5 (0x00007fdf53a3b000)",
+      "\tlibzstd.so.1 => /usr/lib/libzstd.so.1 (0x00007fdf52a81000)",
+      "\tlibgssapi_krb5.so.2 => /usr/lib/libgssapi_krb5.so.2 (0x00007fdf537a8000)",
+      "\tlibnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x00007fdf53779000)",
+      "\tlibhidapi-hidraw.so.0 => /usr/lib/libhidapi-hidraw.so.0 (0x00007fdf55d96000)",
+      "\tlibevdev.so.2 => /usr/lib/libevdev.so.2 (0x00007fdf53762000)",
+      "\tlibtss2-esys.so.0 => /usr/lib/libtss2-esys.so.0 (0x00007fdf5336e000)",
+      "\tlibtss2-mu.so.0 => /usr/lib/libtss2-mu.so.0 (0x00007fdf53324000)",
+      "\tlibtss2-rc.so.0 => /usr/lib/libtss2-rc.so.0 (0x00007fdf53a30000)",
+      "\tlibtss2-tctildr.so.0 => /usr/lib/libtss2-tctildr.so.0 (0x00007fdf5375a000)",
+      "\tlibblkid.so.1 => /usr/lib/libblkid.so.1 (0x00007fdf52a36000)",
+      "\tlibglycin-2.so.0 => /usr/lib/libglycin-2.so.0 (0x00007fdf51c00000)",
+      "\tlibatspi.so.0 => /usr/lib/libatspi.so.0 (0x00007fdf521bb000)",
+      "\tlibdbus-1.so.3 => /usr/lib/libdbus-1.so.3 (0x00007fdf5215b000)",
+      "\tlibjson-glib-1.0.so.0 => /usr/lib/libjson-glib-1.0.so.0 (0x00007fdf5372d000)",
+      "\tlibdatrie.so.1 => /usr/lib/libdatrie.so.1 (0x00007fdf53724000)",
+      "\tlibXau.so.6 => /usr/lib/libXau.so.6 (0x00007fdf5371f000)",
+      "\tlibXdmcp.so.6 => /usr/lib/libXdmcp.so.6 (0x00007fdf52a2e000)",
+      "\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x00007fdf52138000)",
+      "\tliblzma.so.5 => /usr/lib/liblzma.so.5 (0x00007fdf52102000)",
+      "\tlibelf.so.1 => /usr/lib/libelf.so.1 (0x00007fdf520e3000)",
+      "\tlibGLdispatch.so.0 => /usr/lib/libGLdispatch.so.0 (0x00007fdf51b87000)",
+      "\tlibudev.so.1 => /usr/lib/libudev.so.1 (0x00007fdf52093000)",
+      "\tlibunistring.so.5 => /usr/lib/libunistring.so.5 (0x00007fdf5198f000)",
+      "\tlibidn2.so.0 => /usr/lib/libidn2.so.0 (0x00007fdf5196c000)",
+      "\tlibkrb5.so.3 => /usr/lib/libkrb5.so.3 (0x00007fdf5189d000)",
+      "\tlibk5crypto.so.3 => /usr/lib/libk5crypto.so.3 (0x00007fdf5186f000)",
+      "\tlibcom_err.so.2 => /usr/lib/libcom_err.so.2 (0x00007fdf51869000)",
+      "\tlibkrb5support.so.0 => /usr/lib/libkrb5support.so.0 (0x00007fdf5185a000)",
+      "\tlibkeyutils.so.1 => /usr/lib/libkeyutils.so.1 (0x00007fdf51853000)",
+      "\tlibresolv.so.2 => /usr/lib/libresolv.so.2 (0x00007fdf5183e000)",
+      "\tlibcrypto.so.4 => /usr/lib/libcrypto.so.4 (0x00007fdf51200000)",
+      "\tlibtss2-sys.so.1 => /usr/lib/libtss2-sys.so.1 (0x00007fdf5181c000)"
+    ],
+    "/usr/lib/webkit2gtk-4.1/injected-bundle/libwebkit2gtkinjectedbundle.so": [
+      "\tlinux-vdso.so.1 (0x00007ff42be6a000)",
+      "\tlibwebkit2gtk-4.1.so.0 => /usr/lib/libwebkit2gtk-4.1.so.0 (0x00007ff426000000)",
+      "\tlibc.so.6 => /usr/lib/libc.so.6 (0x00007ff425c00000)",
+      "\tlibgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x00007ff425800000)",
+      "\tlibgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x00007ff425ff9000)",
+      "\tlibepoxy.so.0 => /usr/lib/libepoxy.so.0 (0x00007ff425ed8000)",
+      "\tlibgtk-3.so.0 => /usr/lib/libgtk-3.so.0 (0x00007ff425000000)",
+      "\tlibgdk-3.so.0 => /usr/lib/libgdk-3.so.0 (0x00007ff425af0000)",
+      "\tlibpango-1.0.so.0 => /usr/lib/libpango-1.0.so.0 (0x00007ff425e5a000)",
+      "\tlibharfbuzz.so.0 => /usr/lib/libharfbuzz.so.0 (0x00007ff424e4f000)",
+      "\tlibatk-1.0.so.0 => /usr/lib/libatk-1.0.so.0 (0x00007ff425ac8000)",
+      "\tlibcairo.so.2 => /usr/lib/libcairo.so.2 (0x00007ff424c9a000)",
+      "\tlibz.so.1 => /usr/lib/libz.so.1 (0x00007ff425a8d000)",
+      "\tlibfreetype.so.6 => /usr/lib/libfreetype.so.6 (0x00007ff424b5f000)",
+      "\tlibfontconfig.so.1 => /usr/lib/libfontconfig.so.1 (0x00007ff425a03000)",
+      "\tlibwebpmux.so.3 => /usr/lib/libwebpmux.so.3 (0x00007ff425e4b000)",
+      "\tlibexpat.so.1 => /usr/lib/libexpat.so.1 (0x00007ff424b27000)",
+      "\tlibgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x00007ff424ab3000)",
+      "\tlibjavascriptcoregtk-4.1.so.0 => /usr/lib/libjavascriptcoregtk-4.1.so.0 (0x00007ff422200000)",
+      "\tlibicui18n.so.78 => /usr/lib/libicui18n.so.78 (0x00007ff421e00000)",
+      "\tlibsystemd.so.0 => /usr/lib/libsystemd.so.0 (0x00007ff424969000)",
+      "\tlibjpeg.so.8 => /usr/lib/libjpeg.so.8 (0x00007ff421d58000)",
+      "\tlibpng16.so.16 => /usr/lib/libpng16.so.16 (0x00007ff424911000)",
+      "\tlibglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x00007ff421bcf000)",
+      "\tlibicuuc.so.78 => /usr/lib/libicuuc.so.78 (0x00007ff421800000)",
+      "\tlibxml2.so.16 => /usr/lib/libxml2.so.16 (0x00007ff42167d000)",
+      "\tlibsqlite3.so.0 => /usr/lib/libsqlite3.so.0 (0x00007ff4214db000)",
+      "\tlibxslt.so.1 => /usr/lib/libxslt.so.1 (0x00007ff4248d0000)",
+      "\tliblcms2.so.2 => /usr/lib/liblcms2.so.2 (0x00007ff421b3b000)",
+      "\tlibgcrypt.so.20 => /usr/lib/libgcrypt.so.20 (0x00007ff421200000)",
+      "\tlibgstallocators-1.0.so.0 => /usr/lib/libgstallocators-1.0.so.0 (0x00007ff4257f0000)",
+      "\tlibgstapp-1.0.so.0 => /usr/lib/libgstapp-1.0.so.0 (0x00007ff4257d7000)",
+      "\tlibgstbase-1.0.so.0 => /usr/lib/libgstbase-1.0.so.0 (0x00007ff421ab3000)",
+      "\tlibgstreamer-1.0.so.0 => /usr/lib/libgstreamer-1.0.so.0 (0x00007ff42108d000)",
+      "\tlibgstpbutils-1.0.so.0 => /usr/lib/libgstpbutils-1.0.so.0 (0x00007ff421a6e000)",
+      "\tlibgstaudio-1.0.so.0 => /usr/lib/libgstaudio-1.0.so.0 (0x00007ff421450000)",
+      "\tlibgsttag-1.0.so.0 => /usr/lib/libgsttag-1.0.so.0 (0x00007ff42104e000)",
+      "\tlibgstvideo-1.0.so.0 => /usr/lib/libgstvideo-1.0.so.0 (0x00007ff420f6f000)",
+      "\tlibgstgl-1.0.so.0 => /usr/lib/libgstgl-1.0.so.0 (0x00007ff420ed9000)",
+      "\tlibgstfft-1.0.so.0 => /usr/lib/libgstfft-1.0.so.0 (0x00007ff4221f5000)",
+      "\tlibwebpdemux.so.2 => /usr/lib/libwebpdemux.so.2 (0x00007ff4257ce000)",
+      "\tlibwebp.so.7 => /usr/lib/libwebp.so.7 (0x00007ff420e09000)",
+      "\tlibjxl.so.0.12 => /usr/lib/libjxl.so.0.12 (0x00007ff420800000)",
+      "\tlibavif.so.16 => /usr/lib/libavif.so.16 (0x00007ff4207a9000)",
+      "\tlibharfbuzz-icu.so.0 => /usr/lib/libharfbuzz-icu.so.0 (0x00007ff4248c9000)",
+      "\tlibsoup-3.0.so.0 => /usr/lib/libsoup-3.0.so.0 (0x00007ff4206f1000)",
+      "\tlibX11.so.6 => /usr/lib/libX11.so.6 (0x00007ff420573000)",
+      "\tlibwayland-server.so.0 => /usr/lib/libwayland-server.so.0 (0x00007ff4221dc000)",
+      "\tlibwayland-client.so.0 => /usr/lib/libwayland-client.so.0 (0x00007ff421a5d000)",
+      "\tlibm.so.6 => /usr/lib/libm.so.6 (0x00007ff42046c000)",
+      "\tlibmanette-0.2.so.0 => /usr/lib/libmanette-0.2.so.0 (0x00007ff42041a000)",
+      "\tlibseccomp.so.2 => /usr/lib/libseccomp.so.2 (0x00007ff4203ed000)",
+      "\tlibenchant-2.so.2 => /usr/lib/libenchant-2.so.2 (0x00007ff420df7000)",
+      "\tlibgbm.so.1 => /usr/lib/libgbm.so.1 (0x00007ff4221d4000)",
+      "\tlibdrm.so.2 => /usr/lib/libdrm.so.2 (0x00007ff4203d4000)",
+      "\tlibtasn1.so.6 => /usr/lib/libtasn1.so.6 (0x00007ff4203ba000)",
+      "\tlibhyphen.so.0 => /usr/lib/libhyphen.so.0 (0x00007ff421a52000)",
+      "\tlibsecret-1.so.0 => /usr/lib/libsecret-1.so.0 (0x00007ff42036c000)",
+      "\tlibstdc++.so.6 => /usr/lib/libstdc++.so.6 (0x00007ff420000000)",
+      "\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x00007ff420336000)",
+      "\t/usr/lib64/ld-linux-x86-64.so.2 (0x00007ff42be6c000)",
+      "\tlibmount.so.1 => /usr/lib/libmount.so.1 (0x00007ff41ff97000)",
+      "\tlibpangocairo-1.0.so.0 => /usr/lib/libpangocairo-1.0.so.0 (0x00007ff41ff84000)",
+      "\tlibpangoft2-1.0.so.0 => /usr/lib/libpangoft2-1.0.so.0 (0x00007ff41ff64000)",
+      "\tlibfribidi.so.0 => /usr/lib/libfribidi.so.0 (0x00007ff41ff3f000)",
+      "\tlibcairo-gobject.so.2 => /usr/lib/libcairo-gobject.so.2 (0x00007ff42032d000)",
+      "\tlibgdk_pixbuf-2.0.so.0 => /usr/lib/libgdk_pixbuf-2.0.so.0 (0x00007ff41fee8000)",
+      "\tlibXi.so.6 => /usr/lib/libXi.so.6 (0x00007ff41fed0000)",
+      "\tlibatk-bridge-2.0.so.0 => /usr/lib/libatk-bridge-2.0.so.0 (0x00007ff41fe8e000)",
+      "\tlibcloudproviders.so.0 => /usr/lib/libcloudproviders.so.0 (0x00007ff41fe76000)",
+      "\tlibtinysparql-3.0.so.0 => /usr/lib/libtinysparql-3.0.so.0 (0x00007ff41fd9f000)",
+      "\tlibXfixes.so.3 => /usr/lib/libXfixes.so.3 (0x00007ff41fd97000)",
+      "\tlibxkbcommon.so.0 => /usr/lib/libxkbcommon.so.0 (0x00007ff41fd29000)",
+      "\tlibwayland-cursor.so.0 => /usr/lib/libwayland-cursor.so.0 (0x00007ff41fd20000)",
+      "\tlibwayland-egl.so.1 => /usr/lib/libwayland-egl.so.1 (0x00007ff41fd1b000)",
+      "\tlibXext.so.6 => /usr/lib/libXext.so.6 (0x00007ff41fd01000)",
+      "\tlibXcursor.so.1 => /usr/lib/libXcursor.so.1 (0x00007ff41fcf1000)",
+      "\tlibXdamage.so.1 => /usr/lib/libXdamage.so.1 (0x00007ff41fcec000)",
+      "\tlibXcomposite.so.1 => /usr/lib/libXcomposite.so.1 (0x00007ff41fce7000)",
+      "\tlibXrandr.so.2 => /usr/lib/libXrandr.so.2 (0x00007ff41fcd8000)",
+      "\tlibXinerama.so.1 => /usr/lib/libXinerama.so.1 (0x00007ff41fcd3000)",
+      "\tlibthai.so.0 => /usr/lib/libthai.so.0 (0x00007ff41fcc4000)",
+      "\tlibgraphite2.so.3 => /usr/lib/libgraphite2.so.3 (0x00007ff41fca1000)",
+      "\tlibXrender.so.1 => /usr/lib/libXrender.so.1 (0x00007ff41fc92000)",
+      "\tlibxcb.so.1 => /usr/lib/libxcb.so.1 (0x00007ff41fc65000)",
+      "\tlibxcb-render.so.0 => /usr/lib/libxcb-render.so.0 (0x00007ff41fc55000)",
+      "\tlibxcb-shm.so.0 => /usr/lib/libxcb-shm.so.0 (0x00007ff41fc4e000)",
+      "\tlibpixman-1.so.0 => /usr/lib/libpixman-1.so.0 (0x00007ff41fb07000)",
+      "\tlibbz2.so.1.0 => /usr/lib/libbz2.so.1.0 (0x00007ff41faf3000)",
+      "\tlibbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x00007ff41fae3000)",
+      "\tlibffi.so.8 => /usr/lib/libffi.so.8 (0x00007ff41fad4000)",
+      "\tlibatomic.so.1 => /usr/lib/libatomic.so.1 (0x00007ff41fac7000)",
+      "\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x00007ff41f9f7000)",
+      "\tlibicudata.so.78 => /usr/lib/libicudata.so.78 (0x00007ff41da00000)",
+      "\tlibgpg-error.so.0 => /usr/lib/libgpg-error.so.0 (0x00007ff41f9c1000)",
+      "\tlibunwind.so.8 => /usr/lib/libunwind.so.8 (0x00007ff41f9a2000)",
+      "\tlibdw.so.1 => /usr/lib/libdw.so.1 (0x00007ff41d95e000)",
+      "\tliborc-0.4.so.0 => /usr/lib/liborc-0.4.so.0 (0x00007ff41d7f4000)",
+      "\tlibEGL.so.1 => /usr/lib/libEGL.so.1 (0x00007ff41d7e2000)",
+      "\tlibGLX.so.0 => /usr/lib/libGLX.so.0 (0x00007ff41d7b0000)",
+      "\tlibX11-xcb.so.1 => /usr/lib/libX11-xcb.so.1 (0x00007ff41f99b000)",
+      "\tlibgudev-1.0.so.0 => /usr/lib/libgudev-1.0.so.0 (0x00007ff41d7a2000)",
+      "\tlibsharpyuv.so.0 => /usr/lib/libsharpyuv.so.0 (0x00007ff41d796000)",
+      "\tlibjxl_cms.so.0.12 => /usr/lib/libjxl_cms.so.0.12 (0x00007ff41d764000)",
+      "\tlibhwy.so.1 => /usr/lib/libhwy.so.1 (0x00007ff41d754000)",
+      "\tlibbrotlienc.so.1 => /usr/lib/libbrotlienc.so.1 (0x00007ff41d654000)",
+      "\tlibyuv.so => /usr/lib/libyuv.so (0x00007ff41d51d000)",
+      "\tlibdav1d.so.7 => /usr/lib/libdav1d.so.7 (0x00007ff41d200000)",
+      "\tlibrav1e.so.0.8 => /usr/lib/librav1e.so.0.8 (0x00007ff41ce00000)",
+      "\tlibSvtAv1Enc.so.4 => /usr/lib/libSvtAv1Enc.so.4 (0x00007ff41c600000)",
+      "\tlibaom.so.3 => /usr/lib/libaom.so.3 (0x00007ff41bc00000)",
+      "\tlibpsl.so.5 => /usr/lib/libpsl.so.5 (0x00007ff41d509000)",
+      "\tlibzstd.so.1 => /usr/lib/libzstd.so.1 (0x00007ff41c481000)",
+      "\tlibgssapi_krb5.so.2 => /usr/lib/libgssapi_krb5.so.2 (0x00007ff41d4b1000)",
+      "\tlibnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x00007ff41d482000)",
+      "\tlibhidapi-hidraw.so.0 => /usr/lib/libhidapi-hidraw.so.0 (0x00007ff41d47a000)",
+      "\tlibevdev.so.2 => /usr/lib/libevdev.so.2 (0x00007ff41d463000)",
+      "\tlibtss2-esys.so.0 => /usr/lib/libtss2-esys.so.0 (0x00007ff41d16e000)",
+      "\tlibtss2-mu.so.0 => /usr/lib/libtss2-mu.so.0 (0x00007ff41d124000)",
+      "\tlibtss2-rc.so.0 => /usr/lib/libtss2-rc.so.0 (0x00007ff41d458000)",
+      "\tlibtss2-tctildr.so.0 => /usr/lib/libtss2-tctildr.so.0 (0x00007ff41d450000)",
+      "\tlibblkid.so.1 => /usr/lib/libblkid.so.1 (0x00007ff41cdb5000)",
+      "\tlibglycin-2.so.0 => /usr/lib/libglycin-2.so.0 (0x00007ff41b600000)",
+      "\tlibatspi.so.0 => /usr/lib/libatspi.so.0 (0x00007ff41cd70000)",
+      "\tlibdbus-1.so.3 => /usr/lib/libdbus-1.so.3 (0x00007ff41bba0000)",
+      "\tlibjson-glib-1.0.so.0 => /usr/lib/libjson-glib-1.0.so.0 (0x00007ff41cd43000)",
+      "\tlibdatrie.so.1 => /usr/lib/libdatrie.so.1 (0x00007ff41d445000)",
+      "\tlibXau.so.6 => /usr/lib/libXau.so.6 (0x00007ff41d43e000)",
+      "\tlibXdmcp.so.6 => /usr/lib/libXdmcp.so.6 (0x00007ff41d436000)",
+      "\tlibbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x00007ff41cd20000)",
+      "\tliblzma.so.5 => /usr/lib/liblzma.so.5 (0x00007ff41c44b000)",
+      "\tlibelf.so.1 => /usr/lib/libelf.so.1 (0x00007ff41c42c000)",
+      "\tlibGLdispatch.so.0 => /usr/lib/libGLdispatch.so.0 (0x00007ff41bb27000)",
+      "\tlibudev.so.1 => /usr/lib/libudev.so.1 (0x00007ff41bad7000)",
+      "\tlibunistring.so.5 => /usr/lib/libunistring.so.5 (0x00007ff41b408000)",
+      "\tlibidn2.so.0 => /usr/lib/libidn2.so.0 (0x00007ff41bab4000)",
+      "\tlibkrb5.so.3 => /usr/lib/libkrb5.so.3 (0x00007ff41b339000)",
+      "\tlibk5crypto.so.3 => /usr/lib/libk5crypto.so.3 (0x00007ff41b30b000)",
+      "\tlibcom_err.so.2 => /usr/lib/libcom_err.so.2 (0x00007ff41d42c000)",
+      "\tlibkrb5support.so.0 => /usr/lib/libkrb5support.so.0 (0x00007ff41baa5000)",
+      "\tlibkeyutils.so.1 => /usr/lib/libkeyutils.so.1 (0x00007ff41d11d000)",
+      "\tlibresolv.so.2 => /usr/lib/libresolv.so.2 (0x00007ff41b2f6000)",
+      "\tlibcrypto.so.4 => /usr/lib/libcrypto.so.4 (0x00007ff41ac00000)",
+      "\tlibtss2-sys.so.1 => /usr/lib/libtss2-sys.so.1 (0x00007ff41b2d4000)"
+    ],
+    "/usr/bin/bwrap": [
+      "\tlinux-vdso.so.1 (0x00007f9243d19000)",
+      "\tlibcap.so.2 => /usr/lib/libcap.so.2 (0x00007f9243cc3000)",
+      "\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x00007f9243c8d000)",
+      "\tlibc.so.6 => /usr/lib/libc.so.6 (0x00007f9243a00000)",
+      "\t/lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00007f9243d1b000)"
+    ],
+    "/usr/bin/xdg-dbus-proxy": [
+      "\tlinux-vdso.so.1 (0x00007f85ab600000)",
+      "\tlibglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x00007f85ab435000)",
+      "\tlibgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x00007f85ab200000)",
+      "\tlibgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x00007f85ab18c000)",
+      "\tlibgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x00007f85ab156000)",
+      "\tlibc.so.6 => /usr/lib/libc.so.6 (0x00007f85aae00000)",
+      "\tlibpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x00007f85ab086000)",
+      "\tlibgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x00007f85ab42c000)",
+      "\tlibz.so.1 => /usr/lib/libz.so.1 (0x00007f85ab04b000)",
+      "\tlibmount.so.1 => /usr/lib/libmount.so.1 (0x00007f85aad97000)",
+      "\tlibffi.so.8 => /usr/lib/libffi.so.8 (0x00007f85ab41d000)",
+      "\t/lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00007f85ab602000)",
+      "\tlibblkid.so.1 => /usr/lib/libblkid.so.1 (0x00007f85aad4c000)",
+      "\tlibsystemd.so.0 => /usr/lib/libsystemd.so.0 (0x00007f85aac02000)"
+    ]
+  },
+  "ELF_files": {
+    "/home/alberto/Desktop/LINTRA/lintra/spikes/tauri-runtime/src-tauri/target/debug/lintra-runtime-spike": {
+      "sha256": "c53fd4ba3d5c7a1409dd4a62a9fc2a5c46cdfd0f271e0159fe7bd0e1c71e6883",
+      "bytes": 21886344
+    },
+    "/usr/bin/bwrap": {
+      "sha256": "4933d8b8964d999ae09c02b5185f61e3e4ba028c9bae36eab891c2ac0db7f1fe",
+      "bytes": 88560
+    },
+    "/usr/bin/xdg-dbus-proxy": {
+      "sha256": "f48fbe21ad5461b94c610e2b3748c29bf6e8daaf55cd6d33cc0a8d3650ffb64c",
+      "bytes": 67856
+    },
+    "/usr/lib/ld-linux-x86-64.so.2": {
+      "sha256": "1129a22d25f14b37cbda329bc7bee8c8e9d3574dab916b75334ba265b5427f7d",
+      "bytes": 287736
+    },
+    "/usr/lib/libEGL.so.1.1.0": {
+      "sha256": "5abf75181cf85376893f8c3b0848e758cf1836f25b218eceb9ef8535c4c32ff3",
+      "bytes": 67536
+    },
+    "/usr/lib/libGLX.so.0.0.0": {
+      "sha256": "9b361c64b1e7460b50f7acafe982489fe333c6520a13875979aff098b76c6108",
+      "bytes": 137160
+    },
+    "/usr/lib/libGLdispatch.so.0.0.0": {
+      "sha256": "7ef043c911380ba37913da4529595fc33fb60a841e1f08e6357ba92ceba2e0ee",
+      "bytes": 460896
+    },
+    "/usr/lib/libSvtAv1Enc.so.4.2.0": {
+      "sha256": "92b041c19223ae93cb6c0e1d23610a88ce42a1b43dd031813f9729663e913807",
+      "bytes": 7208600
+    },
+    "/usr/lib/libX11-xcb.so.1.0.0": {
+      "sha256": "c6439e7173c2083e29897d0c053918912967896ac4b05cedf49bc376abfa1b9d",
+      "bytes": 13976
+    },
+    "/usr/lib/libX11.so.6.4.0": {
+      "sha256": "2dbbcfc654bbd07a445750f442e3ff2f353f4b000cac122124e245fe1426c015",
+      "bytes": 1558144
+    },
+    "/usr/lib/libXau.so.6.0.0": {
+      "sha256": "dcdf6cc1271692b80dc835094c7130797c34c1d5ea8b6b22d785091c7bb9c43a",
+      "bytes": 14232
+    },
+    "/usr/lib/libXcomposite.so.1.0.0": {
+      "sha256": "4eb917a20a2ba449f1aa4ce285d9032a799213678944ba96a0bad0aa8f6ded8c",
+      "bytes": 14208
+    },
+    "/usr/lib/libXcursor.so.1.0.2": {
+      "sha256": "de2b1b5beb7793e1962b6464e47497564c405580ec38f167fd850bfd892c058b",
+      "bytes": 55240
+    },
+    "/usr/lib/libXdamage.so.1.1.0": {
+      "sha256": "a6d338bddfd301ad47387353563f35a022df36bc204305942374927340aca39a",
+      "bytes": 14208
+    },
+    "/usr/lib/libXdmcp.so.6.0.0": {
+      "sha256": "3cd366d1d147a6336c6333159333c4688994b9694c82c376be64a7e9c212a947",
+      "bytes": 26488
+    },
+    "/usr/lib/libXext.so.6.4.0": {
+      "sha256": "4dd4d4c0c39715255ea98b3bd1ff5d3309f7a3d5ae19ac1ba4c18ad98cfe4995",
+      "bytes": 101504
+    },
+    "/usr/lib/libXfixes.so.3.1.0": {
+      "sha256": "bdd51f3c94624aea7195847327359fb5215a897f5b11e49e91539d694d2f1446",
+      "bytes": 30600
+    },
+    "/usr/lib/libXi.so.6.1.0": {
+      "sha256": "374dcd9acfa411ae3a710fd1fad9038ff9b8dd072b398f22b67f78b37a8a6e2f",
+      "bytes": 92216
+    },
+    "/usr/lib/libXinerama.so.1.0.0": {
+      "sha256": "d6a65978b81810cbe62bc6cdf4e5217121777dc79a39e7289ba387208c5de740",
+      "bytes": 14328
+    },
+    "/usr/lib/libXrandr.so.2.2.0": {
+      "sha256": "9c3b3251c2566f5f07dda940e6c1739cb6ef46776f8ff78a03b265c487ff7b6b",
+      "bytes": 55280
+    },
+    "/usr/lib/libXrender.so.1.3.0": {
+      "sha256": "23b2324cc32d596a06ab1f0fe0d0357acd1ac938203f04093370918a8f3238c4",
+      "bytes": 55440
+    },
+    "/usr/lib/libaom.so.3.15.3": {
+      "sha256": "d4d1fbb085006d06aa3dc63d6109481f234883ae4e9071cc04838d3f68138de2",
+      "bytes": 8478560
+    },
+    "/usr/lib/libatk-1.0.so.0.26210.1": {
+      "sha256": "fcb440bfd99d00dd2a0fd2031e4995084224fef348cdba38f86d1fbcf446d784",
+      "bytes": 161752
+    },
+    "/usr/lib/libatk-bridge-2.0.so.0.0.0": {
+      "sha256": "97ae7baa766c4ae91f78148791d00e47eb68bfcb7f5ce64f3f17f70a2119543f",
+      "bytes": 265032
+    },
+    "/usr/lib/libatomic.so.1.2.0": {
+      "sha256": "0162045b7557d9f513ed50e38ac2a1de46e8536c1217f13026d69051bd1242be",
+      "bytes": 34768
+    },
+    "/usr/lib/libatspi.so.0.0.1": {
+      "sha256": "3820aac1741007d73b99a4e022e30240d7e627c16ddb9f658a438ddd87d26f23",
+      "bytes": 280928
+    },
+    "/usr/lib/libavif.so.16.4.2": {
+      "sha256": "a942a6fe33a6806718dd22ae6ac247bc0af4c31b6fa2a35cfe383e4320229770",
+      "bytes": 350472
+    },
+    "/usr/lib/libblkid.so.1.1.0": {
+      "sha256": "4ec9fa3c66eef4c7aa424716eee06cdb4b33b51d4284b24761f4595c604d94cd",
+      "bytes": 301952
+    },
+    "/usr/lib/libbrotlicommon.so.1.2.1": {
+      "sha256": "55d0cda6a6c42b2664e8113528a932b508d498d295399bf6a92939be49a24338",
+      "bytes": 141264
+    },
+    "/usr/lib/libbrotlidec.so.1.2.1": {
+      "sha256": "869af0347030c2263fdb5bfb44eee76ae22879f8c17abfec2a4c3d24be269ea2",
+      "bytes": 59264
+    },
+    "/usr/lib/libbrotlienc.so.1.2.1": {
+      "sha256": "6142a5ebf3089d486eb2c7417538967be92843df82df0ca73a520ad49ff858ee",
+      "bytes": 1047008
+    },
+    "/usr/lib/libbz2.so.1.0.8": {
+      "sha256": "d40e715b956543b3ad4fb06a788e511d6584c360bc33a4686002a3f62659b06d",
+      "bytes": 78816
+    },
+    "/usr/lib/libc.so.6": {
+      "sha256": "08921ee0de2dd38d66c1d579056c1423f82fb2351882b08289a48d5a49939d80",
+      "bytes": 2375072
+    },
+    "/usr/lib/libcairo-gobject.so.2.11806.6": {
+      "sha256": "273f3481334ad46200e29744bc4b1253c5ece2d25e4a373a12c9b495034e8208",
+      "bytes": 34616
+    },
+    "/usr/lib/libcairo.so.2.11806.6": {
+      "sha256": "1bcf7cf73983de0f95907c5d0be7bd150c66c46c93643300499d6500e6eb88e4",
+      "bytes": 1784552
+    },
+    "/usr/lib/libcap.so.2.78": {
+      "sha256": "b52bd8780e77cca0adc97df56c921f59d0d070f7b46a9511807bf4b55ed895a4",
+      "bytes": 55352
+    },
+    "/usr/lib/libcloudproviders.so.0.4.2": {
+      "sha256": "ca9d9d4ddaae5df0c852ee147c7c124e693313b8a50a3de01fd6a3bfc69192a9",
+      "bytes": 96304
+    },
+    "/usr/lib/libcom_err.so.2.1": {
+      "sha256": "5a128f72ac306383408d3eed8cb13f013f3b2ea62552f230500ef2682a90de14",
+      "bytes": 18376
+    },
+    "/usr/lib/libcrypto.so.4": {
+      "sha256": "2d6cb0b466c46ac0f853e63c9473a582a17bc525f30a7beb6de187019187d746",
+      "bytes": 6011056
+    },
+    "/usr/lib/libdatrie.so.1.4.1": {
+      "sha256": "30f1793741d419385ea8c9fbedf84c0577d4dda65450279773a7cb0b6228f517",
+      "bytes": 30672
+    },
+    "/usr/lib/libdav1d.so.7.0.0": {
+      "sha256": "69f3ea86a2db8293295a2d2b0d46dc2e4fb9e449712936ef7d5afc663e473c81",
+      "bytes": 2123720
+    },
+    "/usr/lib/libdbus-1.so.3.38.3": {
+      "sha256": "b942f8537176cad3659bba46e198cc37bd3ab8c827d990ac5a42c8bbfffa1e56",
+      "bytes": 387256
+    },
+    "/usr/lib/libdrm.so.2.134.0": {
+      "sha256": "8d3b9dae427c5ec5d05d40934191243186c05e2e0725b29ddba88245da232a19",
+      "bytes": 100296
+    },
+    "/usr/lib/libdw-0.197.so": {
+      "sha256": "a89708a8f51ac2969c33cbb2f56a9209f18447a652b6f14ba84453476fa63c3e",
+      "bytes": 662568
+    },
+    "/usr/lib/libelf-0.197.so": {
+      "sha256": "1cff588f1129943c7391fab3e16d95eaa6586cf3c0483e7f95e50784f1389d94",
+      "bytes": 120920
+    },
+    "/usr/lib/libenchant-2.so.2.8.21": {
+      "sha256": "e27fd28580b661b5f8ead4b781e2a6b5b5a9e3853bd9c8a9d9acc007d73cea8a",
+      "bytes": 71632
+    },
+    "/usr/lib/libepoxy.so.0.0.0": {
+      "sha256": "23890ead1b5be3dddc7b7530f18c8baaf80383a0a126b277ff7aa2c59c5f22de",
+      "bytes": 1185392
+    },
+    "/usr/lib/libevdev.so.2.3.0": {
+      "sha256": "06b03cca7c08a47635f32ff9252506b3b29a9b55c51db964adfb3b669f4197c8",
+      "bytes": 88144
+    },
+    "/usr/lib/libexpat.so.1.13.1": {
+      "sha256": "664ded53832486dc3028a21f2d08766d04a23579c9a60c61869665d1e2376bf7",
+      "bytes": 227272
+    },
+    "/usr/lib/libffi.so.8.5.0": {
+      "sha256": "766d8819b2b66c3139718f51285e11679d3a03142cd2d1e0c4d3f5780bec5fe3",
+      "bytes": 55528
+    },
+    "/usr/lib/libfontconfig.so.1.17.0": {
+      "sha256": "00e06871d4085ddc70da33f95098324ebd2345c9006340b4af9e0e7fbb732f8f",
+      "bytes": 563160
+    },
+    "/usr/lib/libfreetype.so.6.20.7": {
+      "sha256": "17adb335bd909c15429bceb555e57655625f18acae2d909a5b4cea350923f2a8",
+      "bytes": 1288136
+    },
+    "/usr/lib/libfribidi.so.0.4.0": {
+      "sha256": "5f7fb2fa19991cb4ce10b18c44ba4770c4c634f7ff2a261426e6a8695028f7f2",
+      "bytes": 149560
+    },
+    "/usr/lib/libgbm.so.1.0.0": {
+      "sha256": "b1b0be61fa5c286cc349644046b65d0bb2805d743e0ddc68f50fb219ffb10501",
+      "bytes": 18312
+    },
+    "/usr/lib/libgcc_s.so.1": {
+      "sha256": "f0cb09ad25ba16848370f16086d1b5671962431ae2ea878e8eeb4c7bb35a56ed",
+      "bytes": 219376
+    },
+    "/usr/lib/libgcrypt.so.20.8.9": {
+      "sha256": "4193715ef2029ba616d19550ecd6ff146234ded68275c164ce28605ee790192c",
+      "bytes": 2406776
+    },
+    "/usr/lib/libgdk-3.so.0.2420.32": {
+      "sha256": "423036f1be23ea30c417d4f4e0bc0b93d3f04a93cf8907de9406b414441ea838",
+      "bytes": 1108264
+    },
+    "/usr/lib/libgdk_pixbuf-2.0.so.0.4400.8": {
+      "sha256": "433c4466122b7c7f1070518385cb7a961785929235b263634ebf0bc14053e51a",
+      "bytes": 351416
+    },
+    "/usr/lib/libgio-2.0.so.0.9000.1": {
+      "sha256": "2d564447264cfa86018f1091efedbc4a8c00f64761216c636fb57a43a86275f4",
+      "bytes": 2096096
+    },
+    "/usr/lib/libglib-2.0.so.0.9000.1": {
+      "sha256": "e3fbfd24c2b195b58b276a44b424011ef14ae76edd6dda36a288c4d552bf974c",
+      "bytes": 1605064
+    },
+    "/usr/lib/libglycin-2.so.0": {
+      "sha256": "9538afdc9f440fd94c50cab768a1a689b2e11850a6e22b038ad21f3be9a648c1",
+      "bytes": 4784096
+    },
+    "/usr/lib/libgmodule-2.0.so.0.9000.1": {
+      "sha256": "c01375857bf77f69d79c13a3dfe806fcaf2ddce8bf273d7a3a9b827a61e75cb2",
+      "bytes": 22464
+    },
+    "/usr/lib/libgobject-2.0.so.0.9000.1": {
+      "sha256": "0fa29e4191508afdee780d86afa42b0f8998b195ca4221c87adde032c737005a",
+      "bytes": 469088
+    },
+    "/usr/lib/libgpg-error.so.0.42.1": {
+      "sha256": "9eee334f0acb76e597813059562d49eae102770e9b2f93ed1e74e178649e8a37",
+      "bytes": 219320
+    },
+    "/usr/lib/libgraphite2.so.3.3.1": {
+      "sha256": "70eebd2fda11b867ebff5a8e3bdf272875acdde0851d258c98b3b046b01b4fc7",
+      "bytes": 137160
+    },
+    "/usr/lib/libgssapi_krb5.so.2.2": {
+      "sha256": "2ed8479f7a3dc219b9d362e5e2a40b54578a1272809e74e1cc1941dfcbe1b82e",
+      "bytes": 360736
+    },
+    "/usr/lib/libgstallocators-1.0.so.0.2809.0": {
+      "sha256": "fc2f3dc46940996c5daad7c0367f8fd21a79db4e8a0904beb1a217b22f836f8e",
+      "bytes": 34776
+    },
+    "/usr/lib/libgstapp-1.0.so.0.2809.0": {
+      "sha256": "87e6a09052acb39b47d0d5f45ad67dc321e8aa4aae604fb57523eda383b16cdb",
+      "bytes": 100520
+    },
+    "/usr/lib/libgstaudio-1.0.so.0.2809.0": {
+      "sha256": "c76b7d0b2ba102b49a48dedc9f1f9eb13c5dc52bd5c419c5646a9cf592235bea",
+      "bytes": 563584
+    },
+    "/usr/lib/libgstbase-1.0.so.0.2809.0": {
+      "sha256": "7b82c4c33d971cdee5a4c3234c5d4696821f8fedaa8efe9db2efc0ae3d6d023c",
+      "bytes": 550864
+    },
+    "/usr/lib/libgstfft-1.0.so.0.2809.0": {
+      "sha256": "5ad783d90efc11ff0353995e93a01048386eaa1253a6d04a38fdc2dc4dd610de",
+      "bytes": 42880
+    },
+    "/usr/lib/libgstgl-1.0.so.0.2809.0": {
+      "sha256": "dead750bb8720ade279b08976603822a3546ed500229c90e2365d6c32bc7b598",
+      "bytes": 614104
+    },
+    "/usr/lib/libgstpbutils-1.0.so.0.2809.0": {
+      "sha256": "8f709c5999f528341b5d6d9c2e58d4a5a59e3759e94f7eb07c16df91d5bbb9d5",
+      "bytes": 276600
+    },
+    "/usr/lib/libgstreamer-1.0.so.0.2809.0": {
+      "sha256": "ed3bf4a9a948afbc8e8d0a6e9d16e1aa8550ddd7ffac71005918cb7f3ec1ba11",
+      "bytes": 1514032
+    },
+    "/usr/lib/libgsttag-1.0.so.0.2809.0": {
+      "sha256": "11ccbe4a757f697272a02f463ac809682f7ee93b0c2a242db1bb00932b1099ff",
+      "bytes": 256104
+    },
+    "/usr/lib/libgstvideo-1.0.so.0.2809.0": {
+      "sha256": "286a8be97a1f9bf35de906c154ed5c3ecca402fac9370f5dc1362c35943b51ab",
+      "bytes": 903768
+    },
+    "/usr/lib/libgtk-3.so.0.2420.32": {
+      "sha256": "6c0530895ebb7eb6142bf705b7e7ac6f40e4d1435889144d2387c63fc7a0c61a",
+      "bytes": 8159832
+    },
+    "/usr/lib/libgudev-1.0.so.0.3.0": {
+      "sha256": "8aaba655dbd993d54bec163ca17a0e3eff23d3a1f7dca87a3407747722c5bcd5",
+      "bytes": 51240
+    },
+    "/usr/lib/libharfbuzz-icu.so.0.61510.0": {
+      "sha256": "5de246fe2c4e151300153b583c2bd0a5cd313465d4145a04d2876539d2179f4f",
+      "bytes": 14288
+    },
+    "/usr/lib/libharfbuzz.so.0.61510.0": {
+      "sha256": "3cf5dec32dc7858a1e4ec028d6a09b7c3148b529bc5abdffeb420ec71f2fb811",
+      "bytes": 1769616
+    },
+    "/usr/lib/libhidapi-hidraw.so.0.15.0": {
+      "sha256": "a96a1295c28845a2730231162c01d5bf80a6779190232d6178c3c45cbb8ecbeb",
+      "bytes": 26512
+    },
+    "/usr/lib/libhwy.so.1.4.0": {
+      "sha256": "adbb770a30102ba571c1d84d11d3de314af53d845cfab76268886117c78a8be8",
+      "bytes": 59432
+    },
+    "/usr/lib/libhyphen.so.0.4.1": {
+      "sha256": "dafe8fe5f1069906eae24a12e30adfd792003ae373c2423fbbc7b88aba17c4da",
+      "bytes": 38784
+    },
+    "/usr/lib/libicudata.so.78.3": {
+      "sha256": "d72003b08760852bee4c80cff32c1e6248ae6b1fda5bd313482733a4d5e70dc9",
+      "bytes": 33112920
+    },
+    "/usr/lib/libicui18n.so.78.3": {
+      "sha256": "d8ce240a923ed64ff5ce417d7d1012dfe83989036a43e7dd8f1b48566bb05169",
+      "bytes": 3992112
+    },
+    "/usr/lib/libicuuc.so.78.3": {
+      "sha256": "b231795a2d77d25a32937ca74d1f3ae92d8e417193130ff635efbcdca0cc0657",
+      "bytes": 2422832
+    },
+    "/usr/lib/libidn2.so.0.4.0": {
+      "sha256": "b4791d0658aabc7b586a2cb000b30af81bc85a15a65514b0cb0e47e2f36ffe03",
+      "bytes": 137160
+    },
+    "/usr/lib/libjavascriptcoregtk-4.1.so.0.11.9": {
+      "sha256": "9f840f926a4056a0e2828e14bdc026dfc96ef606e5c2cd4abea8ceb5c035bad3",
+      "bytes": 40606216
+    },
+    "/usr/lib/libjpeg.so.8.3.2": {
+      "sha256": "48fc7b690f980fc7c3401d6e532b8c80f25f6b7cf688997ab471e110a09f49ef",
+      "bytes": 686104
+    },
+    "/usr/lib/libjson-glib-1.0.so.0.1000.8": {
+      "sha256": "0ab2cb4b2478218d4f1c75ddc41a4f82fa6bf656a10a41a8df812b5d955f4cd0",
+      "bytes": 182304
+    },
+    "/usr/lib/libjxl.so.0.12.0": {
+      "sha256": "9e730ec02d91980ee9bd591b40d683faf573efd2d773b8dd398ce843b8c4c74f",
+      "bytes": 5732376
+    },
+    "/usr/lib/libjxl_cms.so.0.12.0": {
+      "sha256": "0dd90dd702352849ae9ad0f704f2abcac4050e6779fa47082fa9b23fe0050d27",
+      "bytes": 202696
+    },
+    "/usr/lib/libk5crypto.so.3.1": {
+      "sha256": "05e43f1ab830827afe46effb2c994436238a5dfc2935599f5eb609168c5083a2",
+      "bytes": 182320
+    },
+    "/usr/lib/libkeyutils.so.1.10": {
+      "sha256": "fdb5847174365e9330e7a117cdbcc8272da2824ff39a8d083893a8678865d2d9",
+      "bytes": 22480
+    },
+    "/usr/lib/libkrb5.so.3.3": {
+      "sha256": "c568bc0f0b96ec094a910475a8230d10a8b0bab3f2a50c3a0b9975ff8688ed0b",
+      "bytes": 845896
+    },
+    "/usr/lib/libkrb5support.so.0.1": {
+      "sha256": "85c806c05f4b5784f59cbc5977e26ebf5bf3b0ef89c1f3c1b95762b427f8ed79",
+      "bytes": 55544
+    },
+    "/usr/lib/liblcms2.so.2.0.20": {
+      "sha256": "73bd656a5dfe51d18ff06e7afb04fdc7bf154145939c96031234b504c0b92e3b",
+      "bytes": 599136
+    },
+    "/usr/lib/liblzma.so.5.8.4": {
+      "sha256": "d573e6e8861680ec927303a2e632b94b93cdc3402ab8ac37279224ba18fa99d3",
+      "bytes": 219344
+    },
+    "/usr/lib/libm.so.6": {
+      "sha256": "250c68a9199cd23823a3df545ef53ee57907081bf7e345a80c95c497eae0295f",
+      "bytes": 1075616
+    },
+    "/usr/lib/libmanette-0.2.so.0": {
+      "sha256": "83e5b219dd07ff77d842c809bbac7e414be276deb5162d377e859d6bfb70ed4c",
+      "bytes": 334008
+    },
+    "/usr/lib/libmount.so.1.1.0": {
+      "sha256": "bf81b6268827320f1b0fcd8fb5b74bb11f85e4e4252aca4f5c1933ff27f792ac",
+      "bytes": 428656
+    },
+    "/usr/lib/libnghttp2.so.14.30.0": {
+      "sha256": "b79d1c975b617279b3b58f6fc88e55efbeb219f635bfbc983178449c1221c26c",
+      "bytes": 186408
+    },
+    "/usr/lib/liborc-0.4.so.0.44.0": {
+      "sha256": "5e77dfec77e46a992784c3210d2b5cbc72108ab30be0b6f28655dea1370114d4",
+      "bytes": 1474040
+    },
+    "/usr/lib/libpango-1.0.so.0.5800.2": {
+      "sha256": "86d421bba6a1ad6160d723471a25928e0315b41b4cfd2b83eb51fd334ddeafbc",
+      "bytes": 511752
+    },
+    "/usr/lib/libpangocairo-1.0.so.0.5800.2": {
+      "sha256": "7886b6caf5cd7280d7b6bf672394dc47dd1a82711c93905fb61cc24499d3f8de",
+      "bytes": 71688
+    },
+    "/usr/lib/libpangoft2-1.0.so.0.5800.2": {
+      "sha256": "37911ce26273a9ba55b5bd7a231fa878186f7b0479725d2ddf5f4d48f4b58457",
+      "bytes": 128984
+    },
+    "/usr/lib/libpcre2-8.so.0.16.1": {
+      "sha256": "0b934560fd866dd480672cc37f4ffeea4769d142faab7bce63aab76b63a2628b",
+      "bytes": 846128
+    },
+    "/usr/lib/libpixman-1.so.0.46.4": {
+      "sha256": "3bb23a4fcb60907c718db8fa9b812fe1683db567e8bb55f37056935a825380a8",
+      "bytes": 1337392
+    },
+    "/usr/lib/libpng16.so.16.59.0": {
+      "sha256": "2d5704a16c9a6ed379076f1aee8478af4fce802bd1bcc48d633ff57f9f209c55",
+      "bytes": 354328
+    },
+    "/usr/lib/libpsl.so.5.3.5": {
+      "sha256": "b5189c9a4b32b15f0bb1bab989069acd2d0dc89723b990266ad5566cd16f1924",
+      "bytes": 75640
+    },
+    "/usr/lib/librav1e.so.0.8.1": {
+      "sha256": "7d1be8a0e4e045ca06c60bd7ed8693fc7a6d77220af301177da11fd5d460b9f3",
+      "bytes": 3235608
+    },
+    "/usr/lib/libresolv.so.2": {
+      "sha256": "ba83f2dccc327507ec500c90779f1d5526d3a9bf1b5a3526e511a634f50fed8e",
+      "bytes": 76096
+    },
+    "/usr/lib/libseccomp.so.2.6.0": {
+      "sha256": "7cb971c30c6e854dedffe8b74f7548ed8f7b0f2e03233cd00f61f76a334dc5c3",
+      "bytes": 182288
+    },
+    "/usr/lib/libsecret-1.so.0.0.0": {
+      "sha256": "99a715888715fa5676c1454aeebe3dfff7fd67c8076dc6007e5f40557d4157c3",
+      "bytes": 317472
+    },
+    "/usr/lib/libsharpyuv.so.0.1.2": {
+      "sha256": "4a571cfcf0ba1c922a6b9560da9dc1eb08bc39926871655eeca11d1be4896c11",
+      "bytes": 38800
+    },
+    "/usr/lib/libsoup-3.0.so.0.8.1": {
+      "sha256": "85ccf29ebc4ced52ca5b5741465f2fa1fdc1e36f476c970cf6a2253b1ec1dba8",
+      "bytes": 748120
+    },
+    "/usr/lib/libsqlite3.so.3.54.0": {
+      "sha256": "ca620f062ad1588603b72f796b148279c53ba53d2eaded9399e48a4ede52f3d9",
+      "bytes": 1705656
+    },
+    "/usr/lib/libstdc++.so.6.0.36": {
+      "sha256": "8fa09826e4c4d357a956eb7268e5af77750280f777d57eeea6789e87ec4b8842",
+      "bytes": 3312664
+    },
+    "/usr/lib/libsystemd.so.0.45.0": {
+      "sha256": "c003be7361666431b78a72c73d00a43794a0921326151b6dff20bbb688a3e892",
+      "bytes": 1345056
+    },
+    "/usr/lib/libtasn1.so.6.6.5": {
+      "sha256": "6c7f67f1efa236c31a8c3f52870032da60394a4c9e71d5db65e896c852bbad1c",
+      "bytes": 104472
+    },
+    "/usr/lib/libthai.so.0.3.2": {
+      "sha256": "342b5fc194cea5e0bb94fcb9418b6cd546d7e8a1cc828b8736e096d3d164c918",
+      "bytes": 48192
+    },
+    "/usr/lib/libtinysparql-3.0.so.0.1200.0": {
+      "sha256": "b61583dcc2306fd29b3e40ccfe9414d09e69b977b767f21480d9f13b45e02452",
+      "bytes": 875792
+    },
+    "/usr/lib/libtss2-esys.so.0.0.1": {
+      "sha256": "087f8f7f6d8867c5fb0a66cdab058f160684ec445b75196860ff554bf3dd5145",
+      "bytes": 592528
+    },
+    "/usr/lib/libtss2-mu.so.0.0.1": {
+      "sha256": "7177279731d198bcee19279fd9ed0cceeb66046dc4494597dd73c515abeb2f9d",
+      "bytes": 301032
+    },
+    "/usr/lib/libtss2-rc.so.0.0.0": {
+      "sha256": "bdc516e31991125be2cde20e72df9ae123856fd42f5e4a6e08b5890a39d1f36b",
+      "bytes": 31752
+    },
+    "/usr/lib/libtss2-sys.so.1.0.1": {
+      "sha256": "968ce00276e196c68410625d30b775f00cd31dd88c8f03d791d70b6b19625b51",
+      "bytes": 137168
+    },
+    "/usr/lib/libtss2-tctildr.so.0.0.0": {
+      "sha256": "5acdfe9a5929827dc977a684a55c60bb5dae0f3196d21ee426845b374fef6e66",
+      "bytes": 26768
+    },
+    "/usr/lib/libudev.so.1.7.15": {
+      "sha256": "d48847d3f84674e7ee57c44b9a8e02c781b5160bb1e906003405a2e1a26fc09f",
+      "bytes": 326752
+    },
+    "/usr/lib/libunistring.so.5.2.1": {
+      "sha256": "bee1a3d3f2af54de2c2178d91aa95b65fe4c4cce09553efc7da4ac267697016f",
+      "bytes": 2062384
+    },
+    "/usr/lib/libunwind.so.8.2.0": {
+      "sha256": "3299d58655d922144615de443dbd0657cd48fd09fe8f9c7c67d5aea3b53d690f",
+      "bytes": 79768
+    },
+    "/usr/lib/libwayland-client.so.0.26.0": {
+      "sha256": "dead8e45b2e2b0999d5dbc99930e64d12bad9c65cbfd59352bad95c0f3c7543f",
+      "bytes": 64264
+    },
+    "/usr/lib/libwayland-cursor.so.0.26.0": {
+      "sha256": "b4f838c0db4c4a3d93915e68b1ea80704e92bb57851c172afef8164095de91c4",
+      "bytes": 31200
+    },
+    "/usr/lib/libwayland-egl.so.1.26.0": {
+      "sha256": "2fe12fb7c0442ecef124c82efe3a6d93184769275995780a70d85816f4a1e164",
+      "bytes": 14136
+    },
+    "/usr/lib/libwayland-server.so.0.26.0": {
+      "sha256": "3e4f161283e73f6ab7e39ed1bfc947c063af085f7cff08ba2ced9d68d9a1398e",
+      "bytes": 92968
+    },
+    "/usr/lib/libwebkit2gtk-4.1.so.0.24.5": {
+      "sha256": "8b395564715e229c38ac83df47e0def9368f01acff9d438930decef3024c2258",
+      "bytes": 98572496
+    },
+    "/usr/lib/libwebp.so.7.2.0": {
+      "sha256": "17bd6ebbb971044ca7c0c4fc3f2429a8439f4270a1d6844644706b335617face",
+      "bytes": 845968
+    },
+    "/usr/lib/libwebpdemux.so.2.0.17": {
+      "sha256": "1501884d122f3b18792092bf2728d4c9160d32f2d0108094f6bd549d5c9cf9ea",
+      "bytes": 22480
+    },
+    "/usr/lib/libwebpmux.so.3.1.2": {
+      "sha256": "e10afee171caf2040544b6aa8ea329490d12d7f5acd9d4cb632334254f9f3245",
+      "bytes": 51072
+    },
+    "/usr/lib/libxcb-render.so.0.0.0": {
+      "sha256": "78f07d67ced87e0a111540fad300c04157bccf9d658329145d611b981a86943e",
+      "bytes": 63464
+    },
+    "/usr/lib/libxcb-shm.so.0.0.0": {
+      "sha256": "1307d234f395bfb54a18aade9478dace36a7e7f4e73353b77ce72af82875b763",
+      "bytes": 14304
+    },
+    "/usr/lib/libxcb.so.1.1.0": {
+      "sha256": "0590133244ae0c33b099290c3e47c9001b5f126ab7dc92160ef8f839172f09ab",
+      "bytes": 178176
+    },
+    "/usr/lib/libxkbcommon.so.0.13.2": {
+      "sha256": "58ab112982c56fa07abc22b4911298f53d1de95da8f9914487c88aa8bd3b7b93",
+      "bytes": 444584
+    },
+    "/usr/lib/libxml2.so.16.1.4": {
+      "sha256": "ca087e3074425b3e1337d1b8d34850e069988a6a4a2c5ff59d5da4be1521cd3c",
+      "bytes": 1579976
+    },
+    "/usr/lib/libxslt.so.1.1.45": {
+      "sha256": "595a636dfd84dbcbde1b078ac250ae212a5409af1ddd5ecb2de7bb39bd7a5aaa",
+      "bytes": 264288
+    },
+    "/usr/lib/libyuv.so": {
+      "sha256": "4a79ea22a4cf2f9fcd9c059a3210e2faadbe6886145a39ab9f32e8d3b6375d13",
+      "bytes": 1267664
+    },
+    "/usr/lib/libz.so.1.3.1.zlib-ng": {
+      "sha256": "9dccf7a4f50240f899e1072cdbc758ea1ef15afe537385b3807d5774040e25dc",
+      "bytes": 235680
+    },
+    "/usr/lib/libzstd.so.1.5.7": {
+      "sha256": "2cc7cb566ed6d92f698a9aa777ef9510acc5a607593c439d8ee2db93b393b6f9",
+      "bytes": 1566664
+    },
+    "/usr/lib/webkit2gtk-4.1/WebKitGPUProcess": {
+      "sha256": "4314c19ebe435e62c823c175d73b3e286f551215985a10a3affa08671ba39153",
+      "bytes": 4560
+    },
+    "/usr/lib/webkit2gtk-4.1/WebKitNetworkProcess": {
+      "sha256": "cced4a812c463efb6796e42526221d1057eea54f465092f863ec0cc1c008e061",
+      "bytes": 4552
+    },
+    "/usr/lib/webkit2gtk-4.1/WebKitWebProcess": {
+      "sha256": "365ffb0322335e55761ce968fe4a15b9caaa10752d9878ff3848028744205ab7",
+      "bytes": 4552
+    },
+    "/usr/lib/webkit2gtk-4.1/injected-bundle/libwebkit2gtkinjectedbundle.so": {
+      "sha256": "536f0d1fdf916f20d00b64598b8f8fe7df0804e932c27cdd4baae85358f43de5",
+      "bytes": 4792
+    }
+  },
+  "owning_OS_packages": {
+    "aom": {
+      "version": "3.15.3-1.1",
+      "licenses_as_reported_by_OS": "BSD-3-Clause"
+    },
+    "at-spi2-core": {
+      "version": "2.62.1-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "brotli": {
+      "version": "1.2.1-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "bubblewrap": {
+      "version": "0.13.1-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "bzip2": {
+      "version": "1.0.8-6.1",
+      "licenses_as_reported_by_OS": "BSD"
+    },
+    "cairo": {
+      "version": "1.18.6-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-only OR MPL-1.1"
+    },
+    "dav1d": {
+      "version": "1.5.4-1.1",
+      "licenses_as_reported_by_OS": "BSD-2-Clause"
+    },
+    "dbus": {
+      "version": "1.16.2-2.1",
+      "licenses_as_reported_by_OS": "AFL-2.1 OR GPL-2.0-or-later"
+    },
+    "e2fsprogs": {
+      "version": "1.47.4-1.1",
+      "licenses_as_reported_by_OS": "GPL  LGPL  MIT"
+    },
+    "enchant": {
+      "version": "2.8.21-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "expat": {
+      "version": "2.10.0-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "fontconfig": {
+      "version": "2:2.18.3-2.1",
+      "licenses_as_reported_by_OS": "HPND AND Unicode-DFS-2016"
+    },
+    "freetype2": {
+      "version": "2.15.0-1.1",
+      "licenses_as_reported_by_OS": "FTL OR GPL-2.0-or-later"
+    },
+    "fribidi": {
+      "version": "1.0.18-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "gdk-pixbuf2": {
+      "version": "2.44.8-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.0-or-later"
+    },
+    "glib2": {
+      "version": "2.90.1-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "glibc": {
+      "version": "2.44+r50+g1848099f063e-2",
+      "licenses_as_reported_by_OS": "GPL-2.0-or-later  LGPL-2.1-or-later"
+    },
+    "glycin": {
+      "version": "2.2.6-1.1",
+      "licenses_as_reported_by_OS": "MPL-2.0 OR LGPL-2.1-or-later"
+    },
+    "graphite": {
+      "version": "1:1.3.15-1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later OR MPL-2.0 OR GPL-2.0-or-later"
+    },
+    "gst-plugins-base-libs": {
+      "version": "1.28.9-1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "gstreamer": {
+      "version": "1.28.9-1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "gtk3": {
+      "version": "1:3.24.52-2.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "harfbuzz": {
+      "version": "15.1.0-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "harfbuzz-icu": {
+      "version": "15.1.0-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "hidapi": {
+      "version": "0.15.0-1.1",
+      "licenses_as_reported_by_OS": "GPL3  BSD  custom"
+    },
+    "highway": {
+      "version": "1.4.0-1.1",
+      "licenses_as_reported_by_OS": "Apache-2.0 OR BSD-3-Clause"
+    },
+    "hyphen": {
+      "version": "2.8.10-1.1",
+      "licenses_as_reported_by_OS": "GPL-2.0-only OR LGPL-2.1-or-later OR MPL-1.1"
+    },
+    "icu": {
+      "version": "78.3-1.1",
+      "licenses_as_reported_by_OS": "LicenseRef-Unicode-3.0  BSD-2-Clause  BSD-3-Clause  NAIST-2003"
+    },
+    "json-glib": {
+      "version": "1.10.8-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "keyutils": {
+      "version": "1.6.3-4.1",
+      "licenses_as_reported_by_OS": "GPL-2.0-or-later  LGPL-2.1-or-later"
+    },
+    "krb5": {
+      "version": "1.22.2-2",
+      "licenses_as_reported_by_OS": "custom"
+    },
+    "lcms2": {
+      "version": "2.20-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "libatomic": {
+      "version": "16.2.1+r23+gd564253eb6c8-3",
+      "licenses_as_reported_by_OS": "GPL-3.0-or-later WITH GCC-exception-3.1  GFDL-1.3-or-later"
+    },
+    "libavif": {
+      "version": "1.4.2-1.1",
+      "licenses_as_reported_by_OS": "LicenseRef-libavif"
+    },
+    "libcap": {
+      "version": "2.78-1.1",
+      "licenses_as_reported_by_OS": "BSD-3-Clause OR GPL-2.0-only"
+    },
+    "libcloudproviders": {
+      "version": "0.4.2-1.1",
+      "licenses_as_reported_by_OS": "LGPL-3.0-or-later"
+    },
+    "libdatrie": {
+      "version": "0.2.14-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "libdrm": {
+      "version": "2.4.134-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "libelf": {
+      "version": "0.197-1",
+      "licenses_as_reported_by_OS": "GPL-2.0-or-later OR LGPL-3.0-or-later"
+    },
+    "libepoxy": {
+      "version": "1.5.10-3.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "libevdev": {
+      "version": "1.14.0-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "libffi": {
+      "version": "3.8.0-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "libgcc": {
+      "version": "16.2.1+r23+gd564253eb6c8-3",
+      "licenses_as_reported_by_OS": "GPL-3.0-or-later WITH GCC-exception-3.1  GFDL-1.3-or-later"
+    },
+    "libgcrypt": {
+      "version": "1.12.4-1.1",
+      "licenses_as_reported_by_OS": "BSD-3-Clause  BSD-3-Clause OR GPL-2.0-only  GPL-2.0-or-later  LGPL-2.0-or-later  LGPL-2.1-or-later  X11  LicenseRef-scancode-public-domain  LicenseRef-OCB1"
+    },
+    "libglvnd": {
+      "version": "1.7.0-3.1",
+      "licenses_as_reported_by_OS": "custom:BSD-like"
+    },
+    "libgpg-error": {
+      "version": "1.61-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later  BSD-3-Clause OR LGPL-2.1-or-later  FSFULLR  GPL-2.0-or-later"
+    },
+    "libgudev": {
+      "version": "238-4.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "libidn2": {
+      "version": "2.3.8-1.1",
+      "licenses_as_reported_by_OS": "GPL2  LGPL3"
+    },
+    "libjpeg-turbo": {
+      "version": "3.2.1-1",
+      "licenses_as_reported_by_OS": "BSD-3-Clause  IJG"
+    },
+    "libjxl": {
+      "version": "0.12.0-1.1",
+      "licenses_as_reported_by_OS": "BSD-3-Clause"
+    },
+    "libmanette": {
+      "version": "0.2.13-2.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "libnghttp2": {
+      "version": "1.71.0-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "libpng": {
+      "version": "1.6.59-1.1",
+      "licenses_as_reported_by_OS": "libpng-2.0"
+    },
+    "libpsl": {
+      "version": "0.21.5-2",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "libseccomp": {
+      "version": "2.6.0-1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-only"
+    },
+    "libsecret": {
+      "version": "0.21.8.2-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "libsoup3": {
+      "version": "3.8.1-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.0-or-later"
+    },
+    "libstdc++": {
+      "version": "16.2.1+r23+gd564253eb6c8-3",
+      "licenses_as_reported_by_OS": "GPL-3.0-or-later WITH GCC-exception-3.1  GFDL-1.3-or-later"
+    },
+    "libtasn1": {
+      "version": "4.21.0-1.1",
+      "licenses_as_reported_by_OS": "GPL-3.0-or-later  LGPL-2.1-or-later  GFDL-1.3-or-later"
+    },
+    "libthai": {
+      "version": "0.1.30-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "libunistring": {
+      "version": "1.4.2-1.1",
+      "licenses_as_reported_by_OS": "GPL-2.0-or-later  LGPL-3.0-or-later"
+    },
+    "libunwind": {
+      "version": "1.8.3-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "libwebp": {
+      "version": "1.6.0-2.1",
+      "licenses_as_reported_by_OS": "BSD-3-Clause"
+    },
+    "libx11": {
+      "version": "1.8.14-1.1",
+      "licenses_as_reported_by_OS": "MIT AND X11"
+    },
+    "libxau": {
+      "version": "1.0.12-1.1",
+      "licenses_as_reported_by_OS": "MIT-open-group"
+    },
+    "libxcb": {
+      "version": "1.17.0-1.2",
+      "licenses_as_reported_by_OS": "X11"
+    },
+    "libxcomposite": {
+      "version": "0.4.7-1.1",
+      "licenses_as_reported_by_OS": "MIT  HPND-sell-variant"
+    },
+    "libxcursor": {
+      "version": "1.2.3-1.1",
+      "licenses_as_reported_by_OS": "HPND-sell-variant"
+    },
+    "libxdamage": {
+      "version": "1.1.7-1.1",
+      "licenses_as_reported_by_OS": "HPND-sell-variant"
+    },
+    "libxdmcp": {
+      "version": "1.1.5-2.1",
+      "licenses_as_reported_by_OS": "MIT-open-group"
+    },
+    "libxext": {
+      "version": "1.3.7-1.1",
+      "licenses_as_reported_by_OS": "LicenseRef-libxext"
+    },
+    "libxfixes": {
+      "version": "6.0.2-1.1",
+      "licenses_as_reported_by_OS": "MIT  HPND-sell-variant"
+    },
+    "libxi": {
+      "version": "1.8.4-1.1",
+      "licenses_as_reported_by_OS": "MIT-open-group  SMLNJ  MIT"
+    },
+    "libxinerama": {
+      "version": "1.1.6-1.1",
+      "licenses_as_reported_by_OS": "MIT  MIT-open-group  X11"
+    },
+    "libxkbcommon": {
+      "version": "1.13.2-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "libxml2": {
+      "version": "2.15.4-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "libxrandr": {
+      "version": "1.5.5-1.1",
+      "licenses_as_reported_by_OS": "HPND-sell-variant"
+    },
+    "libxrender": {
+      "version": "0.9.13-1.1",
+      "licenses_as_reported_by_OS": "HPND-sell-variant"
+    },
+    "libxslt": {
+      "version": "1.1.45-2.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "libyuv": {
+      "version": "r2921+644251f25-1.1",
+      "licenses_as_reported_by_OS": "custom"
+    },
+    "mesa": {
+      "version": "3:26.2.6-1",
+      "licenses_as_reported_by_OS": "MIT AND BSD-3-Clause AND SGI-B-2.0"
+    },
+    "openssl": {
+      "version": "4.1.0-1",
+      "licenses_as_reported_by_OS": "Apache-2.0"
+    },
+    "orc": {
+      "version": "0.4.44-1.1",
+      "licenses_as_reported_by_OS": "BSD-3-Clause"
+    },
+    "pango": {
+      "version": "1:1.58.2-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.0-or-later"
+    },
+    "pcre2": {
+      "version": "10.49-1.1",
+      "licenses_as_reported_by_OS": "BSD-2-Clause  BSD-3-Clause WITH PCRE2-exception"
+    },
+    "pixman": {
+      "version": "0.46.4-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "rav1e": {
+      "version": "0.8.1-3.1",
+      "licenses_as_reported_by_OS": "BSD-2-Clause"
+    },
+    "sqlite": {
+      "version": "3.54.0-1",
+      "licenses_as_reported_by_OS": "LicenseRef-Sqlite"
+    },
+    "svt-av1": {
+      "version": "4.2.0-1",
+      "licenses_as_reported_by_OS": "BSD  custom: Alliance for Open Media Patent License 1.0"
+    },
+    "systemd-libs": {
+      "version": "262.2-1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later  CC0-1.0  GPL-2.0-or-later WITH Linux-syscall-note"
+    },
+    "tinysparql": {
+      "version": "3.12.0-1",
+      "licenses_as_reported_by_OS": "GPL-2.0-or-later"
+    },
+    "tpm2-tss": {
+      "version": "4.2.1-2",
+      "licenses_as_reported_by_OS": "BSD-2-Clause"
+    },
+    "util-linux-libs": {
+      "version": "2.42.4-1.1",
+      "licenses_as_reported_by_OS": "BSD-2-Clause  BSD-3-Clause  BSD-4-Clause-UC  GPL-2.0-only  GPL-2.0-or-later  GPL-3.0-or-later  ISC  LGPL-2.1-or-later  LicenseRef-PublicDomain"
+    },
+    "wayland": {
+      "version": "1.26.0-1.1",
+      "licenses_as_reported_by_OS": "MIT"
+    },
+    "webkit2gtk-4.1": {
+      "version": "2.54.2-1",
+      "licenses_as_reported_by_OS": "AFL-2.0 OR GPL-2.0-or-later  Apache-2.0  Apache-2.0 WITH LLVM-exception  BSD-2-Clause  BSD-2-Clause-Views  BSD-3-Clause  BSD-Source-Code  BSL-1.0  bzip2-1.0.6  GPL-2.0-only  GPL-3.0-only WITH Autoconf-exception-3.0  GPL-3.0-or-later WITH Bison-exception-2.2  ICU  ISC  LGPL-2.1-only  LGPL-2.1-or-later  MIT  MPL-1.1  MPL-2.0  NCSA  NCSA OR MIT  OFL-1.1  SunPro  Unicode-TOU"
+    },
+    "xdg-dbus-proxy": {
+      "version": "0.1.9-1.1",
+      "licenses_as_reported_by_OS": "LGPL-2.1-or-later"
+    },
+    "xz": {
+      "version": "5.8.4-2",
+      "licenses_as_reported_by_OS": "GPL  LGPL  custom"
+    },
+    "zlib-ng-compat": {
+      "version": "2.3.3-2",
+      "licenses_as_reported_by_OS": "Zlib"
+    },
+    "zstd": {
+      "version": "1.5.7-4",
+      "licenses_as_reported_by_OS": "BSD-3-Clause  GPL-2.0-only"
+    }
+  },
+  "ownership_evidence": [
+    "/usr/bin/bwrap is owned by bubblewrap 0.13.1-1.1",
+    "/usr/bin/xdg-dbus-proxy is owned by xdg-dbus-proxy 0.1.9-1.1",
+    "/usr/lib/ld-linux-x86-64.so.2 is owned by glibc 2.44+r50+g1848099f063e-2",
+    "/usr/lib/libEGL.so.1.1.0 is owned by libglvnd 1.7.0-3.1",
+    "/usr/lib/libGLX.so.0.0.0 is owned by libglvnd 1.7.0-3.1",
+    "/usr/lib/libGLdispatch.so.0.0.0 is owned by libglvnd 1.7.0-3.1",
+    "/usr/lib/libSvtAv1Enc.so.4.2.0 is owned by svt-av1 4.2.0-1",
+    "/usr/lib/libX11-xcb.so.1.0.0 is owned by libx11 1.8.14-1.1",
+    "/usr/lib/libX11.so.6.4.0 is owned by libx11 1.8.14-1.1",
+    "/usr/lib/libXau.so.6.0.0 is owned by libxau 1.0.12-1.1",
+    "/usr/lib/libXcomposite.so.1.0.0 is owned by libxcomposite 0.4.7-1.1",
+    "/usr/lib/libXcursor.so.1.0.2 is owned by libxcursor 1.2.3-1.1",
+    "/usr/lib/libXdamage.so.1.1.0 is owned by libxdamage 1.1.7-1.1",
+    "/usr/lib/libXdmcp.so.6.0.0 is owned by libxdmcp 1.1.5-2.1",
+    "/usr/lib/libXext.so.6.4.0 is owned by libxext 1.3.7-1.1",
+    "/usr/lib/libXfixes.so.3.1.0 is owned by libxfixes 6.0.2-1.1",
+    "/usr/lib/libXi.so.6.1.0 is owned by libxi 1.8.4-1.1",
+    "/usr/lib/libXinerama.so.1.0.0 is owned by libxinerama 1.1.6-1.1",
+    "/usr/lib/libXrandr.so.2.2.0 is owned by libxrandr 1.5.5-1.1",
+    "/usr/lib/libXrender.so.1.3.0 is owned by libxrender 0.9.13-1.1",
+    "/usr/lib/libaom.so.3.15.3 is owned by aom 3.15.3-1.1",
+    "/usr/lib/libatk-1.0.so.0.26210.1 is owned by at-spi2-core 2.62.1-1.1",
+    "/usr/lib/libatk-bridge-2.0.so.0.0.0 is owned by at-spi2-core 2.62.1-1.1",
+    "/usr/lib/libatomic.so.1.2.0 is owned by libatomic 16.2.1+r23+gd564253eb6c8-3",
+    "/usr/lib/libatspi.so.0.0.1 is owned by at-spi2-core 2.62.1-1.1",
+    "/usr/lib/libavif.so.16.4.2 is owned by libavif 1.4.2-1.1",
+    "/usr/lib/libblkid.so.1.1.0 is owned by util-linux-libs 2.42.4-1.1",
+    "/usr/lib/libbrotlicommon.so.1.2.1 is owned by brotli 1.2.1-1.1",
+    "/usr/lib/libbrotlidec.so.1.2.1 is owned by brotli 1.2.1-1.1",
+    "/usr/lib/libbrotlienc.so.1.2.1 is owned by brotli 1.2.1-1.1",
+    "/usr/lib/libbz2.so.1.0.8 is owned by bzip2 1.0.8-6.1",
+    "/usr/lib/libc.so.6 is owned by glibc 2.44+r50+g1848099f063e-2",
+    "/usr/lib/libcairo-gobject.so.2.11806.6 is owned by cairo 1.18.6-1.1",
+    "/usr/lib/libcairo.so.2.11806.6 is owned by cairo 1.18.6-1.1",
+    "/usr/lib/libcap.so.2.78 is owned by libcap 2.78-1.1",
+    "/usr/lib/libcloudproviders.so.0.4.2 is owned by libcloudproviders 0.4.2-1.1",
+    "/usr/lib/libcom_err.so.2.1 is owned by e2fsprogs 1.47.4-1.1",
+    "/usr/lib/libcrypto.so.4 is owned by openssl 4.1.0-1",
+    "/usr/lib/libdatrie.so.1.4.1 is owned by libdatrie 0.2.14-1.1",
+    "/usr/lib/libdav1d.so.7.0.0 is owned by dav1d 1.5.4-1.1",
+    "/usr/lib/libdbus-1.so.3.38.3 is owned by dbus 1.16.2-2.1",
+    "/usr/lib/libdrm.so.2.134.0 is owned by libdrm 2.4.134-1.1",
+    "/usr/lib/libdw-0.197.so is owned by libelf 0.197-1",
+    "/usr/lib/libelf-0.197.so is owned by libelf 0.197-1",
+    "/usr/lib/libenchant-2.so.2.8.21 is owned by enchant 2.8.21-1.1",
+    "/usr/lib/libepoxy.so.0.0.0 is owned by libepoxy 1.5.10-3.1",
+    "/usr/lib/libevdev.so.2.3.0 is owned by libevdev 1.14.0-1.1",
+    "/usr/lib/libexpat.so.1.13.1 is owned by expat 2.10.0-1.1",
+    "/usr/lib/libffi.so.8.5.0 is owned by libffi 3.8.0-1.1",
+    "/usr/lib/libfontconfig.so.1.17.0 is owned by fontconfig 2:2.18.3-2.1",
+    "/usr/lib/libfreetype.so.6.20.7 is owned by freetype2 2.15.0-1.1",
+    "/usr/lib/libfribidi.so.0.4.0 is owned by fribidi 1.0.18-1.1",
+    "/usr/lib/libgbm.so.1.0.0 is owned by mesa 3:26.2.6-1",
+    "/usr/lib/libgcc_s.so.1 is owned by libgcc 16.2.1+r23+gd564253eb6c8-3",
+    "/usr/lib/libgcrypt.so.20.8.9 is owned by libgcrypt 1.12.4-1.1",
+    "/usr/lib/libgdk-3.so.0.2420.32 is owned by gtk3 1:3.24.52-2.1",
+    "/usr/lib/libgdk_pixbuf-2.0.so.0.4400.8 is owned by gdk-pixbuf2 2.44.8-1.1",
+    "/usr/lib/libgio-2.0.so.0.9000.1 is owned by glib2 2.90.1-1.1",
+    "/usr/lib/libglib-2.0.so.0.9000.1 is owned by glib2 2.90.1-1.1",
+    "/usr/lib/libglycin-2.so.0 is owned by glycin 2.2.6-1.1",
+    "/usr/lib/libgmodule-2.0.so.0.9000.1 is owned by glib2 2.90.1-1.1",
+    "/usr/lib/libgobject-2.0.so.0.9000.1 is owned by glib2 2.90.1-1.1",
+    "/usr/lib/libgpg-error.so.0.42.1 is owned by libgpg-error 1.61-1.1",
+    "/usr/lib/libgraphite2.so.3.3.1 is owned by graphite 1:1.3.15-1",
+    "/usr/lib/libgssapi_krb5.so.2.2 is owned by krb5 1.22.2-2",
+    "/usr/lib/libgstallocators-1.0.so.0.2809.0 is owned by gst-plugins-base-libs 1.28.9-1",
+    "/usr/lib/libgstapp-1.0.so.0.2809.0 is owned by gst-plugins-base-libs 1.28.9-1",
+    "/usr/lib/libgstaudio-1.0.so.0.2809.0 is owned by gst-plugins-base-libs 1.28.9-1",
+    "/usr/lib/libgstbase-1.0.so.0.2809.0 is owned by gstreamer 1.28.9-1",
+    "/usr/lib/libgstfft-1.0.so.0.2809.0 is owned by gst-plugins-base-libs 1.28.9-1",
+    "/usr/lib/libgstgl-1.0.so.0.2809.0 is owned by gst-plugins-base-libs 1.28.9-1",
+    "/usr/lib/libgstpbutils-1.0.so.0.2809.0 is owned by gst-plugins-base-libs 1.28.9-1",
+    "/usr/lib/libgstreamer-1.0.so.0.2809.0 is owned by gstreamer 1.28.9-1",
+    "/usr/lib/libgsttag-1.0.so.0.2809.0 is owned by gst-plugins-base-libs 1.28.9-1",
+    "/usr/lib/libgstvideo-1.0.so.0.2809.0 is owned by gst-plugins-base-libs 1.28.9-1",
+    "/usr/lib/libgtk-3.so.0.2420.32 is owned by gtk3 1:3.24.52-2.1",
+    "/usr/lib/libgudev-1.0.so.0.3.0 is owned by libgudev 238-4.1",
+    "/usr/lib/libharfbuzz-icu.so.0.61510.0 is owned by harfbuzz-icu 15.1.0-1.1",
+    "/usr/lib/libharfbuzz.so.0.61510.0 is owned by harfbuzz 15.1.0-1.1",
+    "/usr/lib/libhidapi-hidraw.so.0.15.0 is owned by hidapi 0.15.0-1.1",
+    "/usr/lib/libhwy.so.1.4.0 is owned by highway 1.4.0-1.1",
+    "/usr/lib/libhyphen.so.0.4.1 is owned by hyphen 2.8.10-1.1",
+    "/usr/lib/libicudata.so.78.3 is owned by icu 78.3-1.1",
+    "/usr/lib/libicui18n.so.78.3 is owned by icu 78.3-1.1",
+    "/usr/lib/libicuuc.so.78.3 is owned by icu 78.3-1.1",
+    "/usr/lib/libidn2.so.0.4.0 is owned by libidn2 2.3.8-1.1",
+    "/usr/lib/libjavascriptcoregtk-4.1.so.0.11.9 is owned by webkit2gtk-4.1 2.54.2-1",
+    "/usr/lib/libjpeg.so.8.3.2 is owned by libjpeg-turbo 3.2.1-1",
+    "/usr/lib/libjson-glib-1.0.so.0.1000.8 is owned by json-glib 1.10.8-1.1",
+    "/usr/lib/libjxl.so.0.12.0 is owned by libjxl 0.12.0-1.1",
+    "/usr/lib/libjxl_cms.so.0.12.0 is owned by libjxl 0.12.0-1.1",
+    "/usr/lib/libk5crypto.so.3.1 is owned by krb5 1.22.2-2",
+    "/usr/lib/libkeyutils.so.1.10 is owned by keyutils 1.6.3-4.1",
+    "/usr/lib/libkrb5.so.3.3 is owned by krb5 1.22.2-2",
+    "/usr/lib/libkrb5support.so.0.1 is owned by krb5 1.22.2-2",
+    "/usr/lib/liblcms2.so.2.0.20 is owned by lcms2 2.20-1.1",
+    "/usr/lib/liblzma.so.5.8.4 is owned by xz 5.8.4-2",
+    "/usr/lib/libm.so.6 is owned by glibc 2.44+r50+g1848099f063e-2",
+    "/usr/lib/libmanette-0.2.so.0 is owned by libmanette 0.2.13-2.1",
+    "/usr/lib/libmount.so.1.1.0 is owned by util-linux-libs 2.42.4-1.1",
+    "/usr/lib/libnghttp2.so.14.30.0 is owned by libnghttp2 1.71.0-1.1",
+    "/usr/lib/liborc-0.4.so.0.44.0 is owned by orc 0.4.44-1.1",
+    "/usr/lib/libpango-1.0.so.0.5800.2 is owned by pango 1:1.58.2-1.1",
+    "/usr/lib/libpangocairo-1.0.so.0.5800.2 is owned by pango 1:1.58.2-1.1",
+    "/usr/lib/libpangoft2-1.0.so.0.5800.2 is owned by pango 1:1.58.2-1.1",
+    "/usr/lib/libpcre2-8.so.0.16.1 is owned by pcre2 10.49-1.1",
+    "/usr/lib/libpixman-1.so.0.46.4 is owned by pixman 0.46.4-1.1",
+    "/usr/lib/libpng16.so.16.59.0 is owned by libpng 1.6.59-1.1",
+    "/usr/lib/libpsl.so.5.3.5 is owned by libpsl 0.21.5-2",
+    "/usr/lib/librav1e.so.0.8.1 is owned by rav1e 0.8.1-3.1",
+    "/usr/lib/libresolv.so.2 is owned by glibc 2.44+r50+g1848099f063e-2",
+    "/usr/lib/libseccomp.so.2.6.0 is owned by libseccomp 2.6.0-1",
+    "/usr/lib/libsecret-1.so.0.0.0 is owned by libsecret 0.21.8.2-1.1",
+    "/usr/lib/libsharpyuv.so.0.1.2 is owned by libwebp 1.6.0-2.1",
+    "/usr/lib/libsoup-3.0.so.0.8.1 is owned by libsoup3 3.8.1-1.1",
+    "/usr/lib/libsqlite3.so.3.54.0 is owned by sqlite 3.54.0-1",
+    "/usr/lib/libstdc++.so.6.0.36 is owned by libstdc++ 16.2.1+r23+gd564253eb6c8-3",
+    "/usr/lib/libsystemd.so.0.45.0 is owned by systemd-libs 262.2-1",
+    "/usr/lib/libtasn1.so.6.6.5 is owned by libtasn1 4.21.0-1.1",
+    "/usr/lib/libthai.so.0.3.2 is owned by libthai 0.1.30-1.1",
+    "/usr/lib/libtinysparql-3.0.so.0.1200.0 is owned by tinysparql 3.12.0-1",
+    "/usr/lib/libtss2-esys.so.0.0.1 is owned by tpm2-tss 4.2.1-2",
+    "/usr/lib/libtss2-mu.so.0.0.1 is owned by tpm2-tss 4.2.1-2",
+    "/usr/lib/libtss2-rc.so.0.0.0 is owned by tpm2-tss 4.2.1-2",
+    "/usr/lib/libtss2-sys.so.1.0.1 is owned by tpm2-tss 4.2.1-2",
+    "/usr/lib/libtss2-tctildr.so.0.0.0 is owned by tpm2-tss 4.2.1-2",
+    "/usr/lib/libudev.so.1.7.15 is owned by systemd-libs 262.2-1",
+    "/usr/lib/libunistring.so.5.2.1 is owned by libunistring 1.4.2-1.1",
+    "/usr/lib/libunwind.so.8.2.0 is owned by libunwind 1.8.3-1.1",
+    "/usr/lib/libwayland-client.so.0.26.0 is owned by wayland 1.26.0-1.1",
+    "/usr/lib/libwayland-cursor.so.0.26.0 is owned by wayland 1.26.0-1.1",
+    "/usr/lib/libwayland-egl.so.1.26.0 is owned by wayland 1.26.0-1.1",
+    "/usr/lib/libwayland-server.so.0.26.0 is owned by wayland 1.26.0-1.1",
+    "/usr/lib/libwebkit2gtk-4.1.so.0.24.5 is owned by webkit2gtk-4.1 2.54.2-1",
+    "/usr/lib/libwebp.so.7.2.0 is owned by libwebp 1.6.0-2.1",
+    "/usr/lib/libwebpdemux.so.2.0.17 is owned by libwebp 1.6.0-2.1",
+    "/usr/lib/libwebpmux.so.3.1.2 is owned by libwebp 1.6.0-2.1",
+    "/usr/lib/libxcb-render.so.0.0.0 is owned by libxcb 1.17.0-1.2",
+    "/usr/lib/libxcb-shm.so.0.0.0 is owned by libxcb 1.17.0-1.2",
+    "/usr/lib/libxcb.so.1.1.0 is owned by libxcb 1.17.0-1.2",
+    "/usr/lib/libxkbcommon.so.0.13.2 is owned by libxkbcommon 1.13.2-1.1",
+    "/usr/lib/libxml2.so.16.1.4 is owned by libxml2 2.15.4-1.1",
+    "/usr/lib/libxslt.so.1.1.45 is owned by libxslt 1.1.45-2.1",
+    "/usr/lib/libyuv.so is owned by libyuv r2921+644251f25-1.1",
+    "/usr/lib/libz.so.1.3.1.zlib-ng is owned by zlib-ng-compat 2.3.3-2",
+    "/usr/lib/libzstd.so.1.5.7 is owned by zstd 1.5.7-4",
+    "/usr/lib/webkit2gtk-4.1/WebKitGPUProcess is owned by webkit2gtk-4.1 2.54.2-1",
+    "/usr/lib/webkit2gtk-4.1/WebKitNetworkProcess is owned by webkit2gtk-4.1 2.54.2-1",
+    "/usr/lib/webkit2gtk-4.1/WebKitWebProcess is owned by webkit2gtk-4.1 2.54.2-1",
+    "/usr/lib/webkit2gtk-4.1/injected-bundle/libwebkit2gtkinjectedbundle.so is owned by webkit2gtk-4.1 2.54.2-1"
+  ],
+  "binary_dynamic_section": [
+    "",
+    "Dynamic section at offset 0xc1c7c0 contains 41 entries:",
+    "  Tag        Type                         Name/Value",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libgdk-3.so.0]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libgdk_pixbuf-2.0.so.0]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libcairo.so.2]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libgobject-2.0.so.0]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libglib-2.0.so.0]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libdbus-1.so.3]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libwebkit2gtk-4.1.so.0]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libgtk-3.so.0]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libsoup-3.0.so.0]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libgio-2.0.so.0]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libjavascriptcoregtk-4.1.so.0]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libgcc_s.so.1]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libm.so.6]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]",
+    " 0x0000000000000001 (NEEDED)             Shared library: [ld-linux-x86-64.so.2]",
+    " 0x000000000000001e (FLAGS)              BIND_NOW",
+    " 0x000000006ffffffb (FLAGS_1)            Flags: NOW PIE",
+    " 0x0000000000000015 (DEBUG)              0x0",
+    " 0x0000000000000007 (RELA)               0x7c90",
+    " 0x0000000000000008 (RELASZ)             798528 (bytes)",
+    " 0x0000000000000009 (RELAENT)            24 (bytes)",
+    " 0x000000006ffffff9 (RELACOUNT)          32667",
+    " 0x0000000000000017 (JMPREL)             0xcabd0",
+    " 0x0000000000000002 (PLTRELSZ)           72 (bytes)",
+    " 0x0000000000000003 (PLTGOT)             0xc47b58",
+    " 0x0000000000000014 (PLTREL)             RELA",
+    " 0x0000000000000006 (SYMTAB)             0x340",
+    " 0x000000000000000b (SYMENT)             24 (bytes)",
+    " 0x0000000000000005 (STRTAB)             0x42dc",
+    " 0x000000000000000a (STRSZ)              14770 (bytes)",
+    " 0x000000006ffffef5 (GNU_HASH)           0x42c0",
+    " 0x0000000000000019 (INIT_ARRAY)         0xbdd4b0",
+    " 0x000000000000001b (INIT_ARRAYSZ)       24 (bytes)",
+    " 0x000000000000001a (FINI_ARRAY)         0xbdd4a8",
+    " 0x000000000000001c (FINI_ARRAYSZ)       8 (bytes)",
+    " 0x000000000000000c (INIT)               0xbdc398",
+    " 0x000000000000000d (FINI)               0xbdc3b4",
+    " 0x000000006ffffff0 (VERSYM)             0x3c40",
+    " 0x000000006ffffffe (VERNEED)            0x4100",
+    " 0x000000006fffffff (VERNEEDNUM)         5",
+    " 0x0000000000000000 (NULL)               0x0"
+  ],
+  "missing_libraries": [],
+  "RPATH_RUNPATH": "absent",
+  "deployment_contract": "Keep the complete recorded OS packages installed, including WebKit/GTK resources; rebuild and rerun the native smoke after host ABI/runtime changes.",
+  "limits": "ELF closure includes WebKit auxiliaries and sandbox helpers. Late-loaded driver/media/accessibility plugins depend on the installed desktop; this does not certify a hand-extracted library bundle or another host."
+}

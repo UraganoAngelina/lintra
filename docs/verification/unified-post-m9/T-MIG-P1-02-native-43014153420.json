@@ -1,0 +1,119 @@
+{
+  "conclusion": "success",
+  "createdAt": "2026-11-11T11:42:27Z",
+  "headSha": "bdca1cf00121717b3c58504127ae4ce45f806e6b",
+  "jobs": [
+    {
+      "completedAt": "2026-11-11T11:51:19Z",
+      "conclusion": "success",
+      "databaseId": 130500911680,
+      "name": "Windows Server build only - not Windows 11 clean-room",
+      "startedAt": "2026-11-11T11:42:30Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-11T11:42:33Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-11T11:42:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-11T11:42:44Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 2,
+          "startedAt": "2026-11-11T11:42:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-11T11:42:52Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+          "number": 3,
+          "startedAt": "2026-11-11T11:42:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-11T11:43:07Z",
+          "conclusion": "success",
+          "name": "Record native build host and toolchain",
+          "number": 4,
+          "startedAt": "2026-11-11T11:42:52Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-11T11:43:15Z",
+          "conclusion": "success",
+          "name": "Install exact frontend dependencies without lifecycle scripts",
+          "number": 5,
+          "startedAt": "2026-11-11T11:43:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-11T11:45:47Z",
+          "conclusion": "success",
+          "name": "Check isolated Rust probe",
+          "number": 6,
+          "startedAt": "2026-11-11T11:43:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-11T11:51:05Z",
+          "conclusion": "success",
+          "name": "Build test-only NSIS with offline WebView2 and perMachine mode",
+          "number": 7,
+          "startedAt": "2026-11-11T11:45:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-11T11:51:06Z",
+          "conclusion": "success",
+          "name": "Record artifact identity without claiming installation",
+          "number": 8,
+          "startedAt": "2026-11-11T11:51:05Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-11T11:51:15Z",
+          "conclusion": "success",
+          "name": "Upload test artifact for later Windows 11 qualification",
+          "number": 9,
+          "startedAt": "2026-11-11T11:51:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-11T11:51:15Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+          "number": 17,
+          "startedAt": "2026-11-11T11:51:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-11T11:51:17Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 18,
+          "startedAt": "2026-11-11T11:51:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-11T11:51:17Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 19,
+          "startedAt": "2026-11-11T11:51:17Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/43014153420/job/130500911680"
+    }
+  ],
+  "status": "completed",
+  "updatedAt": "2026-11-11T11:51:19Z",
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/43014153420",
+  "log_gzip_sha256": "85ba81a9f66c8859a782eb65893861ddb117e482b978fb1d71126f1c2a1f0917",
+  "scope": "Windows Server native build only; Windows11 clean-room and offline installation NOT_RUN"
+}

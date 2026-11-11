@@ -1,6 +1,6 @@
 # T-MIG-P1-02 — Spike Windows / WebView2
 
-11 novembre 2026. **WAITING_CI / BLOCKED_NATIVE_ENVIRONMENT**.
+11 novembre 2026. **BLOCKED_NATIVE_ENVIRONMENT; build CI PASS**.
 Prerequisito P0-08 DONE; P1-01 Linux DONE su b1f14ce.
 
 Preflight corrente: nessun virsh, QEMU, VBoxManage, vmrun, PowerShell, Wine,
@@ -27,8 +27,7 @@ Esiti locali: JSON overlay sintatticamente valido e diff check PASS; review
 manuale del workflow. Parser YAML/PowerShell non installati localmente:
 nessun package aggiunto solo per il lint; parsing Tauri/Actions effettivo in CI.
 Inventario e digest in T-MIG-P1-02-preflight.json;
-esito CI ancora da leggere sullo SHA effettivo. Windows11 install/run NOT_RUN.
+CI43014153420 conclusa success su bdca1cf00121717b3c58504127ae4ce45f806e6b: frontend strict, fmt/Clippy MSVC release, build e NSIS offline configurato, upload artefatto sintetico. Metadati e log completi archiviati in native-43014153420.json/log.gz. Non sostituisce la prova Win11. Windows11 install/run NOT_RUN.
 G-MIG-1 NOT_VERIFIED. La prova non è sostituita da simulazione o da un flag.
 
-Next indipendente READY **T-MIG-P1-03**, dopo aver pubblicato/avviato la build
-Windows. Nessun ingresso P2/P3 prima del vero gate G-MIG-1. AUTO_CONTINUE.
+P1-03 è conclusa indipendentemente su Linux; next READY **U-OPS-04**. Nessun ingresso P2/P3 prima del vero gate G-MIG-1. AUTO_CONTINUE.
