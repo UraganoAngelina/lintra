@@ -2869,7 +2869,7 @@ worker thread
          UI thread
 ```
 
-Framework GUI vincolante: **Slint** (ARCH §39D); `egui` è soltanto piano B subordinato all’esito dello spike. Il prototipo Slint esistente non è un MVP.
+Contratto storico Slint: ARCH §39D/Addendum B. Per il nuovo adapter vale [ADR-MIG-001](adr/ADR-MIG-001.md), React/TS strict/Tauri2 dopo G-MIG-0; il prototipo legacy non è una qualifica del nuovo frontend.
 
 ---
 
@@ -4522,6 +4522,14 @@ Aggiunta alla checklist di code review (§163):
 
 
 # Addendum B (revisione 2026-10-09): interfaccia desktop con Slint
+
+> **Applicabilità corrente11 novembre2026:**
+> [ADR-MIG-001](adr/ADR-MIG-001.md) recepisce la sostituzione mirata N-24
+> approvata dall'autore. B.1–B.3 restano contratto Slint legacy. Il nuovo
+> adapter Tauri2/React usa il servizio Rust effettivo, Job Manager con una
+> validazione per istanza, IPC typed/bounded e risultati paginati; firme e
+> ownership concrete saranno qualificate in MIG-P2. Nessuna norma in TS,
+> nessun Full/approval simulato, nessuna CI legacy trasformata in prova WebView.
 
 Concretizza `ARCHITECTURE.md` §39D.
 

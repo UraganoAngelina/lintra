@@ -118,7 +118,7 @@ Ogni riga è un vincolo da rispettare. Modificarne uno richiede una nuova decisi
 | N-21 | Modalità ibrida: snapshot incorporato + cartella esterna prioritaria; fallback a livello di bundle, mai misto; cartella incompleta o schema mancante = errore; `schema_format_version` verificato | ARCH §39C.2 |
 | N-22 | JSONL UTF-8 senza BOM, `\n`, **identico byte per byte** tra OS; XLSX formato principale per gli analisti (celle di dato come testo); CSV solo RFC 4180; timestamp UTC | ARCH §39C.3; DET Addendum A.2 |
 | N-23 | Release solo da CI, immutabili, `SHA256SUMS`; Windows `msvc` sul runner Windows; nessuna firma Authenticode; tre ambiti (sorgente, binari, dati) | ARCH §39B.2, §39C.4–5 |
-| N-24 | UI: Slint, eseguibile separato, renderer software di riferimento, font incorporati, token di design unici, attribuzione Slint in «Informazioni», test visivi in CI; client di `ValidationService`, nessuna logica normativa | ARCH §39D; DET Addendum B |
+| N-24 | Nuovo adapter React/TS strict/Tauri2 separato dopo G-MIG-0; Rust possiede norme/dati/job, IPC bounded e una validazione per istanza; parità LocalOnly+Full, redesign e prove per OS. Slint conserva il proprio contratto fino a parità/rollback qualificati | [ADR-MIG-001](adr/ADR-MIG-001.md); ARCH §39D; DET Addendum B legacy |
 | N-25 | Auditabilità: versione software, versione e hash schema, versioni reference data, input (nome, dimensione, SHA-256), opzioni, timestamp UTC | ARCH §35, §39C.3 |
 | N-26 | Nessuna dipendenza, framework o database aggiunti «perché potrebbero servire» | Prompt di pianificazione §9 |
 | N-27 | La formalizzazione dei tracciati regionali precede le attività di sviluppo (gate G0), salva autorizzazione P1/P2 anticipata | Prompt di pianificazione §4.4; A-02 |

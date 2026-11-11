@@ -1,0 +1,11 @@
+{
+  "task": "T-MIG-P0-03",
+  "preflight_head": "56270b0",
+  "adr_sha256": "1aa1214b2331e4c47a11ed483098a293212c18e8726c8bf9d3bb57d40e6dfcca",
+  "previous_N24_row": "| N-24 | UI: Slint, eseguibile separato, renderer software di riferimento, font incorporati, token di design unici, attribuzione Slint in \u00abInformazioni\u00bb, test visivi in CI; client di `ValidationService`, nessuna logica normativa | ARCH \u00a739D; DET Addendum B |",
+  "current_N24_row": "| N-24 | Nuovo adapter React/TS strict/Tauri2 separato dopo G-MIG-0; Rust possiede norme/dati/job, IPC bounded e una validazione per istanza; parit\u00e0 LocalOnly+Full, redesign e prove per OS. Slint conserva il proprio contratto fino a parit\u00e0/rollback qualificati | [ADR-MIG-001](adr/ADR-MIG-001.md); ARCH \u00a739D; DET Addendum B legacy |",
+  "N19_N20_N23_rows_unchanged": true,
+  "runtime_inputs_unchanged": 520,
+  "original_140_status_sha256": "9a9cf8b4bf73c2b4af48cdbba9f10c3d29048189b6866d6b8d00c023e11f240f",
+  "gate_MIG_0": "NOT_VERIFIED"
+}

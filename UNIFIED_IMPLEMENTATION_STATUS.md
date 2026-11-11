@@ -54,7 +54,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-REL-03 | U-OPS-01, U-FIX-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-03.md) | —; Non eseguite | G-DUR NOT_VERIFIED |
 | T-MIG-P0-01 | U-UI-01 | DONE | [Baseline post-audit qualificata](docs/verification/unified-post-m9/T-MIG-P0-01.md) | cb70bee;CI42990775714 success7 job;HEAD documentale42620cf con520 input runtime identici | Acceptance baseline PASS; G-MIG-0 attendeP0-02..08 |
 | T-MIG-P0-02 | T-MIG-P0-01 | DONE | [Matrice corrente/storia](docs/verification/unified-post-m9/T-MIG-P0-02.md) | Baselinecb70bee qualificata;22 discrepanze riconciliate senza riaprire140 task | Acceptance documentale PASS; G-MIG-0 attende03..08 |
-| T-MIG-P0-03 | T-MIG-P0-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-03.md) | —; Non eseguite | G-MIG-0 NOT_VERIFIED |
+| T-MIG-P0-03 | T-MIG-P0-02 | DONE | [ADR N-24 recepita](docs/verification/unified-post-m9/T-MIG-P0-03.md) | ADR-MIG-001;autore10 novembre,recepimento11;ARCH/DET/N-24 allineati | Acceptance ratifica documentale PASS; G-MIG-0 aperto |
 | T-MIG-P0-04 | T-MIG-P0-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-04.md) | —; Non eseguite | G-MIG-0 NOT_VERIFIED |
 | T-MIG-P0-05 | T-MIG-P0-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-05.md) | —; Non eseguite | G-MIG-0 NOT_VERIFIED |
 | T-MIG-P0-06 | T-MIG-P0-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-06.md) | —; Non eseguite | G-MIG-0 NOT_VERIFIED |
@@ -146,7 +146,7 @@ U-FIX-01..05 DONE: G-HARD PASS con CI42990775714 sucb70bee,7 job richiesti posit
 U-NORM-03 DONE per backend normativo,21 oracle3volte/OS;04 WAITING_INTEGRATION per frontend/contesto amministrativo, G-SIOC1 complessivo aperto.
 T-MIG-P0-01 DONE; G-MIG-0 non ancora PASS prima delle altre sette taskP0.
 U-OPS-07 DONE documentale; U-OPS-03 preflight sospeso sull'integrazione root/worker Tauri reale, nessun DONE implicito.
-**next READY T-MIG-P0-03** per recepire ADR N-24 già autorizzata. AUTO_CONTINUE.
+**next READY T-MIG-P0-04**, poi05/06/07/08 prima di implementare Tauri. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.

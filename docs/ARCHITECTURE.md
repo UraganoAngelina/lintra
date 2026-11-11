@@ -1739,6 +1739,16 @@ Regole:
 
 # 39D. Interfaccia desktop: vincoli (Slint)
 
+> **Applicabilità corrente11 novembre2026:**
+> [ADR-MIG-001](adr/ADR-MIG-001.md), ratifica autore già recepita, sostituisce
+> la prescrizione esclusiva Slint per il nuovo adapter React/TS strict/Tauri2
+> dopo G-MIG-0. Rust mantiene tutta la validazione e persistenza; UI separata,
+> IPC bounded, una validazione attiva. Le sottosezioni seguenti conservano
+> il contratto Slint legacy, operativo fino a parità e rollback qualificati.
+> Il nuovo redesign ha parità comportamentale e prove visive per OS;
+> nessun trasferimento implicito del renderer software o dell'identità RGB
+> Slint fra WebView. Gate nativi e G-REL restano necessari.
+
 ## 39D.1 Decisione e licenza
 
 Il framework GUI è **Slint** (decisione 2026-10-09). Motivi: layout dichiarativo con misure esplicite in px, renderer proprio (anche software, senza GPU), lista virtualizzata per tabelle grandi, comportamento uguale su Linux e Windows.
