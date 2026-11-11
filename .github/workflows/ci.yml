@@ -46,6 +46,23 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Prepare controlled Windows test deployment
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          # This job owns its disposable checkout and temporary directory.
+          # Reference integrity tests require controlled mutation permissions,
+          # as does a deployed per-account dictionary. Never alter a developer's
+          # checkout or the runner user's shared/global temporary directory.
+          $currentSid = [Security.Principal.WindowsIdentity]::GetCurrent().User.Value
+          $fixtureTemp = Join-Path $env:RUNNER_TEMP 'lintra-controlled-tests'
+          New-Item -ItemType Directory -Path $fixtureTemp -Force | Out-Null
+          foreach ($ownedRoot in @($env:GITHUB_WORKSPACE, $fixtureTemp)) {
+            icacls $ownedRoot /inheritance:r /grant:r "*${currentSid}:(OI)(CI)F" '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' /T /Q
+            if ($LASTEXITCODE -ne 0) { throw 'Cannot prepare controlled test permissions' }
+          }
+          Add-Content -Path $env:GITHUB_ENV -Value "TEMP=$fixtureTemp" -Encoding utf8
+          Add-Content -Path $env:GITHUB_ENV -Value "TMP=$fixtureTemp" -Encoding utf8
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.13'

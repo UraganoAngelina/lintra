@@ -1,0 +1,9 @@
+{
+  "run": 42840799653,
+  "sha": "c33a3c17ac4c4e92b6572e8e262855411833d088",
+  "url": "https://github.com/UraganoAngelina/lintra/actions/runs/42840799653",
+  "linux": "success",
+  "windows": "failure",
+  "diagnosis": "Eight CAD runtime tests read reference datasets from the disposable checkout, whose inherited ACL grants shared mutation; runtime rejection is expected. CI must provision a controlled test deployment.",
+  "uncompressed_log_sha256": "2ee3827b8fedbf9fae82daa382e19835d5a6a22f0ee73312e35275a3bb2f44df"
+}

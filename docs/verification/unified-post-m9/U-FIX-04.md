@@ -77,3 +77,19 @@ Evidenze conservate: U-FIX-04-cli-fixture*.json/log.gz. Recheck:9 test CLI
 storici PASS, fmt verificato separatamente. Fonte CI:
 https://github.com/UraganoAngelina/lintra/actions/runs/42834962873.
 Task e T-MIG-P0-01 rimangono WAITING_GATE fino alla nuova CI pertinente.
+
+## Ripresa11 novembre: ambiente di test Windows controllato
+
+CI42840799653 su c33a3c1: Linux PASS, Windows FAIL. Il precedente test CLI
+è superato; otto test CAD leggono invece i cataloghi dal checkout del runner,
+che eredita permessi SharedMutation. Log e SHA sono conservati nei file
+U-FIX-04-native-failed-42840799653.*. Il prodotto rifiuta correttamente quel
+root: non si modifica il controllo per far passare i test.
+
+La CI prepara il proprio checkout usa-e-getta e una nuova directory temporanea
+privata con diritti di modifica per SID dell'account del job, SYSTEM e
+Administrators. TEMP/TMP valgono solo per il job. Nessuna modifica al checkout
+dell'autore, cartella temporanea globale o ACL del prodotto. Il test nativo
+che assegna esplicitamente scrittura condivisa continua a richiedere il rifiuto.
+La nuova CI deve qualificare questa preparazione insieme al delta SIOC; nessun
+PASS è attribuito alle due pipeline Windows fallite.
