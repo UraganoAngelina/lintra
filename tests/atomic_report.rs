@@ -430,3 +430,49 @@ fn windows_locked_destination_is_preserved_without_delete_fallback() {
     assert!(!fixture.part().exists());
     drop(held);
 }
+
+#[cfg(windows)]
+#[test]
+fn windows_write_through_publication_preserves_long_unicode_path_support() {
+    let root = tempfile::tempdir().unwrap();
+    let mut parent = root.path().to_owned();
+    for _ in 0..4 {
+        parent.push("synthetic long directory à ".repeat(3));
+    }
+    fs::create_dir_all(&parent).unwrap();
+    let path = parent.join("report à.jsonl");
+    assert!(path.as_os_str().len() > 260);
+    fs::write(&path, b"old complete output").unwrap();
+    assert_eq!(
+        write_atomic_report(&path, PartialOutputPolicy::Delete, |writer| {
+            writer
+                .write_all(b"new complete output")
+                .map_err(ReportError::Write)?;
+            Ok(complete(RunStatus::CompletedInvalid))
+        })
+        .unwrap(),
+        AtomicOutputOutcome::Published
+    );
+    assert_eq!(fs::read(path).unwrap(), b"new complete output");
+}
+
+#[cfg(windows)]
+#[test]
+fn windows_short_path_normalization_is_not_silently_changed_to_verbatim() {
+    let root = tempfile::tempdir().unwrap();
+    let path = root.path().join("synthetic.jsonl.");
+    assert!(path.as_os_str().len() < 260);
+    fs::write(&path, b"old output").unwrap();
+    write_atomic_report(&path, PartialOutputPolicy::Delete, |writer| {
+        writer
+            .write_all(b"new output")
+            .map_err(ReportError::Write)?;
+        Ok(complete(RunStatus::CompletedInvalid))
+    })
+    .unwrap();
+    assert_eq!(fs::read(&path).unwrap(), b"new output");
+    assert_eq!(
+        fs::read(root.path().join("synthetic.jsonl")).unwrap(),
+        b"new output"
+    );
+}

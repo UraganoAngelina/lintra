@@ -60,6 +60,12 @@ pub enum ExportError {
 }
 impl fmt::Display for ExportError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        if matches!(
+            self,
+            Self::Report(ReportError::PublishedDurabilityUnconfirmed { .. })
+        ) {
+            return f.write_str("Il file è visibile, ma il sistema non ha confermato la scrittura su disco. Controlla la destinazione prima di riprovare.");
+        }
         if nested_io_kind(self) == Some(io::ErrorKind::StorageFull) {
             return f.write_str("Spazio insufficiente per il report o per i file temporanei. Libera spazio e riprova.");
         }
@@ -148,10 +154,16 @@ impl fmt::Display for ExportFailure {
         } else {
             write!(f, "{}", self.cause)?;
         }
-        if !self.published.is_empty() {
+        if self.published.len() == 1 {
             write!(
                 f,
                 " Un file è stato salvato, ma l’esportazione non è completa. Controlla la destinazione."
+            )?;
+        } else if self.published.len() > 1 {
+            write!(
+                f,
+                " {} file sono stati salvati, ma l’esportazione non è completa. Controlla la destinazione.",
+                self.published.len()
             )?;
         }
         if !self.cleanup.is_empty() {
@@ -424,6 +436,12 @@ pub fn export_report_with_authorization(
                 ));
             }
             Err(e) => {
+                // Directory sync can fail after a successful rename. Preserve
+                // the actual published-file receipt instead of claiming that
+                // this destination was rolled back or never written.
+                if e.output_was_published() {
+                    published.push(destination);
+                }
                 return Err(abort_all(
                     ExportFailure {
                         cause: ExportError::Report(e),

@@ -38,6 +38,87 @@ fn no_parts(dir: &Path) {
             .is_some_and(|s| s == "part"))
     );
 }
+
+#[test]
+fn late_durability_failure_presents_the_actual_published_file_count_without_paths() {
+    let failure = ExportFailure {
+        cause: ExportError::Report(ReportError::PublishedDurabilityUnconfirmed {
+            source: std::io::Error::new(
+                std::io::ErrorKind::PermissionDenied,
+                "synthetic directory sync",
+            ),
+        }),
+        published: vec![
+            "SYNTHETIC_PRIVATE_PATH.jsonl".into(),
+            "SYNTHETIC_PRIVATE_PATH.summary.json".into(),
+        ],
+        cleanup: vec![],
+        cancelled: false,
+    };
+    let text = failure.to_string();
+    assert!(text.contains("2 file sono stati salvati"));
+    assert!(text.contains("non ha confermato la scrittura su disco"));
+    assert!(!text.contains("SYNTHETIC_PRIVATE_PATH"));
+    assert!(!text.contains("Un file è stato salvato"));
+}
+
+/// Requires an ordinary OS account: a write/search-only directory permits
+/// saving and rename, while opening it for directory fsync fails after publish.
+/// CI explicitly runs this ignored case; running as root is not a valid proof.
+#[cfg(target_os = "linux")]
+#[test]
+#[ignore = "Requires an unprivileged Linux account; native CI explicitly runs it"]
+fn directory_sync_failure_after_rename_reports_the_published_file() {
+    use std::os::unix::fs::PermissionsExt;
+    struct Restore(std::path::PathBuf);
+    impl Drop for Restore {
+        fn drop(&mut self) {
+            let _ = fs::set_permissions(&self.0, fs::Permissions::from_mode(0o700));
+        }
+    }
+    let (_source_root, completed) = analysis(b"001Z  \n");
+    let report = completed.report.unwrap();
+    let parent = Path::new(env!("CARGO_MANIFEST_DIR")).join("../target/export-durability-tests");
+    fs::create_dir_all(&parent).unwrap();
+    let output_root = tempfile::tempdir_in(parent).unwrap();
+    let directory = output_root.path().join("write-search-only");
+    fs::create_dir(&directory).unwrap();
+    let _restore = Restore(directory.clone());
+    fs::set_permissions(&directory, fs::Permissions::from_mode(0o300)).unwrap();
+    assert_eq!(
+        fs::File::open(&directory).unwrap_err().kind(),
+        std::io::ErrorKind::PermissionDenied,
+        "this real permission-fault qualification requires an unprivileged account"
+    );
+    let path = directory.join("saved.jsonl");
+    let failure = export_report(
+        &report,
+        &completed.outcome.summary,
+        ExportFormat::Jsonl,
+        &path,
+        false,
+        &CancellationToken::default(),
+    )
+    .unwrap_err();
+    assert!(
+        matches!(&failure.cause, ExportError::Report(ReportError::PublishedDurabilityUnconfirmed { source })
+        if source.kind() == std::io::ErrorKind::PermissionDenied)
+    );
+    assert_eq!(failure.published, vec![path.clone()]);
+    assert!(failure.cleanup.is_empty());
+    assert!(!failure.cancelled);
+    fs::set_permissions(&directory, fs::Permissions::from_mode(0o700)).unwrap();
+    assert_eq!(
+        fs::read(&path).unwrap(),
+        fs::read(report.jsonl_path()).unwrap()
+    );
+    assert!(!summary_path(&path).exists());
+    assert_eq!(
+        completed.outcome.summary.run_status,
+        RunStatus::CompletedInvalid
+    );
+    no_parts(&directory);
+}
 #[test]
 fn formats_match_the_core_cli_writer_and_keep_summary_bundle_provenance() {
     for bytes in [b"001A  \n".as_slice(), b"001Z  \n".as_slice()] {

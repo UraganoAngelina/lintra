@@ -43,7 +43,10 @@ pub enum OutputOperation {
     Publish,
 }
 
-/// Write one report through a same-directory `.part`, then close and rename it.
+/// Write one report through a same-directory `.part`, sync, close and rename it.
+/// Linux then syncs its parent directory; Windows requests write-through rename.
+/// A late directory-sync error explicitly reports that publication already took
+/// place. Neither operation promises behavior of hardware ignoring flushes.
 ///
 /// An existing destination is deliberately replaced only on successful publish.
 /// An existing `.part` is never truncated or removed: exclusive creation fails.
@@ -97,6 +100,8 @@ pub struct AtomicReportFile {
     part: PathBuf,
     policy: PartialOutputPolicy,
     owns_part: bool,
+    #[cfg(test)]
+    fault: Option<durability_tests::Fault>,
 }
 
 impl AtomicReportFile {
@@ -130,6 +135,8 @@ impl AtomicReportFile {
             part,
             policy,
             owns_part: true,
+            #[cfg(test)]
+            fault: None,
         })
     }
 
@@ -177,23 +184,24 @@ impl AtomicReportFile {
         }
         // File::flush has no user-space buffering, but checking it and sync_all
         // detects filesystem writeback errors before we expose the new filename.
-        let file = self.file.as_mut().expect("owned open output");
-        if let Err(source) = file.flush() {
+        if let Err(source) = self.flush_file() {
             return self.discard(Some(ReportError::Output {
                 operation: OutputOperation::Flush,
                 source,
             }));
         }
-        if let Err(source) = file.sync_all() {
+        if let Err(source) = self.sync_file() {
             return self.discard(Some(ReportError::Output {
                 operation: OutputOperation::Sync,
                 source,
             }));
         }
+        #[cfg(test)]
+        durability_tests::checkpoint("file_synced", &self.destination);
         // Close our handle before rename: Windows sharing restrictions can reject
         // renaming an open file. Never delete the old destination as a workaround.
         self.file.take();
-        if let Err(source) = fs::rename(&self.part, &self.destination) {
+        if let Err(source) = self.publish_staged() {
             return self.discard(Some(ReportError::Output {
                 operation: OutputOperation::Publish,
                 source,
@@ -202,7 +210,49 @@ impl AtomicReportFile {
         // Ownership ends only after rename succeeded. Drop must not unlink a path
         // that could subsequently be reused by another writer.
         self.owns_part = false;
+        #[cfg(test)]
+        durability_tests::checkpoint("renamed", &self.destination);
+        // Syncing the file does not sync its containing directory on Linux.
+        // Once rename succeeded, a late failure cannot undo publication: never
+        // discard/unlink a new .part that another writer might have created.
+        self.sync_directory()
+            .map_err(|source| ReportError::PublishedDurabilityUnconfirmed { source })?;
+        #[cfg(test)]
+        durability_tests::checkpoint("publication_acknowledged", &self.destination);
         Ok(AtomicOutputOutcome::Published)
+    }
+
+    fn flush_file(&mut self) -> io::Result<()> {
+        #[cfg(test)]
+        durability_tests::inject(self.fault, durability_tests::Fault::Flush)?;
+        self.file.as_mut().expect("owned open output").flush()
+    }
+    fn sync_file(&self) -> io::Result<()> {
+        #[cfg(test)]
+        durability_tests::inject(self.fault, durability_tests::Fault::FileSync)?;
+        self.file.as_ref().expect("owned open output").sync_all()
+    }
+    fn publish_staged(&self) -> io::Result<()> {
+        #[cfg(test)]
+        durability_tests::inject(self.fault, durability_tests::Fault::Rename)?;
+        publish_same_directory(&self.part, &self.destination)
+    }
+    fn sync_directory(&self) -> io::Result<()> {
+        #[cfg(test)]
+        durability_tests::inject(self.fault, durability_tests::Fault::DirectorySync)?;
+        #[cfg(target_os = "linux")]
+        {
+            let parent = self
+                .destination
+                .parent()
+                .filter(|p| !p.as_os_str().is_empty())
+                .unwrap_or(Path::new("."));
+            File::open(parent)?.sync_all()
+        }
+        // Windows requests write-through in the rename itself. Do not pretend
+        // that FlushFileBuffers on an arbitrary directory is universally valid.
+        #[cfg(not(target_os = "linux"))]
+        Ok(())
     }
 
     /// Explicitly abort for an upstream technical failure. This closes the file
@@ -237,6 +287,65 @@ impl AtomicReportFile {
         }
     }
 }
+
+#[cfg(not(windows))]
+fn publish_same_directory(source: &Path, destination: &Path) -> io::Result<()> {
+    fs::rename(source, destination)
+}
+#[cfg(windows)]
+fn publish_same_directory(source: &Path, destination: &Path) -> io::Result<()> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::Storage::FileSystem::{
+        MOVEFILE_REPLACE_EXISTING, MOVEFILE_WRITE_THROUGH, MoveFileExW,
+    };
+    let wide = |path: &Path| -> io::Result<Vec<u16>> {
+        // Ordinary short paths keep Windows' existing spelling/normalization.
+        // Long paths need a verbatim prefix. Canonicalize only their parent,
+        // never a destination symlink, before adding the unchanged filename.
+        let absolute = std::path::absolute(path)?;
+        let resolved = if absolute.as_os_str().encode_wide().count() >= 260 {
+            let parent = path
+                .parent()
+                .filter(|p| !p.as_os_str().is_empty())
+                .unwrap_or(Path::new("."));
+            let name = path.file_name().ok_or_else(|| {
+                io::Error::new(io::ErrorKind::InvalidInput, "invalid output path")
+            })?;
+            fs::canonicalize(parent)?.join(name)
+        } else {
+            path.to_owned()
+        };
+        let mut value: Vec<u16> = resolved.as_os_str().encode_wide().collect();
+        if value.contains(&0) {
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "invalid output path",
+            ));
+        }
+        value.push(0);
+        Ok(value)
+    };
+    let source = wide(source)?;
+    let destination = wide(destination)?;
+    // SAFETY: both buffers are terminated UTF16 and remain alive for the call.
+    // No COPY_ALLOWED, reboot scheduling or delete-first replacement fallback.
+    if unsafe {
+        MoveFileExW(
+            source.as_ptr(),
+            destination.as_ptr(),
+            MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH,
+        )
+    } == 0
+    {
+        Err(io::Error::last_os_error())
+    } else {
+        Ok(())
+    }
+}
+
+#[cfg(test)]
+#[path = "atomic/durability_tests.rs"]
+mod durability_tests;
 
 impl Drop for AtomicReportFile {
     /// Fallback for panic/unwinding or interrupted control flow. Drop cannot

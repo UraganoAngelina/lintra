@@ -103,3 +103,21 @@ senza cambiare assertion o lint. Log completo conservato nel relativo
 codice2a5e317; per il nuovo SHA si verifica equivalenza dei sorgenti di prodotto
 e si richiede comunque nuova CI Windows. Preflight U-REL-03 solo lettura,
 nessuna implementazione o task DONE durante questa diagnosi.
+
+CI corrente43050943529 sul34f5b71: il job Linux130630856915 ha fallito prima
+della compilazione per DNS del mirror azure.archive.ubuntu.com durante apt,
+exit100; log completo linux-43050943529-failed.log.gz conservato. Windows
+130630856153 ancora in esecuzione all'ultima lettura. Non è una CI positiva
+né una nuova regressione Linux dimostrata. U-PERF-01 è stata conclusa come
+analisi indipendente documentale; ora U-REL-03 modifica la pubblicazione report
+ed è qualificata separatamente. U-OPS-04 resta WAITING_CI finché la matrice
+nativa applicabile non è positiva; niente riattribuzione di CI precedenti.
+
+Aggiornamento finale CI43050943529: **job Windows SUCCESS**, incluse entrambe
+le prove ignored effettivamente invocate su share e drive mappato. Nel log
+Windows completo compaiono i due casi `... ok` alle16:09:15 e16:09:53UTC;
+metadata e log gzip archiviati, SHA256 del log
+57bc843775b8556515aee69219dc2559c6631cff4fdff4270f39bd6805a84683.
+L'intera CI è FAILURE per apt/DNS Linux, e i confronti cross-OS sono skipped:
+non vengono promossi a PASS. La prossima CI completa includerà anche il delta
+U-REL-03; vecchio codice34f5b71 resta distinto da quel nuovo SHA.

@@ -135,6 +135,122 @@ fn readers_never_observe_staged_or_uncommitted_rows_and_killed_writer_recovers()
     }
 }
 
+/// Exercise the real signed fact batches and manifest, rather than inferring
+/// their crash guarantees from a snapshot containing only identity rows.
+#[test]
+fn killed_history_publication_recovers_signed_facts_manifest_and_idempotent_resolution() {
+    for mode in [
+        "history-stage-pause",
+        "history-write-pause",
+        "history-during",
+        "history-after",
+    ] {
+        let dir = parent();
+        let root = dir.path().join("archive");
+        let repo = create(&root);
+        let settings = repo.settings().unwrap();
+        assert_eq!(settings.journal_mode.to_ascii_lowercase(), "delete");
+        assert_eq!(settings.synchronous, 3);
+        let base = super::history::candidate(&repo, 1, "fact-baseline");
+        publish(&repo, &base).unwrap();
+        let next = super::history::candidate(&repo, 2, mode);
+        drop(repo);
+        // Open the independent reader before the writer takes SQLite's lock.
+        // Opening/configuring a new connection under that lock may legitimately
+        // return StorageBusy; it would not test visibility of committed facts.
+        let reader = open(&root);
+        let mut writer = OwnedChild(child(&root, mode, Some(dir.path())));
+        if matches!(mode, "history-stage-pause" | "history-write-pause") {
+            let barrier = if mode == "history-write-pause" {
+                "write-pause"
+            } else {
+                mode
+            };
+            wait_for_marker(&mut writer, &dir.path().join(format!("{barrier}.ready")));
+            let sql_phase = mode == "history-write-pause";
+            committed_or_busy(
+                reader.load_current_snapshot(&namespace("A")),
+                Some(base.clone()),
+                sql_phase,
+            );
+            committed_or_busy(
+                reader.load_history_facts(&namespace("A"), SnapshotRevision::new(2)),
+                None,
+                sql_phase,
+            );
+            writer.0.kill().unwrap();
+            assert!(!writer.0.wait().unwrap().success());
+        } else {
+            assert_eq!(
+                writer.0.wait().unwrap().code(),
+                Some(if mode == "history-after" { 87 } else { 86 })
+            );
+        }
+        drop(reader);
+        let recovered = open(&root);
+        let committed = mode == "history-after";
+        assert_eq!(
+            recovered.load_current_snapshot(&namespace("A")).unwrap(),
+            Some(if committed {
+                next.clone()
+            } else {
+                base.clone()
+            })
+        );
+        let old = recovered
+            .load_history_facts(&namespace("A"), SnapshotRevision::new(1))
+            .unwrap()
+            .unwrap();
+        assert!(old.inventory_supported());
+        assert_eq!(old.batches(), base.history_facts());
+        let facts = recovered
+            .load_history_facts(&namespace("A"), SnapshotRevision::new(2))
+            .unwrap();
+        assert_eq!(facts.is_some(), committed);
+        if let Some(facts) = facts {
+            assert!(facts.inventory_supported());
+            assert_eq!(facts.batches(), next.history_facts());
+            assert_eq!(
+                recovered.resolve_commit(&next).unwrap(),
+                CommitResolution::Published(CommitReceipt {
+                    revision: SnapshotRevision::new(2)
+                })
+            );
+        } else {
+            assert!(matches!(
+                recovered.resolve_commit(&next).unwrap(),
+                CommitResolution::NotPublished
+            ));
+            publish(&recovered, &next).unwrap();
+        }
+        // Reopening and resolving the exact candidate again does not create a
+        // third generation, duplicate facts or a second logical acquisition.
+        drop(recovered);
+        let reopened = open(&root);
+        assert_eq!(
+            reopened.current_generation(&namespace("A")).unwrap(),
+            Some(SnapshotRevision::new(2))
+        );
+        assert_eq!(
+            reopened.load_current_snapshot(&namespace("A")).unwrap(),
+            Some(next.clone())
+        );
+        assert!(matches!(
+            reopened.resolve_commit(&next).unwrap(),
+            CommitResolution::Published(_)
+        ));
+        let c = reopened.lock().unwrap();
+        for table in ["snapshots", "history_batches", "snapshot_manifests"] {
+            assert_eq!(
+                c.query_row(&format!("SELECT count(*) FROM {table}"), [], |r| r
+                    .get::<_, i64>(0))
+                    .unwrap(),
+                2
+            );
+        }
+    }
+}
+
 const DB_LIMIT: u64 = 4 * 1024 * 1024;
 const MANIFEST_LIMIT: u64 = 16 * 1024;
 const FIXTURE_KIND: &str = "lintra.synthetic-sqlite-transfer.v1";

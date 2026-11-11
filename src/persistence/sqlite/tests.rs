@@ -621,21 +621,29 @@ fn process_worker() {
         );
         return;
     }
-    let candidate = snapshot(
-        &repo,
-        "A",
-        2,
-        &mode,
-        vec![row(repo.protector(), "A", 2, "B")],
-    );
+    let candidate = if mode.starts_with("history-") {
+        history::candidate(&repo, 2, &mode)
+    } else {
+        snapshot(
+            &repo,
+            "A",
+            2,
+            &mode,
+            vec![row(repo.protector(), "A", 2, "B")],
+        )
+    };
     let mut tx = repo
         .begin_transaction(&namespace("A"), Some(SnapshotRevision::new(1)))
         .unwrap();
     tx.stage_snapshot(&candidate).unwrap();
     match mode.as_str() {
-        "during" => *repo.inner.fault.lock().unwrap() = Some(TestFault::DuringExit),
-        "after" => *repo.inner.fault.lock().unwrap() = Some(TestFault::AfterExit),
-        "write-pause" => *repo.inner.fault.lock().unwrap() = Some(TestFault::PauseBeforeCommit),
+        "during" | "history-during" => {
+            *repo.inner.fault.lock().unwrap() = Some(TestFault::DuringExit)
+        }
+        "after" | "history-after" => *repo.inner.fault.lock().unwrap() = Some(TestFault::AfterExit),
+        "write-pause" | "history-write-pause" => {
+            *repo.inner.fault.lock().unwrap() = Some(TestFault::PauseBeforeCommit)
+        }
         _ => wait_at_barrier(&mode),
     }
     match tx.commit() {

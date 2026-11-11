@@ -6,6 +6,12 @@ use std::{error::Error, fmt, io};
 #[derive(Debug)]
 #[non_exhaustive]
 pub enum ReportError {
+    /// Rename succeeded, but persistence of the directory entry could not be
+    /// confirmed. The caller must count the already visible output and must
+    /// not describe this as a rollback or a fully successful durable save.
+    PublishedDurabilityUnconfirmed {
+        source: io::Error,
+    },
     /// Filesystem publication failure, distinct from JSON/diagnostic errors.
     Output {
         operation: OutputOperation,
@@ -24,9 +30,17 @@ pub enum ReportError {
     InvalidDiagnostic(InvalidDiagnostic),
     PreviousFailure,
 }
+impl ReportError {
+    pub fn output_was_published(&self) -> bool {
+        matches!(self, Self::PublishedDurabilityUnconfirmed { .. })
+    }
+}
 impl fmt::Display for ReportError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(match self {
+            Self::PublishedDurabilityUnconfirmed { .. } => {
+                "report published, but directory durability could not be confirmed"
+            }
             Self::Output { .. } => "cannot prepare or publish validation report",
             Self::OutputCleanup { .. } => "cannot remove incomplete validation report",
             Self::InvalidSummary(_) => "cannot write inconsistent validation summary",
@@ -41,6 +55,7 @@ impl fmt::Display for ReportError {
 impl Error for ReportError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
+            Self::PublishedDurabilityUnconfirmed { source } => Some(source),
             Self::Output { source, .. } | Self::OutputCleanup { source, .. } => Some(source),
             Self::InvalidSummary(source) => Some(source),
             Self::InvalidTimestamp => None,
