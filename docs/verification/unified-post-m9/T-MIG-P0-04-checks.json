@@ -1,0 +1,8 @@
+{
+  "task": "T-MIG-P0-04",
+  "preflight_head": "92d6d3d",
+  "scope_rows": 16,
+  "scope_sha256": "4c5ea23e6f328d30533d1fa19010192d3280e57ca43685e3a9ca3b10020cae0c",
+  "qualified_runtime_inputs_unchanged": 520,
+  "frontend_qualification": "NOT_VERIFIED"
+}
