@@ -437,7 +437,9 @@ fn windows_write_through_publication_preserves_long_unicode_path_support() {
     let root = tempfile::tempdir().unwrap();
     let mut parent = root.path().to_owned();
     for _ in 0..4 {
-        parent.push("synthetic long directory à ".repeat(3));
+        // Avoid an accidental trailing space: this case tests path length and
+        // Unicode, not Win32's distinct normalization of directory components.
+        parent.push("synthetic long directory à ".repeat(3).trim_end());
     }
     fs::create_dir_all(&parent).unwrap();
     let path = parent.join("report à.jsonl");

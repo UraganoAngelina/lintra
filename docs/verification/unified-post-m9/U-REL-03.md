@@ -127,3 +127,19 @@ per verificare i metadati Ubuntu noble/noble-security sul mirror offerto dai
 modifica DNS o rende PASS alcun gate del prodotto. La firma effettiva dei
 pacchetti continuerà a essere verificata da apt nella CI completa. Il workflow
 è esclusivamente QA, nessuna nuova dipendenza o rete nel prodotto.
+
+Probe43063034911 su1a044e4 SUCCESS per entrambi i metadati noble e
+noble-security; log/metadata connectivity-43063034911 conservati. Log SHA256
+d63b6182c0793d91e44bd224945c45e62911cbf6bf81e3e3944461c8c149e0c1.
+È prova di trasporto HTTPS soltanto, non di compilazione o corretta firma.
+Il setup apt completo seleziona ora quel mirror conservando l'autenticazione
+Ubuntu esistente. Nessun resolver/hosts/CA modificato, nessun check saltato.
+
+Windows130661899188 della CI43060623511 ha superato Clippy e i casi iniziali
+report, incluso path breve con normalizzazione OS, ma fallisce il setup del
+nuovo test path lungo: create_dir_all alla riga442, prima del publisher.
+La fixture costruiva componenti con spazio finale. Rimossa solo l'ambiguità
+del nome con trim_end; Unicode, quattro componenti, lunghezza>260 e tutte le
+assertion del publisher restano. Log completo windows-43060623511-failed.log.gz,
+SHA256dafec245bc677ab4910200b37044c46c78698f7b71355531cf81da47b6e3a3e6.
+Nessuna modifica al runtime del7d4c02e; serve nuova CI completa sul fix.
