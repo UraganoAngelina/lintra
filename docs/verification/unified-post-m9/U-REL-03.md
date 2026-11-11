@@ -143,3 +143,9 @@ del nome con trim_end; Unicode, quattro componenti, lunghezza>260 e tutte le
 assertion del publisher restano. Log completo windows-43060623511-failed.log.gz,
 SHA256dafec245bc677ab4910200b37044c46c78698f7b71355531cf81da47b6e3a3e6.
 Nessuna modifica al runtime del7d4c02e; serve nuova CI completa sul fix.
+
+Nuova CI completa `43078048297` sul commit
+`3aa0d14f1f66b51ce1e8ba9c14a327b3eda26a25`, dopo conclusione della precedente.
+Fmt/diff-check e sintassi Python del setup PASS; confronto Git conferma src,
+ui/src/ui, dipendenze e norme identici al7d4c02e. Delta: fixture Windows e CI.
+Task ancora WAITING_CI, non riattribuire i vecchi risultati al nuovo SHA.

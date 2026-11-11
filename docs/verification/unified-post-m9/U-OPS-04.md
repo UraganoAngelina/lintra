@@ -124,3 +124,8 @@ U-REL-03; vecchio codice34f5b71 resta distinto da quel nuovo SHA.
 
 Nuova matrice richiesta: CI43060623511 su7d4c02e, che include il delta
 durabilità e conserva le due prove SMB/drive mappato. Task ancora WAITING_CI.
+
+La43060623511 è poi fallita per DNS Linux e fixture path lungo Windows del
+deltaREL, prima di completare la matrice. Nuova CI43078048297 su3aa0d14,
+con mirror raggiungibile verificato separatamente e fixture corretta. La
+connettività positiva non chiude questa task; si attende la matrice completa.
