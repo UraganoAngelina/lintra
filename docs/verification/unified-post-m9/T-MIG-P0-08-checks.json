@@ -1,0 +1,54 @@
+{
+  "gate": "G-MIG-0",
+  "verdict": "PASS",
+  "scope": "Governance and entry to P1, not runtime/distribution approval",
+  "preflight_head": "4e0233b",
+  "qualified_code": "cb70bee19f2d470c3ac2e98828343b32e23b3f0a",
+  "ci_run": 42990775714,
+  "ci_required_jobs_success": 7,
+  "ci_log_gzip_sha256": "1a3cf9e7c15e2d9ac32ecd16496975d4a65092f78c0a36e022f4a0ed856051d2",
+  "prerequisites": {
+    "T-MIG-P0-01": {
+      "dossier_sha256": "2ef09f05927db8f158e61659d0eda8ec05b8c3e46c80d98a07ab6249c34b2be5",
+      "last_dossier_commit": "a89c3f51ece42c84c9420512a4ec00d807936646"
+    },
+    "T-MIG-P0-02": {
+      "dossier_sha256": "1a3684c57583755d5e226cdb403dce5b44268a930bb1deec4e2f54aa39abdde7",
+      "last_dossier_commit": "e41e43463c85fd3bd50c20cb440f8e341b339ae4"
+    },
+    "T-MIG-P0-03": {
+      "dossier_sha256": "489ce559554ed012780acfde69fb8145cafb39a81a5d32932f0f245d118e76f4",
+      "last_dossier_commit": "92d6d3d15effcac92d0db3aca2a7e90ce08ef2bd"
+    },
+    "T-MIG-P0-04": {
+      "dossier_sha256": "755c2e2a6ef8029607153be49371ef3c9b7c369a294023f75a3fc15d13543f70",
+      "last_dossier_commit": "eaf989b65ee6a0749eb4bbef802115a20b2da7ec"
+    },
+    "T-MIG-P0-05": {
+      "dossier_sha256": "ed4e9ea669509b11871739bd93fdc2cc8a49aae6ae5a12dd3e947351b60cb06e",
+      "last_dossier_commit": "4e935d8e8aed4b7429959852d870946abb848fc5"
+    },
+    "T-MIG-P0-06": {
+      "dossier_sha256": "8293dc56ed12abdeac2881ba4770261a2b5e825cea85a1cfd3fa41636e1d4eee",
+      "last_dossier_commit": "ed4595522700e28277e36737ddfcce872b29d99d"
+    },
+    "T-MIG-P0-07": {
+      "dossier_sha256": "2ef20efa7dded2235cc2238b3c5a6345972939b104e0f55ece94296674eaed68",
+      "last_dossier_commit": "4e0233bc0ca274db62a4416b3d5bdc43d28f61d5"
+    }
+  },
+  "ratified_ADRs": {
+    "docs/adr/ADR-MIG-001.md": "1aa1214b2331e4c47a11ed483098a293212c18e8726c8bf9d3bb57d40e6dfcca",
+    "docs/adr/ADR-MIG-002.md": "cb40dc2ba3b8b9cbaa0339cf8ff9065b9eeb0368bace5700e723e9f491cdc3fa",
+    "docs/adr/ADR-MIG-003.md": "d14ffaf22026fde1b8474222f5b126a12e4f9d5933693094a13c9305e46ab0e4",
+    "docs/adr/ADR-MIG-004.md": "41008cc12f2a9ba9be454c30b949481319e1a0cba043979a749ac2a295df0bfe"
+  },
+  "current_runtime_inputs_unchanged": 520,
+  "original_status_sha256": "9a9cf8b4bf73c2b4af48cdbba9f10c3d29048189b6866d6b8d00c023e11f240f",
+  "Tauri_product_scaffold_before_gate": false,
+  "next_ready": "T-MIG-P1-01",
+  "Win11_clean_room": "NOT_RUN",
+  "WebKitGTK4_1_personal_host": "NOT_FOUND; P1 prerequisite",
+  "future_gates": "NOT_VERIFIED",
+  "frozen_normative_dataset_files_checked": 15
+}

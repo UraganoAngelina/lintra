@@ -36,7 +36,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-NORM-03 | U-NORM-01, U-NORM-02, U-NORM-05 | DONE | [Servizio normativo e profilo](docs/verification/unified-post-m9/U-NORM-03.md) | cb70bee;1096 pass/7 ignored;CI42990775714 success,21 oracle3 volte per OS | Acceptance backend PASS; G-SIOC1 aggregato attende04 e bridge usabile |
 | U-NORM-04 | U-NORM-03 | WAITING_INTEGRATION | [Oracle nativi e residuo UI](docs/verification/unified-post-m9/U-NORM-04.md) | cb70bee;21 oracle3 volte/OS,JSONL canonico; frontend/contesto amministrativo ancora da collegare | G-SIOC1 NOT_VERIFIED; riprendere dopo G-MIG-4 |
 | U-NORM-05 | U-NORM-01 | DONE | [Addendum autore e oracle](docs/verification/unified-post-m9/U-NORM-05.md) | DEC-SIOC-HIST-02-A01; fonte C20/C18 e PK4.19.1 confermata; check piano locale | G-SIOC0 documentale PASS; G-SIOC1 NOT_VERIFIED |
-| U-UI-01 | U-GOV-04 | DONE | [Ponte 89 MIG/post-audit](docs/verification/unified-post-m9/U-UI-01.md) | Overlay master §6, sorgenti76fa08a distinti dalla HEAD/CI; controlli grafo/documenti | Acceptance ponte PASS; G-MIG-0 NOT_VERIFIED |
+| U-UI-01 | U-GOV-04 | DONE | [Ponte 89 MIG/post-audit](docs/verification/unified-post-m9/U-UI-01.md) | Overlay master §6, sorgenti76fa08a distinti dalla HEAD/CI; controlli grafo/documenti | Acceptance ponte PASS; G-MIG-0 PASS governance |
 | U-UI-02 | T-MIG-P9-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-UI-02.md) | —; Non eseguite | G-MIG-9 NOT_VERIFIED |
 | U-CAD-01 | U-UI-02, U-OPS-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-01.md) | —; Non eseguite | G-CADUI0 NOT_VERIFIED |
 | U-CAD-02 | U-CAD-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-CAD-02.md) | —; Non eseguite | G-CADUI1 NOT_VERIFIED |
@@ -52,14 +52,14 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-REL-01 | U-UI-02, U-CAD-09, U-NORM-04, U-OPS-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-01.md) | —; Non eseguite | G-REL NOT_VERIFIED |
 | U-REL-02 | U-REL-01, U-OPS-06, U-REL-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-02.md) | —; Non eseguite | G-REL NOT_VERIFIED |
 | U-REL-03 | U-OPS-01, U-FIX-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-03.md) | —; Non eseguite | G-DUR NOT_VERIFIED |
-| T-MIG-P0-01 | U-UI-01 | DONE | [Baseline post-audit qualificata](docs/verification/unified-post-m9/T-MIG-P0-01.md) | cb70bee;CI42990775714 success7 job;HEAD documentale42620cf con520 input runtime identici | Acceptance baseline PASS; G-MIG-0 attendeP0-02..08 |
-| T-MIG-P0-02 | T-MIG-P0-01 | DONE | [Matrice corrente/storia](docs/verification/unified-post-m9/T-MIG-P0-02.md) | Baselinecb70bee qualificata;22 discrepanze riconciliate senza riaprire140 task | Acceptance documentale PASS; G-MIG-0 attende03..08 |
-| T-MIG-P0-03 | T-MIG-P0-02 | DONE | [ADR N-24 recepita](docs/verification/unified-post-m9/T-MIG-P0-03.md) | ADR-MIG-001;autore10 novembre,recepimento11;ARCH/DET/N-24 allineati | Acceptance ratifica documentale PASS; G-MIG-0 aperto |
-| T-MIG-P0-04 | T-MIG-P0-03 | DONE | [Scope e parità obbligatoria](docs/verification/unified-post-m9/T-MIG-P0-04.md) | D01/DEC-MIG-07 recepite;16 capability e stato reale; codice invariato | Acceptance scope PASS; G-MIG-0 attende05..08 |
-| T-MIG-P0-05 | T-MIG-P0-03 | DONE | [ADR OS e offline](docs/verification/unified-post-m9/T-MIG-P0-05.md) | ADR-MIG-002,D14/DEC-MIG-02 recepite;policy core/CLI invariata | Acceptance OS documentale PASS; GUI nativa/installer ancora NOT_VERIFIED |
-| T-MIG-P0-06 | T-MIG-P0-03 | DONE | [Policy e threat model](docs/verification/unified-post-m9/T-MIG-P0-06.md) | ADR-MIG-003/004,policy autore recepita;test attacco/runtime futuri espliciti | Acceptance policy PASS; G-MIG-0 attende07/08 |
-| T-MIG-P0-07 | T-MIG-P0-04, T-MIG-P0-05 | DONE | [Brief UX e budget misurabili](docs/verification/unified-post-m9/T-MIG-P0-07.md) | Copper Ledger esteso,stati/viewport/a11y e protocollo;nessun tempo DEC-14 inventato | Acceptance brief PASS; nuove prove UI NOT_VERIFIED |
-| T-MIG-P0-08 | T-MIG-P0-01, T-MIG-P0-02, T-MIG-P0-03, T-MIG-P0-04, T-MIG-P0-05, T-MIG-P0-06, T-MIG-P0-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-08.md) | —; Non eseguite | G-MIG-0 NOT_VERIFIED |
+| T-MIG-P0-01 | U-UI-01 | DONE | [Baseline post-audit qualificata](docs/verification/unified-post-m9/T-MIG-P0-01.md) | cb70bee;CI42990775714 success7 job;HEAD documentale42620cf con520 input runtime identici | G-MIG-0 PASS governance; prove UI/runtime successive separate |
+| T-MIG-P0-02 | T-MIG-P0-01 | DONE | [Matrice corrente/storia](docs/verification/unified-post-m9/T-MIG-P0-02.md) | Baselinecb70bee qualificata;22 discrepanze riconciliate senza riaprire140 task | G-MIG-0 PASS governance; prove UI/runtime successive separate |
+| T-MIG-P0-03 | T-MIG-P0-02 | DONE | [ADR N-24 recepita](docs/verification/unified-post-m9/T-MIG-P0-03.md) | ADR-MIG-001;autore10 novembre,recepimento11;ARCH/DET/N-24 allineati | G-MIG-0 PASS governance; prove UI/runtime successive separate |
+| T-MIG-P0-04 | T-MIG-P0-03 | DONE | [Scope e parità obbligatoria](docs/verification/unified-post-m9/T-MIG-P0-04.md) | D01/DEC-MIG-07 recepite;16 capability e stato reale; codice invariato | G-MIG-0 PASS governance; prove UI/runtime successive separate |
+| T-MIG-P0-05 | T-MIG-P0-03 | DONE | [ADR OS e offline](docs/verification/unified-post-m9/T-MIG-P0-05.md) | ADR-MIG-002,D14/DEC-MIG-02 recepite;policy core/CLI invariata | G-MIG-0 PASS governance; prove UI/runtime successive separate |
+| T-MIG-P0-06 | T-MIG-P0-03 | DONE | [Policy e threat model](docs/verification/unified-post-m9/T-MIG-P0-06.md) | ADR-MIG-003/004,policy autore recepita;test attacco/runtime futuri espliciti | G-MIG-0 PASS governance; prove UI/runtime successive separate |
+| T-MIG-P0-07 | T-MIG-P0-04, T-MIG-P0-05 | DONE | [Brief UX e budget misurabili](docs/verification/unified-post-m9/T-MIG-P0-07.md) | Copper Ledger esteso,stati/viewport/a11y e protocollo;nessun tempo DEC-14 inventato | G-MIG-0 PASS governance; prove UI/runtime successive separate |
+| T-MIG-P0-08 | T-MIG-P0-01, T-MIG-P0-02, T-MIG-P0-03, T-MIG-P0-04, T-MIG-P0-05, T-MIG-P0-06, T-MIG-P0-07 | DONE | [Gate G-MIG-0](docs/verification/unified-post-m9/T-MIG-P0-08.md) | ADR/evidenze/prerequisiti verificati;cb70bee CI42990775714 positiva | G-MIG-0 PASS governance; ingressoP1 autorizzato |
 | T-MIG-P1-01 | T-MIG-P0-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-01.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-02 | T-MIG-P0-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-02.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-03 | T-MIG-P1-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-03.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
@@ -144,9 +144,9 @@ CI audit non qualifica alcun nuovo delta runtime.
 
 U-FIX-01..05 DONE: G-HARD PASS con CI42990775714 sucb70bee,7 job richiesti positivi.
 U-NORM-03 DONE per backend normativo,21 oracle3volte/OS;04 WAITING_INTEGRATION per frontend/contesto amministrativo, G-SIOC1 complessivo aperto.
-T-MIG-P0-01 DONE; G-MIG-0 non ancora PASS prima delle altre sette taskP0.
+T-MIG-P0-01..08 DONE; G-MIG-0 PASS per governance e ingresso agli spike, non per runtime/installer.
 U-OPS-07 DONE documentale; U-OPS-03 preflight sospeso sull'integrazione root/worker Tauri reale, nessun DONE implicito.
-**next READY T-MIG-P0-08** per verificare G-MIG-0 prima degli spike Tauri. AUTO_CONTINUE.
+**next READY T-MIG-P1-01**: spike reale Tauri su CachyOS. Gli altri gate restano NOT_VERIFIED. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.
