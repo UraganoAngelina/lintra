@@ -144,6 +144,52 @@ pub(super) fn check_outputs(
     }
     Ok(())
 }
+
+/// Same application policy for ordinary and historical report outputs. Only
+/// user-selected output files are assessed: the private internal error spool
+/// for XLSX-only commands is not an export destination. No path is logged.
+pub(super) fn authorize_report_outputs(
+    args: &ValidateArgs,
+    extra: &[PathBuf],
+) -> Result<(Vec<PathBuf>, AuthorizedReportDestinations), Failure> {
+    let paths: Vec<_> = args
+        .errors
+        .iter()
+        .chain(std::iter::once(&args.summary))
+        .chain(args.xlsx.iter())
+        .chain(extra.iter())
+        .cloned()
+        .collect();
+    let assessment = ReportDestinationAssessment::inspect(&paths)?;
+    let permission = if assessment.requires_confirmation() {
+        if !args.allow_shared_export {
+            return Err(invalid(
+                "report destination is remote/shared or cannot be determined; check who can access the folder and explicitly confirm this command with --allow-shared-export",
+            ));
+        }
+        let permission = assessment.acknowledge_warning();
+        let receipt = permission.receipt();
+        let stderr = io::stderr();
+        let mut log = stderr.lock();
+        writeln!(
+            log,
+            "{}",
+            serde_json::json!({
+                "event":"export_destination_confirmed",
+                "local_files":receipt.local_files,
+                "remote_files":receipt.remote_files,
+                "undetermined_files":receipt.undetermined_files,
+                "warning_acknowledged":receipt.warning_acknowledged,
+            })
+        )?;
+        log.flush()?;
+        permission
+    } else {
+        assessment.allow_local()?
+    };
+    permission.verify_unchanged(&paths)?;
+    Ok((paths, permission))
+}
 /// The real service is composed with streaming JSONL and a separate summary.
 /// Publication is atomic per file, as in T-P5-06; this is not a two-file transaction.
 pub fn validate(args: ValidateArgs) -> Result<RunStatus, Failure> {
@@ -179,6 +225,10 @@ fn validate_with_token(
         other => other?,
     };
     let service = selected.service;
+    if cancellation.is_cancelled() {
+        return Ok(RunStatus::Cancelled);
+    }
+    let (export_paths, export_permission) = authorize_report_outputs(&args, &[])?;
     let mut errors = ErrorSpool::create(args.errors.as_deref())?;
     let mut summary =
         match AtomicReportFile::create_replacing(&args.summary, PartialOutputPolicy::Delete) {
@@ -259,6 +309,14 @@ fn validate_with_token(
         run_status: outcome.status,
         truncated: outcome.summary.truncated,
     };
+    if completion.run_status != RunStatus::Cancelled
+        && !completion.truncated
+        && let Err(error) = export_permission.verify_unchanged(&export_paths)
+    {
+        let mut reports = vec![summary];
+        reports.extend(xlsx);
+        return Err(abort(Some(errors), reports, error.into()));
+    }
     if let Err(error) = errors.complete(completion) {
         let mut reports = vec![summary];
         reports.extend(xlsx);
@@ -345,6 +403,7 @@ mod cancellation_tests {
             fs::write(root.join("report.xlsx"), b"old workbook").unwrap();
             fs::write(root.join("budget.json"), br#"{"version":1,"measurement_source":"synthetic cancellation probe","input_bytes":1,"reference_bytes":null}"#).unwrap();
             let args = ValidateArgs {
+                allow_shared_export: false,
                 resource_budget: budget_enabled.then(|| root.join("budget.json")),
                 proceed_over_budget: budget_enabled,
                 bundle_manifest: None,

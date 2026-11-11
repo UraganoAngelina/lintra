@@ -66,6 +66,8 @@ export component MainWindow inherits Window {
     in property <bool> export-busy: false;
     in property <bool> export-error: false;
     in property <bool> export-confirmation-required: false;
+    in property <bool> export-destination-confirmation-required: false;
+    in-out property <bool> export-destination-confirmed: false;
     in-out property <bool> export-overwrite: false;
     in property <int> export-format;
     in-out property <string> export-path;
@@ -244,6 +246,8 @@ export component MainWindow inherits Window {
                 destination <=> root.export-path; note: root.export-note;
                 busy: root.export-busy; error: root.export-error;
                 confirmation-required: root.export-confirmation-required;
+                destination-confirmation-required: root.export-destination-confirmation-required;
+                destination-confirmed <=> root.export-destination-confirmed;
                 overwrite <=> root.export-overwrite;
                 choose-format(index) => { root.choose-export-format(index); }
                 path-edited => { root.export-path-edited(); }

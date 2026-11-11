@@ -31,3 +31,9 @@ CI43014153420 conclusa success su bdca1cf00121717b3c58504127ae4ce45f806e6b: fron
 G-MIG-1 NOT_VERIFIED. La prova non è sostituita da simulazione o da un flag.
 
 P1-03 è conclusa indipendentemente su Linux; next READY **U-OPS-04**. Nessun ingresso P2/P3 prima del vero gate G-MIG-1. AUTO_CONTINUE.
+
+Artefatto sintetico scaricato nel target locale ignorato da Git e verificato
+contro il manifest CI: exe8.722.432byte SHA7927f57a…2b1b0d;
+setup219.878.356byte SHAf31b7064…c0897. Digest completi e percorsi nel
+T-MIG-P1-02-artifact-receipt.json. Installazione non eseguita: nessuna
+consegna del prodotto o PASS Win11 derivato dal solo file disponibile.

@@ -128,6 +128,65 @@ fn native_export_is_bound_to_the_run_ignores_filters_and_reports_actual_save_out
         "export includes the diagnostic hidden by the filter"
     );
     assert!(input.path().join("saved.csv.summary.json").exists());
+    assert!(
+        !exports
+            .borrow()
+            .last_receipt()
+            .unwrap()
+            .destination
+            .warning_acknowledged
+    );
+    #[cfg(target_os = "linux")]
+    {
+        // A real opaque kernel filesystem produces the Unknown-location
+        // warning, without mocking the Rust service or writing a report there.
+        ui.set_export_path("/proc/lintra-synthetic-export.csv".into());
+        ui.invoke_export_path_edited();
+        ui.invoke_confirm_export();
+        wait(|| ui.get_export_busy(), || {});
+        assert!(ui.get_export_destination_confirmation_required());
+        assert!(!ui.get_export_destination_confirmed());
+        assert!(!ui.get_export_error());
+        assert!(ui.get_export_note().contains("Non è possibile determinare"));
+        assert!(exports.borrow().last_receipt().is_none());
+        for scale in [1, 2] {
+            window.dispatch_event(slint::platform::WindowEvent::ScaleFactorChanged {
+                scale_factor: scale as f32,
+            });
+            window.set_size(PhysicalSize::new(1280 * scale, 780 * scale));
+            for dark in [false, true] {
+                ui.set_dark_mode(dark);
+                capture(
+                    &window,
+                    &images,
+                    if dark {
+                        "destination-warning-dark"
+                    } else {
+                        "destination-warning-light"
+                    },
+                    scale,
+                );
+            }
+        }
+        // Clicking through a valid warning cannot bypass a filesystem error.
+        ui.set_export_destination_confirmed(true);
+        ui.invoke_confirm_export();
+        wait(|| ui.get_export_busy(), || {});
+        assert!(ui.get_export_error());
+        assert!(exports.borrow().last_receipt().is_none());
+        assert!(
+            exports
+                .borrow()
+                .last_failure()
+                .unwrap()
+                .published
+                .is_empty()
+        );
+        ui.set_export_path(path.to_str().unwrap().into());
+        ui.invoke_export_path_edited();
+        assert!(!ui.get_export_destination_confirmed());
+        assert!(!ui.get_export_destination_confirmation_required());
+    }
     ui.invoke_confirm_export();
     wait(|| ui.get_export_busy(), || {});
     assert!(ui.get_export_error());

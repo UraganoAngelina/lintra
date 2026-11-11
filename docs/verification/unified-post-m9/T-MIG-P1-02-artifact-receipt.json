@@ -1,0 +1,45 @@
+{
+  "build_manifest": {
+    "task": "T-MIG-P1-02",
+    "source_sha": "bdca1cf00121717b3c58504127ae4ce45f806e6b",
+    "ci_run": "43014153420",
+    "build_host": "windows-2025 / Windows Server; not Windows 11",
+    "purpose": "Synthetic runtime test artifact; not a Lintra product release",
+    "windows_11_clean_room": "NOT_RUN",
+    "offline_installation": "NOT_RUN",
+    "non_admin_two_accounts": "NOT_RUN",
+    "configured": {
+      "nsis": "perMachine",
+      "webview": "offlineInstaller",
+      "target": "x86_64-pc-windows-msvc"
+    },
+    "files": [
+      {
+        "bytes": 8722432,
+        "name": "lintra-runtime-spike.exe",
+        "sha256": "7927f57abe31df8c75ee94497f3ff8b9b866be9ee4460b34cb0653731d2b1b0d"
+      },
+      {
+        "bytes": 219878356,
+        "name": "Lintra Runtime Spike_0.0.0_x64-setup.exe",
+        "sha256": "f31b70649313652c6ebd2af373b41283e93e7a837072ede1147c30175f3c0897"
+      }
+    ]
+  },
+  "manifest_sha256": "0e8bacf628b0b9e35a30162cbb4f035f3b170d8780111cffb2009d401768c9ad",
+  "local_files_verified": [
+    {
+      "bytes": 8722432,
+      "name": "lintra-runtime-spike.exe",
+      "sha256": "7927f57abe31df8c75ee94497f3ff8b9b866be9ee4460b34cb0653731d2b1b0d",
+      "local_path": "target/tauri-windows-spike/bdca1cf/tauri-runtime-spike-windows-bdca1cf00121717b3c58504127ae4ce45f806e6b/lintra-runtime-spike.exe"
+    },
+    {
+      "bytes": 219878356,
+      "name": "Lintra Runtime Spike_0.0.0_x64-setup.exe",
+      "sha256": "f31b70649313652c6ebd2af373b41283e93e7a837072ede1147c30175f3c0897",
+      "local_path": "target/tauri-windows-spike/bdca1cf/tauri-runtime-spike-windows-bdca1cf00121717b3c58504127ae4ce45f806e6b/bundle/nsis/Lintra Runtime Spike_0.0.0_x64-setup.exe"
+    }
+  ],
+  "scope": "Concrete synthetic test artifact downloaded and hashes verified. Not a Lintra product release; Windows11/offline/two-account installation NOT_RUN."
+}

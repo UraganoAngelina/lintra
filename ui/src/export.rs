@@ -47,6 +47,7 @@ pub enum ExportError {
     ProtectedSource,
     NotRegularFile,
     OverwriteRequired,
+    Destination(ReportDestinationError),
     Cancelled,
     IncompleteRun,
     Io(io::Error),
@@ -68,6 +69,10 @@ impl fmt::Display for ExportError {
             Self::ProtectedSource=>"Scegli un altro file: questa destinazione coincide con il file analizzato o con il report sorgente.",
             Self::NotRegularFile=>"La destinazione è una cartella o un collegamento. Scegli un file regolare.",
             Self::OverwriteRequired=>"Il report o il relativo riepilogo esiste già. Conferma la sostituzione oppure cambia nome.",
+            Self::Destination(ReportDestinationError::ConfirmationRequired(assessment)) if assessment.counts().undetermined_files > 0 =>"Non è possibile determinare se la destinazione è locale o condivisa. Verifica gli accessi alla cartella e conferma il salvataggio.",
+            Self::Destination(ReportDestinationError::ConfirmationRequired(_)) =>"La destinazione è remota o condivisa. Altre persone potrebbero accedere ai file. Verifica gli accessi e conferma il salvataggio.",
+            Self::Destination(ReportDestinationError::SelectionChanged) =>"La destinazione è cambiata. Verifica il percorso e ripeti il salvataggio con una nuova conferma se richiesta.",
+            Self::Destination(ReportDestinationError::Io(_)) =>"Impossibile verificare la cartella di destinazione. Controlla che sia accessibile.",
             Self::Cancelled=>"Salvataggio annullato prima della pubblicazione dei file.",
             Self::IncompleteRun=>"Il run è annullato o troncato: non è disponibile un report completo da esportare.",
             Self::Io(e) if e.kind()==io::ErrorKind::NotFound=>"La cartella di destinazione non esiste. Scegli una cartella esistente.",
@@ -89,10 +94,19 @@ impl Error for ExportError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
             Self::Io(e) | Self::Source(e) | Self::Spawn(e) => Some(e),
+            Self::Destination(e) => Some(e),
             Self::Report(e) => Some(e),
             Self::Replay(e) => Some(e),
             Self::Workbook(e) => Some(e),
             _ => None,
+        }
+    }
+}
+impl From<ReportDestinationError> for ExportError {
+    fn from(error: ReportDestinationError) -> Self {
+        match error {
+            ReportDestinationError::Io(error) => Self::Io(error),
+            other => Self::Destination(other),
         }
     }
 }
@@ -167,11 +181,13 @@ impl From<ExportError> for ExportFailure {
 }
 pub struct ExportReceipt {
     pub files: Vec<PathBuf>,
+    pub destination: ReportDestinationReceipt,
 }
 impl fmt::Debug for ExportReceipt {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("ExportReceipt")
             .field("file_count", &self.files.len())
+            .field("destination", &self.destination)
             .finish()
     }
 }
@@ -282,7 +298,8 @@ fn abort_all(mut failure: ExportFailure, guards: Vec<AtomicReportFile>) -> Expor
     }
     failure
 }
-/// A successful result names both files. Before publication both remain private.
+/// A successful result names both files. Before publication both remain staged
+/// under the selected destination's OS permissions, distinct from private spool.
 /// After the final cancellation checkpoint we finish publication; late cancel
 /// cannot undo a file already renamed. External concurrent path replacement is
 /// outside the existing AtomicReportFile contract; no stronger claim is added.
@@ -294,6 +311,21 @@ pub fn export_report(
     overwrite: bool,
     cancellation: &CancellationToken,
 ) -> Result<ExportReceipt, ExportFailure> {
+    export_report_with_authorization(report, summary, format, path, overwrite, cancellation, None)
+}
+
+/// The dialog can acknowledge an inspection returned by a previous attempt.
+/// Local exports use the ordinary entry point with no extra privacy checkbox.
+/// Both routes run the exact same OS policy and canonical writers in Rust.
+pub fn export_report_with_authorization(
+    report: &AnalysisReport,
+    summary: &ValidationSummary,
+    format: ExportFormat,
+    path: &Path,
+    overwrite: bool,
+    cancellation: &CancellationToken,
+    authorization: Option<AuthorizedReportDestinations>,
+) -> Result<ExportReceipt, ExportFailure> {
     if summary.run_status == RunStatus::Cancelled || summary.truncated {
         return Err(ExportError::IncompleteRun.into());
     }
@@ -301,6 +333,20 @@ pub fn export_report(
         return Err(ExportError::Cancelled.into());
     }
     let paths = preflight(report, path, format, overwrite).map_err(ExportFailure::from)?;
+    let permission = match authorization {
+        Some(permission) => permission,
+        None => ReportDestinationAssessment::inspect(&paths)
+            .and_then(ReportDestinationAssessment::allow_local)
+            .map_err(ExportError::from)
+            .map_err(ExportFailure::from)?,
+    };
+    permission
+        .verify_unchanged(&paths)
+        .map_err(ExportError::from)
+        .map_err(ExportFailure::from)?;
+    if cancellation.is_cancelled() {
+        return Err(ExportError::Cancelled.into());
+    }
     let mut guards = Vec::new();
     for destination in &paths {
         match AtomicReportFile::create_replacing(destination, PartialOutputPolicy::Delete) {
@@ -355,6 +401,9 @@ pub fn export_report(
     if let Err(error) = preflight(report, path, format, overwrite) {
         return Err(abort_all(error.into(), guards));
     }
+    if let Err(error) = permission.verify_unchanged(&paths) {
+        return Err(abort_all(ExportError::from(error).into(), guards));
+    }
     let mut published = Vec::new();
     for destination in paths {
         let guard = guards.remove(0);
@@ -387,7 +436,10 @@ pub fn export_report(
             }
         }
     }
-    Ok(ExportReceipt { files: published })
+    Ok(ExportReceipt {
+        files: published,
+        destination: permission.receipt(),
+    })
 }
 /// One terminal slot, owned join handle and cooperative token. The report Arc
 /// keeps the JSONL/temp directory alive across a new validation or UI selection.
@@ -404,6 +456,16 @@ impl ExportJob {
         path: PathBuf,
         overwrite: bool,
     ) -> Result<Self, ExportError> {
+        Self::start_with_authorization(report, summary, format, path, overwrite, None)
+    }
+    pub fn start_with_authorization(
+        report: Arc<AnalysisReport>,
+        summary: ValidationSummary,
+        format: ExportFormat,
+        path: PathBuf,
+        overwrite: bool,
+        authorization: Option<AuthorizedReportDestinations>,
+    ) -> Result<Self, ExportError> {
         let (sender, receiver) = mpsc::sync_channel(1);
         let token = CancellationToken::default();
         let cancellation = token.clone();
@@ -411,7 +473,15 @@ impl ExportJob {
             .name("lintra-export".into())
             .spawn(move || {
                 let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                    export_report(&report, &summary, format, &path, overwrite, &cancellation)
+                    export_report_with_authorization(
+                        &report,
+                        &summary,
+                        format,
+                        &path,
+                        overwrite,
+                        &cancellation,
+                        authorization,
+                    )
                 }))
                 .unwrap_or_else(|_| Err(ExportError::WorkerUnavailable.into()));
                 let _ = sender.try_send(result);

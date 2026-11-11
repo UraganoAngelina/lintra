@@ -11,6 +11,7 @@ use std::{
 /// Parsed adapter configuration, with real request and explicit output paths.
 /// Reference data directories describe bundle selection, not provider availability.
 pub struct ValidateArgs {
+    pub allow_shared_export: bool,
     pub resource_budget: Option<PathBuf>,
     pub proceed_over_budget: bool,
     pub dirs: CliDirs,
@@ -97,6 +98,9 @@ pub fn command() -> Command {
             )
             .arg(path("xlsx"))
             .arg(path("summary").required(true))
+            .arg(Arg::new("allow-shared-export").long("allow-shared-export")
+                .action(clap::ArgAction::SetTrue)
+                .help("Conferma per questo comando il salvataggio su destinazioni remote o non determinabili; non ignora protezioni o errori tecnici"))
             .arg(
                 Arg::new("encoding")
                     .long("encoding")
@@ -348,6 +352,7 @@ where
         )
     };
     let validation = ValidateArgs {
+        allow_shared_export: args.get_flag("allow-shared-export"),
         resource_budget: if historical {
             None
         } else {

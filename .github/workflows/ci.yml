@@ -82,6 +82,29 @@ jobs:
           Remove-Item -LiteralPath $probe
           Add-Content -Path $env:GITHUB_ENV -Value "TEMP=$fixtureTemp" -Encoding utf8
           Add-Content -Path $env:GITHUB_ENV -Value "TMP=$fixtureTemp" -Encoding utf8
+      - name: Prepare synthetic loopback SMB export destinations
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          # Disposable native CI fixture only. The product starts no SMB server
+          # and receives no new networking dependency or general share access.
+          Start-Service LanmanServer
+          $share = 'lintra_export_' + $env:GITHUB_RUN_ID + '_' + $env:GITHUB_RUN_ATTEMPT
+          $directory = Join-Path $env:TEMP $share
+          New-Item -ItemType Directory -Path $directory -ErrorAction Stop | Out-Null
+          $principal = [Security.Principal.WindowsIdentity]::GetCurrent().Name
+          New-SmbShare -Name $share -Path $directory -FullAccess $principal | Out-Null
+          Add-Content -LiteralPath $env:GITHUB_ENV -Value "LINTRA_TEST_EXPORT_SHARE=$share" -Encoding utf8
+          $unc = '\\localhost\' + $share
+          if (!(Test-Path -LiteralPath $unc)) { throw 'Synthetic loopback share unavailable' }
+          $used = [IO.DriveInfo]::GetDrives().Name
+          $drive = 90..82 | ForEach-Object { ([char]$_).ToString() + ':' } | Where-Object { ($_.ToString() + '\') -notin $used } | Select-Object -First 1
+          if (!$drive) { throw 'No unused drive for the synthetic mapping' }
+          New-SmbMapping -LocalPath $drive -RemotePath $unc -Persistent $false | Out-Null
+          Add-Content -LiteralPath $env:GITHUB_ENV -Value "LINTRA_TEST_EXPORT_DRIVE=$drive" -Encoding utf8
+          Add-Content -LiteralPath $env:GITHUB_ENV -Value "LINTRA_TEST_EXPORT_UNC=$unc" -Encoding utf8
+          Add-Content -LiteralPath $env:GITHUB_ENV -Value "LINTRA_TEST_EXPORT_MAPPED=$drive\" -Encoding utf8
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.13'
@@ -104,6 +127,25 @@ jobs:
         run: cargo clippy --workspace --all-targets --all-features --target ${{ matrix.target }} --locked -- -D warnings
       - name: Test all features
         run: cargo test --workspace --all-features --target ${{ matrix.target }} --locked
+      - name: Qualify actual Windows shared export consent and canonical files
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cargo test -p lintra --all-features --target ${{ matrix.target }} --locked --test shared_export_cli -- --ignored
+          if ($LASTEXITCODE -ne 0) { throw 'Actual CLI shared export qualification failed' }
+          cargo test -p lintra-ui --all-features --target ${{ matrix.target }} --locked --test shared_exports -- --ignored
+          if ($LASTEXITCODE -ne 0) { throw 'Actual UI shared export qualification failed' }
+      - name: Remove only this job's synthetic SMB fixture
+        if: always() && runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:LINTRA_TEST_EXPORT_DRIVE -match '^[R-Z]:$') {
+            Remove-SmbMapping -LocalPath $env:LINTRA_TEST_EXPORT_DRIVE -Force -ErrorAction Stop
+          }
+          if ($env:LINTRA_TEST_EXPORT_SHARE -match '^lintra_export_[0-9]+_[0-9]+$') {
+            Remove-SmbShare -Name $env:LINTRA_TEST_EXPORT_SHARE -Force -Confirm:$false
+          }
       # UI's embedded feature is additive. Verify the independent core build
       # too: workspace feature unification must not hide a no-bundle regression.
       - name: Test core without embedded bundle

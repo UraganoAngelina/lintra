@@ -9,6 +9,8 @@ export component ExportPanel inherits Rectangle {
     in property <bool> busy;
     in property <bool> error;
     in property <bool> confirmation-required;
+    in property <bool> destination-confirmation-required;
+    in-out property <bool> destination-confirmed;
     in-out property <bool> overwrite;
     callback choose-format(int);
     callback path-edited();
@@ -34,16 +36,17 @@ export component ExportPanel inherits Rectangle {
             VerticalLayout {
                 spacing: Tok.detail-meta-spacing;
                 Text { text: "File di destinazione"; color: Tok.ink; }
-                FieldEdit { text <=> root.destination; enabled: !root.busy; placeholder: "Percorso completo del file"; monospace: true; edited(value) => { root.path-edited(); } confirmed(value) => { if !root.busy && (!root.confirmation-required || root.overwrite) { root.save(); } } }
+                FieldEdit { text <=> root.destination; enabled: !root.busy; placeholder: "Percorso completo del file"; monospace: true; edited(value) => { root.path-edited(); } confirmed(value) => { if !root.busy && (!root.confirmation-required || root.overwrite) && (!root.destination-confirmation-required || root.destination-confirmed) { root.save(); } } }
                 Text { text: "Il riepilogo usa il percorso del report con suffisso .summary.json."; color: Tok.muted; font-size: Tok.caption-size; wrap: word-wrap; }
             }
             if root.confirmation-required: ReportCheck { label: "Confermo la sostituzione dei file esistenti"; checked <=> root.overwrite; enabled: !root.busy; }
             Text { text: root.note; color: root.error ? Tok.error : Tok.ink; wrap: word-wrap; }
+            if root.destination-confirmation-required: ReportCheck { label: "Confermo il salvataggio in questa destinazione"; checked <=> root.destination-confirmed; enabled: !root.busy; }
             HorizontalLayout {
                 height: Tok.control-height; spacing: Tok.control-gap;
                 Rectangle { horizontal-stretch: 1; }
                 ActionButton { width: Tok.secondary-action-width; label: root.busy ? "Annulla" : "Chiudi"; activated => { root.close(); } }
-                ActionButton { width: Tok.primary-action-width; label: "Salva report"; primary: true; enabled: !root.busy && root.destination != "" && (!root.confirmation-required || root.overwrite); activated => { root.save(); } }
+                ActionButton { width: Tok.primary-action-width; label: "Salva report"; primary: true; enabled: !root.busy && root.destination != "" && (!root.confirmation-required || root.overwrite) && (!root.destination-confirmation-required || root.destination-confirmed); activated => { root.save(); } }
             }
         }
     }

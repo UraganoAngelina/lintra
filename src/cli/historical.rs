@@ -134,6 +134,8 @@ fn json_line(writer: &mut dyn Write, value: &impl serde::Serialize) -> Result<()
 /// Own every guard until the analysis has completed. Publication is atomic per
 /// file, exactly as in the ordinary CLI; it is not a report/DB transaction.
 struct Reports {
+    export_paths: Vec<PathBuf>,
+    export_permission: AuthorizedReportDestinations,
     errors: ErrorSpool,
     summary: AtomicReportFile,
     audit: AtomicReportFile,
@@ -142,6 +144,10 @@ struct Reports {
 }
 impl Reports {
     fn create(args: &HistoricalArgs) -> Result<Self, Failure> {
+        let (export_paths, export_permission) = command::authorize_report_outputs(
+            &args.validation,
+            &[args.audit.clone(), args.audit_summary.clone()],
+        )?;
         let errors = ErrorSpool::create(args.validation.errors.as_deref())?;
         let mut reports = Vec::new();
         for path in [&args.validation.summary, &args.audit, &args.audit_summary]
@@ -155,6 +161,8 @@ impl Reports {
         }
         let mut reports = reports.into_iter();
         Ok(Self {
+            export_paths,
+            export_permission,
             errors,
             summary: reports
                 .next()
@@ -183,6 +191,14 @@ impl Reports {
         Ok(RunStatus::Cancelled)
     }
     fn publish(self, completion: ReportCompletion) -> Result<(), Failure> {
+        // This check remains inside the genuine approval publication callback:
+        // an invalidated destination prevents the transaction, never bypasses CAS.
+        if completion.run_status != RunStatus::Cancelled
+            && !completion.truncated
+            && let Err(error) = self.export_permission.verify_unchanged(&self.export_paths)
+        {
+            return Err(self.fail(error.into()));
+        }
         let (errors, reports) = self.parts();
         if let Err(error) = errors.complete(completion) {
             return Err(command::abort(None, reports, error.into()));
@@ -244,6 +260,9 @@ pub(super) fn execute(
         &[args.audit.clone(), args.audit_summary.clone()],
         std::slice::from_ref(&args.archive.key_file),
     )?;
+    if cancellation.is_cancelled() {
+        return Ok(RunStatus::Cancelled);
+    }
     let mut reports = Reports::create(&args)?;
     let service =
         HistoricalValidationService::new(&selected.service, &repository, repository.protector());

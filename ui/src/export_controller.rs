@@ -6,7 +6,7 @@ use crate::{
     results::controller::ResultsController,
     worker::AnalysisReport,
 };
-use lintra::ValidationSummary;
+use lintra::{ReportDestinationError, ValidationSummary};
 use slint::{ComponentHandle, Timer, TimerMode};
 use std::{cell::RefCell, path::PathBuf, rc::Rc, sync::Arc, time::Duration};
 struct Selection {
@@ -90,6 +90,8 @@ impl ExportController {
         ui.set_export_error(false);
         ui.set_export_overwrite(false);
         ui.set_export_confirmation_required(false);
+        ui.set_export_destination_confirmation_required(false);
+        ui.set_export_destination_confirmed(false);
         ui.set_show_info(false);
         ui.set_export_open(true);
         self.selection = Some(Selection {
@@ -132,6 +134,8 @@ impl ExportController {
         if let Some(ui) = self.window.upgrade() {
             ui.set_export_overwrite(false);
             ui.set_export_confirmation_required(false);
+            ui.set_export_destination_confirmation_required(false);
+            ui.set_export_destination_confirmed(false);
             ui.set_export_error(false);
         }
     }
@@ -145,14 +149,30 @@ impl ExportController {
         let Some(selection) = &self.selection else {
             return;
         };
+        // The UI can acknowledge only the previous Rust inspection, which
+        // remains bound to this selected report. Path/format/open reset the UI
+        // choice; the worker verifies exact destinations before any writes.
+        let authorization = if ui.get_export_destination_confirmed() {
+            self.failure
+                .as_ref()
+                .and_then(|failure| match &failure.cause {
+                    ExportError::Destination(ReportDestinationError::ConfirmationRequired(
+                        assessment,
+                    )) => Some(assessment.clone().acknowledge_warning()),
+                    _ => None,
+                })
+        } else {
+            None
+        };
         self.failure = None;
         self.receipt = None;
-        match ExportJob::start(
+        match ExportJob::start_with_authorization(
             selection.report.clone(),
             selection.summary.clone(),
             selection.format,
             PathBuf::from(ui.get_export_path().as_str()),
             ui.get_export_overwrite(),
+            authorization,
         ) {
             Ok(job) => {
                 self.job = Some(job);
@@ -174,12 +194,18 @@ impl ExportController {
     }
     fn show_failure(&mut self, failure: ExportFailure) {
         if let Some(ui) = self.window.upgrade() {
-            ui.set_export_busy(false);
-            ui.set_export_error(!failure.cancelled);
-            ui.set_export_confirmation_required(matches!(
+            let destination_warning = matches!(
                 failure.cause,
-                ExportError::OverwriteRequired
-            ));
+                ExportError::Destination(ReportDestinationError::ConfirmationRequired(_))
+            );
+            ui.set_export_busy(false);
+            ui.set_export_error(!failure.cancelled && !destination_warning);
+            ui.set_export_destination_confirmation_required(destination_warning);
+            ui.set_export_destination_confirmed(false);
+            ui.set_export_confirmation_required(
+                matches!(failure.cause, ExportError::OverwriteRequired)
+                    || (destination_warning && ui.get_export_confirmation_required()),
+            );
             ui.set_export_note(failure.to_string().into());
         }
         self.failure = Some(failure);
@@ -197,6 +223,8 @@ impl ExportController {
                     ui.set_export_busy(false);
                     ui.set_export_error(false);
                     ui.set_export_confirmation_required(false);
+                    ui.set_export_destination_confirmation_required(false);
+                    ui.set_export_destination_confirmed(false);
                     ui.set_export_overwrite(false);
                     ui.set_export_note(
                         format!(

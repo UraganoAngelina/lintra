@@ -27,7 +27,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | U-OPS-01 | U-GOV-03 | DONE | [Modello uso interno](docs/verification/unified-post-m9/U-OPS-01.md) | Scope ratificato; documenti soltanto, provisioning Tauri ancora da qualificare | Acceptance di scope PASS; G-OPS0 aggregato NOT_VERIFIED |
 | U-OPS-02 | U-OPS-01 | DONE | [Inventario dati/report/spool](docs/verification/unified-post-m9/U-OPS-02.md) | Riscontri statici dei percorsi attuali, target Tauri separati; nessun delta runtime | Acceptance inventario PASS; G-OPS0 tecnico ancora NOT_VERIFIED |
 | U-OPS-03 | U-OPS-02 | WAITING_INTEGRATION | [Preflight permessi e continuità](docs/verification/unified-post-m9/U-OPS-03.md) | Controlli backend esistenti qualificati cb70bee; root Tauri per-account non ancora collegata | G-OPS1 NOT_VERIFIED; handoff a MIG per path/worker reali |
-| U-OPS-04 | U-OPS-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-04.md) | —; Non eseguite | G-OPS1 NOT_VERIFIED |
+| U-OPS-04 | U-OPS-02 | WAITING_CI | [Policy Rust e integrazione export](docs/verification/unified-post-m9/U-OPS-04.md) | 7 unit/7e2e e Clippy PASS;CLI/Slint collegati;SMB Windows reale e full suite da qualificare | G-OPS1 NOT_VERIFIED;nessun DONE per il solo helper |
 | U-OPS-05 | U-OPS-01 | DONE | [Custodia e drill sintetici](docs/verification/unified-post-m9/U-OPS-05.md) | 556c5c6;18pass, file32B/copia corretta/KeyMismatch/restore/sentinelle; crypto invariata | Acceptance provider/runbook PASS; G-OPS1 aggregato NOT_VERIFIED |
 | U-OPS-06 | U-OPS-03, U-OPS-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-06.md) | —; Non eseguite | G-OPS2 NOT_VERIFIED |
 | U-OPS-07 | U-OPS-01, U-OPS-02 | DONE | [Gestione manuale e conservazione](docs/verification/unified-post-m9/U-OPS-07.md) | D05 documentata con riscontri su archive/report/spool; delta solo documentale | Acceptance gestione manuale PASS; G-OPS2 tecnico NOT_VERIFIED |
@@ -148,7 +148,7 @@ U-FIX-01..05 DONE: G-HARD PASS con CI42990775714 sucb70bee,7 job richiesti posit
 U-NORM-03 DONE per backend normativo,21 oracle3volte/OS;04 WAITING_INTEGRATION per frontend/contesto amministrativo, G-SIOC1 complessivo aperto.
 T-MIG-P0-01..08 DONE; G-MIG-0 PASS per governance e ingresso agli spike, non per runtime/installer.
 U-OPS-07 DONE documentale; U-OPS-03 preflight sospeso sull'integrazione root/worker Tauri reale, nessun DONE implicito.
-**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 build CI43014153420 PASS ma collaudo Win11 bloccato; P1-03 DONE personale. Next indipendente READY U-OPS-04; anche U-REL-03/U-PERF-01 pronte. P1-04..07 e P2/P3 non READY. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. AUTO_CONTINUE.
+**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 build CI43014153420 PASS ma collaudo Win11 bloccato; P1-03 DONE personale. Task attiva U-OPS-04 (7 unit policy PASS, integrazione in corso); U-REL-03/U-PERF-01 pronte indipendenti. P1-04..07 e P2/P3 non READY. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.
