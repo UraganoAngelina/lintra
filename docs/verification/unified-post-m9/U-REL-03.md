@@ -113,3 +113,17 @@ Nessuna task indipendente viene dichiarata eseguita per riempire l'attesa.
 U-REL-03-source-7d4c02e.json verifica che i529 input dei tre receipt finali
 corrispondano al codice pubblicato. È equivalenza dei sorgenti, non attribuzione
 di un binario locale da working-tree al nuovo SHA o a un runner diverso.
+
+## Rete dei prerequisiti Linux
+
+CI43060623511: Linux fallisce ancora prima di Rust, questa volta per DNS di
+archive.ubuntu.com; timeout8min, log completo linux-43060623511-failed.log.gz
+con SHA25683f41b23dbbfafcbb0b09fa09c951cab5038f4d546a697ade798d8498abf1238.
+Signed-By/TLS non sono stati indeboliti. Windows prosegue sul7d4c02e.
+
+È preparato un workflow manuale distinto di sola connettività, timeout3min,
+per verificare i metadati Ubuntu noble/noble-security sul mirror offerto dai
+[Linux Kernel Archives](https://mirrors.kernel.org/). Non installa pacchetti,
+modifica DNS o rende PASS alcun gate del prodotto. La firma effettiva dei
+pacchetti continuerà a essere verificata da apt nella CI completa. Il workflow
+è esclusivamente QA, nessuna nuova dipendenza o rete nel prodotto.

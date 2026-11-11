@@ -1,0 +1,28 @@
+name: Linux prerequisite connectivity diagnostic
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  connectivity:
+    name: Ubuntu package mirror connectivity only
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      # This workflow is a network diagnostic, never the product CI gate.
+      # It installs no packages and changes no host DNS or trust settings.
+      - name: Check kernel.org Ubuntu mirror over verified HTTPS
+        shell: bash
+        run: |
+          set -euo pipefail
+          uname -srmo
+          for suite in noble noble-security; do
+            output="$RUNNER_TEMP/lintra-$suite-InRelease"
+            curl --fail --location --silent --show-error --connect-timeout 10 --max-time 30 \
+              --output "$output" "https://mirrors.kernel.org/ubuntu/dists/$suite/InRelease"
+            test "$(head -n 1 "$output")" = '-----BEGIN PGP SIGNED MESSAGE-----'
+            sha256sum "$output"
+          done
