@@ -11,6 +11,9 @@ forniti dall'organizzazione valgono le autorizzazioni aziendali effettive: quest
 ratifica tecnica non le attesta. G-REAL riguarda soltanto tali autorizzazioni,
 quando applicabili; non blocca sviluppo, test sintetici o package tecnico.
 Non sono richiesti server, autenticazione remota o un programma enterprise.
+Recepimento MIG: [ADR-MIG-003](adr/ADR-MIG-003.md) per confini/threat model
+e [ADR-MIG-004](adr/ADR-MIG-004.md) per test sintetici e G-REAL circoscritto.
+Le policy sono approvate; prove WebView/IPC/account restano nei gate tecnici.
 
 ## Account e cartelle
 

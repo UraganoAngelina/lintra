@@ -1,0 +1,13 @@
+{
+  "task": "T-MIG-P0-06",
+  "preflight_head": "4e935d8",
+  "threat_rows": 12,
+  "local_links": 7,
+  "adr_sha256": {
+    "docs/adr/ADR-MIG-003.md": "d14ffaf22026fde1b8474222f5b126a12e4f9d5933693094a13c9305e46ab0e4",
+    "docs/adr/ADR-MIG-004.md": "41008cc12f2a9ba9be454c30b949481319e1a0cba043979a749ac2a295df0bfe"
+  },
+  "qualified_runtime_inputs_unchanged": 520,
+  "WebView_security_tests": "NOT_RUN; required in MIG gates",
+  "new_crypto_retention_or_enterprise_gate": false
+}

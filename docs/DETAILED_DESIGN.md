@@ -8,6 +8,9 @@
 > firme IPC nuove si qualificano in MIG-P2. Per §170,
 > [DEC-SIOC-HIST-02](normative/DEC-SIOC-HIST-02.md) ratifica enforcement PK
 > cross-run prospettico; nessuna mutazione retroattiva di codec, HMAC o golden.
+> [ADR-MIG-003](adr/ADR-MIG-003.md) e [ADR-MIG-004](adr/ADR-MIG-004.md)
+> recepiscono policy di sicurezza/dati e threat model; contratti wire e prove
+> WebView/IPC effettive restano da qualificare, senza nuovo crypto/retention.
 
 > **Stato:** specifica di progettazione di dettaglio, revisione consolidata 2026-10-16.
 >
