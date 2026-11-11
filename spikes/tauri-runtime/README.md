@@ -41,8 +41,8 @@ Dal presente percorso:
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund
-npm run tauri -- build --no-bundle
-./src-tauri/target/release/lintra-runtime-spike --smoke-test
+npm run tauri -- build --no-bundle --debug -- --locked --offline -j 2
+python3 tools/native_smoke.py src-tauri/target/debug/lintra-runtime-spike
 ```
 
 La modalità normale apre la finestra; `--smoke-test` esce con codice zero solo
@@ -50,6 +50,23 @@ dopo un render React, font locali pronti, due animation frame e una seconda
 chiamata Rust che registra `LINTRA_RUNTIME_RENDER_ACK` con dimensioni numeriche.
 Un timeout, un crash o una pagina senza acknowledgment non costituiscono PASS.
 Questo segnale non dimostra confronto pixel, DPI, zero traffico OS o gate Windows.
+
+La prova effettuata usa il profilo debug con la feature `tauri/custom-protocol`
+attiva: tutti gli asset sono inclusi nell'eseguibile, senza dev server. Non è
+una qualifica release. Su Hyprland 0.57 la sola finestra sintetica può essere
+acquisita e chiusa dal programma foreground seguente, usando `hyprctl` e `grim`
+già installati sull'host (nessuna dipendenza del prodotto):
+
+```sh
+python3 tools/native_capture.py src-tauri/target/debug/lintra-runtime-spike /tmp/lintra-probe-window.png
+```
+
+I due harness isolano cache/config/dati WebView in cartelle temporanee private.
+La cattura filtra per PID figlio, verifica il titolo e il focus e ritaglia solo
+la finestra. Nessun titolo di altre applicazioni viene registrato. L'API Lua
+segue la [documentazione Hyprland 0.57](https://wiki.hypr.land/0.57.0/configuring/core/dispatchers/).
+L'icona riprende la geometria di `ui/ui/main.slint`; il PNG è generato con il
+comando `tauri icon src-tauri/icons/mark.svg --output src-tauri/icons --png 128`.
 
 ## Codice e confini
 

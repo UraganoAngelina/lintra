@@ -1,5 +1,15 @@
 # Istruzioni operative Lintra
 
+## Reference UI aggiuntive dell'autore — 11 novembre 2026
+
+Consultare con vision le reference in sola lettura nella cartella adiacente
+`/home/alberto/Desktop/LINTRA/lintra_ui_references` quando utili alla nuova UI.
+Usare solo React/Tauri o componenti delle decisioni già approvate. Qualsiasi
+dipendenza aggiuntiva deve avere una necessità concreta documentata. I concept
+di altri framework sono riferimenti visivi e non autorizzano l'adozione di
+quegli stack. Modalità di recepimento e hash nel brief corrente
+`docs/ui-design-documentation/MIGRATION_TAURI_BRIEF.md` e dossier P1-01.
+
 ## Mandato post-M9 vigente — 10 novembre 2026
 
 L'autore ha autorizzato l'esecuzione sequenziale del master unificato v1.0 e

@@ -1,0 +1,60 @@
+{
+  "task": "T-MIG-P1-01",
+  "verdict": "PASS Linux minimal runtime spike only",
+  "qualified_application_commit": "996947e48517dc61caea9c9eafaaf2220e04766f",
+  "application_sources_unchanged": {
+    "spikes/tauri-runtime/.gitignore": "e6e7f4bf51135ae4397996c41bf35e7b413f26635c83cd15053ce9a2985a50fa",
+    "spikes/tauri-runtime/index.html": "6c9005e65b0ca6cbe9dafb7b947f6e83c46c28ca76d5e4123a131cbea8038672",
+    "spikes/tauri-runtime/package-lock.json": "761514850f51fab1beb88f6c0f598bac9e0c26cec66ac2a83b0f4614efda4553",
+    "spikes/tauri-runtime/package.json": "9a2b82c26cf81ebd1636900919a4a32fe6341c93eb6a376588bcdbfa31365c74",
+    "spikes/tauri-runtime/src-tauri/Cargo.lock": "4fc0fa3932a91aa5b6aa572a8313a467b569cea30d1ef783b7e20d5d1524aa64",
+    "spikes/tauri-runtime/src-tauri/Cargo.toml": "f33cff29afb4e1bc7752f0e8c2f7dee7617d31eb6fbeb3649e0edb172e0fb281",
+    "spikes/tauri-runtime/src-tauri/build.rs": "556ed6c5134a7c5a86489a635fcd9ad2aa86177ccb3fd95b5783a5fc99595221",
+    "spikes/tauri-runtime/src-tauri/capabilities/probe.json": "255e78c69f0297c2287ea6cb92311373b708c25740e1330ef91f5adc1d2d46b7",
+    "spikes/tauri-runtime/src-tauri/icons/128x128.png": "e42645408761e4e1971c6d3f34faef1317866a01e9c188e6593119326b09b259",
+    "spikes/tauri-runtime/src-tauri/icons/mark.svg": "1602fef3c60bb6b488696ebc7f3e70534b789febd45d541b29bfafe9cb496ae8",
+    "spikes/tauri-runtime/src-tauri/src/main.rs": "03cacdc4b7f8ab6fe6fbb980373c0861dd8d166d0f570d3fe9be1a576527a574",
+    "spikes/tauri-runtime/src-tauri/tauri.conf.json": "bc68c6c7ec1a7540515c1e2a0dded3041506f7ffae37226cc2b09cadf3243570",
+    "spikes/tauri-runtime/src/main.tsx": "69382a210844d5ea5fa36509f7b045b34a5426343eeee68fada0850cfb0c2895",
+    "spikes/tauri-runtime/src/style.css": "613e854cc9d6ffa4f051ed9357bdce0f9b759f736d6a8fdf320513980b8afaca",
+    "spikes/tauri-runtime/tsconfig.json": "06bb5b9fe7eacdac2fe16e94dc5fe1ac6387d1842132fcc2f5dc1a910633138a"
+  },
+  "standalone_harness_sources": {
+    "native_smoke.py": "23b200279f4ba35eb4c782830d26a25c3a60fa43c7731b42201ef7ec7034f381",
+    "native_capture.py": "83dfa2b73d71a686fe60d551ad52e8722bd32e484a504cbd2d71f4b8a7c1db18"
+  },
+  "qualification": {
+    "build-v1": {
+      "exit": 0,
+      "head": "996947e48517dc61caea9c9eafaaf2220e04766f",
+      "log_sha256": "f61a1276775fcd4ff939ec6f1455b75009464a8b30319b56f41418408c43845e",
+      "seconds": 11.016
+    },
+    "wayland-v1": {
+      "exit": 0,
+      "head": "996947e48517dc61caea9c9eafaaf2220e04766f",
+      "log_sha256": "4e8a6dd98cdf06eb8edcfd51d2ea0734e74a0dd35b7852d6168bff930d64d96b",
+      "seconds": 2.195
+    },
+    "capture-v2": {
+      "exit": 0,
+      "head": "996947e48517dc61caea9c9eafaaf2220e04766f",
+      "log_sha256": "707b022ca10928ab536dd030a11f7c99ce51b1a54e3ff1bcdba18a53357af25c",
+      "seconds": 2.253
+    },
+    "clippy-v1": {
+      "exit": 0,
+      "head": "996947e48517dc61caea9c9eafaaf2220e04766f",
+      "log_sha256": "00adbe49d1d1cb586366e9a934a4e23e6450328a0f2d5201d684375d3d3a13aa",
+      "seconds": 78.374
+    }
+  },
+  "production_inputs_unchanged": 520,
+  "original_140_status_sha256": "9a9cf8b4bf73c2b4af48cdbba9f10c3d29048189b6866d6b8d00c023e11f240f",
+  "external_reference_files_unchanged": 11,
+  "visual_review": "Actual native PNG inspected; only synthetic probe content; no other app content.",
+  "G_MIG_1": "NOT_VERIFIED",
+  "Windows": "NOT_RUN",
+  "profile": "debug with tauri/custom-protocol",
+  "CI": "No new core CI; no production source delta. Antecedent core CI is not Tauri proof."
+}
