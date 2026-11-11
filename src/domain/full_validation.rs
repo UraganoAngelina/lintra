@@ -1,5 +1,5 @@
 //! Persistent Full-run evidence, independent of engine execution types.
-use super::{ScopeSummary, TraceId, ValidationCompleteness};
+use super::{ScopeSummary, SnapshotRevision, TraceId, ValidationCompleteness};
 use serde::Serialize;
 use std::collections::{BTreeMap, HashSet};
 
@@ -267,6 +267,50 @@ impl FullValidationSummary {
                 return false;
             }
         }
+        if let Some(cross_run) = &self.cross_run_validation {
+            if cross_run.format_version != 1
+                || !(1..=9999).contains(&cross_run.reporting_year)
+                || !(1..=12).contains(&cross_run.reporting_month)
+                || (cross_run.initial_baseline && cross_run.reporting_month != 1)
+                || (!interrupted && cross_run.unreported_errors != 0)
+            {
+                return false;
+            }
+            let mut seen = HashSet::new();
+            for evidence in &cross_run.traces {
+                let Some(trace) = self.traces.iter().find(|t| t.trace_id == evidence.trace_id)
+                else {
+                    return false;
+                };
+                let classified = [
+                    evidence.carry_forward_identical,
+                    evidence.new_records,
+                    evidence.historical_key_content_mismatch,
+                    evidence.reused_records,
+                ]
+                .into_iter()
+                .try_fold(0u64, |sum, count| sum.checked_add(count));
+                if !seen.insert(&evidence.trace_id)
+                    || (cross_run.initial_baseline && classified != Some(0))
+                    || classified.is_none_or(|n| n > trace.record_keys_checked)
+                    || evidence.baseline_revision > cross_run.namespace_generation
+                    || evidence.indeterminate != evidence.unknown_reason.is_some()
+                    || evidence
+                        .missing_previous_record_code
+                        .parse::<super::ValidationCode>()
+                        .is_err()
+                {
+                    return false;
+                }
+                let Some(next) = normative
+                    .checked_add(evidence.historical_key_content_mismatch)
+                    .and_then(|n| n.checked_add(evidence.reused_records))
+                else {
+                    return false;
+                };
+                normative = next;
+            }
+        }
         let partial = interrupted
             || self.partial(&summary.scope_summary)
             || summary
@@ -275,13 +319,16 @@ impl FullValidationSummary {
                 .is_some_and(|audit| audit.has_non_definitive_evaluations());
         if skipped != summary.skipped_rules
             || normative
-                > summary.total_errors.saturating_add(if interrupted {
+                > match summary.total_errors.checked_add(if interrupted {
                     self.cross_run_validation
                         .as_ref()
                         .map_or(0, |v| v.unreported_errors)
                 } else {
                     0
-                })
+                }) {
+                    Some(n) => n,
+                    None => return false,
+                }
             || self.completeness
                 != if partial {
                     ValidationCompleteness::Partial
@@ -308,8 +355,15 @@ impl FullValidationSummary {
 }
 
 /// Aggregate evidence only; protected PKs and clinical rows never enter reports.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Default)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct CrossRunValidationSummary {
+    pub format_version: u32,
+    pub namespace_generation: Option<SnapshotRevision>,
+    pub reporting_year: i64,
+    pub reporting_month: i64,
+    /// An empty January submission offered for explicit initial approval.
+    /// Non-empty inputs in this state remain Unknown and cannot be approved.
+    pub initial_baseline: bool,
     pub traces: Vec<CrossRunTraceSummary>,
     /// Detected second-pass errors not emitted after max_errors/cancellation.
     pub unreported_errors: u64,
@@ -317,6 +371,8 @@ pub struct CrossRunValidationSummary {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct CrossRunTraceSummary {
     pub trace_id: TraceId,
+    pub baseline_revision: Option<SnapshotRevision>,
+    pub missing_previous_record_code: String,
     pub carry_forward_identical: u64,
     pub new_records: u64,
     pub historical_key_content_mismatch: u64,

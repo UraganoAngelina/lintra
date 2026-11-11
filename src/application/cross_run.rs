@@ -18,6 +18,9 @@ pub(super) struct CrossRunEvaluator<'a> {
     errors: Vec<ValidationError>,
     rejected: HashSet<(TraceId, u64)>,
     replay: bool,
+    reporting_year: i64,
+    reporting_month: i64,
+    initial_baseline: bool,
 }
 struct TraceState {
     plan: CrossRunTracePlan,
@@ -49,6 +52,9 @@ impl<'a> CrossRunEvaluator<'a> {
             errors: Vec::new(),
             rejected: HashSet::new(),
             replay: false,
+            reporting_year: binding.year.1,
+            reporting_month: binding.month.1,
+            initial_baseline: false,
         };
         for trace in &plan.traces {
             let id = &profile.trace_ids()[trace.trace_index];
@@ -60,6 +66,12 @@ impl<'a> CrossRunEvaluator<'a> {
                     seen: HashSet::new(),
                     summary: CrossRunTraceSummary {
                         trace_id: id.clone(),
+                        baseline_revision: None,
+                        missing_previous_record_code: trace
+                            .missing_error
+                            .as_symbol()
+                            .map_err(|_| HistoricalValidationError::InvalidRequest)?
+                            .into(),
                         carry_forward_identical: 0,
                         new_records: 0,
                         historical_key_content_mismatch: 0,
@@ -172,7 +184,9 @@ impl<'a> CrossRunEvaluator<'a> {
         let mut loaded = BTreeMap::new();
         for (id, (revision, source)) in selected {
             check_cancel(cancellation)?;
-            if !loaded.contains_key(&revision.value()) {
+            if let std::collections::btree_map::Entry::Vacant(entry) =
+                loaded.entry(revision.value())
+            {
                 let snapshot = repository
                     .load_snapshot(&result.namespace, revision)?
                     .ok_or(PersistenceError::CorruptStorage)?;
@@ -180,13 +194,14 @@ impl<'a> CrossRunEvaluator<'a> {
                     return Err(PersistenceError::CorruptStorage.into());
                 }
                 result.verify_snapshot(&snapshot, cancellation)?;
-                loaded.insert(revision.value(), snapshot);
+                entry.insert(snapshot);
             }
             let snapshot = &loaded[&revision.value()];
             let trace = result
                 .traces
                 .get_mut(&id)
                 .ok_or(HistoricalValidationError::InvalidRequest)?;
+            trace.summary.baseline_revision = Some(revision);
             for row in snapshot
                 .identities()
                 .iter()
@@ -222,6 +237,11 @@ impl<'a> CrossRunEvaluator<'a> {
             }
         }
         result.check_generation()?;
+        // An empty local database is not an approved cumulative universe.
+        // Bootstrap only an actually empty January submission, reviewed and
+        // committed through the ordinary service. Any observed record makes
+        // this attempt Unknown instead of silently becoming NEW_RECORD.
+        result.initial_baseline = !saw_flow && binding.month.1 == 1;
         Ok(result)
     }
     fn unknown_all(&mut self, reason: &str) {
@@ -282,13 +302,15 @@ impl<'a> CrossRunEvaluator<'a> {
         if !trace.seen.insert(id.clone()) {
             return Ok(());
         } // engine owns intra-run diagnostics
+        if self.initial_baseline {
+            unknown(trace, "missing_initial_approved_baseline");
+        }
         if trace.summary.indeterminate {
             return Ok(());
         }
-        let previous = if self.replay {
-            trace.baseline.get(id).cloned()
-        } else if trace.plan.mode == RawCrossRunMode::CumulativeIdentical
-            && trace.baseline.contains_key(id)
+        let previous = if self.replay
+            || (trace.plan.mode == RawCrossRunMode::CumulativeIdentical
+                && trace.baseline.contains_key(id))
         {
             trace.baseline.get(id).cloned()
         } else {
@@ -413,6 +435,11 @@ impl<'a> CrossRunEvaluator<'a> {
     }
     pub(super) fn summary(&self) -> CrossRunValidationSummary {
         CrossRunValidationSummary {
+            format_version: 1,
+            namespace_generation: self.generation,
+            reporting_year: self.reporting_year,
+            reporting_month: self.reporting_month,
+            initial_baseline: self.initial_baseline,
             traces: self.traces.values().map(|v| v.summary.clone()).collect(),
             unreported_errors: 0,
         }

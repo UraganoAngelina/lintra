@@ -20,7 +20,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-FIX-01 | U-GOV-01 | DONE | [Dossier, log nativi e digest](docs/verification/unified-post-m9/U-FIX-01.md) | 4c169cd; Linux38 pass/4 ignored; CI42823787199 success, regressioni 3 volte per OS verificate | Acceptance PASS; G-HARD aggregato NOT_VERIFIED |
 | U-FIX-02 | U-GOV-03 | DONE | [Dossier, contratto e log](docs/verification/unified-post-m9/U-FIX-02.md) | 52ec340; Linux 18 pass/1 ignored; delta solo documentale, CI nuova non richiesta | Acceptance PASS; G-HARD aggregato NOT_VERIFIED |
 | U-FIX-03 | U-GOV-03 | DONE | [Budget backend/CLI e CI nativa](docs/verification/unified-post-m9/U-FIX-03.md) | 4864c34/539b9bc sorgenti identici; locale1073pass/7ignored; CI42829144043 success, nuovi oracle 3 volte/OS | Acceptance backend/CLI PASS; G-HARD ancora attende U-FIX-04; React in MIG-P5-05 |
-| U-FIX-04 | U-GOV-03 | WAITING_GATE | [Tree controllata e qualifica](docs/verification/unified-post-m9/U-FIX-04.md) | 76fa08a; 89 pass, fmt/Clippy PASS, Windows modulo type-check PASS; 447 input invariati | G-HARD NOT_VERIFIED; CI42834962873 pendente su dfc3604 |
+| U-FIX-04 | U-GOV-03 | WAITING_GATE | [Tree controllata e qualifica](docs/verification/unified-post-m9/U-FIX-04.md) | 76fa08a; 89 pass, fmt/Clippy PASS, Windows modulo type-check PASS; 447 input invariati | G-HARD NOT_VERIFIED; CI42834962873/42840799653 Windows FAIL; nuova qualifica da avviare |
 | U-FIX-05 | U-GOV-02 | DONE | [Ignored e confronto fonte](docs/verification/unified-post-m9/U-FIX-05.md) | 539b9bc; due ignored espliciti pass, workbook SHA oracle confermato; nessun delta runtime | Acceptance PASS; G-HARD aggregato NOT_VERIFIED |
 | U-OPS-01 | U-GOV-03 | DONE | [Modello uso interno](docs/verification/unified-post-m9/U-OPS-01.md) | Scope ratificato; documenti soltanto, provisioning Tauri ancora da qualificare | Acceptance di scope PASS; G-OPS0 aggregato NOT_VERIFIED |
 | U-OPS-02 | U-OPS-01 | DONE | [Inventario dati/report/spool](docs/verification/unified-post-m9/U-OPS-02.md) | Riscontri statici dei percorsi attuali, target Tauri separati; nessun delta runtime | Acceptance inventario PASS; G-OPS0 tecnico ancora NOT_VERIFIED |
@@ -33,7 +33,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-OPS-09 | U-OPS-03, U-OPS-04, U-OPS-05, U-OPS-07, U-OPS-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-09.md) | —; Non eseguite | G-REAL NOT_VERIFIED |
 | U-NORM-01 | U-GOV-03 | DONE | [PK e deferred inventariati](docs/verification/unified-post-m9/U-NORM-01.md) | 10dc66b;1 oracle pass;5 tuple identiche .1/.2/FROZEN/component;83+70+3 deferred | G-SIOC0/1 NOT_VERIFIED; D11 enforcement resta richiesto |
 | U-NORM-02 | U-NORM-01 | DONE | [Freeze dataset D12](docs/verification/unified-post-m9/U-NORM-02.md) | Otto fonti con hash/versioni;12 assenze SIOC dichiarate definitive; nessun sourcing o delta runtime | Acceptance inventario PASS; G-SIOC0/1 NOT_VERIFIED |
-| U-NORM-03 | U-NORM-01, U-NORM-02, U-NORM-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-03.md) | —; Non eseguite | G-SIOC1 NOT_VERIFIED |
+| U-NORM-03 | U-NORM-01, U-NORM-02, U-NORM-05 | IN_PROGRESS | [Servizio normativo e profilo](docs/verification/unified-post-m9/U-NORM-03.md) | e357f1c avvio; qualifica locale/nativa in corso, nessun DONE implicito | G-SIOC1 NOT_VERIFIED; UI storica futura |
 | U-NORM-04 | U-NORM-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-04.md) | —; Non eseguite | G-SIOC1 NOT_VERIFIED |
 | U-NORM-05 | U-NORM-01 | DONE | [Addendum autore e oracle](docs/verification/unified-post-m9/U-NORM-05.md) | DEC-SIOC-HIST-02-A01; fonte C20/C18 e PK4.19.1 confermata; check piano locale | G-SIOC0 documentale PASS; G-SIOC1 NOT_VERIFIED |
 | U-UI-01 | U-GOV-04 | DONE | [Ponte 89 MIG/post-audit](docs/verification/unified-post-m9/U-UI-01.md) | Overlay master §6, sorgenti76fa08a distinti dalla HEAD/CI; controlli grafo/documenti | Acceptance ponte PASS; G-MIG-0 NOT_VERIFIED |
@@ -52,7 +52,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-REL-01 | U-UI-02, U-CAD-09, U-NORM-04, U-OPS-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-01.md) | —; Non eseguite | G-REL NOT_VERIFIED |
 | U-REL-02 | U-REL-01, U-OPS-06, U-REL-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-02.md) | —; Non eseguite | G-REL NOT_VERIFIED |
 | U-REL-03 | U-OPS-01, U-FIX-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-03.md) | —; Non eseguite | G-DUR NOT_VERIFIED |
-| T-MIG-P0-01 | U-UI-01 | WAITING_GATE | [Fotografia tecnica attuale](docs/verification/unified-post-m9/T-MIG-P0-01.md) | Baseline dfc3604/runtime76fa08a; locale e budget nativo verdi; CI42834962873 reference pendente | G-MIG-0 NOT_VERIFIED; P0-02 attende gate baseline |
+| T-MIG-P0-01 | U-UI-01 | WAITING_GATE | [Fotografia tecnica attuale](docs/verification/unified-post-m9/T-MIG-P0-01.md) | Baseline dfc3604/runtime76fa08a; locale e budget nativo verdi; CI42834962873/42840799653 Windows FAIL; preparazione CI corretta in ab93e71 | G-MIG-0 NOT_VERIFIED; P0-02 attende gate baseline |
 | T-MIG-P0-02 | T-MIG-P0-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-02.md) | —; Non eseguite | G-MIG-0 NOT_VERIFIED |
 | T-MIG-P0-03 | T-MIG-P0-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-03.md) | —; Non eseguite | G-MIG-0 NOT_VERIFIED |
 | T-MIG-P0-04 | T-MIG-P0-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-04.md) | —; Non eseguite | G-MIG-0 NOT_VERIFIED |
@@ -143,9 +143,9 @@ CI audit non qualifica alcun nuovo delta runtime.
 | T-MIG-P9-08 | T-MIG-P9-01, T-MIG-P7-09 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-08.md) | —; Non eseguite | G-MIG-9 NOT_VERIFIED |
 
 U-FIX-03 DONE con CI propria; U-FIX-04 WAITING_GATE nativo, nessun gate ereditato.
-U-NORM-05 DONE: addendum cumulativo e PK4.1 completa ratificati; next READY U-NORM-03, poi04.
-T-MIG-P0-01 WAITING_GATE CI42834962873; nessun P0-02 o scaffold avviato prima del gate.
-Next READY indipendente: **U-OPS-07**; baseline MIG attende CI42834962873. AUTO_CONTINUE.
+U-NORM-05 DONE; U-NORM-03 IN_PROGRESS sul servizio reale e sul profilo versionato;04 attende03.
+T-MIG-P0-01 WAITING_GATE: due CI Windows fallite sui permessi reference; nessun P0-02 o scaffold avviato prima del gate.
+Task attiva: **U-NORM-03**; U-OPS-07 indipendente READY; baseline MIG attende nuova CI qualificata. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.

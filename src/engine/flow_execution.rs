@@ -312,10 +312,18 @@ impl<'a> FlowValidator<'a> {
         let mut state = FlowState::new(self.schema);
         for (index, path) in prepared {
             if ports.summary.error_limit_reached() {
-                return state.finish(ExecutionStop::ErrorLimit, ports);
+                return state.finish_interrupted(
+                    ExecutionStop::ErrorLimit,
+                    ports,
+                    record_observer.as_deref(),
+                );
             }
             if (ports.control.is_cancelled)() {
-                return state.finish(ExecutionStop::Cancelled, ports);
+                return state.finish_interrupted(
+                    ExecutionStop::Cancelled,
+                    ports,
+                    record_observer.as_deref(),
+                );
             }
             let trace = &self.schema.traces()[index];
             let mut collector = ProjectionCollector {
@@ -371,7 +379,11 @@ impl<'a> FlowValidator<'a> {
                 .map_err(FlowValidationError::Trace)?;
             drop(validator);
             if completion.completion != ExecutionStop::Completed {
-                return state.finish(completion.completion, ports);
+                return state.finish_interrupted(
+                    completion.completion,
+                    ports,
+                    record_observer.as_deref(),
+                );
             }
             let evidence = &mut state.traces[index];
             evidence.coverage = if evidence.unprojectable_records == 0 {
@@ -381,7 +393,11 @@ impl<'a> FlowValidator<'a> {
             };
         }
         if (ports.control.is_cancelled)() {
-            return state.finish(ExecutionStop::Cancelled, ports);
+            return state.finish_interrupted(
+                ExecutionStop::Cancelled,
+                ports,
+                record_observer.as_deref(),
+            );
         }
         (ports.control.on_event)(FlowEvent::CrossStarted);
         let coverage = state
@@ -414,8 +430,7 @@ impl<'a> FlowValidator<'a> {
                 e.line_number,
             )
         });
-        let mut emitted = 0;
-        for error in &pending {
+        for (emitted, error) in pending.iter().enumerate() {
             let stop = if (ports.control.is_cancelled)() {
                 Some(ExecutionStop::Cancelled)
             } else if ports.summary.error_limit_reached() {
@@ -446,7 +461,6 @@ impl<'a> FlowValidator<'a> {
                     .invalidate_previously_valid_record()
                     .map_err(FlowValidationError::Summary)?;
             }
-            emitted += 1;
         }
         if ports.summary.error_limit_reached() {
             return state.finish(ExecutionStop::ErrorLimit, ports);
@@ -536,6 +550,34 @@ impl FlowState {
             cross_run_validation: None,
             totals: CrossRecordPassSummary::default(),
         }
+    }
+    fn finish_interrupted(
+        mut self,
+        completion: ExecutionStop,
+        ports: FlowExecutionPorts<'_, '_>,
+        producer: Option<&dyn FlowRecordObserver>,
+    ) -> Result<FlowRunArtifacts, FlowValidationError> {
+        // Pass one may stop after detecting deferred duplicates or historical
+        // mismatches. Keep their evidence, but never emit pass-two diagnostics
+        // during cancellation or turn them into fictitious emitted errors.
+        if let Some(mut evidence) = producer.and_then(|p| p.cross_run_summary()) {
+            let overflow = || {
+                FlowValidationError::Summary(SummaryBuildError::CounterOverflow(
+                    SummaryCounter::Errors,
+                ))
+            };
+            let mut pending =
+                u64::try_from(self.deferred_duplicates.len()).map_err(|_| overflow())?;
+            for trace in &evidence.traces {
+                pending = pending
+                    .checked_add(trace.historical_key_content_mismatch)
+                    .and_then(|v| v.checked_add(trace.reused_records))
+                    .ok_or_else(overflow)?;
+            }
+            evidence.unreported_errors = pending;
+            self.cross_run_validation = Some(evidence);
+        }
+        self.finish(completion, ports)
     }
     fn finish(
         mut self,
