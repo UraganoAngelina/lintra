@@ -40,6 +40,9 @@ Nessun file operativo, archivio reale o chiave dell'autore è stato aperto per
 questo inventario. Verifiche e sentinelle restano sintetiche. Non si afferma
 assenza universale di PHI da ogni output o da una WebView non ancora presente.
 Il mapping guida U-OPS-03/04/05/06/08 e MIG; nessun gate nativo anticipato.
+La [gestione manuale](MANUAL_DATA_MANAGEMENT.md) documenta D05/U-OPS-07:
+nessuna scadenza automatica dei dati persistenti, temporanei gestiti dal job,
+nessuna riscrittura di snapshot o baseline per liberare spazio.
 
 Fonti di codice: src/cli/{args,bundle,error_spool,command}.rs,
 src/persistence/sqlite/mod.rs, src/persistence/file_security*,

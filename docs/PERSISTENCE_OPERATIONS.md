@@ -26,6 +26,8 @@ D05 approva **assenza di retention/purge automatici** e gestione manuale di
 conservazione/copie, sotto l'operatore e le prescrizioni aziendali applicabili.
 Non si introduce una durata o un obbligo generale inventato. Eliminare un file
 o una riga SQLite non dimostra la cancellazione sicura da supporti o backup.
+Procedura operativa: [gestione manuale](MANUAL_DATA_MANAGEMENT.md), con
+archivi chiusi, continuità delle PK e distinzione fra copie e temporanei.
 
 ## Review dei dati protetti e visibili
 

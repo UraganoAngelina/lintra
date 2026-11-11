@@ -1,0 +1,66 @@
+{
+  "head": "8941bbe00f5de1b871ec252ca895badee5bf834b",
+  "document_hashes": {
+    "docs/MANUAL_DATA_MANAGEMENT.md": "978f11776a15ffc16b2fbb85170c76b7ba0a38929085d34fb5f60f1a64470f5f",
+    "docs/LOCAL_DATA_INVENTORY.md": "b58490bace1638a745181f25d973942ed4b1e17b802e20a34ab1fa15d2d0dac3",
+    "docs/PERSISTENCE_OPERATIONS.md": "a90dfb05b4af1f1b07259f00ce45b50af3ae9317ecdab5d862b27d08de25827e",
+    "docs/verification/unified-post-m9/U-OPS-07.md": "4e395b08e59fd8056776031643879abbe2c59a4ef31db856c23953bc61f1fe14"
+  },
+  "local_links": [
+    {
+      "source": "docs/MANUAL_DATA_MANAGEMENT.md",
+      "target": "LOCAL_DATA_INVENTORY.md",
+      "exists": true
+    },
+    {
+      "source": "docs/MANUAL_DATA_MANAGEMENT.md",
+      "target": "KEY_CUSTODY_RECOVERY.md",
+      "exists": true
+    },
+    {
+      "source": "docs/MANUAL_DATA_MANAGEMENT.md",
+      "target": "PERSISTENCE_OPERATIONS.md",
+      "exists": true
+    },
+    {
+      "source": "docs/LOCAL_DATA_INVENTORY.md",
+      "target": "MANUAL_DATA_MANAGEMENT.md",
+      "exists": true
+    },
+    {
+      "source": "docs/PERSISTENCE_OPERATIONS.md",
+      "target": "INTERNAL_USE.md",
+      "exists": true
+    },
+    {
+      "source": "docs/PERSISTENCE_OPERATIONS.md",
+      "target": "unified-post-m9/RATIFICATION_2026-11-10.md",
+      "exists": true
+    },
+    {
+      "source": "docs/PERSISTENCE_OPERATIONS.md",
+      "target": "verification/PERSIST-KEY-PROVISIONING-01-ratification.md",
+      "exists": true
+    },
+    {
+      "source": "docs/PERSISTENCE_OPERATIONS.md",
+      "target": "HISTORICAL_CLI.md",
+      "exists": true
+    },
+    {
+      "source": "docs/PERSISTENCE_OPERATIONS.md",
+      "target": "PORTABLE_KEY_BUNDLE.md",
+      "exists": true
+    },
+    {
+      "source": "docs/PERSISTENCE_OPERATIONS.md",
+      "target": "MANUAL_DATA_MANAGEMENT.md",
+      "exists": true
+    }
+  ],
+  "runtime_compared_with": "cb70bee19f2d470c3ac2e98828343b32e23b3f0a",
+  "qualified_inputs_compared": 520,
+  "changed_inputs": [],
+  "new_runtime_tests_required": false,
+  "aggregate_G_OPS2": "NOT_VERIFIED"
+}

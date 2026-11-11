@@ -28,7 +28,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-OPS-04 | U-OPS-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-04.md) | —; Non eseguite | G-OPS1 NOT_VERIFIED |
 | U-OPS-05 | U-OPS-01 | DONE | [Custodia e drill sintetici](docs/verification/unified-post-m9/U-OPS-05.md) | 556c5c6;18pass, file32B/copia corretta/KeyMismatch/restore/sentinelle; crypto invariata | Acceptance provider/runbook PASS; G-OPS1 aggregato NOT_VERIFIED |
 | U-OPS-06 | U-OPS-03, U-OPS-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-06.md) | —; Non eseguite | G-OPS2 NOT_VERIFIED |
-| U-OPS-07 | U-OPS-01, U-OPS-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-07.md) | —; Non eseguite | G-OPS2 NOT_VERIFIED |
+| U-OPS-07 | U-OPS-01, U-OPS-02 | DONE | [Gestione manuale e conservazione](docs/verification/unified-post-m9/U-OPS-07.md) | D05 documentata con riscontri su archive/report/spool; delta solo documentale | Acceptance gestione manuale PASS; G-OPS2 tecnico NOT_VERIFIED |
 | U-OPS-08 | U-OPS-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-08.md) | —; Non eseguite | G-OPS2 NOT_VERIFIED |
 | U-OPS-09 | U-OPS-03, U-OPS-04, U-OPS-05, U-OPS-07, U-OPS-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-09.md) | —; Non eseguite | G-REAL NOT_VERIFIED |
 | U-NORM-01 | U-GOV-03 | DONE | [PK e deferred inventariati](docs/verification/unified-post-m9/U-NORM-01.md) | 10dc66b;1 oracle pass;5 tuple identiche .1/.2/FROZEN/component;83+70+3 deferred | G-SIOC0/1 NOT_VERIFIED; D11 enforcement resta richiesto |
@@ -145,7 +145,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 U-FIX-03 DONE con CI propria; U-FIX-04 WAITING_GATE nativo, nessun gate ereditato.
 U-NORM-05 DONE; U-NORM-03 WAITING_GATE dopo1096 pass locali sul servizio reale/profilo versionato;04 attende03.
 T-MIG-P0-01 WAITING_GATE: pipeline precedenti fallite su reference/ACL/golden; retry42990775714 corrente, nessun P0-02 o scaffold prima del gate.
-U-NORM-03 sospesa sul gate remoto; **next READY U-OPS-07** indipendente; baseline MIG attende nuova CI qualificata. AUTO_CONTINUE.
+U-NORM-03 sospesa sul gate remoto; U-OPS-07 DONE documentale. **next READY U-OPS-03** (backend permessi/continuità) indipendente; baseline MIG attende CI42990775714. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.
