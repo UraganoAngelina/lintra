@@ -1,5 +1,12 @@
 # Lintra desktop Tauri: brief operativo
 
+**Addendum autore UI-BRAND-LINTRA-2026-11-11:** il logo ufficiale della nuova
+UI è ora quello del [logo book ratificato](LINTRA_OFFICIAL_BRAND.md), con
+concept, varianti e palette blu/cyan. Prevale sulle indicazioni di marchio e
+rame sottostanti per React/Tauri. I token Copper Ledger qui conservati
+documentano la provenienza Slint; i futuri token di brand seguono la fonte
+ufficiale, mantenendo leggibilità, font locali e requisiti funzionali.
+
 T-MIG-P0-07,11 novembre2026. **Mode: Operate.** Target futuro:
 apps/lintra-desktop; nessuna nuova UI implementata da questo brief.
 Utenti: autore e colleghi autorizzati che preparano invii, individuano anomalie
@@ -8,24 +15,24 @@ selezioni reali e termina con risultati, export e provenienza verificabili.
 
 Autorità: mandato unificato10 novembre, ADR-MIG-001/002/003/004 e
 [scope obbligatorio](../unified-post-m9/MIGRATION_SCOPE_PARITY.md).
-Il mondo visivo è Copper Ledger già approvato. La migrazione estende Analisi/
-Risultati al Full, preservando i comportamenti e adattando la composizione
-alla WebView. Le decisioni estetiche ordinarie sono delegate dal mandato
+La nuova identità visiva è quella del logo book ufficiale. La migrazione
+estende Analisi/Risultati al Full, preservando i comportamenti e adattando
+alla WebView la gerarchia del workbench già qualificato. Le decisioni estetiche ordinarie sono delegate dal mandato
 Signature; non richiedono un nuovo giro di scelte o una ratifica globale.
 
 ## Direzione e fonti visive
 
-Grafite/avorio/rame, IBM Plex Sans per comandi e lettura, IBM Plex Mono per
-codici/valori. Font e asset locali; marchio geometrico Lintra esistente,
-nessuna immagine clinica o nuovo logo. Colore per azione/selezione, rosso per
+Marchio e palette blu/cyan del book ufficiale; IBM Plex Sans per comandi e
+lettura, IBM Plex Mono per codici/valori. Font e asset locali; varianti del
+logo scelte per tema e contesto secondo LINTRA_OFFICIAL_BRAND.md. Colore per azione/selezione, rosso per
 violazioni, ambra per incompletezza; testo e icona accompagnano sempre lo stato.
 
-Fonte eseguibile verificata: ui/ui/tokens.slint, qualificata incb70bee. I token
-iniziali del nuovo frontend derivano da questi ruoli in un registro CSS/theme
-unico, senza valori sparsi nei componenti. I due stack restano distinti durante
+Fonte storica verificata: ui/ui/tokens.slint, qualificata incb70bee. I token
+del nuovo frontend avranno un registro CSS/theme unico, senza valori sparsi
+nei componenti, con ruoli di brand aggiornati al book ufficiale. I due stack restano distinti durante
 la coesistenza; non si rigenerano o alterano i token/golden Slint per adattarli
-a React. I valori seguenti sono intenzioni di partenza verificate sul legacy,
-non una promessa di uguaglianza pixel WebView/Slint.
+a React. I valori seguenti documentano il legacy Slint, non la palette definitiva
+React/Tauri né una promessa di uguaglianza pixel WebView/Slint.
 
 | Ruolo | Chiaro | Scuro |
 | --- | --- | --- |
@@ -63,7 +70,8 @@ navigazione contestuale. Le varianti sono concept, non prove native; non
 introducono altri framework, librerie o funzionalità. Codici, tracciati, periodi,
 percentuali di conformità e contatori illustrativi vengono sostituiti dai soli
 valori del servizio Rust. Il perimetro reale precede ogni formula di conformità.
-Palette Copper Ledger, font locali, layout responsive e gate restano vigenti.
+La nuova palette di brand segue il logo book ratificato; font locali, layout
+responsive e gate restano vigenti.
 
 Vincolo esplicito dell’autore: soltanto React/Tauri e componenti già approvati;
 qualsiasi ulteriore dipendenza richiede una necessità concreta documentata.

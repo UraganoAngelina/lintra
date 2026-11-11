@@ -2,6 +2,14 @@
 
 ## Reference UI aggiuntive dell'autore — 11 novembre 2026
 
+**Marchio ufficiale ratificato successivamente nello stesso giorno:**
+`lintra_ui_references/lintra-logo-book.png`, con varianti, concept, palette e
+valori, è la fonte vincolante per il logo della nuova UI React/Tauri e le sue
+icone applicative. Recepimento UI-BRAND-LINTRA-2026-11-11 in
+`docs/ui-design-documentation/LINTRA_OFFICIAL_BRAND.md`. Per la nuova UI questa
+identità supera il vecchio segno e la precedente palette di brand rame;
+conservare le prove storiche. Nessun nuovo checkpoint estetico richiesto.
+
 Consultare con vision le reference in sola lettura nella cartella adiacente
 `/home/alberto/Desktop/LINTRA/lintra_ui_references` quando utili alla nuova UI.
 Usare solo React/Tauri o componenti delle decisioni già approvate. Qualsiasi

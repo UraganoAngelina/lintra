@@ -1,5 +1,9 @@
 # Lintra — contesto di prodotto
 
+Per la nuova UI React/Tauri vale il [marchio ufficiale](LINTRA_OFFICIAL_BRAND.md)
+ratificato l’11 novembre 2026; il contesto Slint sottostante resta la fonte
+storica del workbench. Scope corrente nel brief MIGRATION_TAURI_BRIEF.md.
+
 Fonte: prompt Signature dell'autore,2026-10-29, e inventario del codice5197a98.
 
 ## Piattaforma

@@ -1,0 +1,31 @@
+{
+  "decision": "UI-BRAND-LINTRA-2026-11-11",
+  "authority": "Author chat 2026-11-11: use the logo book as the official program logo in the new React/Tauri UI",
+  "source_path": "/home/alberto/Desktop/LINTRA/lintra_ui_references/lintra-logo-book.png",
+  "source_sha256": "85f1c48fc1d7fcbd9ac1d64edc8e48c02c729b541c06dcd2392cf0125ec038c1",
+  "source_bytes": 1306802,
+  "source_modified": false,
+  "vision_reviewed": true,
+  "palette": {
+    "deep_blue": "#0B2A5B",
+    "technical_cyan": "#00C2E8",
+    "slate": "#6B7A90",
+    "light_gray": "#E5EAF2"
+  },
+  "variants": [
+    "light background",
+    "dark background",
+    "full color app mark",
+    "black monochrome on white",
+    "white monochrome on black"
+  ],
+  "values": [
+    "Precisione",
+    "Struttura",
+    "Affidabilità",
+    "Rigore",
+    "Modernità"
+  ],
+  "production_assets": "Not yet exported/qualified; adopt in the appropriate React/Tauri and installer tasks",
+  "new_dependencies": []
+}

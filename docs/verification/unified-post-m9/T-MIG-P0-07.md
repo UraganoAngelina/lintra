@@ -62,3 +62,14 @@ Verifica proporzionata: link/fonti/token/render visti,520 input immutati,
 check_unified_plan.py e diff check. Non si aggiungono test runtime o CI per
 soli documenti. File: brief, budget, link di contesto, checks, stato e dossier.
 G-MIG-0 attendeP0-08. Next READY P0-08, AUTO_CONTINUE.
+
+## Addendum autore UI-BRAND-LINTRA-2026-11-11
+
+Successivamente alla qualifica del brief, l'autore ha fornito il logo book e
+richiesto esplicitamente che sia il marchio ufficiale del programma React/Tauri.
+Fonte esaminata con vision; varianti, concept, palette e valori recepiti in
+[LINTRA_OFFICIAL_BRAND.md](../../ui-design-documentation/LINTRA_OFFICIAL_BRAND.md),
+con SHA e ambito. Il brief corrente prevale sulle precedenti indicazioni di
+segno/rame per la nuova UI; la prova iniziale Copper Ledger resta storica.
+Nessun asset produttivo o gate UI viene dichiarato qualificato da questo
+solo recepimento documentale. Nessuna nuova task o dipendenza introdotta.
