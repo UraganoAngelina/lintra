@@ -1,0 +1,61 @@
+{
+  "run_id": 42990775714,
+  "purpose": "Current native gate; not a PASS",
+  "observed": {
+    "conclusion": "",
+    "headSha": "cb70bee19f2d470c3ac2e98828343b32e23b3f0a",
+    "jobs": [
+      {
+        "conclusion": "",
+        "name": "Verify (x86_64-unknown-linux-gnu)",
+        "status": "in_progress",
+        "steps": [
+          {
+            "conclusion": "skipped",
+            "name": "Prepare controlled Windows test deployment",
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test release tooling without credentials",
+            "status": "completed"
+          },
+          {
+            "conclusion": "",
+            "name": "Clippy",
+            "status": "in_progress"
+          }
+        ]
+      },
+      {
+        "conclusion": "",
+        "name": "Verify (x86_64-pc-windows-msvc)",
+        "status": "in_progress",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Prepare controlled Windows test deployment",
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Test release tooling without credentials",
+            "status": "completed"
+          },
+          {
+            "conclusion": "",
+            "name": "Clippy",
+            "status": "in_progress"
+          }
+        ]
+      },
+      {
+        "conclusion": "skipped",
+        "name": "Qualify UI archives",
+        "status": "completed",
+        "steps": []
+      }
+    ],
+    "status": "in_progress"
+  }
+}

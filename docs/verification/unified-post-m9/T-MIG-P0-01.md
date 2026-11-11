@@ -2,7 +2,7 @@
 
 Data: 2026-11-10, Europe/Rome. Prerequisito integrativo U-UI-01 `4f758d3`.
 Stato corrente11 novembre: **WAITING_GATE**. Le due CI reference sono
-fallite su Windows; nuova CI42989468054 su97f7688 in corso. G-MIG-0
+fallite su Windows; anche CI42989468054 è FAIL; nuova CI42990775714 sucb70bee in corso. G-MIG-0
 NOT_VERIFIED. La fotografia del10 novembre riportata sotto resta storica.
 
 Baseline esecutiva scelta: **dfc36044e0315f3ab060f98594192d3d1dfcad95**,
@@ -45,3 +45,8 @@ CI42989468054 sullo stesso SHA in corso. La promozione richiede esito e log
 pertinenti; P0-02 resta non avviata. Né Windows2025 né CachyOS personale
 sostituiscono Windows11 clean-room/installer. U-NORM-05 è ora DONE con
 addendum-A01, senza più decisioni ordinarie pendenti.
+
+Frontiera successiva:97f7688 non qualificato (CI42989468054 FAIL su entrambi
+gli OS). Candidate `cb70bee19f2d470c3ac2e98828343b32e23b3f0a`,
+CI42990775714 in corso; preparazione/lettura file Windows e test Python
+superati, niente PASS nativo dedotto finché il workflow non termina.

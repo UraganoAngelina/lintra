@@ -1,0 +1,133 @@
+{
+  "head": "cb70bee19f2d470c3ac2e98828343b32e23b3f0a",
+  "audit_commit_is_ancestor": true,
+  "source_files_read_only": [
+    {
+      "path": "../LINTRA_STARTER_KIT_FINAL_20261016/CAD_REVISED_CANDIDATE/datasets/cad_icd9_cm_symptoms_page7.json",
+      "expected": "8c19447ca64a28e736eb5012c11fb22ba8e55367c59bb81537b25fc2b11b7a96",
+      "actual": "8c19447ca64a28e736eb5012c11fb22ba8e55367c59bb81537b25fc2b11b7a96",
+      "matches": true
+    },
+    {
+      "path": "../LINTRA_STARTER_KIT_FINAL_20261016/CAD_REVISED_CANDIDATE/datasets/cad_needs_70_positions_page6.json",
+      "expected": "87b889d437275582fb521221d05b0b0598e66a9553b02581daa39b0c704fbf45",
+      "actual": "87b889d437275582fb521221d05b0b0598e66a9553b02581daa39b0c704fbf45",
+      "matches": true
+    },
+    {
+      "path": "../LINTRA_STARTER_KIT_FINAL_20261016/CAD_REVISED_CANDIDATE/datasets/cad_prestations_type_5_5_page5.json",
+      "expected": "9edbedc9c86c1ed53537c7259ae9d42a897ffa2424bb53fb3388131545a2ab0a",
+      "actual": "9edbedc9c86c1ed53537c7259ae9d42a897ffa2424bb53fb3388131545a2ab0a",
+      "matches": true
+    },
+    {
+      "path": "schemas/operational/CAD/2024-06.runtime-candidate.1/data/icd9-membership.json",
+      "expected": "645ebe2d375842055ff579fcddac44343ca3843cf474697cb23448d87d14bff6",
+      "actual": "645ebe2d375842055ff579fcddac44343ca3843cf474697cb23448d87d14bff6",
+      "matches": true
+    },
+    {
+      "path": "schemas/operational/CAD/2024-06.runtime-candidate.1/data/prestations-membership.json",
+      "expected": "2c7b12dac959b89f5f0e93c1324b2b38ffffee5d62a45a2ada0b699c430512a6",
+      "actual": "2c7b12dac959b89f5f0e93c1324b2b38ffffee5d62a45a2ada0b699c430512a6",
+      "matches": true
+    },
+    {
+      "path": "bundles/embedded/reference-data/example-codes.json",
+      "expected": "d42577f285ce8926363ae9bf8b23ef3796512407553d9216e9bc9ee969607a5f",
+      "actual": "d42577f285ce8926363ae9bf8b23ef3796512407553d9216e9bc9ee969607a5f",
+      "matches": true
+    },
+    {
+      "path": "schemas/xlsx/SIOC_tracciato_regionale_20260420-definitivo_v05.xlsx",
+      "expected": "6be8ae60a2c236e5a25b731365b42f8e7bca849066d68747abfc78b92ce273e3",
+      "actual": "6be8ae60a2c236e5a25b731365b42f8e7bca849066d68747abfc78b92ce273e3",
+      "matches": true
+    },
+    {
+      "path": "../LINTRA_STARTER_KIT_FINAL_20261016/SCHEMA_INPUTS/CAD_2024-06_SOURCE/2025-05-14_FLUSSO_ADI.pdf",
+      "expected": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29",
+      "actual": "8f828829d7912a8205073b0c097386774e996a64ab17f35b59cba7afbafd7b29",
+      "matches": true
+    },
+    {
+      "path": "tests/golden/cross-trace/sioc-referential/v1/schema.json",
+      "expected": "b7a5a8d91ffe6aecff39065ea4cfd634551b7cc83d4ceff219bdc6bca9b96ec7",
+      "actual": "b7a5a8d91ffe6aecff39065ea4cfd634551b7cc83d4ceff219bdc6bca9b96ec7",
+      "matches": true
+    },
+    {
+      "path": "schemas/sioc/2026-04-20.structural-minimal.2/flow_schema.json",
+      "expected": "b1bffeb800570d8f4ac045110bf849e5380ed4062f209b4cb1f34dee3df1c33b",
+      "actual": "b1bffeb800570d8f4ac045110bf849e5380ed4062f209b4cb1f34dee3df1c33b",
+      "matches": true
+    },
+    {
+      "path": "schemas/sioc/2026-04-20.structural-minimal.1/flow_schema.json",
+      "expected": "2592c46889a2c06fc9dd5da5b9220f2f1c2a3ac42985f56bd24e476058128c31",
+      "actual": "2592c46889a2c06fc9dd5da5b9220f2f1c2a3ac42985f56bd24e476058128c31",
+      "matches": true
+    },
+    {
+      "path": "../LINTRA_STARTER_KIT_FINAL_20261016/SCHEMA_INPUTS/SIOC_2026-04-20_FROZEN/flow_schema.json",
+      "expected": "3567bafd3cb9b762becdd46a356454b89df094c7b88c5b1538c97a1bbaf26c45",
+      "actual": "3567bafd3cb9b762becdd46a356454b89df094c7b88c5b1538c97a1bbaf26c45",
+      "matches": true
+    },
+    {
+      "path": "schemas/sioc/2026-04-20.structural-minimal.1/scope-ledger.json",
+      "expected": "e5043f09dfa383ab8a14bf733f8bea2d8022b33f1acf10c7236ff558217e369f",
+      "actual": "e5043f09dfa383ab8a14bf733f8bea2d8022b33f1acf10c7236ff558217e369f",
+      "matches": true
+    },
+    {
+      "path": "schemas/sioc/2026-04-20.structural-minimal.2/scope-ledger.json",
+      "expected": "9c7dc7e7977c2ee34772573594338c6985143b0f6fb75d174428beba92064c35",
+      "actual": "9c7dc7e7977c2ee34772573594338c6985143b0f6fb75d174428beba92064c35",
+      "matches": true
+    },
+    {
+      "path": "tests/golden/cross-trace/sioc-referential/v1/scope-ledger.json",
+      "expected": "6d457f70882aa2947a75bcbf2ebaf08c86be21c59606e0ff87f8386775b1f25b",
+      "actual": "6d457f70882aa2947a75bcbf2ebaf08c86be21c59606e0ff87f8386775b1f25b",
+      "matches": true
+    }
+  ],
+  "new_profile_sha256": "cd2cfcbeee35b3fe6dc34e6439d35d6af6e4337053572a7f48e0308767601d3e",
+  "preserved_record_keys": {
+    "1": [
+      "1.1",
+      "1.17",
+      "1.18"
+    ],
+    "2": [
+      "2.1",
+      "2.49",
+      "2.50"
+    ],
+    "3": [
+      "3.1",
+      "3.2",
+      "3.35",
+      "3.36"
+    ],
+    "4.1": [
+      "4.1",
+      "4.7",
+      "4.8",
+      "4.19.1"
+    ],
+    "4.2": [
+      "4.20",
+      "4.22"
+    ]
+  },
+  "original_task_count": 140,
+  "note": "Read-only comparison against approved source digests. Does not qualify missing normative datasets or UI.",
+  "original_status": {
+    "path": "IMPLEMENTATION_STATUS.md",
+    "sha256": "9a9cf8b4bf73c2b4af48cdbba9f10c3d29048189b6866d6b8d00c023e11f240f",
+    "matches_U_GOV_01": true,
+    "verified_marker": "140/140 DONE"
+  }
+}

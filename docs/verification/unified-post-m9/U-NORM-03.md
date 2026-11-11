@@ -1,6 +1,6 @@
 # U-NORM-03 — Enforcement SIOC cross-run generico
 
-Data: 11 novembre 2026, Europe/Rome. Stato: **IN_PROGRESS**.
+Data: 11 novembre 2026, Europe/Rome. Stato corrente: **WAITING_GATE** dopo qualifica locale PASS.
 Prerequisiti DONE: U-NORM-01 `a5689ae`, U-NORM-02 `672459e`, U-NORM-05
 `d49386b6c8f5567e2131166f88704d6b494d2c97`.
 Decisione: [DEC-SIOC-HIST-02-A01](../../normative/DEC-SIOC-HIST-02-A01.md).
@@ -164,3 +164,33 @@ una DACL protetta sulla sola directory root, poi ripristina l'ereditarietà
 sui discendenti: non applica ACE ereditabili direttamente ai file. Prima
 dei test controlla lettura di un modulo e write/read di un file sintetico.
 La nuova CI deve ancora dimostrarne l'efficacia; il controllo runtime non cambia.
+
+## Retry corrente: cb70bee
+
+[CI42990775714](https://github.com/UraganoAngelina/lintra/actions/runs/42990775714)
+su `cb70bee19f2d470c3ac2e98828343b32e23b3f0a`, dopo il FAIL completo
+di42989468054 (Linux discovery golden, Windows lettura file). Il primo
+riscontro del retry mostra preparazione ACL e24 test Python Windows PASS;
+Clippy/test nativi ancora in corso. Non è una qualifica del runtime anticipata.
+Fmt e Clippy finali v2 PASS;24 test Python locali PASS. La regressione
+workspace-v2 è in corso sullo stesso commit.
+
+`U-NORM-03-source-context.json` verifica in sola lettura15 fonti/dataset
+congelati, FROZEN incluso, e il consuntivo originale byte-identico a U-GOV-01
+(SHA9a9cf8b4..., marker140/140 DONE). Nuovo profilo SHA256
+`cd2cfcbeee35b3fe6dc34e6439d35d6af6e4337053572a7f48e0308767601d3e`.
+
+## Esito locale finale e sospensione sul gate remoto
+
+`U-NORM-03-workspace-v2.json/log.gz`: **1096 pass, zero fail,7 ignored**,
+126 riepiloghi Rust,1114,911s inclusa compilazione. HEAD prima/dopo
+`cb70bee19f2d470c3ac2e98828343b32e23b3f0a`, tutti520 input inventariati
+invariati. Le prove ignored rimangono esplicite; non sono conteggiate PASS.
+Fmt/Clippy v2 e24 test Python locali PASS sullo stesso SHA. Nessuna modifica
+dei golden legacy per ottenere il risultato.
+
+U-NORM-03 **WAITING_GATE**: CI42990775714 corrente, nessun DONE o G-SIOC1
+implicito. Le prime prove native standard sono verdi su entrambi gli OS;
+restano verifica finale del workflow e lettura dei log pertinenti. U-NORM-04
+non avviata prima del prerequisito. Prossima READY indipendente U-OPS-07;
+proseguire sequenzialmente durante la sola attesa remota.

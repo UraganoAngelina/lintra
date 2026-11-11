@@ -3,7 +3,9 @@
   "job": 130418517362,
   "head": "97f76883a339f2b5401e1b68809f5c2cf9f6bfd1",
   "job_conclusion": "failure",
-  "run_conclusion": "not_yet_observed",
+  "run_conclusion": "failure",
   "log_gzip_sha256": "10dec709b87f2deec19a7c594b2c2af17859ac11b8523f37a4fde6047cf2a4cd",
-  "diagnosis": "Controlled deployment returned success but Python could not read five source modules (PermissionError13). Recursive inheritance removal plus inheritable grants on files is replaced with directory-only root ACL and reset of descendant inheritance. Runtime security checks remain unchanged."
+  "diagnosis": "Controlled deployment returned success but Python could not read five source modules (PermissionError13). Recursive inheritance removal plus inheritable grants on files is replaced with directory-only root ACL and reset of descendant inheritance. Runtime security checks remain unchanged.",
+  "linux_job": 130418517707,
+  "linux_failure_observed": "golden committed_scenarios_match_byte_for_byte: no golden producer registered for this profile; same failure as local workspace, registered explicitly in cb70bee"
 }

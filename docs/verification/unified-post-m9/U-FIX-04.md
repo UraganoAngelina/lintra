@@ -110,3 +110,7 @@ ripristina la normale ereditarietà. Un probe legge davvero un modulo Python
 e scrive/rilegge un file temporaneo sintetico prima dei test. Nessun bypass
 runtime, modifica del checkout locale o concessione di scrittura condivisa.
 Il PASS nativo resta da acquisire su questa correzione.
+
+Retry corrente CI42990775714 sucb70bee: preparazione ACL e test Python
+Windows PASS al primo riscontro; Clippy e test Rust ancora da concludere.
+Restano invariati i controlli runtime e il test negativo di scrittura condivisa.
