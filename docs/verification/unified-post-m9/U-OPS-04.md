@@ -95,3 +95,11 @@ suite Linux: serve ancora il risultato nativo del nuovo SHA.
 **WAITING_CI**, nessun incremento delle task DONE. L'attesa remota consente
 il preflight sequenziale indipendente U-REL-03, come previsto dalla governance;
 nessuna delega o compilazione locale parallela a un'altra task.
+
+CI43049206479 ha successivamente fallito Clippy per il solo import inutilizzato
+`ComponentHandle` nel nuovo test Windows `shared_exports`. Rimosso l'import,
+senza cambiare assertion o lint. Log completo conservato nel relativo
+`windows-43049206479-failed.log.gz`. Le1105 prove locali restano evidenza del
+codice2a5e317; per il nuovo SHA si verifica equivalenza dei sorgenti di prodotto
+e si richiede comunque nuova CI Windows. Preflight U-REL-03 solo lettura,
+nessuna implementazione o task DONE durante questa diagnosi.

@@ -6,12 +6,9 @@ use lintra_ui::{
     export_controller::install_exports, results::controller::install_results,
     worker_controller::install_worker,
 };
-use slint::{
-    ComponentHandle,
-    platform::{
-        Platform, WindowAdapter,
-        software_renderer::{MinimalSoftwareWindow, RepaintBufferType},
-    },
+use slint::platform::{
+    Platform, WindowAdapter,
+    software_renderer::{MinimalSoftwareWindow, RepaintBufferType},
 };
 use std::{
     fs,
