@@ -65,3 +65,18 @@ receipt, invalidità normativa preservata, cambio scope, overwrite e controller.
 Mancano ancora CI del commit finale e suite locale completa sul suo codice.
 Nessun DONE o G-OPS1 PASS finché quelle prove mancano. Windows11 e frontend
 React restano gate separati; la ratifica brand ufficiale è documentale.
+
+## Prima CI e correzione Windows
+
+CI43043752821 su5fbe8cf: la fixture SMB/drive mappato è stata creata
+correttamente; il job Windows è fallito in compilazione Clippy per import
+delle costanti DRIVE_* dal namespace errato. Il log completo è conservato
+in U-OPS-04-windows-43043752821-failed.log.gz. Corretto esclusivamente il
+blocco cfg(windows): funzioni da Storage::FileSystem, costanti qualificate
+wp::DRIVE_* da System::WindowsProgramming, feature già abilitata nel progetto.
+Non aggiunte dipendenze, disattivati lint o cambiata la classificazione.
+
+La prima suite locale completa è stata interrotta dall'agente durante il
+linking, prima dei test, per eccessiva concorrenza di build/load60 e swap.
+Evidenza workspace-v1 marcata exit130/NOT_A_TEST_PASS. Rilancio con -j2 sul
+commit corretto; nessun limite del validatore o caso di test è stato cambiato.

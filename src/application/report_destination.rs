@@ -258,7 +258,10 @@ fn windows_unc_path(path: &Path) -> bool {
 #[cfg(windows)]
 fn classify_parent(parent: &Path) -> ReportDestinationLocation {
     use std::os::windows::ffi::OsStrExt;
-    use windows_sys::Win32::Storage::FileSystem::*;
+    use windows_sys::Win32::{
+        Storage::FileSystem::{GetDriveTypeW, GetVolumePathNameW},
+        System::WindowsProgramming as wp,
+    };
     if windows_unc_path(parent) {
         return ReportDestinationLocation::Remote;
     }
@@ -275,8 +278,8 @@ fn classify_parent(parent: &Path) -> ReportDestinationLocation {
     }
     // SAFETY: the successful preceding API produced a terminated volume path.
     match unsafe { GetDriveTypeW(volume.as_ptr()) } {
-        DRIVE_REMOTE => ReportDestinationLocation::Remote,
-        DRIVE_FIXED | DRIVE_REMOVABLE | DRIVE_RAMDISK | DRIVE_CDROM => {
+        wp::DRIVE_REMOTE => ReportDestinationLocation::Remote,
+        wp::DRIVE_FIXED | wp::DRIVE_REMOVABLE | wp::DRIVE_RAMDISK | wp::DRIVE_CDROM => {
             ReportDestinationLocation::Local
         }
         _ => ReportDestinationLocation::Undetermined,
