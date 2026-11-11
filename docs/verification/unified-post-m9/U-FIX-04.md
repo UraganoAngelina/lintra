@@ -93,3 +93,20 @@ dell'autore, cartella temporanea globale o ACL del prodotto. Il test nativo
 che assegna esplicitamente scrittura condivisa continua a richiedere il rifiuto.
 La nuova CI deve qualificare questa preparazione insieme al delta SIOC; nessun
 PASS è attribuito alle due pipeline Windows fallite.
+
+Nuova qualifica: [CI42989468054](https://github.com/UraganoAngelina/lintra/actions/runs/42989468054)
+in corso su97f7688, con preparazione runner ab93e71 e delta SIOC.
+Il controllo reference runtime resta quello76fa08a; nessun PASS fino ai log.
+
+## Job Windows42989468054: lettura dei file e ACL ereditabili
+
+Il job130418517362 è FAIL nei test Python: cinque `PermissionError13` sugli
+stessi moduli sorgente; i test Rust non sono stati eseguiti. La precedente
+preparazione icacls dichiarava successo ma applicava flag ereditabili anche
+ai file dopo averne rimosso l'ereditarietà. Evidenza log/sha preservata.
+La DACL viene ora costruita con DirectorySecurity sulla sola root posseduta
+(SID corrente, SYSTEM, Administrators; protected); icacls/reset dei discendenti
+ripristina la normale ereditarietà. Un probe legge davvero un modulo Python
+e scrive/rilegge un file temporaneo sintetico prima dei test. Nessun bypass
+runtime, modifica del checkout locale o concessione di scrittura condivisa.
+Il PASS nativo resta da acquisire su questa correzione.

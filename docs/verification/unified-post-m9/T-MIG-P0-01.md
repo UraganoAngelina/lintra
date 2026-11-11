@@ -1,7 +1,9 @@
 # T-MIG-P0-01 — Baseline tecnica post-audit
 
 Data: 2026-11-10, Europe/Rome. Prerequisito integrativo U-UI-01 `4f758d3`.
-Stato: **WAITING_GATE** per CI del delta reference. G-MIG-0 NOT_VERIFIED.
+Stato corrente11 novembre: **WAITING_GATE**. Le due CI reference sono
+fallite su Windows; nuova CI42989468054 su97f7688 in corso. G-MIG-0
+NOT_VERIFIED. La fotografia del10 novembre riportata sotto resta storica.
 
 Baseline esecutiva scelta: **dfc36044e0315f3ab060f98594192d3d1dfcad95**,
 branch work/p1-foundations, working tree pulita alla fotografia. af3bccc è
@@ -31,3 +33,15 @@ solo baseline JSON/dossier/stato. Aggiornare gate quando la CI nativa reale
 è completata e verificata sui log. U-NORM-05 ha una domanda mirata distinta,
 non blocca questa fotografia tecnica né il percorso UI sintetico indipendente.
 Next READY indipendente: U-OPS-05 (chiave/recovery), poi U-OPS-07 applicabile.
+
+## Frontiera corrente11 novembre
+
+CI42834962873 e42840799653: Windows FAIL, Linux PASS. La fixture CLI e la
+preparazione dei permessi del runner sono corrette senza bypass runtime.
+Candidate corrente `97f76883a339f2b5401e1b68809f5c2cf9f6bfd1`, con il nuovo
+produttore SIOC normativo: nessuna equivalenza implicita con dfc3604.
+21 test mirati e fmt/Clippy PASS; regressione completa in corso.
+CI42989468054 sullo stesso SHA in corso. La promozione richiede esito e log
+pertinenti; P0-02 resta non avviata. Né Windows2025 né CachyOS personale
+sostituiscono Windows11 clean-room/installer. U-NORM-05 è ora DONE con
+addendum-A01, senza più decisioni ordinarie pendenti.

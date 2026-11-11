@@ -130,3 +130,37 @@ andrà qualificato nelle task UI previste dopo G-MIG-4.
 Task attiva03;04 non avviata prima del suo prerequisito effettivo. In attesa
 del gate remoto è READY indipendente U-OPS-07. T-MIG-P0-01 attende nuova CI
 nativa pertinente; nessuno scaffold o P0-02 prima della baseline qualificata.
+
+## Qualifica corrente sul commit97f7688
+
+Sorgenti congelati su `97f76883a339f2b5401e1b68809f5c2cf9f6bfd1`,
+pubblicato sul branch autorizzato.21 test mirati PASS, zero fail/ignored
+(`U-NORM-03-focused-recheck`),520 input inventariati invariati.
+`U-NORM-03-final-fmt` e `U-NORM-03-final-clippy`: PASS sul commit esatto;
+Clippy workspace/all-targets/all-features con -Dwarnings. La regressione
+workspace/all-features completa è in corso, non ancora PASS.
+
+[CI42989468054](https://github.com/UraganoAngelina/lintra/actions/runs/42989468054)
+avviata sull’esatto SHA97f7688: qualifica Linux/Windows e ACL del runner,
+NON_VERIFIED fino agli esiti/log. Nessuna attribuzione delle run fallite
+precedenti al nuovo codice. Stato ancora IN_PROGRESS.
+
+## Prima regressione completa: FAIL e correzione registrazione
+
+`U-NORM-03-workspace` sullo SHA97f7688:532 pass,1 fail,5 ignored prima
+che Cargo fermasse il resto. Errore nel discovery `committed_scenarios_match_byte_for_byte`:
+la famiglia golden nuova non era registrata. Il producer SIOC mensile reale
+è già in `cross_run_validation.rs`; viene aggiunta soltanto la sua root esatta
+all'elenco, come per i producer SIOC referenziale/CAD. Il discovery continua a
+rifiutare famiglie sconosciute, il single-reader updater non può rigenerare
+questa famiglia. Nessun expected legacy viene modificato. Recheck dedicato:
+`U-NORM-03-golden-registration`,34 pass, zero fail/ignored (21 normativi+13golden).
+La suite completa va ripetuta sul nuovo SHA prima del PASS.
+
+Il job Windows130418517362 della CI42989468054 è FAIL prima dei test Rust:
+le ACL ricorsive del checkout impedivano la lettura di cinque moduli Python.
+Log e digest in U-FIX-04-native-failed-42989468054.*. La correzione imposta
+una DACL protetta sulla sola directory root, poi ripristina l'ereditarietà
+sui discendenti: non applica ACE ereditabili direttamente ai file. Prima
+dei test controlla lettura di un modulo e write/read di un file sintetico.
+La nuova CI deve ancora dimostrarne l'efficacia; il controllo runtime non cambia.

@@ -58,9 +58,28 @@ jobs:
           $fixtureTemp = Join-Path $env:RUNNER_TEMP 'lintra-controlled-tests'
           New-Item -ItemType Directory -Path $fixtureTemp -Force | Out-Null
           foreach ($ownedRoot in @($env:GITHUB_WORKSPACE, $fixtureTemp)) {
-            icacls $ownedRoot /inheritance:r /grant:r "*${currentSid}:(OI)(CI)F" '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' /T /Q
-            if ($LASTEXITCODE -ne 0) { throw 'Cannot prepare controlled test permissions' }
+            # Inheritable ACEs belong on directories. Applying those flags to
+            # every file after removing its inheritance can leave the file
+            # unreadable. Protect the root, then restore descendant inheritance.
+            $security = [Security.AccessControl.DirectorySecurity]::new()
+            $security.SetAccessRuleProtection($true, $false)
+            $inherit = [Security.AccessControl.InheritanceFlags]::ContainerInherit -bor [Security.AccessControl.InheritanceFlags]::ObjectInherit
+            foreach ($sid in @($currentSid, 'S-1-5-18', 'S-1-5-32-544')) {
+              $identity = [Security.Principal.SecurityIdentifier]::new($sid)
+              $rule = [Security.AccessControl.FileSystemAccessRule]::new($identity, [Security.AccessControl.FileSystemRights]::FullControl, $inherit, [Security.AccessControl.PropagationFlags]::None, [Security.AccessControl.AccessControlType]::Allow)
+              $security.AddAccessRule($rule)
+            }
+            Set-Acl -LiteralPath $ownedRoot -AclObject $security
+            if (Get-ChildItem -LiteralPath $ownedRoot -Force | Select-Object -First 1) {
+              icacls (Join-Path $ownedRoot '*') /reset /T /Q
+              if ($LASTEXITCODE -ne 0) { throw 'Cannot restore controlled descendant inheritance' }
+            }
           }
+          Get-Content -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'scripts/tests/test_workspace.py') -TotalCount 1 | Out-Null
+          $probe = Join-Path $fixtureTemp 'permission-probe.txt'
+          [IO.File]::WriteAllText($probe, 'synthetic-readable-writable')
+          if ([IO.File]::ReadAllText($probe) -ne 'synthetic-readable-writable') { throw 'Test permissions are ineffective' }
+          Remove-Item -LiteralPath $probe
           Add-Content -Path $env:GITHUB_ENV -Value "TEMP=$fixtureTemp" -Encoding utf8
           Add-Content -Path $env:GITHUB_ENV -Value "TMP=$fixtureTemp" -Encoding utf8
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
