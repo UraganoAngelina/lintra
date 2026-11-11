@@ -92,3 +92,9 @@ rimangono distinti attraverso testi e colore; fine run non implica conformità.
 Modelli/callback Rust restano le fonti dei dati e delle azioni.
 
 Evidenze e fasi sequenziali in `signature/` e nel report Signature.
+
+
+Per la nuova WebView il
+[brief Tauri](MIGRATION_TAURI_BRIEF.md) estende il mondo Copper Ledger al
+percorso Full e alle prove responsive per OS. I token e i test Slint restano
+indipendenti e conservati; la sola migrazione non li rigenera.

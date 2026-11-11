@@ -1,0 +1,80 @@
+{
+  "task": "T-MIG-P0-07",
+  "preflight_head": "ed45955",
+  "source_runtime": "cb70bee19f2d470c3ac2e98828343b32e23b3f0a",
+  "qualified_runtime_inputs_unchanged": 520,
+  "visual_sources_seen": {
+    "target/ui-signature/analysis-dark-1366x768-2x.png": "b020d0ce09167dff53e9e7df3af1e5cafbd2500b0a097974893691ed1669d71d",
+    "target/ui-signature/results-light-640x480-1x.png": "96afc15d1d4c097d299bfcd998cc8348022c3649d7a9a9644d533d9e86520612"
+  },
+  "tokens_sha256": "d3847381138274d3c8072ea2ac367711dc233e9db87ee627ada2c5e18636f4f7",
+  "existing_context": [
+    "docs/ui-design-documentation/PRODUCT.md",
+    "docs/ui-design-documentation/DESIGN.md",
+    "docs/ui-design-documentation/LINTRA_DESIGN_DIRECTION.md"
+  ],
+  "impeccable_context": "Ran once; root-level loader did not discover existing nested context. Existing documents and render/token evidence used directly. No context rerun, new interview or delegation.",
+  "ui_ux_pro_max_commands": [
+    {
+      "args": [
+        "python3",
+        ".codex/skills/ui-ux-pro-max/scripts/search.py",
+        "offline desktop healthcare fixed width validation dense data ledger copper charcoal ivory accessible analysts",
+        "--design-system",
+        "-p",
+        "Lintra",
+        "-f",
+        "markdown"
+      ]
+    },
+    {
+      "args": [
+        "python3",
+        ".codex/skills/ui-ux-pro-max/scripts/search.py",
+        "keyboard focus error table virtualization loading",
+        "--domain",
+        "ux",
+        "-n",
+        "5"
+      ]
+    },
+    {
+      "args": [
+        "python3",
+        ".codex/skills/ui-ux-pro-max/scripts/search.py",
+        "state accessibility virtualized table bounded data",
+        "--stack",
+        "react"
+      ]
+    }
+  ],
+  "research_outputs": {
+    "lintra-ux-design-system.md": "## Design System: Lintra\n\n### Pattern\n- **Name:** Social Proof-Focused\n- **CTA Placement:** Above fold\n- **Sections:** Hero > Features > CTA\n\n### Style\n- **Name:** Accessible & Ethical\n- **Keywords:** High contrast, large text (16px+), keyboard navigation, screen reader friendly, WCAG compliant, focus state, semantic\n- **Best For:** Government, healthcare, education, inclusive products, large audience, legal compliance, public\n- **Performance:** \u26a1 Excellent | **Accessibility:** \u2713 WCAG AAA\n\n### Colors\n| Role | Hex |\n|------|-----|\n| Primary | #1E40AF |\n| Secondary | #3B82F6 |\n| CTA | #F59E0B |\n| Background | #F8FAFC |\n| Text | #1E3A8A |\n\n*Notes: Blue data + amber highlights*\n\n### Typography\n- **Heading:** Figtree\n- **Body:** Noto Sans\n- **Mood:** medical, clean, accessible, professional, healthcare, trustworthy\n- **Best For:** Healthcare, medical clinics, pharma, health apps, accessibility\n- **Google Fonts:** https://fonts.google.com/share?selection.family=Figtree:wght@300;400;500;600;700|Noto+Sans:wght@300;400;500;700\n- **CSS Import:**\n```css\n@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Noto+Sans:wght@300;400;500;700&display=swap');\n```\n\n### Key Effects\nClear focus rings (3-4px), ARIA labels, skip links, responsive design, reduced motion, 44x44px touch targets\n\n### Avoid (Anti-patterns)\n- Bright neon colors\n- Motion-heavy animations\n- AI purple/pink gradients\n\n### Pre-Delivery Checklist\n- [ ] No emojis as icons (use SVG: Heroicons/Lucide)\n- [ ] cursor-pointer on all clickable elements\n- [ ] Hover states with smooth transitions (150-300ms)\n- [ ] Light mode: text contrast 4.5:1 minimum\n- [ ] Focus states visible for keyboard nav\n- [ ] prefers-reduced-motion respected\n- [ ] Responsive: 375px, 768px, 1024px, 1440px\n\n",
+    "lintra-ux-patterns.txt": "## UI Pro Max Search Results\n**Domain:** ux | **Query:** keyboard focus error table virtualization loading\n**Source:** ux-guidelines.csv | **Found:** 5 results\n\n### Result 1\n- **Category:** Interaction\n- **Issue:** Focus States\n- **Platform:** All\n- **Description:** Keyboard users need visible focus indicators\n- **Do:** Use visible focus rings on interactive elements\n- **Don't:** Remove focus outline without replacement\n- **Code Example Good:** focus:ring-2 focus:ring-blue-500\n- **Code Example Bad:** outline-none without alternative\n- **Severity:** High\n\n### Result 2\n- **Category:** Accessibility\n- **Issue:** Error Messages\n- **Platform:** All\n- **Description:** Error messages must be announced\n- **Do:** Use aria-live or role=alert for errors\n- **Don't:** Visual-only error indication\n- **Code Example Good:** role='alert'\n- **Code Example Bad:** Red border only\n- **Severity:** High\n\n### Result 3\n- **Category:** Accessibility\n- **Issue:** Keyboard Navigation\n- **Platform:** Web\n- **Description:** All functionality accessible via keyboard\n- **Do:** Tab order matches visual order\n- **Don't:** Keyboard traps or illogical tab order\n- **Code Example Good:** tabIndex for custom order\n- **Code Example Bad:** Unreachable elements\n- **Severity:** High\n\n### Result 4\n- **Category:** Responsive\n- **Issue:** Table Handling\n- **Platform:** Web\n- **Description:** Tables can overflow on mobile\n- **Do:** Use horizontal scroll or card layout\n- **Don't:** Wide tables breaking layout\n- **Code Example Good:** overflow-x-auto wrapper\n- **Code Example Bad:** Table overflows viewport\n- **Severity:** Medium\n\n### Result 5\n- **Category:** Accessibility\n- **Issue:** Skip Links\n- **Platform:** Web\n- **Description:** Allow keyboard users to skip navigation\n- **Do:** Provide skip to main content link\n- **Don't:** No skip link on nav-heavy pages\n- **Code Example Good:** Skip to main content link\n- **Code Example Bad:** 100 tabs to reach content\n- **Severity:** Medium\n\n",
+    "lintra-ux-react.txt": "## UI Pro Max Stack Guidelines\n**Stack:** react | **Query:** state accessibility virtualized table bounded data\n**Source:** stacks/react.csv | **Found:** 3 results\n\n### Result 1\n- **Category:** Context\n- **Guideline:** Use context for global data\n- **Description:** Context for theme auth locale\n- **Do:** Context for app-wide state\n- **Don't:** Context for frequently changing data\n- **Code Good:** <ThemeContext.Provider>\n- **Code Bad:** Context for form field values\n- **Severity:** Medium\n- **Docs URL:** https://react.dev/learn/passing-data-deeply-with-context\n\n### Result 2\n- **Category:** Effects\n- **Guideline:** Avoid unnecessary effects\n- **Description:** Don't use effects for transforming data or events\n- **Do:** Transform data during render handle events directly\n- **Don't:** useEffect for derived state or event handling\n- **Code Good:** const filtered = items.filter(...)\n- **Code Bad:** useEffect(() => setFiltered(items.filter(...)))\n- **Severity:** High\n- **Docs URL:** https://react.dev/learn/you-might-not-need-an-effect\n\n### Result 3\n- **Category:** Patterns\n- **Guideline:** Container/Presentational split\n- **Description:** Separate data logic from UI\n- **Do:** Container fetches presentational renders\n- **Don't:** Mixed data and UI in one\n- **Code Good:** <UserContainer><UserView/></UserContainer>\n- **Code Bad:** <User /> with fetch and render\n- **Severity:** Low\n- **Docs URL:** \n\n"
+  },
+  "adopted": [
+    "keyboard/focus/labels",
+    "viewport-contained table",
+    "textual error announcements",
+    "React presentation/state boundary"
+  ],
+  "not_adopted": [
+    "marketing social-proof/hero layout",
+    "blue hospital palette or new fonts",
+    "remote Google Fonts import",
+    "unproved AAA compliance claim",
+    "JS items.filter for clinical diagnostics; query/filter remain Rust"
+  ],
+  "pre_existing_drift": "DESIGN frontmatter ink-dark F4F3EE differs from qualified Tok F5F4F0. Recorded; source legacy tokens not changed.",
+  "review": "Single-agent integrated review required by author. No subagents. No new UI code; craft-floor/detector deferred to actual UI implementation.",
+  "no_ai_slop_self_review": {
+    "preserves_operator_meaning": true,
+    "no_new_compliance_claims": true,
+    "no_normative_rewrite": true,
+    "concrete_actions_and_states": true,
+    "no_invented_statistics_or_latency_threshold": true
+  },
+  "new_frontend_visual_tests": "NOT_RUN",
+  "performance_numeric_latency_threshold": "NOT_INVENTED; measured protocol and hard structural budgets only"
+}

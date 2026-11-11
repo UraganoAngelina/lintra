@@ -58,7 +58,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | T-MIG-P0-04 | T-MIG-P0-03 | DONE | [Scope e parità obbligatoria](docs/verification/unified-post-m9/T-MIG-P0-04.md) | D01/DEC-MIG-07 recepite;16 capability e stato reale; codice invariato | Acceptance scope PASS; G-MIG-0 attende05..08 |
 | T-MIG-P0-05 | T-MIG-P0-03 | DONE | [ADR OS e offline](docs/verification/unified-post-m9/T-MIG-P0-05.md) | ADR-MIG-002,D14/DEC-MIG-02 recepite;policy core/CLI invariata | Acceptance OS documentale PASS; GUI nativa/installer ancora NOT_VERIFIED |
 | T-MIG-P0-06 | T-MIG-P0-03 | DONE | [Policy e threat model](docs/verification/unified-post-m9/T-MIG-P0-06.md) | ADR-MIG-003/004,policy autore recepita;test attacco/runtime futuri espliciti | Acceptance policy PASS; G-MIG-0 attende07/08 |
-| T-MIG-P0-07 | T-MIG-P0-04, T-MIG-P0-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-07.md) | —; Non eseguite | G-MIG-0 NOT_VERIFIED |
+| T-MIG-P0-07 | T-MIG-P0-04, T-MIG-P0-05 | DONE | [Brief UX e budget misurabili](docs/verification/unified-post-m9/T-MIG-P0-07.md) | Copper Ledger esteso,stati/viewport/a11y e protocollo;nessun tempo DEC-14 inventato | Acceptance brief PASS; nuove prove UI NOT_VERIFIED |
 | T-MIG-P0-08 | T-MIG-P0-01, T-MIG-P0-02, T-MIG-P0-03, T-MIG-P0-04, T-MIG-P0-05, T-MIG-P0-06, T-MIG-P0-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P0-08.md) | —; Non eseguite | G-MIG-0 NOT_VERIFIED |
 | T-MIG-P1-01 | T-MIG-P0-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-01.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-02 | T-MIG-P0-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-02.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
@@ -146,7 +146,7 @@ U-FIX-01..05 DONE: G-HARD PASS con CI42990775714 sucb70bee,7 job richiesti posit
 U-NORM-03 DONE per backend normativo,21 oracle3volte/OS;04 WAITING_INTEGRATION per frontend/contesto amministrativo, G-SIOC1 complessivo aperto.
 T-MIG-P0-01 DONE; G-MIG-0 non ancora PASS prima delle altre sette taskP0.
 U-OPS-07 DONE documentale; U-OPS-03 preflight sospeso sull'integrazione root/worker Tauri reale, nessun DONE implicito.
-**next READY T-MIG-P0-07**, poi08 prima di implementare Tauri. AUTO_CONTINUE.
+**next READY T-MIG-P0-08** per verificare G-MIG-0 prima degli spike Tauri. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.
