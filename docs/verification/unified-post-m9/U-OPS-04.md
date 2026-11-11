@@ -80,3 +80,18 @@ La prima suite locale completa è stata interrotta dall'agente durante il
 linking, prima dei test, per eccessiva concorrenza di build/load60 e swap.
 Evidenza workspace-v1 marcata exit130/NOT_A_TEST_PASS. Rilancio con -j2 sul
 commit corretto; nessun limite del validatore o caso di test è stato cambiato.
+
+## Qualifica locale sul commit corretto
+
+Codice `2a5e317a007fd7e23ca247926676869215528472`, CI nativa corrente
+`43049206479` ancora in esecuzione. Locale workspace-v2: **1105 pass,
+0 fail,7 ignored**,571.021s; Clippy-v2 all-targets/all-features con
+`-D warnings`: PASS; tooling-v1:24 test Python PASS. Tutti i receipt
+conservano528 input identici, senza modifiche durante le verifiche.
+Fmt e diff-check PASS. Otto fonti dataset congelate U-NORM-02 e hash del
+consuntivo M9 invariati. I due test SMB Windows non sono qualificati dalla
+suite Linux: serve ancora il risultato nativo del nuovo SHA.
+
+**WAITING_CI**, nessun incremento delle task DONE. L'attesa remota consente
+il preflight sequenziale indipendente U-REL-03, come previsto dalla governance;
+nessuna delega o compilazione locale parallela a un'altra task.
