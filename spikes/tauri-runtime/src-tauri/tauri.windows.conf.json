@@ -1,0 +1,16 @@
+{
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "icon": ["icons/icon.ico"],
+    "shortDescription": "Lintra synthetic runtime qualification probe",
+    "windows": {
+      "allowDowngrades": false,
+      "webviewInstallMode": { "type": "offlineInstaller", "silent": true },
+      "nsis": {
+        "installMode": "perMachine",
+        "languages": ["Italian", "English"]
+      }
+    }
+  }
+}

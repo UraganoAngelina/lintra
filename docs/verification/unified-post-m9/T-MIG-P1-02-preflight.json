@@ -1,0 +1,33 @@
+{
+  "task": "T-MIG-P1-02",
+  "preflight_head": "b1f14ce2792aaea5d24a8426ec10a8815ddd6759",
+  "native_environment": "BLOCKED",
+  "author_response": "2026-11-11 chat: Nessun ambiente Windows 11 al momento",
+  "local_virtualization_tools": {
+    "virsh": null,
+    "qemu-system-x86_64": null,
+    "VBoxManage": null,
+    "vmrun": null,
+    "pwsh": null,
+    "powershell": null,
+    "wine": null,
+    "makensis": null
+  },
+  "kvm_exists": false,
+  "workspace_vm_images_found": [],
+  "Windows_overlay_json": "syntax PASS; full Tauri schema parsing to be checked on native CI",
+  "local_YAML_PowerShell_validation": "Unavailable; manual source review only, no additional dependency installed",
+  "files_sha256": {
+    "spikes/tauri-runtime/src-tauri/tauri.windows.conf.json": "daea61bbee839df58de62bd1475892485b180eef7db6f3c83070af95ea78889e",
+    ".github/workflows/tauri-runtime-spike.yml": "5d6b6c4416c563373daa04b462da2e7a6f9113e0529c333f11487789716076d5",
+    "spikes/tauri-runtime/src-tauri/icons/icon.ico": "a7c33bc2a63369bf29d65be8c89644e0142643afd2e0c173972156e49cad52ff"
+  },
+  "setup_node_immutable_ref": {
+    "repository": "actions/setup-node",
+    "tag": "v6",
+    "commit": "249970729cb0ef3589644e2896645e5dc5ba9c38",
+    "source": "Official GitHub API git/ref/tags/v6"
+  },
+  "G_MIG_1": "NOT_VERIFIED",
+  "CI": "NOT_YET_RUN"
+}

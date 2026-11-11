@@ -61,7 +61,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | T-MIG-P0-07 | T-MIG-P0-04, T-MIG-P0-05 | DONE | [Brief UX e budget misurabili](docs/verification/unified-post-m9/T-MIG-P0-07.md) | Copper Ledger esteso,stati/viewport/a11y e protocollo;nessun tempo DEC-14 inventato | G-MIG-0 PASS governance; prove UI/runtime successive separate |
 | T-MIG-P0-08 | T-MIG-P0-01, T-MIG-P0-02, T-MIG-P0-03, T-MIG-P0-04, T-MIG-P0-05, T-MIG-P0-06, T-MIG-P0-07 | DONE | [Gate G-MIG-0](docs/verification/unified-post-m9/T-MIG-P0-08.md) | ADR/evidenze/prerequisiti verificati;cb70bee CI42990775714 positiva | G-MIG-0 PASS governance; ingressoP1 autorizzato |
 | T-MIG-P1-01 | T-MIG-P0-08 | DONE | [Spike nativo React/Tauri Linux](docs/verification/unified-post-m9/T-MIG-P1-01.md) | 996947e app invariata;build/Clippy/IPC-render Wayland/capture PASS;144 righe ldd senza missing | Acceptance Linux personale PASS;G-MIG-1 aggregato NOT_VERIFIED |
-| T-MIG-P1-02 | T-MIG-P0-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-02.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
+| T-MIG-P1-02 | T-MIG-P0-08 | WAITING_CI_BLOCKED_NATIVE | [Spike Windows e prerequisito reale](docs/verification/unified-post-m9/T-MIG-P1-02.md) | Overlay NSIS offline/perMachine e build CI preparati;autore senza ambiente Windows11 | G-MIG-1 NOT_VERIFIED;build Server2025 non sostituisce clean-room11 |
 | T-MIG-P1-03 | T-MIG-P1-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-03.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-04 | T-MIG-P1-01, T-MIG-P1-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-04.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-05 | T-MIG-P1-01, T-MIG-P1-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-05.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
@@ -146,7 +146,7 @@ U-FIX-01..05 DONE: G-HARD PASS con CI42990775714 sucb70bee,7 job richiesti posit
 U-NORM-03 DONE per backend normativo,21 oracle3volte/OS;04 WAITING_INTEGRATION per frontend/contesto amministrativo, G-SIOC1 complessivo aperto.
 T-MIG-P0-01..08 DONE; G-MIG-0 PASS per governance e ingresso agli spike, non per runtime/installer.
 U-OPS-07 DONE documentale; U-OPS-03 preflight sospeso sull'integrazione root/worker Tauri reale, nessun DONE implicito.
-**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. Next READY P1-02; anche P1-03 pronta per dipendenze. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. AUTO_CONTINUE.
+**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 in attesa CI e bloccata sul collaudo nativo Win11 indisponibile; next indipendente READY P1-03. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.

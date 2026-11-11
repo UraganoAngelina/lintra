@@ -1,0 +1,94 @@
+name: Tauri runtime spike Windows build
+
+on:
+  push:
+    branches: [work/p1-foundations]
+    paths:
+      - spikes/tauri-runtime/**
+      - .github/workflows/tauri-runtime-spike.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tauri-runtime-spike-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-windows-probe:
+    name: Windows Server build only - not Windows 11 clean-room
+    runs-on: windows-2025
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: spikes/tauri-runtime
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Required solely to reproduce the already approved frontend toolchain.
+      # Immutable official v6 ref resolved through the actions/setup-node API.
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '26.13.0'
+      - name: Record native build host and toolchain
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, BuildNumber
+          node --version
+          if ($LASTEXITCODE -ne 0) { throw 'Node unavailable' }
+          npm --version
+          if ($LASTEXITCODE -ne 0) { throw 'npm unavailable' }
+          rustup show active-toolchain
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Rust unavailable' }
+      - name: Install exact frontend dependencies without lifecycle scripts
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          if ($LASTEXITCODE -ne 0) { throw 'npm ci failed' }
+          npm run build
+          if ($LASTEXITCODE -ne 0) { throw 'Strict frontend build failed' }
+      - name: Check isolated Rust probe
+        run: |
+          cargo fmt --manifest-path src-tauri/Cargo.toml -- --check
+          if ($LASTEXITCODE -ne 0) { throw 'Rust formatting failed' }
+          cargo clippy --manifest-path src-tauri/Cargo.toml --locked --all-targets --release --target x86_64-pc-windows-msvc --features tauri/custom-protocol -j 2 -- -D warnings
+          if ($LASTEXITCODE -ne 0) { throw 'Clippy failed' }
+      - name: Build test-only NSIS with offline WebView2 and perMachine mode
+        run: |
+          npm run tauri -- build --bundles nsis --target x86_64-pc-windows-msvc -- --locked -j 2
+          if ($LASTEXITCODE -ne 0) { throw 'Windows spike packaging failed' }
+      - name: Record artifact identity without claiming installation
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $releaseDir = 'src-tauri/target/x86_64-pc-windows-msvc/release'
+          $app = Get-Item (Join-Path $releaseDir 'lintra-runtime-spike.exe')
+          $installers = @(Get-ChildItem (Join-Path $releaseDir 'bundle/nsis') -Filter '*-setup.exe' -File)
+          if ($installers.Count -ne 1) { throw 'Expected exactly one test installer' }
+          $files = @(@($app, $installers[0]) | ForEach-Object {
+            @{ name = $_.Name; bytes = $_.Length; sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant() }
+          })
+          $record = [ordered]@{
+            task = 'T-MIG-P1-02'
+            source_sha = $env:GITHUB_SHA
+            ci_run = $env:GITHUB_RUN_ID
+            build_host = 'windows-2025 / Windows Server; not Windows 11'
+            purpose = 'Synthetic runtime test artifact; not a Lintra product release'
+            windows_11_clean_room = 'NOT_RUN'
+            offline_installation = 'NOT_RUN'
+            non_admin_two_accounts = 'NOT_RUN'
+            configured = @{ nsis = 'perMachine'; webview = 'offlineInstaller'; target = 'x86_64-pc-windows-msvc' }
+            files = $files
+          }
+          $record | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $releaseDir 'windows-spike-build.json') -Encoding utf8
+      - name: Upload test artifact for later Windows 11 qualification
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: tauri-runtime-spike-windows-${{ github.sha }}
+          path: |
+            spikes/tauri-runtime/src-tauri/target/x86_64-pc-windows-msvc/release/lintra-runtime-spike.exe
+            spikes/tauri-runtime/src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*-setup.exe
+            spikes/tauri-runtime/src-tauri/target/x86_64-pc-windows-msvc/release/windows-spike-build.json
+          if-no-files-found: error
+          retention-days: 7
