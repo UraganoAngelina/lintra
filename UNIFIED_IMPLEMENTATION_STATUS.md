@@ -34,7 +34,7 @@ CI audit non qualifica alcun nuovo delta runtime.
 | U-NORM-01 | U-GOV-03 | DONE | [PK e deferred inventariati](docs/verification/unified-post-m9/U-NORM-01.md) | 10dc66b;1 oracle pass;5 tuple identiche .1/.2/FROZEN/component;83+70+3 deferred | G-SIOC0/1 NOT_VERIFIED; D11 enforcement resta richiesto |
 | U-NORM-02 | U-NORM-01 | DONE | [Freeze dataset D12](docs/verification/unified-post-m9/U-NORM-02.md) | Otto fonti con hash/versioni;12 assenze SIOC dichiarate definitive; nessun sourcing o delta runtime | Acceptance inventario PASS; G-SIOC0/1 NOT_VERIFIED |
 | U-NORM-03 | U-NORM-01, U-NORM-02, U-NORM-05 | DONE | [Servizio normativo e profilo](docs/verification/unified-post-m9/U-NORM-03.md) | cb70bee;1096 pass/7 ignored;CI42990775714 success,21 oracle3 volte per OS | Acceptance backend PASS; G-SIOC1 aggregato attende04 e bridge usabile |
-| U-NORM-04 | U-NORM-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-NORM-04.md) | —; Non eseguite | G-SIOC1 NOT_VERIFIED |
+| U-NORM-04 | U-NORM-03 | WAITING_INTEGRATION | [Oracle nativi e residuo UI](docs/verification/unified-post-m9/U-NORM-04.md) | cb70bee;21 oracle3 volte/OS,JSONL canonico; frontend/contesto amministrativo ancora da collegare | G-SIOC1 NOT_VERIFIED; riprendere dopo G-MIG-4 |
 | U-NORM-05 | U-NORM-01 | DONE | [Addendum autore e oracle](docs/verification/unified-post-m9/U-NORM-05.md) | DEC-SIOC-HIST-02-A01; fonte C20/C18 e PK4.19.1 confermata; check piano locale | G-SIOC0 documentale PASS; G-SIOC1 NOT_VERIFIED |
 | U-UI-01 | U-GOV-04 | DONE | [Ponte 89 MIG/post-audit](docs/verification/unified-post-m9/U-UI-01.md) | Overlay master §6, sorgenti76fa08a distinti dalla HEAD/CI; controlli grafo/documenti | Acceptance ponte PASS; G-MIG-0 NOT_VERIFIED |
 | U-UI-02 | T-MIG-P9-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-UI-02.md) | —; Non eseguite | G-MIG-9 NOT_VERIFIED |
@@ -143,10 +143,10 @@ CI audit non qualifica alcun nuovo delta runtime.
 | T-MIG-P9-08 | T-MIG-P9-01, T-MIG-P7-09 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P9-08.md) | —; Non eseguite | G-MIG-9 NOT_VERIFIED |
 
 U-FIX-01..05 DONE: G-HARD PASS con CI42990775714 sucb70bee,7 job richiesti positivi.
-U-NORM-03 DONE per backend normativo,21 oracle3volte/OS;04 READY per qualifica/bridge, G-SIOC1 complessivo ancora aperto.
+U-NORM-03 DONE per backend normativo,21 oracle3volte/OS;04 WAITING_INTEGRATION per frontend/contesto amministrativo, G-SIOC1 complessivo aperto.
 T-MIG-P0-01 DONE; G-MIG-0 non ancora PASS prima delle altre sette taskP0.
 U-OPS-07 DONE documentale; U-OPS-03 preflight sospeso sull'integrazione root/worker Tauri reale, nessun DONE implicito.
-**next READY U-NORM-04**, poi T-MIG-P0-02 per proseguire il percorso UI autorizzato. AUTO_CONTINUE.
+**next READY T-MIG-P0-02** per proseguire il percorso UI autorizzato. AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.
