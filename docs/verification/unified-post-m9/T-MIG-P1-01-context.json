@@ -1,0 +1,117 @@
+{
+  "task": "T-MIG-P1-01",
+  "date": "2026-11-11",
+  "preflight_head": "925ef47869518e8723ed4c4506b0996b290af2e4",
+  "author_reference_instruction": "Chat 2026-11-11: consult prepared visual references; React/Tauri or already approved components only; additional dependencies require documented necessity.",
+  "references_read_only": [
+    {
+      "name": "Confronto UI LINTRA_ Tauri, Dioxus e GPUI.png",
+      "bytes": 1707961,
+      "sha256": "6f82db946437133df58c46e2e1ccf56b08de2c9d4aa0a327dcc7a9671690b8d2"
+    },
+    {
+      "name": "Confronto framework GUI Rust per Lintra.png",
+      "bytes": 1924222,
+      "sha256": "391b5ecceb529f925014e0a9a14781b9180aff736a23471245b54065bb5135cf"
+    },
+    {
+      "name": "Lintra_ quattro interfacce Rust a confronto.png",
+      "bytes": 1751467,
+      "sha256": "b396dd7d894ca0ccaced7d737f45416cabda1b70cb6b90f3f47a92abc0f5d17e"
+    },
+    {
+      "name": "lintra_11_frameworks_gallery(1).png",
+      "bytes": 608868,
+      "sha256": "cfdeb73d412092315b13793d44474fec2f3dd9295d7cb69db4553a80822c7c47"
+    },
+    {
+      "name": "lintra_11_frameworks_gallery.png",
+      "bytes": 608868,
+      "sha256": "cfdeb73d412092315b13793d44474fec2f3dd9295d7cb69db4553a80822c7c47"
+    },
+    {
+      "name": "lintra_dioxus_ui(1).png",
+      "bytes": 124101,
+      "sha256": "70cd9ad6a293ec00ed380e21418fc3f996f6ef6c312c9784fe6f1a58557ae4e9"
+    },
+    {
+      "name": "lintra_dioxus_ui.png",
+      "bytes": 124101,
+      "sha256": "70cd9ad6a293ec00ed380e21418fc3f996f6ef6c312c9784fe6f1a58557ae4e9"
+    },
+    {
+      "name": "lintra_gpui_ui(1).png",
+      "bytes": 124417,
+      "sha256": "e99361405d4c205fde15f3a4ef809bd8b6d57c6b3f7b8f932016533f60363d04"
+    },
+    {
+      "name": "lintra_gpui_ui.png",
+      "bytes": 124417,
+      "sha256": "e99361405d4c205fde15f3a4ef809bd8b6d57c6b3f7b8f932016533f60363d04"
+    },
+    {
+      "name": "lintra_tauri_ui(1).png",
+      "bytes": 119714,
+      "sha256": "db25dfa45936460afe4e82929dfaa9a98a6ed9345d72c60bada2a8d0fe9317af"
+    },
+    {
+      "name": "lintra_tauri_ui.png",
+      "bytes": 119714,
+      "sha256": "db25dfa45936460afe4e82929dfaa9a98a6ed9345d72c60bada2a8d0fe9317af"
+    }
+  ],
+  "vision_examined": [
+    "lintra_tauri_ui.png",
+    "lintra_tauri_ui(1).png",
+    "lintra_11_frameworks_gallery.png",
+    "lintra_dioxus_ui.png",
+    "lintra_gpui_ui.png"
+  ],
+  "os_dependency_preflight": "WebKitGTK 4.1 missing; sudo -n denied because a password is required. No password requested or logged.",
+  "author_response": "2026-11-11: Installazione completata",
+  "installed_verified": {
+    "webkit2gtk-4.1": "2.54.2-1",
+    "enchant": "2.8.21-1.1",
+    "libmanette": "0.2.13-2.1",
+    "woff2": "1.0.2-7.1",
+    "xdg-dbus-proxy": "0.1.9-1.1"
+  },
+  "pkg_config": {
+    "webkit2gtk-4.1": "2.54.2",
+    "javascriptcoregtk-4.1": "2.54.2",
+    "gtk+-3.0": "3.24.52",
+    "libsoup-3.0": "3.8.1"
+  },
+  "environment": {
+    "os": "CachyOS rolling",
+    "session": "Wayland",
+    "desktop": "Hyprland",
+    "rust": "1.99.1",
+    "node": "26.13.0",
+    "npm": "12.2.2"
+  },
+  "mechanical_UI_detector": {
+    "command": "impeccable detect --json spikes/tauri-runtime/src",
+    "exit": 0,
+    "findings": []
+  },
+  "initial_frontend_type_check": {
+    "exit": 2,
+    "diagnostics": [
+      "Tauri type declarations need ESNext.Disposable",
+      "CSS side effect import needs Vite client types"
+    ],
+    "resolution": "Add only the appropriate TypeScript library declarations and existing Vite client types; keep strict checks and skipLibCheck false."
+  },
+  "frontend_build_after_correction": {
+    "command": "npm run build",
+    "exit": 0,
+    "modules": 17,
+    "assets_included": [
+      "React JavaScript",
+      "local CSS",
+      "existing IBM Plex Sans regular and semibold fonts"
+    ]
+  },
+  "runtime_verdict": "NOT_RUN"
+}

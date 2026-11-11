@@ -1,0 +1,7 @@
+{
+  "identifier": "probe",
+  "description": "Only the two synthetic runtime-probe commands in the local probe window.",
+  "local": true,
+  "windows": ["probe"],
+  "permissions": ["allow-runtime-probe", "allow-render-ack"]
+}

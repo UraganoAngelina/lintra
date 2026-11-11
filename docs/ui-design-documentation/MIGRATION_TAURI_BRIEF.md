@@ -50,6 +50,26 @@ silenziosamente. Qui prevalgono token e render qualificati. Le capture Slint
 sintetiche fresche analysis-dark1366×768@2 e results-light640×480@1 sono state
 osservate; servono a ereditare identità/densità, non a qualificare il nuovo frontend.
 
+## Reference aggiuntive dell’autore — 11 novembre 2026
+
+Fonte in sola lettura: `/home/alberto/Desktop/LINTRA/lintra_ui_references`.
+Il concept `lintra_tauri_ui.png` (SHA-256
+`db25dfa45936460afe4e82929dfaa9a98a6ed9345d72c60bada2a8d0fe9317af`),
+la galleria degli undici framework e le varianti Dioxus/GPUI sono stati esaminati
+con vision. I file `(1)` corrispondenti sono duplicati byte-identici.
+
+Si riprendono gerarchia risultati/tabella/dettaglio, lettura compatta e
+navigazione contestuale. Le varianti sono concept, non prove native; non
+introducono altri framework, librerie o funzionalità. Codici, tracciati, periodi,
+percentuali di conformità e contatori illustrativi vengono sostituiti dai soli
+valori del servizio Rust. Il perimetro reale precede ogni formula di conformità.
+Palette Copper Ledger, font locali, layout responsive e gate restano vigenti.
+
+Vincolo esplicito dell’autore: soltanto React/Tauri e componenti già approvati;
+qualsiasi ulteriore dipendenza richiede una necessità concreta documentata.
+Lo spike P1 usa React/TypeScript/Vite/Tauri già ratificati, senza librerie UI
+aggiuntive. Le reference non vengono copiate né modificate nel repository.
+
 ## Percorso e composizione
 
 La barra mantiene Analisi, Risultati, tema e Informazioni. Analisi è la vista

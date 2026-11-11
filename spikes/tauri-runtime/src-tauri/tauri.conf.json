@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Lintra Runtime Spike",
+  "version": "0.0.0",
+  "identifier": "it.lintra.runtime-spike",
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [{
+      "label": "probe",
+      "title": "Lintra · Verifica runtime",
+      "width": 900,
+      "height": 600,
+      "minWidth": 640,
+      "minHeight": 480,
+      "devtools": false
+    }],
+    "security": {
+      "csp": "default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src ipc: http://ipc.localhost; img-src 'none'; object-src 'none'; base-uri 'none'; frame-src 'none'; form-action 'none'",
+      "capabilities": ["probe"]
+    }
+  },
+  "bundle": { "active": false, "icon": ["icons/128x128.png"] }
+}

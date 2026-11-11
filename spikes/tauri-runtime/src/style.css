@@ -1,0 +1,50 @@
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../../../ui/ui/fonts/IBMPlexSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../../../ui/ui/fonts/IBMPlexSans-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "IBM Plex Sans", sans-serif; font-size: 14px; }
+main {
+  --bg: #f5f4f0; --surface: #fff; --ink: #20272b;
+  --muted: #56616a; --accent: #a13e1a; --line: #c9cdca;
+  min-height: 100vh; color: var(--ink); background: var(--bg);
+  display: flex; flex-direction: column;
+}
+main[data-theme="dark"] {
+  --bg: #101112; --surface: #1b1d1f; --ink: #f5f4f0;
+  --muted: #b6babc; --accent: #ff9c66; --line: #4f5354;
+  color-scheme: dark;
+}
+header, footer { padding: 16px 24px; }
+header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+header strong { font-size: 18px; font-weight: 600; }
+button {
+  min-height: 36px; padding: 6px 12px; font: inherit;
+  border: 1px solid var(--accent); border-radius: 4px;
+  color: var(--accent); background: var(--surface); cursor: pointer;
+}
+button:hover { text-decoration: underline; text-underline-offset: 3px; }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+section { padding: 32px 24px; width: min(100%, 780px); margin: auto; }
+h1 { margin: 0 0 12px; font-size: 28px; line-height: 1.2; font-weight: 600; }
+p { max-width: 70ch; line-height: 1.6; }
+dl { margin: 24px 0; border-block: 1px solid var(--line); }
+dl div { display: grid; grid-template-columns: 140px 1fr; gap: 16px; padding: 12px 0; }
+dt { color: var(--muted); }
+dd { margin: 0; overflow-wrap: anywhere; }
+.note, footer { color: var(--muted); }
+footer { border-top: 1px solid var(--line); font-size: 12px; }
+::selection { background: var(--accent); color: var(--bg); }
+@media (max-width: 640px) {
+  section { padding: 24px 16px; }
+  dl div { grid-template-columns: 1fr; gap: 4px; }
+  header, footer { padding-inline: 16px; }
+}
