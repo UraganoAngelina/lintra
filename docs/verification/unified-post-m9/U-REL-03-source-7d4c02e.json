@@ -1,0 +1,19 @@
+{
+  "task": "U-REL-03",
+  "checked_utc": "2026-11-11T16:45:34.283506+00:00",
+  "published_code_sha": "7d4c02e39554d618e337145cbb5ba8bad4d693ed",
+  "required_native_ci": 43060623511,
+  "qualified_input_count": 529,
+  "qualified_inventory_sha256": "44f5a736ab95580b25d346f62f9ef3e852a20cf79bb3d2dff3cc282fe09220d2",
+  "local_receipts": {
+    "U-REL-03-export-v3": "ed4c81e0d05f0bdfa3446f1810c2d676441c25e1f6859adecea1c84db8a94545",
+    "U-REL-03-report-final-v2": "f029f3e11cfbda1c7339884d5b93d2e9bc48a0045299bd163e6dc2f3c3664670",
+    "U-REL-03-clippy-v3": "c96c68dfe966096a437de65787ded3d688462c8b5792e9b2d9b8763636928315"
+  },
+  "checks": {
+    "local_receipts_share_exact_inputs": true,
+    "working_tree_matches_529_inputs": true,
+    "published_commit_matches_529_inputs": true
+  },
+  "provenance_limit": "Local binaries were built from da0892e plus the captured working tree. Source equivalence is not a claim that they are CI binaries of the published commit. New native CI remains mandatory."
+}

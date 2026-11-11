@@ -121,3 +121,6 @@ metadata e log gzip archiviati, SHA256 del log
 L'intera CI è FAILURE per apt/DNS Linux, e i confronti cross-OS sono skipped:
 non vengono promossi a PASS. La prossima CI completa includerà anche il delta
 U-REL-03; vecchio codice34f5b71 resta distinto da quel nuovo SHA.
+
+Nuova matrice richiesta: CI43060623511 su7d4c02e, che include il delta
+durabilità e conserva le due prove SMB/drive mappato. Task ancora WAITING_CI.

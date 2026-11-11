@@ -102,3 +102,14 @@ build locale precede il commit e non viene spacciata per un binario CI sul
 nuovo SHA. Fmt/diff-check e grafo128task PASS. M9,otto fonti congelate,
 schema/bundle/golden e dipendenze di prodotto invariati. Commit autorizzato
 con sorgenti equivalenti ai receipt finali; prossima azione CI nativa nuova.
+
+Codice pubblicato: `7d4c02e39554d618e337145cbb5ba8bad4d693ed`.
+CI nuova: `43060623511`, avviata sul branch autorizzato dopo la conclusione
+della precedente. Non riusa il PASS Windows34f5b71 come prova del nuovo rename.
+Durante l'attesa il grafo non contiene task NOT_STARTED con tutti i prerequisiti
+DONE; U-OPS-03/U-NORM-04 attendono il bridge effettivo, G-MIG-1 attende Win11.
+Nessuna task indipendente viene dichiarata eseguita per riempire l'attesa.
+
+U-REL-03-source-7d4c02e.json verifica che i529 input dei tre receipt finali
+corrispondano al codice pubblicato. È equivalenza dei sorgenti, non attribuzione
+di un binario locale da working-tree al nuovo SHA o a un runner diverso.
