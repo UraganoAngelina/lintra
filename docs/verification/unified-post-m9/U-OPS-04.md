@@ -1,6 +1,7 @@
 # U-OPS-04 — Export locale/shared
 
-11 novembre 2026. **IN_PROGRESS**, nessun nuovo gate PASS.
+Aggiornamento 12 novembre 2026. **DONE** per export backend/CLI/Slint.
+G-OPS1 aggregato ancora NOT_VERIFIED. Cronologia di esecuzione conservata sotto.
 Prerequisito U-OPS-02 DONE. Preflight31e4ea4, ratifica D04 e master §2:
 locale scrivibile senza ulteriore consenso; remoto/condiviso riconosciuto o
 natura non determinabile richiedono avviso e scelta esplicita, poi salvataggio.
@@ -129,3 +130,37 @@ La43060623511 è poi fallita per DNS Linux e fixture path lungo Windows del
 deltaREL, prima di completare la matrice. Nuova CI43078048297 su3aa0d14,
 con mirror raggiungibile verificato separatamente e fixture corretta. La
 connettività positiva non chiude questa task; si attende la matrice completa.
+
+
+## Quality Gate e handoff — 12 novembre 2026
+
+**DONE**. La [CI43078048297](https://github.com/UraganoAngelina/lintra/actions/runs/43078048297)
+su `3aa0d14f1f66b51ce1e8ba9c14a327b3eda26a25` è SUCCESS: sette job
+applicabili positivi; `Qualify UI archives` skipped è il gate di packaging
+condizionale, non una prova positiva né un requisito di questo delta.
+Metadati, log integrale gzip e receipt `U-OPS-04-qualification-43078048297.json`
+conservano hash e righe delle prove effettivamente eseguite.
+
+Job Windows130723016884: CLI SMB con consenso esatto PASS alle18:49:35UTC;
+controller/export SMB e drive mappato, receipt e tre formati canonici PASS
+alle18:50:13UTC. Sono esecuzioni esplicite `--ignored`, non casi saltati.
+Job Linux130723017375: suite native e test permessi/directory-sync dopo
+pubblicazione PASS alle18:41:12UTC. I cinque job successivi verificano
+JSONL byte per byte, pixel e riapertura SQLite in entrambe le direzioni.
+Fmt, Clippy, test default/all-features/no-default-features e build release
+sono positivi sui due OS. I precedenti fallimenti rimangono documentati.
+
+Lettura locale del grafo e diff-check alla chiusura; nessuna nuova modifica
+runtime, quindi nessuna replica della suite completa per il solo dossier.
+Il diff tra SHA CI e HEAD di ripresa `e615202` contiene soltanto i tre file
+stato/dossier: non viene attribuita una CI antenata a codice nuovo.
+File di chiusura: dossier, stato, metadati, log e receipt di qualifica.
+I contratti già implementati sono spiegati in `docs/EXPORT_DESTINATIONS.md`.
+
+G-OPS1 resta NOT_VERIFIED per U-OPS-03; l'integrazione React resta nelle task
+MIG. Windows Server2025 non qualifica Win11 clean-room, due account o installer.
+Prossima task pronta alla verifica finale: **U-REL-03**, prerequisiti
+U-OPS-01/U-FIX-01 DONE e nuova matrice nativa positiva. **AUTO_CONTINUE**:
+chiudere la sua qualifica software mantenendo NOT_TESTED_HARDWARE.
+Commit/push della chiusura sul branch autorizzato `work/p1-foundations`;
+SHA risolvibile dalla cronologia del dossier, senza hash autoreferenziale.

@@ -1,12 +1,12 @@
 # Stato unificato post-M9
 
-Aggiornato: 2026-11-11, Europe/Rome. Un agente, una task per volta.
+Aggiornato: 2026-11-12, Europe/Rome. Un agente, una task per volta.
 Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md),
 [master v1.0](docs/unified-post-m9/MASTER_PLAN_UNIFICATO.md) e
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **29/128 DONE;99 rimanenti** (20U-* e79MIG).
+Conteggio unificato: **30/128 DONE;98 rimanenti** (19U-* e79MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -31,7 +31,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | U-OPS-01 | U-GOV-03 | DONE | [Modello uso interno](docs/verification/unified-post-m9/U-OPS-01.md) | Scope ratificato; documenti soltanto, provisioning Tauri ancora da qualificare | Acceptance di scope PASS; G-OPS0 aggregato NOT_VERIFIED |
 | U-OPS-02 | U-OPS-01 | DONE | [Inventario dati/report/spool](docs/verification/unified-post-m9/U-OPS-02.md) | Riscontri statici dei percorsi attuali, target Tauri separati; nessun delta runtime | Acceptance inventario PASS; G-OPS0 tecnico ancora NOT_VERIFIED |
 | U-OPS-03 | U-OPS-02 | WAITING_INTEGRATION | [Preflight permessi e continuità](docs/verification/unified-post-m9/U-OPS-03.md) | Controlli backend esistenti qualificati cb70bee; root Tauri per-account non ancora collegata | G-OPS1 NOT_VERIFIED; handoff a MIG per path/worker reali |
-| U-OPS-04 | U-OPS-02 | WAITING_CI | [Policy Rust e integrazione export](docs/verification/unified-post-m9/U-OPS-04.md) | CI43050943529 Windows/SMB PASS;nuova CI43078048297 su3aa0d14 dopo fix mirror/fixture | G-OPS1 NOT_VERIFIED;attesa nuova matrice nativa completa |
+| U-OPS-04 | U-OPS-02 | DONE | [Policy Rust e integrazione export](docs/verification/unified-post-m9/U-OPS-04.md) | 3aa0d14;CI43078048297 SUCCESS,7job;SMB/drive mappato Windows e suite Linux PASS | Acceptance backend/CLI/Slint PASS;G-OPS1 aggregato attende03;React in MIG |
 | U-OPS-05 | U-OPS-01 | DONE | [Custodia e drill sintetici](docs/verification/unified-post-m9/U-OPS-05.md) | 556c5c6;18pass, file32B/copia corretta/KeyMismatch/restore/sentinelle; crypto invariata | Acceptance provider/runbook PASS; G-OPS1 aggregato NOT_VERIFIED |
 | U-OPS-06 | U-OPS-03, U-OPS-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-OPS-06.md) | —; Non eseguite | G-OPS2 NOT_VERIFIED |
 | U-OPS-07 | U-OPS-01, U-OPS-02 | DONE | [Gestione manuale e conservazione](docs/verification/unified-post-m9/U-OPS-07.md) | D05 documentata con riscontri su archive/report/spool; delta solo documentale | Acceptance gestione manuale PASS; G-OPS2 tecnico NOT_VERIFIED |
@@ -152,7 +152,7 @@ U-FIX-01..05 DONE: G-HARD PASS con CI42990775714 sucb70bee,7 job richiesti posit
 U-NORM-03 DONE per backend normativo,21 oracle3volte/OS;04 WAITING_INTEGRATION per frontend/contesto amministrativo, G-SIOC1 complessivo aperto.
 T-MIG-P0-01..08 DONE; G-MIG-0 PASS per governance e ingresso agli spike, non per runtime/installer.
 U-OPS-07 DONE documentale; U-OPS-03 preflight sospeso sull'integrazione root/worker Tauri reale, nessun DONE implicito.
-**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 build CI43014153420 PASS ma collaudo Win11 bloccato; P1-03 DONE personale. U-PERF-01 DONE per volumi aggregati/oracle. U-OPS-04 WAITING_CI (Windows/SMB positivi,Linux DNS fallito); U-REL-03 WAITING_CI dopo sync report e prove locali. P1-04..07 e P2/P3 non READY. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. AUTO_CONTINUE alla qualifica nativa,nessun nuovo DONE senza prova.
+**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 build CI43014153420 PASS ma collaudo Win11 bloccato; P1-03 DONE personale. U-PERF-01 DONE per volumi aggregati/oracle. U-OPS-04 DONE dopo CI43078048297 SUCCESS su3aa0d14 (SMB/drive mappato e Linux PASS); U-REL-03 in verifica finale della stessa CI positiva. P1-04..07 e P2/P3 non READY. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. AUTO_CONTINUE alla qualifica nativa,nessun nuovo DONE senza prova.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.

@@ -1,0 +1,75 @@
+{
+  "task": "U-OPS-04",
+  "review_date_europe_rome": "2026-11-12",
+  "run_id": 43078048297,
+  "head_sha": "3aa0d14f1f66b51ce1e8ba9c14a327b3eda26a25",
+  "run_url": "https://github.com/UraganoAngelina/lintra/actions/runs/43078048297",
+  "conclusion": "success",
+  "metadata_file": "U-OPS-04-native-43078048297.json",
+  "metadata_sha256": "4867f342c930e2a969cfcbecbb06bdf23340f0b6f8db9ef7d9c40e69d330e65a",
+  "log_file": "U-OPS-04-native-43078048297.log.gz",
+  "uncompressed_log_sha256": "ba1a1d1b53968eefad0370baef7576793f468c87a090e9039a74ea47e9ccb5f1",
+  "gzip_sha256": "e113ccb0ef11e5cdf7b9e386b9106527cc9ee7cf2de0112896ff6fc1a49ae83d",
+  "required_jobs": [
+    {
+      "name": "Verify (x86_64-pc-windows-msvc)",
+      "id": 130723016884,
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify (x86_64-unknown-linux-gnu)",
+      "id": 130723017375,
+      "conclusion": "success"
+    },
+    {
+      "name": "Compare production UI regression pixels",
+      "id": 130743163424,
+      "conclusion": "success"
+    },
+    {
+      "name": "Compare Linux and Windows JSONL bytes",
+      "id": 130743163492,
+      "conclusion": "success"
+    },
+    {
+      "name": "Reopen counterpart snapshot (x86_64-pc-windows-msvc)",
+      "id": 130743163564,
+      "conclusion": "success"
+    },
+    {
+      "name": "Reopen counterpart snapshot (x86_64-unknown-linux-gnu)",
+      "id": 130743163586,
+      "conclusion": "success"
+    },
+    {
+      "name": "Compare native desktop theme pixels",
+      "id": 130743163655,
+      "conclusion": "success"
+    }
+  ],
+  "explicit_ignored_test_pass_lines": {
+    "real_shared_cli_requires_scoped_consent_and_preserves_normative_invalidity": [
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:49:35.4376439Z test real_shared_cli_requires_scoped_consent_and_preserves_normative_invalidity ... ok"
+    ],
+    "actual_smb_and_mapped_export_require_confirmation_and_preserve_canonical_bytes": [
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:50:13.4560651Z test actual_smb_and_mapped_export_require_confirmation_and_preserve_canonical_bytes ... ok"
+    ],
+    "directory_sync_failure_after_rename_reports_the_published_file": [
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:41:12.2867723Z test directory_sync_failure_after_rename_reports_the_published_file ... ok"
+    ]
+  },
+  "source_equivalence": {
+    "reviewed_head": "e615202828211c5a467af1d6f13ac35892a0cf24",
+    "changed_paths_since_ci": [
+      "UNIFIED_IMPLEMENTATION_STATUS.md",
+      "docs/verification/unified-post-m9/U-OPS-04.md",
+      "docs/verification/unified-post-m9/U-REL-03.md"
+    ],
+    "runtime_changes": []
+  },
+  "limits": [
+    "Windows runner is Server 2025, not Windows 11 clean-room.",
+    "React integration remains in MIG tasks.",
+    "G-OPS1 requires remaining U-OPS-03 integration; it is not passed by this task."
+  ]
+}
