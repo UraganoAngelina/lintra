@@ -1,6 +1,7 @@
 # U-REL-03 — Durabilità e recovery
 
-11 novembre2026. **WAITING_CI**. Prerequisiti U-OPS-01 e U-FIX-01 DONE;
+Aggiornamento 12 novembre 2026. **DONE; G-DUR software PASS**.
+Hardware **NOT_TESTED_HARDWARE**. Prerequisiti U-OPS-01 e U-FIX-01 DONE;
 D15 autorizza hardening e prove di interruzione. Preflight da0892e.
 U-OPS-04 sospesa in attesa della CI43050943529 sul codice34f5b71.
 
@@ -149,3 +150,64 @@ Nuova CI completa `43078048297` sul commit
 Fmt/diff-check e sintassi Python del setup PASS; confronto Git conferma src,
 ui/src/ui, dipendenze e norme identici al7d4c02e. Delta: fixture Windows e CI.
 Task ancora WAITING_CI, non riattribuire i vecchi risultati al nuovo SHA.
+
+
+## Quality Gate finale — 12 novembre 2026
+
+**DONE; G-DUR PASS per il perimetro software provato.**
+[CI43078048297](https://github.com/UraganoAngelina/lintra/actions/runs/43078048297)
+su `3aa0d14f1f66b51ce1e8ba9c14a327b3eda26a25` SUCCESS; sette job
+applicabili positivi, packaging UI condizionale skipped e non qualificato.
+Metadati e log integrale condivisi con `U-OPS-04-native-43078048297.*`;
+receipt specifico `U-REL-03-qualification-43078048297.json` con hash,
+righe di ciascun oracle e limiti. Il log Linux preesistente, inizialmente
+untracked, è conservato senza modifiche: tutte le8077righe corrispondono al
+log appena scaricato dopo la sola normalizzazione della rappresentazione ANSI.
+
+| Prova | Linux130723017375 | Windows130723016884 |
+| --- | --- | --- |
+| Flush/sync/rename e sync-directory sintetici | PASS3esecuzioni | PASS3esecuzioni |
+| Kill reale a6barriere report, residui e retry esplicito | PASS3esecuzioni | PASS3esecuzioni |
+| Kill/exit a4fasi SQLite, fatti/manifest, reopen e risoluzione idempotente | PASS3esecuzioni | PASS3esecuzioni |
+| Errore permessi Linux reale dopo rename, file pubblicato contato | PASS1esecuzione esplicita ignored | Non applicabile |
+| Path Windows lungo Unicode e normalizzazione path breve | Non applicabile | PASS3esecuzioni ciascuno |
+| Messaggio export con conteggio reale e senza path | PASS2esecuzioni | PASS2esecuzioni |
+| Suite default/all-features/no-default-features, fmt, Clippy e release | PASS | PASS |
+
+Le tre esecuzioni core per OS sono default, all-features e senza bundle;
+non vengono sommate come casi distinti. I parent coprono sei barriere report
+e quattro fasi SQLite; helper ignored sono subprocessi attesi dai parent,
+non casi saltati che si pretendono superati. Riutilizzate le regressioni
+corruzione/key mismatch/CAS già presenti. Confronto JSONL, confronto pixel
+di produzione/tema e reopen del database sull'altro OS: cinque job PASS.
+
+Ambienti effettivi: CI Ubuntu24.04.5 e Windows Server2025; locale CachyOS
+su Btrfs dalle verifiche precedenti conservate. I log CI non identificano
+esplicitamente il tipo del filesystem del workspace: non si inventa una
+qualifica ext4/NTFS. Gli oracle operano sulle directory fixture del checkout,
+non soltanto su tmpfs. Signed-By/apt/TLS e tutti i gate sono rimasti attivi.
+Il delta fra SHA CI e HEAD di ripresa è solo documentale; nessun nuovo
+runtime da qualificare. Chiusura: dossier, receipt, log Linux e stato; contratti
+e spiegazioni di struct/funzioni in `docs/DURABILITY_AND_RECOVERY.md`.
+
+**NOT_TESTED_HARDWARE** resta invariato: kill/exit non simulano lo svuotamento
+delle cache hardware né provano ogni storage remoto. Backup-B/restore
+applicativi restano U-OPS-06/08; Win11 clean-room, account e installer restano
+G-MIG/G-REL. Nessuna promozione di questi gate dalla sola CI Server2025.
+
+## Handoff
+
+U-OPS-04 è chiusa e pubblicata nel commit327e5ec; questa task chiude il gate
+software D15 sul sorgente3aa0d14. Branch `work/p1-foundations`, nessuna nuova
+modifica di codice, dipendenza, schema, golden, chiave o checkout adiacente.
+Test locali della chiusura: grafo/preservazione fonti e diff-check; suite Rust
+non ripetuta per le sole evidenze documentali dopo CI nativa positiva.
+
+Prossima task READY: **nessuna**, verificato sui128nodi e sullo stato attuale.
+P1-02 richiede Windows11 clean-room, già dichiarato indisponibile dall'autore;
+non si riapre una domanda già risolta né si sostituisce con Server2025.
+U-OPS-03 e U-NORM-04 restano WAITING_INTEGRATION sul bridge Tauri non ancora
+ammesso dal gate piattaforme. U-OPS-06/08 attendono03 e le task successive
+hanno prerequisiti incompleti. Dettaglio e conteggi nel receipt finale.
+**NO_READY_TASK** per il piano invariato. Ripresa da P1-02 quando disponibile
+l'ambiente nativo prescritto; nessun consenso nuovo su D01–D15 richiesto.

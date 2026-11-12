@@ -6,13 +6,14 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **30/128 DONE;98 rimanenti** (19U-* e79MIG).
+Conteggio unificato: **31/128 DONE;97 rimanenti** (18U-* e79MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
 Gate correnti: G-U0 PASS documentale; G-HARD PASS nativo su cb70bee/
 CI42990775714; G-SIOC0 PASS documentale; G-MIG-0 PASS governance.
-G-OPS0/1/2, G-SIOC1, G-MIG-1..9, G-CADUI0..3, G-DUR, G-PERF e G-REL:
+G-DUR PASS software su3aa0d14/CI43078048297; hardware NOT_TESTED_HARDWARE.
+G-OPS0/1/2, G-SIOC1, G-MIG-1..9, G-CADUI0..3, G-PERF e G-REL:
 NOT_VERIFIED. G-MIG-1 manca della clean-room Win11, indisponibile all'autore.
 G-REAL riguarda autorizzazioni effettive per specifici dati, non presunte.
 CI antecedenti non qualificano nuovi delta runtime.
@@ -57,7 +58,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | U-PERF-02 | U-PERF-01, T-MIG-P7-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-PERF-02.md) | —; Non eseguite | G-PERF NOT_VERIFIED |
 | U-REL-01 | U-UI-02, U-CAD-09, U-NORM-04, U-OPS-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-01.md) | —; Non eseguite | G-REL NOT_VERIFIED |
 | U-REL-02 | U-REL-01, U-OPS-06, U-REL-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/INTEGRAZIONE_39/U-REL-02.md) | —; Non eseguite | G-REL NOT_VERIFIED |
-| U-REL-03 | U-OPS-01, U-FIX-01 | WAITING_CI | [Sync report e crash/reopen manifest](docs/verification/unified-post-m9/U-REL-03.md) | Runtime7d4c02e;source3aa0d14 fixCI/fixture;1109pass/9ignored locali,Clippy/6export PASS;CI43078048297 | G-DUR NOT_VERIFIED;hardware NOT_TESTED_HARDWARE |
+| U-REL-03 | U-OPS-01, U-FIX-01 | DONE | [Sync report e crash/reopen manifest](docs/verification/unified-post-m9/U-REL-03.md) | 3aa0d14;CI43078048297 SUCCESS,7job;kill/fault/reopen3volte per OS,permessi Linux e path Windows PASS | G-DUR PASS software;hardware NOT_TESTED_HARDWARE |
 | T-MIG-P0-01 | U-UI-01 | DONE | [Baseline post-audit qualificata](docs/verification/unified-post-m9/T-MIG-P0-01.md) | cb70bee;CI42990775714 success7 job;HEAD documentale42620cf con520 input runtime identici | G-MIG-0 PASS governance; prove UI/runtime successive separate |
 | T-MIG-P0-02 | T-MIG-P0-01 | DONE | [Matrice corrente/storia](docs/verification/unified-post-m9/T-MIG-P0-02.md) | Baselinecb70bee qualificata;22 discrepanze riconciliate senza riaprire140 task | G-MIG-0 PASS governance; prove UI/runtime successive separate |
 | T-MIG-P0-03 | T-MIG-P0-02 | DONE | [ADR N-24 recepita](docs/verification/unified-post-m9/T-MIG-P0-03.md) | ADR-MIG-001;autore10 novembre,recepimento11;ARCH/DET/N-24 allineati | G-MIG-0 PASS governance; prove UI/runtime successive separate |
@@ -152,7 +153,17 @@ U-FIX-01..05 DONE: G-HARD PASS con CI42990775714 sucb70bee,7 job richiesti posit
 U-NORM-03 DONE per backend normativo,21 oracle3volte/OS;04 WAITING_INTEGRATION per frontend/contesto amministrativo, G-SIOC1 complessivo aperto.
 T-MIG-P0-01..08 DONE; G-MIG-0 PASS per governance e ingresso agli spike, non per runtime/installer.
 U-OPS-07 DONE documentale; U-OPS-03 preflight sospeso sull'integrazione root/worker Tauri reale, nessun DONE implicito.
-**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 build CI43014153420 PASS ma collaudo Win11 bloccato; P1-03 DONE personale. U-PERF-01 DONE per volumi aggregati/oracle. U-OPS-04 DONE dopo CI43078048297 SUCCESS su3aa0d14 (SMB/drive mappato e Linux PASS); U-REL-03 in verifica finale della stessa CI positiva. P1-04..07 e P2/P3 non READY. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. AUTO_CONTINUE alla qualifica nativa,nessun nuovo DONE senza prova.
+**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 build CI43014153420 PASS ma collaudo Win11 bloccato; P1-03 DONE personale. U-PERF-01 DONE per volumi aggregati/oracle. U-OPS-04 DONE dopo CI43078048297 SUCCESS su3aa0d14 (SMB/drive mappato e Linux PASS); U-REL-03 DONE, G-DUR PASS software sulla stessa CI positiva;hardware NOT_TESTED_HARDWARE. P1-04..07 e P2/P3 non READY. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. NO_READY_TASK: nessun nodo NOT_STARTED con tutti i prerequisiti DONE;P1-02 richiede l’ambiente Win11 prescritto.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.
+
+
+Handoff 12 novembre2026: U-OPS-04 e U-REL-03 chiuse con evidenze CI effettive;
+**31/128 DONE (24,2%)**,97rimanenti. Per questa chiusura solo documenti/log/receipt:
+nessun nuovo runtime o CI duplicata. Snapshot dei prerequisiti e dei residui in
+`docs/verification/unified-post-m9/U-REL-03-qualification-43078048297.json`.
+Prossimo passo del piano invariato: rendere disponibile il collaudo Windows11
+clean-room P1-02; build MSVC/NSIS già positiva ma insufficiente per quel gate.
+U-OPS-03/U-NORM-04 attendono integrazione Tauri reale; non diventano DONE per
+permettere U-OPS-06/08 o G-SIOC1. **NO_READY_TASK**, nessuna delega/background.

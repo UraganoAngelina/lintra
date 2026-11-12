@@ -1,0 +1,760 @@
+{
+  "task": "U-REL-03",
+  "review_date_europe_rome": "2026-11-12",
+  "run_id": 43078048297,
+  "head_sha": "3aa0d14f1f66b51ce1e8ba9c14a327b3eda26a25",
+  "conclusion": "success",
+  "software_gate": "G-DUR PASS",
+  "hardware": "NOT_TESTED_HARDWARE",
+  "shared_metadata_file": "U-OPS-04-native-43078048297.json",
+  "shared_log_file": "U-OPS-04-native-43078048297.log.gz",
+  "uncompressed_full_log_sha256": "ba1a1d1b53968eefad0370baef7576793f468c87a090e9039a74ea47e9ccb5f1",
+  "preexisting_linux_log": {
+    "file": "U-REL-03-linux-43078048297.log.gz",
+    "gzip_sha256": "29e3cf3d917347dfb9b8405e4cd45a4515e9169ef26aa4ba87c70ea1c8baea79",
+    "uncompressed_sha256": "6a8bdc55e0607a357aa5452a5a4781574cab7666850bdbbe061faa16a2cacc1b",
+    "matches_fresh_download_after_ansi_rendering_normalization": true,
+    "line_count": 8077
+  },
+  "oracle_pass_lines": {
+    "injected_flush_sync_and_rename_failures_preserve_the_previous_report": [
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:38:26.2519374Z test report::atomic::durability_tests::injected_flush_sync_and_rename_failures_preserve_the_previous_report ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:46:10.3038107Z test report::atomic::durability_tests::injected_flush_sync_and_rename_failures_preserve_the_previous_report ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:53:34.5753554Z test report::atomic::durability_tests::injected_flush_sync_and_rename_failures_preserve_the_previous_report ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:33:34.9703260Z test report::atomic::durability_tests::injected_flush_sync_and_rename_failures_preserve_the_previous_report ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:38:12.3756290Z test report::atomic::durability_tests::injected_flush_sync_and_rename_failures_preserve_the_previous_report ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:42:41.6330714Z test report::atomic::durability_tests::injected_flush_sync_and_rename_failures_preserve_the_previous_report ... ok"
+    ],
+    "directory_sync_failure_is_technical_but_does_not_claim_publication_was_undone": [
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:38:26.2490773Z test report::atomic::durability_tests::directory_sync_failure_is_technical_but_does_not_claim_publication_was_undone ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:46:10.2903640Z test report::atomic::durability_tests::directory_sync_failure_is_technical_but_does_not_claim_publication_was_undone ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:53:34.4980956Z test report::atomic::durability_tests::directory_sync_failure_is_technical_but_does_not_claim_publication_was_undone ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:33:34.9690348Z test report::atomic::durability_tests::directory_sync_failure_is_technical_but_does_not_claim_publication_was_undone ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:38:12.3742394Z test report::atomic::durability_tests::directory_sync_failure_is_technical_but_does_not_claim_publication_was_undone ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:42:41.6272878Z test report::atomic::durability_tests::directory_sync_failure_is_technical_but_does_not_claim_publication_was_undone ... ok"
+    ],
+    "actual_kill_before_and_after_rename_preserves_complete_outputs_and_blocks_stale_part_reuse": [
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:38:26.3197513Z test report::atomic::durability_tests::actual_kill_before_and_after_rename_preserves_complete_outputs_and_blocks_stale_part_reuse ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:46:10.6118462Z test report::atomic::durability_tests::actual_kill_before_and_after_rename_preserves_complete_outputs_and_blocks_stale_part_reuse ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:53:34.8260903Z test report::atomic::durability_tests::actual_kill_before_and_after_rename_preserves_complete_outputs_and_blocks_stale_part_reuse ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:33:35.0175479Z test report::atomic::durability_tests::actual_kill_before_and_after_rename_preserves_complete_outputs_and_blocks_stale_part_reuse ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:38:12.4183246Z test report::atomic::durability_tests::actual_kill_before_and_after_rename_preserves_complete_outputs_and_blocks_stale_part_reuse ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:42:41.6707203Z test report::atomic::durability_tests::actual_kill_before_and_after_rename_preserves_complete_outputs_and_blocks_stale_part_reuse ... ok"
+    ],
+    "killed_history_publication_recovers_signed_facts_manifest_and_idempotent_resolution": [
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:38:26.3763881Z test persistence::sqlite::tests::qualification::killed_history_publication_recovers_signed_facts_manifest_and_idempotent_resolution ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:46:10.4260207Z test persistence::sqlite::tests::qualification::killed_history_publication_recovers_signed_facts_manifest_and_idempotent_resolution ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:53:34.8620775Z test persistence::sqlite::tests::qualification::killed_history_publication_recovers_signed_facts_manifest_and_idempotent_resolution ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:33:35.1056831Z test persistence::sqlite::tests::qualification::killed_history_publication_recovers_signed_facts_manifest_and_idempotent_resolution ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:38:12.5156606Z test persistence::sqlite::tests::qualification::killed_history_publication_recovers_signed_facts_manifest_and_idempotent_resolution ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:42:41.7787317Z test persistence::sqlite::tests::qualification::killed_history_publication_recovers_signed_facts_manifest_and_idempotent_resolution ... ok"
+    ],
+    "windows_write_through_publication_preserves_long_unicode_path_support": [
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:38:28.6289658Z test windows_write_through_publication_preserves_long_unicode_path_support ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:46:12.9385631Z test windows_write_through_publication_preserves_long_unicode_path_support ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:53:37.2301412Z test windows_write_through_publication_preserves_long_unicode_path_support ... ok"
+    ],
+    "windows_short_path_normalization_is_not_silently_changed_to_verbatim": [
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:38:28.6257522Z test windows_short_path_normalization_is_not_silently_changed_to_verbatim ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:46:12.9357295Z test windows_short_path_normalization_is_not_silently_changed_to_verbatim ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:53:37.2272131Z test windows_short_path_normalization_is_not_silently_changed_to_verbatim ... ok"
+    ],
+    "directory_sync_failure_after_rename_reports_the_published_file": [
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:41:12.2867723Z test directory_sync_failure_after_rename_reports_the_published_file ... ok"
+    ],
+    "late_durability_failure_presents_the_actual_published_file_count_without_paths": [
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:38:59.5237238Z test late_durability_failure_presents_the_actual_published_file_count_without_paths ... ok",
+      "Verify (x86_64-pc-windows-msvc)\tUNKNOWN STEP\t2026-11-11T18:46:43.9522098Z test late_durability_failure_presents_the_actual_published_file_count_without_paths ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:34:04.9111953Z test late_durability_failure_presents_the_actual_published_file_count_without_paths ... ok",
+      "Verify (x86_64-unknown-linux-gnu)\tUNKNOWN STEP\t2026-11-11T18:38:41.9287936Z test late_durability_failure_presents_the_actual_published_file_count_without_paths ... ok"
+    ]
+  },
+  "frontier": {
+    "total": 128,
+    "done": 31,
+    "remaining": 97,
+    "ready_not_started": [],
+    "remaining_tasks": {
+      "U-OPS-03": {
+        "state": "WAITING_INTEGRATION",
+        "unfinished_dependencies": {}
+      },
+      "U-OPS-06": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-OPS-03": "WAITING_INTEGRATION"
+        }
+      },
+      "U-OPS-08": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-OPS-06": "NOT_STARTED"
+        }
+      },
+      "U-OPS-09": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-OPS-03": "WAITING_INTEGRATION",
+          "U-OPS-08": "NOT_STARTED"
+        }
+      },
+      "U-NORM-04": {
+        "state": "WAITING_INTEGRATION",
+        "unfinished_dependencies": {}
+      },
+      "U-UI-02": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P9-07": "NOT_STARTED"
+        }
+      },
+      "U-CAD-01": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-UI-02": "NOT_STARTED"
+        }
+      },
+      "U-CAD-02": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-CAD-01": "NOT_STARTED"
+        }
+      },
+      "U-CAD-03": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-CAD-02": "NOT_STARTED"
+        }
+      },
+      "U-CAD-04": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-CAD-03": "NOT_STARTED"
+        }
+      },
+      "U-CAD-05": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-CAD-04": "NOT_STARTED"
+        }
+      },
+      "U-CAD-06": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-CAD-05": "NOT_STARTED"
+        }
+      },
+      "U-CAD-07": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-CAD-06": "NOT_STARTED"
+        }
+      },
+      "U-CAD-08": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-CAD-07": "NOT_STARTED"
+        }
+      },
+      "U-CAD-09": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-CAD-08": "NOT_STARTED"
+        }
+      },
+      "U-PERF-02": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P7-08": "NOT_STARTED"
+        }
+      },
+      "U-REL-01": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-UI-02": "NOT_STARTED",
+          "U-CAD-09": "NOT_STARTED",
+          "U-NORM-04": "WAITING_INTEGRATION",
+          "U-OPS-08": "NOT_STARTED"
+        }
+      },
+      "U-REL-02": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "U-REL-01": "NOT_STARTED",
+          "U-OPS-06": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P1-02": {
+        "state": "BLOCKED_NATIVE_ENVIRONMENT",
+        "unfinished_dependencies": {}
+      },
+      "T-MIG-P1-04": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P1-02": "BLOCKED_NATIVE_ENVIRONMENT"
+        }
+      },
+      "T-MIG-P1-05": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P1-02": "BLOCKED_NATIVE_ENVIRONMENT"
+        }
+      },
+      "T-MIG-P1-06": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P1-02": "BLOCKED_NATIVE_ENVIRONMENT",
+          "T-MIG-P1-04": "NOT_STARTED",
+          "T-MIG-P1-05": "NOT_STARTED",
+          "T-MIG-P1-07": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P1-07": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P1-02": "BLOCKED_NATIVE_ENVIRONMENT",
+          "T-MIG-P1-04": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P2-01": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P1-06": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P2-02": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P2-01": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P2-03": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P2-02": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P2-04": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P2-03": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P2-05": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P2-02": "NOT_STARTED",
+          "T-MIG-P2-03": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P2-06": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P2-05": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P2-07": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P2-03": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P2-08": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P2-02": "NOT_STARTED",
+          "T-MIG-P2-07": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P2-09": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P2-03": "NOT_STARTED",
+          "T-MIG-P2-04": "NOT_STARTED",
+          "T-MIG-P2-05": "NOT_STARTED",
+          "T-MIG-P2-06": "NOT_STARTED",
+          "T-MIG-P2-07": "NOT_STARTED",
+          "T-MIG-P2-08": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P2-10": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P2-01": "NOT_STARTED",
+          "T-MIG-P2-02": "NOT_STARTED",
+          "T-MIG-P2-03": "NOT_STARTED",
+          "T-MIG-P2-04": "NOT_STARTED",
+          "T-MIG-P2-05": "NOT_STARTED",
+          "T-MIG-P2-06": "NOT_STARTED",
+          "T-MIG-P2-07": "NOT_STARTED",
+          "T-MIG-P2-08": "NOT_STARTED",
+          "T-MIG-P2-09": "NOT_STARTED",
+          "T-MIG-P2-11": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P2-11": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P2-03": "NOT_STARTED",
+          "T-MIG-P2-05": "NOT_STARTED",
+          "T-MIG-P2-08": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P3-01": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P2-10": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P3-02": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P3-01": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P3-03": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P3-01": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P3-04": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P3-01": "NOT_STARTED",
+          "T-MIG-P3-02": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P3-05": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P3-02": "NOT_STARTED",
+          "T-MIG-P3-04": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P3-06": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P3-01": "NOT_STARTED",
+          "T-MIG-P3-02": "NOT_STARTED",
+          "T-MIG-P3-03": "NOT_STARTED",
+          "T-MIG-P3-04": "NOT_STARTED",
+          "T-MIG-P3-05": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P4-01": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P3-06": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P4-02": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P4-01": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P4-03": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P4-01": "NOT_STARTED",
+          "T-MIG-P4-02": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P4-04": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P4-03": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P4-05": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P4-04": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P4-06": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P4-04": "NOT_STARTED",
+          "T-MIG-P4-05": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P4-07": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P4-06": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P4-08": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P4-07": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P4-09": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P4-08": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P4-10": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P4-06": "NOT_STARTED",
+          "T-MIG-P4-08": "NOT_STARTED",
+          "T-MIG-P4-09": "NOT_STARTED",
+          "T-MIG-P4-12": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P4-11": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P4-06": "NOT_STARTED",
+          "T-MIG-P2-11": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P4-12": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P4-11": "NOT_STARTED",
+          "T-MIG-P4-05": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P5-01": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P4-10": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P5-02": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P5-01": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P5-03": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P5-02": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P5-04": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P5-02": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P5-05": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P5-03": "NOT_STARTED",
+          "T-MIG-P5-04": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P5-06": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P5-05": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P5-07": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P5-01": "NOT_STARTED",
+          "T-MIG-P5-06": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P5-08": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P5-01": "NOT_STARTED",
+          "T-MIG-P5-02": "NOT_STARTED",
+          "T-MIG-P5-03": "NOT_STARTED",
+          "T-MIG-P5-04": "NOT_STARTED",
+          "T-MIG-P5-05": "NOT_STARTED",
+          "T-MIG-P5-06": "NOT_STARTED",
+          "T-MIG-P5-07": "NOT_STARTED",
+          "T-MIG-P5-10": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P5-09": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P5-03": "NOT_STARTED",
+          "T-MIG-P4-12": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P5-10": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P5-09": "NOT_STARTED",
+          "T-MIG-P5-06": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P6-01": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P5-08": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P6-02": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P6-01": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P6-03": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P6-01": "NOT_STARTED",
+          "T-MIG-P6-02": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P6-04": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P6-03": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P6-05": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P6-04": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P6-06": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P6-05": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P6-07": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P6-01": "NOT_STARTED",
+          "T-MIG-P6-03": "NOT_STARTED",
+          "T-MIG-P6-06": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P6-08": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P6-07": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P6-09": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P6-02": "NOT_STARTED",
+          "T-MIG-P6-03": "NOT_STARTED",
+          "T-MIG-P6-04": "NOT_STARTED",
+          "T-MIG-P6-05": "NOT_STARTED",
+          "T-MIG-P6-06": "NOT_STARTED",
+          "T-MIG-P6-07": "NOT_STARTED",
+          "T-MIG-P6-08": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P6-10": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P6-09": "NOT_STARTED",
+          "T-MIG-P5-10": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P7-01": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P6-09": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P7-02": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P7-01": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P7-03": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P7-01": "NOT_STARTED",
+          "T-MIG-P7-02": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P7-04": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P7-01": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P7-05": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P7-01": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P7-06": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P7-02": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P7-07": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P7-03": "NOT_STARTED",
+          "T-MIG-P7-04": "NOT_STARTED",
+          "T-MIG-P7-05": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P7-08": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P7-01": "NOT_STARTED",
+          "T-MIG-P7-02": "NOT_STARTED",
+          "T-MIG-P7-03": "NOT_STARTED",
+          "T-MIG-P7-04": "NOT_STARTED",
+          "T-MIG-P7-05": "NOT_STARTED",
+          "T-MIG-P7-06": "NOT_STARTED",
+          "T-MIG-P7-07": "NOT_STARTED",
+          "T-MIG-P7-09": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P7-09": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P7-03": "NOT_STARTED",
+          "T-MIG-P7-04": "NOT_STARTED",
+          "T-MIG-P7-05": "NOT_STARTED",
+          "T-MIG-P6-10": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P8-01": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P7-08": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P8-02": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P8-01": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P8-03": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P8-01": "NOT_STARTED",
+          "T-MIG-P8-02": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P8-04": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P8-01": "NOT_STARTED",
+          "T-MIG-P8-02": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P8-05": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P8-01": "NOT_STARTED",
+          "T-MIG-P8-03": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P8-06": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P8-03": "NOT_STARTED",
+          "T-MIG-P8-04": "NOT_STARTED",
+          "T-MIG-P8-05": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P8-07": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P8-04": "NOT_STARTED",
+          "T-MIG-P8-05": "NOT_STARTED",
+          "T-MIG-P8-06": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P8-08": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P8-01": "NOT_STARTED",
+          "T-MIG-P8-02": "NOT_STARTED",
+          "T-MIG-P8-03": "NOT_STARTED",
+          "T-MIG-P8-04": "NOT_STARTED",
+          "T-MIG-P8-05": "NOT_STARTED",
+          "T-MIG-P8-06": "NOT_STARTED",
+          "T-MIG-P8-07": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P9-01": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P8-08": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P9-02": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P9-01": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P9-03": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P9-01": "NOT_STARTED",
+          "T-MIG-P9-02": "NOT_STARTED",
+          "T-MIG-P9-08": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P9-04": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P9-03": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P9-05": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P9-03": "NOT_STARTED",
+          "T-MIG-P9-04": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P9-06": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P9-04": "NOT_STARTED",
+          "T-MIG-P9-05": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P9-07": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P9-01": "NOT_STARTED",
+          "T-MIG-P9-02": "NOT_STARTED",
+          "T-MIG-P9-03": "NOT_STARTED",
+          "T-MIG-P9-04": "NOT_STARTED",
+          "T-MIG-P9-05": "NOT_STARTED",
+          "T-MIG-P9-06": "NOT_STARTED",
+          "T-MIG-P9-08": "NOT_STARTED"
+        }
+      },
+      "T-MIG-P9-08": {
+        "state": "NOT_STARTED",
+        "unfinished_dependencies": {
+          "T-MIG-P9-01": "NOT_STARTED",
+          "T-MIG-P7-09": "NOT_STARTED"
+        }
+      }
+    }
+  },
+  "limits": [
+    "No physical power-loss test.",
+    "CI workspace filesystem type is not explicitly recorded; do not infer ext4 or NTFS.",
+    "Windows Server 2025 does not qualify Windows 11 clean-room.",
+    "Backup-B and restore remain U-OPS-06/08."
+  ]
+}
