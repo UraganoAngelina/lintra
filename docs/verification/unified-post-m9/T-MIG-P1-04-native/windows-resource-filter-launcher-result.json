@@ -1,0 +1,93 @@
+{
+  "passed": false,
+  "account": "DESKTOP-RLLAD2M\\lintra-agent",
+  "elevated": false,
+  "session": 1,
+  "console_session": 1,
+  "ordinary_exit": 0,
+  "ordinary_ack": "LINTRA_RUNTIME_RENDER_ACK {\"protocol\":1,\"width\":900,\"height\":600}\n",
+  "harness_exit": 1,
+  "native": {
+    "passed": false,
+    "executable_sha256": "121363a6800410d3635ec4c908f1a69b2a5a4b59b09a37395117a6adb07c81a1",
+    "platform": "win32",
+    "node": "v26.13.1",
+    "started_utc": "2026-11-13T15:07:51.735Z",
+    "collector_health": "reachable before native launch",
+    "trusted_popup_input": "sent only to the focused owned child",
+    "exit_code": 0,
+    "signal": null,
+    "stdout": "LINTRA_RUNTIME_SECURITY_AWAIT_POPUP\nLINTRA_RUNTIME_NEW_WINDOW_DENIED\nLINTRA_RUNTIME_NAVIGATION_DENIED\nLINTRA_RUNTIME_WEB_RESOURCE_DENIED\nLINTRA_RUNTIME_SECURITY_REPORT {\"text_only\":true,\"inline_script_blocked\":true,\"remote_script_blocked\":true,\"remote_style_blocked\":true,\"remote_font_blocked\":true,\"image_blocked\":true,\"frame_blocked\":true,\"object_blocked\":true,\"fetch_blocked\":true,\"websocket_blocked\":true,\"eventsource_blocked\":true,\"beacon_blocked\":true,\"form_blocked\":true,\"native_navigation_blocked\":true,\"native_popup_blocked\":true,\"valid_invoke\":true,\"forbidden_invokes\":true,\"invalid_reports\":true,\"csp_events\":12}\nLINTRA_RUNTIME_SECURITY_ACK {\"navigation_denied\":1,\"new_window_denied\":1,\"web_resource_denied\":1}\nLINTRA_RUNTIME_RENDER_ACK {\"protocol\":1,\"width\":900,\"height\":600,\"security\":{\"text_only\":true,\"inline_script_blocked\":true,\"remote_script_blocked\":true,\"remote_style_blocked\":true,\"remote_font_blocked\":true,\"image_blocked\":true,\"frame_blocked\":true,\"object_blocked\":true,\"fetch_blocked\":true,\"websocket_blocked\":true,\"eventsource_blocked\":true,\"beacon_blocked\":true,\"form_blocked\":true,\"native_navigation_blocked\":true,\"native_popup_blocked\":true,\"valid_invoke\":true,\"forbidden_invokes\":true,\"invalid_reports\":true,\"csp_events\":12}}\n",
+    "stderr": "[1113/160800.151:ERROR:ui\\gfx\\win\\window_impl.cc:172] Failed to unregister class Chrome_WidgetWin_0. Error = 1412\r\n",
+    "collector_connections": 3,
+    "collector_requests": 0,
+    "collector_socket_bytes": [
+      {
+        "read": 0,
+        "written": 0
+      },
+      {
+        "read": 0,
+        "written": 0
+      },
+      {
+        "read": 0,
+        "written": 0
+      }
+    ],
+    "connection_diagnostics": [
+      {
+        "accepted_utc": "2026-11-13T15:07:54.011Z",
+        "peer_port": 50353,
+        "loopback_owner_rows": [
+          "  TCP    127.0.0.1:49183        127.0.0.1:50353        ESTABLISHED     1376",
+          "  TCP    127.0.0.1:50353        127.0.0.1:49183        ESTABLISHED     7464"
+        ]
+      },
+      {
+        "accepted_utc": "2026-11-13T15:07:54.638Z",
+        "peer_port": 52629,
+        "loopback_owner_rows": [
+          "  TCP    127.0.0.1:49183        127.0.0.1:52629        ESTABLISHED     1376",
+          "  TCP    127.0.0.1:52629        127.0.0.1:49183        ESTABLISHED     7464"
+        ]
+      },
+      {
+        "accepted_utc": "2026-11-13T15:08:00.427Z",
+        "peer_port": 55227,
+        "loopback_owner_rows": [
+          "  TCP    127.0.0.1:49183        127.0.0.1:55227        CLOSE_WAIT      1376",
+          "  TCP    127.0.0.1:55227        127.0.0.1:49183        FIN_WAIT_2      7464"
+        ]
+      }
+    ],
+    "request_cases": [],
+    "report": {
+      "text_only": true,
+      "inline_script_blocked": true,
+      "remote_script_blocked": true,
+      "remote_style_blocked": true,
+      "remote_font_blocked": true,
+      "image_blocked": true,
+      "frame_blocked": true,
+      "object_blocked": true,
+      "fetch_blocked": true,
+      "websocket_blocked": true,
+      "eventsource_blocked": true,
+      "beacon_blocked": true,
+      "form_blocked": true,
+      "native_navigation_blocked": true,
+      "native_popup_blocked": true,
+      "valid_invoke": true,
+      "forbidden_invokes": true,
+      "invalid_reports": true,
+      "csp_events": 12
+    },
+    "native_guards": {
+      "navigation_denied": 1,
+      "new_window_denied": 1,
+      "web_resource_denied": 1
+    }
+  },
+  "error": "Native Windows CSP/guard/ACL checks failed"
+}

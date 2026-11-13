@@ -9,7 +9,7 @@ const crypto = require("node:crypto");
 const { spawn, spawnSync } = require("node:child_process");
 
 function checked(command, args) {
-  const result = spawnSync(command, args, { encoding: "utf8", timeout: 8000 });
+  const result = spawnSync(command, args, { encoding: "utf8", timeout: 20000 });
   if (result.error || result.status !== 0) throw new Error("Owned-window input failed: " + (result.error || result.stderr));
   return result.stdout;
 }
@@ -47,11 +47,29 @@ async function main() {
   if (fs.existsSync(output)) throw new Error("Refusing to overwrite existing security evidence");
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), "lintra-security-"));
   let measuring = false, connections = 0, requests = 0;
-  const server = http.createServer((_request, response) => {
-    if (measuring) requests++;
+  const measuredSockets = [];
+  const connectionDiagnostics = [];
+  const requestCases = [];
+  const server = http.createServer((request, response) => {
+    if (measuring) {
+      requests++;
+      const known = ["/text", "/script", "/style", "/font", "/image", "/frame", "/object", "/fetch", "/socket", "/events", "/beacon", "/form", "/popup", "/navigation", "/invoke"];
+      requestCases.push({ method: request.method, test_case: known.includes(request.url) ? request.url : "<unexpected>" });
+    }
     response.writeHead(204, { "Connection": "close" }); response.end();
   });
-  server.on("connection", () => { if (measuring) connections++; });
+  server.on("connection", (socket) => {
+    if (measuring) {
+      connections++;
+      measuredSockets.push(socket);
+      const entry = { accepted_utc: new Date().toISOString(), peer_port: socket.remotePort };
+      if (process.platform === "win32") {
+        const rows = spawnSync("netstat.exe", ["-ano", "-p", "tcp"], { encoding: "utf8", timeout: 3000 });
+        entry.loopback_owner_rows = (rows.stdout || "").split(/\r?\n/).filter((line) => line.includes("127.0.0.1:49183") && line.includes(":" + socket.remotePort));
+      }
+      connectionDiagnostics.push(entry);
+    }
+  });
   let child;
   const result = { passed: false, executable_sha256: crypto.createHash("sha256").update(fs.readFileSync(exe)).digest("hex"),
     platform: process.platform, node: process.version, started_utc: new Date().toISOString() };
@@ -94,7 +112,8 @@ async function main() {
     await new Promise((resolve) => setTimeout(resolve, 200));
     measuring = false;
     Object.assign(result, { exit_code: outcome.code, signal: outcome.signal, stdout, stderr,
-      collector_connections: connections, collector_requests: requests });
+      collector_connections: connections, collector_requests: requests,
+      collector_socket_bytes: measuredSockets.map((socket) => ({ read: socket.bytesRead, written: socket.bytesWritten })), connection_diagnostics: connectionDiagnostics, request_cases: requestCases });
     const lines = stdout.split(/\r?\n/);
     const decode = (prefix) => lines.filter((line) => line.startsWith(prefix)).map((line) => JSON.parse(line.slice(prefix.length)));
     const reports = decode("LINTRA_RUNTIME_SECURITY_REPORT ");

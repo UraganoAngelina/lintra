@@ -1,0 +1,154 @@
+{
+  "source_head": "7f165e5cf9d33ffa8e549b9bc9d54f667b7d48c1",
+  "working_changes_included": true,
+  "build_mode": "Cargo MSVC with exact host-built platform-neutral frontend dist; no Node dependency install on VM",
+  "rust_version": "1.99.1",
+  "files": [
+    {
+      "path": "spikes/tauri-runtime/.gitignore",
+      "bytes": 95,
+      "sha256": "e6e7f4bf51135ae4397996c41bf35e7b413f26635c83cd15053ce9a2985a50fa"
+    },
+    {
+      "path": "spikes/tauri-runtime/dist/assets/IBMPlexSans-Regular-Bl2SjS7V.ttf",
+      "bytes": 200500,
+      "sha256": "975dcda37d80f038dcd143c22e33ca2d97a0cc5a929aace1c749153b0fe1afa5"
+    },
+    {
+      "path": "spikes/tauri-runtime/dist/assets/IBMPlexSans-SemiBold-B9auKknr.ttf",
+      "bytes": 202632,
+      "sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+    },
+    {
+      "path": "spikes/tauri-runtime/dist/assets/index-CWMaA-oC.css",
+      "bytes": 1829,
+      "sha256": "077c226b24d1d62670660bd9cda5ee1ed69977db5e2ff866ba8712e079fe8a3f"
+    },
+    {
+      "path": "spikes/tauri-runtime/dist/assets/index-CcjaBpO5.js",
+      "bytes": 225986,
+      "sha256": "9f491c08033cbb81b4465d212f3f0ceb38d05b39c545e91254a1c46543e14433"
+    },
+    {
+      "path": "spikes/tauri-runtime/dist/index.html",
+      "bytes": 411,
+      "sha256": "effb8b99b964df7b302cf5b2f0a06fcacd7514d0cbe76c13bf3df96d9f83ea0f"
+    },
+    {
+      "path": "spikes/tauri-runtime/index.html",
+      "bytes": 313,
+      "sha256": "6c9005e65b0ca6cbe9dafb7b947f6e83c46c28ca76d5e4123a131cbea8038672"
+    },
+    {
+      "path": "spikes/tauri-runtime/package-lock.json",
+      "bytes": 51074,
+      "sha256": "761514850f51fab1beb88f6c0f598bac9e0c26cec66ac2a83b0f4614efda4553"
+    },
+    {
+      "path": "spikes/tauri-runtime/package.json",
+      "bytes": 467,
+      "sha256": "9a2b82c26cf81ebd1636900919a4a32fe6341c93eb6a376588bcdbfa31365c74"
+    },
+    {
+      "path": "spikes/tauri-runtime/src-tauri/Cargo.lock",
+      "bytes": 107859,
+      "sha256": "35a48734a190424c5e0f0b20b0153d173e2039f47814f9ee0b69155cdb8c6562"
+    },
+    {
+      "path": "spikes/tauri-runtime/src-tauri/Cargo.toml",
+      "bytes": 772,
+      "sha256": "98efb1f7480b02b32dc5fb77246362c66ef71f9b2773f853adc207f207f92409"
+    },
+    {
+      "path": "spikes/tauri-runtime/src-tauri/build.rs",
+      "bytes": 401,
+      "sha256": "556ed6c5134a7c5a86489a635fcd9ad2aa86177ccb3fd95b5783a5fc99595221"
+    },
+    {
+      "path": "spikes/tauri-runtime/src-tauri/capabilities/probe.json",
+      "bytes": 224,
+      "sha256": "255e78c69f0297c2287ea6cb92311373b708c25740e1330ef91f5adc1d2d46b7"
+    },
+    {
+      "path": "spikes/tauri-runtime/src-tauri/icons/128x128.png",
+      "bytes": 888,
+      "sha256": "e42645408761e4e1971c6d3f34faef1317866a01e9c188e6593119326b09b259"
+    },
+    {
+      "path": "spikes/tauri-runtime/src-tauri/icons/icon.ico",
+      "bytes": 4319,
+      "sha256": "a7c33bc2a63369bf29d65be8c89644e0142643afd2e0c173972156e49cad52ff"
+    },
+    {
+      "path": "spikes/tauri-runtime/src-tauri/icons/mark.svg",
+      "bytes": 374,
+      "sha256": "1602fef3c60bb6b488696ebc7f3e70534b789febd45d541b29bfafe9cb496ae8"
+    },
+    {
+      "path": "spikes/tauri-runtime/src-tauri/src/main.rs",
+      "bytes": 11991,
+      "sha256": "49b258efa4478340e3062391d2bd264f58062b639cc2857a70e1f79bd63cadf3"
+    },
+    {
+      "path": "spikes/tauri-runtime/src-tauri/src/windows_request_guard.rs",
+      "bytes": 5006,
+      "sha256": "bd63dac8f6d64b9407a71fafae5167e7637541470717a51fc9e673c5d5636daf"
+    },
+    {
+      "path": "spikes/tauri-runtime/src-tauri/tauri.conf.json",
+      "bytes": 834,
+      "sha256": "396adcfdba0e459b9c14cebe5d5ba93543b626735d53f8f4b9d8cab2047ccecf"
+    },
+    {
+      "path": "spikes/tauri-runtime/src-tauri/tauri.windows.conf.json",
+      "bytes": 407,
+      "sha256": "daea61bbee839df58de62bd1475892485b180eef7db6f3c83070af95ea78889e"
+    },
+    {
+      "path": "spikes/tauri-runtime/src/main.tsx",
+      "bytes": 3385,
+      "sha256": "d757d0adb5f2a3ab0c3c72a03a674d0667c2067449e8843fe7466a13bfd5b2fc"
+    },
+    {
+      "path": "spikes/tauri-runtime/src/security_probe.ts",
+      "bytes": 8332,
+      "sha256": "87eb2167291475303db8d6ed40123e0dabc7c66d6af948cd1e301aab91f9ca7b"
+    },
+    {
+      "path": "spikes/tauri-runtime/src/style.css",
+      "bytes": 2105,
+      "sha256": "613e854cc9d6ffa4f051ed9357bdce0f9b759f736d6a8fdf320513980b8afaca"
+    },
+    {
+      "path": "spikes/tauri-runtime/tools/native_capture.py",
+      "bytes": 3702,
+      "sha256": "83dfa2b73d71a686fe60d551ad52e8722bd32e484a504cbd2d71f4b8a7c1db18"
+    },
+    {
+      "path": "spikes/tauri-runtime/tools/native_security.cjs",
+      "bytes": 8537,
+      "sha256": "adbccfcc558a21521c8c66a14d543f504e5f133d865361e978f422f95bca035d"
+    },
+    {
+      "path": "spikes/tauri-runtime/tools/native_smoke.py",
+      "bytes": 1304,
+      "sha256": "23b200279f4ba35eb4c782830d26a25c3a60fa43c7731b42201ef7ec7034f381"
+    },
+    {
+      "path": "spikes/tauri-runtime/tsconfig.json",
+      "bytes": 501,
+      "sha256": "06bb5b9fe7eacdac2fe16e94dc5fe1ac6387d1842132fcc2f5dc1a910633138a"
+    },
+    {
+      "path": "ui/ui/fonts/IBMPlexSans-Regular.ttf",
+      "bytes": 200500,
+      "sha256": "975dcda37d80f038dcd143c22e33ca2d97a0cc5a929aace1c749153b0fe1afa5"
+    },
+    {
+      "path": "ui/ui/fonts/IBMPlexSans-SemiBold.ttf",
+      "bytes": 202632,
+      "sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+    }
+  ],
+  "revision": "Native WebView2 resource allowlist after observed GET before navigation cancellation"
+}

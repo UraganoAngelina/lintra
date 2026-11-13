@@ -1,0 +1,2 @@
+# Preserve native evidence/manifest hashes independently of core.autocrlf.
+*.json text eol=lf

@@ -115,7 +115,7 @@ export async function runSecurityProbe(): Promise<SecurityReport> {
       protocol: 1, width: Math.round(innerWidth), height: Math.round(innerHeight),
     } }, "security report required");
     if (!ready) throw new Error("popup handshake failed");
-    const popup = await Promise.race([trustedPopup, pause(10000).then(() => { throw new Error("trusted popup input timeout"); })]);
+    const popup = await Promise.race([trustedPopup, pause(30000).then(() => { throw new Error("trusted popup input timeout"); })]);
     await pause(200);
     location.assign(`${collector}/navigation`);
     await pause(200);

@@ -15,6 +15,12 @@ tauri = { version = "=2.12.5", features = [] }
 serde = { version = "=1.0.229", features = ["derive"] }
 serde_json = "=1.0.151"
 
+[target.'cfg(target_os = "windows")'.dependencies]
+# Already pinned transitive Wry dependencies. Direct access is needed because
+# NavigationStarting can reject display after WebView2 has begun an HTTP load.
+webview2-com = "=0.39.1"
+windows = { version = "=0.62.2", features = ["Win32_System_Com"] }
+
 [profile.dev]
 debug = 0
 incremental = false

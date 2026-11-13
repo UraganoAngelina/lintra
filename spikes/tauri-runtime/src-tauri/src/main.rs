@@ -9,10 +9,18 @@ use tauri::{
     AppHandle, State, Url, WebviewWindow, WebviewWindowBuilder, webview::NewWindowResponse,
 };
 
+#[cfg(target_os = "windows")]
+mod windows_request_guard;
+
 #[derive(Default)]
 struct GuardCounters {
     navigation_denied: AtomicU32,
     new_window_denied: AtomicU32,
+    web_resource_denied: AtomicU32,
+    #[cfg(target_os = "windows")]
+    resource_guard_ready: std::sync::atomic::AtomicBool,
+    #[cfg(target_os = "windows")]
+    resource_guard_failed: std::sync::atomic::AtomicBool,
 }
 
 struct ProbeOptions {
@@ -95,6 +103,30 @@ fn local_asset_origin(url: &Url) -> bool {
         )
 }
 
+#[cfg(any(target_os = "windows", test))]
+fn local_resource_origin(url: &Url) -> bool {
+    local_asset_origin(url)
+        || (url.username().is_empty()
+            && url.password().is_none()
+            && url.port().is_none()
+            && matches!(
+                (url.scheme(), url.host_str()),
+                ("http", Some("ipc.localhost")) | ("ipc", Some("localhost"))
+            ))
+}
+
+fn ensure_request_guard(options: &ProbeOptions) -> Result<(), &'static str> {
+    #[cfg(target_os = "windows")]
+    if !options.guards.resource_guard_ready.load(Ordering::Relaxed)
+        || options.guards.resource_guard_failed.load(Ordering::Relaxed)
+    {
+        return Err("native request guard unavailable");
+    }
+    #[cfg(not(target_os = "windows"))]
+    let _ = options;
+    Ok(())
+}
+
 fn valid_render_bounds(report: &RenderReport) -> bool {
     report.protocol == 1
         && (1..=32768).contains(&report.width)
@@ -114,8 +146,12 @@ fn authorize(window: &WebviewWindow) -> Result<(), &'static str> {
 }
 
 #[tauri::command]
-fn runtime_probe(window: WebviewWindow) -> Result<&'static str, &'static str> {
+fn runtime_probe(
+    window: WebviewWindow,
+    options: State<'_, ProbeOptions>,
+) -> Result<&'static str, &'static str> {
     authorize(&window)?;
+    ensure_request_guard(&options)?;
     Ok("lintra-runtime-v1")
 }
 
@@ -127,6 +163,7 @@ fn render_ack(
     report: RenderReport,
 ) -> Result<(), &'static str> {
     authorize(&window)?;
+    ensure_request_guard(&options)?;
     // Bounds constrain the synthetic proof, not future product DTO limits.
     if !valid_render_bounds(&report) {
         return Err("invalid runtime render acknowledgment");
@@ -149,8 +186,9 @@ fn render_ack(
             app.exit(1);
             return Err("security probe failed");
         }
+        let resources = options.guards.web_resource_denied.load(Ordering::Relaxed);
         println!(
-            "LINTRA_RUNTIME_SECURITY_ACK {{\"navigation_denied\":{navigation},\"new_window_denied\":{popups}}}"
+            "LINTRA_RUNTIME_SECURITY_ACK {{\"navigation_denied\":{navigation},\"new_window_denied\":{popups},\"web_resource_denied\":{resources}}}"
         );
     } else if report.security.is_some() {
         return Err("security report outside qualification mode");
@@ -210,7 +248,11 @@ fn main() {
             if security_test {
                 window = window.initialization_script("window.__LINTRA_SECURITY_TEST__ = true;");
             }
-            window.build()?;
+            let built_window = window.build()?;
+            #[cfg(target_os = "windows")]
+            windows_request_guard::install(&built_window, guards.clone())?;
+            #[cfg(not(target_os = "windows"))]
+            let _ = built_window;
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![runtime_probe, render_ack])
@@ -276,6 +318,28 @@ mod tests {
             "null",
         ] {
             assert!(serde_json::from_str::<RenderReport>(json).is_err());
+        }
+    }
+
+    #[test]
+    fn resource_allowlist_adds_only_the_exact_internal_ipc_origins() {
+        for url in [
+            "http://ipc.localhost/runtime_probe",
+            "ipc://localhost/",
+            "http://tauri.localhost/assets/index.js",
+            "tauri://localhost/index.html",
+        ] {
+            assert!(local_resource_origin(&Url::parse(url).unwrap()), "{url}");
+        }
+        for url in [
+            "http://127.0.0.1:49183/navigation",
+            "http://ipc.localhost.evil/",
+            "http://user@ipc.localhost/",
+            "http://ipc.localhost:49183/",
+            "https://ipc.localhost/",
+            "file:///secret",
+        ] {
+            assert!(!local_resource_origin(&Url::parse(url).unwrap()), "{url}");
         }
     }
 }

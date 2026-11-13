@@ -163,3 +163,30 @@ Il collettore osserva le richieste delle prove, non tutto il traffico dell’OS 
 telemetria del redistributable Microsoft. Non qualifica l’intero futuro prodotto,
 PHI/cache/dump, Job Manager, persistenza, native file broker o release. G-MIG-1
 richiede ancora DPI/installer e la decisione di fase previste dal piano.
+
+
+### Confine risorse WebView2 rilevato sulla VM
+
+Su WebView2 157, un `NavigationStarting` cancellato manteneva la pagina locale
+ma il collettore osservava comunque un GET del caso `/navigation`. Gli eventi
+CSP e il solo rifiuto del cambio pagina non dimostravano quindi zero richieste.
+`src-tauri/src/windows_request_guard.rs` aggiunge un filter WebResourceRequested
+su tutti i contesti: ammette soltanto le origini asset e IPC interne esatte,
+restituisce una risposta locale403 senza contenuto per gli altri URI e non
+registra URL o payload. I callback ricevono oggetti COM validi dal thread Tauri;
+le copie dell’environment sono possedute, il buffer URI viene liberato dal
+medesimo helper CoTaskMem della Wry pinnata. Errori di installazione/risposta
+falliscono esplicitamente e impediscono un ACK di successo.
+
+Per questa necessità concreta sono dichiarati direttamente `webview2-com
+0.39.1` e `windows0.62.2`, **gli stessi pacchetti già presenti nel lockfile e
+nella Wry selezionata**: nessuna versione o famiglia di dipendenze nuova,
+nessuna dipendenza GUI nella library/CLI. Un terzo test verifica il confine
+asset/IPC e gli origin lookalike. Il modulo SDK resta isolato con cfg Windows;
+il protocollo e le decisioni cliniche del core non sono coinvolti.
+
+Il driver registra separatamente connessioni, byte e il solo nome noto del
+caso sintetico HTTP. Un renderer che segnala rifiuti ma invia richieste resta
+FAIL. Il timeout del helper OS è20s e la finestra di input trusted30s, per
+accogliere il primo caricamento PowerShell della VM senza cambiare le policy.
+La prova continua a richiedere zero connessioni/richieste, non un mero exit0.

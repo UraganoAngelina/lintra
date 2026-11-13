@@ -1,0 +1,140 @@
+{
+  "scope": "P1-04 native CSP/ACL/guards; Windows zero-network FAIL retained",
+  "files": [
+    {
+      "file": "before-desktop-checkpoint.json.gz",
+      "size": 1011,
+      "sha256": "a89e64b40d90bd81f87082e8df1bf8aacd262c9a1714eb7d35e284978cb30d75"
+    },
+    {
+      "file": "ci-43437870531.json",
+      "size": 4030,
+      "sha256": "4d577e5e0b9dc22287c72b3af0e53961a2bcab6c0f7e6d537594044429183e1d"
+    },
+    {
+      "file": "ci-43437870531.log.gz",
+      "size": 18512,
+      "sha256": "dd7fbbd29979d72de3d22303e4dd1e2345822ac1a546e0a162c12c138bf32cf0"
+    },
+    {
+      "file": "desktop-after-restore-admin.json.gz",
+      "size": 909,
+      "sha256": "f20d2231bb8ca4589437cf00ce7347e03f6f182f4e35e59c991fa3fa41166bfd"
+    },
+    {
+      "file": "desktop-after-restore-user.json.gz",
+      "size": 803,
+      "sha256": "889e9356777d4dfd0c56ed0544eb1e7417991caa08515f57a8689cfa120e665f"
+    },
+    {
+      "file": "desktop-before-restore.json.gz",
+      "size": 726,
+      "sha256": "d06800b9ce5be83a435ab6e0de33ad66c8dd772a666f2523a9b1846761b1c766"
+    },
+    {
+      "file": "desktop-checkpoint-restore.json.gz",
+      "size": 255,
+      "sha256": "43e04cfd638a62ad7729a2e4fae927a6c3c256684646d8a0d862f4027ae13dd7"
+    },
+    {
+      "file": "linux-acl-reasons.json",
+      "size": 2406,
+      "sha256": "c8fa64ddb7796747b7d7740d429b048395e27df3423c93a13cf1583bef7bad54"
+    },
+    {
+      "file": "linux-first.json",
+      "size": 1530,
+      "sha256": "5719217df7f6cfbaab5975ec8dadd928787f6869f637f4fa5c0850f22b43926d"
+    },
+    {
+      "file": "linux-resource-allowlist.json",
+      "size": 2549,
+      "sha256": "55966b4762741bffff6d403bb46897eeb707b4b8951f6922b9bbc07ac20eab77"
+    },
+    {
+      "file": "linux-trusted-popup.json",
+      "size": 2406,
+      "sha256": "133c9e0100268a4ca9b066b74f9104b61d7d1f4cdfd1992081f1656eda38425a"
+    },
+    {
+      "file": "prepare-security-desktop.json.gz",
+      "size": 1775,
+      "sha256": "6fb71d6bb2f8bfbc10d29a157027050dbdc365983ada9d9261ffabe80b33390c"
+    },
+    {
+      "file": "security-lsa-login.json.gz",
+      "size": 1332,
+      "sha256": "6fb701629b552b7a9baf673bb313a347166f85fdf14d6a6b558b824278bff8d6"
+    },
+    {
+      "file": "windows-desktop-security-status.json.gz",
+      "size": 1162,
+      "sha256": "78404c5f5d006b04e6983540eb8df1665efdb00dc9207d0e4f6d1fc8b614ab51"
+    },
+    {
+      "file": "windows-final-source-build.json.gz",
+      "size": 1741,
+      "sha256": "eeca2cc9ea00b1614f7c49803eae2e9ca2a2218a24cd4405b010365ab4560400"
+    },
+    {
+      "file": "windows-install-pinned-toolchain.json.gz",
+      "size": 823,
+      "sha256": "3045f16ee55ab80e91e25bcd4790508b29c42b99cc239d3d5b73b495c63a47fd"
+    },
+    {
+      "file": "windows-network-diagnostic-result.json.gz",
+      "size": 1571,
+      "sha256": "336efaef9c2a782ecb94e705af799982df4312e633ef2d263f03eedb7be8bc76"
+    },
+    {
+      "file": "windows-request-case.json.gz",
+      "size": 1556,
+      "sha256": "41eff6fcc05cf07471aabb77e3eb916ca370faba89e44fa63eb00208ed2553e0"
+    },
+    {
+      "file": "windows-resource-filter-launcher-result.json",
+      "size": 4258,
+      "sha256": "b3ba0474a7dc45fdf2ffab5be66a6a46d2491eb7d5474d293a2253cb16b82fe7"
+    },
+    {
+      "file": "windows-resource-filter-native-security.json",
+      "size": 3759,
+      "sha256": "e3fe69e4bac175c491b69c52a99c376d727c050694a550af0a8e3edca74fa100"
+    },
+    {
+      "file": "windows-resource-filter-result.json.gz",
+      "size": 1861,
+      "sha256": "c543b48fd5b901587d2c4bd615d140144e6e1675544d409e11341e2d30da9ccd"
+    },
+    {
+      "file": "windows-resource-guard-build.json.gz",
+      "size": 1742,
+      "sha256": "8610eeb8095330287bbd27c4dd9780c42e85358139cd855bfc43b7625b301186"
+    },
+    {
+      "file": "windows-resource-guard-tests.json.gz",
+      "size": 2216,
+      "sha256": "74aa16ac69c65e4fd763ef17ec3ab278dad2ee55f3bda4b5a7e16ddab456741d"
+    },
+    {
+      "file": "windows-source-and-build.json.gz",
+      "size": 4917,
+      "sha256": "3532ecdd00520e9b61ba46e941a89716432e157473a8426a2af207c74af4c71e"
+    },
+    {
+      "file": "windows-source-manifest.json",
+      "size": 5244,
+      "sha256": "518963f7c17e990c4d0d9f186ae1158f41ddbcbba36e62713a9b3781efeea9c2"
+    },
+    {
+      "file": "windows-source-v2-manifest.json",
+      "size": 5300,
+      "sha256": "b797aae0ea0720eaf6277b0d9da246c1b37a734c9306204721e544a680a072c1"
+    },
+    {
+      "file": "windows-source-v3-manifest.json",
+      "size": 5541,
+      "sha256": "83c3e326d25e3f0add7e34b6aa070e154ba1751b8711b075ca6ffbf99b87f78b"
+    }
+  ]
+}
