@@ -1,5 +1,40 @@
 # Istruzioni operative Lintra
 
+## VM Windows 11: utilizzo selettivo — 13 novembre 2026
+
+Asset disponibile: `Windows11-Lintra-Test`, Windows 11 x86_64 su CachyOS con
+QEMU/KVM, libvirt e virt-manager. Operare da CachyOS via alias SSH `lintra-win`,
+chiave SSH, account standard `lintra-agent`, shell PowerShell. Disponibili
+Rust/Cargo (`stable-x86_64-pc-windows-msvc`), Git, Node.js e npm (`npm.cmd`).
+Non installare Codex nella VM né aggiornare/reinstallare strumenti senza bisogno.
+
+**La VM non è un quality gate.** Usarla esclusivamente per un requisito Windows
+esplicito del piano o un dubbio concreto che richieda esecuzione nativa e non
+sia risolvibile in modo equivalente con analisi, test ordinari o CI. Nessun
+avvio, sincronizzazione, build, regressione o report ricorrente a fine task/gate.
+Restano obbligatorie soltanto le prove Windows già approvate; disponibilità della
+VM, gate, ordine e criteri di completamento del piano sono aspetti distinti.
+CI ufficiale resta il riferimento; una prova VM non equivale a un PASS CI.
+
+Quando serve, verificare `ssh -o BatchMode=yes lintra-win "whoami"` e soltanto
+gli strumenti pertinenti, senza ripetere preflight già validi. Propagare errori
+ed exit code dei comandi PowerShell. Usare verifiche mirate, ampliandole solo
+per risultati o requisiti concreti. VM irraggiungibile non blocca task ordinarie.
+
+Sincronizzare soltanto quando necessario, includendo le modifiche locali utili
+anche non committate e identificando lo stato provato. Escludere segreti, chiavi,
+dati sanitari reali, `target`, `node_modules` e artefatti incompatibili. Nessun
+commit/push imposto dalla sincronizzazione, modifica del repository principale,
+sovrascrittura/cancellazione remota incontrollata o servizio permanente.
+
+Operare senza privilegi amministrativi per build/test ordinari; non modificare
+SSH/firewall/rete inutilmente, non aggirare autorizzazioni e non compiere azioni
+distruttive senza consenso. L'uso ordinario motivato è già autorizzato; fermarsi
+solo su blocchi reali, privilegi non autorizzati o decisioni sostanziali aperte.
+Riportare motivo, controllo, esito e problemi nel normale report soltanto quando
+la VM viene usata. Nessuna nuova checklist, milestone o qualifica periodica.
+Il recepimento di questa direttiva non richiede avvio, sync o test Windows.
+
 ## Reference UI aggiuntive dell'autore — 11 novembre 2026
 
 **Marchio ufficiale ratificato successivamente nello stesso giorno:**

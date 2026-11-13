@@ -1,9 +1,15 @@
 # Spike Windows 11: artefatto e collaudo
 
 T-MIG-P1-02. Stato del requisito clean-room: **BLOCKED_NATIVE_ENVIRONMENT**.
-L'11 novembre 2026 l'autore ha confermato in chat che non dispone al momento
-di un ambiente Windows 11. Non installare VM, immagini OS o strumenti di
-virtualizzazione senza una necessità e disponibilità effettive.
+Dal 13 novembre 2026 è disponibile `Windows11-Lintra-Test` via `ssh lintra-win`,
+account standard `lintra-agent`. Accesso verificato per riprendere questa task,
+che richiede espressamente Windows: non è un controllo periodico aggiuntivo.
+Restano da predisporre/verificare la clean-room ripristinabile, l'installazione
+offline con elevazione e la prova da due account standard. Nessuna installazione
+eseguita; WebView2 è già presente nella VM. Il preflight e i limiti sono nel
+[dossier corrente](../../docs/verification/unified-post-m9/T-MIG-P1-02.md).
+Applicare la direttiva selettiva in [AGENTS.md](../../AGENTS.md): nessuna nuova
+infrastruttura o verifica Windows ricorrente.
 
 La build separata `.github/workflows/tauri-runtime-spike.yml` usa il runner
 Windows Server 2025 esclusivamente per compilazione MSVC, Clippy, NSIS e
