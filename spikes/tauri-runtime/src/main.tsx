@@ -3,6 +3,9 @@ import { createRoot } from "react-dom/client";
 import { invoke } from "@tauri-apps/api/core";
 import "./style.css";
 import { runSecurityProbe, UNTRUSTED_SENTINEL } from "./security_probe";
+import { measureProfile } from "./profile_probe";
+
+declare global { interface Window { __LINTRA_PROFILE_TEST__?: true; } }
 
 type ProbeState = "pending" | "ready" | "failed";
 
@@ -39,6 +42,7 @@ function RuntimeProbe() {
             width: Math.round(window.innerWidth),
             height: Math.round(window.innerHeight),
             ...(security === undefined ? {} : { security }),
+            ...(window.__LINTRA_PROFILE_TEST__ === true ? { profile: measureProfile() } : {}),
           } });
         })().catch(() => { if (active) setState("failed"); });
       }));

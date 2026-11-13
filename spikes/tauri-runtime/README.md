@@ -190,3 +190,26 @@ caso sintetico HTTP. Un renderer che segnala rifiuti ma invia richieste resta
 FAIL. Il timeout del helper OS è20s e la finestra di input trusted30s, per
 accogliere il primo caricamento PowerShell della VM senza cambiare le policy.
 La prova continua a richiedere zero connessioni/richieste, non un mero exit0.
+
+## P1-05: profilo WebView, font e scala nativa
+
+La modalità opt-in `--profile-test` misura il documento dopo caricamento dei
+font e confronta DPR, viewport e geometria con scala/dimensioni lette dal
+backend. Rifiuta misure incoerenti e font non caricati; non cambia lo stile
+ordinario e non promette pixel parity fra motori. È esclusiva rispetto alla
+modalità security. Esecuzione mirata sul desktop Linux già configurato:
+
+```sh
+node tools/native_profile.cjs src-tauri/target/debug/lintra-runtime-spike /tmp/lintra-profile-result.json
+```
+
+Il harness verifica anche che il profilo WebView sia realmente presente nella
+root per-account risolta da Tauri; Linux usa XDG temporanee private. Il profilo
+dello spike usa `it.lintra.runtime-spike`: non implementa ancora la root dati
+`Lintra` del futuro prodotto. Su Windows il launcher
+`qualification/windows-profile-desktop.ps1` richiede la console reale con
+token non elevato, confronta `GetDpiForWindow`, acquisisce la sola finestra e
+la chiude. SSH prepara/raccoglie la prova; sessione0 non soddisfa il launcher.
+I risultati, gli hash e i limiti delle scale effettivamente osservate sono nel
+[dossier P1-05](../../docs/verification/unified-post-m9/T-MIG-P1-05.md).
+Questi strumenti sono specifici dello spike, senza nuovi gate Windows ricorrenti.

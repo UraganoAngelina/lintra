@@ -6,7 +6,7 @@ use std::sync::{
     atomic::{AtomicU32, Ordering},
 };
 use tauri::{
-    AppHandle, State, Url, WebviewWindow, WebviewWindowBuilder, webview::NewWindowResponse,
+    AppHandle, Manager, State, Url, WebviewWindow, WebviewWindowBuilder, webview::NewWindowResponse,
 };
 
 #[cfg(target_os = "windows")]
@@ -26,6 +26,7 @@ struct GuardCounters {
 struct ProbeOptions {
     exit_after_render: bool,
     security_test: bool,
+    profile_test: bool,
     guards: Arc<GuardCounters>,
 }
 
@@ -88,6 +89,51 @@ struct RenderReport {
     height: u32,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     security: Option<SecurityReport>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    profile: Option<ProfileReport>,
+}
+
+/// Bounded, synthetic document measurements. Native window size/scale are
+/// recorded independently; renderer-reported DPI alone is not an OS proof.
+#[derive(Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+struct ProfileReport {
+    scale_milli: u32,
+    body_font_milli: u32,
+    title_font_milli: u32,
+    normal_face_loaded: bool,
+    semibold_face_loaded: bool,
+    body_uses_plex: bool,
+    title_uses_plex: bool,
+    no_horizontal_overflow: bool,
+    title_inside_viewport: bool,
+}
+
+impl ProfileReport {
+    fn passed(&self) -> bool {
+        (500..=8000).contains(&self.scale_milli)
+            && self.body_font_milli == 14000
+            && self.title_font_milli == 28000
+            && self.normal_face_loaded
+            && self.semibold_face_loaded
+            && self.body_uses_plex
+            && self.title_uses_plex
+            && self.no_horizontal_overflow
+            && self.title_inside_viewport
+    }
+
+    /// A CSS zoom must not masquerade as a native monitor scale. Compare both
+    /// axes independently, allowing only two physical pixels of rounding.
+    fn matches_native(&self, report: &RenderReport, physical: (u32, u32), scale: u32) -> bool {
+        let size_matches = |physical: u32, logical: u32| {
+            (i64::from(physical) * 1000 - i64::from(logical) * i64::from(scale)).abs() <= 2000
+        };
+        valid_render_bounds(report)
+            && self.passed()
+            && self.scale_milli.abs_diff(scale) <= 2
+            && size_matches(physical.0, report.width)
+            && size_matches(physical.1, report.height)
+    }
 }
 
 /// Match origins, not URL prefixes. Credentials, nonstandard ports and lookalike
@@ -193,6 +239,31 @@ fn render_ack(
     } else if report.security.is_some() {
         return Err("security report outside qualification mode");
     }
+    if options.profile_test {
+        let profile = report.profile.as_ref().ok_or("profile report required")?;
+        let physical = window.inner_size().map_err(|_| "cannot read native size")?;
+        let scale = (window
+            .scale_factor()
+            .map_err(|_| "cannot read native scale")?
+            * 1000.0)
+            .round() as u32;
+        println!(
+            "LINTRA_RUNTIME_PROFILE_NATIVE {}",
+            serde_json::json!({
+                "scale_milli": scale,
+                "physical_width": physical.width,
+                "physical_height": physical.height,
+                "webview_version": tauri::webview_version().map_err(|_| "cannot read WebView version")?,
+                "app_local_data_root": app.path().app_local_data_dir().map_err(|_| "cannot resolve app data")?,
+            })
+        );
+        if !profile.matches_native(&report, (physical.width, physical.height), scale) {
+            app.exit(1);
+            return Err("profile measurements failed");
+        }
+    } else if report.profile.is_some() {
+        return Err("profile report outside qualification mode");
+    }
     println!(
         "LINTRA_RUNTIME_RENDER_ACK {}",
         serde_json::to_string(&report).map_err(|_| "cannot encode runtime acknowledgment")?
@@ -208,11 +279,17 @@ fn main() {
     // Normal mode remains open for native window inspection and capture.
     let exit_after_render = std::env::args().skip(1).any(|arg| arg == "--smoke-test");
     let security_test = std::env::args().skip(1).any(|arg| arg == "--security-test");
+    let profile_test = std::env::args().skip(1).any(|arg| arg == "--profile-test");
+    assert!(
+        !(security_test && profile_test),
+        "qualification modes are exclusive"
+    );
     let guards = Arc::new(GuardCounters::default());
     tauri::Builder::default()
         .manage(ProbeOptions {
             exit_after_render,
             security_test,
+            profile_test,
             guards: guards.clone(),
         })
         .setup(move |app| {
@@ -248,6 +325,9 @@ fn main() {
             if security_test {
                 window = window.initialization_script("window.__LINTRA_SECURITY_TEST__ = true;");
             }
+            if profile_test {
+                window = window.initialization_script("window.__LINTRA_PROFILE_TEST__ = true;");
+            }
             let built_window = window.build()?;
             #[cfg(target_os = "windows")]
             windows_request_guard::install(&built_window, guards.clone())?;
@@ -263,6 +343,44 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn profile_rejects_font_fallback_zoom_and_native_size_mismatch() {
+        let report = RenderReport {
+            protocol: 1,
+            width: 900,
+            height: 600,
+            security: None,
+            profile: None,
+        };
+        let mut profile = ProfileReport {
+            scale_milli: 1500,
+            body_font_milli: 14000,
+            title_font_milli: 28000,
+            normal_face_loaded: true,
+            semibold_face_loaded: true,
+            body_uses_plex: true,
+            title_uses_plex: true,
+            no_horizontal_overflow: true,
+            title_inside_viewport: true,
+        };
+        assert!(profile.matches_native(&report, (1350, 900), 1500));
+        // CSS/browser zoom alone and stale physical geometry cannot qualify.
+        assert!(!profile.matches_native(&report, (900, 600), 1000));
+        assert!(!profile.matches_native(&report, (1350, 900), 1000));
+        assert!(!profile.matches_native(&report, (1350, 910), 1500));
+        profile.normal_face_loaded = false;
+        assert!(!profile.matches_native(&report, (1350, 900), 1500));
+        profile.normal_face_loaded = true;
+        profile.title_inside_viewport = false;
+        assert!(!profile.matches_native(&report, (1350, 900), 1500));
+        profile.title_inside_viewport = true;
+        profile.body_font_milli = 16000;
+        assert!(!profile.matches_native(&report, (1350, 900), 1500));
+        let mut wire = serde_json::to_value(&profile).unwrap();
+        wire["arbitrary_text"] = serde_json::json!("rejected");
+        assert!(serde_json::from_value::<ProfileReport>(wire).is_err());
+    }
 
     #[test]
     fn asset_origins_reject_lookalikes_credentials_ports_and_other_protocols() {
@@ -306,7 +424,8 @@ mod tests {
                     protocol,
                     width,
                     height,
-                    security: None
+                    security: None,
+                    profile: None,
                 }),
                 valid
             );
