@@ -63,7 +63,13 @@ public static class LintraProfileConsole {
     } until (($app.MainWindowHandle -ne [IntPtr]::Zero -and $ack -match 'LINTRA_RUNTIME_RENDER_ACK') -or [DateTime]::UtcNow -ge $deadline)
     if ($ack -notmatch 'LINTRA_RUNTIME_RENDER_ACK' -or $app.SessionId -ne $result.session) { throw 'Capture requires native acknowledgment in this desktop' }
     $window = $app.MainWindowHandle
-    if (-not [LintraProfileConsole]::IsWindowVisible($window) -or $app.MainWindowTitle -ne 'Lintra · Verifica runtime') { throw 'Unexpected capture window' }
+    $result.window_title = $app.MainWindowTitle
+    $result.window_visible = [LintraProfileConsole]::IsWindowVisible($window)
+    # Windows PowerShell 5 reads a BOM-less script as the ANSI code page.
+    # Spell the synthetic middle dot explicitly so UTF-8 source bytes cannot
+    # turn an exact title check into a false rejection on that host.
+    $expectedTitle = 'Lintra ' + [char]0x00B7 + ' Verifica runtime'
+    if (-not $result.window_visible -or $result.window_title -ne $expectedTitle) { throw 'Unexpected capture window' }
     [LintraProfileConsole]::SetForegroundWindow($window) | Out-Null
     Start-Sleep -Seconds 1
     if ([LintraProfileConsole]::GetForegroundWindow() -ne $window) { throw 'Probe does not own foreground' }

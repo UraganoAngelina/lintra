@@ -6,7 +6,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **32/128 DONE;96 rimanenti** (18U-* e78MIG).
+Conteggio unificato: **33/128 DONE;95 rimanenti** (18U-* e77MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -15,7 +15,7 @@ CI42990775714; G-SIOC0 PASS documentale; G-MIG-0 PASS governance.
 G-DUR PASS software su3aa0d14/CI43078048297; hardware NOT_TESTED_HARDWARE.
 G-OPS0/1/2, G-SIOC1, G-MIG-1..9, G-CADUI0..3, G-PERF e G-REL:
 NOT_VERIFIED. P1-02 PASS nativo Win11/offline/due desktop e ripristino;
-G-MIG-1 aggregato attende P1-04/05/07 e decisione P1-06.
+G-MIG-1 aggregato attende P1-04/07 e decisione P1-06; P1-05 PASS sulle scale osservate.
 G-REAL riguarda autorizzazioni effettive per specifici dati, non presunte.
 CI antecedenti non qualificano nuovi delta runtime.
 
@@ -72,7 +72,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P1-02 | T-MIG-P0-08 | DONE | [Spike Windows e prove reali](docs/verification/unified-post-m9/T-MIG-P1-02.md) | bdca1cf/CI43014153420;13/11 Win11 offline runtime presente/assente, due desktop standard, ACL/uninstall/restore PASS | Acceptance Windows spike PASS; G-MIG-1 aggregato NOT_VERIFIED |
 | T-MIG-P1-03 | T-MIG-P1-01 | DONE | [Profilo e prove CachyOS](docs/verification/unified-post-m9/T-MIG-P1-03.md) | 151 ELF/99 package;relocated Wayland e loader negativo PASS;binario c53fd4ba invariato | Acceptance personale PASS;G-MIG-1 aggregato bloccato su Win11 |
 | T-MIG-P1-04 | T-MIG-P1-01, T-MIG-P1-02 | BLOCKED | [CSP e guard nativi](docs/verification/unified-post-m9/T-MIG-P1-04.md) | 3 test Rust/MSVC/Clippy e Linux native PASS; Windows 0HTTP ma3TCP vuote, zero-network FAIL | G-MIG-1 NOT_VERIFIED |
-| T-MIG-P1-05 | T-MIG-P1-01, T-MIG-P1-02 | IN_PROGRESS | [Profilo WebView/font/DPI](docs/verification/unified-post-m9/T-MIG-P1-05.md) | Linux native/font/DPI100% e4test PASS; MSVC/desktop Windows in corso | G-MIG-1 NOT_VERIFIED |
+| T-MIG-P1-05 | T-MIG-P1-01, T-MIG-P1-02 | DONE | [Profilo WebView/font/DPI](docs/verification/unified-post-m9/T-MIG-P1-05.md) | 413b7e4/CI43494464261 SUCCESS; Wayland e Win11 standard/font/DPI100%/capture PASS; VM ripristinata/spenta | Acceptance profilo PASS; G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-06 | T-MIG-P1-02, T-MIG-P1-03, T-MIG-P1-04, T-MIG-P1-05, T-MIG-P1-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-06.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-07 | T-MIG-P1-02, T-MIG-P1-04 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-07.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P2-01 | T-MIG-P1-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-01.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
@@ -154,7 +154,7 @@ U-FIX-01..05 DONE: G-HARD PASS con CI42990775714 sucb70bee,7 job richiesti posit
 U-NORM-03 DONE per backend normativo,21 oracle3volte/OS;04 WAITING_INTEGRATION per frontend/contesto amministrativo, G-SIOC1 complessivo aperto.
 T-MIG-P0-01..08 DONE; G-MIG-0 PASS per governance e ingresso agli spike, non per runtime/installer.
 U-OPS-07 DONE documentale; U-OPS-03 preflight sospeso sull'integrazione root/worker Tauri reale, nessun DONE implicito.
-**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 build CI43014153420 e collaudo Win11 PASS; P1-03 DONE personale. U-PERF-01 DONE per volumi aggregati/oracle. U-OPS-04 DONE dopo CI43078048297 SUCCESS su3aa0d14 (SMB/drive mappato e Linux PASS); U-REL-03 DONE, G-DUR PASS software sulla stessa CI positiva;hardware NOT_TESTED_HARDWARE. P1-04 BLOCKED sul contenimento TCP Windows e P1-05 READY; P1-06/07 e P2/P3 attendono i prerequisiti. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. Prossima task indipendente T-MIG-P1-05, AUTO_CONTINUE.
+**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 build CI43014153420 e collaudo Win11 PASS; P1-03 DONE personale. U-PERF-01 DONE per volumi aggregati/oracle. U-OPS-04 DONE dopo CI43078048297 SUCCESS su3aa0d14 (SMB/drive mappato e Linux PASS); U-REL-03 DONE, G-DUR PASS software sulla stessa CI positiva;hardware NOT_TESTED_HARDWARE. P1-04 BLOCKED sul contenimento TCP Windows; P1-05 DONE per profilo/font/DPI100% osservati. P1-06/07 e P2/P3 attendono i prerequisiti. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. Nessuna task indipendente READY, NO_READY_TASK.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.
@@ -202,3 +202,20 @@ WebResourceRequested lo elimina. Restano3TCP senza dati: prova zero-network
 FAIL esplicita, P1-04 BLOCKED e G-MIG-1 NOT_VERIFIED. Linux0TCP/0HTTP PASS,
 3 test/Clippy MSVC PASS; nuova CI richiesta per il delta. P1-02 conserva DONE;
 32/128 DONE invariato. Proseguire sequenzialmente con P1-05 indipendente READY.
+
+
+Handoff P1-05, 13 novembre2026: **T-MIG-P1-05 DONE**. Runtime413b7e4,
+CI43494464261 SUCCESS (4test/Clippy/MSVC/NSIS); Wayland/WebKitGTK2.54.2
+e Win11/WebView2157.0.4341.46 nel desktop standard/sessione1: font locali,
+corpo14/titolo28CSSpx, scala100%, viewport e capture PASS, exit0. Win32DPI96
+coerente; nessuna pixel parity universale o qualifica di scale non osservate.
+Corretto solo il launcher PowerShell5 per il titolo Unicode; app byte-identica
+alla CI, primo FAIL conservato. Tentativo build SSH255 distinto dalla ripresa
+riuscita e dal binario CI esatto. VM inizialmente spenta, avviata per il requisito
+nativo di questa task, poi ripristinata al checkpoint esistente: modifiche
+console/task rimosse, accessi standard/admin conservati e stato finale shut off
+verificato dopo virsh shutdown. Nessun gate VM ricorrente o nuova milestone.
+**33/128 DONE (25,8%)**,95rimanenti. P1-04 resta BLOCKED su3TCP Windows,
+P1-07/06 e P2/P3 attendono quel prerequisito; U-OPS-03/U-NORM-04 attendono
+integrazione reale. Nessuna NOT_STARTED con dipendenze tutte DONE:
+**NO_READY_TASK**. Le prove P1-05 non risolvono il blocco di rete P1-04.

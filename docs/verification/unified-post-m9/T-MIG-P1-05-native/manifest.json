@@ -1,0 +1,226 @@
+{
+  "task": "T-MIG-P1-05",
+  "runtime_source_sha": "413b7e41da0fda75f29bb68fcefcea3999a6ec57",
+  "ci_run": "43494464261",
+  "ci_result": "success",
+  "ci_url": "https://github.com/UraganoAngelina/lintra/actions/runs/43494464261",
+  "compiled_inputs_unchanged_since_qualified_commit": [
+    "spikes/tauri-runtime/src",
+    "spikes/tauri-runtime/src-tauri",
+    "spikes/tauri-runtime/package.json",
+    "spikes/tauri-runtime/package-lock.json",
+    "spikes/tauri-runtime/tsconfig.json",
+    "spikes/tauri-runtime/index.html",
+    "rust-toolchain.toml",
+    ".cargo/config.toml",
+    "ui/ui/fonts"
+  ],
+  "launcher_changed_only_for_PowerShell5_title_encoding": true,
+  "linux_binary_sha256": "065eb1949603b7987e687b0f337fcb54165e5a92a67083a206417fff9b5e105c",
+  "windows_ci_binary_sha256": "0706a715b928d619c056b547cc4eac7532378892442eac7213faea2426f89d05",
+  "observed_native_scales": {
+    "linux": 1000,
+    "windows": 1000
+  },
+  "windows_native_dpi": 96,
+  "vm_final_state": "shut off",
+  "aggregate_G_MIG_1": "NOT_VERIFIED",
+  "next": "NO_READY_TASK",
+  "files": [
+    {
+      "path": "ci-43494464261.log.gz",
+      "bytes": 18588,
+      "sha256": "5796e2c8d7b38835ad21bffea9d66d4169c97b5e0b9d04928517fc4d840bda63"
+    },
+    {
+      "path": "ci-final.json.gz",
+      "bytes": 707,
+      "sha256": "198242cedbf99945411823fcfa9fca24e5d76743e2b12bb915cfd558b013189b"
+    },
+    {
+      "path": "ci-windows-spike-build.json.gz",
+      "bytes": 518,
+      "sha256": "3a0e3cc2cd07b2179d641ccb2cdea92a84eccf8b15ef6eb1c6d8aaeffec5144e"
+    },
+    {
+      "path": "linux-build.log.gz",
+      "bytes": 159,
+      "sha256": "a6139fc053a7af8880fc8cf35f8f478da1c6efdfa9af704db0f358d8a98c2c6e"
+    },
+    {
+      "path": "linux-capture.log.gz",
+      "bytes": 279,
+      "sha256": "186538afd372f820526e87c15dc6d31fa989d9eab3174db0cf086af5d61d1c79"
+    },
+    {
+      "path": "linux-clippy.log.gz",
+      "bytes": 158,
+      "sha256": "fb40e6ea59d56c9e00c3196d4caa970f33b176d15f20b9ac9ceebd40a52f31ec"
+    },
+    {
+      "path": "linux-current-desktop.json.gz",
+      "bytes": 763,
+      "sha256": "5f27237eda99ed1e1166463a8b2dcd8e4baee58da7c16c70b0c3f86ecec9a13f"
+    },
+    {
+      "path": "linux-current.json.gz",
+      "bytes": 514,
+      "sha256": "6270ed82f406d0531974961e272c45489d832f5aca456fb57b32305912124b0c"
+    },
+    {
+      "path": "linux-environment.json.gz",
+      "bytes": 365,
+      "sha256": "a703ba354073cc050a3d2831ab31823ed0008aaf51216a0ecc4383555743088e"
+    },
+    {
+      "path": "linux-tests.log.gz",
+      "bytes": 427,
+      "sha256": "5953b0ca5e2e3ab4042dbd385ce2efa55bf269a813f1fa01b7661be27b28494b"
+    },
+    {
+      "path": "linux-window.png",
+      "bytes": 163817,
+      "sha256": "b8dbe5c39c87015a22b189197677bab435a2c89bf2f9687eb095c3e84e8f27ab"
+    },
+    {
+      "path": "preceding-ci.json.gz",
+      "bytes": 706,
+      "sha256": "3590fd5a87b34f22ec4faacdf0e587964ae4d498e587b90f900bcd5f60d97585"
+    },
+    {
+      "path": "restore-checkpoint.xml.gz",
+      "bytes": 2146,
+      "sha256": "e98e9b58ef00a7d3b35b3a5d4e7ec2e8b085bbb095dccc39ff320ee7e60254bf"
+    },
+    {
+      "path": "unified-plan-final-check.json.gz",
+      "bytes": 255,
+      "sha256": "5c7203f38654f1d1d9e0df65f89b0f8feaac9f69fce60a169be50a217cc5d802"
+    },
+    {
+      "path": "vm-lifecycle.json.gz",
+      "bytes": 480,
+      "sha256": "33a14b10bd231b1b463f73b914ca5217c24eb8a12f121c3e795559dc02021673"
+    },
+    {
+      "path": "windows-before-restore.json.gz",
+      "bytes": 912,
+      "sha256": "67120d2c1ed9d0d65d164f23904d30109cc77a4cc066159ffc2588958e9e091a"
+    },
+    {
+      "path": "windows-build-diagnostic.json.gz",
+      "bytes": 943,
+      "sha256": "be2c31b7b2b18d400b0c42e60cd308d0243c2727c86be438138315ca2206f06b"
+    },
+    {
+      "path": "windows-build-retry.json.gz",
+      "bytes": 1072,
+      "sha256": "34a9d1c90c703874fa671e72e90c3fb11bc8e326aeae452ec84a4bab87ed1f8b"
+    },
+    {
+      "path": "windows-build.json.gz",
+      "bytes": 2397,
+      "sha256": "303394bad03c0c5e6091de3d98e0ebd73bee2306c68ce3b826da61e778840ea1"
+    },
+    {
+      "path": "windows-ci-staged.json.gz",
+      "bytes": 1184,
+      "sha256": "9b1a6280ae7ca44023d4ca46aeb211764fa294d507c38d3df0fd1e953df87954"
+    },
+    {
+      "path": "windows-desktop-final-capture-stderr.txt.gz",
+      "bytes": 20,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "windows-desktop-final-capture-stdout.txt.gz",
+      "bytes": 326,
+      "sha256": "761cdac82bd3743fce393d26f481d9842625ea5f0e8b34455b27cfcb7a886ea9"
+    },
+    {
+      "path": "windows-desktop-final-harness-stderr.txt.gz",
+      "bytes": 25,
+      "sha256": "ea3131359ea35f4d4267abf0b5bcc00bcc4a536fe78e6b55b27158ff89ce7a20"
+    },
+    {
+      "path": "windows-desktop-final-harness-stdout.txt.gz",
+      "bytes": 838,
+      "sha256": "f6fbfb3ac534b27350275fb131d08a28e9b00332f52ff7025e074566d4ad9c1e"
+    },
+    {
+      "path": "windows-desktop-final-launcher-result.json.gz",
+      "bytes": 1078,
+      "sha256": "47ba69f41b6e4083f337d24ac2c3c8c826d593cc52bce7ed511288c7f4958696"
+    },
+    {
+      "path": "windows-desktop-final-native-profile.json.gz",
+      "bytes": 824,
+      "sha256": "9b4d3a56678a96859dbb69a6b2a3c496e802fccbcbd0c6a877e467d8e9e7086b"
+    },
+    {
+      "path": "windows-desktop-final-profile-window.png",
+      "bytes": 78578,
+      "sha256": "a40e3fd5d8c2f21b4cd5e3eeef01024c0ad89efa35b4dc25493986589f82f6cb"
+    },
+    {
+      "path": "windows-desktop-first-capture-stderr.txt.gz",
+      "bytes": 20,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "windows-desktop-first-capture-stdout.txt.gz",
+      "bytes": 326,
+      "sha256": "761cdac82bd3743fce393d26f481d9842625ea5f0e8b34455b27cfcb7a886ea9"
+    },
+    {
+      "path": "windows-desktop-first-harness-stderr.txt.gz",
+      "bytes": 25,
+      "sha256": "ea3131359ea35f4d4267abf0b5bcc00bcc4a536fe78e6b55b27158ff89ce7a20"
+    },
+    {
+      "path": "windows-desktop-first-harness-stdout.txt.gz",
+      "bytes": 837,
+      "sha256": "1be063b804f0579af52cd3d8254ea86d98bf46c79abab525c6cf84f032f1a2cf"
+    },
+    {
+      "path": "windows-desktop-first-launcher-result.json.gz",
+      "bytes": 993,
+      "sha256": "dc72155ea40a1ddd2e6b8a9936c6e654d58b671bb6df8a3cb28f29d6031540af"
+    },
+    {
+      "path": "windows-desktop-first-native-profile.json.gz",
+      "bytes": 827,
+      "sha256": "01069ed5cafa2e71626ebd6c38a7e444b4ca2e1020933067b7eed1a0d69ffae6"
+    },
+    {
+      "path": "windows-desktop-login.json.gz",
+      "bytes": 2667,
+      "sha256": "8d8952c701e37b888316ede9fd15d183b6d5e0f37f08ddb4fdbb6c4f108931bc"
+    },
+    {
+      "path": "windows-launcher-retry.json.gz",
+      "bytes": 1110,
+      "sha256": "6d9f036b01de6ab0fa374eb187dd18be4b5e67f5649fac6b2a8b412737b7f7e6"
+    },
+    {
+      "path": "windows-native-build-retry.log.gz",
+      "bytes": 279,
+      "sha256": "6a6e672af45fa54fbf450765ba128e5def672ad4b449cc8a22c17a8a5f591128"
+    },
+    {
+      "path": "windows-restored-state.json.gz",
+      "bytes": 927,
+      "sha256": "c908468b1709117e0fc17c13213f1d006ebf0c24f9704c6fd87e170e69b2e10e"
+    },
+    {
+      "path": "windows-source-manifest.json.gz",
+      "bytes": 2448,
+      "sha256": "3cebd8f8572dd8cabada815ff888638f29df7d7ec979f6f47d8090f9e5164851"
+    },
+    {
+      "path": "windows-standard-restored.json.gz",
+      "bytes": 807,
+      "sha256": "d65234eb05bb47c5d54a4330df1e4acbf47aa589ef582dd99a34bcdd5284573c"
+    }
+  ]
+}
