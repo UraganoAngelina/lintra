@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { invoke } from "@tauri-apps/api/core";
 import "./style.css";
+import { runSecurityProbe, UNTRUSTED_SENTINEL } from "./security_probe";
 
 type ProbeState = "pending" | "ready" | "failed";
 
@@ -30,13 +31,16 @@ function RuntimeProbe() {
     void document.fonts.ready.then(() => {
       requestAnimationFrame(() => requestAnimationFrame(() => {
         if (!active) return;
-        void invoke("render_ack", {
-          report: {
+        void (async () => {
+          const security = window.__LINTRA_SECURITY_TEST__ === true ? await runSecurityProbe() : undefined;
+          if (!active) return;
+          await invoke("render_ack", { report: {
             protocol: 1,
             width: Math.round(window.innerWidth),
             height: Math.round(window.innerHeight),
-          },
-        }).catch(() => { if (active) setState("failed"); });
+            ...(security === undefined ? {} : { security }),
+          } });
+        })().catch(() => { if (active) setState("failed"); });
       }));
     });
     return () => { active = false; };
@@ -53,6 +57,8 @@ function RuntimeProbe() {
       <section aria-labelledby="title">
         <h1 id="title">Verifica runtime desktop</h1>
         <p>Prova tecnica React e Tauri 2. Nessun file di lavoro viene aperto.</p>
+        {window.__LINTRA_SECURITY_TEST__ === true && <p id="probe-untrusted-sentinel">{UNTRUSTED_SENTINEL}</p>}
+        {window.__LINTRA_SECURITY_TEST__ === true && <button type="button" id="probe-popup-attempt">Verifica popup sintetico</button>}
         <dl>
           <div><dt>Interfaccia</dt><dd>React · TypeScript strict</dd></div>
           <div><dt>Contenuti</dt><dd>Inclusi nell’applicazione</dd></div>

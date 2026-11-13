@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "executable_sha256": "5d153a7afac5b6e8e9e87b2cf8f04137324169211a4cd84955f59a3f1ac50254",
+  "platform": "linux",
+  "node": "v26.13.0",
+  "started_utc": "2026-11-13T13:49:55.078Z",
+  "collector_health": "reachable before native launch",
+  "trusted_popup_input": "sent only to the focused owned child",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "LINTRA_RUNTIME_SECURITY_AWAIT_POPUP\nLINTRA_RUNTIME_NEW_WINDOW_DENIED\nLINTRA_RUNTIME_NAVIGATION_DENIED\nLINTRA_RUNTIME_SECURITY_REPORT {\"text_only\":true,\"inline_script_blocked\":true,\"remote_script_blocked\":true,\"remote_style_blocked\":true,\"remote_font_blocked\":true,\"image_blocked\":true,\"frame_blocked\":true,\"object_blocked\":true,\"fetch_blocked\":true,\"websocket_blocked\":true,\"eventsource_blocked\":true,\"beacon_blocked\":true,\"form_blocked\":true,\"native_navigation_blocked\":true,\"native_popup_blocked\":true,\"valid_invoke\":true,\"forbidden_invokes\":true,\"invalid_reports\":true,\"csp_events\":12}\nLINTRA_RUNTIME_SECURITY_ACK {\"navigation_denied\":1,\"new_window_denied\":1}\nLINTRA_RUNTIME_RENDER_ACK {\"protocol\":1,\"width\":873,\"height\":1138,\"security\":{\"text_only\":true,\"inline_script_blocked\":true,\"remote_script_blocked\":true,\"remote_style_blocked\":true,\"remote_font_blocked\":true,\"image_blocked\":true,\"frame_blocked\":true,\"object_blocked\":true,\"fetch_blocked\":true,\"websocket_blocked\":true,\"eventsource_blocked\":true,\"beacon_blocked\":true,\"form_blocked\":true,\"native_navigation_blocked\":true,\"native_popup_blocked\":true,\"valid_invoke\":true,\"forbidden_invokes\":true,\"invalid_reports\":true,\"csp_events\":12}}\n",
+  "stderr": "",
+  "collector_connections": 0,
+  "collector_requests": 0,
+  "report": {
+    "text_only": true,
+    "inline_script_blocked": true,
+    "remote_script_blocked": true,
+    "remote_style_blocked": true,
+    "remote_font_blocked": true,
+    "image_blocked": true,
+    "frame_blocked": true,
+    "object_blocked": true,
+    "fetch_blocked": true,
+    "websocket_blocked": true,
+    "eventsource_blocked": true,
+    "beacon_blocked": true,
+    "form_blocked": true,
+    "native_navigation_blocked": true,
+    "native_popup_blocked": true,
+    "valid_invoke": true,
+    "forbidden_invokes": true,
+    "invalid_reports": true,
+    "csp_events": 12
+  },
+  "native_guards": {
+    "navigation_denied": 1,
+    "new_window_denied": 1
+  }
+}

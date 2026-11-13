@@ -71,7 +71,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P1-01 | T-MIG-P0-08 | DONE | [Spike nativo React/Tauri Linux](docs/verification/unified-post-m9/T-MIG-P1-01.md) | 996947e app invariata;build/Clippy/IPC-render Wayland/capture PASS;144 righe ldd senza missing | Acceptance Linux personale PASS;G-MIG-1 aggregato NOT_VERIFIED |
 | T-MIG-P1-02 | T-MIG-P0-08 | DONE | [Spike Windows e prove reali](docs/verification/unified-post-m9/T-MIG-P1-02.md) | bdca1cf/CI43014153420;13/11 Win11 offline runtime presente/assente, due desktop standard, ACL/uninstall/restore PASS | Acceptance Windows spike PASS; G-MIG-1 aggregato NOT_VERIFIED |
 | T-MIG-P1-03 | T-MIG-P1-01 | DONE | [Profilo e prove CachyOS](docs/verification/unified-post-m9/T-MIG-P1-03.md) | 151 ELF/99 package;relocated Wayland e loader negativo PASS;binario c53fd4ba invariato | Acceptance personale PASS;G-MIG-1 aggregato bloccato su Win11 |
-| T-MIG-P1-04 | T-MIG-P1-01, T-MIG-P1-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-04.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
+| T-MIG-P1-04 | T-MIG-P1-01, T-MIG-P1-02 | IN_PROGRESS | [CSP e guard nativi](docs/verification/unified-post-m9/T-MIG-P1-04.md) | TS strict, 2 test Rust, build/Clippy Linux PASS; native/Windows/CI in corso | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-05 | T-MIG-P1-01, T-MIG-P1-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-05.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-06 | T-MIG-P1-02, T-MIG-P1-03, T-MIG-P1-04, T-MIG-P1-05, T-MIG-P1-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-06.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-07 | T-MIG-P1-02, T-MIG-P1-04 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-07.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
@@ -154,7 +154,7 @@ U-FIX-01..05 DONE: G-HARD PASS con CI42990775714 sucb70bee,7 job richiesti posit
 U-NORM-03 DONE per backend normativo,21 oracle3volte/OS;04 WAITING_INTEGRATION per frontend/contesto amministrativo, G-SIOC1 complessivo aperto.
 T-MIG-P0-01..08 DONE; G-MIG-0 PASS per governance e ingresso agli spike, non per runtime/installer.
 U-OPS-07 DONE documentale; U-OPS-03 preflight sospeso sull'integrazione root/worker Tauri reale, nessun DONE implicito.
-**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 build CI43014153420 e collaudo Win11 PASS; P1-03 DONE personale. U-PERF-01 DONE per volumi aggregati/oracle. U-OPS-04 DONE dopo CI43078048297 SUCCESS su3aa0d14 (SMB/drive mappato e Linux PASS); U-REL-03 DONE, G-DUR PASS software sulla stessa CI positiva;hardware NOT_TESTED_HARDWARE. P1-04/05 READY; P1-06/07 e P2/P3 attendono i prerequisiti. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. Prossima task T-MIG-P1-04, AUTO_CONTINUE.
+**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 build CI43014153420 e collaudo Win11 PASS; P1-03 DONE personale. U-PERF-01 DONE per volumi aggregati/oracle. U-OPS-04 DONE dopo CI43078048297 SUCCESS su3aa0d14 (SMB/drive mappato e Linux PASS); U-REL-03 DONE, G-DUR PASS software sulla stessa CI positiva;hardware NOT_TESTED_HARDWARE. P1-04 IN_PROGRESS e P1-05 READY; P1-06/07 e P2/P3 attendono i prerequisiti. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. Prossima task T-MIG-P1-04, AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.
@@ -190,3 +190,7 @@ sentinelle vs persistenza prodotto, VM vs CI e gate aggregato futuro.
 **32/128 DONE (25,0%)**,96rimanenti. Evidenze nel dossier P1-02; nessun nuovo
 gate VM ricorrente o requisito di completamento. P1-04 e P1-05 READY; scegliere
 **T-MIG-P1-04** in sequenza, AUTO_CONTINUE. P1-06/07 e P2/P3 non ancora READY.
+
+Avvio sequenziale P1-04: guard origine/navigazioni/popup e prova CSP/ACL nativa
+implementati nello spike; Linux strict/unit/Clippy/smoke/security PASS. Windows
+MSVC e CI del delta in corso; task IN_PROGRESS, nessun DONE o G-MIG-1 anticipato.

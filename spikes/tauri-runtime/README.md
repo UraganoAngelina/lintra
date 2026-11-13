@@ -107,3 +107,59 @@ Configurazione e ACL seguono la documentazione ufficiale di
 [configurazione](https://v2.tauri.app/reference/config/),
 [custom commands](https://v2.tauri.app/develop/calling-rust/) e
 [capabilities](https://v2.tauri.app/security/capabilities/).
+
+
+## P1-04: origine, CSP e prova di attacco nativa
+
+La finestra `probe` ha `create: false`: il setup Rust la costruisce esplicitamente
+con i guard già collegati, prima del primo documento. `local_asset_origin`
+confronta schema/host/credenziali/porta, non un prefisso URL: ammette soltanto
+`tauri://localhost` e `http://tauri.localhost`, le origini della versione pinnata.
+`authorize` controlla anche l’URL effettivo oltre alla label. `on_navigation`
+nega le altre origini, `on_new_window` nega ogni nuova finestra. I contatori
+atomici osservano i callback e non trasportano URL o dati arbitrari nei log.
+
+`--security-test` abilita una fixture sintetica tramite initialization script
+nativo. La modalità ordinaria conserva UI e acknowledgment precedenti. Non
+vengono aggiunti comandi/capability: il report opzionale di `render_ack` ha
+campi booleani e un conteggio limitato, rifiuta campi sconosciuti e viene
+accettato soltanto nella modalità di qualificazione. `SecurityReport::passed`
+richiede tutti i controlli; Rust richiede inoltre callback reali di rifiuto
+navigazione/popup. Protocollo, tipi, overflow e dimensioni errate sono testati;
+la risposta errata per un motivo diverso da quello atteso non soddisfa il test.
+
+`src/security_probe.ts` verifica il testo ostile reso letteralmente da React,
+script inline/remoti, CSS, font, immagini, frame, object, fetch, WebSocket,
+EventSource, beacon e form, con eventi CSP effettivi. Una connessione fallita,
+un’API assente o un errore CORS non contano come rifiuto CSP. Verifica anche
+invoke lecito, comandi fs/shell/window/webview assenti o non autorizzati e
+payload invalidi. Le prove usano esclusivamente il collettore loopback locale,
+mai endpoint Internet o dati clinici.
+
+Il browser può bloccare un popup scriptato prima del callback Rust. Per
+verificare anche quel callback, una fixture button riceve un evento OS trusted:
+il renderer la focalizza e invia un handshake incompleto, rifiutato da Rust con
+un marcatore fisso di readiness. Il harness dirige Enter soltanto alla finestra
+del PID figlio verificato (Hyprland `send_shortcut` sul CachyOS personale;
+foreground PID verificato e SendKeys nel desktop standard Windows). Un click
+JS non trusted non soddisfa il controllo. Nessuna configurazione host cambia.
+
+`tools/native_security.cjs` possiede GUI e server temporanei nel medesimo
+processo foreground e li conclude prima di terminare. Prima verifica che il
+collettore `127.0.0.1:49183` risponda; durante la prova richiede **zero
+connessioni e richieste**, ACK unici, exit 0 e contatori Rust positivi.
+Mantiene output e hash del binario in JSON senza sovrascrivere prove esistenti.
+I percorsi XDG Linux sono privati ed effimeri. Windows usa il profilo reale
+dell’account standard, con sessione desktop verificata dal launcher.
+
+```sh
+npm run build
+cargo build --manifest-path src-tauri/Cargo.toml --locked --offline --features tauri/custom-protocol -j 2
+node tools/native_security.cjs src-tauri/target/debug/lintra-runtime-spike /tmp/lintra-security-result.json
+```
+
+Questa è una verifica selettiva dello spike P1-04, non un nuovo gate ricorrente.
+Il collettore osserva le richieste delle prove, non tutto il traffico dell’OS o
+telemetria del redistributable Microsoft. Non qualifica l’intero futuro prodotto,
+PHI/cache/dump, Job Manager, persistenza, native file broker o release. G-MIG-1
+richiede ancora DPI/installer e la decisione di fase previste dal piano.

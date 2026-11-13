@@ -10,6 +10,7 @@
   "app": {
     "windows": [{
       "label": "probe",
+      "create": false,
       "title": "Lintra · Verifica runtime",
       "width": 900,
       "height": 600,
