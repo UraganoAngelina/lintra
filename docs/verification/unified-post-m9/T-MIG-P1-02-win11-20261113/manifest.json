@@ -1,0 +1,363 @@
+{
+  "task": "T-MIG-P1-02",
+  "date": "2026-11-13",
+  "status": "DONE",
+  "artifact_source_sha": "bdca1cf00121717b3c58504127ae4ce45f806e6b",
+  "official_ci_run": "43014153420 (existing success; VM does not replace CI)",
+  "vm": {
+    "name": "Windows11-Lintra-Test",
+    "uuid": "8e50e338-7593-4e13-8556-bdf22097bcc6",
+    "os": "Microsoft Windows 11 Enterprise Evaluation",
+    "build": "26300",
+    "architecture": "AMD64"
+  },
+  "artifact": {
+    "installer_sha256": "f31b70649313652c6ebd2af373b41283e93e7a837072ede1147c30175f3c0897",
+    "standalone_sha256": "7927f57abe31df8c75ee94497f3ff8b9b866be9ee4460b34cb0653731d2b1b0d",
+    "installed_sha256": "886b399223028c97f99803b5e7056ea60c0be4faa60083a16cde3c1a20780015",
+    "only_difference": "3-byte Tauri bundle type marker UNK -> NSS; all other bytes identical"
+  },
+  "acceptance": {
+    "snapshot_restore_before_and_after": "PASS, clean shutdown, actual boot and marker/config checks",
+    "offline_install_runtime_present": "PASS",
+    "offline_provision_runtime_absent": "PASS, controlled runtime files/registration removal after uninstall refused93; not a pristine OS claim",
+    "machine_install_hklm_program_files": "PASS",
+    "two_standard_user_desktops": "PASS, observed captures and real React/Rust ACK, normal close and smoke exit0",
+    "account_filesystem_and_webview_profile_isolation": "PASS",
+    "standard_program_files_write_denied": "PASS",
+    "uninstall_and_reinstall_conservation": "PASS for explicitly synthetic SQLite/config sentinels and WebView profiles",
+    "final_vm_restore_and_both_ssh_identities": "PASS"
+  },
+  "limits": [
+    "Spike opens no product database: React/Tauri product persistence integration, backup and upgrade remain future approved tasks.",
+    "Disk-only snapshot reuses unchanged NVRAM/TPM; actual restoration/boot tested, not a complete firmware/TPM backup claim.",
+    "Internet blocked in guest with local SSH preserved; vendor installer attempted an update ping. No zero-network-attempt claim for OS components or CSP gate.",
+    "CSP/capability/zero-network and DPI/window behavior remain P1-04/05; G-MIG-1 aggregate NOT_VERIFIED."
+  ],
+  "authorization": "Administrative VM scope expressly authorized by author; selective-use directive remains in force.",
+  "autologon": "Plaintext registry mechanism rejected before execution; approved signed Microsoft Sysinternals tool used encrypted LSA, removed by final snapshot restore.",
+  "harness_sha256": {
+    "spikes/tauri-runtime/qualification/windows-desktop-probe.ps1": "67b0a14007298c85c26bec2eb2c272c18c73b50b41e8d940d155b06d8a694b29",
+    "spikes/tauri-runtime/qualification/windows-account-isolation.ps1": "16f3e5ec6a6779fa836e0452d4a4a437fa656a30aea33124368d2cb94220e6d2"
+  },
+  "files": [
+    {
+      "file": "agent-first-harness-failure.json.gz",
+      "sha256": "ad1022d83984a64c2a25ffe05fcb0a1c4ed172a8d29e1035588c0edbfb43443b",
+      "source_sha256": "1e8973921245ca4f90b9db67d3f5c89cc4445cf33832aa2019abdacc1c136cc8",
+      "redacted": false
+    },
+    {
+      "file": "configure-lsa-desktop-agent.json.gz",
+      "sha256": "b8326eaa3787fa17b41ee7b14667ff0dbdd0668e029473a04af46bae2d93a0ee",
+      "source_sha256": "3cfae65882ee63b14d276ac2b0717a99faa25ffbbcd89e5016faf4f089a9367d",
+      "redacted": false
+    },
+    {
+      "file": "deprovision-webview.json.gz",
+      "sha256": "89d95a3c6e39fec0bf379ab2fd899e5027b0ad1c280ae24910aa192e7023809b",
+      "source_sha256": "47e5a44c0293a24c4e740c80d9a59651d2177e64e3e11d71dcd5f0dde8c00098",
+      "redacted": false
+    },
+    {
+      "file": "desktop-agent-diagnostic.json.gz",
+      "sha256": "c0b7373f6cf6b4babd3851b2196a0e80065d6c1f7d68058b62c2fb0766c53c57",
+      "source_sha256": "96005d93fe63764f21de72f50e31145e60313cfd7f1100610441b5f697b71cf6",
+      "redacted": false
+    },
+    {
+      "file": "desktop-agent-failure.json.gz",
+      "sha256": "2ebda2975f0861832c9ee439f90ac3cad492245623fb48c6975c696ed0badaf3",
+      "source_sha256": "6df3db8d6c04a5bb8dc00544109b2ea2221ee2ba3741c91570392a3c6b37f5a1",
+      "redacted": false
+    },
+    {
+      "file": "desktop-agent-result.json.gz",
+      "sha256": "30336a81a8c339559660bdf9357bdd25ef54b927c5c63ed69c1c41204c2bb1f1",
+      "source_sha256": "3a46eb8d96e88a75c9d67884aefb19bfdb14a2b69848b14a0244ae16d35cebe7",
+      "redacted": false
+    },
+    {
+      "file": "desktop-agent-status.json.gz",
+      "sha256": "bf9f5dec3f72f080005015640225221d74131aa14589341a2d267e63aa8fdfff",
+      "source_sha256": "a3a755aa4850ec3e16f0618ce38ac34dcef37bec3a49822b6e707ead27ecdedd",
+      "redacted": false
+    },
+    {
+      "file": "desktop-test2-result.json.gz",
+      "sha256": "89c610aad64f6ddd6bdf8c6f5945836a85a3e842cf5cbe16eee91f9c3ad6c1c5",
+      "source_sha256": "6fdbafbf1de066aecafcb81ecff4eba14e2f7865ce457226c38b9ee9e7e62242",
+      "redacted": false
+    },
+    {
+      "file": "desktop-test2-status.json.gz",
+      "sha256": "33b9de55a9ebbb6ea854f99167b5ce707dd761d0dd0d7db20767ad96e098ccfc",
+      "source_sha256": "f96ed9d5196a51bddfa7b4ba2578aeee517251e961bbde072be5e595dd6887cc",
+      "redacted": false
+    },
+    {
+      "file": "domain-before-final-restore.xml.gz",
+      "sha256": "cdad0768004df4e2ba10979ca80e11d8e92b36b6d4bdd4944c5b5437954b626f",
+      "source_sha256": "6bbbe9f109fcd889b65c5868183b032ed868000753d702964f41b125da55477b",
+      "redacted": false
+    },
+    {
+      "file": "domain-before-tests.xml.gz",
+      "sha256": "96f61a693f5e9e76cb50b004b065b708e05008f7f39db00777aee4dbc54b668d",
+      "source_sha256": "3257e2eb0baae6e6d5dab7d32b38e6bf8e30d3392da0decb2a7944d8dae8340b",
+      "redacted": false
+    },
+    {
+      "file": "final-restore-verification.json.gz",
+      "sha256": "653291a20e07f53eee34e585a592a679f288782ce9171d39145119de1b69ead8",
+      "source_sha256": "a4e2c9dc873909f4559b16a9c7db75735b42d4afe954c411fe3b2df0a4b963bc",
+      "redacted": false
+    },
+    {
+      "file": "final-snapshot-revert.log.gz",
+      "sha256": "dd5fc51f436565057d6170e04bbea9c676bf9c2282cc5a989912c3299447cea1",
+      "source_sha256": "c14d9df349c3caa1576714e0b8b7b1ff1bfd96d93859a904aa735d28c38017a6",
+      "redacted": false
+    },
+    {
+      "file": "installed-vs-standalone-pe.json.gz",
+      "sha256": "35dd37493f0e31325bcbd467125a7176d080e8461471050da26ba6ad44bf7bdf",
+      "source_sha256": "890aab1e543c671d72005791263fef4429386df01bd78b2b49e0d6da819237ba",
+      "redacted": false
+    },
+    {
+      "file": "isolation-agent-command-retry.json.gz",
+      "sha256": "7cf3a385915a9ed24b004a7a98342b5bf8d61354cadf028a3cb6090d43f47518",
+      "source_sha256": "e141a16c53f4c3519160c08e4462c2d733dd5e25fc167da16d574a279fd44af1",
+      "redacted": false
+    },
+    {
+      "file": "isolation-agent-command.json.gz",
+      "sha256": "c3cbe23944f250d46b3aa7f7215363cd3865db80771f4a3df8ae1cf732ca6e02",
+      "source_sha256": "b785826ba647aa09db70b789cb6f17338e2178f737d12c33466d333e21bf9259",
+      "redacted": false
+    },
+    {
+      "file": "lintra-agent-isolation-result.json.gz",
+      "sha256": "bbbfa95c214895a1ddc40af8018694955d63272d10ccfa87195ace8a5f961e00",
+      "source_sha256": "12669316bd6a2bb8b24dd6de5fc3e36f8b0f006a2f4c413b4d692c94d1fb821f",
+      "redacted": false
+    },
+    {
+      "file": "lsa-agent-retry.json.gz",
+      "sha256": "81d63e0d2dfec48995ee4a87fa6d330d7dcc1465dc5b29e0be570e2b7fb43893",
+      "source_sha256": "b2a66d900a29d31b3c4eb1c2a8126e670f1d18d2867e98aaa39299326659f3de",
+      "redacted": false
+    },
+    {
+      "file": "lsa-state.json.gz",
+      "sha256": "5f0b73f3608aaa91a6c261a692e73b9ea273e5af7a9f52d2cec9c1ef2ad218a2",
+      "source_sha256": "1a1f8a3bd171eba450c5091b6626ae2714d67082c0871db58761755251edead2",
+      "redacted": false
+    },
+    {
+      "file": "lsa-test2.json.gz",
+      "sha256": "b1cf062674bca31c3d0693e0a37d398f3a3b7a317c393db4b3e708252c9b14d2",
+      "source_sha256": "3ad50aafd9820647d37602e9322ee7ef7cd4b79b4a497380f8df40f76d112951",
+      "redacted": false
+    },
+    {
+      "file": "nsis-bundle-type-patch.json.gz",
+      "sha256": "ed5de6a6be561d9b1725d7e3d25a5a27a6c8cb40c198ebf322365644d53b9b8b",
+      "source_sha256": "c91fd5c14926561a91e45958247bcb3330bdc7f48a6070ceb9bab25a052aa86c",
+      "redacted": false
+    },
+    {
+      "file": "offline-install-present-retry.json.gz",
+      "sha256": "13f82ba157ab685d34120088a3c22c15c144b0f545400938ca080753d68f7e71",
+      "source_sha256": "3bb04bc2f886062c6dc598513e96aa4f0a1363e23469a36c93dcb9151c2f157b",
+      "redacted": false
+    },
+    {
+      "file": "offline-install-present.json.gz",
+      "sha256": "7c8f6ca72ba54fdb95577371f0094430d3470c991249fb3a5b9131acbb83ba47",
+      "source_sha256": "45c26f246df6a169d7ba41df18e346d445fc254fe690ffeb68cb85db8c742dd9",
+      "redacted": false
+    },
+    {
+      "file": "offline-install-runtime-absent.json.gz",
+      "sha256": "b449bf924eb3cc918da5fdae90cc6f598c734b630b4092228790e8a82bcb8b8c",
+      "source_sha256": "40933b591ce51cef333f6044cf513e1ca249492b24ff7867c17fa844c899606f",
+      "redacted": false
+    },
+    {
+      "file": "offline-redistributable-identity.json.gz",
+      "sha256": "362de7d64d68b570df4b56fcfcf5358236a3b428fc5a7250ccbad50d6a0e6daa",
+      "source_sha256": "8e69c2d59f73246984e595d428e2ff8ca55ab6576d15ed88877cbe2804879360",
+      "redacted": false
+    },
+    {
+      "file": "post-provisioning-desktop-result.json.gz",
+      "sha256": "7033557d76d4199d7d24f0ec9c075328c2620b6474f436cd4022e159113caea8",
+      "source_sha256": "f40a26f060a4085b993aedcca90ee58d1e42ee35fa0f55f7a2880f91a5758366",
+      "redacted": false
+    },
+    {
+      "file": "post-provisioning-desktop-status.json.gz",
+      "sha256": "76bca92073df2a773ade43c5ec49634ba2af8272cfacfa2c9f527dd9e6fafd7a",
+      "source_sha256": "63f8f01e0a4dbc50d8c2a84a1fdc305eeb6e53195e6d38dc900113cea68a957d",
+      "redacted": false
+    },
+    {
+      "file": "prepare-accounts-retry.json.gz",
+      "sha256": "7ca1df2ec38f0513e7117c150d13dde569567211f7473ed5ccb487b5e3814a5a",
+      "source_sha256": "b9af68dd40a87450e1a780c82bb5c2e3b1910d081ca6c5222e2a136e26e27f5c",
+      "redacted": false
+    },
+    {
+      "file": "prepare-accounts.json.gz",
+      "sha256": "d57ff3cb613ce63f7b69ec154bc828fa0b3ddd837b561fe149dc2bb1b6620a83",
+      "source_sha256": "4161ba912f3e01e976b60b08a82aa570bff00db47cd45a7a3a8d6562aff3851e",
+      "redacted": false
+    },
+    {
+      "file": "prepare-desktop-after-runtime-provisioning.json.gz",
+      "sha256": "c84c4aa9672e35b6d8b00919d9ad2a71abc21fedbb437500cf03c3794e23f76a",
+      "source_sha256": "3eaa2e96ea616da58d5373cb04a107579d3c45725bf031de2fffc6e7bb2db5d7",
+      "redacted": false
+    },
+    {
+      "file": "prepare-isolation-checks.json.gz",
+      "sha256": "fac88b5a959007cdbbf731ff1cbb155ead10d8d226d46020ee9d48bb5fb8c1bf",
+      "source_sha256": "31737d2c8797d2d891367101a4f62665de3cd7877354853af4e1172c9792ff30",
+      "redacted": false
+    },
+    {
+      "file": "pretest-snapshot.xml.gz",
+      "sha256": "06ce17367e7d9b432dac3aea2860e5eca755677982845556e16afbe87523ba31",
+      "source_sha256": "cc5c6317e9999bb41c4a37d3f478d3677ea7e61ef208203c5d1f4916ea12aaf8",
+      "redacted": false
+    },
+    {
+      "file": "retry-desktop-agent.json.gz",
+      "sha256": "b72bb44a2a9b16d029316bba40570b8f92379d4fd545cc7ef0d1c34a6246d568",
+      "source_sha256": "385f549c6ce67c9fe29d675c8497e8d0936d62f2a48ecb93694e0d5819fa2eec",
+      "redacted": false
+    },
+    {
+      "file": "runtime-absence-preflight.json.gz",
+      "sha256": "83f97dbc5beb0a3d5e5dfa57d6f1cd5ee6daa107fe8dc1f26cce72991d426175",
+      "source_sha256": "f36ff6f23d28a85e1a6bc427421592e48f0e2caf0914fd5d8df634bd7899eb19",
+      "redacted": false
+    },
+    {
+      "file": "runtime-provisioning-processes.json.gz",
+      "sha256": "4fe177ce917cb23b2b9ea2bec22c35632cc56381c46630a23913115bbda31014",
+      "source_sha256": "064fbf54a4be5c2cd409fc27e34cc51036dd2748828bf46eec37b2329a9990ad",
+      "redacted": false
+    },
+    {
+      "file": "runtime-provisioning-progress.json.gz",
+      "sha256": "27ecd63f45bdd738a43fd2f0d204f83986d87ab32f610c432dacbb9ee6b09c73",
+      "source_sha256": "0f7689cc7a8d5f22aaa6fb1b74cf6aa0242d6dfd9232bc8eddbc0dcbd46e7754",
+      "redacted": true
+    },
+    {
+      "file": "snapshot-create.log.gz",
+      "sha256": "1c551c6a3f8b6c30a5f24e3df62d46789c89579c08ace538fff439c7721265fc",
+      "source_sha256": "b313d81a21e666a781574d368a48d0e9bb3147709984a4df96fdf218171e7390",
+      "redacted": false
+    },
+    {
+      "file": "snapshot-marker-after.json.gz",
+      "sha256": "c67e225544f79ea2213082c53528db65a2b529a0fc2d6e6bcd6deb60d21f821a",
+      "source_sha256": "c4369d86ee56974a56414053c5d8bf74a433e8aca7dc1d32eb94950dc67a8b2e",
+      "redacted": false
+    },
+    {
+      "file": "snapshot-restore-verification.json.gz",
+      "sha256": "d25a6b986f8e0eca1b521123e8fc4ae722159c609adc690c9edeacb8be6bb596",
+      "source_sha256": "4a8c72d6b7d69c9c22d65920bd25a99dfc35b81e64d46fea5c717901799f5350",
+      "redacted": false
+    },
+    {
+      "file": "snapshot-revert.log.gz",
+      "sha256": "dd5fc51f436565057d6170e04bbea9c676bf9c2282cc5a989912c3299447cea1",
+      "source_sha256": "c14d9df349c3caa1576714e0b8b7b1ff1bfd96d93859a904aa735d28c38017a6",
+      "redacted": false
+    },
+    {
+      "file": "source-input-comparison.json.gz",
+      "sha256": "7c0af0b9f7ef861c2319345d355beea2b517f4d4ea32bf9e34506121e4b3fd57",
+      "source_sha256": "1e385211a0c86b6a5860e68738925c91468a61a27a6803ad6fce8e3b684ac768",
+      "redacted": false
+    },
+    {
+      "file": "standard-access-after-restore.json.gz",
+      "sha256": "6e51df292bcb3d9bd06819bcdf41bf117fc43335eadec581aa88f08f1f348c96",
+      "source_sha256": "e3ccf94972a7012535318b8c13b3421d3a98d3d9d06de36eca05cce4ea9b27fb",
+      "redacted": false
+    },
+    {
+      "file": "two-accounts-results.json.gz",
+      "sha256": "4feead5a82a3376f1caf44591ef0d482697fe55dcf85af2ad7af989741553d44",
+      "source_sha256": "6ecf88ebd8afe86fd970af4498f96aea655572ed6bad1def7c5640258801ffaf",
+      "redacted": false
+    },
+    {
+      "file": "two-desktop-verified.json.gz",
+      "sha256": "9776e1afbe9ae930d920b531aac9ca78f16f7b3b7e8594b7ec06c2c566cefa78",
+      "source_sha256": "acef3e2766ae4b2565a1d4df02f05b3177831c8969d69f9a0130b6d591662174",
+      "redacted": false
+    },
+    {
+      "file": "uninstall-conservation-after-runtime-provisioning.json.gz",
+      "sha256": "49e71f8c5a2874192b1a7689e34b48045465056b2cae1523434923c52855c8d0",
+      "source_sha256": "02df291aeaa486dd78e290b454c4c2ad6890d5d23655e1a9728da73c9396a6de",
+      "redacted": false
+    },
+    {
+      "file": "uninstall-conservation-present.json.gz",
+      "sha256": "32906cee2df55dbfcd6191059cd35050a29f790ffdce5fb26350ad4948ed474c",
+      "source_sha256": "86a032dbb3a533ca7fae6df44906608d7416091968323ad5ad6dab0df2ad87a9",
+      "redacted": false
+    },
+    {
+      "file": "webview-uninstall-diagnostic-clean.json.gz",
+      "sha256": "faf7fa8386a6fcb070fc778f345b2e8cbcc68f0e533cd487910d69a92f552fd2",
+      "source_sha256": "8374e2ec3b8397ae1a8cb1f039715e0f1df5432b1110346164b2d881a1287388",
+      "redacted": false
+    },
+    {
+      "file": "webview-uninstall.json.gz",
+      "sha256": "d5503f2aa5d2d0b9fb7d5844099a59d87ec24a4a3f863e14fd6653f8a7ca6b74",
+      "source_sha256": "a88d9646053811787656caae5cb6864923f171dc9d1b15e2eb44eb65554b7e97",
+      "redacted": false
+    },
+    {
+      "file": "lintra-agent-desktop-result.json",
+      "sha256": "6cfe692eb061caad18c784de17c566c3b72b055ef1ec2280cf9b8a6164ca02f0",
+      "redacted": false
+    },
+    {
+      "file": "lintra-agent-interactive-desktop.png",
+      "sha256": "9ed550210ed0c8a19501e8822630340363919cd62db3970ee94d20eb3ef8762d",
+      "redacted": false
+    },
+    {
+      "file": "lintra-test2-desktop-result.json",
+      "sha256": "5106c5e521bf412b5a932f029c0c82c8216791027c5e4841568a9314b0b9c903",
+      "redacted": false
+    },
+    {
+      "file": "lintra-test2-interactive-desktop.png",
+      "sha256": "f6106c652ae387907c7a2d8cf659d742c1f39947e1f1fe2ba1578a78073c0d78",
+      "redacted": false
+    },
+    {
+      "file": "lintra-test2-after-runtime-provisioning-desktop-result.json",
+      "sha256": "5106c5e521bf412b5a932f029c0c82c8216791027c5e4841568a9314b0b9c903",
+      "redacted": false
+    },
+    {
+      "file": "lintra-test2-after-runtime-provisioning-interactive-desktop.png",
+      "sha256": "1340c074064b41f9c51a0c2b9f3002a1aa3dbe1cf562bc253536959b904f9d92",
+      "redacted": false
+    }
+  ]
+}

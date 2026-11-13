@@ -1,0 +1,32 @@
+﻿{
+    "passed":  true,
+    "account":  "DESKTOP-RLLAD2M\\lintra-test2",
+    "elevated":  false,
+    "session":  1,
+    "console_session":  1,
+    "local_app_data":  "C:\\Users\\lintra-test2\\AppData\\Local",
+    "user_profile":  "C:\\Users\\lintra-test2",
+    "sqlite_helper_exit":  0,
+    "sqlite_sentinel_rows":  "[{\"account\":\"lintra-test2\"}]",
+    "synthetic_sqlite_path":  "C:\\Users\\lintra-test2\\AppData\\Local\\Lintra\\Qualification-P1-02\\synthetic-conservation.sqlite",
+    "synthetic_sqlite_sha256":  "063ff22a5b28a633d13c8ac9adbfa4e77a00dbe7f00984e3224aa59f7763fd1f",
+    "executable_sha256":  "886b399223028c97f99803b5e7056ea60c0be4faa60083a16cde3c1a20780015",
+    "render_ack":  "LINTRA_RUNTIME_RENDER_ACK {\"protocol\":1,\"width\":900,\"height\":600}",
+    "window_title":  "Lintra · Verifica runtime",
+    "app_session":  1,
+    "window_visible":  true,
+    "accessible_names":  [
+                             "Lintra · Verifica runtime",
+                             "Lintra · Verifica runtime - Contenuto Web"
+                         ],
+    "screen":  {
+                   "height":  800,
+                   "width":  1280
+               },
+    "interactive_exit":  0,
+    "smoke_exit":  0,
+    "smoke_ack":  "LINTRA_RUNTIME_RENDER_ACK {\"protocol\":1,\"width\":900,\"height\":600}",
+    "program_files_unchanged":  true,
+    "webview_profile_root":  "C:\\Users\\lintra-test2\\AppData\\Local\\it.lintra.runtime-spike",
+    "webview_profile_created":  true
+}

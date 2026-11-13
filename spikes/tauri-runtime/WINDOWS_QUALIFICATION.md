@@ -1,15 +1,22 @@
 # Spike Windows 11: artefatto e collaudo
 
-T-MIG-P1-02. Stato del requisito clean-room: **BLOCKED_NATIVE_ENVIRONMENT**.
-Dal 13 novembre 2026 è disponibile `Windows11-Lintra-Test` via `ssh lintra-win`,
-account standard `lintra-agent`. Accesso verificato per riprendere questa task,
-che richiede espressamente Windows: non è un controllo periodico aggiuntivo.
-Restano da predisporre/verificare la clean-room ripristinabile, l'installazione
-offline con elevazione e la prova da due account standard. Nessuna installazione
-eseguita; WebView2 è già presente nella VM. Il preflight e i limiti sono nel
-[dossier corrente](../../docs/verification/unified-post-m9/T-MIG-P1-02.md).
-Applicare la direttiva selettiva in [AGENTS.md](../../AGENTS.md): nessuna nuova
-infrastruttura o verifica Windows ricorrente.
+T-MIG-P1-02: **DONE per lo spike Windows**, 13 novembre 2026.
+La VM dedicata `Windows11-Lintra-Test` è disponibile via `ssh lintra-win`
+(account standard) e `ssh lintra-win-admin` (`Lintra_tester`, amministrativo).
+Installazione perMachine offline nei casi runtime presente/assente, due desktop
+standard reali, isolamento ACL, disinstallazione conservativa e ripristino
+provato: PASS sull’artefatto CI43014153420. Il caso assente è stato preparato
+rimuovendo file/registrazioni di discovery, dopo rifiuto93 dell’uninstaller
+WebView2; non equivale a un OS appena installato. La VM è tornata allo snapshot
+pre-test; credenziali/task/firewall temporanei e secondo account rimossi.
+
+[Dossier e limiti di scope](../../docs/verification/unified-post-m9/T-MIG-P1-02.md),
+[manifest/log/capture](../../docs/verification/unified-post-m9/T-MIG-P1-02-win11-20261113/manifest.json)
+e [script desktop/ACL spiegati](qualification/README.md).
+Il probe non apre database del prodotto: le sentinelle SQLite/config sono solo
+prove sintetiche di isolamento e conservazione. G-MIG-1 aggregato resta aperto;
+prossima task P1-04, non una release. Applicare l’uso selettivo in
+[AGENTS.md](../../AGENTS.md), senza nuovi controlli ricorrenti.
 
 La build separata `.github/workflows/tauri-runtime-spike.yml` usa il runner
 Windows Server 2025 esclusivamente per compilazione MSVC, Clippy, NSIS e
@@ -36,7 +43,7 @@ configurazione e OS effettivo, marcando installazione, offline e due account
 NOT_RUN. Pubblica soltanto l'artefatto di test in Actions, non tag o release.
 Non distribuire questo probe ai colleghi come applicativo Lintra.
 
-## Procedura quando sarà disponibile la clean-room
+## Procedura di riferimento per la prova mirata
 
 1. Preparare una VM/macchina Windows 11 x86_64 autorizzata, snapshot iniziale
    recuperabile, un amministratore per installazione e due account standard

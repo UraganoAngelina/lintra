@@ -35,6 +35,28 @@ Riportare motivo, controllo, esito e problemi nel normale report soltanto quando
 la VM viene usata. Nessuna nuova checklist, milestone o qualifica periodica.
 Il recepimento di questa direttiva non richiede avvio, sync o test Windows.
 
+### Sblocco P1-02 e amministrazione della VM — successivo, 13 novembre 2026
+
+L'autore autorizza pienamente le operazioni necessarie sulla sola VM dedicata
+e sulle sue risorse: NSIS offline perMachine/install/uninstall, account di test,
+permessi/servizi/task pianificati, dipendenze necessarie, snapshot/backup/cloni,
+riavvii e ricostruzione. Verificare UUID e dischi prima di azioni distruttive;
+non estendere il mandato all'host, ad altre VM, al repository o alla produzione.
+È espressamente autorizzata la sola aggiunta dell'alias SSH host
+`lintra-win-admin`, stesso endpoint/chiave di `lintra-win`, utente `Lintra_tester`.
+Il token amministrativo via `ssh -l Lintra_tester lintra-win` è stato verificato.
+Usare admin solo per operazioni privilegiate; `lintra-agent` resta standard.
+Non richiedere ancora disponibilità di amministratore, secondo account o snapshot:
+predisporli autonomamente. Credenziali dedicate fuori dal repository e dai log.
+
+Riprendere P1-02, verificare ripristino effettivo, installer/machine metadata,
+assenza Internet e due account standard con prove grafiche desktop reali.
+Distinguere install offline con WebView2 presente da provisioning del runtime
+assente, sessione SSH da desktop, scope dello spike da persistenza del prodotto.
+Nessun DONE senza evidenze; poi successiva READY. Restano uso selettivo della VM,
+CI distinta, single-agent e assenza di nuovi gate ricorrenti. Questo mandato
+autorizza anche i processi remoti necessari all'automazione della VM.
+
 ## Reference UI aggiuntive dell'autore — 11 novembre 2026
 
 **Marchio ufficiale ratificato successivamente nello stesso giorno:**

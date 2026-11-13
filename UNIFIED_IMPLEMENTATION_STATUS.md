@@ -6,7 +6,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **31/128 DONE;97 rimanenti** (18U-* e79MIG).
+Conteggio unificato: **32/128 DONE;96 rimanenti** (18U-* e78MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -14,8 +14,8 @@ Gate correnti: G-U0 PASS documentale; G-HARD PASS nativo su cb70bee/
 CI42990775714; G-SIOC0 PASS documentale; G-MIG-0 PASS governance.
 G-DUR PASS software su3aa0d14/CI43078048297; hardware NOT_TESTED_HARDWARE.
 G-OPS0/1/2, G-SIOC1, G-MIG-1..9, G-CADUI0..3, G-PERF e G-REL:
-NOT_VERIFIED. G-MIG-1 attende il collaudo clean-room Win11; VM ora accessibile
-via SSH standard, installazione elevata offline e due account ancora da provare.
+NOT_VERIFIED. P1-02 PASS nativo Win11/offline/due desktop e ripristino;
+G-MIG-1 aggregato attende P1-04/05/07 e decisione P1-06.
 G-REAL riguarda autorizzazioni effettive per specifici dati, non presunte.
 CI antecedenti non qualificano nuovi delta runtime.
 
@@ -69,7 +69,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P0-07 | T-MIG-P0-04, T-MIG-P0-05 | DONE | [Brief UX e budget misurabili](docs/verification/unified-post-m9/T-MIG-P0-07.md) | Copper Ledger esteso,stati/viewport/a11y e protocollo;nessun tempo DEC-14 inventato | G-MIG-0 PASS governance; prove UI/runtime successive separate |
 | T-MIG-P0-08 | T-MIG-P0-01, T-MIG-P0-02, T-MIG-P0-03, T-MIG-P0-04, T-MIG-P0-05, T-MIG-P0-06, T-MIG-P0-07 | DONE | [Gate G-MIG-0](docs/verification/unified-post-m9/T-MIG-P0-08.md) | ADR/evidenze/prerequisiti verificati;cb70bee CI42990775714 positiva | G-MIG-0 PASS governance; ingressoP1 autorizzato |
 | T-MIG-P1-01 | T-MIG-P0-08 | DONE | [Spike nativo React/Tauri Linux](docs/verification/unified-post-m9/T-MIG-P1-01.md) | 996947e app invariata;build/Clippy/IPC-render Wayland/capture PASS;144 righe ldd senza missing | Acceptance Linux personale PASS;G-MIG-1 aggregato NOT_VERIFIED |
-| T-MIG-P1-02 | T-MIG-P0-08 | BLOCKED_NATIVE_ENVIRONMENT | [Spike Windows e prerequisito reale](docs/verification/unified-post-m9/T-MIG-P1-02.md) | bdca1cf;CI43014153420 PASS;13/11 SSH standard PASS, artefatti verificati | G-MIG-1 NOT_VERIFIED;clean-room/elevazione e due account da predisporre/provare |
+| T-MIG-P1-02 | T-MIG-P0-08 | DONE | [Spike Windows e prove reali](docs/verification/unified-post-m9/T-MIG-P1-02.md) | bdca1cf/CI43014153420;13/11 Win11 offline runtime presente/assente, due desktop standard, ACL/uninstall/restore PASS | Acceptance Windows spike PASS; G-MIG-1 aggregato NOT_VERIFIED |
 | T-MIG-P1-03 | T-MIG-P1-01 | DONE | [Profilo e prove CachyOS](docs/verification/unified-post-m9/T-MIG-P1-03.md) | 151 ELF/99 package;relocated Wayland e loader negativo PASS;binario c53fd4ba invariato | Acceptance personale PASS;G-MIG-1 aggregato bloccato su Win11 |
 | T-MIG-P1-04 | T-MIG-P1-01, T-MIG-P1-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-04.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-05 | T-MIG-P1-01, T-MIG-P1-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-05.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
@@ -154,7 +154,7 @@ U-FIX-01..05 DONE: G-HARD PASS con CI42990775714 sucb70bee,7 job richiesti posit
 U-NORM-03 DONE per backend normativo,21 oracle3volte/OS;04 WAITING_INTEGRATION per frontend/contesto amministrativo, G-SIOC1 complessivo aperto.
 T-MIG-P0-01..08 DONE; G-MIG-0 PASS per governance e ingresso agli spike, non per runtime/installer.
 U-OPS-07 DONE documentale; U-OPS-03 preflight sospeso sull'integrazione root/worker Tauri reale, nessun DONE implicito.
-**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 build CI43014153420 PASS ma collaudo Win11 bloccato; P1-03 DONE personale. U-PERF-01 DONE per volumi aggregati/oracle. U-OPS-04 DONE dopo CI43078048297 SUCCESS su3aa0d14 (SMB/drive mappato e Linux PASS); U-REL-03 DONE, G-DUR PASS software sulla stessa CI positiva;hardware NOT_TESTED_HARDWARE. P1-04..07 e P2/P3 non READY. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. NO_READY_TASK: nessun nodo NOT_STARTED con tutti i prerequisiti DONE;P1-02 richiede il collaudo Win11 prescritto, oltre all'accesso SSH ora disponibile.
+**T-MIG-P1-01 DONE** per spike nativo Linux personale: build debug/Clippy e IPC-render/capture Wayland PASS. P1-02 build CI43014153420 e collaudo Win11 PASS; P1-03 DONE personale. U-PERF-01 DONE per volumi aggregati/oracle. U-OPS-04 DONE dopo CI43078048297 SUCCESS su3aa0d14 (SMB/drive mappato e Linux PASS); U-REL-03 DONE, G-DUR PASS software sulla stessa CI positiva;hardware NOT_TESTED_HARDWARE. P1-04/05 READY; P1-06/07 e P2/P3 attendono i prerequisiti. G-MIG-1 aggregato e gli altri gate futuri restano NOT_VERIFIED. Prossima task T-MIG-P1-04, AUTO_CONTINUE.
 Le task non avviate non hanno CI/evidenze implicite. SHA dei dossier risolvibile
 con `git log --format=%H -- <percorso-dossier>`, evitando hash autoreferenziali.
 U-GOV è sola governance: nessun dato, schema, golden o comportamento modificato.
@@ -169,7 +169,7 @@ clean-room P1-02; build MSVC/NSIS già positiva ma insufficiente per quel gate.
 U-OPS-03/U-NORM-04 attendono integrazione Tauri reale; non diventano DONE per
 permettere U-OPS-06/08 o G-SIOC1. **NO_READY_TASK**, nessuna delega/background.
 
-Ripresa 13 novembre2026: recepita in AGENTS.md la direttiva sull'uso selettivo
+Prima ripresa 13 novembre2026 (precedente al mandato amministrativo): recepita in AGENTS.md la direttiva sull'uso selettivo
 della VM, senza nuovi gate o task. Per il requisito nativo già previsto da
 P1-02 verificati SSH `lintra-win`/`lintra-agent`, preflight in sola lettura e
 digest dei due artefatti CI esistenti. Nessun avvio VM, sync, build, installazione
@@ -177,3 +177,16 @@ o smoke. Blocco ristretto alla clean-room ripristinabile e ai passaggi elevati/
 due account da predisporre o verificare oltre il solo accesso SSH standard; chiesta
 disponibilità all'autore. Dettagli e risultati nel dossier P1-02. **31/128 DONE**
 e gate invariati; nessuna task indipendente READY.
+
+
+Handoff successivo 13 novembre2026: mandato amministrativo della sola VM
+recepito in AGENTS.md, accessi standard/admin verificati, snapshot attuale
+ripristinato prima e dopo le prove. **T-MIG-P1-02 DONE** sull’installer esatto
+CI43014153420/bdca1cf: NSIS offline perMachine nei casi runtime presente e
+realmente assente dai percorsi/registrazioni, due account standard con desktop/
+ACK/capture reali, ACL e conservazione sintetica SQLite/config, uninstall e
+ripristino finale PASS. Distinti: assenza preparata controllata vs OS nuovo,
+sentinelle vs persistenza prodotto, VM vs CI e gate aggregato futuro.
+**32/128 DONE (25,0%)**,96rimanenti. Evidenze nel dossier P1-02; nessun nuovo
+gate VM ricorrente o requisito di completamento. P1-04 e P1-05 READY; scegliere
+**T-MIG-P1-04** in sequenza, AUTO_CONTINUE. P1-06/07 e P2/P3 non ancora READY.
