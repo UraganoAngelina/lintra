@@ -331,8 +331,10 @@
     },
     {
       "file": "lintra-agent-desktop-result.json",
-      "sha256": "6cfe692eb061caad18c784de17c566c3b72b055ef1ec2280cf9b8a6164ca02f0",
-      "redacted": false
+      "sha256": "1ce692bbbcf18acc8a225efd44997eb3c684818f09717117afa769e8dd5a66e8",
+      "redacted": false,
+      "native_sha256_before_line_normalization": "6cfe692eb061caad18c784de17c566c3b72b055ef1ec2280cf9b8a6164ca02f0",
+      "normalization": "CRLF -> LF for Git; original command output preserved in compressed native logs"
     },
     {
       "file": "lintra-agent-interactive-desktop.png",
@@ -341,8 +343,10 @@
     },
     {
       "file": "lintra-test2-desktop-result.json",
-      "sha256": "5106c5e521bf412b5a932f029c0c82c8216791027c5e4841568a9314b0b9c903",
-      "redacted": false
+      "sha256": "6d503a0c88fecef4ada2ec239962edafaea6d0d8c518d09e0b8601026eb6881d",
+      "redacted": false,
+      "native_sha256_before_line_normalization": "5106c5e521bf412b5a932f029c0c82c8216791027c5e4841568a9314b0b9c903",
+      "normalization": "CRLF -> LF for Git; original command output preserved in compressed native logs"
     },
     {
       "file": "lintra-test2-interactive-desktop.png",
@@ -351,8 +355,10 @@
     },
     {
       "file": "lintra-test2-after-runtime-provisioning-desktop-result.json",
-      "sha256": "5106c5e521bf412b5a932f029c0c82c8216791027c5e4841568a9314b0b9c903",
-      "redacted": false
+      "sha256": "6d503a0c88fecef4ada2ec239962edafaea6d0d8c518d09e0b8601026eb6881d",
+      "redacted": false,
+      "native_sha256_before_line_normalization": "5106c5e521bf412b5a932f029c0c82c8216791027c5e4841568a9314b0b9c903",
+      "normalization": "CRLF -> LF for Git; original command output preserved in compressed native logs"
     },
     {
       "file": "lintra-test2-after-runtime-provisioning-interactive-desktop.png",
