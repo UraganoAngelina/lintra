@@ -1,0 +1,17 @@
+{
+  "qualified_source_sha": "608ccdc1d79c8495085ade5888e8df99f97c958f",
+  "ci": 43595367523,
+  "compiled_inputs_unchanged": [
+    "spikes/tauri-runtime/src",
+    "spikes/tauri-runtime/src-tauri",
+    "spikes/tauri-runtime/package.json",
+    "spikes/tauri-runtime/package-lock.json",
+    "spikes/tauri-runtime/tsconfig.json",
+    "spikes/tauri-runtime/index.html",
+    "rust-toolchain.toml",
+    ".cargo/config.toml",
+    "ui/ui/fonts"
+  ],
+  "driver_sha256": "e3738a0c5a02b0ebbf3bca3ee8e56c13c83ffe13227e4804a62f6a8737c26db8",
+  "driver_check": "node --check exit0 and installed native Windows retry PASS; no application rebuild needed"
+}

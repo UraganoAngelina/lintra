@@ -7,16 +7,17 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **34/128 DONE;94 rimanenti** (18U-* e76MIG).
+Conteggio unificato: **36/128 DONE;92 rimanenti** (18U-* e74MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
 Gate correnti: G-U0 PASS documentale; G-HARD PASS nativo su cb70bee/
 CI42990775714; G-SIOC0 PASS documentale; G-MIG-0 PASS governance.
 G-DUR PASS software su3aa0d14/CI43078048297; hardware NOT_TESTED_HARDWARE.
-G-OPS0/1/2, G-SIOC1, G-MIG-1..9, G-CADUI0..3, G-PERF e G-REL:
-NOT_VERIFIED. P1-02 PASS nativo Win11/offline/due desktop e ripristino;
-G-MIG-1 aggregato attende P1-04/07 e decisione P1-06; P1-05 PASS sulle scale osservate.
+G-MIG-1 PASS/GO tecnico piattaforme: dossier P1-02/03/04/05/07 e decisioneP1-06.
+G-OPS0/1/2, G-SIOC1, G-MIG-2..9, G-CADUI0..3, G-PERF e G-REL:
+NOT_VERIFIED. Prove Win11/offline/due desktop e scale osservate distinte dalla
+CI Windows Server; VM ripristinata/spenta. Non è un gate di distribuzione.
 G-REAL riguarda autorizzazioni effettive per specifici dati, non presunte.
 CI antecedenti non qualificano nuovi delta runtime.
 
@@ -74,9 +75,9 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P1-03 | T-MIG-P1-01 | DONE | [Profilo e prove CachyOS](docs/verification/unified-post-m9/T-MIG-P1-03.md) | 151 ELF/99 package;relocated Wayland e loader negativo PASS;binario c53fd4ba invariato | Acceptance personale PASS;G-MIG-1 aggregato bloccato su Win11 |
 | T-MIG-P1-04 | T-MIG-P1-01, T-MIG-P1-02 | DONE | [CSP e guard nativi](docs/verification/unified-post-m9/T-MIG-P1-04.md) | 608ccdc/CI43595367523 SUCCESS;9test/Clippy/TS/MSVC/NSIS; native Linux/Win11 18controlli/0TCP0HTTP PASS; VM ripristinata/spenta | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-05 | T-MIG-P1-01, T-MIG-P1-02 | DONE | [Profilo WebView/font/DPI](docs/verification/unified-post-m9/T-MIG-P1-05.md) | 413b7e4/CI43494464261 SUCCESS; Wayland e Win11 standard/font/DPI100%/capture PASS; VM ripristinata/spenta | Acceptance profilo PASS; G-MIG-1 NOT_VERIFIED |
-| T-MIG-P1-06 | T-MIG-P1-02, T-MIG-P1-03, T-MIG-P1-04, T-MIG-P1-05, T-MIG-P1-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-06.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
-| T-MIG-P1-07 | T-MIG-P1-02, T-MIG-P1-04 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-07.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
-| T-MIG-P2-01 | T-MIG-P1-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-01.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
+| T-MIG-P1-06 | T-MIG-P1-02, T-MIG-P1-03, T-MIG-P1-04, T-MIG-P1-05, T-MIG-P1-07 | DONE | [GO piattaforme](docs/verification/unified-post-m9/T-MIG-P1-06.md) | Matrice nativa e CI dei prerequisiti consolidate; nessun nuovo test equivalente | G-MIG-1 PASS; ingressoP2, non release |
+| T-MIG-P1-07 | T-MIG-P1-02, T-MIG-P1-04 | DONE | [Installer offline](docs/verification/unified-post-m9/T-MIG-P1-07.md) | CI43595367523/608ccdc; setup/uninstall0, desktop standard e0TCP0HTTP; sentinelle conservate; VM ripristinata/spenta | Acceptance installer PASS; G-MIG-1 inP1-06 |
+| T-MIG-P2-01 | T-MIG-P1-06 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-01.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-02 | T-MIG-P2-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-02.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-03 | T-MIG-P2-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-03.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-04 | T-MIG-P2-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-04.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
@@ -239,3 +240,19 @@ sintetico privato senza storage web; invarianti CSP/ACL e zeroTCP invariati.
 **34/128 DONE (26,6%)**. Avviata in sequenza **T-MIG-P1-07** sul nuovo artefatto
 CI; nessuna nuova build/CI o regressione workspace richiesta per la sola prova
 installer. P1-06/G-MIG-1 attendono gli esiti effettivi di07. AUTO_CONTINUE.
+
+
+Handoff P1-07,14 novembre2026: **DONE**. Nuovo installer CI43595367523
+installato/disinstallato offline nel guest; desktop standard, security0TCP0HTTP,
+conservazione di SQLite/config e ripristino/spento PASS. Driver focus Windows
+corretto e provato senza cambiare gli input compilati o generare CI equivalente.
+**35/128 DONE (27,3%)**. Avviata la decisione tecnica **T-MIG-P1-06** sui dossier
+nativi esistenti; nessuna suite o ciclo VM aggiuntivo per consolidare il gate.
+
+
+Handoff P1-06,14 novembre2026: **DONE — G-MIG-1 GO/PASS** per fattibilità
+nativa dello spike. Windows Server/build, Win11/installer/desktop e CachyOS
+restano evidenze distinte; runtime/scale/limiti sono espliciti. Nessuna nuova
+CI o regressione per il consolidamento; tutte le acceptance del piano intatte.
+**36/128 DONE (28,1%)**. Iniziata **T-MIG-P2-01** sui boundary già ratificati e
+sui reali entrypoint Rust; nessun nuovo adapter di prodotto prima diG-MIG-2.

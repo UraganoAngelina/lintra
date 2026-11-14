@@ -231,7 +231,12 @@ I nove test coprono anche policy, query illegali, URL diversi, recovery fallita,
 controlli incompleti e limiti dei conteggi.
 
 Il helper PowerShell parte con finestra nascosta per non sottrarre il focus
-al processo che deve ricevere Enter. Il driver conserva le fasi fisse
+al processo che deve ricevere Enter. Se Windows rifiuta l’attivazione,
+il helper collega temporaneamente la propria coda di input al thread foreground
+con `AttachThreadInput` e la scollega in `finally`, prima del tasto.
+Il controllo finale del PID resta obbligatorio; errori e detach fallito
+impediscono Enter. Non cambia policy OS o runtime.
+Il driver conserva le fasi fisse
 dell’input Windows e termina solo il proprio
 albero di processi in caso di errore/timeout; le pipe vengono chiuse e un
 timeout non può diventare PASS anche se il processo era già uscito con0.

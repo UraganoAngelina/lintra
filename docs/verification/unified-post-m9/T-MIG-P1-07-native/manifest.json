@@ -1,0 +1,257 @@
+{
+  "task": "T-MIG-P1-07",
+  "status": "DONE",
+  "runtime_source_sha": "608ccdc1d79c8495085ade5888e8df99f97c958f",
+  "official_ci": 43595367523,
+  "installer_sha256": "b2bc84627e1286927b24e2ed79a00c77246bef334af14084cecbfd54ba1eedc1",
+  "standalone_sha256": "93736932328f4f433b12a64075f08a30db0aa540522e5becc8b6c6e3d3057917",
+  "installed_sha256": "6f1b32420a8819fcdae6e3b0393f7bad5a5b014b72cb5215ff1bc488f2419703",
+  "offline_install": "PASS: runtime present",
+  "ordinary_desktop": "PASS: standard console, normal close and smoke0",
+  "installed_security": "PASS:18 flags,12 CSP events,0TCP/0HTTP",
+  "offline_uninstall": "PASS: executable/HKLM removed, two sentinels byte-identical, profile conserved",
+  "runtime_absent_in_this_task": "NOT_RUN; P1-02 distinct historical evidence, not claimed on new installer",
+  "vm_final_state": "shut off",
+  "files": [
+    {
+      "path": "before-restore.json.gz",
+      "bytes": 975,
+      "sha256": "50d1fa809f12b00e1815a5643b73f8729ba3ac35a00269379d209659221b7ec5"
+    },
+    {
+      "path": "checkpoint-restore.json.gz",
+      "bytes": 438,
+      "sha256": "bf650bd225345eb4e9694aa9b4bd73b22747537e8aac974c71afce32e8594422"
+    },
+    {
+      "path": "ci-windows-spike-build.json.gz",
+      "bytes": 549,
+      "sha256": "2614d7aed83c63c4e587cb99677dbfb276d0c4bc0eec86443dde5dfab112872d"
+    },
+    {
+      "path": "collect-final.json.gz",
+      "bytes": 1636,
+      "sha256": "722344b3b2cfec116ca7938c6e415e870f8226d810241b014056dcd75f6081b1"
+    },
+    {
+      "path": "compiled-input-reuse.json",
+      "bytes": 639,
+      "sha256": "0990dae3e565fdd5a30d591522fd615223fd53f2bbad891b04b483646e57b53d"
+    },
+    {
+      "path": "core-evidence-reuse.json.gz",
+      "bytes": 761,
+      "sha256": "625ff309fc4177958cccf608ec905d0fa1fe3cf6d1880f56de7c221a800a62fc"
+    },
+    {
+      "path": "final-P1-07-20261114-desktop-result.json.gz",
+      "bytes": 698,
+      "sha256": "ff97896bdf4738e8dec5e1e29e6640bb43bffc5b43d533ac8ebbf0ef6fa79414"
+    },
+    {
+      "path": "final-P1-07-20261114-interactive-stderr.txt.gz",
+      "bytes": 64,
+      "sha256": "6334eff77a58849cf82eeb41e0350c3be016afbdaeb4511a89a59f818c357abe"
+    },
+    {
+      "path": "final-P1-07-20261114-interactive-stdout.txt.gz",
+      "bytes": 130,
+      "sha256": "7a25274111cfcaf278db825bb15b3af97a596fcb30736ac2c0cae293c73a3c2f"
+    },
+    {
+      "path": "final-P1-07-20261114-security-input-retry-harness-stderr.txt.gz",
+      "bytes": 86,
+      "sha256": "e8c79a5a04bc68d71a8f0d160067d379b8f48141056903b0251c5fe80f609098"
+    },
+    {
+      "path": "final-P1-07-20261114-security-input-retry-harness-stdout.txt.gz",
+      "bytes": 985,
+      "sha256": "58416a4fadd44717a8c15967ec3fd21a2218cf15d5c2e8ef81f422fcf1c27602"
+    },
+    {
+      "path": "final-P1-07-20261114-security-input-retry-launcher-result.json.gz",
+      "bytes": 1200,
+      "sha256": "1f25a95c46e02c940cd7cec526cc5ccb9343365164c1e6666c971605e89119eb"
+    },
+    {
+      "path": "final-P1-07-20261114-security-input-retry-native-security.json.gz",
+      "bytes": 974,
+      "sha256": "5b0c46960bdf2f032793adc9c3f36ddbefafff8a2bf344abda3e405c6eaaf855"
+    },
+    {
+      "path": "final-P1-07-20261114-smoke-stderr.txt.gz",
+      "bytes": 170,
+      "sha256": "5cf2c768bcc3050cb918ac0c341a5add3cec432db82d27f3e721fdf044966ed6"
+    },
+    {
+      "path": "final-P1-07-20261114-smoke-stdout.txt.gz",
+      "bytes": 124,
+      "sha256": "4cf03d24d48b79b94ee74b6f8957e23eed16b0444cc3b3d23aab309ab92bcb99"
+    },
+    {
+      "path": "final-P1-07-20261114-sqlite-stderr.txt.gz",
+      "bytes": 64,
+      "sha256": "727c94db710685e9d141f96ddde768687bed38df0a8cd133a5569c90eee8c49f"
+    },
+    {
+      "path": "final-P1-07-20261114-synthetic-sentinel.cjs.gz",
+      "bytes": 324,
+      "sha256": "eff9a2976bd7df3884794cade4bbff105680d68366a25b3ba8ea1d47abbc3fdb"
+    },
+    {
+      "path": "final-desktop-evidence-qualification-complete.json.gz",
+      "bytes": 312,
+      "sha256": "07d5abdd834ea75bff16a43fed40ac79a537e3b6a1b4d73e20750fe64fe026de"
+    },
+    {
+      "path": "first-P1-07-20261114-desktop-result.json.gz",
+      "bytes": 698,
+      "sha256": "ed5a6cf8a5a77119f491d65aba0107aa36eeeb7e91e346940c9611404bb420ad"
+    },
+    {
+      "path": "first-P1-07-20261114-interactive-stderr.txt.gz",
+      "bytes": 64,
+      "sha256": "4d49f75ce6d5d2f8e134e479cc3ad27f71ebaeea5e88b650ee91203d84270caa"
+    },
+    {
+      "path": "first-P1-07-20261114-interactive-stdout.txt.gz",
+      "bytes": 130,
+      "sha256": "4ddfeab1e8d2d7b21aa82b124350df10be0908485acbdb854180b2735d3122f0"
+    },
+    {
+      "path": "first-P1-07-20261114-security-harness-stderr.txt.gz",
+      "bytes": 74,
+      "sha256": "1066e78d2ea03561e966978c2937b74f8a7b43b087ced00591f4945faf9926fb"
+    },
+    {
+      "path": "first-P1-07-20261114-security-harness-stdout.txt.gz",
+      "bytes": 977,
+      "sha256": "b4cf7feae3b1480098645ff400107a72a1831ab2d93f002a5a6d75406b5c5fd8"
+    },
+    {
+      "path": "first-P1-07-20261114-security-launcher-result.json.gz",
+      "bytes": 1230,
+      "sha256": "014ce3265ea5b070b9cd6c1525dbf9e19d65b86978cfe89e74bdb27969bae048"
+    },
+    {
+      "path": "first-P1-07-20261114-security-native-security.json.gz",
+      "bytes": 965,
+      "sha256": "02d54ab376396916a5f660768cd7e89506292aa59b3566d0fb28cfca7ff02b03"
+    },
+    {
+      "path": "first-P1-07-20261114-smoke-stderr.txt.gz",
+      "bytes": 170,
+      "sha256": "604d1424de3ff9bf52f5d752191bf465d17e779df015304bcc6472138b7d50f7"
+    },
+    {
+      "path": "first-P1-07-20261114-smoke-stdout.txt.gz",
+      "bytes": 124,
+      "sha256": "4ec53cc7ee2609635e9036e13001b50f8925295de0fc9b43e5c1c1c721949c26"
+    },
+    {
+      "path": "first-P1-07-20261114-sqlite-stderr.txt.gz",
+      "bytes": 64,
+      "sha256": "7902175b76239ed66989fd339ad7dac05ee929c44f83148c1e0a155b9cb6063d"
+    },
+    {
+      "path": "first-P1-07-20261114-synthetic-sentinel.cjs.gz",
+      "bytes": 324,
+      "sha256": "3cea32403379382a8ba9a909417e817d718235e76e0d351c74044053c539d219"
+    },
+    {
+      "path": "first-before-security-retry-desktop-complete.json.gz",
+      "bytes": 188,
+      "sha256": "e55238cb6f86d2292fe35ec0eea57f61582e2113c5d94f1c72e9f282a7594676"
+    },
+    {
+      "path": "initial-collector-failure.json.gz",
+      "bytes": 362,
+      "sha256": "e7551b08b2171322384e7c2d10f40d327f7b5910ca45789eb9fca6a11b23fb58"
+    },
+    {
+      "path": "installed-desktop.png",
+      "bytes": 1045619,
+      "sha256": "0ad33137c0f1969b7715c1184b1fb852c3faf02d5ccc4a1594fb719e19f34227"
+    },
+    {
+      "path": "installed-vs-ci.json.gz",
+      "bytes": 264,
+      "sha256": "7ec86c5aa2c6cf828ad81b62bbfd78717f06aff1802b4a03c79075b762fb8ddc"
+    },
+    {
+      "path": "offline-install-retry.json.gz",
+      "bytes": 2166,
+      "sha256": "e47f0ed0ff371fa6db2b533d58fe42ac1f8651f9606a96f1a023bd0fda65edbd"
+    },
+    {
+      "path": "offline-install.ps1.gz",
+      "bytes": 1333,
+      "sha256": "262053859b16e282f9b02d72245c83b25bdd6c342c9ba4e619f30b39b44a3a97"
+    },
+    {
+      "path": "offline-prepare.json.gz",
+      "bytes": 992,
+      "sha256": "a2ba72ca14f2edb9b92376ecf39d7b278501f6cdd51f4c2d0ee4d564fdacf44f"
+    },
+    {
+      "path": "offline-uninstall.json.gz",
+      "bytes": 1829,
+      "sha256": "95eb71c94bdc0af29561ebe76c56f1912846b2b42b807dda98567c56fcadff26"
+    },
+    {
+      "path": "offline-uninstall.ps1.gz",
+      "bytes": 1216,
+      "sha256": "a678eb72d01ab67191cb0fe21282b8cad020e0cb8ffe38cabb359aa629ebfc53"
+    },
+    {
+      "path": "qualification-complete.json.gz",
+      "bytes": 289,
+      "sha256": "4e3ddaffa7b69ca2483ab3cae213614ffaae5b5be93fb08c8386aaa1a5c242e2"
+    },
+    {
+      "path": "remove-unqualified-install.json.gz",
+      "bytes": 949,
+      "sha256": "5281f7b663490e721d4b686965eb97b1c2e795002c114e5055d19f852c7075c0"
+    },
+    {
+      "path": "restored-admin.json.gz",
+      "bytes": 1129,
+      "sha256": "76e4425a907b6ddce1a5e0bdcb7240d32ce3366cef4c1c3f72ca10bff4cc2b4e"
+    },
+    {
+      "path": "restored-shutdown.json.gz",
+      "bytes": 826,
+      "sha256": "b5b250f789f9fcc861610f2d08e445a546e6c1e376c00ef16ff089a8455dba6f"
+    },
+    {
+      "path": "restored-standard.json.gz",
+      "bytes": 870,
+      "sha256": "6d1b2b5ac423fcd218db7827744371b9cb583724f49a54791f084ab13e957178"
+    },
+    {
+      "path": "stage-manifest.json.gz",
+      "bytes": 452,
+      "sha256": "d6979cf3f0a2a9a60b3900cff2a6f814d0c144b75929c724964a658242d0f8be"
+    },
+    {
+      "path": "verify-stage.json.gz",
+      "bytes": 983,
+      "sha256": "8f51958b2d93cff3bf9c8ae1195dfe6a43b885c431f2dfb413ca13d27015e647"
+    },
+    {
+      "path": "vm-lifecycle.json.gz",
+      "bytes": 553,
+      "sha256": "b28908234230a02b1add15258fbb321b05019e6695a6cf61dc7b36f6118a62cd"
+    },
+    {
+      "path": "windows-desktop-probe.ps1.gz",
+      "bytes": 3393,
+      "sha256": "fa7ac1f767e9764a28f33bc5f312ec317216cb2bdeaacc11c91ce4299ee602bf"
+    },
+    {
+      "path": "windows-security-retry.ps1.gz",
+      "bytes": 1506,
+      "sha256": "5cde3fde90a2704c5268dac5af1af9bd1280efaac4349e63de26b8f713e8910f"
+    }
+  ]
+}

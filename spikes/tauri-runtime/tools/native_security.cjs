@@ -29,17 +29,33 @@ function trustedPopupInput(pid) {
   } else if (process.platform === "win32") {
     const script = `$ErrorActionPreference='Stop'; [Console]::Out.WriteLine('LINTRA_INPUT_STAGE init'); [Console]::Out.Flush(); Add-Type -AssemblyName System.Windows.Forms; [Console]::Out.WriteLine('LINTRA_INPUT_STAGE assembly'); [Console]::Out.Flush();
 Add-Type @'
-using System; using System.Runtime.InteropServices;
+using System; using System.ComponentModel; using System.Runtime.InteropServices;
 public static class LintraOwnedInput {
  [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);
  [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
  [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr h, out uint p);
+ [DllImport("kernel32.dll")] static extern uint GetCurrentThreadId();
+ [DllImport("user32.dll", SetLastError=true)] static extern bool AttachThreadInput(uint from, uint to, bool attach);
+ public static void ActivateOwned(IntPtr window) {
+  if (SetForegroundWindow(window)) return;
+  uint owner;
+  uint foreground = GetWindowThreadProcessId(GetForegroundWindow(), out owner);
+  uint current = GetCurrentThreadId();
+  if (foreground == 0 || foreground == current) return;
+  // The dedicated test desktop can retain Explorer's input queue after the
+  // preceding smoke closes. Attach only while activating, then always detach.
+  if (!AttachThreadInput(current, foreground, true)) throw new Win32Exception(Marshal.GetLastWin32Error());
+  try { SetForegroundWindow(window); }
+  finally {
+   if (!AttachThreadInput(current, foreground, false)) throw new Win32Exception(Marshal.GetLastWin32Error());
+  }
+ }
 }
 '@
 [Console]::Out.WriteLine('LINTRA_INPUT_STAGE win32'); [Console]::Out.Flush();
 $p=Get-Process -Id ${pid}; $handle=$p.MainWindowHandle; if($handle -eq [IntPtr]::Zero){throw 'No owned native window'};
 [Console]::Out.WriteLine('LINTRA_INPUT_STAGE handle'); [Console]::Out.Flush();
-[LintraOwnedInput]::SetForegroundWindow($handle) | Out-Null; [Console]::Out.WriteLine('LINTRA_INPUT_STAGE activate'); [Console]::Out.Flush(); Start-Sleep -Milliseconds 200;
+[LintraOwnedInput]::ActivateOwned($handle); [Console]::Out.WriteLine('LINTRA_INPUT_STAGE activate'); [Console]::Out.Flush(); Start-Sleep -Milliseconds 200;
 [uint32]$owner=0; [LintraOwnedInput]::GetWindowThreadProcessId([LintraOwnedInput]::GetForegroundWindow(),[ref]$owner) | Out-Null;
 if($owner -ne ${pid}){throw 'Refuse input to another process'}; [Console]::Out.WriteLine('LINTRA_INPUT_STAGE focus'); [Console]::Out.Flush(); [Windows.Forms.SendKeys]::SendWait('{ENTER}'); [Console]::Out.WriteLine('LINTRA_INPUT_STAGE sent'); [Console]::Out.Flush();`;
     checked("powershell.exe", ["-NoLogo", "-NoProfile", "-NonInteractive", "-EncodedCommand", Buffer.from(script, "utf16le").toString("base64")], 60000);
