@@ -1,0 +1,399 @@
+{
+  "task": "T-MIG-P2-02",
+  "checked_utc": "2026-11-14T15:51:24.529011+00:00",
+  "reference_exit_code": 0,
+  "stderr": "",
+  "ratification": "NOT_ACQUIRED",
+  "production_bridge": "NOT_IMPLEMENTED",
+  "vectors": {
+    "passed": true,
+    "vectors": 71,
+    "scope": "design reference only; no product/native gate",
+    "results": [
+      {
+        "case": "minimal request",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "minimal result",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "UTF-8 text and escaped delimiters",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "operation registry is a separate check",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "version 0",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "version 2",
+        "expected": "IPC_UNSUPPORTED_VERSION",
+        "passed": true
+      },
+      {
+        "case": "version 65535",
+        "expected": "IPC_UNSUPPORTED_VERSION",
+        "passed": true
+      },
+      {
+        "case": "version 65536",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "version True",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "version '1'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "version 1.0",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "missing wire_version",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "missing request_id",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "missing kind",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "missing operation",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "missing payload",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "unknown envelope field",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "wrong direction",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "request decoded as response",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "null payload",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "array payload",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid request id ''",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid request id 'xxxx'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid request id '\u00e8'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid request id 'a\\nb'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "64 character request id",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "64 character operation",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "invalid operation ''",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid operation 'aaaaaaaaaaaa'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid operation '../read'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid operation 'plugin:shell'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid operation 'Uppercase'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid JSON b''",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid JSON b'null'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid JSON b'[]'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid JSON b'{'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid JSON b'{}{}'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid JSON b'\\xef\\xbb\\xbf{\"w'",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "invalid UTF-8 rejected before parse",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "duplicate envelope key",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "duplicate payload key",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "JSON number 9007199254740991",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "JSON number -9007199254740991",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "JSON number 9007199254740992",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "JSON number 1.25",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "JSON number nan",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "JSON number inf",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "u64 preserved as text",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "lone surrogate",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "container depth 32",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "container depth 33",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "request byte length 1048575",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "request byte length 1048576",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "request byte length 1048577",
+        "expected": "IPC_PAYLOAD_TOO_LARGE",
+        "passed": true
+      },
+      {
+        "case": "response byte length 1048575",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "response byte length 1048576",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "response byte length 1048577",
+        "expected": "IPC_PAYLOAD_TOO_LARGE",
+        "passed": true
+      },
+      {
+        "case": "multi-byte payload limit",
+        "expected": "IPC_PAYLOAD_TOO_LARGE",
+        "passed": true
+      },
+      {
+        "case": "bounded error IPC_UNSUPPORTED_VERSION",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "bounded error IPC_INVALID_MESSAGE",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "bounded error IPC_PAYLOAD_TOO_LARGE",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "bounded error IPC_UNKNOWN_OPERATION",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "bounded error IPC_UNAUTHORIZED",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "bounded error IPC_STALE_CONTEXT",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "bounded error IPC_BUSY",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "bounded error IPC_INVALID_STATE",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "bounded error IPC_TECHNICAL_FAILURE",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "correlated error",
+        "expected": "ACCEPT_ENVELOPE_ONLY",
+        "passed": true
+      },
+      {
+        "case": "no arbitrary diagnostic text",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "normative outcome is not a transport error",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      },
+      {
+        "case": "result requires correlation",
+        "expected": "IPC_INVALID_MESSAGE",
+        "passed": true
+      }
+    ]
+  },
+  "sha256": {
+    "docs/migration/ipc-v1/CONTRACT.md": "1f2fffe002a8b374669571fcc3b86e2fec33874264a14f7f3a691061edaed749",
+    "docs/migration/ipc-v1/proposal.json": "a3dc335df0e25cf9018e4d9bdea5ba7563ad341f7e3d4f0a9f17a696806d2c17",
+    "docs/migration/ipc-v1/reference_codec.py": "8d680e02d912e52029638dc1cd007fa2d6c042e6219c1393a8b8631069e9deb5",
+    "docs/migration/ipc-v1/verify_contract.py": "d9cce914fe79fa3020ced0ca49b9aeabb159d46a6a4d3da525963632ddf6ea76"
+  },
+  "pinned_api_sources": [
+    {
+      "package": "tauri 2.12.5",
+      "source": "src/ipc/mod.rs",
+      "sha256": "6aa3624871ec604883e799e728346e6f474808589ab5b67c1db7bc600ef0068b",
+      "verified": [
+        "InvokeBody::Raw(Vec<u8>)",
+        "Request::body()",
+        "Response::new",
+        "From<Vec<u8>> for InvokeResponseBody"
+      ]
+    },
+    {
+      "package": "2.12.4",
+      "source": "@tauri-apps/api/core.d.ts",
+      "sha256": "5f32c4bd93cd5c24bd3254bf3b505564a2e783ea221f0d678ae15b9c9ab62230",
+      "verified": [
+        "InvokeArgs accepts Uint8Array and ArrayBuffer",
+        "invoke<T>",
+        "raw response ArrayBuffer"
+      ]
+    }
+  ]
+}

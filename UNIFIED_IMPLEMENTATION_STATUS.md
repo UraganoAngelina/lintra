@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **36/128 DONE;92 rimanenti** (18U-* e74MIG).
+Conteggio unificato: **37/128 DONE;91 rimanenti** (18U-* e73MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -77,8 +77,8 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P1-05 | T-MIG-P1-01, T-MIG-P1-02 | DONE | [Profilo WebView/font/DPI](docs/verification/unified-post-m9/T-MIG-P1-05.md) | 413b7e4/CI43494464261 SUCCESS; Wayland e Win11 standard/font/DPI100%/capture PASS; VM ripristinata/spenta | Acceptance profilo PASS; G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-06 | T-MIG-P1-02, T-MIG-P1-03, T-MIG-P1-04, T-MIG-P1-05, T-MIG-P1-07 | DONE | [GO piattaforme](docs/verification/unified-post-m9/T-MIG-P1-06.md) | Matrice nativa e CI dei prerequisiti consolidate; nessun nuovo test equivalente | G-MIG-1 PASS; ingressoP2, non release |
 | T-MIG-P1-07 | T-MIG-P1-02, T-MIG-P1-04 | DONE | [Installer offline](docs/verification/unified-post-m9/T-MIG-P1-07.md) | CI43595367523/608ccdc; setup/uninstall0, desktop standard e0TCP0HTTP; sentinelle conservate; VM ripristinata/spenta | Acceptance installer PASS; G-MIG-1 inP1-06 |
-| T-MIG-P2-01 | T-MIG-P1-06 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-01.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
-| T-MIG-P2-02 | T-MIG-P2-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-02.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
+| T-MIG-P2-01 | T-MIG-P1-06 | DONE | [Ownership processo](docs/verification/unified-post-m9/T-MIG-P2-01.md) | Diagrammi derivati da ADR ratificati; entrypoint reali e confine dipendenze verificati; nessun bridge | G-MIG-2 NOT_VERIFIED; wire non congelato |
+| T-MIG-P2-02 | T-MIG-P2-01 | IN_PROGRESS | [Proposta envelope](docs/verification/unified-post-m9/T-MIG-P2-02.md) | API pinned verificate; reference stdlib71vettori PASS/exit0; nuovo wire v1/1MiB/depth32 proposto | Ratifica tecnica dei nuovi parametri pendente; G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-03 | T-MIG-P2-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-03.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-04 | T-MIG-P2-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-04.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-05 | T-MIG-P2-02, T-MIG-P2-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-05.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
@@ -256,3 +256,18 @@ restano evidenze distinte; runtime/scale/limiti sono espliciti. Nessuna nuova
 CI o regressione per il consolidamento; tutte le acceptance del piano intatte.
 **36/128 DONE (28,1%)**. Iniziata **T-MIG-P2-01** sui boundary già ratificati e
 sui reali entrypoint Rust; nessun nuovo adapter di prodotto prima diG-MIG-2.
+
+
+Handoff P2-01,14 novembre2026: **DONE** sui boundary già ratificati. Diagrammi
+processo/ownership collegati ai servizi reali, nessuna dipendenza WebView nel
+core e nessun nuovo bridge. Distinte RunStatus/completeness/evaluation e autorità
+storica non deserializzabile. **37/128 DONE (28,9%)**. Prosegue **P2-02**:
+wire/limiti concreti da qualificare e ratificare aG-MIG-2, non firme già approvate.
+
+
+P2-02,14 novembre2026: proposta `MIG-IPC-WIRE-V1-2026-11-14` pronta per
+ratifica, non DONE.71vettori stdlib PASS; buffer raw/UTF-8/1MiB/depth32,
+versione1, correlazione e taxonomy separata dagli esiti normativi. Il codec è
+reference di design, non bridge o qualifica nativa Rust↔TS. Parametri concreti
+nuovi da approvare secondo l’acceptanceP2-02; nessuna nuova richiesta D01–D15.
+P2-03 e successive attendono il prerequisito; non avviare P3 prima diG-MIG-2.

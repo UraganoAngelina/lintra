@@ -1,0 +1,62 @@
+{
+  "task": "T-MIG-P2-01",
+  "checked_utc": "2026-11-14T15:39:06.262279+00:00",
+  "baseline": "7320b881b2ba768510e110d6f608c9b95bc4be54",
+  "existing_policy_ratification": [
+    "ADR-MIG-001",
+    "ADR-MIG-003",
+    "ADR-POST-M9-001"
+  ],
+  "new_wire_approval": "NOT_CLAIMED; G-MIG-2 pending",
+  "forbidden_core_gui_dependencies": [],
+  "domain_schema_engine_files_checked": 76,
+  "symbols_verified": {
+    "src/application/service.rs": [
+      "pub struct ValidationService",
+      "pub fn validate_with_typed_parameters"
+    ],
+    "src/application/request.rs": [
+      "pub enum ValidationScope",
+      "pub struct ValidationRequest"
+    ],
+    "src/application/progress.rs": [
+      "pub trait ProgressObserver"
+    ],
+    "src/application/historical_validation.rs": [
+      "pub enum HistoricalValidationOutcome",
+      "pub struct HistoricalReview"
+    ],
+    "src/persistence/mod.rs": [
+      "pub trait PersistentContextRepository"
+    ],
+    "src/persistence/protection.rs": [
+      "pub struct IdentityProtector"
+    ],
+    "src/report/atomic.rs": [
+      "pub struct AtomicReportFile"
+    ],
+    "ui/src/worker.rs": [
+      "pub struct WorkerHandle",
+      "pub struct AnalysisReport"
+    ],
+    "ui/src/results/mod.rs": [
+      "pub struct ReportIndex"
+    ]
+  },
+  "sha256": {
+    "src/application/service.rs": "a5f18e1bfb228b9ca88ac3001387746042290282179554611a2f278b312304b1",
+    "src/application/request.rs": "96d1005534e7a8f60b4fa8720fed789d3598840e480d0de212fb6e3e133cd55f",
+    "src/application/progress.rs": "c2006f3fb108e513525ee81d924511175d082e1ab5f73f29a042b7fe9ba44be0",
+    "src/application/historical_validation.rs": "f70d6b429a2ceb32e95b1285121818af976c8bf36e005713d6f1e8d85fdaf69b",
+    "src/persistence/mod.rs": "0632e617316a7ca1576ab19afcfa3a623fa88e55b15955ebf98f5a2342514d3b",
+    "src/persistence/protection.rs": "7c3158b30c108b27bd951d3bd759bf873cb096d9a6275877e4d83692f2331482",
+    "src/report/atomic.rs": "6d8dd47cdadca5bec489714ec0c2bdb4485298f59a820b527060c2a92e0d3408",
+    "ui/src/worker.rs": "31ec677c75e82ff775063eaec4b519186fbf0ad031ff8a800e4fdfa3cf6b6cd3",
+    "ui/src/results/mod.rs": "859de6b998e0c71ae36a7e07781c4c0ce6bb0dc4242074986fc78c0e6053ca8c",
+    "Cargo.toml": "a6e8e56b4ef8f17c50567e35547d52f720df66e8cede02163941ab94a2283799",
+    "Cargo.lock": "eeec45a15dfa05e3d3cc2d41c07a2a2dfa1a9b5ef64de6404fe2cfcff4bfbd21",
+    "ui/Cargo.toml": "c5b94b9997c5dc1a0746c097d95ad334ed3a4bd22984a4c640bfcb3039fb725d",
+    "spikes/tauri-runtime/src-tauri/Cargo.toml": "98efb1f7480b02b32dc5fb77246362c66ef71f9b2773f853adc207f207f92409",
+    "docs/migration/TAURI_PROCESS_OWNERSHIP.md": "140678ceb73aa92a89f4332b2879ca2a81b5637937a658ccf62baf254254fb41"
+  }
+}

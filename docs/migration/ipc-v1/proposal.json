@@ -1,0 +1,50 @@
+{
+  "id": "MIG-IPC-WIRE-V1-2026-11-14",
+  "status": "PROPOSED_NOT_RATIFIED",
+  "wire_version": 1,
+  "max_encoded_bytes": 1048576,
+  "max_container_depth": 32,
+  "request_id_ascii_chars": [
+    1,
+    64
+  ],
+  "operation_ascii_chars": [
+    1,
+    64
+  ],
+  "safe_json_integer_abs_max": 9007199254740991,
+  "large_integer_representation": "canonical decimal text, field-specific validation required",
+  "request_fields": [
+    "wire_version",
+    "request_id",
+    "kind",
+    "operation",
+    "payload"
+  ],
+  "result_fields": [
+    "wire_version",
+    "request_id",
+    "kind",
+    "payload"
+  ],
+  "error_fields": [
+    "wire_version",
+    "request_id",
+    "kind",
+    "error"
+  ],
+  "error_codes": [
+    "IPC_UNSUPPORTED_VERSION",
+    "IPC_INVALID_MESSAGE",
+    "IPC_PAYLOAD_TOO_LARGE",
+    "IPC_UNKNOWN_OPERATION",
+    "IPC_UNAUTHORIZED",
+    "IPC_STALE_CONTEXT",
+    "IPC_BUSY",
+    "IPC_INVALID_STATE",
+    "IPC_TECHNICAL_FAILURE"
+  ],
+  "transport_proposal": "UTF-8 JSON in Tauri raw byte request/response; not an InvokeBody::Json boundary",
+  "payload_authorization": "NONE: operation registry, exact per-operation DTO, native origin, context and state checks remain mandatory",
+  "production_adoption": "forbidden before G-MIG-2 approval and P3 integration"
+}
