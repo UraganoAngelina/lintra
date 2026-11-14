@@ -1,0 +1,33 @@
+{
+  "task_state": "Ready",
+  "result_present": true,
+  "launcher": {
+    "passed": false,
+    "account": "DESKTOP-RLLAD2M\\lintra-agent",
+    "elevated": false,
+    "session": 1,
+    "console_session": 1,
+    "ordinary_evidence": "Reused: same b781805b executable; preceding ordinary smoke exit0/ACK900x600",
+    "harness_exit": 1,
+    "native": {
+      "passed": false,
+      "executable_sha256": "b781805b495aed5d5c059983a3d1f4a84fb7f66b76e9fe2c014509e272be88e6",
+      "platform": "win32",
+      "node": "v26.13.1",
+      "started_utc": "2026-11-14T11:22:35.709Z",
+      "collector_health": "reachable before native launch",
+      "input_error": "Error: Owned-window input failed: Error: spawnSync powershell.exe ETIMEDOUT; LINTRA_INPUT_STAGE init, LINTRA_INPUT_STAGE assembly, LINTRA_INPUT_STAGE win32",
+      "exit_code": null,
+      "signal": "SIGTERM",
+      "stdout": "LINTRA_RUNTIME_SECURITY_AWAIT_POPUP\n",
+      "stderr": "",
+      "collector_connections": 0,
+      "collector_requests": 0,
+      "collector_socket_bytes": [],
+      "connection_diagnostics": [],
+      "request_cases": []
+    },
+    "error": "Native Windows CSP/guard/ACL checks failed"
+  },
+  "task_last_result": 1
+}

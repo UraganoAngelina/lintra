@@ -2,11 +2,12 @@
 
 use serde::{Deserialize, Serialize};
 use std::sync::{
-    Arc,
+    Arc, Mutex,
     atomic::{AtomicU32, Ordering},
 };
 use tauri::{
-    AppHandle, Manager, State, Url, WebviewWindow, WebviewWindowBuilder, webview::NewWindowResponse,
+    AppHandle, Manager, State, Url, WebviewWindow, WebviewWindowBuilder,
+    webview::{NewWindowResponse, PageLoadEvent},
 };
 
 #[cfg(target_os = "windows")]
@@ -16,6 +17,8 @@ mod windows_request_guard;
 struct GuardCounters {
     navigation_denied: AtomicU32,
     new_window_denied: AtomicU32,
+    navigation_probe_denied: AtomicU32,
+    popup_probe_denied: AtomicU32,
     web_resource_denied: AtomicU32,
     #[cfg(target_os = "windows")]
     resource_guard_ready: std::sync::atomic::AtomicBool,
@@ -28,12 +31,85 @@ struct ProbeOptions {
     security_test: bool,
     profile_test: bool,
     guards: Arc<GuardCounters>,
+    document: Mutex<DocumentState>,
+}
+
+/// One trusted entry URL and one fixed-size synthetic checkpoint, held only in
+/// Rust memory. A policy error document must never become an IPC authority.
+#[derive(Default)]
+struct DocumentState {
+    trusted_url: Option<Url>,
+    recovering: bool,
+    recoveries: u32,
+    checkpoint: Option<SecurityReport>,
+}
+
+impl DocumentState {
+    fn loaded(&mut self, event: PageLoadEvent, url: &Url) -> Result<Option<Url>, &'static str> {
+        if local_asset_origin(url) {
+            if self.checkpoint.is_some() && self.trusted_url.as_ref() != Some(url) {
+                return Err("checkpoint document changed");
+            }
+            if self.recovering {
+                if self.trusted_url.as_ref() != Some(url) {
+                    return Err("unexpected recovery target");
+                }
+                if event == PageLoadEvent::Finished {
+                    self.recoveries = self.recoveries.checked_add(1).ok_or("recovery overflow")?;
+                    self.recovering = false;
+                }
+            } else if event == PageLoadEvent::Started || self.trusted_url.is_none() {
+                self.trusted_url = Some(url.clone());
+            }
+            Ok(None)
+        } else if event == PageLoadEvent::Finished {
+            if self.recovering {
+                return Err("local document recovery failed");
+            }
+            let target = self.trusted_url.clone().ok_or("missing trusted document")?;
+            self.recovering = true;
+            Ok(Some(target))
+        } else {
+            Ok(None)
+        }
+    }
+
+    fn checkpoint(&mut self, report: &SecurityReport, url: &Url) -> Result<(), &'static str> {
+        if self.recovering
+            || self.trusted_url.as_ref() != Some(url)
+            || self.checkpoint.is_some()
+            || report.native_navigation_blocked
+            || report.native_popup_blocked
+            || !report.controls_passed()
+        {
+            return Err("invalid security checkpoint");
+        }
+        self.checkpoint = Some(report.clone());
+        Ok(())
+    }
+
+    fn resume(
+        &self,
+        url: &Url,
+        navigation: u32,
+        popups: u32,
+    ) -> Result<Option<SecurityReport>, &'static str> {
+        if self.recovering || self.trusted_url.as_ref() != Some(url) {
+            return Err("untrusted checkpoint resume");
+        }
+        Ok(self.checkpoint.as_ref().map(|checkpoint| {
+            let mut report = checkpoint.clone();
+            report.native_navigation_blocked = navigation > 0;
+            report.native_popup_blocked = popups > 0;
+            report
+        }))
+    }
 }
 
 /// Fixed-size synthetic results only: no URL, path, record or arbitrary map
 /// can enter this acknowledgment. The renderer tests the deployed CSP/ACL;
 /// native counters independently require both navigation guards to execute.
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 struct SecurityReport {
     text_only: bool,
@@ -59,6 +135,10 @@ struct SecurityReport {
 
 impl SecurityReport {
     fn passed(&self) -> bool {
+        self.controls_passed() && self.native_navigation_blocked && self.native_popup_blocked
+    }
+
+    fn controls_passed(&self) -> bool {
         self.text_only
             && self.inline_script_blocked
             && self.remote_script_blocked
@@ -72,8 +152,6 @@ impl SecurityReport {
             && self.eventsource_blocked
             && self.beacon_blocked
             && self.form_blocked
-            && self.native_navigation_blocked
-            && self.native_popup_blocked
             && self.valid_invoke
             && self.forbidden_invokes
             && self.invalid_reports
@@ -91,6 +169,20 @@ struct RenderReport {
     security: Option<SecurityReport>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     profile: Option<ProfileReport>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    security_resume: Option<bool>,
+}
+
+impl RenderReport {
+    fn checkpoint_query(&self, security_mode: bool) -> Result<bool, &'static str> {
+        if self.security_resume == Some(true) {
+            if !security_mode || self.security.is_some() || self.profile.is_some() {
+                return Err("invalid security checkpoint query");
+            }
+            return Ok(true);
+        }
+        Ok(false)
+    }
 }
 
 /// Bounded, synthetic document measurements. Native window size/scale are
@@ -149,6 +241,19 @@ fn local_asset_origin(url: &Url) -> bool {
         )
 }
 
+/// Count the two synthetic attacks independently; a popup must not stand in
+/// for the separate top-level navigation if WebView2 replaces the document.
+fn probe_target(url: &Url, path: &str) -> bool {
+    url.username().is_empty()
+        && url.password().is_none()
+        && url.scheme() == "http"
+        && url.host_str() == Some("127.0.0.1")
+        && url.port() == Some(49183)
+        && url.path() == path
+        && url.query().is_none()
+        && url.fragment().is_none()
+}
+
 #[cfg(any(target_os = "windows", test))]
 fn local_resource_origin(url: &Url) -> bool {
     local_asset_origin(url)
@@ -159,6 +264,21 @@ fn local_resource_origin(url: &Url) -> bool {
                 (url.scheme(), url.host_str()),
                 ("http", Some("ipc.localhost")) | ("ipc", Some("localhost"))
             ))
+}
+
+/// WebView2 can open speculative sockets before navigation/resource callbacks.
+/// Enforce the document's connection boundary in the browser network service;
+/// the only allowed destinations are Wry's intercepted asset and IPC origins.
+/// CSP and the native guards remain independent, including on older runtimes
+/// which ignore this header. Native zero-connection qualification is mandatory.
+#[cfg(any(target_os = "windows", test))]
+fn restrict_document_connections(headers: &mut tauri::http::HeaderMap) {
+    headers.insert(
+        "connection-allowlist",
+        tauri::http::HeaderValue::from_static(
+            r#"("http://tauri.localhost/*" "http://ipc.localhost/*")"#,
+        ),
+    );
 }
 
 fn ensure_request_guard(options: &ProbeOptions) -> Result<(), &'static str> {
@@ -181,14 +301,15 @@ fn valid_render_bounds(report: &RenderReport) -> bool {
 
 /// Check the actual caller as well as the capability. No path, file content,
 /// schema, keys or arbitrary strings cross this probe's IPC boundary.
-fn authorize(window: &WebviewWindow) -> Result<(), &'static str> {
+fn authorize(window: &WebviewWindow) -> Result<Url, &'static str> {
     if window.label() != "probe" {
         return Err("unexpected probe window");
     }
-    if !local_asset_origin(&window.url().map_err(|_| "cannot read probe origin")?) {
+    let url = window.url().map_err(|_| "cannot read probe origin")?;
+    if !local_asset_origin(&url) {
         return Err("unexpected probe origin");
     }
-    Ok(())
+    Ok(url)
 }
 
 #[tauri::command]
@@ -196,8 +317,14 @@ fn runtime_probe(
     window: WebviewWindow,
     options: State<'_, ProbeOptions>,
 ) -> Result<&'static str, &'static str> {
-    authorize(&window)?;
+    let url = authorize(&window)?;
     ensure_request_guard(&options)?;
+    options
+        .document
+        .lock()
+        .map_err(|_| "document state unavailable")?
+        .trusted_url
+        .get_or_insert(url);
     Ok("lintra-runtime-v1")
 }
 
@@ -207,12 +334,26 @@ fn render_ack(
     app: AppHandle,
     options: State<'_, ProbeOptions>,
     report: RenderReport,
-) -> Result<(), &'static str> {
-    authorize(&window)?;
+) -> Result<Option<SecurityReport>, &'static str> {
+    let url = authorize(&window)?;
     ensure_request_guard(&options)?;
     // Bounds constrain the synthetic proof, not future product DTO limits.
     if !valid_render_bounds(&report) {
         return Err("invalid runtime render acknowledgment");
+    }
+    if report.checkpoint_query(options.security_test)? {
+        return options
+            .document
+            .lock()
+            .map_err(|_| "document state unavailable")?
+            .resume(
+                &url,
+                options
+                    .guards
+                    .navigation_probe_denied
+                    .load(Ordering::Relaxed),
+                options.guards.popup_probe_denied.load(Ordering::Relaxed),
+            );
     }
     if options.security_test {
         let Some(security) = report.security.as_ref() else {
@@ -224,17 +365,53 @@ fn render_ack(
         };
         let navigation = options.guards.navigation_denied.load(Ordering::Relaxed);
         let popups = options.guards.new_window_denied.load(Ordering::Relaxed);
+        if !security.native_navigation_blocked && !security.native_popup_blocked {
+            options
+                .document
+                .lock()
+                .map_err(|_| "document state unavailable")?
+                .checkpoint(security, &url)?;
+            println!("LINTRA_RUNTIME_SECURITY_CHECKPOINT");
+            return Ok(None);
+        }
         println!(
             "LINTRA_RUNTIME_SECURITY_REPORT {}",
             serde_json::to_string(security).map_err(|_| "cannot encode security acknowledgment")?
         );
-        if !security.passed() || navigation == 0 || popups == 0 {
+        let expected = options
+            .document
+            .lock()
+            .map_err(|_| "document state unavailable")?
+            .resume(
+                &url,
+                options
+                    .guards
+                    .navigation_probe_denied
+                    .load(Ordering::Relaxed),
+                options.guards.popup_probe_denied.load(Ordering::Relaxed),
+            )?;
+        if !security.passed()
+            || navigation == 0
+            || popups == 0
+            || expected.as_ref() != Some(security)
+            || options
+                .guards
+                .navigation_probe_denied
+                .load(Ordering::Relaxed)
+                == 0
+            || options.guards.popup_probe_denied.load(Ordering::Relaxed) == 0
+        {
             app.exit(1);
             return Err("security probe failed");
         }
         let resources = options.guards.web_resource_denied.load(Ordering::Relaxed);
+        let recovered = options
+            .document
+            .lock()
+            .map_err(|_| "document state unavailable")?
+            .recoveries;
         println!(
-            "LINTRA_RUNTIME_SECURITY_ACK {{\"navigation_denied\":{navigation},\"new_window_denied\":{popups},\"web_resource_denied\":{resources}}}"
+            "LINTRA_RUNTIME_SECURITY_ACK {{\"navigation_denied\":{navigation},\"new_window_denied\":{popups},\"web_resource_denied\":{resources},\"document_recoveries\":{recovered}}}"
         );
     } else if report.security.is_some() {
         return Err("security report outside qualification mode");
@@ -271,7 +448,7 @@ fn render_ack(
     if options.exit_after_render || options.security_test {
         app.exit(0);
     }
-    Ok(())
+    Ok(None)
 }
 
 fn main() {
@@ -291,6 +468,7 @@ fn main() {
             security_test,
             profile_test,
             guards: guards.clone(),
+            document: Mutex::new(DocumentState::default()),
         })
         .setup(move |app| {
             let config = app
@@ -305,6 +483,27 @@ fn main() {
             // Disable automatic window creation in config so these callbacks
             // are attached before the very first document is loaded.
             let mut window = WebviewWindowBuilder::from_config(app, config)?
+                .on_page_load(|window, payload| {
+                    let action = window
+                        .state::<ProbeOptions>()
+                        .document
+                        .lock()
+                        .map_err(|_| "document state unavailable")
+                        .and_then(|mut state| state.loaded(payload.event(), payload.url()));
+                    match action {
+                        Ok(Some(target)) => {
+                            // Navigate is queued through Tauri from its executor;
+                            // no COM reference crosses threads or native event.
+                            tauri::async_runtime::spawn(async move {
+                                if window.navigate(target).is_err() {
+                                    window.app_handle().exit(1);
+                                }
+                            });
+                        }
+                        Ok(None) => {}
+                        Err(_) => window.app_handle().exit(1),
+                    }
+                })
                 .on_navigation(move |url| {
                     let allowed = local_asset_origin(url);
                     if !allowed {
@@ -312,16 +511,32 @@ fn main() {
                             .navigation_denied
                             .fetch_add(1, Ordering::Relaxed);
                         println!("LINTRA_RUNTIME_NAVIGATION_DENIED");
+                        if security_test && probe_target(url, "/navigation") {
+                            navigation_guards
+                                .navigation_probe_denied
+                                .fetch_add(1, Ordering::Relaxed);
+                        }
                     }
                     allowed
                 })
-                .on_new_window(move |_url, _features| {
+                .on_new_window(move |url, _features| {
                     popup_guards
                         .new_window_denied
                         .fetch_add(1, Ordering::Relaxed);
                     println!("LINTRA_RUNTIME_NEW_WINDOW_DENIED");
+                    if security_test && probe_target(&url, "/popup") {
+                        popup_guards
+                            .popup_probe_denied
+                            .fetch_add(1, Ordering::Relaxed);
+                    }
                     NewWindowResponse::Deny
                 });
+            #[cfg(target_os = "windows")]
+            {
+                window = window.on_web_resource_request(|_request, response| {
+                    restrict_document_connections(response.headers_mut());
+                });
+            }
             if security_test {
                 window = window.initialization_script("window.__LINTRA_SECURITY_TEST__ = true;");
             }
@@ -344,6 +559,154 @@ fn main() {
 mod tests {
     use super::*;
 
+    fn controls_only_report() -> SecurityReport {
+        serde_json::from_value(serde_json::json!({
+            "text_only": true, "inline_script_blocked": true,
+            "remote_script_blocked": true, "remote_style_blocked": true,
+            "remote_font_blocked": true, "image_blocked": true,
+            "frame_blocked": true, "object_blocked": true,
+            "fetch_blocked": true, "websocket_blocked": true,
+            "eventsource_blocked": true, "beacon_blocked": true,
+            "form_blocked": true, "native_navigation_blocked": false,
+            "native_popup_blocked": false, "valid_invoke": true,
+            "forbidden_invokes": true, "invalid_reports": true, "csp_events": 12
+        }))
+        .unwrap()
+    }
+
+    #[test]
+    fn document_recovery_is_bounded_and_never_trusts_an_error_origin() {
+        let root = Url::parse("http://tauri.localhost/").unwrap();
+        let error = Url::parse("chrome-error://chromewebdata/").unwrap();
+        let other = Url::parse("http://tauri.localhost/other").unwrap();
+        let mut document = DocumentState::default();
+        assert!(document.loaded(PageLoadEvent::Finished, &error).is_err());
+        document.loaded(PageLoadEvent::Started, &root).unwrap();
+        assert_eq!(
+            document.loaded(PageLoadEvent::Finished, &error).unwrap(),
+            Some(root.clone())
+        );
+        assert!(document.recovering);
+        assert!(document.loaded(PageLoadEvent::Finished, &error).is_err());
+        assert!(document.loaded(PageLoadEvent::Started, &other).is_err());
+        document.loaded(PageLoadEvent::Started, &root).unwrap();
+        document.loaded(PageLoadEvent::Finished, &root).unwrap();
+        assert!(!document.recovering);
+        assert_eq!(document.recoveries, 1);
+        assert_eq!(document.trusted_url, Some(root.clone()));
+        document.recoveries = u32::MAX;
+        document.loaded(PageLoadEvent::Finished, &error).unwrap();
+        assert!(document.loaded(PageLoadEvent::Finished, &root).is_err());
+    }
+
+    #[test]
+    fn checkpoint_requires_all_controls_and_resumes_only_its_exact_document() {
+        let root = Url::parse("http://tauri.localhost/").unwrap();
+        let other = Url::parse("http://tauri.localhost/other").unwrap();
+        let report = controls_only_report();
+        let mut document = DocumentState {
+            trusted_url: Some(root.clone()),
+            ..Default::default()
+        };
+        document.checkpoint(&report, &root).unwrap();
+        assert!(document.checkpoint(&report, &root).is_err());
+        assert!(document.resume(&other, 1, 1).is_err());
+        assert!(document.loaded(PageLoadEvent::Started, &other).is_err());
+        let popup_only = document.resume(&root, 0, 1).unwrap().unwrap();
+        assert!(popup_only.native_popup_blocked && !popup_only.native_navigation_blocked);
+        assert!(!popup_only.passed());
+        assert!(!document.resume(&root, 1, 0).unwrap().unwrap().passed());
+        assert!(document.resume(&root, 1, 1).unwrap().unwrap().passed());
+        document.recovering = true;
+        assert!(document.resume(&root, 1, 1).is_err());
+
+        let value = serde_json::to_value(&report).unwrap();
+        for (key, original) in value.as_object().unwrap() {
+            if original == &serde_json::Value::Bool(true) {
+                let mut bad = value.clone();
+                bad[key] = serde_json::Value::Bool(false);
+                let mut fresh = DocumentState {
+                    trusted_url: Some(root.clone()),
+                    ..Default::default()
+                };
+                assert!(
+                    fresh
+                        .checkpoint(&serde_json::from_value(bad).unwrap(), &root)
+                        .is_err(),
+                    "{key}"
+                );
+                assert!(fresh.checkpoint.is_none());
+            }
+        }
+        for count in [0, 9, 129, u32::MAX] {
+            let mut bad = report.clone();
+            bad.csp_events = count;
+            let mut fresh = DocumentState {
+                trusted_url: Some(root.clone()),
+                ..Default::default()
+            };
+            assert!(fresh.checkpoint(&bad, &root).is_err());
+        }
+    }
+
+    #[test]
+    fn checkpoint_query_is_test_only_and_preserves_the_normal_wire_shape() {
+        let mut report: RenderReport =
+            serde_json::from_str(r#"{"protocol":1,"width":900,"height":600}"#).unwrap();
+        assert_eq!(
+            serde_json::to_string(&report).unwrap(),
+            r#"{"protocol":1,"width":900,"height":600}"#
+        );
+        assert!(!report.checkpoint_query(false).unwrap());
+        report.security_resume = Some(true);
+        assert!(report.checkpoint_query(false).is_err());
+        assert!(report.checkpoint_query(true).unwrap());
+        report.security = Some(controls_only_report());
+        assert!(report.checkpoint_query(true).is_err());
+        assert!(
+            serde_json::from_str::<RenderReport>(
+                r#"{"protocol":1,"width":900,"height":600,"security_resume":"true"}"#
+            )
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn native_attack_counters_distinguish_the_two_exact_synthetic_targets() {
+        let navigation = Url::parse("http://127.0.0.1:49183/navigation").unwrap();
+        let popup = Url::parse("http://127.0.0.1:49183/popup").unwrap();
+        assert!(probe_target(&navigation, "/navigation"));
+        assert!(probe_target(&popup, "/popup"));
+        assert!(!probe_target(&popup, "/navigation"));
+        for url in [
+            "http://127.0.0.1/navigation",
+            "http://127.0.0.1:49183/navigation?extra",
+            "http://user@127.0.0.1:49183/navigation",
+            "http://127.0.0.1.evil:49183/navigation",
+        ] {
+            assert!(!probe_target(&Url::parse(url).unwrap(), "/navigation"));
+        }
+    }
+
+    #[test]
+    fn connection_boundary_replaces_weaker_policy_and_preserves_csp() {
+        let mut headers = tauri::http::HeaderMap::new();
+        headers.insert(
+            "content-security-policy",
+            "default-src 'self'".parse().unwrap(),
+        );
+        headers.insert("connection-allowlist", "(*)".parse().unwrap());
+        restrict_document_connections(&mut headers);
+        restrict_document_connections(&mut headers);
+        assert_eq!(headers.get_all("connection-allowlist").iter().count(), 1);
+        assert_eq!(
+            headers["connection-allowlist"],
+            r#"("http://tauri.localhost/*" "http://ipc.localhost/*")"#
+        );
+        assert_eq!(headers["content-security-policy"], "default-src 'self'");
+        assert_eq!(headers.len(), 2);
+    }
+
     #[test]
     fn profile_rejects_font_fallback_zoom_and_native_size_mismatch() {
         let report = RenderReport {
@@ -352,6 +715,7 @@ mod tests {
             height: 600,
             security: None,
             profile: None,
+            security_resume: None,
         };
         let mut profile = ProfileReport {
             scale_milli: 1500,
@@ -426,6 +790,7 @@ mod tests {
                     height,
                     security: None,
                     profile: None,
+                    security_resume: None,
                 }),
                 valid
             );

@@ -1,0 +1,33 @@
+{
+  "baseline": "c33cdb85a12cb844004a0daa4feee6dce044d1ee",
+  "source_identity": "baseline plus Windows source manifest and final harness hashes",
+  "inputs": {
+    "spikes/tauri-runtime/src-tauri/src/main.rs": "88fe0ec0f596cdff70b60c71bbf7e725d75581d4dabee2ef6ee8e2e90acc980f",
+    "spikes/tauri-runtime/src/security_probe.ts": "c5897139bc670a2033d3f79d449210bbd1c158bf27a5a610a8894ea466cdbd8d",
+    "spikes/tauri-runtime/tools/native_security.cjs": "6acad72c5198d39735f7f1501873201b371db4cf4152bcbe78f10fdbd370b55c"
+  },
+  "windows_binary": {
+    "sha256": "976167f807ac6a2ed2cc8514513f79148df928266189c47194f687bcea78f5b1",
+    "bytes": 9061888
+  },
+  "local_checks": {
+    "rust_tests": {
+      "exit_code": 0,
+      "passed": 9
+    },
+    "clippy_all_targets": {
+      "exit_code": 0
+    },
+    "typescript_strict_vite": {
+      "exit_code": 0
+    },
+    "windows_msvc_release_clippy": {
+      "exit_code": 0
+    },
+    "windows_msvc_release_build": {
+      "exit_code": 0
+    }
+  },
+  "scope": "isolated synthetic runtime, not workspace or release qualification",
+  "ci": "pending new commit; previous CI not reused"
+}

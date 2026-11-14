@@ -187,9 +187,57 @@ il protocollo e le decisioni cliniche del core non sono coinvolti.
 
 Il driver registra separatamente connessioni, byte e il solo nome noto del
 caso sintetico HTTP. Un renderer che segnala rifiuti ma invia richieste resta
-FAIL. Il timeout del helper OS è20s e la finestra di input trusted30s, per
+FAIL. Il timeout del helper OS è20s su Linux (60s diagnostici su Windows) e la finestra di input trusted30s, per
 accogliere il primo caricamento PowerShell della VM senza cambiare le policy.
 La prova continua a richiedere zero connessioni/richieste, non un mero exit0.
+
+### Contenimento delle connessioni del documento Windows
+
+`restrict_document_connections` imposta l’header HTTP `Connection-Allowlist`
+sulle risposte asset attraverso `on_web_resource_request`, prima del caricamento
+del documento. La policy ammette solo `http://tauri.localhost/*` e
+`http://ipc.localhost/*`, intercettati da Wry. Sostituisce un eventuale header
+precedente senza duplicarlo e conserva la CSP: il test mirato copre entrambi
+gli invarianti. Non abilita reporting di rete, redirect o WebRTC.
+
+Le [connection allowlist di Chromium](https://developer.chrome.com/blog/connection-allowlist-announcement)
+agiscono anche sui canali non coperti dalla CSP. La presenza dell’header non
+dimostra però supporto o contenimento nel runtime WebView2: servono gli esiti
+della prova nativa nel dossier P1-04. I guard SDK/navigation/popup e il criterio
+zero connessioni del collettore restano attivi. Il callback è solo Windows;
+questa singola policy non cambia i lockfile. Il recovery e il checkpoint
+descritti sotto sono integrati anche nel renderer e nel DTO privato dello spike.
+
+### Ripristino del documento dopo un errore di policy
+
+WebView2 può sostituire la pagina con `chrome-error://chromewebdata/` anche
+quando i guard rifiutano l’attacco. `DocumentState` conserva in memoria Rust
+l’ultimo URL asset attendibile e accoda tramite Tauri il ritorno a quel solo
+documento; nessun riferimento COM attraversa thread. Un target diverso,
+recovery ricorsiva, assenza dell’entry o overflow falliscono esplicitamente.
+La pagina di errore continua a non avere autorità IPC. Questo ricarica il
+documento dello spike; non promette conservazione di stato React arbitrario
+o recovery di job del prodotto, che appartengono alle fasi successive.
+
+La sonda conserva un solo checkpoint sintetico Rust prima di popup e navigazione,
+senza localStorage/sessionStorage o dati di lavoro. Il flag privato opzionale
+`security_resume` di `render_ack` è ammesso solo nella modalità di qualifica,
+senza payload misti. Il normale wire protocol1 resta identico. Il resume verifica
+l’URL esatto e deriva separatamente i due dinieghi dai callback dei casi
+`/popup` e `/navigation`: un popup non può sostituire la prova di navigazione.
+Dopo il reload il renderer ricontrolla sentinella text-only e IPC reale; Rust
+confronta il report finale con il checkpoint e non emette un ACK intermedio.
+I nove test coprono anche policy, query illegali, URL diversi, recovery fallita,
+controlli incompleti e limiti dei conteggi.
+
+Il helper PowerShell parte con finestra nascosta per non sottrarre il focus
+al processo che deve ricevere Enter. Il driver conserva le fasi fisse
+dell’input Windows e termina solo il proprio
+albero di processi in caso di errore/timeout; le pipe vengono chiuse e un
+timeout non può diventare PASS anche se il processo era già uscito con0.
+Il limite diagnostico PowerShell è60s, il processo GUI150s; la finestra del
+gesto trusted nel renderer resta30s. PID/foreground e tutti i predicati
+CSP/ACL/zero connessioni restano obbligatori.
 
 ## P1-05: profilo WebView, font e scala nativa
 

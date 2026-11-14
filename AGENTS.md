@@ -1,5 +1,29 @@
 # Istruzioni operative Lintra
 
+## Sviluppo sostanziale e verifiche progressive — 14 novembre 2026
+
+La direttiva dell’autore supera la frequenza dei controlli nei workflow storici:
+eseguire sequenzialmente blocchi funzionali coerenti (indicativamente 2–5 task
+correlate quando i prerequisiti lo consentono), mantenendo ID, dipendenze,
+criteri di accettazione e gate del Piano Unificato. Nessun attraversamento di
+gate aperti e nessun DONE senza evidenze attribuibili alla singola task.
+
+Livello A durante lo sviluppo: controlli piccoli sui moduli/invarianti toccati.
+Livello B a integrazione del blocco: test negativi, edge case, contratti e
+regressioni confinanti pertinenti. Livello C soltanto per gate obbligatori,
+checkpoint significativi, rischio trasversale, anomalie o artefatti qualificati.
+Verificare subito gli invarianti critici (DSL/PASS1/PASS2, storia, SQLite/CAS,
+privacy/HMAC, determinismo, contratti pubblici, interruzioni e concorrenza).
+Niente suite workspace, CI o VM sistematiche dopo ogni micro-task; riusare
+evidenze soltanto se sorgenti, configurazione e dipendenze restano pertinenti.
+Registrare exit code reali, distinguendo locale, Windows e CI ufficiale.
+Non cambiare CI o acceptance per risparmiare tempo. Restano single-agent,
+nessuna delega/background e uso selettivo della VM già autorizzato.
+
+Al termine del blocco: sviluppato/task, verificato/esiti, rischi/gate residui,
+prossimo avanzamento. Skill, plugin e preferenze generali sono configurati a
+livello utente in `~/.codex/AGENTS.md`, senza dipendenze applicative nel repo.
+
 ## VM Windows 11: utilizzo selettivo — 13 novembre 2026
 
 Asset disponibile: `Windows11-Lintra-Test`, Windows 11 x86_64 su CachyOS con

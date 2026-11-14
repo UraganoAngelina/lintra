@@ -1,0 +1,104 @@
+{
+  "files": [
+    {
+      "path": "checkpoint.json",
+      "bytes": 1125,
+      "sha256": "60a6f2dd7003b6626fb08fa9ea16632ee238e7678cb3ebc6bc77db8a82d372d8"
+    },
+    {
+      "path": "first-header-failure.json",
+      "bytes": 1170,
+      "sha256": "f9eea7736ec4c50a4dd0370ddb8b08585538855781bd83d3158f813f529864c8"
+    },
+    {
+      "path": "fresh-console-harness-stderr.txt.gz",
+      "bytes": 58,
+      "sha256": "e21944aae68d14734c60fc30e8f7e038e8e1cfb7222804ddf8cb04a6867ef2dd"
+    },
+    {
+      "path": "fresh-console-harness-stdout.txt.gz",
+      "bytes": 961,
+      "sha256": "55ea2fb5442f77fd7345604c8a42781d506062df3aacccceaba14938282ab009"
+    },
+    {
+      "path": "fresh-console-launcher-result.json.gz",
+      "bytes": 1199,
+      "sha256": "268cf977ffe421621aff63ba8b4a5023fe4701e418c599be2252cdef9caf02d8"
+    },
+    {
+      "path": "fresh-console-native-security.json.gz",
+      "bytes": 950,
+      "sha256": "8dd5a1276b5932f79e7a24c1b7f92d3de621ec729bbebfaf6ed2eb454e6a4708"
+    },
+    {
+      "path": "fresh-console-ordinary-stderr.txt.gz",
+      "bytes": 165,
+      "sha256": "ee3d1281f38b265b01b9e4c71b431ea275efc76e7be7178733d579adde31393b"
+    },
+    {
+      "path": "fresh-console-ordinary-stdout.txt.gz",
+      "bytes": 120,
+      "sha256": "e4c4323f522bc63d5b7cb3046c37ae92f5d1ac73672add272a8fe09b576b0b6a"
+    },
+    {
+      "path": "fresh-input-failure.json",
+      "bytes": 2538,
+      "sha256": "720ddef5103f77bcda13e3edc485f59c87e4df3faedf80b3a475526597705933"
+    },
+    {
+      "path": "harness-negative-non-gui-permitted.json.gz",
+      "bytes": 376,
+      "sha256": "93abb54ab24e522928a1acee44c552332f3bb66fbaa68da2837bdd1d852cdb2a"
+    },
+    {
+      "path": "harness-negative-spawn-error-permitted.json.gz",
+      "bytes": 337,
+      "sha256": "91d42f1f6294244a0a2210be50a980b015e9bac127bbcbb9342d7cf2671d8cb0"
+    },
+    {
+      "path": "harness-stderr.txt.gz",
+      "bytes": 44,
+      "sha256": "cd2307d5e8cc519be7b6020b9870597bce57eaf09362fcce69baaae42dce184c"
+    },
+    {
+      "path": "harness-stdout.txt.gz",
+      "bytes": 943,
+      "sha256": "05aee5af2faa32474356f666a69db5eaed3a27c9c1bb0a202116523fb320f5df"
+    },
+    {
+      "path": "input-failure.json",
+      "bytes": 1196,
+      "sha256": "169df1e959da3728e2894d32f09a997f5d40105a4ecd6bc2241bb35c28ad889f"
+    },
+    {
+      "path": "launcher-result.json.gz",
+      "bytes": 1135,
+      "sha256": "8db701dd8f20677dbfe295ad7dbb4172a3d0f4a320d4361de14ed4ab8b18bb24"
+    },
+    {
+      "path": "linux-document-recovery.json.gz",
+      "bytes": 850,
+      "sha256": "64f4a76eae54aa2c5dbc0fd02f853f2463bde9e1ed39a30b479823b895b9c6d0"
+    },
+    {
+      "path": "native-security.json.gz",
+      "bytes": 932,
+      "sha256": "a9c1153bf08fb1dacfeb5bbab56bc0ff1a23b4d0b1606b6c97bffa31664ecbc4"
+    },
+    {
+      "path": "recovery-build.log.gz",
+      "bytes": 187,
+      "sha256": "5adcfa90132a14962b63431164d4727e6e0a43204ff19d9d32119887375b28a2"
+    },
+    {
+      "path": "recovery-clippy.log.gz",
+      "bytes": 189,
+      "sha256": "986f8780cd1595707c384f71e8d0d19385515382ccaa3957f6d0f7a46347a156"
+    },
+    {
+      "path": "windows-source-recovery-manifest.json.gz",
+      "bytes": 2493,
+      "sha256": "18df943ce6711f195c1acec5ac087599357cfd20a5d9bac59adce196b20142b9"
+    }
+  ]
+}

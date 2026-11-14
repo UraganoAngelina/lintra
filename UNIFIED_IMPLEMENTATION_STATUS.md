@@ -1,6 +1,7 @@
 # Stato unificato post-M9
 
-Aggiornato: 2026-11-13, Europe/Rome. Un agente, una task per volta.
+Aggiornato: 2026-11-14, Europe/Rome. Un agente; task tracciate singolarmente,
+sviluppo sequenziale per blocchi coerenti secondo AGENTS.md.
 Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md),
 [master v1.0](docs/unified-post-m9/MASTER_PLAN_UNIFICATO.md) e
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
@@ -71,7 +72,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P1-01 | T-MIG-P0-08 | DONE | [Spike nativo React/Tauri Linux](docs/verification/unified-post-m9/T-MIG-P1-01.md) | 996947e app invariata;build/Clippy/IPC-render Wayland/capture PASS;144 righe ldd senza missing | Acceptance Linux personale PASS;G-MIG-1 aggregato NOT_VERIFIED |
 | T-MIG-P1-02 | T-MIG-P0-08 | DONE | [Spike Windows e prove reali](docs/verification/unified-post-m9/T-MIG-P1-02.md) | bdca1cf/CI43014153420;13/11 Win11 offline runtime presente/assente, due desktop standard, ACL/uninstall/restore PASS | Acceptance Windows spike PASS; G-MIG-1 aggregato NOT_VERIFIED |
 | T-MIG-P1-03 | T-MIG-P1-01 | DONE | [Profilo e prove CachyOS](docs/verification/unified-post-m9/T-MIG-P1-03.md) | 151 ELF/99 package;relocated Wayland e loader negativo PASS;binario c53fd4ba invariato | Acceptance personale PASS;G-MIG-1 aggregato bloccato su Win11 |
-| T-MIG-P1-04 | T-MIG-P1-01, T-MIG-P1-02 | BLOCKED | [CSP e guard nativi](docs/verification/unified-post-m9/T-MIG-P1-04.md) | 3 test Rust/MSVC/Clippy e Linux native PASS; Windows 0HTTP ma3TCP vuote, zero-network FAIL | G-MIG-1 NOT_VERIFIED |
+| T-MIG-P1-04 | T-MIG-P1-01, T-MIG-P1-02 | IN_PROGRESS | [CSP e guard nativi](docs/verification/unified-post-m9/T-MIG-P1-04.md) | Recovery/checkpoint integrati;9test/Clippy/TS e native Linux/Win11 18controlli/0TCP0HTTP PASS; CI del delta pendente | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-05 | T-MIG-P1-01, T-MIG-P1-02 | DONE | [Profilo WebView/font/DPI](docs/verification/unified-post-m9/T-MIG-P1-05.md) | 413b7e4/CI43494464261 SUCCESS; Wayland e Win11 standard/font/DPI100%/capture PASS; VM ripristinata/spenta | Acceptance profilo PASS; G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-06 | T-MIG-P1-02, T-MIG-P1-03, T-MIG-P1-04, T-MIG-P1-05, T-MIG-P1-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-06.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-07 | T-MIG-P1-02, T-MIG-P1-04 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-07.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
@@ -219,3 +220,13 @@ verificato dopo virsh shutdown. Nessun gate VM ricorrente o nuova milestone.
 P1-07/06 e P2/P3 attendono quel prerequisito; U-OPS-03/U-NORM-04 attendono
 integrazione reale. Nessuna NOT_STARTED con dipendenze tutte DONE:
 **NO_READY_TASK**. Le prove P1-05 non risolvono il blocco di rete P1-04.
+
+Ripresa 14 novembre 2026: conservata la frontiera c33cdb8 (33/128 DONE).
+Recepita la direttiva sulle verifiche progressive in AGENTS.md; setup skill
+esclusivamente utente, ricevuta fuori repo in ~/.codex/setup-evidence/.
+Ripresa la diagnosi/correzione circoscritta P1-04 con Connection-Allowlist
+sulle risposte asset Windows, senza cambiare CSP/ACL o criterio zero TCP.
+Cinque test Rust mirati e Clippy Linux PASS; sorgenti/font/dist identificati
+da manifest di39file, cache MSVC riutilizzata. Prove Windows del delta in corso:
+il precedente blocco resta aperto fino a evidenza nativa e CI pertinenti.
+Nessuna suite workspace/golden/CI/Windows avviata per il solo setup globale.

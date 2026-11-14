@@ -8,9 +8,12 @@ const http = require("node:http");
 const crypto = require("node:crypto");
 const { spawn, spawnSync } = require("node:child_process");
 
-function checked(command, args) {
-  const result = spawnSync(command, args, { encoding: "utf8", timeout: 20000 });
-  if (result.error || result.status !== 0) throw new Error("Owned-window input failed: " + (result.error || result.stderr));
+function checked(command, args, timeout = 20000) {
+  const result = spawnSync(command, args, { encoding: "utf8", timeout, windowsHide: true });
+  if (result.error || result.status !== 0) {
+    const stages = (result.stdout || "").split(/\r?\n/).filter(line => /^LINTRA_INPUT_STAGE (init|assembly|win32|handle|activate|focus|sent)$/.test(line));
+    throw new Error("Owned-window input failed: " + (result.error || result.stderr) + (stages.length ? "; " + stages.join(", ") : ""));
+  }
   return result.stdout;
 }
 
@@ -24,7 +27,7 @@ function trustedPopupInput(pid) {
     if (JSON.parse(checked("hyprctl", ["-j", "activewindow"])).pid !== pid) throw new Error("Native child does not own focus");
     checked("hyprctl", ["dispatch", `hl.dsp.send_shortcut({mods = "", key = "Return", window = ${target}})`]);
   } else if (process.platform === "win32") {
-    const script = `$ErrorActionPreference='Stop'; Add-Type -AssemblyName System.Windows.Forms;
+    const script = `$ErrorActionPreference='Stop'; [Console]::Out.WriteLine('LINTRA_INPUT_STAGE init'); [Console]::Out.Flush(); Add-Type -AssemblyName System.Windows.Forms; [Console]::Out.WriteLine('LINTRA_INPUT_STAGE assembly'); [Console]::Out.Flush();
 Add-Type @'
 using System; using System.Runtime.InteropServices;
 public static class LintraOwnedInput {
@@ -33,11 +36,13 @@ public static class LintraOwnedInput {
  [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr h, out uint p);
 }
 '@
-$p=Get-Process -Id ${pid}; if($p.MainWindowHandle -eq [IntPtr]::Zero){throw 'No owned native window'};
-[LintraOwnedInput]::SetForegroundWindow($p.MainWindowHandle) | Out-Null; Start-Sleep -Milliseconds 200;
+[Console]::Out.WriteLine('LINTRA_INPUT_STAGE win32'); [Console]::Out.Flush();
+$p=Get-Process -Id ${pid}; $handle=$p.MainWindowHandle; if($handle -eq [IntPtr]::Zero){throw 'No owned native window'};
+[Console]::Out.WriteLine('LINTRA_INPUT_STAGE handle'); [Console]::Out.Flush();
+[LintraOwnedInput]::SetForegroundWindow($handle) | Out-Null; [Console]::Out.WriteLine('LINTRA_INPUT_STAGE activate'); [Console]::Out.Flush(); Start-Sleep -Milliseconds 200;
 [uint32]$owner=0; [LintraOwnedInput]::GetWindowThreadProcessId([LintraOwnedInput]::GetForegroundWindow(),[ref]$owner) | Out-Null;
-if($owner -ne ${pid}){throw 'Refuse input to another process'}; [Windows.Forms.SendKeys]::SendWait('{ENTER}');`;
-    checked("powershell.exe", ["-NoLogo", "-NoProfile", "-NonInteractive", "-EncodedCommand", Buffer.from(script, "utf16le").toString("base64")]);
+if($owner -ne ${pid}){throw 'Refuse input to another process'}; [Console]::Out.WriteLine('LINTRA_INPUT_STAGE focus'); [Console]::Out.Flush(); [Windows.Forms.SendKeys]::SendWait('{ENTER}'); [Console]::Out.WriteLine('LINTRA_INPUT_STAGE sent'); [Console]::Out.Flush();`;
+    checked("powershell.exe", ["-NoLogo", "-NoProfile", "-NonInteractive", "-EncodedCommand", Buffer.from(script, "utf16le").toString("base64")], 60000);
   } else throw new Error("Unsupported native input platform");
 }
 
@@ -73,6 +78,19 @@ async function main() {
   let child;
   const result = { passed: false, executable_sha256: crypto.createHash("sha256").update(fs.readFileSync(exe)).digest("hex"),
     platform: process.platform, node: process.version, started_utc: new Date().toISOString() };
+  const stopChild = () => {
+    if (!child) return;
+    if (Number.isSafeInteger(child.pid) && child.exitCode === null && child.signalCode === null) {
+      if (process.platform === "win32") {
+        // Kill only this owned process tree; orphan WebView pipes otherwise
+        // keep the foreground harness alive after a timed-out Rust child.
+        const stopped = spawnSync("taskkill.exe", ["/PID", String(child.pid), "/T", "/F"], { encoding: "utf8", timeout: 10000 });
+        if (stopped.error || stopped.status !== 0) result.termination_error = String(stopped.error || stopped.stderr);
+      }
+      child.kill();
+    }
+    child.stdout?.destroy(); child.stderr?.destroy();
+  };
   try {
     await new Promise((resolve, reject) => {
       server.once("error", reject); server.listen(49183, "127.0.0.1", resolve);
@@ -92,6 +110,7 @@ async function main() {
     if (process.platform === "linux") env.GDK_BACKEND = "wayland";
     measuring = true;
     child = spawn(exe, ["--security-test"], { env, stdio: ["ignore", "pipe", "pipe"] });
+    result.native_pid = child.pid;
     let stdout = "", stderr = "";
     let trustedInput = false;
     child.stdout.on("data", (chunk) => {
@@ -99,12 +118,12 @@ async function main() {
       if (!trustedInput && stdout.includes("LINTRA_RUNTIME_SECURITY_AWAIT_POPUP")) {
         trustedInput = true;
         try { trustedPopupInput(child.pid); result.trusted_popup_input = "sent only to the focused owned child"; }
-        catch (error) { result.input_error = String(error); child.kill(); }
+        catch (error) { result.input_error = String(error); stopChild(); }
       }
     });
     child.stderr.on("data", (chunk) => { stderr += chunk.toString(); });
     const outcome = await new Promise((resolve, reject) => {
-      const timer = setTimeout(() => { child.kill(); }, 90000);
+      const timer = setTimeout(() => { result.timed_out = true; stopChild(); }, 150000);
       child.once("error", (error) => { clearTimeout(timer); reject(error); });
       child.once("close", (code, signal) => { clearTimeout(timer); resolve({ code, signal }); });
     });
@@ -120,14 +139,14 @@ async function main() {
     const guards = decode("LINTRA_RUNTIME_SECURITY_ACK ");
     const renders = decode("LINTRA_RUNTIME_RENDER_ACK ");
     result.report = reports[0]; result.native_guards = guards[0];
-    result.passed = outcome.code === 0 && outcome.signal === null && requests === 0 && connections === 0 && trustedInput && !result.input_error
+    result.passed = !result.timed_out && !result.termination_error && outcome.code === 0 && outcome.signal === null && requests === 0 && connections === 0 && trustedInput && !result.input_error
       && reports.length === 1 && guards.length === 1 && renders.length === 1
       && Object.entries(reports[0]).every(([name, value]) => name === "csp_events" ? value >= 10 && value <= 128 : value === true)
       && guards[0].navigation_denied >= 1 && guards[0].new_window_denied >= 1
       && renders[0].protocol === 1 && renders[0].width >= 640 && renders[0].height >= 480;
   } catch (error) { result.error = String(error); }
   finally {
-    if (child && child.exitCode === null && child.signalCode === null) child.kill();
+    stopChild();
     // closeAllConnections also bounds cleanup if an unexpected forbidden
     // connection was opened and kept alive. Such a connection already fails.
     server.closeAllConnections();

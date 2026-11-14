@@ -1,6 +1,7 @@
 # T-MIG-P1-04 — CSP, capability e navigazioni native
 
-13 novembre 2026. **BLOCKED — zero-network Windows**, G-MIG-1 aggregato NOT_VERIFIED.
+14 novembre 2026. **IN_PROGRESS — prove native PASS, CI del delta pendente**;
+G-MIG-1 aggregato NOT_VERIFIED. La cronologia del13 novembre resta sotto.
 Prerequisiti P1-01/P1-02 DONE; ingresso documentale 7f165e5. P1-02 resta
 qualificata sull’artefatto bdca1cf; questa task modifica il runtime dello spike
 e richiede proprie prove native/CI, senza attribuirsi la CI del codice vecchio.
@@ -147,3 +148,128 @@ Autologon assenti, nessuna password plaintext Winlogon. SSH admin elevato e
 standard non elevato funzionanti;1.99.1 affiancata e stable1.100.0 conservate,
 sorgente/cache v2 presente. Il checkpoint è quindi provato ripristinabile.
 Indice delle evidenze con SHA: [manifest](T-MIG-P1-04-native/manifest.json).
+
+## Ripresa 14 novembre 2026: connessioni del documento
+
+Baseline c33cdb8, working tree iniziale pulita; P1-05 e33/128 DONE conservati.
+Il nuovo workflow è recepito in AGENTS.md. Installazioni e ricevuta delle skill
+sono esclusivamente utente, fuori dal repository; nessuna milestone o suite
+di regressione introdotta per il setup.
+
+Il delta candidato usa `WebviewWindowBuilder::on_web_resource_request`, API
+verificata nel sorgente della Tauri2.12.5 pinnata. Prima del primo documento
+aggiunge alle risposte asset `Connection-Allowlist` con i soli pattern
+`http://tauri.localhost/*` e `http://ipc.localhost/*`, intercettati da Wry.
+`restrict_document_connections` sostituisce eventuali policy precedenti,
+senza duplicarle o cambiare la CSP. Il callback è compilato solo Windows;
+nessuna nuova dipendenza, capability, norma o modifica core/CLI/Slint.
+Il checkpoint successivo estende soltanto il DTO privato della sonda.
+La [documentazione Chromium](https://developer.chrome.com/blog/connection-allowlist-announcement)
+descrive il contenimento prima delle connessioni, compresi canali non coperti
+dalla CSP. Il supporto nel WebView2 concreto richiede comunque prova nativa.
+
+Livello A: cinque test Rust Linux PASS, incluso il nuovo test di sostituzione
+della policy permissiva, idempotenza e conservazione CSP; Clippy locale
+`--all-targets -- -D warnings` PASS. MSVC1.99.1: cinque test, Clippy e build
+release custom-protocol PASS. Nessuna suite workspace o golden rieseguita.
+Frontend e harness sono riutilizzati dal codice qualificato P1-05; il manifest
+di39file identifica sorgenti/font/dist, inclusi i delta locali. Lo staging
+iniziale ha rifiutato i due font ereditati perché assenti dalla nuova allowlist:
+errore conservato, corretto ammettendo solo quei nomi esatti, prima dell’overlay.
+
+La prima prova desktop standard/sessione1 osserva sul binario SHA256
+`1aeb5cc0274dd44c5187085defe9ad1c1373d646a9ae0341851b34fdddfb75a0`
+(9037824byte) ACK ordinario900×600/exit0, guard popup e navigazione attivati,
+**0TCP/0HTTP**, ma nessun report finale: timeout/SIGTERM, harness1 e launcher
+FAIL. Il solo successo del contenimento di rete non chiude l’acceptance.
+
+Diagnosi separata sullo stesso binario, senza ricompilarlo: CDP limitato a
+`127.0.0.1:9227` tramite variabile del solo processo figlio, secondo il
+[metodo Microsoft per il debugging](https://learn.microsoft.com/en-us/microsoft-edge/webview2/how-to/debug-visual-studio-code).
+Non è una qualificazione e non viene usata per attribuire un PASS alla rete.
+La pagina osservata dopo l’attacco è `chrome-error://chromewebdata/`, titolo
+sintetico127.0.0.1. L’invoke riceve `Origin header is not a valid URL`/HTTP500:
+il confine IPC rifiuta l’origine non valida, mentre il documento locale è stato
+sostituito. Non è un motivo per consentire quell’origine o indebolire l’ACL.
+Disabilitare la built-in error page non preserva il documento: Microsoft
+[documenta una pagina vuota](https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2settings),
+quindi non viene adottato come correzione.
+
+Il tentativo successivo aggiunge nel solo adapter SDK un NavigationStarting
+che verifica ancora `local_asset_origin`, imposta Cancel e invoca `Stop()` sul
+sender COM del medesimo evento. URI malformati vengono negati; argomenti nulli
+ed errori SDK impostano failure ed exit1. Nessun riferimento COM preso in
+prestito esce dal callback. L’esito del tentativo viene registrato sotto dopo
+il collaudo; non è dichiarato risolutivo dalla sola compilazione. Test puri e
+frontend invariati vengono riutilizzati; si ricompila solo il delta Windows.
+
+Le strumentazioni temporanee JS/Node della diagnosi sono state rimosse dai
+sorgenti; il frontend precedente è stato ripristinato byte per byte dal suo
+archivio identificato. La prova successiva rifiuta un listener CDP ancora
+attivo e conserva separatamente gli output del primo fallimento.
+
+
+## Blocco integrato: contenimento, recovery e checkpoint sintetico
+
+Il tentativo SDK `Stop()` descritto sopra e la variante accodata sul thread
+Tauri sono stati **scartati**: build/Clippy passavano, ma la prova non produceva
+il report finale e l’input si bloccava. `windows_request_guard.rs` è tornato
+esattamente alla versione qualificata precedente, senza quei callback COM.
+
+`DocumentState::loaded` conserva l’entry asset attendibile, riconosce un
+Finished estraneo e accoda il ritorno a quell’URL tramite l’executor Tauri.
+Non trasferisce riferimenti COM e non naviga mantenendo il mutex acquisito.
+Origine di errore, target diverso, recovery ricorsiva e overflow non acquistano
+autorità: il processo fallisce. Lo spike ricarica la pagina; non conserva stato
+React arbitrario o lavori del prodotto futuro.
+
+Per permettere alla prova di attraversare un reload reale, `checkpoint` salva
+in Rust un solo `SecurityReport` completo dei controlli CSP/ACL già eseguiti,
+con i due dinieghi nativi ancora falsi. Forma e dimensioni restano bounded,
+nessun dato di lavoro entra in memoria DOM persistente o nei log. `resume`
+verifica l’URL esatto e deriva i due flag da contatori distinti dei target
+sintetici canonici `/popup` e `/navigation`. Un popup non sostituisce la seconda
+prova. `render_ack` non emette successo al checkpoint e confronta il risultato
+finale con la copia Rust. Query miste o fuori dalla modalità security sono
+rifiutate; il normale protocollo1 continua a serializzare gli stessi campi.
+Il renderer ricontrolla sentinella testuale e IPC dopo il reload.
+
+Il driver usa `windowsHide` per il helper PowerShell: la sua console non deve
+sottrarre il focus. Prima di Enter resta obbligatoria la verifica del PID
+foreground. Un tentativo precedente con focus errato è conservato come FAIL,
+con driver/launcher1 e terminazione dell’albero GUI posseduto. Timeout e
+fallimento del taskkill non possono produrre PASS; output/pipe e collettore
+sono chiusi senza lasciare la prova appesa.
+
+Verifiche A/B sul blocco corrente:
+
+- TS strict/Vite,9 test Rust Linux, Clippy all-targets `-D warnings`: PASS.
+  Test su confini origin/wire, allowlist header, recovery/overflow, URL esatto,
+  controlli incompleti, query illegali e distinzione dei due attacchi.
+- Release MSVC1.99.1 e Clippy all-targets: PASS. I9 test Windows correnti
+  sono demandati alla CI ufficiale; i5 test della prima variante non li sostituiscono.
+- Wayland: binario080a26ee4af83f829d13544ee18734b56a93d00b889e4b2149aaeb83d2c8bf87,
+  tutti18 flag veri,12 eventi CSP,1popup/1navigazione,0TCP/0HTTP,exit0.
+- Windows11 build26300/WebView2 157.0.4341.46, console1 standard:
+  binario976167f807ac6a2ed2cc8514513f79148df928266189c47194f687bcea78f5b1,
+  9061888byte; smoke ordinario900×600/exit0 riutilizzato sullo stesso binario.
+  Prova finale:18 flag veri,12 eventi CSP,1popup/1navigazione,1recovery,
+  **0TCP/0HTTP, processo/driver/task/launcher0**. Nessun CDP attivo nella prova.
+  Il warning WebView2 di uscita `Failed to unregister class ... Error = 1412`
+  è preservato nello stderr; non ha impedito ACK né uscita0.
+- Driver negativo con processo non GUI e con spawn EACCES: exit1/PASS false.
+  Il fallimento reale del focus ha verificato anche la chiusura dell’albero
+  Windows; non è stata aggiunta una seconda prova artificiale equivalente.
+
+Ponytail-review circoscritta a main.rs, renderer, chiamanti IPC e driver:
+nessun finding bloccante sul carico della singola finestra sintetica. Nessuna
+modifica a SDK/lockfile/core/CLI/DSL/SQLite o riduzione dei predicati del test.
+Header supportato dal runtime provato, non garanzia per WebView2 precedenti
+che lo ignorano o per l’intero traffico OS/redistributable. I gate applicativi
+PHI/cache/job/persistenza restano nelle task previste.
+
+Evidenze con hash, sorgenti esatti e tentativi negativi separati:
+[manifest14 novembre](T-MIG-P1-04-native/2026-11-14/manifest.json).
+Il manifest runtime identifica gli input; il nuovo hash separato del driver
+registra la correzione `windowsHide`, successiva alla build ma senza delta del
+binario o del frontend. La CI precedente non viene attribuita a questo stato.
