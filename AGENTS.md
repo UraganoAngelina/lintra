@@ -24,6 +24,17 @@ Al termine del blocco: sviluppato/task, verificato/esiti, rischi/gate residui,
 prossimo avanzamento. Skill, plugin e preferenze generali sono configurati a
 livello utente in `~/.codex/AGENTS.md`, senza dipendenze applicative nel repo.
 
+## Ratifica IPC v1 — 14 novembre 2026
+
+T-MIG-P2-02 approvata dall’autore; fonte vincolante:
+`docs/migration/ipc-v1/RATIFICATION_2026-11-14.md`. Usare `schemaVersion = 1`
+su envelope e DTO,1MiB per messaggio completo in entrambe le direzioni,
+profondità32 prima dell’elaborazione, errori protocollo/tecnici/normativi
+separati e nessun dataset/record sanitario raw/bulk diagnostici in IPC.
+Dettagli implementativi ordinari autorizzati; proseguire secondo dipendenze.
+G-MIG-2 resta aperto fino ai requisiti complessivi, senza nuovo ciclo CI/VM
+per la sola ratifica e senza codice bridge prima del gate previsto.
+
 ## VM Windows 11: utilizzo selettivo — 13 novembre 2026
 
 Asset disponibile: `Windows11-Lintra-Test`, Windows 11 x86_64 su CachyOS con

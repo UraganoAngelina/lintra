@@ -10,6 +10,10 @@ ERROR_CODES = frozenset({
     "IPC_UNKNOWN_OPERATION", "IPC_UNAUTHORIZED", "IPC_STALE_CONTEXT",
     "IPC_BUSY", "IPC_INVALID_STATE", "IPC_TECHNICAL_FAILURE",
 })
+PROTOCOL_CODES = frozenset({
+    "IPC_UNSUPPORTED_VERSION", "IPC_INVALID_MESSAGE", "IPC_PAYLOAD_TOO_LARGE",
+    "IPC_UNKNOWN_OPERATION",
+})
 IDENTIFIER = re.compile(r"[A-Za-z0-9_-]{1,64}", re.ASCII)
 OPERATION = re.compile(r"[a-z][a-z0-9_]{0,63}", re.ASCII)
 
@@ -17,11 +21,20 @@ OPERATION = re.compile(r"[a-z][a-z0-9_]{0,63}", re.ASCII)
 class Rejected(ValueError):
     def __init__(self, code):
         self.code = code
+        self.category = "protocol" if code in PROTOCOL_CODES else "technical"
         super().__init__(code)
 
 
 def invalid(*_):
     raise Rejected("IPC_INVALID_MESSAGE")
+
+
+def require_version(dto):
+    version = dto.get("schemaVersion")
+    if type(version) is not int or not 1 <= version <= 65535:
+        invalid()
+    if version != 1:
+        raise Rejected("IPC_UNSUPPORTED_VERSION")
 
 
 def unique_object(pairs):
@@ -94,30 +107,30 @@ def decode(data, direction):
         invalid()
     if not isinstance(packet, dict):
         invalid()
-    version = packet.get("wire_version")
-    if type(version) is not int or not 1 <= version <= 65535:
-        invalid()
-    if version != 1:
-        raise Rejected("IPC_UNSUPPORTED_VERSION")
+    require_version(packet)
     kind = packet.get("kind")
     if direction == "request":
-        expected = {"wire_version", "request_id", "kind", "operation", "payload"}
+        expected = {"schemaVersion", "request_id", "kind", "operation", "payload"}
         if kind != "request" or set(packet) != expected:
             invalid()
         if not isinstance(packet["operation"], str) or not OPERATION.fullmatch(packet["operation"]):
             invalid()
     elif kind == "result":
-        expected = {"wire_version", "request_id", "kind", "payload"}
+        expected = {"schemaVersion", "request_id", "kind", "payload"}
         if set(packet) != expected:
             invalid()
     elif kind == "error":
-        expected = {"wire_version", "request_id", "kind", "error"}
+        expected = {"schemaVersion", "request_id", "kind", "error"}
         if set(packet) != expected:
             invalid()
         error = packet["error"]
-        if not isinstance(error, dict) or set(error) != {"code"}:
+        if not isinstance(error, dict) or set(error) != {"schemaVersion", "category", "code"}:
             invalid()
+        require_version(error)
         if not isinstance(error["code"], str) or error["code"] not in ERROR_CODES:
+            invalid()
+        category = "protocol" if error["code"] in PROTOCOL_CODES else "technical"
+        if error["category"] != category:
             invalid()
     else:
         invalid()
@@ -125,7 +138,9 @@ def decode(data, direction):
     if not (direction == "response" and kind == "error" and identifier is None):
         if not isinstance(identifier, str) or not IDENTIFIER.fullmatch(identifier):
             invalid()
-    if "payload" in packet and not isinstance(packet["payload"], dict):
-        invalid()
+    if "payload" in packet:
+        if not isinstance(packet["payload"], dict):
+            invalid()
+        require_version(packet["payload"])
     check_scalars(packet)
     return packet

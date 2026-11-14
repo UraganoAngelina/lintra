@@ -1,7 +1,6 @@
 {
   "id": "MIG-IPC-WIRE-V1-2026-11-14",
-  "status": "PROPOSED_NOT_RATIFIED",
-  "wire_version": 1,
+  "status": "USER_APPROVED_REPOSITORY_RATIFIED",
   "max_encoded_bytes": 1048576,
   "max_container_depth": 32,
   "request_id_ascii_chars": [
@@ -15,20 +14,20 @@
   "safe_json_integer_abs_max": 9007199254740991,
   "large_integer_representation": "canonical decimal text, field-specific validation required",
   "request_fields": [
-    "wire_version",
+    "schemaVersion",
     "request_id",
     "kind",
     "operation",
     "payload"
   ],
   "result_fields": [
-    "wire_version",
+    "schemaVersion",
     "request_id",
     "kind",
     "payload"
   ],
   "error_fields": [
-    "wire_version",
+    "schemaVersion",
     "request_id",
     "kind",
     "error"
@@ -46,5 +45,31 @@
   ],
   "transport_proposal": "UTF-8 JSON in Tauri raw byte request/response; not an InvokeBody::Json boundary",
   "payload_authorization": "NONE: operation registry, exact per-operation DTO, native origin, context and state checks remain mandatory",
-  "production_adoption": "forbidden before G-MIG-2 approval and P3 integration"
+  "production_adoption": "forbidden before G-MIG-2 approval and P3 integration",
+  "schemaVersion": 1,
+  "ratification": "RATIFICATION_2026-11-14.md",
+  "dto_version_field": "schemaVersion",
+  "dto_initial_version": 1,
+  "error_dto_fields": [
+    "schemaVersion",
+    "category",
+    "code"
+  ],
+  "error_categories": {
+    "protocol": [
+      "IPC_UNSUPPORTED_VERSION",
+      "IPC_INVALID_MESSAGE",
+      "IPC_PAYLOAD_TOO_LARGE",
+      "IPC_UNKNOWN_OPERATION"
+    ],
+    "technical": [
+      "IPC_UNAUTHORIZED",
+      "IPC_STALE_CONTEXT",
+      "IPC_BUSY",
+      "IPC_INVALID_STATE",
+      "IPC_TECHNICAL_FAILURE"
+    ]
+  },
+  "transfer_policy": "No complete dataset, raw health record or bulk diagnostic transfer; Rust queries, opaque handles and paging only",
+  "compatibility": "Unknown versions rejected; additive compatibility requires explicit documentation and validation; incompatible changes require new version"
 }

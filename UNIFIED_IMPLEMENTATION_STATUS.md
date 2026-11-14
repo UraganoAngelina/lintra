@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **37/128 DONE;91 rimanenti** (18U-* e73MIG).
+Conteggio unificato: **40/128 DONE;88 rimanenti** (18U-* e70MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -78,10 +78,10 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P1-06 | T-MIG-P1-02, T-MIG-P1-03, T-MIG-P1-04, T-MIG-P1-05, T-MIG-P1-07 | DONE | [GO piattaforme](docs/verification/unified-post-m9/T-MIG-P1-06.md) | Matrice nativa e CI dei prerequisiti consolidate; nessun nuovo test equivalente | G-MIG-1 PASS; ingressoP2, non release |
 | T-MIG-P1-07 | T-MIG-P1-02, T-MIG-P1-04 | DONE | [Installer offline](docs/verification/unified-post-m9/T-MIG-P1-07.md) | CI43595367523/608ccdc; setup/uninstall0, desktop standard e0TCP0HTTP; sentinelle conservate; VM ripristinata/spenta | Acceptance installer PASS; G-MIG-1 inP1-06 |
 | T-MIG-P2-01 | T-MIG-P1-06 | DONE | [Ownership processo](docs/verification/unified-post-m9/T-MIG-P2-01.md) | Diagrammi derivati da ADR ratificati; entrypoint reali e confine dipendenze verificati; nessun bridge | G-MIG-2 NOT_VERIFIED; wire non congelato |
-| T-MIG-P2-02 | T-MIG-P2-01 | IN_PROGRESS | [Proposta envelope](docs/verification/unified-post-m9/T-MIG-P2-02.md) | API pinned verificate; reference stdlib71vettori PASS/exit0; nuovo wire v1/1MiB/depth32 proposto | Ratifica tecnica dei nuovi parametri pendente; G-MIG-2 NOT_VERIFIED |
-| T-MIG-P2-03 | T-MIG-P2-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-03.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
-| T-MIG-P2-04 | T-MIG-P2-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-04.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
-| T-MIG-P2-05 | T-MIG-P2-02, T-MIG-P2-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-05.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
+| T-MIG-P2-02 | T-MIG-P2-01 | DONE | [Proposta envelope](docs/verification/unified-post-m9/T-MIG-P2-02.md) | Ratifica autore14/11 con7precisazioni; schemaVersion1 envelope/DTO;84vettori PASS/exit0 | AcceptanceP2-02 PASS; G-MIG-2 NOT_VERIFIED |
+| T-MIG-P2-03 | T-MIG-P2-02 | DONE | [Run/lifecycle](docs/verification/unified-post-m9/T-MIG-P2-03.md) | Transizioni/race complete;53casi PASS/exit0; fonti Rust e identity/owner/terminali verificati nel modello | Gate design; G-MIG-2 NOT_VERIFIED |
+| T-MIG-P2-04 | T-MIG-P2-03 | DONE | [Progresso/terminale](docs/verification/unified-post-m9/T-MIG-P2-04.md) |49scenari PASS/exit0;10k update/consumer lento, slot bounded, terminale indipendente; regressione53 lifecycle PASS | Gate design; G-MIG-2 NOT_VERIFIED |
+| T-MIG-P2-05 | T-MIG-P2-02, T-MIG-P2-03 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-05.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-06 | T-MIG-P2-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-06.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-07 | T-MIG-P2-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-07.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-08 | T-MIG-P2-02, T-MIG-P2-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-08.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
@@ -271,3 +271,23 @@ versione1, correlazione e taxonomy separata dagli esiti normativi. Il codec è
 reference di design, non bridge o qualifica nativa Rust↔TS. Parametri concreti
 nuovi da approvare secondo l’acceptanceP2-02; nessuna nuova richiesta D01–D15.
 P2-03 e successive attendono il prerequisito; non avviare P3 prima diG-MIG-2.
+
+
+Ratifica P2-02,14 novembre2026: **DONE**, sette precisazioni dell’autore
+conservate integralmente. `schemaVersion = 1` envelope/DTO,1MiB completo
+bidirezionale,32livelli, categorie errore esplicite;84vettori mirati PASS.
+Niente dataset/raw sanitario/bulk diagnostici in IPC, nessun nuovo consenso
+per dettagli ordinari. **38/128 DONE (29,7%)**; avviataP2-03 e successivaP2-04
+secondo dipendenze. G-MIG-2 resta aperto; nessun bridge, CI o VM anticipati.
+
+
+P2-03,14 novembre2026: **DONE** design identità/ownership/stati;53casi PASS.
+Nessun successo anticipato da RunCompleted, ack prima di sostituzione, esiti
+tecnici e normativi separati;39/128 DONE (30,5%). Prosegue **P2-04** con slot
+progresso e terminale distinti, senza nuove firme core o bridge anticipati.
+
+
+P2-04,14 novembre2026: **DONE** design progresso bounded/terminale indipendente;
+49scenari e regressione53lifecycle PASS, nessun rerun del workspace/CI/VM.
+**40/128 DONE (31,25%)**. Prosegue **P2-05** su paging/offset/filtri Rust, poi
+contratti dettaglio ed export. Tutti i gate applicativi rimangono aperti.

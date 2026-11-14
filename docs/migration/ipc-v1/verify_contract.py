@@ -26,24 +26,25 @@ def main():
             except codec.Rejected as error:
                 decoded = None
                 actual = error.code
+                assert error.category == "protocol"
             assert actual == expected, (name, expected, actual)
         finally:
             codec.json.loads = original
         results.append({"case": name, "expected": expected or "ACCEPT_ENVELOPE_ONLY", "passed": True})
         return decoded
 
-    base = {"wire_version": 1, "request_id": "fixture_1", "kind": "request",
-            "operation": "synthetic_probe", "payload": {}}
-    result = {"wire_version": 1, "request_id": "fixture_1", "kind": "result", "payload": {}}
+    base = {"schemaVersion": 1, "request_id": "fixture_1", "kind": "request",
+            "operation": "synthetic_probe", "payload": {"schemaVersion": 1}}
+    result = {"schemaVersion": 1, "request_id": "fixture_1", "kind": "result", "payload": {"schemaVersion": 1}}
     bad = "IPC_INVALID_MESSAGE"
     case("minimal request", wire(base))
     case("minimal result", wire(result), direction="response")
-    case("UTF-8 text and escaped delimiters", wire({**base, "payload": {"text": 'è😀 ]} \\" [<script>'}}))
+    case("UTF-8 text and escaped delimiters", wire({**base, "payload": {"schemaVersion": 1, "text": 'è😀 ]} \\" [<script>'}}))
     case("operation registry is a separate check", wire({**base, "operation": "not_registered"}))
     for version, expected in [(0, bad), (2, "IPC_UNSUPPORTED_VERSION"),
                               (65535, "IPC_UNSUPPORTED_VERSION"), (65536, bad),
                               (True, bad), ("1", bad), (1.0, bad)]:
-        case("version " + repr(version), wire({**base, "wire_version": version}), expected)
+        case("version " + repr(version), wire({**base, "schemaVersion": version}), expected)
     for key in base:
         case("missing " + key, wire({k: v for k, v in base.items() if k != key}), bad)
     case("unknown envelope field", wire({**base, "unexpected": True}), bad)
@@ -60,46 +61,66 @@ def main():
     for raw in [b"", b"null", b"[]", b"{", b"{}{}", b"\xef\xbb\xbf" + wire(base)]:
         case("invalid JSON " + repr(raw[:6]), raw, bad)
     case("invalid UTF-8 rejected before parse", b"\xff", bad, before_parse=True)
-    duplicate = wire(base).replace(b'"wire_version":1', b'"wire_version":1,"wire_version":1')
+    duplicate = wire(base).replace(b'"schemaVersion":1', b'"schemaVersion":1,"schemaVersion":1')
     case("duplicate envelope key", duplicate, bad)
-    duplicate = wire({**base, "payload": {"x": 1}}).replace(b'"x":1', b'"x":1,"x":2')
+    duplicate = wire({**base, "payload": {"schemaVersion": 1, "x": 1}}).replace(b'"x":1', b'"x":1,"x":2')
     case("duplicate payload key", duplicate, bad)
     for number, expected in [(9_007_199_254_740_991, None), (-9_007_199_254_740_991, None),
                              (9_007_199_254_740_992, bad), (1.25, bad), (float("nan"), bad),
                              (float("inf"), bad)]:
-        case("JSON number " + repr(number), wire({**base, "payload": {"n": number}}), expected)
-    preserved = case("u64 preserved as text", wire({**base, "payload": {"n": "18446744073709551615"}}))
+        case("JSON number " + repr(number), wire({**base, "payload": {"schemaVersion": 1, "n": number}}), expected)
+    preserved = case("u64 preserved as text", wire({**base, "payload": {"schemaVersion": 1, "n": "18446744073709551615"}}))
     assert preserved["payload"]["n"] == "18446744073709551615"
-    case("lone surrogate", wire({**base, "payload": {"text": "sentinel"}}).replace(b'sentinel', b'\\ud800'), bad)
+    case("lone surrogate", wire({**base, "payload": {"schemaVersion": 1, "text": "sentinel"}}).replace(b'sentinel', b'\\ud800'), bad)
     # Root envelope and payload account for two container levels.
     for arrays, expected in [(30, None), (31, bad)]:
         nested = b"[" * arrays + b"0" + b"]" * arrays
-        raw = wire({**base, "payload": {"x": "nested"}}).replace(b'"nested"', nested)
+        raw = wire({**base, "payload": {"schemaVersion": 1, "x": "nested"}}).replace(b'"nested"', nested)
         case("container depth " + str(arrays + 2), raw, expected, before_parse=expected is not None)
     for direction, packet in [("request", base), ("response", result)]:
-        empty = wire({**packet, "payload": {"text": ""}})
+        empty = wire({**packet, "payload": {"schemaVersion": 1, "text": ""}})
         for length, expected in [(1_048_575, None), (1_048_576, None),
                                  (1_048_577, "IPC_PAYLOAD_TOO_LARGE")]:
-            raw = wire({**packet, "payload": {"text": "a" * (length - len(empty))}})
+            raw = wire({**packet, "payload": {"schemaVersion": 1, "text": "a" * (length - len(empty))}})
             assert len(raw) == length
             case(direction + " byte length " + str(length), raw, expected,
                  direction=direction, before_parse=expected is not None)
     # Characters and bytes must not be confused for non-ASCII messages.
-    raw = wire({**base, "payload": {"text": "è" * 524_288}})
+    raw = wire({**base, "payload": {"schemaVersion": 1, "text": "è" * 524_288}})
     assert len(raw.decode("utf-8")) < 1_048_576 < len(raw)
     case("multi-byte payload limit", raw, "IPC_PAYLOAD_TOO_LARGE", before_parse=True)
     codes = ["IPC_UNSUPPORTED_VERSION", "IPC_INVALID_MESSAGE", "IPC_PAYLOAD_TOO_LARGE",
              "IPC_UNKNOWN_OPERATION", "IPC_UNAUTHORIZED", "IPC_STALE_CONTEXT",
              "IPC_BUSY", "IPC_INVALID_STATE", "IPC_TECHNICAL_FAILURE"]
     for code in codes:
-        packet = {"wire_version": 1, "request_id": None, "kind": "error", "error": {"code": code}}
+        packet = {"schemaVersion": 1, "request_id": None, "kind": "error", "error": {"schemaVersion": 1, "category": "protocol" if code in codes[:4] else "technical", "code": code}}
         case("bounded error " + code, wire(packet), direction="response")
-    packet = {"wire_version": 1, "request_id": "fixture_1", "kind": "error",
-              "error": {"code": "IPC_TECHNICAL_FAILURE"}}
+    packet = {"schemaVersion": 1, "request_id": "fixture_1", "kind": "error",
+              "error": {"schemaVersion": 1, "category": "technical", "code": "IPC_TECHNICAL_FAILURE"}}
     case("correlated error", wire(packet), direction="response")
     case("no arbitrary diagnostic text", wire({**packet, "error": {**packet["error"], "message": "synthetic path"}}), bad, direction="response")
-    case("normative outcome is not a transport error", wire({**packet, "error": {"code": "CompletedInvalid"}}), bad, direction="response")
+    case("normative outcome is not a transport error", wire({**packet, "error": {"schemaVersion": 1, "category": "technical", "code": "CompletedInvalid"}}), bad, direction="response")
     case("result requires correlation", wire({**result, "request_id": None}), bad, direction="response")
+    case("legacy draft version name rejected", wire({**{k: v for k, v in base.items() if k != "schemaVersion"}, "wire_version": 1}), bad)
+    case("version aliases not mixed", wire({**base, "wire_version": 1}), bad)
+    case("DTO version required", wire({**base, "payload": {}}), bad)
+    for version, expected in [(0, bad), (2, "IPC_UNSUPPORTED_VERSION"),
+                              (True, bad), ("1", bad), (1.0, bad)]:
+        case("payload DTO version " + repr(version), wire({**base, "payload": {"schemaVersion": version}}), expected)
+    case("error DTO version required", wire({**packet, "error": {"category": "technical", "code": "IPC_TECHNICAL_FAILURE"}}), bad, direction="response")
+    case("error DTO incompatible", wire({**packet, "error": {**packet["error"], "schemaVersion": 2}}), "IPC_UNSUPPORTED_VERSION", direction="response")
+    case("technical failure cannot claim protocol category", wire({**packet, "error": {**packet["error"], "category": "protocol"}}), bad, direction="response")
+    case("error cannot claim normative category", wire({**packet, "error": {**packet["error"], "category": "normative"}}), bad, direction="response")
+    case("truncated UTF-8 rejected before parse", b"\xe2\x82", bad, before_parse=True)
+    # Decode rejection must precede every application side effect.
+    calls = []
+    for raw in [b"{", wire({**base, "schemaVersion": 2}), b" " * 1_048_577]:
+        try:
+            decoded = codec.decode(raw, "request")
+            calls.append(decoded)
+        except codec.Rejected:
+            pass
+    assert calls == [], "invalid requests reached application processing"
     print(json.dumps({"passed": True, "vectors": len(results), "scope": "design reference only; no product/native gate", "results": results}, indent=2))
 
 
