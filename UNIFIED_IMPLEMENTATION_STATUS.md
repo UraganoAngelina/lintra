@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **33/128 DONE;95 rimanenti** (18U-* e77MIG).
+Conteggio unificato: **34/128 DONE;94 rimanenti** (18U-* e76MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -72,10 +72,10 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P1-01 | T-MIG-P0-08 | DONE | [Spike nativo React/Tauri Linux](docs/verification/unified-post-m9/T-MIG-P1-01.md) | 996947e app invariata;build/Clippy/IPC-render Wayland/capture PASS;144 righe ldd senza missing | Acceptance Linux personale PASS;G-MIG-1 aggregato NOT_VERIFIED |
 | T-MIG-P1-02 | T-MIG-P0-08 | DONE | [Spike Windows e prove reali](docs/verification/unified-post-m9/T-MIG-P1-02.md) | bdca1cf/CI43014153420;13/11 Win11 offline runtime presente/assente, due desktop standard, ACL/uninstall/restore PASS | Acceptance Windows spike PASS; G-MIG-1 aggregato NOT_VERIFIED |
 | T-MIG-P1-03 | T-MIG-P1-01 | DONE | [Profilo e prove CachyOS](docs/verification/unified-post-m9/T-MIG-P1-03.md) | 151 ELF/99 package;relocated Wayland e loader negativo PASS;binario c53fd4ba invariato | Acceptance personale PASS;G-MIG-1 aggregato bloccato su Win11 |
-| T-MIG-P1-04 | T-MIG-P1-01, T-MIG-P1-02 | IN_PROGRESS | [CSP e guard nativi](docs/verification/unified-post-m9/T-MIG-P1-04.md) | Recovery/checkpoint integrati;9test/Clippy/TS e native Linux/Win11 18controlli/0TCP0HTTP PASS; CI del delta pendente | G-MIG-1 NOT_VERIFIED |
+| T-MIG-P1-04 | T-MIG-P1-01, T-MIG-P1-02 | DONE | [CSP e guard nativi](docs/verification/unified-post-m9/T-MIG-P1-04.md) | 608ccdc/CI43595367523 SUCCESS;9test/Clippy/TS/MSVC/NSIS; native Linux/Win11 18controlli/0TCP0HTTP PASS; VM ripristinata/spenta | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-05 | T-MIG-P1-01, T-MIG-P1-02 | DONE | [Profilo WebView/font/DPI](docs/verification/unified-post-m9/T-MIG-P1-05.md) | 413b7e4/CI43494464261 SUCCESS; Wayland e Win11 standard/font/DPI100%/capture PASS; VM ripristinata/spenta | Acceptance profilo PASS; G-MIG-1 NOT_VERIFIED |
 | T-MIG-P1-06 | T-MIG-P1-02, T-MIG-P1-03, T-MIG-P1-04, T-MIG-P1-05, T-MIG-P1-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-06.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
-| T-MIG-P1-07 | T-MIG-P1-02, T-MIG-P1-04 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-07.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
+| T-MIG-P1-07 | T-MIG-P1-02, T-MIG-P1-04 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P1-07.md) | —; Non eseguite | G-MIG-1 NOT_VERIFIED |
 | T-MIG-P2-01 | T-MIG-P1-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-01.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-02 | T-MIG-P2-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-02.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-03 | T-MIG-P2-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-03.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
@@ -230,3 +230,12 @@ Cinque test Rust mirati e Clippy Linux PASS; sorgenti/font/dist identificati
 da manifest di39file, cache MSVC riutilizzata. Prove Windows del delta in corso:
 il precedente blocco resta aperto fino a evidenza nativa e CI pertinenti.
 Nessuna suite workspace/golden/CI/Windows avviata per il solo setup globale.
+
+
+Handoff P1-04,14 novembre2026: **DONE**, commit608ccdc eCI43595367523 SUCCESS.
+Contenimento pre-trasporto e recovery del documento integrati, checkpoint
+sintetico privato senza storage web; invarianti CSP/ACL e zeroTCP invariati.
+9test Rust, Clippy/TS, native Wayland eWin11 PASS; VM ripristinata/spenta.
+**34/128 DONE (26,6%)**. Avviata in sequenza **T-MIG-P1-07** sul nuovo artefatto
+CI; nessuna nuova build/CI o regressione workspace richiesta per la sola prova
+installer. P1-06/G-MIG-1 attendono gli esiti effettivi di07. AUTO_CONTINUE.

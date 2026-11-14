@@ -29,5 +29,10 @@
     }
   },
   "scope": "isolated synthetic runtime, not workspace or release qualification",
-  "ci": "pending new commit; previous CI not reused"
+  "ci": {
+    "run": 43595367523,
+    "sha": "608ccdc1d79c8495085ade5888e8df99f97c958f",
+    "status": "success",
+    "scope": "Windows Server build/test/Clippy/NSIS, separate from Win11 native"
+  }
 }

@@ -1,9 +1,32 @@
 {
+  "task": "T-MIG-P1-04",
+  "status": "DONE",
+  "source_sha": "608ccdc1d79c8495085ade5888e8df99f97c958f",
+  "ci": 43595367523,
+  "ci_result": "success",
+  "native_linux": "PASS 0TCP/0HTTP",
+  "native_windows11": "PASS 0TCP/0HTTP, one document recovery",
+  "vm_final_state": "shut off",
   "files": [
     {
+      "path": "checkpoint-restore.json.gz",
+      "bytes": 246,
+      "sha256": "0c9d75803dbd16d827956a8def2690b5d36643dbf91fe4dfc8783893133121f5"
+    },
+    {
       "path": "checkpoint.json",
-      "bytes": 1125,
-      "sha256": "60a6f2dd7003b6626fb08fa9ea16632ee238e7678cb3ebc6bc77db8a82d372d8"
+      "bytes": 1271,
+      "sha256": "e51194f67440bb0d9366fcdae22d528f3572e9fea498530f41e2bd053ea0d68a"
+    },
+    {
+      "path": "ci-43595367523.log.gz",
+      "bytes": 18841,
+      "sha256": "96a3718ed949f115dfa5fae6b314cfd3feb1d812e9bbe5feb8ffe9972b52ebd8"
+    },
+    {
+      "path": "ci-final.json.gz",
+      "bytes": 736,
+      "sha256": "f8b564afe4381f41b67262efd2b6bbafd27fdbee866596b7f59c18f41f8e96ca"
     },
     {
       "path": "first-header-failure.json",
@@ -94,6 +117,31 @@
       "path": "recovery-clippy.log.gz",
       "bytes": 189,
       "sha256": "986f8780cd1595707c384f71e8d0d19385515382ccaa3957f6d0f7a46347a156"
+    },
+    {
+      "path": "vm-lifecycle.json.gz",
+      "bytes": 336,
+      "sha256": "42cac5aacefc9cdf7b8cbed150a4f0fb39c43ad63581a1e0baede45119efeee1"
+    },
+    {
+      "path": "windows-before-restore.json.gz",
+      "bytes": 935,
+      "sha256": "e0d71b1f5f59710870a9fafd35292342edbe62e49e755e946b2731ec5c0bc66e"
+    },
+    {
+      "path": "windows-restored-admin.json.gz",
+      "bytes": 965,
+      "sha256": "20cec3620582d34968fc001873de1764788c64992cb6b59a81964a696003ce63"
+    },
+    {
+      "path": "windows-restored-shutdown.json.gz",
+      "bytes": 788,
+      "sha256": "7758141f5b335e7fffe1ae1cb2c040441f0e8f3d45c5ec7f2b2401f42134b729"
+    },
+    {
+      "path": "windows-restored-standard.json.gz",
+      "bytes": 838,
+      "sha256": "14d2eee80a161410a5b5608f8f98e343d02ab8fe8cf2330375803ea1c35d7857"
     },
     {
       "path": "windows-source-recovery-manifest.json.gz",

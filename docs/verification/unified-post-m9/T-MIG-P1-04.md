@@ -1,6 +1,6 @@
 # T-MIG-P1-04 — CSP, capability e navigazioni native
 
-14 novembre 2026. **IN_PROGRESS — prove native PASS, CI del delta pendente**;
+14 novembre 2026. **DONE — prove native e CI del delta PASS**;
 G-MIG-1 aggregato NOT_VERIFIED. La cronologia del13 novembre resta sotto.
 Prerequisiti P1-01/P1-02 DONE; ingresso documentale 7f165e5. P1-02 resta
 qualificata sull’artefatto bdca1cf; questa task modifica il runtime dello spike
@@ -273,3 +273,15 @@ Evidenze con hash, sorgenti esatti e tentativi negativi separati:
 Il manifest runtime identifica gli input; il nuovo hash separato del driver
 registra la correzione `windowsHide`, successiva alla build ma senza delta del
 binario o del frontend. La CI precedente non viene attribuita a questo stato.
+
+
+Ripristino14 novembre PASS: snapshot `LINTRA-P1-04-BEFORE-DESKTOP-20261113`
+con UUID/dischi/stato spento controllati, revert/start0, marker base presente,
+marker/directory/task del tentativo assenti, nessun autologon o password
+plaintext Winlogon. SSH admin e standard verificati; richiesto shutdown pulito.
+Questi controlli non qualificano un nuovo installer P1-07. La CI del blocco è
+[43595367523](https://github.com/UraganoAngelina/lintra/actions/runs/43595367523)
+sul commit608ccdc1d79c8495085ade5888e8df99f97c958f: **SUCCESS** (TS strict,
+9test MSVC, fmt/Clippy, release e NSIS). Log archiviati separati dalle prove
+native. VM finale `shut off`. **T-MIG-P1-04 DONE**,34/128 (26,6%).
+Prossima READY **T-MIG-P1-07**; P1-06 e G-MIG-1 attendono ancora l’installer.
