@@ -19,7 +19,7 @@ for (const vector of JSON.parse(readFileSync(new URL("./ipc-vectors.json", impor
     if (vector.response.kind === "error") {
       reject(() => decodeReply(response, id), vector.response.error.code);
     } else {
-      assert.deepEqual(JSON.parse(new TextDecoder().decode(encodeRequest("app_info", id))), JSON.parse(vector.request));
+      assert.deepEqual(JSON.parse(new TextDecoder().decode(encodeRequest("app_info", id, { schemaVersion: 1 }))), JSON.parse(vector.request));
       assert.deepEqual(decodeReply(response, id), vector.response.payload);
     }
   });
@@ -67,8 +67,8 @@ test("version, envelope shape, correlation and error category cannot silently fa
   for (const changed of [{ ...valid, schemaVersion: 2 }, { ...valid, payload: { schemaVersion: 2 } }]) {
     reject(() => decodeReply(raw(JSON.stringify(changed)), id), "IPC_UNSUPPORTED_VERSION");
   }
-  reject(() => encodeRequest("execute_sql", id));
-  reject(() => encodeRequest("app_info", "x".repeat(65)));
+  reject(() => encodeRequest("execute_sql", id, { schemaVersion: 1 }));
+  reject(() => encodeRequest("app_info", "x".repeat(65), { schemaVersion: 1 }));
 });
 
 test("typed client invokes only the raw dispatcher and verifies both exact DTOs", async () => {

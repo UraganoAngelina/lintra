@@ -13,7 +13,14 @@ const categories = {
   IPC_TECHNICAL_FAILURE: "technical",
 } as const;
 type ErrorCode = keyof typeof categories;
-type Operation = "app_info" | "client_ready";
+type RequestPayloads = {
+  app_info: { schemaVersion: 1 };
+  client_ready: { schemaVersion: 1 };
+  catalog_page: { schemaVersion: 1; offset: string };
+  configuration_select: { schemaVersion: 1; schema_ref: string; encoding: "utf8" };
+  configuration_page: { schemaVersion: 1; configuration_ref: string; offset: string };
+};
+type Operation = keyof RequestPayloads;
 type ObjectDto = Record<string, unknown>;
 export type AppInfo = { schemaVersion: 1; app_version: string; validation_available: false };
 
@@ -119,20 +126,20 @@ export function decodeReply(raw: unknown, requestId: string): ObjectDto {
   return dto;
 }
 
-export function encodeRequest(operation: Operation, requestId: string): Uint8Array {
+export function encodeRequest<K extends Operation>(operation: K, requestId: string, payload: RequestPayloads[K]): Uint8Array {
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(requestId)
-      || (operation !== "app_info" && operation !== "client_ready")) invalid();
+      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page"].includes(operation)) invalid();
   const bytes = new TextEncoder().encode(JSON.stringify({
     schemaVersion: 1, request_id: requestId, kind: "request", operation,
-    payload: { schemaVersion: 1 },
+    payload,
   }));
   if (bytes.byteLength > MAX_BYTES) throw new IpcError("IPC_PAYLOAD_TOO_LARGE");
   return bytes;
 }
 
-async function exchange(operation: Operation): Promise<ObjectDto> {
+async function exchange<K extends Operation>(operation: K, payload: RequestPayloads[K]): Promise<ObjectDto> {
   const requestId = crypto.randomUUID();
-  const bytes = encodeRequest(operation, requestId);
+  const bytes = encodeRequest(operation, requestId, payload);
   let raw: unknown;
   try { raw = await invoke<unknown>("lintra_ipc", bytes); }
   catch { throw new IpcError("IPC_TECHNICAL_FAILURE"); }
@@ -140,7 +147,7 @@ async function exchange(operation: Operation): Promise<ObjectDto> {
 }
 
 export async function appInfo(): Promise<AppInfo> {
-  const dto = await exchange("app_info");
+  const dto = await exchange("app_info", { schemaVersion: 1 });
   exact(dto, ["schemaVersion", "app_version", "validation_available"]);
   if (typeof dto.app_version !== "string" || dto.app_version.length < 1
       || dto.app_version.length > 64 || !/^[A-Za-z0-9.+-]+$/.test(dto.app_version)
@@ -149,9 +156,104 @@ export async function appInfo(): Promise<AppInfo> {
 }
 
 export async function clientReady(): Promise<void> {
-  const dto = await exchange("client_ready");
+  const dto = await exchange("client_ready", { schemaVersion: 1 });
   exact(dto, ["schemaVersion", "ready"]);
   if (dto.ready !== true) invalid();
+}
+
+export type BundleProvenance = {
+  schemaVersion: 1; bundle_source: "embedded" | "external";
+  bundle_version: string | null; bundle_manifest_status: "present" | "absent";
+};
+export type SchemaDescriptor = { schemaVersion: 1; schema_ref: string; flow_id: string; schema_version: string; trace_count: string };
+export type CatalogPage = { schemaVersion: 1; offset: string; entries: SchemaDescriptor[]; next_offset: string | null; provenance: BundleProvenance };
+export type ConfigurationSelection = {
+  schemaVersion: 1; configuration_ref: string; flow_id: string; schema_version: string;
+  schema_hash: string; encoding: "utf8"; trace_count: string; parameter_count: string; provenance: BundleProvenance;
+};
+export type ConfigurationDescriptor =
+  | { schemaVersion: 1; kind: "trace"; trace_ref: string; trace_id: string }
+  | { schemaVersion: 1; kind: "parameter"; parameter_ref: string; parameter_id: string; value_kind: "text" | "integer" };
+export type ConfigurationPage = { schemaVersion: 1; configuration_ref: string; offset: string; descriptors: ConfigurationDescriptor[]; next_offset: string | null };
+
+function text(value: unknown): string {
+  if (typeof value !== "string" || value.length === 0) invalid();
+  return value;
+}
+function opaque(value: unknown): string {
+  const result = text(value);
+  if (!/^[A-Za-z0-9_-]{1,128}$/.test(result)) invalid();
+  return result;
+}
+function unsigned(value: unknown): string {
+  const result = text(value);
+  if (!/^(0|[1-9][0-9]{0,19})$/.test(result) || BigInt(result) > 18446744073709551615n) invalid();
+  return result;
+}
+function provenance(value: unknown): BundleProvenance {
+  const dto = object(value);
+  version(dto);
+  exact(dto, ["schemaVersion", "bundle_source", "bundle_version", "bundle_manifest_status"]);
+  if (dto.bundle_source !== "embedded" && dto.bundle_source !== "external") invalid();
+  if (dto.bundle_manifest_status !== "present" && dto.bundle_manifest_status !== "absent") invalid();
+  const declared = dto.bundle_manifest_status === "present";
+  if (declared ? typeof dto.bundle_version !== "string" || dto.bundle_version.length === 0
+      : dto.bundle_version !== null || dto.bundle_source === "embedded") invalid();
+  return { schemaVersion: 1, bundle_source: dto.bundle_source,
+    bundle_version: declared ? text(dto.bundle_version) : null, bundle_manifest_status: dto.bundle_manifest_status };
+}
+function page(dto: ObjectDto, name: "entries" | "descriptors", offset: string): unknown[] {
+  if (unsigned(dto.offset) !== offset || !Array.isArray(dto[name])) invalid();
+  const rows = dto[name];
+  if (rows.length > 64) invalid();
+  if (dto.next_offset !== null && (rows.length !== 64
+      || BigInt(unsigned(dto.next_offset)) !== BigInt(offset) + BigInt(rows.length))) invalid();
+  return rows;
+}
+
+export async function catalogPage(offset = "0"): Promise<CatalogPage> {
+  unsigned(offset);
+  const dto = await exchange("catalog_page", { schemaVersion: 1, offset });
+  exact(dto, ["schemaVersion", "offset", "entries", "next_offset", "provenance"]);
+  const entries = page(dto, "entries", offset).map(value => {
+    const entry = object(value);
+    version(entry);
+    exact(entry, ["schemaVersion", "schema_ref", "flow_id", "schema_version", "trace_count"]);
+    return { schemaVersion: 1 as const, schema_ref: opaque(entry.schema_ref), flow_id: text(entry.flow_id),
+      schema_version: text(entry.schema_version), trace_count: unsigned(entry.trace_count) };
+  });
+  return { schemaVersion: 1, offset, entries, next_offset: dto.next_offset === null ? null : unsigned(dto.next_offset), provenance: provenance(dto.provenance) };
+}
+
+export async function configurationSelect(schemaRef: string, encoding: "utf8"): Promise<ConfigurationSelection> {
+  opaque(schemaRef);
+  if (encoding !== "utf8") invalid();
+  const dto = await exchange("configuration_select", { schemaVersion: 1, schema_ref: schemaRef, encoding });
+  exact(dto, ["schemaVersion", "configuration_ref", "flow_id", "schema_version", "schema_hash", "encoding", "trace_count", "parameter_count", "provenance"]);
+  const hash = text(dto.schema_hash);
+  if (!/^[0-9a-f]{64}$/.test(hash) || dto.encoding !== "utf8") invalid();
+  return { schemaVersion: 1, configuration_ref: opaque(dto.configuration_ref), flow_id: text(dto.flow_id),
+    schema_version: text(dto.schema_version), schema_hash: hash, encoding: "utf8", trace_count: unsigned(dto.trace_count),
+    parameter_count: unsigned(dto.parameter_count), provenance: provenance(dto.provenance) };
+}
+
+export async function configurationPage(configurationRef: string, offset = "0"): Promise<ConfigurationPage> {
+  opaque(configurationRef); unsigned(offset);
+  const dto = await exchange("configuration_page", { schemaVersion: 1, configuration_ref: configurationRef, offset });
+  exact(dto, ["schemaVersion", "configuration_ref", "offset", "descriptors", "next_offset"]);
+  if (dto.configuration_ref !== configurationRef) invalid();
+  const descriptors: ConfigurationDescriptor[] = page(dto, "descriptors", offset).map(value => {
+    const row = object(value);
+    version(row);
+    if (row.kind === "trace") {
+      exact(row, ["schemaVersion", "kind", "trace_ref", "trace_id"]);
+      return { schemaVersion: 1, kind: "trace", trace_ref: opaque(row.trace_ref), trace_id: text(row.trace_id) };
+    }
+    exact(row, ["schemaVersion", "kind", "parameter_ref", "parameter_id", "value_kind"]);
+    if (row.kind !== "parameter" || (row.value_kind !== "text" && row.value_kind !== "integer")) invalid();
+    return { schemaVersion: 1, kind: "parameter", parameter_ref: opaque(row.parameter_ref), parameter_id: text(row.parameter_id), value_kind: row.value_kind };
+  });
+  return { schemaVersion: 1, configuration_ref: configurationRef, offset, descriptors, next_offset: dto.next_offset === null ? null : unsigned(dto.next_offset) };
 }
 
 export function errorText(error: unknown): string {

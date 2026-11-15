@@ -1,4 +1,5 @@
 use crate::{
+    configuration::{Configuration, ConfigurationRequest},
     ipc::{self, ErrorCode},
     security::local_asset_origin,
 };
@@ -18,7 +19,7 @@ pub(crate) struct GuardCounters {
 }
 
 pub(crate) struct AppState {
-    gate: Mutex<()>,
+    gate: Mutex<Option<Configuration>>,
     closed: AtomicBool,
     info_sent: AtomicBool,
     ready: AtomicBool,
@@ -30,7 +31,7 @@ pub(crate) struct AppState {
 impl AppState {
     pub(crate) fn new(smoke: bool) -> Self {
         Self {
-            gate: Mutex::new(()),
+            gate: Mutex::new(None),
             closed: AtomicBool::new(false),
             info_sent: AtomicBool::new(false),
             ready: AtomicBool::new(false),
@@ -61,7 +62,7 @@ impl AppState {
             return ipc::error(None, ErrorCode::TechnicalFailure);
         }
         // One parser/response at a time; framework buffer allocation precedes this boundary.
-        let _permit = match self.gate.try_lock() {
+        let mut permit = match self.gate.try_lock() {
             Ok(permit) => permit,
             Err(TryLockError::WouldBlock) => return ipc::error(None, ErrorCode::Busy),
             Err(TryLockError::Poisoned(_)) => return ipc::error(None, ErrorCode::TechnicalFailure),
@@ -71,6 +72,29 @@ impl AppState {
             Err(code) => return ipc::error(None, code),
         };
         let id = &request.request_id;
+        if matches!(
+            request.operation.as_str(),
+            "catalog_page" | "configuration_select" | "configuration_page"
+        ) {
+            let command = match ConfigurationRequest::decode(&request.operation, &request.payload) {
+                Ok(command) => command,
+                Err(code) => return ipc::error(Some(id), code),
+            };
+            if !self.info_sent.load(Ordering::Acquire) {
+                return ipc::error(Some(id), ErrorCode::InvalidState);
+            }
+            if permit.is_none() {
+                match Configuration::resolve() {
+                    Ok(configuration) => *permit = Some(configuration),
+                    Err(code) => return ipc::error(Some(id), code),
+                }
+            }
+            return permit
+                .as_mut()
+                .expect("configuration acquired")
+                .dispatch(command, id)
+                .unwrap_or_else(|code| ipc::error(Some(id), code));
+        }
         if !matches!(request.operation.as_str(), "app_info" | "client_ready") {
             return ipc::error(Some(id), ErrorCode::UnknownOperation);
         }
@@ -123,6 +147,64 @@ mod tests {
             raw,
         ))
         .unwrap()
+    }
+
+    #[test]
+    fn catalog_boundary_checks_dtos_before_acquisition_and_preserves_native_selection() {
+        let state = state();
+        assert_eq!(
+            call(
+                &state,
+                Some(&request(
+                    "catalog_page",
+                    json!({"schemaVersion":1,"offset":"0"})
+                ))
+            )["error"]["code"],
+            "IPC_INVALID_STATE"
+        );
+        call(
+            &state,
+            Some(&request("app_info", json!({"schemaVersion":1}))),
+        );
+        for payload in [
+            json!({"schemaVersion":1,"offset":0}),
+            json!({"schemaVersion":1,"offset":"0","path":"SYNTHETIC"}),
+        ] {
+            assert_eq!(
+                call(&state, Some(&request("catalog_page", payload)))["error"]["code"],
+                "IPC_INVALID_MESSAGE"
+            );
+        }
+        assert!(state.gate.lock().unwrap().is_none());
+        *state.gate.lock().unwrap() =
+            Some(Configuration::new(lintra::AnalysisBundle::builtin().unwrap()).unwrap());
+        let catalog = call(
+            &state,
+            Some(&request(
+                "catalog_page",
+                json!({"schemaVersion":1,"offset":"0"}),
+            )),
+        );
+        let selected = call(
+            &state,
+            Some(&request(
+                "configuration_select",
+                json!({"schemaVersion":1,
+            "schema_ref":catalog["payload"]["entries"][0]["schema_ref"],"encoding":"utf8"}),
+            )),
+        );
+        assert_eq!(selected["payload"]["flow_id"], "SYNTHETIC");
+        let page = call(
+            &state,
+            Some(&request(
+                "configuration_page",
+                json!({"schemaVersion":1,
+            "configuration_ref":selected["payload"]["configuration_ref"],"offset":"0"}),
+            )),
+        );
+        assert_eq!(page["payload"]["descriptors"][0]["trace_id"], "T1");
+        assert!(page["payload"].get("path").is_none());
+        assert!(page["payload"].get("raw").is_none());
     }
 
     #[test]

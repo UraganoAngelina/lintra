@@ -1,0 +1,35 @@
+{
+  "task": "T-MIG-P4-01",
+  "status": "DONE",
+  "prerequisite": "P3-06/G-MIG-3 PASS on native QG1/2/3 steps and desktop CI ce344d4",
+  "checks": {
+    "native_linux_rust_tests": {
+      "exit_code": 0,
+      "passed": 16
+    },
+    "frontend_tests": {
+      "exit_code": 0,
+      "passed": 20
+    },
+    "frontend_lint_exit_code": 0,
+    "frontend_typecheck_build_exit_code": 0,
+    "legacy_analysis_configuration_tests": {
+      "exit_code": 0,
+      "passed": 8
+    }
+  },
+  "registry_versions_outside_qualified_locks": [],
+  "windows_integration": "Pending coherent P4 block checkpoint, no new per-task CI",
+  "gate": "G-MIG-4 NOT_VERIFIED",
+  "sha256": {
+    "src/bundle_acquisition.rs": "2148e6f61db12b03e4eea0cc63cb5080d61512b3072a04c9e64493b2f97ba3c2",
+    "src/lib.rs": "71b31e3c9914ca4280e43f5a56266ded5ae527becd8bf4b10f65cd3da383d049",
+    "ui/src/analysis.rs": "01b07b55cc84017752b13363db7a8bc9837d5cf28be339fff1cc86c6a372368a",
+    "apps/lintra-desktop/src-tauri/src/configuration.rs": "d91f4b9b24eaf6276cf1d017b1057e52230df35cbfabc4c1526ebe83a0425064",
+    "apps/lintra-desktop/src-tauri/src/state.rs": "ddcec410ada89aba1dcfc3550cb5851899676bb0e1beb7a05c8bc14dc4e07719",
+    "apps/lintra-desktop/src-tauri/Cargo.toml": "43b6db59ed7ce7e0e750778cf64ccdcdd3acd93819327043478df1ebc6f3efcc",
+    "apps/lintra-desktop/src-tauri/Cargo.lock": "593a864dc595a1494a79943834fe8b1d99aeb3c1f71ea351c611fa4a401fb957",
+    "apps/lintra-desktop/src/ipc.ts": "5a03cc4608c7029c686dd0604fe20109de680f264ae07793b409ebcd746c477d",
+    "apps/lintra-desktop/tests/configuration.test.mjs": "6a69334e7a1d975345e9e12091a93c7ad835ba87b75748c7a1554261fffe8ed4"
+  }
+}

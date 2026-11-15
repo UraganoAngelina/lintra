@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **53/128 DONE;75 rimanenti** (18U-* e57MIG).
+Conteggio unificato: **54/128 DONE;74 rimanenti** (18U-* e56MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -96,8 +96,8 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P3-04 | T-MIG-P3-01, T-MIG-P3-02 | DONE | [Dispatcher Rust](docs/verification/unified-post-m9/T-MIG-P3-04.md) | 10 test Rust e smoke nativo Wayland avvio/chiusura PASS; nessun servizio validazione | Acceptance dispatcher PASS; G-MIG-3 NOT_VERIFIED |
 | T-MIG-P3-05 | T-MIG-P3-02, T-MIG-P3-04 | DONE | [Client TS](docs/verification/unified-post-m9/T-MIG-P3-05.md) | 14 test TS/11 Rust e handshake React–Rust nativo Wayland PASS; errori statici e schema strict | Acceptance client PASS; G-MIG-3 NOT_VERIFIED |
 | T-MIG-P3-06 | T-MIG-P3-01, T-MIG-P3-02, T-MIG-P3-03, T-MIG-P3-04, T-MIG-P3-05 | DONE | [Integrazione P3](docs/verification/unified-post-m9/T-MIG-P3-06.md) | ce344d4: CI desktop43758529844 SUCCESS + smoke; QG-1/2/3 Linux/Windows CI43758531087 SUCCESS per step; ulteriori prove della run in corso | G-MIG-3 PASS; non qualifica release |
-| T-MIG-P4-01 | T-MIG-P3-06 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-01.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
-| T-MIG-P4-02 | T-MIG-P4-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-02.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
+| T-MIG-P4-01 | T-MIG-P3-06 | DONE | [Catalogo e selezione](docs/verification/unified-post-m9/T-MIG-P4-01.md) | 16 Rust/20 Node/8 regressioni configurazione Slint PASS locali; versioni registry già qualificate; CI nativa al blocco | G-MIG-4 NOT_VERIFIED |
+| T-MIG-P4-02 | T-MIG-P4-01 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-02.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-03 | T-MIG-P4-01, T-MIG-P4-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-03.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-04 | T-MIG-P4-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-04.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-05 | T-MIG-P4-04 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-05.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |

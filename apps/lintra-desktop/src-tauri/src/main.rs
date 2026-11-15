@@ -1,5 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod configuration;
 mod ipc;
 mod security;
 mod state;

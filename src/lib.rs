@@ -365,8 +365,10 @@ pub use domain::{
 pub use schema::historical::{CompiledHistoricalFlowSchema, RecordByteProjectionDefinition};
 
 // Adapter support only: engine/service still receive explicit repositories/paths.
+mod bundle_acquisition;
 mod bundle_resolution;
 pub use bundle::external_bundle_manifest_path;
+pub use bundle_acquisition::AnalysisBundle;
 pub use bundle_resolution::{
     BundleDirectories, BundleLevel as BundleSelectionLevel, BundleResolveError,
     BundleSource as BundleSelection, DirectoryKind as BundleDirectoryKind,
