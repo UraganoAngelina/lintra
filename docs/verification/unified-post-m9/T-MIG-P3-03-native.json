@@ -1,0 +1,13 @@
+{
+  "binary_sha256": "adb9dfe68df15b1903a7f0868a88c1bf0e6534813446777b37d5969d71031e98",
+  "captured": true,
+  "focused_owned_window": true,
+  "size": [
+    873,
+    503
+  ],
+  "image_sha256": "fccb7744926f7aac0ceaced2990a19058a8dc6879590d1298aacb361c1516b8e",
+  "cleanup_exit_code": -15,
+  "stdout": "",
+  "stderr": ""
+}

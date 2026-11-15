@@ -39,14 +39,121 @@
     "git_diff_exit_code": 0
   },
   "windows_CI": {
-    "run": 43731922567,
-    "source_sha": "c8ad22ecc5b4213e7ad6547dcd307e6744acf63c",
-    "status": "in_progress",
-    "last_observed_step": "Check native Rust boundaries",
-    "frontend_windows": "PASS",
-    "native_result": "PENDING"
+    "conclusion": "success",
+    "headSha": "c8ad22ecc5b4213e7ad6547dcd307e6744acf63c",
+    "jobs": [
+      {
+        "completedAt": "2026-11-15T15:55:36Z",
+        "conclusion": "success",
+        "databaseId": 132866046764,
+        "name": "Windows desktop build (not Windows 11 qualification)",
+        "startedAt": "2026-11-15T15:48:30Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-11-15T15:48:31Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-11-15T15:48:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-15T15:48:41Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-11-15T15:48:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-15T15:48:50Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+            "number": 3,
+            "startedAt": "2026-11-15T15:48:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-15T15:48:50Z",
+            "conclusion": "success",
+            "name": "Run actions/cache@caa296126883cff596d87d8935842f9db880ef25",
+            "number": 4,
+            "startedAt": "2026-11-15T15:48:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-15T15:48:57Z",
+            "conclusion": "success",
+            "name": "Install locked frontend without lifecycle scripts and build",
+            "number": 5,
+            "startedAt": "2026-11-15T15:48:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-15T15:54:16Z",
+            "conclusion": "success",
+            "name": "Check native Rust boundaries",
+            "number": 6,
+            "startedAt": "2026-11-15T15:48:57Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-15T15:55:15Z",
+            "conclusion": "success",
+            "name": "Build the separate desktop binary",
+            "number": 7,
+            "startedAt": "2026-11-15T15:54:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-15T15:55:16Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+            "number": 8,
+            "startedAt": "2026-11-15T15:55:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-15T15:55:31Z",
+            "conclusion": "success",
+            "name": "Post Run actions/cache@caa296126883cff596d87d8935842f9db880ef25",
+            "number": 14,
+            "startedAt": "2026-11-15T15:55:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-15T15:55:33Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+            "number": 15,
+            "startedAt": "2026-11-15T15:55:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-15T15:55:35Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 16,
+            "startedAt": "2026-11-15T15:55:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-15T15:55:35Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 17,
+            "startedAt": "2026-11-15T15:55:35Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/UraganoAngelina/lintra/actions/runs/43731922567/job/132866046764"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/UraganoAngelina/lintra/actions/runs/43731922567"
   },
-  "native_GUI_smoke": "NOT_RUN; P3-04/06 checkpoint",
+  "native_GUI_smoke": "NOT_QUALIFIED: owned window observed; focus/capture failed; not a P3-01 acceptance gate",
   "sha256": {
     "apps/lintra-desktop/package.json": "7434a39d787eeeb5be976fe38f5f7a73894f9aab8ba2ee060b69979e13e66cdf",
     "apps/lintra-desktop/package-lock.json": "bfe836a32ed76fa730a034bba52f4e45c03166b3c2c5bbfa948503abca9f6fa5",
@@ -65,5 +172,45 @@
     "apps/lintra-desktop/src-tauri/src/main.rs": "b7977029fbc414ac4536d02f9e3fa8e93431f0f7b974a5bc76354086ae0ed0ee",
     "apps/lintra-desktop/src-tauri/icons/128x128.png": "e42645408761e4e1971c6d3f34faef1317866a01e9c188e6593119326b09b259",
     "apps/lintra-desktop/src-tauri/icons/icon.ico": "a7c33bc2a63369bf29d65be8c89644e0142643afd2e0c173972156e49cad52ff"
-  }
+  },
+  "native_capture_attempts": [
+    {
+      "exit_code": 1,
+      "reason": "Owned foreground assertion failed before capture; no image acquired"
+    },
+    {
+      "exit_code": 1,
+      "result": {
+        "failed": true,
+        "error": "Owned window not focused",
+        "native_exit_code": -15,
+        "stderr": "",
+        "stdout": "",
+        "events": [
+          {
+            "native_exit_before_focus": null
+          },
+          {
+            "attempt": 0,
+            "focus_result": "ok",
+            "owned": false,
+            "native_exit": null
+          },
+          {
+            "attempt": 1,
+            "focus_result": "ok",
+            "owned": false,
+            "native_exit": null
+          },
+          {
+            "attempt": 2,
+            "focus_result": "ok",
+            "owned": false,
+            "native_exit": null
+          }
+        ]
+      },
+      "cleanup": "Owned GUI terminated and joined; private temporary profile removed"
+    }
+  ]
 }

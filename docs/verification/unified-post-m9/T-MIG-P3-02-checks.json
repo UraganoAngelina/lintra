@@ -1,0 +1,31 @@
+{
+  "task": "T-MIG-P3-02",
+  "checked_utc": "2026-11-15T16:04:26.344913+00:00",
+  "exit_code": 0,
+  "npm_install_exit_code": 0,
+  "node": "26.13.0",
+  "tested_npm": {
+    "CachyOS": "12.2.2",
+    "Windows_CI43731922567": "11.20.0"
+  },
+  "npm_registry_entries": 87,
+  "npm_integrity": "all sha512 validated, version/url/integrity/license identical to qualified spike",
+  "Cargo_registry_delta": [],
+  "installed_runtime_license_sha256": {
+    "node_modules/react/LICENSE": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+    "node_modules/react-dom/LICENSE": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+    "node_modules/scheduler/LICENSE": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+    "node_modules/@tauri-apps/api/LICENSE-APACHE-2.0": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "node_modules/@tauri-apps/api/LICENSE-MIT": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d"
+  },
+  "sha256": {
+    "apps/lintra-desktop/package.json": "5bc6676cd29aca26306a227b300198f9fcee3a2b1c1d442761ec9425b2c72a32",
+    "apps/lintra-desktop/package-lock.json": "06f2e923e400abfca60b839a57c0ff3aa13c888a2be9c9b559fd7db370150e55",
+    "apps/lintra-desktop/.nvmrc": "6e775beae185bb3f5837d2f6d3fbe910e6f60e18fa507e661e312e84d707a92f",
+    "apps/lintra-desktop/.npmrc": "0845322b05da9c42d87fd11c3721e26ab9faff8e022dc68c7c5469b657d6b3af",
+    "apps/lintra-desktop/src-tauri/Cargo.toml": "04c7c1f905af930cad3728fe9b23c1af671e0ed0c9b532d72e723dbb0bafb1aa",
+    "apps/lintra-desktop/src-tauri/Cargo.lock": "b9bf2125fa45c6bb0e8d6fd84152996e1a6aa06c52aeabe0cc03f4f3843b9625",
+    "apps/lintra-desktop/public/THIRD_PARTY_NOTICES": "25f27f82d6a4cf6ab8ebcbfa529bd1fec1d4dcfc2533e1db640eec424dd5ca98"
+  },
+  "scope": "Exact tool profiles and lock/supply-chain verification; no silent upgrade, advisory database scan or fresh Windows CI claimed"
+}

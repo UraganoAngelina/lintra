@@ -1,0 +1,35 @@
+{
+  "task": "T-MIG-P3-03",
+  "fonts": [
+    {
+      "source": "ui/ui/fonts/IBMPlexSans-Regular.ttf",
+      "destination": "public/fonts/IBMPlexSans-Regular.ttf",
+      "sha256": "975dcda37d80f038dcd143c22e33ca2d97a0cc5a929aace1c749153b0fe1afa5"
+    },
+    {
+      "source": "ui/ui/fonts/IBMPlexSans-SemiBold.ttf",
+      "destination": "public/fonts/IBMPlexSans-SemiBold.ttf",
+      "sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+    },
+    {
+      "source": "ui/ui/fonts/IBMPlexMono-Regular.ttf",
+      "destination": "public/fonts/IBMPlexMono-Regular.ttf",
+      "sha256": "fe11304a5fe956d5744e9b6a246cc83d90425245e75a62230044966ca96a7f50"
+    },
+    {
+      "source": "ui/ui/fonts/OFL.md",
+      "destination": "public/fonts/OFL.md",
+      "sha256": "37784b44044a4ffd9256702b7c0982c37e5c8887ba90c6dca0479aea93dc898d"
+    }
+  ],
+  "token_sources": {
+    "ui/ui/tokens.slint": "d3847381138274d3c8072ea2ac367711dc233e9db87ee627ada2c5e18636f4f7",
+    "docs/ui-design-documentation/MIGRATION_TAURI_BRIEF.md": "56c8fe04e73a5774b7ed12176d8445e64df6716bcbff86da8de58f7f32ec414e",
+    "docs/ui-design-documentation/LINTRA_OFFICIAL_BRAND.md": "343e12b2ec392d29f1a04e2e14140f5f0a05195ed2ae03cc430e81e5b20fbf5a"
+  },
+  "official_brand_reference": {
+    "sha256": "85f1c48fc1d7fcbd9ac1d64edc8e48c02c729b541c06dcd2392cf0125ec038c1",
+    "scope": "Approved palette only; book remains read-only outside repository, production logo variants not exported in P3"
+  },
+  "visual_baseline": "Separate React/WebView baseline; no Slint pixel parity claim"
+}

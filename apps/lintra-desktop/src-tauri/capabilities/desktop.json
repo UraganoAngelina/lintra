@@ -1,0 +1,7 @@
+{
+  "identifier": "desktop",
+  "description": "Only the bounded desktop dispatcher in the owned local main window.",
+  "local": true,
+  "windows": ["main"],
+  "permissions": ["allow-lintra-ipc"]
+}

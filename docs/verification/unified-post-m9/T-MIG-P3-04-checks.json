@@ -1,0 +1,20 @@
+{
+  "task": "T-MIG-P3-04",
+  "native_shell_smoke": {
+    "exit_code": 0,
+    "platform": "CachyOS/Wayland; actual WebKitGTK window, no capture",
+    "binary_sha256": "e76b8a4b02a99d4458ac8b3c7c6e6fe412d6756b2ae81258c7f742d81edd339f",
+    "stdout": "LINTRA_DESKTOP_SHELL_READY\n",
+    "stderr": ""
+  },
+  "prior_sandbox_attempt": {
+    "exit_code": 101,
+    "reason": "GTK could not access compositor inside sandbox"
+  },
+  "scope": "Native shell startup/document load and app shutdown; React handshake belongs to P3-05",
+  "rust_tests": {
+    "exit_code": 0,
+    "passed": 10,
+    "command": "CARGO_TARGET_DIR=spikes/tauri-runtime/src-tauri/target cargo test --manifest-path apps/lintra-desktop/src-tauri/Cargo.toml --offline --locked --features tauri/custom-protocol -j 2"
+  }
+}

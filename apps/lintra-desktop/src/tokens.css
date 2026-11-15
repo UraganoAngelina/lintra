@@ -1,0 +1,56 @@
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("/fonts/IBMPlexSans-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("/fonts/IBMPlexSans-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/IBMPlexMono-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+:root {
+  color-scheme: light dark;
+  --font-sans: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --ink: #20272b;
+  --muted: #56616a;
+  --border: #cbcfcf;
+  --brand: #0b2a5b;
+  --brand-cyan: #00c2e8;
+  --brand-slate: #6b7a90;
+  --brand-light: #e5eaf2;
+  --accent: var(--brand);
+  --error: #ae2925;
+  --warn: #855408;
+  --title-size: 28px;
+  --body-size: 14px;
+  --space-small: 4px;
+  --control-gap: 12px;
+  --page-padding: 24px;
+  --section-gap: 32px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101112;
+    --surface: #1b1d1f;
+    --ink: #f5f4f0;
+    --muted: #b6babc;
+    --border: #60676b;
+    --accent: var(--brand-cyan);
+    --error: #ff9288;
+    --warn: #efc177;
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "info",
+    "request": "{\"schemaVersion\":1,\"request_id\":\"fixture_1\",\"kind\":\"request\",\"operation\":\"app_info\",\"payload\":{\"schemaVersion\":1}}",
+    "response": {"schemaVersion":1,"request_id":"fixture_1","kind":"result","payload":{"schemaVersion":1,"app_version":"0.1.1-rc.3","validation_available":false}}
+  },
+  {
+    "name": "unknown operation",
+    "request": "{\"schemaVersion\":1,\"request_id\":\"fixture_1\",\"kind\":\"request\",\"operation\":\"execute_sql\",\"payload\":{\"schemaVersion\":1}}",
+    "response": {"schemaVersion":1,"request_id":"fixture_1","kind":"error","error":{"schemaVersion":1,"category":"protocol","code":"IPC_UNKNOWN_OPERATION"}}
+  },
+  {
+    "name": "unknown envelope field",
+    "request": "{\"schemaVersion\":1,\"request_id\":\"fixture_1\",\"kind\":\"request\",\"operation\":\"app_info\",\"payload\":{\"schemaVersion\":1},\"extra\":true}",
+    "response": {"schemaVersion":1,"request_id":null,"kind":"error","error":{"schemaVersion":1,"category":"protocol","code":"IPC_INVALID_MESSAGE"}}
+  },
+  {
+    "name": "unknown DTO field",
+    "request": "{\"schemaVersion\":1,\"request_id\":\"fixture_1\",\"kind\":\"request\",\"operation\":\"app_info\",\"payload\":{\"schemaVersion\":1,\"extra\":true}}",
+    "response": {"schemaVersion":1,"request_id":"fixture_1","kind":"error","error":{"schemaVersion":1,"category":"protocol","code":"IPC_INVALID_MESSAGE"}}
+  },
+  {
+    "name": "version mismatch",
+    "request": "{\"schemaVersion\":2,\"request_id\":\"fixture_1\",\"kind\":\"request\",\"operation\":\"app_info\",\"payload\":{\"schemaVersion\":1}}",
+    "response": {"schemaVersion":1,"request_id":null,"kind":"error","error":{"schemaVersion":1,"category":"protocol","code":"IPC_UNSUPPORTED_VERSION"}}
+  },
+  {
+    "name": "DTO version mismatch",
+    "request": "{\"schemaVersion\":1,\"request_id\":\"fixture_1\",\"kind\":\"request\",\"operation\":\"app_info\",\"payload\":{\"schemaVersion\":2}}",
+    "response": {"schemaVersion":1,"request_id":null,"kind":"error","error":{"schemaVersion":1,"category":"protocol","code":"IPC_UNSUPPORTED_VERSION"}}
+  },
+  {
+    "name": "premature ready",
+    "request": "{\"schemaVersion\":1,\"request_id\":\"fixture_1\",\"kind\":\"request\",\"operation\":\"client_ready\",\"payload\":{\"schemaVersion\":1}}",
+    "response": {"schemaVersion":1,"request_id":"fixture_1","kind":"error","error":{"schemaVersion":1,"category":"technical","code":"IPC_INVALID_STATE"}}
+  },
+  {
+    "name": "duplicate escaped key",
+    "request": "{\"schemaVersion\":1,\"request_id\":\"fixture_1\",\"kind\":\"request\",\"operation\":\"app_info\",\"payload\":{\"schemaVersion\":1,\"schema\\u0056ersion\":1}}",
+    "response": {"schemaVersion":1,"request_id":null,"kind":"error","error":{"schemaVersion":1,"category":"protocol","code":"IPC_INVALID_MESSAGE"}}
+  }
+]

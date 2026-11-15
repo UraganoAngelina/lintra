@@ -1,0 +1,102 @@
+{
+  "task": "T-MIG-P3-06",
+  "state": "IN_PROGRESS",
+  "local_checks": {
+    "frontend_tests": {
+      "exit_code": 0,
+      "passed": 16
+    },
+    "rust_adapter_tests": {
+      "exit_code": 0,
+      "passed": 11
+    },
+    "frontend_lint_exit_code": 0,
+    "frontend_strict_typecheck_exit_code": 0,
+    "frontend_build_exit_code": 0,
+    "rust_fmt_exit_code": 0,
+    "rust_clippy_exit_code": 0,
+    "linux_release_build": {
+      "exit_code": 0,
+      "elapsed_seconds": 120,
+      "binary_sha256": "adb9dfe68df15b1903a7f0868a88c1bf0e6534813446777b37d5969d71031e98"
+    },
+    "native_wayland_release_smoke": {
+      "exit_code": 0,
+      "stdout": "LINTRA_DESKTOP_READY\n",
+      "harness_exit_code": 0
+    },
+    "impeccable_detector": {
+      "exit_code": 0,
+      "findings": []
+    },
+    "legacy_workspace_tests": "IN_PROGRESS"
+  },
+  "effective_acl": {
+    "passed": true,
+    "resolved_commands": [
+      "lintra_ipc"
+    ],
+    "files": {
+      "apps/lintra-desktop/src-tauri/gen/schemas/acl-manifests.json": "3a1085aa5036465aa03b730234cebdd47dee7c9752b72d922513fec8685d1c46",
+      "apps/lintra-desktop/src-tauri/gen/schemas/capabilities.json": "a06bb8bb62aac2ffaeb081e45d0c700552b49d2004024fc2694e8ecce7e1524c"
+    }
+  },
+  "legacy_unchanged": {
+    "baseline": "45fce38",
+    "paths": [
+      "Cargo.toml",
+      "Cargo.lock",
+      "src",
+      "ui",
+      "tests",
+      ".cargo",
+      ".github/workflows/ci.yml"
+    ],
+    "git_diff_exit_code": 0
+  },
+  "sha256": {
+    "apps/lintra-desktop/.gitignore": "e6e7f4bf51135ae4397996c41bf35e7b413f26635c83cd15053ce9a2985a50fa",
+    "apps/lintra-desktop/.npmrc": "0845322b05da9c42d87fd11c3721e26ab9faff8e022dc68c7c5469b657d6b3af",
+    "apps/lintra-desktop/.nvmrc": "6e775beae185bb3f5837d2f6d3fbe910e6f60e18fa507e661e312e84d707a92f",
+    "apps/lintra-desktop/README.md": "00f4d5f74805879184b08f06eb74b65941851c74caf4afe5cfea7e5e47182e68",
+    "apps/lintra-desktop/assets-provenance.json": "5a060d86d769322e2f1160d1751d4fcee2ed2e492fe9601b963f7b904d3b98ac",
+    "apps/lintra-desktop/index.html": "4d0338ea2d3633623d40d0caca2f2cadd2c1b78489194ecae2c79c40fcdf111f",
+    "apps/lintra-desktop/package-lock.json": "06f2e923e400abfca60b839a57c0ff3aa13c888a2be9c9b559fd7db370150e55",
+    "apps/lintra-desktop/package.json": "d4bbb35f020fe7a46e28e8494203dc6659dfedb42d70fe2d3d9b2f1629db3f2f",
+    "apps/lintra-desktop/public/THIRD_PARTY_NOTICES": "25f27f82d6a4cf6ab8ebcbfa529bd1fec1d4dcfc2533e1db640eec424dd5ca98",
+    "apps/lintra-desktop/public/fonts/IBMPlexMono-Regular.ttf": "fe11304a5fe956d5744e9b6a246cc83d90425245e75a62230044966ca96a7f50",
+    "apps/lintra-desktop/public/fonts/IBMPlexSans-Regular.ttf": "975dcda37d80f038dcd143c22e33ca2d97a0cc5a929aace1c749153b0fe1afa5",
+    "apps/lintra-desktop/public/fonts/IBMPlexSans-SemiBold.ttf": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+    "apps/lintra-desktop/public/fonts/OFL.md": "37784b44044a4ffd9256702b7c0982c37e5c8887ba90c6dca0479aea93dc898d",
+    "apps/lintra-desktop/src-tauri/Cargo.lock": "f8dfbdea742f348e90d26f3b6337b9221db9d74c391c02e86552ec6c2ff37d79",
+    "apps/lintra-desktop/src-tauri/Cargo.toml": "51758762fe64a3b160c03bdcfe6184070376ad31f7c6d1d4a0bbf9f5e16682d3",
+    "apps/lintra-desktop/src-tauri/build.rs": "bd09590b29caf43d4180093498b757936df13c4da8a2bbbeedc11a41e8742e3e",
+    "apps/lintra-desktop/src-tauri/capabilities/desktop.json": "f7bf7180bb3e78f0710112a2c924a540518f39f4e8a3729184eac19475133847",
+    "apps/lintra-desktop/src-tauri/icons/128x128.png": "e42645408761e4e1971c6d3f34faef1317866a01e9c188e6593119326b09b259",
+    "apps/lintra-desktop/src-tauri/icons/icon.ico": "a7c33bc2a63369bf29d65be8c89644e0142643afd2e0c173972156e49cad52ff",
+    "apps/lintra-desktop/src-tauri/src/ipc.rs": "e2a701bb724f1c182fdcc10e00d5176b7f903e87a01a97305e817efb3cfad37a",
+    "apps/lintra-desktop/src-tauri/src/main.rs": "a1e86bb282e26adb0037513a6a7a0bba65d437f58d5062f13102b366ca8a39e1",
+    "apps/lintra-desktop/src-tauri/src/security.rs": "92c0e2cc0c64a31b5ef62fc4d460354fcd7dbc223e342417262166fd8da2a11b",
+    "apps/lintra-desktop/src-tauri/src/state.rs": "0a958527878fb3ed1915e81c6a4fa07eb977001b89c8fb9935e7e28c28663a0e",
+    "apps/lintra-desktop/src-tauri/src/windows_request_guard.rs": "bd63dac8f6d64b9407a71fafae5167e7637541470717a51fc9e673c5d5636daf",
+    "apps/lintra-desktop/src-tauri/tauri.conf.json": "f253a6441d379a47b4ede264be43a0842f450e47a1fd16d7d7743d6c0e43696e",
+    "apps/lintra-desktop/src/ipc.ts": "3c30614d90c4ecfcf3009539cf7bd71b5530a5c39217873f79a285b64130063f",
+    "apps/lintra-desktop/src/main.tsx": "0d43d3d41daeba69649f79555682c3fdc3f162e63f9111cbca86efa1281b0664",
+    "apps/lintra-desktop/src/style.css": "3d68b718a2d534375cd7024a939b483f12f6d3f2e80fe80aa31ce38ab4e3a3ce",
+    "apps/lintra-desktop/src/tokens.css": "c547b51c0d7038839b2567d4d0cd7c27658e2784acc5fa9b5c0cbab1d014c9d6",
+    "apps/lintra-desktop/tests/assets.test.mjs": "a7b7cfbc7c0c9d919a6247a3ce1d765349b7420f2ddc64bbbf53d0a172852a2b",
+    "apps/lintra-desktop/tests/ipc-vectors.json": "cfb81cdae01bfd46e67fbbbaecdfac26e82bd74e50f4675159d774be1ad80d11",
+    "apps/lintra-desktop/tests/ipc.test.mjs": "ed1a96660d8c4c13f685266942e76337c99440dff9e11225b16c302edbbd6c48",
+    "apps/lintra-desktop/tests/native_smoke.py": "cd66361aff3b1debf76cd2c3be05f633508710252b8674a109e155911271ac91",
+    "apps/lintra-desktop/tsconfig.json": "06bb5b9fe7eacdac2fe16e94dc5fe1ac6387d1842132fcc2f5dc1a910633138a",
+    ".github/workflows/desktop.yml": "a2a91cf7c9377ad257eeb31894672590ca65db7715f7e4bbee2780d9751a2e44"
+  },
+  "ci": "NOT_STARTED",
+  "not_claimed": [
+    "Native Windows smoke on new source",
+    "CI Linux/Windows on new source",
+    "P4 application services",
+    "G-MIG-3 PASS",
+    "VM/installer/release qualification"
+  ]
+}

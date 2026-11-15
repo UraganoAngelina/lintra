@@ -1,0 +1,22 @@
+{
+  "task": "T-MIG-P3-05",
+  "native_handshake": {
+    "exit_code": 0,
+    "stdout": "LINTRA_DESKTOP_READY\n",
+    "stderr": ""
+  },
+  "binary_sha256": "f7124a3091a3840e9a9c3056b9160ded11cda5e2e71f59854ab9a5dae1772d87",
+  "rust_tests": {
+    "exit_code": 0,
+    "passed": 11
+  },
+  "frontend_tests": {
+    "exit_code": 0,
+    "passed": 14,
+    "command": "node --test --test-isolation=none tests/ipc.test.mjs"
+  },
+  "typecheck_exit_code": 0,
+  "frontend_build_exit_code": 0,
+  "shared_vectors": 8,
+  "platform": "CachyOS/Wayland; actual React/raw IPC/Rust ack and process exit, no capture"
+}

@@ -1723,6 +1723,8 @@ dependencies = [
 name = "lintra-desktop"
 version = "0.1.1-rc.3"
 dependencies = [
+ "serde",
+ "serde_json",
  "tauri",
  "tauri-build",
  "webview2-com",

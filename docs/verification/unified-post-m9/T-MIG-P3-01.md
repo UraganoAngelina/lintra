@@ -1,6 +1,6 @@
 # T-MIG-P3-01 — Scaffold desktop affiancato
 
-15 novembre2026. **IN_PROGRESS: Linux PASS, Windows CI pendente**.
+15 novembre2026. **DONE: Linux e Windows CI PASS**.
 Ingresso: G-MIG-2 approvato dall’autore, P2-10 DONE. Nuovo eseguibile in
 apps/lintra-desktop, workspace/lock Rust e frontend propri. React/TS strict,
 asset locali, capability vuote, finestra creata con guard prima del documento.
@@ -17,4 +17,7 @@ release e artefatto. Cache ufficiale GitHub pinnata e separata per OS/toolchain/
 lock; nessun controllo omesso sui cache hit. Manifest/istruzioni ufficiali
 cache verificati sul commitcaa296126883cff596d87d8935842f9db880ef25.
 Windows Server CI non è Windows11/installer o qualifica del prodotto.
-Nessun DONE finché la build Windows non supera i controlli; G-MIG-3 aperto.
+CI43731922567 su c8ad22e PASS: frontend, test nativi, Clippy e build release.
+48/128 DONE; segue P3-02. G-MIG-3 resta aperto fino aP3-06.
+Le due catture locali non sono qualificate: il controllo sul focus ha bloccato
+la cattura, processi posseduti terminati, nessuna immagine estranea acquisita.
