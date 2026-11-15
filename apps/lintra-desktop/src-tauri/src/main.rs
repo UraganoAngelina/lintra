@@ -2,6 +2,7 @@
 
 mod configuration;
 mod ipc;
+mod native_picker;
 mod security;
 mod state;
 #[cfg(target_os = "windows")]
@@ -27,7 +28,13 @@ fn lintra_ipc(
                 tauri::ipc::InvokeBody::Raw(bytes) => Some(bytes.as_slice()),
                 tauri::ipc::InvokeBody::Json(_) => None,
             };
-            state.handle(window.label(), &origin, raw)
+            state.handle(window.label(), &origin, raw, &|| {
+                let selected = native_picker::choose(&window)?;
+                if state.closed() {
+                    return Err(ipc::ErrorCode::StaleContext);
+                }
+                Ok(selected)
+            })
         }
         Err(_) => ipc::error(None, ipc::ErrorCode::TechnicalFailure),
     };

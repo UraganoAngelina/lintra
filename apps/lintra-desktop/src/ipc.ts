@@ -19,6 +19,8 @@ type RequestPayloads = {
   catalog_page: { schemaVersion: 1; offset: string };
   configuration_select: { schemaVersion: 1; schema_ref: string; encoding: "utf8" };
   configuration_page: { schemaVersion: 1; configuration_ref: string; offset: string };
+  plan_create: { schemaVersion: 1; configuration_ref: string; mode: "local_only" | "full"; trace_ref: string | null };
+  plan_input_choose: { schemaVersion: 1; plan_ref: string; trace_ref: string };
 };
 type Operation = keyof RequestPayloads;
 type ObjectDto = Record<string, unknown>;
@@ -128,7 +130,7 @@ export function decodeReply(raw: unknown, requestId: string): ObjectDto {
 
 export function encodeRequest<K extends Operation>(operation: K, requestId: string, payload: RequestPayloads[K]): Uint8Array {
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(requestId)
-      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page"].includes(operation)) invalid();
+      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose"].includes(operation)) invalid();
   const bytes = new TextEncoder().encode(JSON.stringify({
     schemaVersion: 1, request_id: requestId, kind: "request", operation,
     payload,
@@ -254,6 +256,37 @@ export async function configurationPage(configurationRef: string, offset = "0"):
     return { schemaVersion: 1, kind: "parameter", parameter_ref: opaque(row.parameter_ref), parameter_id: text(row.parameter_id), value_kind: row.value_kind };
   });
   return { schemaVersion: 1, configuration_ref: configurationRef, offset, descriptors, next_offset: dto.next_offset === null ? null : unsigned(dto.next_offset) };
+}
+
+export type PlanDraft = { schemaVersion: 1; plan_ref: string; configuration_ref: string; mode: "local_only" | "full"; assigned_input_count: string };
+export type InputPreviewDto = { schemaVersion: 1; file_size: string; sampled_bytes: string; lf: string; crlf: string; lone_cr: string; reached_eof: boolean };
+export type InputChoice = { schemaVersion: 1; plan_ref: string; trace_ref: string; disposition: "selected" | "cancelled"; assigned_input_count: string; preview: InputPreviewDto | null };
+
+export async function planCreate(configurationRef: string, mode: "local_only" | "full", traceRef: string | null): Promise<PlanDraft> {
+  opaque(configurationRef);
+  if (mode === "local_only") opaque(traceRef);
+  else if (mode !== "full" || traceRef !== null) invalid();
+  const dto = await exchange("plan_create", { schemaVersion: 1, configuration_ref: configurationRef, mode, trace_ref: traceRef });
+  exact(dto, ["schemaVersion", "plan_ref", "configuration_ref", "mode", "assigned_input_count"]);
+  if (dto.configuration_ref !== configurationRef || dto.mode !== mode) invalid();
+  return { schemaVersion: 1, plan_ref: opaque(dto.plan_ref), configuration_ref: configurationRef, mode, assigned_input_count: unsigned(dto.assigned_input_count) };
+}
+
+export async function planInputChoose(planRef: string, traceRef: string): Promise<InputChoice> {
+  opaque(planRef); opaque(traceRef);
+  const dto = await exchange("plan_input_choose", { schemaVersion: 1, plan_ref: planRef, trace_ref: traceRef });
+  exact(dto, ["schemaVersion", "plan_ref", "trace_ref", "disposition", "assigned_input_count", "preview"]);
+  if (dto.trace_ref !== traceRef || (dto.disposition !== "selected" && dto.disposition !== "cancelled")) invalid();
+  let preview: InputPreviewDto | null = null;
+  if (dto.disposition === "selected") {
+    const raw = object(dto.preview); version(raw);
+    exact(raw, ["schemaVersion", "file_size", "sampled_bytes", "lf", "crlf", "lone_cr", "reached_eof"]);
+    if (typeof raw.reached_eof !== "boolean" || dto.plan_ref === planRef) invalid();
+    preview = { schemaVersion: 1, file_size: unsigned(raw.file_size), sampled_bytes: unsigned(raw.sampled_bytes),
+      lf: unsigned(raw.lf), crlf: unsigned(raw.crlf), lone_cr: unsigned(raw.lone_cr), reached_eof: raw.reached_eof };
+  } else if (dto.preview !== null || dto.plan_ref !== planRef) invalid();
+  return { schemaVersion: 1, plan_ref: opaque(dto.plan_ref), trace_ref: traceRef, disposition: dto.disposition,
+    assigned_input_count: unsigned(dto.assigned_input_count), preview };
 }
 
 export function errorText(error: unknown): string {

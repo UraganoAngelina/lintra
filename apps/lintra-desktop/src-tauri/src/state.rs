@@ -44,11 +44,20 @@ impl AppState {
     pub(crate) fn close(&self) {
         self.closed.store(true, Ordering::Release);
     }
+    pub(crate) fn closed(&self) -> bool {
+        self.closed.load(Ordering::Acquire)
+    }
     pub(crate) fn ready(&self) -> bool {
         self.ready.load(Ordering::Acquire)
     }
 
-    pub(crate) fn handle(&self, label: &str, origin: &Url, raw: Option<&[u8]>) -> Vec<u8> {
+    pub(crate) fn handle(
+        &self,
+        label: &str,
+        origin: &Url,
+        raw: Option<&[u8]>,
+        choose: &dyn Fn() -> Result<Option<std::path::PathBuf>, ErrorCode>,
+    ) -> Vec<u8> {
         if label != "main" || !local_asset_origin(origin) {
             return ipc::error(None, ErrorCode::Unauthorized);
         }
@@ -74,7 +83,11 @@ impl AppState {
         let id = &request.request_id;
         if matches!(
             request.operation.as_str(),
-            "catalog_page" | "configuration_select" | "configuration_page"
+            "catalog_page"
+                | "configuration_select"
+                | "configuration_page"
+                | "plan_create"
+                | "plan_input_choose"
         ) {
             let command = match ConfigurationRequest::decode(&request.operation, &request.payload) {
                 Ok(command) => command,
@@ -92,7 +105,7 @@ impl AppState {
             return permit
                 .as_mut()
                 .expect("configuration acquired")
-                .dispatch(command, id)
+                .dispatch(command, id, choose)
                 .unwrap_or_else(|code| ipc::error(Some(id), code));
         }
         if !matches!(request.operation.as_str(), "app_info" | "client_ready") {
@@ -145,6 +158,7 @@ mod tests {
             "main",
             &Url::parse("tauri://localhost/").unwrap(),
             raw,
+            &|| Err(ErrorCode::TechnicalFailure),
         ))
         .unwrap()
     }
@@ -297,6 +311,7 @@ mod tests {
                 label,
                 &Url::parse(origin).unwrap(),
                 Some(&raw),
+                &|| Err(ErrorCode::TechnicalFailure),
             ))
             .unwrap();
             assert_eq!(value["error"]["code"], "IPC_UNAUTHORIZED");

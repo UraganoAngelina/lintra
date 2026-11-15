@@ -369,11 +369,13 @@ mod bundle_acquisition;
 mod bundle_resolution;
 pub use bundle::external_bundle_manifest_path;
 pub use bundle_acquisition::AnalysisBundle;
+mod input_preview;
 pub use bundle_resolution::{
     BundleDirectories, BundleLevel as BundleSelectionLevel, BundleResolveError,
     BundleSource as BundleSelection, DirectoryKind as BundleDirectoryKind,
     EnvProvider as BundleEnvironment, SystemEnv as SystemBundleEnvironment, resolve_bundle_source,
 };
+pub use input_preview::{ConfigurationError, InputPreview};
 
 /// Persistent history ports and explicit in-memory transaction test adapter.
 pub use persistence::{

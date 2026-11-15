@@ -1,0 +1,39 @@
+{
+  "task": "T-MIG-P4-02",
+  "passed": true,
+  "final_exit_code": 0,
+  "attempts": [
+    {
+      "task": "T-MIG-P4-02",
+      "platform": "CachyOS/Wayland GTK native dialog; automated own-widget accept of a synthetic path",
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "apps/lintra-desktop/src-tauri/Cargo.toml",
+        "--offline",
+        "--locked",
+        "--features",
+        "tauri/custom-protocol",
+        "-j",
+        "2",
+        "native_picker::tests::real_gtk_picker_preserves_the_native_selected_path",
+        "--",
+        "--exact",
+        "--ignored"
+      ],
+      "exit_code": 101,
+      "stdout": "\nrunning 1 test\ntest native_picker::tests::real_gtk_picker_preserves_the_native_selected_path ... FAILED\n\nfailures:\n\n---- native_picker::tests::real_gtk_picker_preserves_the_native_selected_path stdout ----\n\nthread 'native_picker::tests::real_gtk_picker_preserves_the_native_selected_path' (97070) panicked at src/native_picker.rs:97:9:\nassertion `left == right` failed\n  left: None\n right: Some(\"/tmp/.tmprJUX7Q/synthetic input = file.txt\")\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    native_picker::tests::real_gtk_picker_preserves_the_native_selected_path\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 19 filtered out; finished in 10.15s\n\n",
+      "stderr": "   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)\n   Compiling lintra-desktop v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra/apps/lintra-desktop/src-tauri)\n    Finished `test` profile [unoptimized] target(s) in 22.32s\n     Running unittests src/main.rs (spikes/tauri-runtime/src-tauri/target/debug/deps/lintra_desktop-81e2c9f446e51d72)\nerror: test failed, to rerun pass `--bin lintra-desktop`\n",
+      "source_sha256": "40422cd4c69bc3e78337f8cea3a61bc52eb6cc225c5debb77fbcc29db2c27b7e",
+      "scope": "Actual GTK dialog and native PathBuf; not a Windows picker/manual accessibility qualification; no capture"
+    },
+    {
+      "exit_code": 0,
+      "stdout": "\nrunning 1 test\ntest native_picker::tests::real_gtk_picker_preserves_the_native_selected_path ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 19 filtered out; finished in 0.60s\n\n",
+      "stderr": "   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)\n   Compiling lintra-desktop v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra/apps/lintra-desktop/src-tauri)\n    Finished `test` profile [unoptimized] target(s) in 22.28s\n     Running unittests src/main.rs (spikes/tauri-runtime/src-tauri/target/debug/deps/lintra_desktop-81e2c9f446e51d72)\n",
+      "source_sha256": "4f707200e830497aa2145d0b48de78b676d60ee60d23f1128f9fc4f09e6fd261"
+    }
+  ],
+  "scope": "Foreground GTK native dialog on Wayland with private XDG and synthetic selected file; Windows UI not claimed"
+}

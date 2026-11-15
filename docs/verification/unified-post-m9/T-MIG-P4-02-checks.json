@@ -1,0 +1,41 @@
+{
+  "task": "T-MIG-P4-02",
+  "status": "DONE",
+  "checks": {
+    "native_linux_rust_tests": {
+      "passed": 19,
+      "exit_code": 0
+    },
+    "frontend_tests": {
+      "passed": 22,
+      "exit_code": 0
+    },
+    "frontend_strict_exit_code": 0,
+    "legacy_configuration_tests": {
+      "passed": 8,
+      "exit_code": 0
+    },
+    "native_gtk_picker": {
+      "exit_code": 0,
+      "selective_ignored_test": "native_picker::tests::real_gtk_picker_preserves_the_native_selected_path",
+      "receipt": "T-MIG-P4-02-native-picker.json",
+      "first_driver_failure_preserved": true
+    }
+  },
+  "scope": "Native file broker, typed draft plan, bounded shared preflight; no validation job",
+  "not_claimed": [
+    "Windows native dialog UI qualification; MSVC compilation at coherent block checkpoint",
+    "G-MIG-4",
+    "Record validation or Full conformity"
+  ],
+  "sha256": {
+    "src/input_preview.rs": "0c965c6cc1c3c258a9266721c57529018eb2959822c671e60a3886758f4985af",
+    "src/lib.rs": "da812e58dfef0ab9766500d49bb0f57326876ffb3477620220d35ab4ee5284b7",
+    "ui/src/analysis.rs": "e2911d1c3c48aa3683622e2ef0a2e1fae29196dae082a2f8c0e950cac73b303c",
+    "apps/lintra-desktop/src-tauri/src/native_picker.rs": "4f707200e830497aa2145d0b48de78b676d60ee60d23f1128f9fc4f09e6fd261",
+    "apps/lintra-desktop/src-tauri/src/configuration.rs": "39491c9010b7eb96ca1d83b108636a7c170f8351b5f96ef2078d7b1d8698ac62",
+    "apps/lintra-desktop/src-tauri/src/main.rs": "7a039d14ae2e133b95f3d3e40fa280a1c681e58a8d04cd020dc8926eaf7509ef",
+    "apps/lintra-desktop/src-tauri/src/state.rs": "99a7d87fee4c90c48774d0cbc61cd295339f0d39287251f4f25fecd41c1f4f75",
+    "apps/lintra-desktop/src/ipc.ts": "2c557c0c6d1ed6e0fe60fab5baaea4894678384f54edc740c9a747dd5152c57f"
+  }
+}

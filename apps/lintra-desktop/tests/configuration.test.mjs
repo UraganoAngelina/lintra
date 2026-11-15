@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import { mockIPC, clearMocks } from "@tauri-apps/api/mocks";
-import { catalogPage, configurationSelect, configurationPage, IpcError } from "../src/ipc.ts";
+import { catalogPage, configurationSelect, configurationPage, planCreate, planInputChoose, IpcError } from "../src/ipc.ts";
 
 globalThis.window = { crypto: globalThis.crypto };
 afterEach(clearMocks);
@@ -63,4 +63,30 @@ test("malformed intents fail before transport and u64 values stay canonical stri
   assert.equal(calls, 0);
   mock({ ...catalog, offset: "18446744073709551615", entries: [], next_offset: null });
   assert.equal((await catalogPage("18446744073709551615")).offset, "18446744073709551615");
+});
+
+test("plan creation binds mode and a native input choice exposes only versioned counters", async () => {
+  const draft = { schemaVersion: 1, plan_ref: "instance_plan_1", configuration_ref: selected.configuration_ref, mode: "local_only", assigned_input_count: "0" };
+  mock(draft, request => assert.deepEqual(request.payload, { schemaVersion: 1, configuration_ref: selected.configuration_ref, mode: "local_only", trace_ref: "trace_0" }));
+  assert.deepEqual(await planCreate(selected.configuration_ref, "local_only", "trace_0"), draft);
+  const preview = { schemaVersion: 1, file_size: "8", sampled_bytes: "8", lf: "0", crlf: "1", lone_cr: "0", reached_eof: true };
+  const response = { schemaVersion: 1, plan_ref: "instance_plan_2", trace_ref: "trace_0", disposition: "selected", assigned_input_count: "1", preview };
+  mock(response, request => assert.deepEqual(request.payload, { schemaVersion: 1, plan_ref: draft.plan_ref, trace_ref: "trace_0" }));
+  assert.deepEqual(await planInputChoose(draft.plan_ref, "trace_0"), response);
+  mock({ ...response, plan_ref: draft.plan_ref, disposition: "cancelled", preview: null, assigned_input_count: "0" });
+  assert.equal((await planInputChoose(draft.plan_ref, "trace_0")).disposition, "cancelled");
+});
+
+test("input replies reject raw/path data, inconsistent cancellation and stale selection identity", async () => {
+  const preview = { schemaVersion: 1, file_size: "8", sampled_bytes: "8", lf: "0", crlf: "1", lone_cr: "0", reached_eof: true };
+  const response = { schemaVersion: 1, plan_ref: "plan_2", trace_ref: "trace_0", disposition: "selected", assigned_input_count: "1", preview };
+  for (const payload of [{ ...response, path: "SYNTHETIC" }, { ...response, preview: { ...preview, raw: "SYNTHETIC" } },
+    { ...response, preview: { ...preview, schemaVersion: 2 } }, { ...response, disposition: "cancelled", preview: null },
+    { ...response, trace_ref: "other" }, { ...response, plan_ref: "plan_1" }]) {
+    mock(payload); await assert.rejects(() => planInputChoose("plan_1", "trace_0"), IpcError);
+  }
+  let called = false; mock(response, () => { called = true; });
+  await assert.rejects(() => planCreate(selected.configuration_ref, "local_only", null), IpcError);
+  await assert.rejects(() => planCreate(selected.configuration_ref, "full", "trace_0"), IpcError);
+  assert.equal(called, false);
 });

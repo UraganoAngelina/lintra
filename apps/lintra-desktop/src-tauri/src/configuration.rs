@@ -2,7 +2,7 @@
 use crate::ipc::{self, ErrorCode};
 use lintra::*;
 use serde_json::{Map, Value, json};
-use std::sync::Arc;
+use std::{path::PathBuf, sync::Arc};
 
 const PAGE_SIZE: usize = 64;
 
@@ -16,6 +16,15 @@ pub(crate) enum ConfigurationRequest {
     Descriptors {
         configuration_ref: String,
         offset: usize,
+    },
+    CreatePlan {
+        configuration_ref: String,
+        mode: ValidationMode,
+        trace_ref: Option<String>,
+    },
+    ChooseInput {
+        plan_ref: String,
+        trace_ref: String,
     },
 }
 
@@ -62,6 +71,31 @@ impl ConfigurationRequest {
     pub(crate) fn decode(operation: &str, payload: &Map<String, Value>) -> Result<Self, ErrorCode> {
         ipc::version(payload)?;
         match operation {
+            "plan_create" => {
+                fields(payload, &["configuration_ref", "mode", "trace_ref"])?;
+                let mode = match payload["mode"].as_str() {
+                    Some("local_only") => ValidationMode::LocalOnly,
+                    Some("full") => ValidationMode::Full,
+                    _ => return Err(ErrorCode::InvalidMessage),
+                };
+                let trace_ref = if payload["trace_ref"].is_null() {
+                    None
+                } else {
+                    Some(handle(payload, "trace_ref")?)
+                };
+                Ok(Self::CreatePlan {
+                    configuration_ref: handle(payload, "configuration_ref")?,
+                    mode,
+                    trace_ref,
+                })
+            }
+            "plan_input_choose" => {
+                fields(payload, &["plan_ref", "trace_ref"])?;
+                Ok(Self::ChooseInput {
+                    plan_ref: handle(payload, "plan_ref")?,
+                    trace_ref: handle(payload, "trace_ref")?,
+                })
+            }
             "catalog_page" => {
                 fields(payload, &["offset"])?;
                 Ok(Self::Catalog {
@@ -94,11 +128,20 @@ mod tests {
     use super::*;
     use std::fs;
 
+    fn no_picker() -> Result<Option<PathBuf>, ErrorCode> {
+        Err(ErrorCode::TechnicalFailure)
+    }
+
     fn request(operation: &str, value: Value) -> ConfigurationRequest {
         ConfigurationRequest::decode(operation, value.as_object().unwrap()).unwrap()
     }
     fn call(configuration: &mut Configuration, request: ConfigurationRequest) -> Value {
-        serde_json::from_slice(&configuration.dispatch(request, "test_1").unwrap()).unwrap()
+        serde_json::from_slice(
+            &configuration
+                .dispatch(request, "test_1", &no_picker)
+                .unwrap(),
+        )
+        .unwrap()
     }
     fn fixture(count: usize) -> (tempfile::TempDir, Configuration) {
         let directory = tempfile::tempdir().unwrap();
@@ -153,7 +196,11 @@ mod tests {
             json!([])
         );
         assert_eq!(
-            state.dispatch(ConfigurationRequest::Catalog { offset: 71 }, "test_1"),
+            state.dispatch(
+                ConfigurationRequest::Catalog { offset: 71 },
+                "test_1",
+                &no_picker
+            ),
             Err(ErrorCode::InvalidMessage)
         );
         assert!(state.selected.is_none());
@@ -199,7 +246,8 @@ mod tests {
                     configuration_ref: selected_ref,
                     offset: 0
                 },
-                "test_1"
+                "test_1",
+                &no_picker
             ),
             Err(ErrorCode::StaleContext)
         );
@@ -222,14 +270,19 @@ mod tests {
                 ConfigurationRequest::Select {
                     schema_ref: other.schema_ref(0)
                 },
-                "test_1"
+                "test_1",
+                &no_picker
             ),
             Err(ErrorCode::StaleContext)
         );
         assert_eq!(state.selected.as_ref().unwrap().reference, before);
         state.generation = u64::MAX;
         assert_eq!(
-            state.dispatch(ConfigurationRequest::Select { schema_ref }, "test_1"),
+            state.dispatch(
+                ConfigurationRequest::Select { schema_ref },
+                "test_1",
+                &no_picker
+            ),
             Err(ErrorCode::TechnicalFailure)
         );
         assert_eq!(state.selected.as_ref().unwrap().reference, before);
@@ -260,6 +313,138 @@ mod tests {
             );
         }
     }
+
+    fn local_plan(state: &mut Configuration) -> (String, String) {
+        let schema_ref = state.schema_ref(0);
+        let selected = call(state, ConfigurationRequest::Select { schema_ref });
+        let reference = selected["payload"]["configuration_ref"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        let trace_ref = format!("{reference}_trace_0");
+        let plan = call(
+            state,
+            ConfigurationRequest::CreatePlan {
+                configuration_ref: reference,
+                mode: ValidationMode::LocalOnly,
+                trace_ref: Some(trace_ref.clone()),
+            },
+        );
+        (
+            plan["payload"]["plan_ref"].as_str().unwrap().to_owned(),
+            trace_ref,
+        )
+    }
+
+    #[test]
+    fn native_choice_returns_only_probe_counters_and_rejects_old_plan_before_picker() {
+        let (directory, mut state) = fixture(1);
+        let (plan_ref, trace_ref) = local_plan(&mut state);
+        let path = directory.path().join("synthetic input = file.txt");
+        fs::write(&path, b"001A  \r\n").unwrap();
+        let bytes = state
+            .dispatch(
+                ConfigurationRequest::ChooseInput {
+                    plan_ref: plan_ref.clone(),
+                    trace_ref: trace_ref.clone(),
+                },
+                "test_1",
+                &|| Ok(Some(path.clone())),
+            )
+            .unwrap();
+        let value: Value = serde_json::from_slice(&bytes).unwrap();
+        assert_eq!(value["payload"]["disposition"], "selected");
+        assert_eq!(value["payload"]["preview"]["file_size"], "8");
+        assert_eq!(value["payload"]["preview"]["crlf"], "1");
+        assert_eq!(value["payload"]["assigned_input_count"], "1");
+        assert_ne!(value["payload"]["plan_ref"], plan_ref);
+        assert!(
+            !String::from_utf8(bytes)
+                .unwrap()
+                .contains("synthetic input")
+        );
+        assert_eq!(fs::read(&path).unwrap(), b"001A  \r\n");
+        let called = std::cell::Cell::new(false);
+        assert_eq!(
+            state.dispatch(
+                ConfigurationRequest::ChooseInput {
+                    plan_ref,
+                    trace_ref
+                },
+                "test_1",
+                &|| {
+                    called.set(true);
+                    Ok(Some(path.clone()))
+                }
+            ),
+            Err(ErrorCode::StaleContext)
+        );
+        assert!(!called.get());
+    }
+
+    #[test]
+    fn cancellation_bom_failure_and_forged_fields_do_not_replace_the_plan() {
+        let (directory, mut state) = fixture(1);
+        let (plan_ref, trace_ref) = local_plan(&mut state);
+        let response = state
+            .dispatch(
+                ConfigurationRequest::ChooseInput {
+                    plan_ref: plan_ref.clone(),
+                    trace_ref: trace_ref.clone(),
+                },
+                "test_1",
+                &|| Ok(None),
+            )
+            .unwrap();
+        let value: Value = serde_json::from_slice(&response).unwrap();
+        assert_eq!(value["payload"]["disposition"], "cancelled");
+        assert_eq!(state.plan.as_ref().unwrap().reference, plan_ref);
+        let path = directory.path().join("synthetic-bom.txt");
+        fs::write(&path, [0xff, 0xfe, 0, 0]).unwrap();
+        assert_eq!(
+            state.dispatch(
+                ConfigurationRequest::ChooseInput {
+                    plan_ref: plan_ref.clone(),
+                    trace_ref: trace_ref.clone()
+                },
+                "test_1",
+                &|| Ok(Some(path.clone()))
+            ),
+            Err(ErrorCode::TechnicalFailure)
+        );
+        assert_eq!(state.plan.as_ref().unwrap().reference, plan_ref);
+        assert_eq!(state.plan.as_ref().unwrap().assigned(), 0);
+        assert!(ConfigurationRequest::decode("plan_input_choose",json!({"schemaVersion":1,"plan_ref":plan_ref,"trace_ref":trace_ref,"path":"forged"}).as_object().unwrap()).is_err());
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn native_non_utf8_input_path_is_retained_without_a_lossy_wire_conversion() {
+        use std::os::unix::ffi::OsStringExt;
+        let (directory, mut state) = fixture(1);
+        let (plan_ref, trace_ref) = local_plan(&mut state);
+        let path = directory
+            .path()
+            .join(std::ffi::OsString::from_vec(b"synthetic-\xff.txt".to_vec()));
+        fs::write(&path, b"001A  \n").unwrap();
+        state
+            .dispatch(
+                ConfigurationRequest::ChooseInput {
+                    plan_ref,
+                    trace_ref,
+                },
+                "test_1",
+                &|| Ok(Some(path.clone())),
+            )
+            .unwrap();
+        assert_eq!(
+            state.plan.as_ref().unwrap().inputs[0]
+                .as_ref()
+                .unwrap()
+                .path,
+            path
+        );
+    }
 }
 
 pub(crate) struct SelectedConfiguration {
@@ -269,11 +454,51 @@ pub(crate) struct SelectedConfiguration {
     pub schema_hash: Sha256Digest,
 }
 
+#[derive(Clone)]
+struct ConfirmedInput {
+    path: PathBuf,
+    preview: InputPreview,
+}
+
+#[derive(Clone)]
+struct DraftPlan {
+    reference: String,
+    configuration_ref: String,
+    mode: ValidationMode,
+    trace: Option<usize>,
+    inputs: Vec<Option<ConfirmedInput>>,
+}
+
+impl DraftPlan {
+    fn assigned(&self) -> usize {
+        self.inputs
+            .iter()
+            .filter(|input| {
+                input
+                    .as_ref()
+                    .is_some_and(|i| !i.path.as_os_str().is_empty())
+            })
+            .count()
+    }
+    fn mode_name(&self) -> &'static str {
+        match self.mode {
+            ValidationMode::LocalOnly => "local_only",
+            ValidationMode::Full => "full",
+        }
+    }
+    fn dto(&self) -> Value {
+        json!({"schemaVersion":1,"plan_ref":self.reference,"configuration_ref":self.configuration_ref,
+            "mode":self.mode_name(),"assigned_input_count":self.assigned().to_string()})
+    }
+}
+
 pub(crate) struct Configuration {
     bundle: AnalysisBundle,
     instance: String,
     generation: u64,
     selected: Option<SelectedConfiguration>,
+    plan_number: u64,
+    plan: Option<DraftPlan>,
 }
 
 impl Configuration {
@@ -297,6 +522,8 @@ impl Configuration {
             instance,
             generation: 0,
             selected: None,
+            plan_number: 0,
+            plan: None,
         })
     }
 
@@ -413,12 +640,114 @@ impl Configuration {
         )
     }
 
+    fn trace_index(selected: &SelectedConfiguration, trace_ref: &str) -> Result<usize, ErrorCode> {
+        selected
+            .schema
+            .traces()
+            .iter()
+            .enumerate()
+            .find_map(|(index, _)| {
+                (format!("{}_trace_{index}", selected.reference) == trace_ref).then_some(index)
+            })
+            .ok_or(ErrorCode::StaleContext)
+    }
+
+    fn create_plan(
+        &mut self,
+        configuration_ref: &str,
+        mode: ValidationMode,
+        trace_ref: Option<&str>,
+        request_id: &str,
+    ) -> Result<Vec<u8>, ErrorCode> {
+        let selected = self
+            .selected
+            .as_ref()
+            .filter(|s| s.reference == configuration_ref)
+            .ok_or(ErrorCode::StaleContext)?;
+        let trace = match (mode, trace_ref) {
+            (ValidationMode::LocalOnly, Some(trace)) => Some(Self::trace_index(selected, trace)?),
+            (ValidationMode::Full, None) => None,
+            _ => return Err(ErrorCode::InvalidMessage),
+        };
+        let number = self
+            .plan_number
+            .checked_add(1)
+            .ok_or(ErrorCode::TechnicalFailure)?;
+        let plan = DraftPlan {
+            reference: format!("{}_plan_{number}", self.instance),
+            configuration_ref: configuration_ref.to_owned(),
+            mode,
+            trace,
+            inputs: vec![None; selected.schema.traces().len()],
+        };
+        let bytes = ipc::response(request_id, plan.dto())?;
+        self.plan_number = number;
+        self.plan = Some(plan);
+        Ok(bytes)
+    }
+
+    fn choose_input(
+        &mut self,
+        plan_ref: &str,
+        trace_ref: &str,
+        request_id: &str,
+        choose: &dyn Fn() -> Result<Option<PathBuf>, ErrorCode>,
+    ) -> Result<Vec<u8>, ErrorCode> {
+        let selected = self.selected.as_ref().ok_or(ErrorCode::StaleContext)?;
+        let plan = self
+            .plan
+            .as_ref()
+            .filter(|p| p.reference == plan_ref && p.configuration_ref == selected.reference)
+            .ok_or(ErrorCode::StaleContext)?;
+        let index = Self::trace_index(selected, trace_ref)?;
+        if plan.mode == ValidationMode::LocalOnly && plan.trace != Some(index) {
+            return Err(ErrorCode::InvalidState);
+        }
+        let number = self
+            .plan_number
+            .checked_add(1)
+            .ok_or(ErrorCode::TechnicalFailure)?;
+        let Some(path) = choose()? else {
+            return ipc::response(
+                request_id,
+                json!({"schemaVersion":1,"plan_ref":plan_ref,"trace_ref":trace_ref,
+                "disposition":"cancelled","assigned_input_count":plan.assigned().to_string(),"preview":null}),
+            );
+        };
+        let preview = InputPreview::inspect(&path).map_err(|_| ErrorCode::TechnicalFailure)?;
+        let mut next = plan.clone();
+        next.reference = format!("{}_plan_{number}", self.instance);
+        next.inputs[index] = Some(ConfirmedInput { path, preview });
+        let preview = &next.inputs[index]
+            .as_ref()
+            .expect("confirmed input assigned")
+            .preview;
+        let dto = json!({"schemaVersion":1,"plan_ref":next.reference,"trace_ref":trace_ref,"disposition":"selected",
+            "assigned_input_count":next.assigned().to_string(),"preview":{"schemaVersion":1,"file_size":preview.file_size.to_string(),
+            "sampled_bytes":preview.sampled_bytes.to_string(),"lf":preview.lf.to_string(),"crlf":preview.crlf.to_string(),
+            "lone_cr":preview.lone_cr.to_string(),"reached_eof":preview.reached_eof}});
+        let bytes = ipc::response(request_id, dto)?;
+        self.plan_number = number;
+        self.plan = Some(next);
+        Ok(bytes)
+    }
+
     pub(crate) fn dispatch(
         &mut self,
         request: ConfigurationRequest,
         request_id: &str,
+        choose: &dyn Fn() -> Result<Option<PathBuf>, ErrorCode>,
     ) -> Result<Vec<u8>, ErrorCode> {
         match request {
+            ConfigurationRequest::CreatePlan {
+                configuration_ref,
+                mode,
+                trace_ref,
+            } => self.create_plan(&configuration_ref, mode, trace_ref.as_deref(), request_id),
+            ConfigurationRequest::ChooseInput {
+                plan_ref,
+                trace_ref,
+            } => self.choose_input(&plan_ref, &trace_ref, request_id, choose),
             ConfigurationRequest::Catalog { offset } => {
                 ipc::response(request_id, self.catalog_page(offset)?)
             }
@@ -432,6 +761,7 @@ impl Configuration {
                 // Oversize/serialization failure leaves the previous selection and IDs intact.
                 self.generation += 1;
                 self.selected = Some(selected);
+                self.plan = None;
                 Ok(bytes)
             }
         }
