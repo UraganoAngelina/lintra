@@ -1,7 +1,8 @@
 # Lintra desktop
 
-Adapter React/Tauri affiancato a CLI e Slint; scaffold P3, non release utenti.
-Manifest e lock separati; nessuna validazione o persistenza collegata.
+Adapter React/Tauri affiancato a CLI e Slint; P4 in sviluppo, non release utenti.
+Manifest e lock separati; preparazione collegata alla library, worker e
+persistenza non ancora disponibili nella UI.
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund
@@ -18,8 +19,15 @@ aggiuntivo. `npm test` esegue i decoder IPC e verifica asset/licenze locali.
 
 L'unico comando `lintra_ipc` riceve e restituisce byte raw UTF-8: envelope e DTO
 v1, massimo 1 MiB completo e profondità 32. La capability vale soltanto per la
-finestra locale `main`, con ricontrollo Rust dell'origine. Sono registrate solo
-`app_info` e `client_ready`; nessuna operazione file, SQL, validazione o storia.
+finestra locale `main`, con ricontrollo Rust dell'origine. Il registry comprende
+`app_info`, `client_ready`, catalogo e selezione esplicita, pagine dei
+descrittori, `plan_create`, `plan_input_choose`, `plan_parameter_set` e
+`plan_prepare`. Il selettore nativo conserva PathBuf in Rust; il client riceve
+solo riferimenti opachi e contatori. Parametri tipizzati restano testo esatto,
+anche per interi oltre il limite JavaScript. La preparazione congela schema,
+mode e binding mediante i validator della library: non avvia record validation.
+Nessuna operazione SQL o storia. La shell React resta quella P3 fino alle
+viste P5; le API P4 sono provate attraverso i dispatcher reali.
 CSP e guard WebView2 qualificati in P1-04 restano applicati.
 
 `--shell-smoke-test` verifica caricamento del documento e chiusura; `--smoke-test`

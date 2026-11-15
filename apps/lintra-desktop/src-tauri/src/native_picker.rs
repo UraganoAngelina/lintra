@@ -28,6 +28,7 @@ fn choose_gtk(parent: &gtk::Window) -> Result<Option<PathBuf>, ErrorCode> {
         ],
     );
     dialog.set_modal(true);
+    dialog.set_destroy_with_parent(true);
     dialog.set_select_multiple(false);
     dialog.set_local_only(true);
     dialog.set_preview_widget_active(false);
@@ -66,16 +67,16 @@ mod tests {
         let callback_parent = parent.clone();
         let accept = gtk::glib::timeout_add_local(Duration::from_millis(250), move || {
             for window in gtk::Window::list_toplevels() {
-                if let Ok(dialog) = window.downcast::<gtk::FileChooserDialog>() {
-                    if dialog.transient_for().as_ref() == Some(&callback_parent) {
-                        if !callback_selected.get() {
-                            assert!(dialog.set_filename(&callback_path));
-                            callback_selected.set(true);
-                        }
-                        // GTK resolves the selected folder/file asynchronously.
-                        if dialog.filename().as_ref() == Some(&callback_path) {
-                            dialog.response(gtk::ResponseType::Accept);
-                        }
+                if let Ok(dialog) = window.downcast::<gtk::FileChooserDialog>()
+                    && dialog.transient_for().as_ref() == Some(&callback_parent)
+                {
+                    if !callback_selected.get() {
+                        assert!(dialog.set_filename(&callback_path));
+                        callback_selected.set(true);
+                    }
+                    // GTK resolves the selected folder/file asynchronously.
+                    if dialog.filename().as_ref() == Some(&callback_path) {
+                        dialog.response(gtk::ResponseType::Accept);
                     }
                 }
             }
@@ -84,10 +85,10 @@ mod tests {
         let timeout_parent = parent.clone();
         let timeout = gtk::glib::timeout_add_local(Duration::from_secs(10), move || {
             for window in gtk::Window::list_toplevels() {
-                if let Ok(dialog) = window.downcast::<gtk::FileChooserDialog>() {
-                    if dialog.transient_for().as_ref() == Some(&timeout_parent) {
-                        dialog.response(gtk::ResponseType::Cancel);
-                    }
+                if let Ok(dialog) = window.downcast::<gtk::FileChooserDialog>()
+                    && dialog.transient_for().as_ref() == Some(&timeout_parent)
+                {
+                    dialog.response(gtk::ResponseType::Cancel);
                 }
             }
             gtk::glib::ControlFlow::Continue
@@ -99,6 +100,20 @@ mod tests {
         assert!(selected.get());
         assert_eq!(result.unwrap(), Some(path.clone()));
         assert_eq!(std::fs::read(path).unwrap(), b"001A  \n");
+        let parent = gtk::Window::new(gtk::WindowType::Toplevel);
+        parent.set_title("Lintra · Prova chiusura picker");
+        parent.show();
+        let closing = parent.clone();
+        let close = gtk::glib::timeout_add_local(Duration::from_millis(250), move || {
+            // SAFETY: the test owns this window and uses no children after teardown.
+            // A window-manager close request is inhibited by a modal child.
+            unsafe { closing.destroy() };
+            gtk::glib::ControlFlow::Continue
+        });
+        let cancelled = choose_gtk(&parent);
+        close.remove();
+        parent.close();
+        assert_eq!(cancelled.unwrap(), None);
     }
 }
 

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import { mockIPC, clearMocks } from "@tauri-apps/api/mocks";
-import { catalogPage, configurationSelect, configurationPage, planCreate, planInputChoose, IpcError } from "../src/ipc.ts";
+import { catalogPage, configurationSelect, configurationPage, planCreate, planInputChoose, planParameterSet, planPrepare, IpcError } from "../src/ipc.ts";
 
 globalThis.window = { crypto: globalThis.crypto };
 afterEach(clearMocks);
@@ -88,5 +88,26 @@ test("input replies reject raw/path data, inconsistent cancellation and stale se
   let called = false; mock(response, () => { called = true; });
   await assert.rejects(() => planCreate(selected.configuration_ref, "local_only", null), IpcError);
   await assert.rejects(() => planCreate(selected.configuration_ref, "full", "trace_0"), IpcError);
+  assert.equal(called, false);
+});
+
+test("parameter values stay typed exact text and prepare is bound to the requested plan", async () => {
+  const draft = { schemaVersion: 1, plan_ref: "plan_2", configuration_ref: selected.configuration_ref, mode: "full", assigned_input_count: "2" };
+  mock(draft, request => assert.deepEqual(request.payload, { schemaVersion: 1, plan_ref: "plan_1", parameter_ref: "param_1",
+    value: { schemaVersion: 1, kind: "integer", text: "18446744073709551615" } }));
+  assert.equal((await planParameterSet("plan_1", "param_1", { kind: "integer", text: "18446744073709551615" })).plan_ref, "plan_2");
+  const ready = { schemaVersion: 1, plan_ref: "plan_2", mode: "full", ready: true, schema_hash: "a".repeat(64), input_count: "2", parameter_count: "1", provenance };
+  mock(ready, request => assert.deepEqual(request.payload, { schemaVersion: 1, plan_ref: "plan_2" }));
+  assert.deepEqual(await planPrepare("plan_2"), ready);
+});
+
+test("prepare rejects invented readiness, hidden raw values and an unrelated plan", async () => {
+  const ready = { schemaVersion: 1, plan_ref: "plan_1", mode: "full", ready: true, schema_hash: "a".repeat(64), input_count: "2", parameter_count: "1", provenance };
+  for (const response of [{ ...ready, ready: false }, { ...ready, plan_ref: "other" }, { ...ready, mode: "auto" },
+    { ...ready, raw: "SYNTHETIC" }, { ...ready, input_count: 2 }]) {
+    mock(response); await assert.rejects(() => planPrepare("plan_1"), IpcError);
+  }
+  let called = false; mock(ready, () => { called = true; });
+  await assert.rejects(() => planParameterSet("plan_1", "param_1", { kind: "integer", text: 1844 }), IpcError);
   assert.equal(called, false);
 });

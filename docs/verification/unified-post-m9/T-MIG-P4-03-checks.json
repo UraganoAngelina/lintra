@@ -1,0 +1,47 @@
+{
+  "task": "T-MIG-P4-03",
+  "status": "DONE",
+  "checks": {
+    "native_linux_rust_tests": {
+      "passed": 23,
+      "ignored_display_test": 1,
+      "exit_code": 0
+    },
+    "frontend_tests": {
+      "passed": 24,
+      "exit_code": 0
+    },
+    "frontend_lint_typecheck_build_exit_code": 0,
+    "adapter_clippy_all_targets_exit_code": 0,
+    "core_ui_clippy_lib_exit_code": 0,
+    "legacy_configuration_tests": {
+      "passed": 8,
+      "exit_code": 0
+    },
+    "native_gtk_selection_and_parent_teardown": {
+      "exit_code": 0,
+      "receipt": "T-MIG-P4-03-native-picker.json",
+      "first_driver_failure": "T-MIG-P4-03-native-picker-first.json"
+    },
+    "native_react_raw_ipc_smoke": {
+      "exit_code": 0,
+      "stdout": "LINTRA_DESKTOP_READY\n",
+      "stderr": "",
+      "binary_sha256": "95265023e9fd5d05570cbf341e66e83eb272cdf04591a30d52eb94f47eb59d9f",
+      "scope": "debug integration before native dialog parent teardown amendment; bootstrap only"
+    }
+  },
+  "not_claimed": [
+    "Windows MSVC until coherent block CI",
+    "Worker execution",
+    "G-MIG-4",
+    "P5 operational React views"
+  ],
+  "sha256": {
+    "apps/lintra-desktop/src-tauri/src/configuration.rs": "6ff68c69b01d90b3eae8776fea388922670bfa90a9f6310328f2b578186f636b",
+    "apps/lintra-desktop/src-tauri/src/state.rs": "b7768625d857a932be258bee7b69db4c7ceacb7c089d695db888c19fb0f38ab1",
+    "apps/lintra-desktop/src-tauri/src/native_picker.rs": "d474126a94d2120191f8559ff964ea3ed33a74ce66a2c4ac5fd854387e1f6ffb",
+    "apps/lintra-desktop/src/ipc.ts": "55e54387f3b8a0d405b338fc44c84cb0b6b7b64aa2d1e800c9791f4d0fc152d7",
+    "apps/lintra-desktop/tests/configuration.test.mjs": "f9ec7ddd19a22731d70b8b5c610df99e041747cded1da69825fb7763782a0d85"
+  }
+}

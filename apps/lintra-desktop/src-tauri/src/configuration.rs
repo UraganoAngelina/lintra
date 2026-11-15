@@ -2,7 +2,7 @@
 use crate::ipc::{self, ErrorCode};
 use lintra::*;
 use serde_json::{Map, Value, json};
-use std::{path::PathBuf, sync::Arc};
+use std::{collections::BTreeMap, path::PathBuf, sync::Arc};
 
 const PAGE_SIZE: usize = 64;
 
@@ -25,6 +25,14 @@ pub(crate) enum ConfigurationRequest {
     ChooseInput {
         plan_ref: String,
         trace_ref: String,
+    },
+    SetParameter {
+        plan_ref: String,
+        parameter_ref: String,
+        value: JoinParameterValue,
+    },
+    Prepare {
+        plan_ref: String,
     },
 }
 
@@ -71,6 +79,33 @@ impl ConfigurationRequest {
     pub(crate) fn decode(operation: &str, payload: &Map<String, Value>) -> Result<Self, ErrorCode> {
         ipc::version(payload)?;
         match operation {
+            "plan_parameter_set" => {
+                fields(payload, &["plan_ref", "parameter_ref", "value"])?;
+                let value = payload["value"]
+                    .as_object()
+                    .ok_or(ErrorCode::InvalidMessage)?;
+                ipc::version(value)?;
+                fields(value, &["kind", "text"])?;
+                let text = value["text"].as_str().ok_or(ErrorCode::InvalidMessage)?;
+                let value = match value["kind"].as_str() {
+                    Some("text") => JoinParameterValue::Text(text.to_owned()),
+                    Some("integer") => JoinParameterValue::Integer(
+                        text.parse().map_err(|_| ErrorCode::InvalidMessage)?,
+                    ),
+                    _ => return Err(ErrorCode::InvalidMessage),
+                };
+                Ok(Self::SetParameter {
+                    plan_ref: handle(payload, "plan_ref")?,
+                    parameter_ref: handle(payload, "parameter_ref")?,
+                    value,
+                })
+            }
+            "plan_prepare" => {
+                fields(payload, &["plan_ref"])?;
+                Ok(Self::Prepare {
+                    plan_ref: handle(payload, "plan_ref")?,
+                })
+            }
             "plan_create" => {
                 fields(payload, &["configuration_ref", "mode", "trace_ref"])?;
                 let mode = match payload["mode"].as_str() {
@@ -127,6 +162,12 @@ impl ConfigurationRequest {
 mod tests {
     use super::*;
     use std::fs;
+    mod full_schema {
+        include!(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../../tests/support/full_schema.rs"
+        ));
+    }
 
     fn no_picker() -> Result<Option<PathBuf>, ErrorCode> {
         Err(ErrorCode::TechnicalFailure)
@@ -144,15 +185,18 @@ mod tests {
         .unwrap()
     }
     fn fixture(count: usize) -> (tempfile::TempDir, Configuration) {
+        let embedded = EmbeddedBundle::builtin().unwrap();
+        let sample: Value =
+            serde_json::from_slice(embedded.file("schemas/SYNTHETIC/v1/flow.json").unwrap())
+                .unwrap();
+        fixture_model(count, sample)
+    }
+    fn fixture_model(count: usize, sample: Value) -> (tempfile::TempDir, Configuration) {
         let directory = tempfile::tempdir().unwrap();
         let schemas = directory.path().join("schemas");
         let reference = directory.path().join("reference-data");
         fs::create_dir(&schemas).unwrap();
         fs::create_dir(&reference).unwrap();
-        let embedded = EmbeddedBundle::builtin().unwrap();
-        let sample: Value =
-            serde_json::from_slice(embedded.file("schemas/SYNTHETIC/v1/flow.json").unwrap())
-                .unwrap();
         for index in 0..count {
             let version = format!("v{index:03}");
             let folder = schemas.join("SYNTHETIC").join(&version);
@@ -445,6 +489,273 @@ mod tests {
             path
         );
     }
+
+    #[test]
+    fn prepared_intent_is_frozen_and_new_selection_cannot_change_its_schema_or_request() {
+        let (directory, mut state) = fixture(2);
+        let (plan_ref, trace_ref) = local_plan(&mut state);
+        let path = directory.path().join("synthetic.txt");
+        fs::write(&path, b"001A  \n").unwrap();
+        let response: Value = serde_json::from_slice(
+            &state
+                .dispatch(
+                    ConfigurationRequest::ChooseInput {
+                        plan_ref,
+                        trace_ref,
+                    },
+                    "test_1",
+                    &|| Ok(Some(path.clone())),
+                )
+                .unwrap(),
+        )
+        .unwrap();
+        let plan_ref = response["payload"]["plan_ref"].as_str().unwrap().to_owned();
+        let ready = call(
+            &mut state,
+            ConfigurationRequest::Prepare {
+                plan_ref: plan_ref.clone(),
+            },
+        );
+        assert_eq!(ready["payload"]["ready"], true);
+        let captured = state
+            .plan
+            .as_ref()
+            .unwrap()
+            .prepared
+            .as_ref()
+            .unwrap()
+            .clone();
+        fs::remove_file(directory.path().join("schemas/SYNTHETIC/v000/flow.json")).unwrap();
+        let next = state.schema_ref(1);
+        call(
+            &mut state,
+            ConfigurationRequest::Select { schema_ref: next },
+        );
+        assert!(state.plan.is_none());
+        assert_eq!(captured.raw.schema_version, "v000");
+        assert_eq!(
+            captured.request.schema_key.version,
+            SchemaVersion("v000".into())
+        );
+        assert_eq!(captured.request.mode, ValidationMode::LocalOnly);
+        assert!(
+            matches!(&captured.request.scope,ValidationScope::Trace(input) if input.source==InputSource::Path(path.clone()))
+        );
+        assert_eq!(
+            schema_fingerprint(&captured.raw).unwrap().to_string(),
+            ready["payload"]["schema_hash"]
+        );
+        assert_eq!(
+            state.dispatch(
+                ConfigurationRequest::Prepare { plan_ref },
+                "test_1",
+                &no_picker
+            ),
+            Err(ErrorCode::StaleContext)
+        );
+        assert_eq!(fs::read(&path).unwrap(), b"001A  \n");
+    }
+
+    #[test]
+    fn full_preparation_uses_all_required_inputs_and_never_downgrades_to_local_only() {
+        let (directory, mut state) = fixture_model(1, full_schema::raw());
+        let reference = state.schema_ref(0);
+        call(
+            &mut state,
+            ConfigurationRequest::Select {
+                schema_ref: reference,
+            },
+        );
+        let selected = state.selected.as_ref().unwrap().reference.clone();
+        let draft = call(
+            &mut state,
+            ConfigurationRequest::CreatePlan {
+                configuration_ref: selected.clone(),
+                mode: ValidationMode::Full,
+                trace_ref: None,
+            },
+        );
+        let mut plan_ref = draft["payload"]["plan_ref"].as_str().unwrap().to_owned();
+        assert_eq!(
+            state.dispatch(
+                ConfigurationRequest::Prepare {
+                    plan_ref: plan_ref.clone()
+                },
+                "test_1",
+                &no_picker
+            ),
+            Err(ErrorCode::InvalidState)
+        );
+        for index in 0..2 {
+            let path = directory.path().join(format!("synthetic-{index}.txt"));
+            fs::write(&path, b"01AAXX\n").unwrap();
+            let trace_ref = format!("{selected}_trace_{index}");
+            let response: Value = serde_json::from_slice(
+                &state
+                    .dispatch(
+                        ConfigurationRequest::ChooseInput {
+                            plan_ref,
+                            trace_ref,
+                        },
+                        "test_1",
+                        &|| Ok(Some(path.clone())),
+                    )
+                    .unwrap(),
+            )
+            .unwrap();
+            plan_ref = response["payload"]["plan_ref"].as_str().unwrap().to_owned();
+            if index == 0 {
+                assert_eq!(
+                    state.dispatch(
+                        ConfigurationRequest::Prepare {
+                            plan_ref: plan_ref.clone()
+                        },
+                        "test_1",
+                        &no_picker
+                    ),
+                    Err(ErrorCode::InvalidState)
+                );
+            }
+        }
+        let response = call(&mut state, ConfigurationRequest::Prepare { plan_ref });
+        assert_eq!(response["payload"]["mode"], "full");
+        assert_eq!(response["payload"]["input_count"], "2");
+        let prepared = state.plan.as_ref().unwrap().prepared.as_ref().unwrap();
+        assert!(
+            matches!(&prepared.request.scope,ValidationScope::Flow(flow) if flow.traces.iter().map(|t|t.trace_id.0.as_str()).collect::<Vec<_>>()==["S","T"])
+        );
+    }
+
+    #[test]
+    fn typed_parameter_domains_reuse_core_validation_and_keep_large_integers_exact() {
+        let mut raw = full_schema::raw();
+        raw["parameters"] = json!([{"id":"unit","type":"string","allowed_values":["A","B"]},
+            {"id":"large","type":"integer","min":-2,"max":99999999999999999999_u128}]);
+        raw["traces"][0]["joins"][0]["namespace_parameters"] = json!(["unit"]);
+        let (directory, mut state) = fixture_model(1, raw);
+        let (plan_ref, trace_ref) = local_plan(&mut state);
+        let path = directory.path().join("synthetic.txt");
+        fs::write(&path, b"01AAXX\n").unwrap();
+        let result: Value = serde_json::from_slice(
+            &state
+                .dispatch(
+                    ConfigurationRequest::ChooseInput {
+                        plan_ref,
+                        trace_ref,
+                    },
+                    "test_1",
+                    &|| Ok(Some(path.clone())),
+                )
+                .unwrap(),
+        )
+        .unwrap();
+        let old_ref = result["payload"]["plan_ref"].as_str().unwrap().to_owned();
+        let configuration = state.selected.as_ref().unwrap().reference.clone();
+        assert_eq!(
+            state.dispatch(
+                ConfigurationRequest::SetParameter {
+                    plan_ref: old_ref.clone(),
+                    parameter_ref: format!("{configuration}_parameter_0"),
+                    value: JoinParameterValue::Text("unknown".into())
+                },
+                "test_1",
+                &no_picker
+            ),
+            Err(ErrorCode::InvalidState)
+        );
+        let result = call(
+            &mut state,
+            ConfigurationRequest::SetParameter {
+                plan_ref: old_ref.clone(),
+                parameter_ref: format!("{configuration}_parameter_0"),
+                value: JoinParameterValue::Text("A".into()),
+            },
+        );
+        let reference = result["payload"]["plan_ref"].as_str().unwrap().to_owned();
+        assert_ne!(reference, old_ref);
+        let value: IntegerLiteral = "18446744073709551615".parse().unwrap();
+        let result = call(
+            &mut state,
+            ConfigurationRequest::SetParameter {
+                plan_ref: reference,
+                parameter_ref: format!("{configuration}_parameter_1"),
+                value: JoinParameterValue::Integer(value.clone()),
+            },
+        );
+        let reference = result["payload"]["plan_ref"].as_str().unwrap().to_owned();
+        call(
+            &mut state,
+            ConfigurationRequest::Prepare {
+                plan_ref: reference.clone(),
+            },
+        );
+        assert_eq!(
+            state
+                .plan
+                .as_ref()
+                .unwrap()
+                .prepared
+                .as_ref()
+                .unwrap()
+                .parameters["large"],
+            JoinParameterValue::Integer(value)
+        );
+        fs::remove_file(path).unwrap();
+        assert_eq!(
+            state.dispatch(
+                ConfigurationRequest::Prepare {
+                    plan_ref: reference
+                },
+                "test_1",
+                &no_picker
+            ),
+            Err(ErrorCode::TechnicalFailure)
+        );
+        assert!(state.plan.as_ref().unwrap().prepared.is_none());
+        let draft = call(
+            &mut state,
+            ConfigurationRequest::CreatePlan {
+                configuration_ref: configuration.clone(),
+                mode: ValidationMode::Full,
+                trace_ref: None,
+            },
+        );
+        let mut plan_ref = draft["payload"]["plan_ref"].as_str().unwrap().to_owned();
+        let mut paths = Vec::new();
+        for index in 0..2 {
+            let path = directory
+                .path()
+                .join(format!("missing-parameter-{index}.txt"));
+            fs::write(&path, b"01AAXX\n").unwrap();
+            let response: Value = serde_json::from_slice(
+                &state
+                    .dispatch(
+                        ConfigurationRequest::ChooseInput {
+                            plan_ref,
+                            trace_ref: format!("{configuration}_trace_{index}"),
+                        },
+                        "test_1",
+                        &|| Ok(Some(path.clone())),
+                    )
+                    .unwrap(),
+            )
+            .unwrap();
+            plan_ref = response["payload"]["plan_ref"].as_str().unwrap().to_owned();
+            paths.push(path);
+        }
+        for path in paths {
+            fs::remove_file(path).unwrap();
+        }
+        // Missing Full namespace wins over nonexistent files: no file probe ran first.
+        assert_eq!(
+            state.dispatch(
+                ConfigurationRequest::Prepare { plan_ref },
+                "test_1",
+                &no_picker
+            ),
+            Err(ErrorCode::InvalidState)
+        );
+    }
 }
 
 pub(crate) struct SelectedConfiguration {
@@ -467,6 +778,16 @@ struct DraftPlan {
     mode: ValidationMode,
     trace: Option<usize>,
     inputs: Vec<Option<ConfirmedInput>>,
+    parameters: BTreeMap<String, JoinParameterValue>,
+    prepared: Option<Arc<PreparedIntent>>,
+}
+
+/// Owned, immutable execution input. No record validation or output allocation here.
+pub(crate) struct PreparedIntent {
+    pub request: ValidationRequest,
+    pub parameters: BTreeMap<String, JoinParameterValue>,
+    pub raw: Arc<RawFlowSchema>,
+    pub audit: BundleAudit,
 }
 
 impl DraftPlan {
@@ -679,6 +1000,8 @@ impl Configuration {
             mode,
             trace,
             inputs: vec![None; selected.schema.traces().len()],
+            parameters: BTreeMap::new(),
+            prepared: None,
         };
         let bytes = ipc::response(request_id, plan.dto())?;
         self.plan_number = number;
@@ -718,6 +1041,7 @@ impl Configuration {
         let mut next = plan.clone();
         next.reference = format!("{}_plan_{number}", self.instance);
         next.inputs[index] = Some(ConfirmedInput { path, preview });
+        next.prepared = None;
         let preview = &next.inputs[index]
             .as_ref()
             .expect("confirmed input assigned")
@@ -732,6 +1056,170 @@ impl Configuration {
         Ok(bytes)
     }
 
+    fn set_parameter(
+        &mut self,
+        plan_ref: &str,
+        parameter_ref: &str,
+        value: JoinParameterValue,
+        request_id: &str,
+    ) -> Result<Vec<u8>, ErrorCode> {
+        let selected = self.selected.as_ref().ok_or(ErrorCode::StaleContext)?;
+        let plan = self
+            .plan
+            .as_ref()
+            .filter(|p| p.reference == plan_ref && p.configuration_ref == selected.reference)
+            .ok_or(ErrorCode::StaleContext)?;
+        let definition = selected
+            .schema
+            .parameters()
+            .iter()
+            .enumerate()
+            .find_map(|(index, definition)| {
+                (format!("{}_parameter_{index}", selected.reference) == parameter_ref)
+                    .then_some(definition)
+            })
+            .ok_or(ErrorCode::StaleContext)?;
+        let id = match (definition, &value) {
+            (ParameterDefinition::String { id, .. }, JoinParameterValue::Text(_))
+            | (ParameterDefinition::Integer { id, .. }, JoinParameterValue::Integer(_)) => {
+                id.to_string()
+            }
+            _ => return Err(ErrorCode::InvalidMessage),
+        };
+        // Validate this partial binding with the core, without requiring a Full horizon yet.
+        VerifiedRunContext::new(
+            &selected.schema,
+            BTreeMap::from([(id.clone(), value.clone())]),
+            ValidationMode::LocalOnly,
+        )
+        .map_err(|_| ErrorCode::InvalidState)?;
+        let number = self
+            .plan_number
+            .checked_add(1)
+            .ok_or(ErrorCode::TechnicalFailure)?;
+        let mut next = plan.clone();
+        next.reference = format!("{}_plan_{number}", self.instance);
+        next.parameters.insert(id, value);
+        next.prepared = None;
+        let bytes = ipc::response(request_id, next.dto())?;
+        self.plan_number = number;
+        self.plan = Some(next);
+        Ok(bytes)
+    }
+
+    fn capture(
+        &self,
+        plan: &DraftPlan,
+        selected: &SelectedConfiguration,
+    ) -> Result<PreparedIntent, ErrorCode> {
+        let traces = selected.schema.traces();
+        let input = |index: usize| -> Result<TraceValidationInput, ErrorCode> {
+            let chosen = plan
+                .inputs
+                .get(index)
+                .and_then(Option::as_ref)
+                .ok_or(ErrorCode::InvalidState)?;
+            Ok(TraceValidationInput {
+                trace_id: traces[index].id().clone(),
+                source: InputSource::Path(chosen.path.clone()),
+            })
+        };
+        let scope = match plan.mode {
+            ValidationMode::LocalOnly => {
+                ValidationScope::Trace(input(plan.trace.ok_or(ErrorCode::InvalidState)?)?)
+            }
+            ValidationMode::Full => {
+                let inputs = plan
+                    .inputs
+                    .iter()
+                    .enumerate()
+                    .filter(|(_, source)| source.is_some())
+                    .map(|(index, _)| input(index))
+                    .collect::<Result<Vec<_>, _>>()?;
+                if inputs.is_empty() {
+                    return Err(ErrorCode::InvalidState);
+                }
+                ValidationScope::Flow(FlowValidationInput { traces: inputs })
+            }
+        };
+        let request = ValidationRequest {
+            schema_key: selected.schema.key().clone(),
+            scope,
+            mode: plan.mode,
+            options: ValidationOptions {
+                record_length_policy: RecordLengthPolicy::StrictSkipRecord,
+                newline_policy: NewlinePolicy::AutoLfOrCrlf,
+                max_errors: None,
+            },
+        };
+        VerifiedRunContext::new(&selected.schema, plan.parameters.clone(), plan.mode)
+            .map_err(|_| ErrorCode::InvalidState)?;
+        match &request.scope {
+            ValidationScope::Trace(_) => {
+                preflight(&request, &selected.schema).map_err(|_| ErrorCode::InvalidState)?;
+            }
+            ValidationScope::Flow(flow) => {
+                let inputs = flow
+                    .traces
+                    .iter()
+                    .map(|input| {
+                        let InputSource::Path(path) = &input.source;
+                        FlowTraceInput {
+                            trace_id: &input.trace_id,
+                            path,
+                        }
+                    })
+                    .collect::<Vec<_>>();
+                preflight_flow_inputs(&selected.schema, &inputs, &plan.parameters)
+                    .map_err(|_| ErrorCode::InvalidState)?;
+            }
+        }
+        // Static schema/parameter/scope checks above precede all repeated file probes.
+        for input in plan.inputs.iter().flatten() {
+            InputPreview::inspect(&input.path).map_err(|_| ErrorCode::TechnicalFailure)?;
+        }
+        if schema_fingerprint(&selected.raw).map_err(|_| ErrorCode::TechnicalFailure)?
+            != selected.schema_hash
+        {
+            return Err(ErrorCode::TechnicalFailure);
+        }
+        Ok(PreparedIntent {
+            request,
+            parameters: plan.parameters.clone(),
+            raw: Arc::new(selected.raw.clone()),
+            audit: self.bundle.audit().clone(),
+        })
+    }
+
+    fn prepare(&mut self, plan_ref: &str, request_id: &str) -> Result<Vec<u8>, ErrorCode> {
+        let selected = self.selected.as_ref().ok_or(ErrorCode::StaleContext)?;
+        let plan = self
+            .plan
+            .as_ref()
+            .filter(|p| p.reference == plan_ref && p.configuration_ref == selected.reference)
+            .ok_or(ErrorCode::StaleContext)?;
+        let prepared = match self.capture(plan, selected) {
+            Ok(prepared) => Arc::new(prepared),
+            Err(code) => {
+                self.plan.as_mut().expect("current plan checked").prepared = None;
+                return Err(code);
+            }
+        };
+        let input_count = match &prepared.request.scope {
+            ValidationScope::Trace(_) => 1,
+            ValidationScope::Flow(flow) => flow.traces.len(),
+        };
+        let bytes = ipc::response(
+            request_id,
+            json!({"schemaVersion":1,"plan_ref":plan_ref,"mode":plan.mode_name(),"ready":true,
+            "schema_hash":schema_fingerprint(&prepared.raw).map_err(|_|ErrorCode::TechnicalFailure)?.to_string(),
+            "input_count":input_count.to_string(),"parameter_count":prepared.parameters.len().to_string(),
+            "provenance":{"schemaVersion":1,"bundle_source":prepared.audit.source(),"bundle_version":prepared.audit.bundle_version(),"bundle_manifest_status":prepared.audit.manifest_status()}}),
+        )?;
+        self.plan.as_mut().expect("current plan checked").prepared = Some(prepared);
+        Ok(bytes)
+    }
+
     pub(crate) fn dispatch(
         &mut self,
         request: ConfigurationRequest,
@@ -739,6 +1227,12 @@ impl Configuration {
         choose: &dyn Fn() -> Result<Option<PathBuf>, ErrorCode>,
     ) -> Result<Vec<u8>, ErrorCode> {
         match request {
+            ConfigurationRequest::SetParameter {
+                plan_ref,
+                parameter_ref,
+                value,
+            } => self.set_parameter(&plan_ref, &parameter_ref, value, request_id),
+            ConfigurationRequest::Prepare { plan_ref } => self.prepare(&plan_ref, request_id),
             ConfigurationRequest::CreatePlan {
                 configuration_ref,
                 mode,

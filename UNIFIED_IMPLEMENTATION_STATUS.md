@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **55/128 DONE;73 rimanenti** (18U-* e55MIG).
+Conteggio unificato: **56/128 DONE;72 rimanenti** (18U-* e54MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -98,8 +98,8 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P3-06 | T-MIG-P3-01, T-MIG-P3-02, T-MIG-P3-03, T-MIG-P3-04, T-MIG-P3-05 | DONE | [Integrazione P3](docs/verification/unified-post-m9/T-MIG-P3-06.md) | ce344d4: CI desktop43758529844 SUCCESS + smoke; QG-1/2/3 Linux/Windows CI43758531087 SUCCESS per step; ulteriori prove della run in corso | G-MIG-3 PASS; non qualifica release |
 | T-MIG-P4-01 | T-MIG-P3-06 | DONE | [Catalogo e selezione](docs/verification/unified-post-m9/T-MIG-P4-01.md) | 16 Rust/20 Node/8 regressioni configurazione Slint PASS locali; versioni registry già qualificate; CI nativa al blocco | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-02 | T-MIG-P4-01 | DONE | [Broker file e preflight](docs/verification/unified-post-m9/T-MIG-P4-02.md) | 19 Rust/22 Node/8 regressioni Slint PASS locali; vero dialogo GTK sintetico PASS; Windows al blocco | G-MIG-4 NOT_VERIFIED |
-| T-MIG-P4-03 | T-MIG-P4-01, T-MIG-P4-02 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-03.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
-| T-MIG-P4-04 | T-MIG-P4-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-04.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
+| T-MIG-P4-03 | T-MIG-P4-01, T-MIG-P4-02 | DONE | [Preparazione immutabile](docs/verification/unified-post-m9/T-MIG-P4-03.md) | 23 Rust/24 Node/8 Slint PASS locali; GTK selezione/teardown PASS; MSVC al checkpoint blocco | G-MIG-4 NOT_VERIFIED |
+| T-MIG-P4-04 | T-MIG-P4-03 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-04.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-05 | T-MIG-P4-04 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-05.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-06 | T-MIG-P4-04, T-MIG-P4-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-06.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-07 | T-MIG-P4-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-07.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
@@ -349,3 +349,13 @@ smoke. L'attesa aggregata della pipeline ufficiale era più ampia dei criteri
 P3: nessuna acceptance modificata e nessuna intera CI dichiarata SUCCESS
 mentre ancora in corso. Dossier/receipt conservano ogni singolo step.
 **AUTO_CONTINUE P4-01**, poi P4-02/03 nel blocco coerente secondo dipendenze.
+
+
+Blocco P4-01/02/03, 15 novembre 2026: **56/128 DONE**. Library condivisa
+per acquisizione bundle/preflight, broker nativo senza path in JS, parametri
+tipizzati e snapshot immutabile LocalOnly/Full. 23 Rust/24 Node/8 Slint PASS
+locali, lint/typecheck/build/Clippy PASS, picker GTK reale selezione e teardown
+PASS; prima prova del driver di teardown FAIL conservata e corretta.
+CI MSVC del blocco in avvio; nessuna qualifica Windows UI anticipata.
+La precedente CI ufficiale P3 43758531087 è ora interamente SUCCESS.
+G-MIG-4 aperto; **AUTO_CONTINUE P4-04**, poi progresso/cancel/esito.

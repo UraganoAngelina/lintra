@@ -21,6 +21,8 @@ type RequestPayloads = {
   configuration_page: { schemaVersion: 1; configuration_ref: string; offset: string };
   plan_create: { schemaVersion: 1; configuration_ref: string; mode: "local_only" | "full"; trace_ref: string | null };
   plan_input_choose: { schemaVersion: 1; plan_ref: string; trace_ref: string };
+  plan_parameter_set: { schemaVersion: 1; plan_ref: string; parameter_ref: string; value: { schemaVersion: 1; kind: "text" | "integer"; text: string } };
+  plan_prepare: { schemaVersion: 1; plan_ref: string };
 };
 type Operation = keyof RequestPayloads;
 type ObjectDto = Record<string, unknown>;
@@ -130,7 +132,7 @@ export function decodeReply(raw: unknown, requestId: string): ObjectDto {
 
 export function encodeRequest<K extends Operation>(operation: K, requestId: string, payload: RequestPayloads[K]): Uint8Array {
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(requestId)
-      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose"].includes(operation)) invalid();
+      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare"].includes(operation)) invalid();
   const bytes = new TextEncoder().encode(JSON.stringify({
     schemaVersion: 1, request_id: requestId, kind: "request", operation,
     payload,
@@ -262,14 +264,21 @@ export type PlanDraft = { schemaVersion: 1; plan_ref: string; configuration_ref:
 export type InputPreviewDto = { schemaVersion: 1; file_size: string; sampled_bytes: string; lf: string; crlf: string; lone_cr: string; reached_eof: boolean };
 export type InputChoice = { schemaVersion: 1; plan_ref: string; trace_ref: string; disposition: "selected" | "cancelled"; assigned_input_count: string; preview: InputPreviewDto | null };
 
+function readPlanDraft(dto: ObjectDto): PlanDraft {
+  exact(dto, ["schemaVersion", "plan_ref", "configuration_ref", "mode", "assigned_input_count"]);
+  if (dto.mode !== "local_only" && dto.mode !== "full") invalid();
+  return { schemaVersion: 1, plan_ref: opaque(dto.plan_ref), configuration_ref: opaque(dto.configuration_ref),
+    mode: dto.mode, assigned_input_count: unsigned(dto.assigned_input_count) };
+}
+
 export async function planCreate(configurationRef: string, mode: "local_only" | "full", traceRef: string | null): Promise<PlanDraft> {
   opaque(configurationRef);
   if (mode === "local_only") opaque(traceRef);
   else if (mode !== "full" || traceRef !== null) invalid();
   const dto = await exchange("plan_create", { schemaVersion: 1, configuration_ref: configurationRef, mode, trace_ref: traceRef });
-  exact(dto, ["schemaVersion", "plan_ref", "configuration_ref", "mode", "assigned_input_count"]);
-  if (dto.configuration_ref !== configurationRef || dto.mode !== mode) invalid();
-  return { schemaVersion: 1, plan_ref: opaque(dto.plan_ref), configuration_ref: configurationRef, mode, assigned_input_count: unsigned(dto.assigned_input_count) };
+  const draft = readPlanDraft(dto);
+  if (draft.configuration_ref !== configurationRef || draft.mode !== mode) invalid();
+  return draft;
 }
 
 export async function planInputChoose(planRef: string, traceRef: string): Promise<InputChoice> {
@@ -287,6 +296,29 @@ export async function planInputChoose(planRef: string, traceRef: string): Promis
   } else if (dto.preview !== null || dto.plan_ref !== planRef) invalid();
   return { schemaVersion: 1, plan_ref: opaque(dto.plan_ref), trace_ref: traceRef, disposition: dto.disposition,
     assigned_input_count: unsigned(dto.assigned_input_count), preview };
+}
+
+export async function planParameterSet(planRef: string, parameterRef: string, value: { kind: "text" | "integer"; text: string }): Promise<PlanDraft> {
+  opaque(planRef); opaque(parameterRef);
+  exact(object(value), ["kind", "text"]);
+  if ((value.kind !== "text" && value.kind !== "integer") || typeof value.text !== "string") invalid();
+  const dto = await exchange("plan_parameter_set", { schemaVersion: 1, plan_ref: planRef, parameter_ref: parameterRef,
+    value: { schemaVersion: 1, kind: value.kind, text: value.text } });
+  const draft = readPlanDraft(dto);
+  if (draft.plan_ref === planRef) invalid();
+  return draft;
+}
+
+export type PreparedPlan = { schemaVersion: 1; plan_ref: string; mode: "local_only" | "full"; ready: true; schema_hash: string; input_count: string; parameter_count: string; provenance: BundleProvenance };
+export async function planPrepare(planRef: string): Promise<PreparedPlan> {
+  opaque(planRef);
+  const dto = await exchange("plan_prepare", { schemaVersion: 1, plan_ref: planRef });
+  exact(dto, ["schemaVersion", "plan_ref", "mode", "ready", "schema_hash", "input_count", "parameter_count", "provenance"]);
+  if (dto.plan_ref !== planRef || dto.ready !== true || (dto.mode !== "local_only" && dto.mode !== "full")) invalid();
+  const hash = text(dto.schema_hash);
+  if (!/^[0-9a-f]{64}$/.test(hash)) invalid();
+  return { schemaVersion: 1, plan_ref: planRef, mode: dto.mode, ready: true, schema_hash: hash,
+    input_count: unsigned(dto.input_count), parameter_count: unsigned(dto.parameter_count), provenance: provenance(dto.provenance) };
 }
 
 export function errorText(error: unknown): string {

@@ -87,3 +87,9 @@ Prove locali native e tutti i prerequisiti P3 già PASS. **G-MIG-3 PASS e
 P3-06 DONE**, 53/128. La CI ufficiale43758531087 è ancora IN_PROGRESS nelle
 ulteriori prove: non viene dichiarata interamente SUCCESS. Quelle prove e i
 gate futuri restano obbligatori nei rispettivi checkpoint. AUTO_CONTINUE P4-01.
+
+CI ufficiale43758531087 successivamente **SUCCESS completa** su ce344d4:
+7 job obbligatori positivi, packaging UI opzionale correttamente skipped.
+Comprende Linux/Windows, snapshot cross-OS, JSONL e pixel legacy. Log completo
+archiviato in `T-MIG-P3-06-official-ci.log.gz`; metadati finali nel receipt.
+Lo sviluppo P4 era già proseguito dopo i controlli necessari a G-MIG-3.

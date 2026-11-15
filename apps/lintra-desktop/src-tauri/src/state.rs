@@ -88,6 +88,8 @@ impl AppState {
                 | "configuration_page"
                 | "plan_create"
                 | "plan_input_choose"
+                | "plan_parameter_set"
+                | "plan_prepare"
         ) {
             let command = match ConfigurationRequest::decode(&request.operation, &request.payload) {
                 Ok(command) => command,
@@ -219,6 +221,100 @@ mod tests {
         assert_eq!(page["payload"]["descriptors"][0]["trace_id"], "T1");
         assert!(page["payload"].get("path").is_none());
         assert!(page["payload"].get("raw").is_none());
+    }
+
+    #[test]
+    fn concurrent_prepare_and_schema_selection_cannot_publish_a_mixed_request() {
+        let state = state();
+        *state.gate.lock().unwrap() =
+            Some(Configuration::new(lintra::AnalysisBundle::builtin().unwrap()).unwrap());
+        call(
+            &state,
+            Some(&request("app_info", json!({"schemaVersion":1}))),
+        );
+        let catalog = call(
+            &state,
+            Some(&request(
+                "catalog_page",
+                json!({"schemaVersion":1,"offset":"0"}),
+            )),
+        );
+        let schema_ref = catalog["payload"]["entries"][0]["schema_ref"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        let selected = call(
+            &state,
+            Some(&request(
+                "configuration_select",
+                json!({"schemaVersion":1,"schema_ref":schema_ref,"encoding":"utf8"}),
+            )),
+        );
+        let configuration_ref = selected["payload"]["configuration_ref"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        let page = call(
+            &state,
+            Some(&request(
+                "configuration_page",
+                json!({"schemaVersion":1,"configuration_ref":configuration_ref,"offset":"0"}),
+            )),
+        );
+        let trace_ref = page["payload"]["descriptors"][0]["trace_ref"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        let draft = call(
+            &state,
+            Some(&request(
+                "plan_create",
+                json!({"schemaVersion":1,"configuration_ref":configuration_ref,"mode":"local_only","trace_ref":trace_ref}),
+            )),
+        );
+        let directory = tempfile::tempdir().unwrap();
+        let path = directory.path().join("synthetic.txt");
+        std::fs::write(&path, b"001A  \n").unwrap();
+        let picked:Value=serde_json::from_slice(&state.handle("main",&Url::parse("tauri://localhost/").unwrap(),
+            Some(&request("plan_input_choose",json!({"schemaVersion":1,"plan_ref":draft["payload"]["plan_ref"],"trace_ref":trace_ref}))),&||Ok(Some(path.clone())))).unwrap();
+        let plan_ref = picked["payload"]["plan_ref"].as_str().unwrap().to_owned();
+        let barrier = std::sync::Barrier::new(2);
+        let (prepared, changed) = std::thread::scope(|scope| {
+            let prepare = scope.spawn(|| {
+                barrier.wait();
+                call(
+                    &state,
+                    Some(&request(
+                        "plan_prepare",
+                        json!({"schemaVersion":1,"plan_ref":plan_ref}),
+                    )),
+                )
+            });
+            let select = scope.spawn(|| {
+                barrier.wait();
+                call(
+                    &state,
+                    Some(&request(
+                        "configuration_select",
+                        json!({"schemaVersion":1,"schema_ref":schema_ref,"encoding":"utf8"}),
+                    )),
+                )
+            });
+            (prepare.join().unwrap(), select.join().unwrap())
+        });
+        if prepared["kind"] == "result" {
+            assert_eq!(prepared["payload"]["plan_ref"], plan_ref);
+            assert_eq!(
+                prepared["payload"]["schema_hash"],
+                selected["payload"]["schema_hash"]
+            );
+        } else {
+            assert!(matches!(
+                prepared["error"]["code"].as_str(),
+                Some("IPC_BUSY" | "IPC_STALE_CONTEXT")
+            ));
+        }
+        assert!(changed["kind"] == "result" || changed["error"]["code"] == "IPC_BUSY");
     }
 
     #[test]

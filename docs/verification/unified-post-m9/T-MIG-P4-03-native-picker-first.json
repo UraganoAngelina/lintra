@@ -1,0 +1,12 @@
+{
+  "task": "T-MIG-P4-03",
+  "checks": [
+    "native selection",
+    "parent close while modal"
+  ],
+  "exit_code": 101,
+  "elapsed_seconds": 38.49,
+  "stdout": "\nrunning 1 test\ntest native_picker::tests::real_gtk_picker_preserves_the_native_selected_path ... FAILED\n\nfailures:\n\n---- native_picker::tests::real_gtk_picker_preserves_the_native_selected_path stdout ----\n\nthread 'native_picker::tests::real_gtk_picker_preserves_the_native_selected_path' (124730) panicked at src/native_picker.rs:114:9:\nassertion `left == right` failed\n  left: Some(\"/tmp/.tmpqsvYTl/synthetic input = file.txt\")\n right: None\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    native_picker::tests::real_gtk_picker_preserves_the_native_selected_path\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 23 filtered out; finished in 13.01s\n\n",
+  "stderr": "   Compiling lintra v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra)\n   Compiling lintra-desktop v0.1.1-rc.3 (/home/alberto/Desktop/LINTRA/lintra/apps/lintra-desktop/src-tauri)\n    Finished `test` profile [unoptimized] target(s) in 25.34s\n     Running unittests src/main.rs (spikes/tauri-runtime/src-tauri/target/debug/deps/lintra_desktop-81e2c9f446e51d72)\nerror: test failed, to rerun pass `--bin lintra-desktop`\n",
+  "source_sha256": "f04bf8f14ee7a5247081259962d5dcffe34831ce910185bcfc5f8e915afae3cf"
+}
