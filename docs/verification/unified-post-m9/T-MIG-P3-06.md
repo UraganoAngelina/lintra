@@ -1,6 +1,6 @@
 # T-MIG-P3-06 — Integrazione scaffold e regressione legacy
 
-15 novembre 2026. **IN_PROGRESS — G-MIG-3 NOT_VERIFIED**.
+15 novembre 2026. **DONE — G-MIG-3 PASS**, 15 novembre 2026; perimetro e prova finale sotto.
 P3-01/02/03/04/05 DONE nel rispettivo perimetro; gate tecnico aggregato ancora
 aperto fino agli esiti effettivi Linux/Windows e regressione core+Slint.
 
@@ -68,3 +68,22 @@ features”, Windows a “Test”, senza failure riportate fino a questa lettura
 Non è un esito finale. Handoff **WAITING_GATE**, 52/128 DONE; grafo verificato:
 nessuna nuova task indipendente con tutti i prerequisiti DONE. Tutti i processi
 locali posseduti sono terminati/attesi. Next P4-01 dopo G-MIG-3 PASS.
+
+## Chiusura sul perimetro approvato G-MIG-3
+
+Ripresa dell'autore: proseguire lo sviluppo e mostrare soltanto blocchi reali.
+Il piano sorgente §10 assegna a G-MIG-3 QG-1/2/3: Slint+CLI verdi, scaffold,
+frontend lint/typecheck/build e CI smoke Linux+Windows. L'acceptance P3-06
+richiede cargo test core+Slint e smoke nativo. L'attesa dell'intera pipeline
+ufficiale, che comprende anche artefatti release, snapshot cross-OS e confronti
+ulteriori, era un checkpoint più ampio di questa fase. Nessun requisito, test,
+workflow o criterio del piano viene modificato per correggere tale attesa.
+
+Verificati da API ufficiale su ce344d4, Linux e Windows MSVC: formatting,
+Clippy, test workspace, Clippy/test all features, test core senza bundle e
+confine workspace/core tutti SUCCESS, con singoli step originali nel receipt.
+CI desktop43758529844 già SUCCESS su entrambi gli OS, inclusi smoke nativi.
+Prove locali native e tutti i prerequisiti P3 già PASS. **G-MIG-3 PASS e
+P3-06 DONE**, 53/128. La CI ufficiale43758531087 è ancora IN_PROGRESS nelle
+ulteriori prove: non viene dichiarata interamente SUCCESS. Quelle prove e i
+gate futuri restano obbligatori nei rispettivi checkpoint. AUTO_CONTINUE P4-01.
