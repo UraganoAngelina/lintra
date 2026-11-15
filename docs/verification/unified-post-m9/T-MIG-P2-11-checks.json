@@ -1,0 +1,57 @@
+{
+  "task": "T-MIG-P2-11",
+  "checked_utc": "2026-11-15T11:32:15.626961+00:00",
+  "exit_code": 0,
+  "result": {
+    "passed": true,
+    "checks": [
+      "Full matrix has eighteen independent expected cases",
+      "real Rust test anchor valid_invalid_cross",
+      "real Rust test anchor bundle_preflight",
+      "real Rust test anchor namespace_types",
+      "real Rust test anchor all_inputs_protected",
+      "real Rust test anchor native_path",
+      "real Rust test anchor ordering_audit",
+      "real Rust test anchor no_double_count",
+      "real Rust test anchor unknown_partial",
+      "real Rust test anchor not_applicable",
+      "real Rust test anchor reference_snapshot",
+      "real Rust test anchor cancel_passes",
+      "real Rust test anchor cancel_no_drain",
+      "real Rust test anchor technical_errors",
+      "real Rust test anchor partial_positive",
+      "real Rust test anchor coverage_consistency",
+      "real Rust test anchor sink_ack",
+      "real Rust test anchor soft_budget",
+      "real Rust test anchor export_partial",
+      "qualified Rust test source unchanged tests/cli_full.rs",
+      "qualified Rust test source unchanged tests/full_service.rs",
+      "qualified Rust test source unchanged tests/flow_validator.rs",
+      "Full DTO fits approved wire grammar plan_input_choose",
+      "Full DTO fits approved wire grammar plan_parameter_set",
+      "Full DTO fits approved wire grammar plan_prepare",
+      "Full DTO fits approved wire grammar validation_start",
+      "Full DTO fits approved wire grammar validation_state",
+      "no historical approval or generic filesystem operation",
+      "Full service completion waits for writer/join",
+      "Full valid+partial remains explicit with one run",
+      "Full technical failure never becomes normative invalid",
+      "old report keeps old run provenance"
+    ],
+    "rust_test_source_sha256": {
+      "tests/cli_full.rs": "fb77b5bcfbb4a3dead9aa761afbeaf9d3367b6ac22d56547c4e826066993247f",
+      "tests/full_service.rs": "2f4a95c66930403c2154bd1247deab3f9cf5df6a8a3e7fbcfee459f8e910df09",
+      "tests/flow_validator.rs": "c85e90ed862bfaff38a85669091e651b2f12f281e47db2e37142d73fe9efb785"
+    },
+    "native_service_tests": "NOT_RERUN; unchanged qualified test sources",
+    "scope": "Full contract examples, source anchors and lifecycle reference only; gate approval pending"
+  },
+  "approval": "PENDING_G_MIG_2; not counted DONE",
+  "sha256": {
+    "docs/migration/ipc-v1/FULL.md": "13dd168e1c967ba565a7020c4d30dcd34305736fa8e9de7d78c07626c5c92569",
+    "docs/migration/ipc-v1/full-cases.json": "bfac0eeabe9548d29d5a04728feed939ad79d64b8c714d2b3777f4accb6d8170",
+    "docs/migration/ipc-v1/verify_full_contract.py": "e37408dc357b8ee9a16d47bdfa0c756643cf5c8abb46f7533c082d068d3f3717",
+    "docs/migration/ipc-v1/lifecycle_reference.py": "2506004ce03870be1233793add74423e18b39afd74188614ac616e8e55533d6e",
+    "docs/migration/ipc-v1/reference_codec.py": "ecd683874ae39e6831a9c88e8c01a1c9afcd528e02dcab06ba5622abe7c31c62"
+  }
+}

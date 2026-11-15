@@ -1,0 +1,21 @@
+{
+  "task": "T-MIG-P2-09",
+  "checked_utc": "2026-11-15T11:26:50.492510+00:00",
+  "exit_code": 0,
+  "stderr": "",
+  "result": {
+    "passed": true,
+    "cases": 14,
+    "hashed_fixture_files": 64,
+    "changed_oracle_rejected": true,
+    "extra_output_byte_rejected": true,
+    "artifact_comparison": "NOT_RUN",
+    "native_parity": "NOT_ATTESTED; execution provenance requires a native task receipt",
+    "scope": "Frozen independent synthetic golden contract; no expected regeneration or engine execution"
+  },
+  "sha256": {
+    "docs/migration/ipc-v1/PARITY.md": "ae6f1feb0daede51818d38db7b296dca5f7f04772c3e15edc61077d6b43ded93",
+    "docs/migration/ipc-v1/parity-fixtures.json": "b834df42d4ebf256967cdaefeda034e171c8b790c458afb232a38007a31e212b",
+    "docs/migration/ipc-v1/verify_parity.py": "a82a3e5b8fff9b5c1b6ae46c895b770f115e6702bbed069d59cd939cc407fd52"
+  }
+}

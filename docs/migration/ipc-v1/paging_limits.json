@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "task": "T-MIG-P2-05",
+  "max_page_rows": 128,
+  "default_page_rows": 64,
+  "max_cached_pages": 2,
+  "max_metadata_preview_utf8_bytes": 256,
+  "max_encoded_message_bytes": 1048576,
+  "order": "canonical JSONL relative order; exact AND filters",
+  "offset": "canonical decimal u64 logical index in immutable filtered query",
+  "wire_forbidden": [
+    "physical byte offsets",
+    "arbitrary paths",
+    "complete dataset/index/JSONL",
+    "raw health records",
+    "bulk diagnostics",
+    "row actual/context/record_identity"
+  ]
+}

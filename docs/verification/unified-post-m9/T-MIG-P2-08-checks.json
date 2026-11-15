@@ -1,0 +1,49 @@
+{
+  "task": "T-MIG-P2-08",
+  "checked_utc": "2026-11-15T11:24:22.135419+00:00",
+  "exit_code": 0,
+  "result": {
+    "passed": true,
+    "checks": [
+      "generated capability equals configured local probe capability",
+      "one local named window only, no remote capability",
+      "only explicit custom permissions, no core/plugin default sets",
+      "custom commands opt in without a default permission",
+      "permission has exact allow and no implicit denies allow-runtime-probe",
+      "permission has exact allow and no implicit denies allow-render-ack",
+      "resolved command surface excludes fs shell SQL approval and events",
+      "configuration selects only audited capability",
+      "release window has no devtools",
+      "CSP is deny-by-default without inline eval wildcard or external origin",
+      "CSP connect origins are only pinned internal IPC endpoints",
+      "qualified native source unchanged spikes/tauri-runtime/src-tauri/src/main.rs",
+      "qualified native source unchanged spikes/tauri-runtime/src-tauri/src/windows_request_guard.rs",
+      "qualified native source unchanged spikes/tauri-runtime/src-tauri/build.rs",
+      "qualified native source unchanged spikes/tauri-runtime/src-tauri/tauri.conf.json",
+      "qualified native source unchanged spikes/tauri-runtime/src-tauri/capabilities/probe.json",
+      "qualified native source unchanged spikes/tauri-runtime/src-tauri/Cargo.toml",
+      "qualified native source unchanged spikes/tauri-runtime/src-tauri/Cargo.lock",
+      "archived native receipt intact native-security.json.gz",
+      "native negative invokes and CSP proved on unchanged spike native-security.json.gz",
+      "archived native receipt intact linux-document-recovery.json.gz",
+      "native negative invokes and CSP proved on unchanged spike linux-document-recovery.json.gz"
+    ],
+    "resolved_commands": [
+      "runtime_probe",
+      "render_ack"
+    ],
+    "qualified_runtime_source": "608ccdc1d79c8495085ade5888e8df99f97c958f",
+    "new_native_run": false,
+    "generated_sha256": {
+      "spikes/tauri-runtime/src-tauri/gen/schemas/acl-manifests.json": "7540931b2eb8a2f84ed51986beb9b7489709448e5fe9e8eb56f7f4dd5bbd1b8b",
+      "spikes/tauri-runtime/src-tauri/gen/schemas/capabilities.json": "32cd7561efb94b236dea2614f90035169c76f2f71c5a6596bcffb2febdb87cff"
+    },
+    "scope": "Actual spike ACL/CSP audit plus unchanged-source reuse; no product bridge permissions qualified"
+  },
+  "new_CI_VM_runtime_tests": false,
+  "sha256": {
+    "docs/migration/ipc-v1/SECURITY.md": "69b661cbc8f71d441e168847ab17e8c8f6db556634a7c70cfb31bf26c900c5c9",
+    "docs/migration/ipc-v1/audit_permissions.py": "cc215f03b6a00281b2a30b150ee0692a8e90d98c2133f9276a9545bc04d06170",
+    "docs/adr/ADR-MIG-003.md": "d14ffaf22026fde1b8474222f5b126a12e4f9d5933693094a13c9305e46ab0e4"
+  }
+}

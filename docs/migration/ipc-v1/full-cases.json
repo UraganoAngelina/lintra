@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "status": "PUBLISHED_AWAITING_G_MIG_2_APPROVAL",
+  "cases": [
+    {
+      "id": "valid_invalid_cross",
+      "source": "tests/cli_full.rs",
+      "test": "validate_flow_real_process_reports_valid_and_invalid_cross_records",
+      "expected": "One Full run, real valid/invalid outcomes, no UI reclassification"
+    },
+    {
+      "id": "bundle_preflight",
+      "source": "tests/cli_full.rs",
+      "test": "flow_bundle_preflight_errors_leave_no_definitive_reports",
+      "expected": "Missing/duplicate/unknown trace rejected with no definitive output"
+    },
+    {
+      "id": "namespace_types",
+      "source": "tests/full_service.rs",
+      "test": "runtime_parameters_follow_declared_types_and_are_audited_without_defaults",
+      "expected": "Declared text/integer values, no implicit default or JS Number coercion"
+    },
+    {
+      "id": "all_inputs_protected",
+      "source": "tests/cli_full.rs",
+      "test": "every_bundle_input_is_protected_from_final_and_part_output_collisions",
+      "expected": "Every captured bundle input protected from report/staging collision"
+    },
+    {
+      "id": "native_path",
+      "source": "tests/cli_full.rs",
+      "test": "native_non_utf8_parent_path_and_equals_are_preserved",
+      "expected": "Native paths retained without a renderer UTF-8 path roundtrip"
+    },
+    {
+      "id": "ordering_audit",
+      "source": "tests/flow_validator.rs",
+      "test": "real_two_pass_order_audit_and_no_local_only_skips",
+      "expected": "Schema trace/record/rule ordering and audit preserved"
+    },
+    {
+      "id": "no_double_count",
+      "source": "tests/full_service.rs",
+      "test": "full_service_reconciles_real_cross_errors_and_persists_counts",
+      "expected": "Source record invalid once even with multiple cross diagnostics"
+    },
+    {
+      "id": "unknown_partial",
+      "source": "tests/full_service.rs",
+      "test": "incomplete_context_is_explicit_in_summary_audit_and_human_report",
+      "expected": "Unknown yields Partial, not a definitive negative or complete conformity"
+    },
+    {
+      "id": "not_applicable",
+      "source": "tests/full_service.rs",
+      "test": "not_applicable_is_neither_unknown_nor_a_normative_violation",
+      "expected": "N/A, Unknown and normative failure distinct"
+    },
+    {
+      "id": "reference_snapshot",
+      "source": "tests/full_service.rs",
+      "test": "full_reference_audit_merges_sources_once_and_keeps_each_trace_control",
+      "expected": "Captured reference evidence once, controls per trace"
+    },
+    {
+      "id": "cancel_passes",
+      "source": "tests/flow_validator.rs",
+      "test": "cancellation_at_each_phase_preserves_observed_audit_and_atomic_record",
+      "expected": "Cooperative cancel throughout PASS1/PASS2, no invented audit EOF"
+    },
+    {
+      "id": "cancel_no_drain",
+      "source": "tests/flow_validator.rs",
+      "test": "cancellation_during_pass_one_does_not_drain_for_an_eof_digest",
+      "expected": "No fake full-file SHA on partial read"
+    },
+    {
+      "id": "technical_errors",
+      "source": "tests/full_service.rs",
+      "test": "full_input_and_sink_failures_remain_technical_and_never_emit_completed_outcomes",
+      "expected": "No technical failure as completed_valid/invalid"
+    },
+    {
+      "id": "partial_positive",
+      "source": "tests/flow_validator.rs",
+      "test": "existence_positive_survives_partial_index_negative_is_unknown",
+      "expected": "Known positive retained; unproven negative remains Unknown"
+    },
+    {
+      "id": "coverage_consistency",
+      "source": "tests/flow_validator.rs",
+      "test": "explicit_coverage_must_match_availability_before_lookup",
+      "expected": "Capture coverage and availability agree"
+    },
+    {
+      "id": "sink_ack",
+      "source": "tests/flow_validator.rs",
+      "test": "sink_failure_before_acknowledgement_does_not_increase_cross_counts",
+      "expected": "Counts only after successful sink acknowledgement"
+    },
+    {
+      "id": "soft_budget",
+      "source": "tests/cli_full.rs",
+      "test": "soft_budget_override_preserves_full_cross_trace_diagnostics_and_both_input_audits",
+      "expected": "Soft warning override does not suppress hard safety or validation"
+    },
+    {
+      "id": "export_partial",
+      "source": "tests/cli_full.rs",
+      "test": "full_unknown_publishes_partial_summary_and_xlsx_without_normative_errors",
+      "expected": "Partial/Unknown visible in export, no fabricated normative errors"
+    }
+  ],
+  "examples": [
+    {
+      "operation": "plan_input_choose",
+      "payload": {
+        "schemaVersion": 1,
+        "plan_ref": "p_captured",
+        "trace_ref": "t_captured"
+      }
+    },
+    {
+      "operation": "plan_parameter_set",
+      "payload": {
+        "schemaVersion": 1,
+        "plan_ref": "p_captured",
+        "parameter_ref": "param_captured",
+        "value": {
+          "schemaVersion": 1,
+          "kind": "integer",
+          "text": "123456789012345678901234567890"
+        }
+      }
+    },
+    {
+      "operation": "plan_prepare",
+      "payload": {
+        "schemaVersion": 1,
+        "plan_ref": "p_captured"
+      }
+    },
+    {
+      "operation": "validation_start",
+      "payload": {
+        "schemaVersion": 1,
+        "plan_ref": "p_prepared",
+        "mode": "full"
+      }
+    },
+    {
+      "operation": "validation_state",
+      "payload": {
+        "schemaVersion": 1,
+        "run": {
+          "schemaVersion": 1,
+          "instance_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "run_id": "1"
+        }
+      }
+    }
+  ],
+  "forbidden_operations": [
+    "persist",
+    "approve",
+    "history_approve",
+    "execute_sql",
+    "read_file",
+    "write_file",
+    "shell"
+  ],
+  "native_Full_adapter": "NOT_IMPLEMENTED"
+}

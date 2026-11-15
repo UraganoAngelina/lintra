@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "task": "T-MIG-P2-09",
+  "synthetic_only": true,
+  "expected_source": "Existing independent manually specified golden oracles; no output captured from the new adapter",
+  "cases": [
+    {
+      "id": "synthetic/v1/valid",
+      "sha256": {
+        "tests/golden/synthetic/v1/schema.json": "4bcba4c310aefcbacbd83a262ffbd5f1a3abd9f51a6767f323e1e9b5b7599fa7",
+        "tests/golden/synthetic/v1/valid/expected.errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/golden/synthetic/v1/valid/expected.summary.json": "d5a09d0bd62281f155a5d412cc4091d959e8d072557c3ef97057b6d2fc151e3e",
+        "tests/golden/synthetic/v1/valid/input.txt": "161bfdc7d7b28d174485b247aabfd3e9b0f0d741833a7fd972b17092cf5acadb"
+      },
+      "errors": "tests/golden/synthetic/v1/valid/expected.errors.jsonl",
+      "summary": "tests/golden/synthetic/v1/valid/expected.summary.json"
+    },
+    {
+      "id": "synthetic/v1/invalid-length",
+      "sha256": {
+        "tests/golden/synthetic/v1/schema.json": "4bcba4c310aefcbacbd83a262ffbd5f1a3abd9f51a6767f323e1e9b5b7599fa7",
+        "tests/golden/synthetic/v1/invalid-length/expected.errors.jsonl": "b91718900b903aa292bd41fbf781508d625919c532e98824df98f804f0f3cefe",
+        "tests/golden/synthetic/v1/invalid-length/expected.summary.json": "7f6c301588bac3086622def4b0e7ff4af83b680ae952842fb0300f89cbda03cc",
+        "tests/golden/synthetic/v1/invalid-length/input.txt": "86705c993cbe91b889cfe2c4a98e72edec1310793206580a8c00042f321e4a2d"
+      },
+      "errors": "tests/golden/synthetic/v1/invalid-length/expected.errors.jsonl",
+      "summary": "tests/golden/synthetic/v1/invalid-length/expected.summary.json"
+    },
+    {
+      "id": "synthetic/v1/crlf-utf8",
+      "sha256": {
+        "tests/golden/synthetic/v1/schema.json": "4bcba4c310aefcbacbd83a262ffbd5f1a3abd9f51a6767f323e1e9b5b7599fa7",
+        "tests/golden/synthetic/v1/crlf-utf8/expected.errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/golden/synthetic/v1/crlf-utf8/expected.summary.json": "47de1b4cbd503ee0c974e5423dceb79c689cbc573edec07daaa5e9eeb0137092",
+        "tests/golden/synthetic/v1/crlf-utf8/input.txt": "dea083c2bdb99fa67808c865be5f084e7af78367991ef194877ceed8a0225f57"
+      },
+      "errors": "tests/golden/synthetic/v1/crlf-utf8/expected.errors.jsonl",
+      "summary": "tests/golden/synthetic/v1/crlf-utf8/expected.summary.json"
+    },
+    {
+      "id": "synthetic/v1/no-final-newline",
+      "sha256": {
+        "tests/golden/synthetic/v1/schema.json": "4bcba4c310aefcbacbd83a262ffbd5f1a3abd9f51a6767f323e1e9b5b7599fa7",
+        "tests/golden/synthetic/v1/no-final-newline/expected.errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/golden/synthetic/v1/no-final-newline/expected.summary.json": "dea39c3bed3fe3ded0c035294e8571006b21bb15f6c5c551d385cd5ebaebf9e3",
+        "tests/golden/synthetic/v1/no-final-newline/input.txt": "e9c0f8b575cbfcb42ab3b78ecc87efa3b011d9a5d10b09fa4e96f240bf6a82f5"
+      },
+      "errors": "tests/golden/synthetic/v1/no-final-newline/expected.errors.jsonl",
+      "summary": "tests/golden/synthetic/v1/no-final-newline/expected.summary.json"
+    },
+    {
+      "id": "synthetic/v1/empty-file",
+      "sha256": {
+        "tests/golden/synthetic/v1/schema.json": "4bcba4c310aefcbacbd83a262ffbd5f1a3abd9f51a6767f323e1e9b5b7599fa7",
+        "tests/golden/synthetic/v1/empty-file/expected.errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/golden/synthetic/v1/empty-file/expected.summary.json": "6bf1cf1475417dda4b1d1a1a87806327e61bf7aabfa07cd92647f9d7be1964a3",
+        "tests/golden/synthetic/v1/empty-file/input.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "errors": "tests/golden/synthetic/v1/empty-file/expected.errors.jsonl",
+      "summary": "tests/golden/synthetic/v1/empty-file/expected.summary.json"
+    },
+    {
+      "id": "synthetic/v1/empty-record",
+      "sha256": {
+        "tests/golden/synthetic/v1/schema.json": "4bcba4c310aefcbacbd83a262ffbd5f1a3abd9f51a6767f323e1e9b5b7599fa7",
+        "tests/golden/synthetic/v1/empty-record/expected.errors.jsonl": "fed80fc6d9733b29bb75d9e6a65d807044bfebca8a0997d2c6be693227b6cdea",
+        "tests/golden/synthetic/v1/empty-record/expected.summary.json": "e21bfed82055b8c8e106e78237187fb01172d9aa504cb25c91dab2720967d443",
+        "tests/golden/synthetic/v1/empty-record/input.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+      },
+      "errors": "tests/golden/synthetic/v1/empty-record/expected.errors.jsonl",
+      "summary": "tests/golden/synthetic/v1/empty-record/expected.summary.json"
+    },
+    {
+      "id": "semantic/v1/valid",
+      "sha256": {
+        "tests/golden/semantic/v1/schema.json": "dc6d5bef91d2d05c7c125133fd225170356e57b83634d23dc3399660faea63a0",
+        "tests/golden/semantic/v1/valid/expected.errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/golden/semantic/v1/valid/expected.summary.json": "cd5cfbd7e0dab7f3530a912da2bcaee39f665d518789c9eb6767d56abadeb70e",
+        "tests/golden/semantic/v1/valid/input.txt": "c0cb32b423974f4b311876c70d4237e113e128219f4f230fa7074747178edbaf"
+      },
+      "errors": "tests/golden/semantic/v1/valid/expected.errors.jsonl",
+      "summary": "tests/golden/semantic/v1/valid/expected.summary.json"
+    },
+    {
+      "id": "semantic/v1/invalid",
+      "sha256": {
+        "tests/golden/semantic/v1/schema.json": "dc6d5bef91d2d05c7c125133fd225170356e57b83634d23dc3399660faea63a0",
+        "tests/golden/semantic/v1/invalid/expected.errors.jsonl": "8de494759b8ea8b4f6ccc2e7e5546c682752a6cf33dc271c59a3cf319f0c03f1",
+        "tests/golden/semantic/v1/invalid/expected.summary.json": "918b30496ea5e64bb0ce34268ef534135d2d0802121d6244bc5b560d8a6c8ab2",
+        "tests/golden/semantic/v1/invalid/input.txt": "4ee5ee758b4dd8c0f5142c3a38071008929a239e3b40e3aabdc66a92549f8201"
+      },
+      "errors": "tests/golden/semantic/v1/invalid/expected.errors.jsonl",
+      "summary": "tests/golden/semantic/v1/invalid/expected.summary.json"
+    },
+    {
+      "id": "dsl/v1/valid",
+      "sha256": {
+        "tests/golden/dsl/v1/schema.json": "4a8b2f28cd75f6a01ff56e4caa14744ef1a8539849c614ac85b237d479b1bfd4",
+        "tests/golden/dsl/v1/valid/expected.errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/golden/dsl/v1/valid/expected.summary.json": "ccd2c14e0ceb7067b938a410006c8f11da379ad3f60777e26cde82a9dcf790bb",
+        "tests/golden/dsl/v1/valid/input.txt": "ff634ac5597e363b753917b5ad6da7754a6cc518351b3a2c2e3413902c56d9cb"
+      },
+      "errors": "tests/golden/dsl/v1/valid/expected.errors.jsonl",
+      "summary": "tests/golden/dsl/v1/valid/expected.summary.json"
+    },
+    {
+      "id": "dsl/v1/invalid",
+      "sha256": {
+        "tests/golden/dsl/v1/schema.json": "4a8b2f28cd75f6a01ff56e4caa14744ef1a8539849c614ac85b237d479b1bfd4",
+        "tests/golden/dsl/v1/invalid/expected.errors.jsonl": "82af92fcec93aa40513751115a322b1fa1b896a662bf1e613181bd5f88e438d0",
+        "tests/golden/dsl/v1/invalid/expected.summary.json": "60a41bb989f4992790a32a7c4e2f1ddd49836f5b69fe2fe48ec386f14997d370",
+        "tests/golden/dsl/v1/invalid/input.txt": "8d2ecf5964f023929c176ed24e3017005dd6b7119d725787b4949d276e7fffe0"
+      },
+      "errors": "tests/golden/dsl/v1/invalid/expected.errors.jsonl",
+      "summary": "tests/golden/dsl/v1/invalid/expected.summary.json"
+    },
+    {
+      "id": "derived/v1/valid",
+      "sha256": {
+        "tests/golden/derived/v1/schema.json": "9619a2daa8d71e5ba03f36a7966c55ba28dc1bd13003da8c93bfcd88fcd663d4",
+        "tests/golden/derived/v1/valid/expected.errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/golden/derived/v1/valid/expected.summary.json": "205289354c51abae2c584f926fcdba4f522d4f839cef4432fba6cb31af18ecbd",
+        "tests/golden/derived/v1/valid/input.txt": "8a683d0da33a22f552b51db6154bc777c9f5df6b664066f4e10ca5a692fad5eb"
+      },
+      "errors": "tests/golden/derived/v1/valid/expected.errors.jsonl",
+      "summary": "tests/golden/derived/v1/valid/expected.summary.json"
+    },
+    {
+      "id": "derived/v1/invalid",
+      "sha256": {
+        "tests/golden/derived/v1/schema.json": "9619a2daa8d71e5ba03f36a7966c55ba28dc1bd13003da8c93bfcd88fcd663d4",
+        "tests/golden/derived/v1/invalid/expected.errors.jsonl": "dc4fad771c96cb86c6812d2f4b80b26708a75689e87d7aac7313dad04f05cfeb",
+        "tests/golden/derived/v1/invalid/expected.summary.json": "1f5b39112634a23895e906aa8a5beb5acda1687652dd0d4cfe79163cf702c7f6",
+        "tests/golden/derived/v1/invalid/input.txt": "8088b40272299b521df84b8f6a3c33901e002276dc849b5baa9ceac64ae10abd"
+      },
+      "errors": "tests/golden/derived/v1/invalid/expected.errors.jsonl",
+      "summary": "tests/golden/derived/v1/invalid/expected.summary.json"
+    },
+    {
+      "id": "cross-trace/sioc-referential/v1/valid",
+      "sha256": {
+        "tests/golden/cross-trace/sioc-referential/v1/schema.json": "b7a5a8d91ffe6aecff39065ea4cfd634551b7cc83d4ceff219bdc6bca9b96ec7",
+        "tests/golden/cross-trace/sioc-referential/v1/valid/expected.errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/golden/cross-trace/sioc-referential/v1/valid/expected.summary.json": "3ca7a7d947693989967cf0420469c6032ee33ace2a81ebd2b4078e8fb46d22c3",
+        "tests/golden/cross-trace/sioc-referential/v1/valid/trace-1.dat": "592226e7c389534633537860417088c9dbc3b419fc3514c1da7d5e9afcea2302",
+        "tests/golden/cross-trace/sioc-referential/v1/valid/trace-2.dat": "c8fae92efba6fbb5302b6bbff139405c506e4b90f2bff2439600f1c56e81e6e9",
+        "tests/golden/cross-trace/sioc-referential/v1/valid/trace-3.dat": "88fcc3cd9b1518cf8f7392d5fcc4cd5a0f42833770fc040eb8361dbd579c423d",
+        "tests/golden/cross-trace/sioc-referential/v1/valid/trace-4.1.dat": "497c6b455f37c115b7c28cf2704461cdbf22444377e4c7c9670f1d699c80453e",
+        "tests/golden/cross-trace/sioc-referential/v1/valid/trace-4.2.dat": "675a6a67d129348d3f4a8a14e8b64249614312f63f69a5044d45d4dd0ed4f7b1"
+      },
+      "errors": "tests/golden/cross-trace/sioc-referential/v1/valid/expected.errors.jsonl",
+      "summary": "tests/golden/cross-trace/sioc-referential/v1/valid/expected.summary.json"
+    },
+    {
+      "id": "cross-trace/sioc-referential/v1/missing",
+      "sha256": {
+        "tests/golden/cross-trace/sioc-referential/v1/schema.json": "b7a5a8d91ffe6aecff39065ea4cfd634551b7cc83d4ceff219bdc6bca9b96ec7",
+        "tests/golden/cross-trace/sioc-referential/v1/missing/expected.errors.jsonl": "5d640574a0de21a141dc3f340b6eca4fadaad9642646c2de4cdb205dd7490c53",
+        "tests/golden/cross-trace/sioc-referential/v1/missing/expected.summary.json": "ad6a3d6e1b82d53d77c19c07f8b4fb6c61416600a81885b376bec4d70e2297eb",
+        "tests/golden/cross-trace/sioc-referential/v1/missing/trace-1.dat": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/golden/cross-trace/sioc-referential/v1/missing/trace-2.dat": "c8fae92efba6fbb5302b6bbff139405c506e4b90f2bff2439600f1c56e81e6e9",
+        "tests/golden/cross-trace/sioc-referential/v1/missing/trace-3.dat": "daed55b09fb633deed651bd5e7cc35fdc0d36565c5f4a3e6a3207af7153be918",
+        "tests/golden/cross-trace/sioc-referential/v1/missing/trace-4.1.dat": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/golden/cross-trace/sioc-referential/v1/missing/trace-4.2.dat": "5ac1766bc9664113351137cc0d663c18de2d03f45b43cae4a517a39877eb5675"
+      },
+      "errors": "tests/golden/cross-trace/sioc-referential/v1/missing/expected.errors.jsonl",
+      "summary": "tests/golden/cross-trace/sioc-referential/v1/missing/expected.summary.json"
+    }
+  ],
+  "expected_provenance": {
+    "tests/golden/README.md": "323af1f9d642c8e7f574f7b4d09db56b2f86a3fab3d44a25a6d7e7caeef479ee",
+    "docs/verification/generate_semantic_goldens.py": "6550a668b52fe0f1030fc87d9f789b1123c1c99be98640e45d85b03e4eb5a58d",
+    "docs/verification/generate_dsl_goldens.py": "709feec14b868e4e398d4727deab710026fe81524f48944642d7344864335970",
+    "docs/verification/generate_derived_goldens.py": "8e82a29ffea1d68aedb9862cd3d90ef5b0177bbabe7a4dd16bb0630b6421aee7",
+    "docs/verification/generate_sioc_referential_goldens.py": "3b6cdae54f9cd06c8e8b10fee6a2fd3eb2917a57b23bff17c7a754316bb0fa5d"
+  },
+  "native_parity": "NOT_RUN; adapter does not yet exist"
+}

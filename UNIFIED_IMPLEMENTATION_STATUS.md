@@ -1,13 +1,13 @@
 # Stato unificato post-M9
 
-Aggiornato: 2026-11-14, Europe/Rome. Un agente; task tracciate singolarmente,
+Aggiornato: 2026-11-15, Europe/Rome. Un agente; task tracciate singolarmente,
 sviluppo sequenziale per blocchi coerenti secondo AGENTS.md.
 Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md),
 [master v1.0](docs/unified-post-m9/MASTER_PLAN_UNIFICATO.md) e
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **40/128 DONE;88 rimanenti** (18U-* e70MIG).
+Conteggio unificato: **45/128 DONE;83 rimanenti** (18U-* e65MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -81,13 +81,13 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P2-02 | T-MIG-P2-01 | DONE | [Proposta envelope](docs/verification/unified-post-m9/T-MIG-P2-02.md) | Ratifica autore14/11 con7precisazioni; schemaVersion1 envelope/DTO;84vettori PASS/exit0 | AcceptanceP2-02 PASS; G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-03 | T-MIG-P2-02 | DONE | [Run/lifecycle](docs/verification/unified-post-m9/T-MIG-P2-03.md) | Transizioni/race complete;53casi PASS/exit0; fonti Rust e identity/owner/terminali verificati nel modello | Gate design; G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-04 | T-MIG-P2-03 | DONE | [Progresso/terminale](docs/verification/unified-post-m9/T-MIG-P2-04.md) |49scenari PASS/exit0;10k update/consumer lento, slot bounded, terminale indipendente; regressione53 lifecycle PASS | Gate design; G-MIG-2 NOT_VERIFIED |
-| T-MIG-P2-05 | T-MIG-P2-02, T-MIG-P2-03 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-05.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
-| T-MIG-P2-06 | T-MIG-P2-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-06.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
-| T-MIG-P2-07 | T-MIG-P2-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-07.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
-| T-MIG-P2-08 | T-MIG-P2-02, T-MIG-P2-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-08.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
-| T-MIG-P2-09 | T-MIG-P2-03, T-MIG-P2-04, T-MIG-P2-05, T-MIG-P2-06, T-MIG-P2-07, T-MIG-P2-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-09.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
+| T-MIG-P2-05 | T-MIG-P2-02, T-MIG-P2-03 | DONE | [Paging/query](docs/verification/unified-post-m9/T-MIG-P2-05.md) |70casi PASS/exit0; max128righe/2pagine,1MiB, filtri/ordine/handle; JSONL invariato | Gate design; G-MIG-2 NOT_VERIFIED |
+| T-MIG-P2-06 | T-MIG-P2-05 | DONE | [Dettaglio/domìni](docs/verification/unified-post-m9/T-MIG-P2-06.md) |58casi PASS/exit0; Unicode/context64, schema/reference catturati, digest/stati espliciti e nessuna enum regex | Gate design; G-MIG-2 NOT_VERIFIED |
+| T-MIG-P2-07 | T-MIG-P2-03 | DONE | [Export nativo](docs/verification/unified-post-m9/T-MIG-P2-07.md) |60casi PASS/exit0; path/conferme solo native, replay/stale, receipt parziali; nessuna transazione multi-file | Gate design; G-MIG-2 NOT_VERIFIED |
+| T-MIG-P2-08 | T-MIG-P2-02, T-MIG-P2-07 | DONE | [Sicurezza/ACL](docs/verification/unified-post-m9/T-MIG-P2-08.md) | Threat model ADR-MIG-003 già ratificato; ACL generate auditate/exit0; input nativi608ccdc invariati, evidenzeP1-04 riusate | Gate design; G-MIG-2 NOT_VERIFIED |
+| T-MIG-P2-09 | T-MIG-P2-03, T-MIG-P2-04, T-MIG-P2-05, T-MIG-P2-06, T-MIG-P2-07, T-MIG-P2-08 | DONE | [Parity/fixture](docs/verification/unified-post-m9/T-MIG-P2-09.md) |14scenari/64file con SHA e attesi indipendenti; comparatore/negativi PASS, native parity NOT_RUN | Gate design; G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-10 | T-MIG-P2-01, T-MIG-P2-02, T-MIG-P2-03, T-MIG-P2-04, T-MIG-P2-05, T-MIG-P2-06, T-MIG-P2-07, T-MIG-P2-08, T-MIG-P2-09, T-MIG-P2-11 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-10.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
-| T-MIG-P2-11 | T-MIG-P2-03, T-MIG-P2-05, T-MIG-P2-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-11.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
+| T-MIG-P2-11 | T-MIG-P2-03, T-MIG-P2-05, T-MIG-P2-08 | IN_PROGRESS | [Full pubblicato](docs/verification/unified-post-m9/T-MIG-P2-11.md) | DTO/ownership e18casi pubblicati; verifica wire/anchor/lifecycle exit0, nessuna nuova suite Rust | Attende approvazione G-MIG-2; non contata DONE |
 | T-MIG-P3-01 | T-MIG-P2-10 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-01.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
 | T-MIG-P3-02 | T-MIG-P3-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-02.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
 | T-MIG-P3-03 | T-MIG-P3-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-03.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
@@ -291,3 +291,23 @@ P2-04,14 novembre2026: **DONE** design progresso bounded/terminale indipendente;
 49scenari e regressione53lifecycle PASS, nessun rerun del workspace/CI/VM.
 **40/128 DONE (31,25%)**. Prosegue **P2-05** su paging/offset/filtri Rust, poi
 contratti dettaglio ed export. Tutti i gate applicativi rimangono aperti.
+
+
+P2-05,14 novembre2026: **DONE** design paging/query.70casi PASS, finestra
+massimo2pagine/128righe per pagina e cap intero1MiB. Indici/file/valori restano
+Rust; nessun raw sanitario o bulk in IPC.41/128 DONE (32,0%). ProsegueP2-06
+su dettaglio minimo e domini catturati; nessuna nuova CI o VM automatica.
+
+
+Blocco P2-06..09,15 novembre2026: **DONE nel perimetro design**. Dettaglio58
+casi ed export60 PASS; ACL effettive generate auditate con input nativi
+608ccdc invariati; harness parity definito su14scenari/64file e attesi
+indipendenti. Non è nuova parity nativa o funzionalità Rust di prodotto.
+**45/128 DONE (35,2%)**. **P2-11 IN_PROGRESS**: Full DTO/ownership e18casi
+pubblicati, verifica locale PASS; acceptance approvativa pendente.
+[Pacchetto G-MIG-2 pronto](docs/migration/ipc-v1/G-MIG-2_REVIEW.md), ancora
+NON APPROVED. Il gate è richiesto esplicitamente prima del bridge/P3; la
+ratifica P2-02 non lo supera. P2-10 non DONE e nessuna approvazione inventata.
+64digest di evidenze P2 controllati senza mismatch, grafo128task/140fonti
+invariato. Nessuna nuova suite Rust/CI/VM per questi contratti. Prossimo
+avanzamento dopo ratifica complessiva: chiudere P2-11/P2-10, avviare P3.
