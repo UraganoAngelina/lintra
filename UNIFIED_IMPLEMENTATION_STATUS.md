@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **45/128 DONE;83 rimanenti** (18U-* e65MIG).
+Conteggio unificato: **47/128 DONE;81 rimanenti** (18U-* e63MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -15,7 +15,8 @@ Gate correnti: G-U0 PASS documentale; G-HARD PASS nativo su cb70bee/
 CI42990775714; G-SIOC0 PASS documentale; G-MIG-0 PASS governance.
 G-DUR PASS software su3aa0d14/CI43078048297; hardware NOT_TESTED_HARDWARE.
 G-MIG-1 PASS/GO tecnico piattaforme: dossier P1-02/03/04/05/07 e decisioneP1-06.
-G-OPS0/1/2, G-SIOC1, G-MIG-2..9, G-CADUI0..3, G-PERF e G-REL:
+G-MIG-2 APPROVED design, ratifica autore15/11 sul pacchetto45fce38.
+G-OPS0/1/2, G-SIOC1, G-MIG-3..9, G-CADUI0..3, G-PERF e G-REL:
 NOT_VERIFIED. Prove Win11/offline/due desktop e scale osservate distinte dalla
 CI Windows Server; VM ripristinata/spenta. Non è un gate di distribuzione.
 G-REAL riguarda autorizzazioni effettive per specifici dati, non presunte.
@@ -86,9 +87,9 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P2-07 | T-MIG-P2-03 | DONE | [Export nativo](docs/verification/unified-post-m9/T-MIG-P2-07.md) |60casi PASS/exit0; path/conferme solo native, replay/stale, receipt parziali; nessuna transazione multi-file | Gate design; G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-08 | T-MIG-P2-02, T-MIG-P2-07 | DONE | [Sicurezza/ACL](docs/verification/unified-post-m9/T-MIG-P2-08.md) | Threat model ADR-MIG-003 già ratificato; ACL generate auditate/exit0; input nativi608ccdc invariati, evidenzeP1-04 riusate | Gate design; G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-09 | T-MIG-P2-03, T-MIG-P2-04, T-MIG-P2-05, T-MIG-P2-06, T-MIG-P2-07, T-MIG-P2-08 | DONE | [Parity/fixture](docs/verification/unified-post-m9/T-MIG-P2-09.md) |14scenari/64file con SHA e attesi indipendenti; comparatore/negativi PASS, native parity NOT_RUN | Gate design; G-MIG-2 NOT_VERIFIED |
-| T-MIG-P2-10 | T-MIG-P2-01, T-MIG-P2-02, T-MIG-P2-03, T-MIG-P2-04, T-MIG-P2-05, T-MIG-P2-06, T-MIG-P2-07, T-MIG-P2-08, T-MIG-P2-09, T-MIG-P2-11 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P2-10.md) | —; Non eseguite | G-MIG-2 NOT_VERIFIED |
-| T-MIG-P2-11 | T-MIG-P2-03, T-MIG-P2-05, T-MIG-P2-08 | IN_PROGRESS | [Full pubblicato](docs/verification/unified-post-m9/T-MIG-P2-11.md) | DTO/ownership e18casi pubblicati; verifica wire/anchor/lifecycle exit0, nessuna nuova suite Rust | Attende approvazione G-MIG-2; non contata DONE |
-| T-MIG-P3-01 | T-MIG-P2-10 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-01.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
+| T-MIG-P2-10 | T-MIG-P2-01, T-MIG-P2-02, T-MIG-P2-03, T-MIG-P2-04, T-MIG-P2-05, T-MIG-P2-06, T-MIG-P2-07, T-MIG-P2-08, T-MIG-P2-09, T-MIG-P2-11 | DONE | [Ratifica gate](docs/verification/unified-post-m9/T-MIG-P2-10.md) | Approvazione esplicita autore15/11 del pacchetto45fce38; prerequisiti verificati | G-MIG-2 APPROVED design; ingresso P3 autorizzato |
+| T-MIG-P2-11 | T-MIG-P2-03, T-MIG-P2-05, T-MIG-P2-08 | DONE | [Full ratificato](docs/verification/unified-post-m9/T-MIG-P2-11.md) | DTO/ownership e18casi verificati; ratifica autore15/11 in G-MIG-2 | Acceptance design PASS; integrazione nativa ai task previsti |
+| T-MIG-P3-01 | T-MIG-P2-10 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-01.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
 | T-MIG-P3-02 | T-MIG-P3-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-02.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
 | T-MIG-P3-03 | T-MIG-P3-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-03.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
 | T-MIG-P3-04 | T-MIG-P3-01, T-MIG-P3-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-04.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
@@ -311,3 +312,8 @@ ratifica P2-02 non lo supera. P2-10 non DONE e nessuna approvazione inventata.
 64digest di evidenze P2 controllati senza mismatch, grafo128task/140fonti
 invariato. Nessuna nuova suite Rust/CI/VM per questi contratti. Prossimo
 avanzamento dopo ratifica complessiva: chiudere P2-11/P2-10, avviare P3.
+
+
+15 novembre2026: autore approva esplicitamente **G-MIG-2 e avvioP3** sul
+pacchetto45fce38. P2-11/P2-10 DONE,47/128 (36,7%); avviataP3-01 scaffold
+affiancato. Nessuna ripetizione CI/VM o reference Python per la sola ratifica.

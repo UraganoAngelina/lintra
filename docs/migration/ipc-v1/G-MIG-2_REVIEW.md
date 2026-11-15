@@ -1,6 +1,12 @@
 # G-MIG-2 — Pacchetto di design da ratificare
 
-15 novembre2026. **READY_FOR_REVIEW, NON APPROVED**. La ratifica del14 novembre
+15 novembre2026. **USER_APPROVED / REPOSITORY_RATIFIED** sul pacchetto45fce38.
+Risposta esplicita dell’autore: **«Approvo G-MIG-2 e l’avvio P3»**.
+Sono approvati lifecycle, paging, dettaglio, export, sicurezza e Full.
+La decisione soddisfa P2-11 e consente la chiusura P2-10 e l’ingresso P3;
+non attesta test nativi del bridge ancora da implementare.
+
+Il testo seguente conserva il perimetro della proposta approvata. La ratifica del14 novembre
 è limitata aP2-02 e non viene estesa tacitamente al gate. P2-01..09 DONE nel
 perimetro di design; P2-11 pubblicata e verificata, in attesa della ratifica
 che è parte della sua acceptance. P2-10 si chiude solo dopo l’approvazione.

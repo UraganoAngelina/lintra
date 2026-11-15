@@ -1,0 +1,62 @@
+{
+  "task": "T-MIG-P3-01",
+  "checked_utc": "2026-11-15T15:47:56.924633+00:00",
+  "linux_release_build": {
+    "exit_code": 0,
+    "command": "CARGO_TARGET_DIR=spikes/tauri-runtime/src-tauri/target cargo build --manifest-path apps/lintra-desktop/src-tauri/Cargo.toml --offline --locked --release --features tauri/custom-protocol -j 2",
+    "elapsed_seconds": 508,
+    "binary_sha256": "b0597a8285ffd40f9338f23a6fe1f84748ba7bb16140bd757a339ca27450dce9"
+  },
+  "linux_targeted_tests": {
+    "exit_code": 0,
+    "tests": 2,
+    "profile": "dev; existing qualified dependency cache reused",
+    "scope": "Exact internal origins and connection allowlist"
+  },
+  "frontend": {
+    "install": "npm ci --ignore-scripts --no-audit --no-fund --offline",
+    "install_exit_code": 0,
+    "build": "npm run build",
+    "build_exit_code": 0,
+    "typecheck": "strict TypeScript included in build"
+  },
+  "registry_delta_from_spike": {
+    "new_Cargo_packages": [],
+    "changed_Cargo_checksums": [],
+    "new_or_changed_npm_registry_entries": []
+  },
+  "legacy": {
+    "baseline": "45fce38",
+    "protected_paths": [
+      "Cargo.toml",
+      "Cargo.lock",
+      "src",
+      "ui",
+      "tests",
+      ".cargo",
+      ".github/workflows/ci.yml"
+    ],
+    "git_diff_exit_code": 0
+  },
+  "windows_CI": "PENDING; not qualified yet",
+  "native_GUI_smoke": "NOT_RUN; P3-04/06 checkpoint",
+  "sha256": {
+    "apps/lintra-desktop/package.json": "7434a39d787eeeb5be976fe38f5f7a73894f9aab8ba2ee060b69979e13e66cdf",
+    "apps/lintra-desktop/package-lock.json": "bfe836a32ed76fa730a034bba52f4e45c03166b3c2c5bbfa948503abca9f6fa5",
+    "apps/lintra-desktop/tsconfig.json": "06bb5b9fe7eacdac2fe16e94dc5fe1ac6387d1842132fcc2f5dc1a910633138a",
+    "apps/lintra-desktop/.gitignore": "e6e7f4bf51135ae4397996c41bf35e7b413f26635c83cd15053ce9a2985a50fa",
+    "apps/lintra-desktop/index.html": "4d0338ea2d3633623d40d0caca2f2cadd2c1b78489194ecae2c79c40fcdf111f",
+    "apps/lintra-desktop/README.md": "14766b1fbce10d9288ae0ce3208e2c47758f04acd8b68f961fe30665e0f0de2b",
+    "apps/lintra-desktop/src/main.tsx": "c88554ce50ed0f060fca09700b4c800baadaf1b27dbdc3208cf908fb25062aa4",
+    "apps/lintra-desktop/src/style.css": "1072bf1a27785815e200279c9b807afddaca44f05139bc16206e789fdee5f42b",
+    "apps/lintra-desktop/src-tauri/Cargo.lock": "b9bf2125fa45c6bb0e8d6fd84152996e1a6aa06c52aeabe0cc03f4f3843b9625",
+    "apps/lintra-desktop/src-tauri/Cargo.toml": "04c7c1f905af930cad3728fe9b23c1af671e0ed0c9b532d72e723dbb0bafb1aa",
+    "apps/lintra-desktop/src-tauri/build.rs": "e333e50bbaea4199bfa484c49787dc3a9726d40b19920c7cf5023dbedc06ed81",
+    "apps/lintra-desktop/src-tauri/tauri.conf.json": "9b86d8c9af3343c3e296be83402d60eab73970447d0c5c1ad953d9e894213d69",
+    "apps/lintra-desktop/src-tauri/src/windows_request_guard.rs": "bd63dac8f6d64b9407a71fafae5167e7637541470717a51fc9e673c5d5636daf",
+    "apps/lintra-desktop/src-tauri/src/security.rs": "92c0e2cc0c64a31b5ef62fc4d460354fcd7dbc223e342417262166fd8da2a11b",
+    "apps/lintra-desktop/src-tauri/src/main.rs": "b7977029fbc414ac4536d02f9e3fa8e93431f0f7b974a5bc76354086ae0ed0ee",
+    "apps/lintra-desktop/src-tauri/icons/128x128.png": "e42645408761e4e1971c6d3f34faef1317866a01e9c188e6593119326b09b259",
+    "apps/lintra-desktop/src-tauri/icons/icon.ico": "a7c33bc2a63369bf29d65be8c89644e0142643afd2e0c173972156e49cad52ff"
+  }
+}

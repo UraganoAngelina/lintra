@@ -1,6 +1,7 @@
 # T-MIG-P2-11 — Full multi-tracciato
 
-15 novembre2026. **IN_PROGRESS, artefatti pronti per approvazione G-MIG-2**.
+15 novembre2026. **DONE — approvazione G-MIG-2 acquisita dall’autore** sul
+pacchetto45fce38: «Approvo G-MIG-2 e l’avvio P3».
 Prerequisiti P2-03/05/08 DONE. [Contratto Full](../../migration/ipc-v1/FULL.md),
 full-cases.json: DTO/protocollo, ownership e18casi collegati ai test Rust reali.
 Un bundle/RunRef, schema/reference/parametri catturati, preflight Rust, PASS1/
@@ -13,5 +14,5 @@ invariati rispetto a3aa0d14, integrazione Lifecycle Full e report precedente.
 nessuna qualifica di nuovo adapter Full, worker nativo o parity reale.
 
 L’accettazione richiede pubblicazione **e approvazione nel gate G-MIG-2**:
-pubblicazione completata, approvazione ancora mancante. Non contata DONE;
-P2-10/P3 non anticipati. Il pacchetto complessivo è [pronto per revisione](../../migration/ipc-v1/G-MIG-2_REVIEW.md).
+entrambe soddisfatte. [Ratifica complessiva](../../migration/ipc-v1/G-MIG-2_REVIEW.md).
+46/128 DONE; segue P2-10 per il consolidamento del gate, poi P3.

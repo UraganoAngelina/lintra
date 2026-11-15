@@ -24,6 +24,16 @@ Al termine del blocco: sviluppato/task, verificato/esiti, rischi/gate residui,
 prossimo avanzamento. Skill, plugin e preferenze generali sono configurati a
 livello utente in `~/.codex/AGENTS.md`, senza dipendenze applicative nel repo.
 
+## Ratifica G-MIG-2 — 15 novembre 2026
+
+L’autore ha approvato il pacchetto completo sul commit45fce38:
+«Approvo G-MIG-2 e l’avvio P3». Decisione in
+`docs/migration/ipc-v1/G-MIG-2_REVIEW.md`. Approvazione acquisita per P2-11/P2-10;
+proseguire P3 secondo dipendenze senza richiedere nuovamente questo consenso.
+G-MIG-2 APPROVED è un gate di design; prove Rust/TS/native e G-MIG-3..9/G-REL
+rimangono obbligatorie nei checkpoint previsti. Preferire implementazione
+applicativa e riuso dei servizi Rust alle ulteriori reference di design.
+
 ## Ratifica IPC v1 — 14 novembre 2026
 
 T-MIG-P2-02 approvata dall’autore; fonte vincolante:
