@@ -16,5 +16,15 @@
     "exit_code": 0,
     "passed": 10,
     "command": "CARGO_TARGET_DIR=spikes/tauri-runtime/src-tauri/target cargo test --manifest-path apps/lintra-desktop/src-tauri/Cargo.toml --offline --locked --features tauri/custom-protocol -j 2"
+  },
+  "integration_ci": {
+    "run_id": 43758529844,
+    "source_sha": "ce344d425c9046e10e6e54c61679b53c15dbc0a9",
+    "conclusion": "SUCCESS",
+    "linux_rust_tests": 11,
+    "windows_rust_tests": 12,
+    "frontend_tests_per_os": 16,
+    "native_smokes": "Linux/X11 and Windows Server React/raw IPC/Rust ack, exit 0",
+    "receipt": "T-MIG-P3-06-checks.json"
   }
 }

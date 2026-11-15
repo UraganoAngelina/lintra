@@ -94,7 +94,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P3-03 | T-MIG-P3-01 | DONE | [Font e token locali](docs/verification/unified-post-m9/T-MIG-P3-03.md) | Font/OFL byte-identici, fonti/hash e due test asset PASS; baseline WebView distinta | Acceptance copia asset PASS; G-MIG-3 NOT_VERIFIED |
 | T-MIG-P3-04 | T-MIG-P3-01, T-MIG-P3-02 | DONE | [Dispatcher Rust](docs/verification/unified-post-m9/T-MIG-P3-04.md) | 10 test Rust e smoke nativo Wayland avvio/chiusura PASS; nessun servizio validazione | Acceptance dispatcher PASS; G-MIG-3 NOT_VERIFIED |
 | T-MIG-P3-05 | T-MIG-P3-02, T-MIG-P3-04 | DONE | [Client TS](docs/verification/unified-post-m9/T-MIG-P3-05.md) | 14 test TS/11 Rust e handshake React–Rust nativo Wayland PASS; errori statici e schema strict | Acceptance client PASS; G-MIG-3 NOT_VERIFIED |
-| T-MIG-P3-06 | T-MIG-P3-01, T-MIG-P3-02, T-MIG-P3-03, T-MIG-P3-04, T-MIG-P3-05 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-06.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
+| T-MIG-P3-06 | T-MIG-P3-01, T-MIG-P3-02, T-MIG-P3-03, T-MIG-P3-04, T-MIG-P3-05 | IN_PROGRESS | [Integrazione P3](docs/verification/unified-post-m9/T-MIG-P3-06.md) | ce344d4: CI desktop43758529844 SUCCESS Linux/Windows + smoke; regressione locale core/CLI/Slint exit0; CI ufficiale43758531087 pendente | WAITING_GATE; G-MIG-3 NOT_VERIFIED |
 | T-MIG-P4-01 | T-MIG-P3-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-01.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-02 | T-MIG-P4-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-02.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-03 | T-MIG-P4-01, T-MIG-P4-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-03.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
@@ -325,3 +325,18 @@ PASS, frontend strict PASS. CI Windows43731922567 in corso; task non DONE.
 Corretto separatamente il comando YAML inline del workflow diagnostico
 SQLite (persistence::), senza cambiare il comando di test o il suo trigger
 manuale. La failure43731921269 non ha eseguito job/test SQLite.
+
+
+Blocco funzionale P3, 15 novembre 2026: **P3-03/04/05 DONE**, **52/128 DONE**.
+Dispatcher Rust e client TS bounded v1 integrati con asset/font locali e
+provenienza preservata; nessun servizio di validazione anticipato. Fonte
+runtime ce344d4; CLI/Slint/core/lock/golden invariati. Regole LF circoscritte
+in `.gitattributes` correggono il primo FAIL asset Windows senza normalizzare
+i test. CI desktop43758529844 **SUCCESS Linux/Windows**, 16 test Node per OS,
+11 Rust Linux/12 Windows e smoke nativi PASS. Regressione locale workspace
+core/CLI/Slint e doc test exit0; log/receipt conservati nel dossier P3-06.
+**P3-06 IN_PROGRESS / WAITING_GATE** sulla CI ufficiale43758531087 dello stesso
+SHA; G-MIG-3 ancora NOT_VERIFIED, G-MIG-4..9/G-REL invariati. Il run legacy
+precedente è stato cancellato dalla concurrency esistente, non qualificato.
+Nessuna VM, installer o subagente. Nessuna nuova task indipendente READY:
+prossima **P4-01 soltanto dopo G-MIG-3 effettivo**, senza nuove ratifiche.

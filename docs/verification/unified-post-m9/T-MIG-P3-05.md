@@ -34,3 +34,8 @@ locale, dove il runner isolato riportava soltanto l'esito del file contenitore.
 Il lint frontend usa le regole statiche TypeScript già installate (unused e
 fallthrough), senza aggiungere ESLint o una dipendenza per questa shell.
 G-MIG-3 ancora aperto; segue P3-03 e poi integrazione P3-06.
+
+Integrazione su ce344d4: CI desktop43758529844 SUCCESS Linux/Windows,
+16 test Node per OS, 11 test Rust Linux/12 Windows e smoke React/raw IPC/Rust
+nativo su entrambi PASS. Receipt aggregato in `T-MIG-P3-06-checks.json`.
+G-MIG-3 attende la CI ufficiale core/Slint, separata da questa prova desktop.

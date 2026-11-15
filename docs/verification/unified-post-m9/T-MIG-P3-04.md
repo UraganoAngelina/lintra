@@ -26,3 +26,8 @@ temporanee private, nessuna capture o dato reale. Il tentativo nel sandbox
 non accedeva a GTK (exit 101); ripetizione con accesso al compositor PASS.
 Receipt: [controlli](T-MIG-P3-04-checks.json). Handshake React/Rust e decoder TS
 seguono in P3-05; G-MIG-3 e Windows sul nuovo delta attendono P3-06.
+
+Integrazione su ce344d4: CI desktop43758529844 SUCCESS Linux/Windows,
+16 test Node per OS, 11 test Rust Linux/12 Windows e smoke React/raw IPC/Rust
+nativo su entrambi PASS. Receipt aggregato in `T-MIG-P3-06-checks.json`.
+G-MIG-3 attende la CI ufficiale core/Slint, separata da questa prova desktop.

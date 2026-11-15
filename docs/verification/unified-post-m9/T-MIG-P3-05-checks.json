@@ -18,5 +18,15 @@
   "typecheck_exit_code": 0,
   "frontend_build_exit_code": 0,
   "shared_vectors": 8,
-  "platform": "CachyOS/Wayland; actual React/raw IPC/Rust ack and process exit, no capture"
+  "platform": "CachyOS/Wayland; actual React/raw IPC/Rust ack and process exit, no capture",
+  "integration_ci": {
+    "run_id": 43758529844,
+    "source_sha": "ce344d425c9046e10e6e54c61679b53c15dbc0a9",
+    "conclusion": "SUCCESS",
+    "linux_rust_tests": 11,
+    "windows_rust_tests": 12,
+    "frontend_tests_per_os": 16,
+    "native_smokes": "Linux/X11 and Windows Server React/raw IPC/Rust ack, exit 0",
+    "receipt": "T-MIG-P3-06-checks.json"
+  }
 }

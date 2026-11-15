@@ -41,3 +41,6 @@ mantengono così i byte Git canonici, come già previsto per la licenza Slint.
 Checkout temporaneo con `core.autocrlf=true`: tutte le 11 risorse di provenienza
 confrontate byte per byte/hash PASS. Nessuna normalizzazione nel test o soglia
 indebolita; CI Windows del checkout corretto ancora da completare in P3-06.
+
+CI checkout corretto43758529844 su ce344d4 SUCCESS Linux/Windows: test asset
+con hash esatti e smoke nativi PASS. Il fallimento CRLF precedente è risolto.

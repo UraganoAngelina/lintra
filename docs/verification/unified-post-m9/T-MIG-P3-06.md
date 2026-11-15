@@ -21,7 +21,7 @@ controlla marker/exit code senza acquisire schermate o usare dati reali.
 Linux locale: 16 test Node, 11 Rust, lint/typecheck/build frontend, fmt/Clippy e
 build release PASS. Smoke release React/raw IPC/Rust Wayland PASS, exit 0,
 SHA binario `adb9dfe68df15b1903a7f0868a88c1bf0e6534813446777b37d5969d71031e98`.
-La regressione `cargo test --workspace --locked --offline -j 2` è in corso.
+La regressione `cargo test --workspace --locked --offline -j 2` è PASS: 1110 esiti PASS riportati (inclusi helper subprocess), 9 ignored previsti, 129 riepiloghi suite/doc suite, exit 0. Log originale compresso in `T-MIG-P3-06-legacy-local.log.gz`.
 La nuova CI desktop e la CI ufficiale core/Slint saranno attribuite allo SHA
 runtime pubblicato; le prove precedenti non qualificano il nuovo adapter.
 
@@ -45,3 +45,26 @@ il checkout corretto. Il gate richiede gli esiti pertinenti del nuovo SHA.
 
 Il filtro path del workflow desktop include ora `.gitattributes`: una modifica
 alla preservazione dei byte deve attivare le stesse prove dell'adapter.
+
+Checkout corretto pubblicato su ce344d4. CI desktop43758529844 e ufficiale
+core/Slint43758531087 in corso sullo stesso SHA. La run legacy43757791728
+è stata annullata automaticamente dalla concurrency già prevista nel workflow
+al dispatch della nuova run; nessuna cancellazione manuale è stata eseguita.
+Il primo desktop Linux43757790267 è SUCCESS; il workflow complessivo resta FAIL
+per l'asset Windows. Nessun errore passato viene cancellato o trasformato in PASS.
+
+CI desktop43758529844 **SUCCESS**, Linux e Windows sullo SHA ce344d4:
+16 test Node per OS, 11 test Rust Linux/12 Windows, fmt/Clippy/build release e
+smoke React/raw IPC/Rust entrambi PASS. Log completo compresso in
+`T-MIG-P3-06-desktop-ci.log.gz`; SHA binari e metadati/step effettivi nel receipt.
+I log conservano i warning del bus accessibilità Xvfb assente e del cleanup
+WebView2 Server (class unregister 1412), con ack e process exit 0; nessuna
+qualifica a11y, Win11 desktop o installer viene dedotta da questi smoke.
+Resta soltanto la CI ufficiale core/Slint43758531087 per G-MIG-3: nessun PASS
+aggregato prima del suo completamento e nessun avvio applicativo P4 anticipato.
+
+Ultima lettura ordinaria CI ufficiale: ancora IN_PROGRESS; Linux a “Test all
+features”, Windows a “Test”, senza failure riportate fino a questa lettura.
+Non è un esito finale. Handoff **WAITING_GATE**, 52/128 DONE; grafo verificato:
+nessuna nuova task indipendente con tutti i prerequisiti DONE. Tutti i processi
+locali posseduti sono terminati/attesi. Next P4-01 dopo G-MIG-3 PASS.

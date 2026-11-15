@@ -29,7 +29,58 @@
       "exit_code": 0,
       "findings": []
     },
-    "legacy_workspace_tests": "IN_PROGRESS",
+    "legacy_workspace_tests": {
+      "exit_code": 0,
+      "command": "cargo test --workspace --locked --offline -j 2",
+      "counts": {
+        "passed": 1110,
+        "failed": 0,
+        "ignored": 9,
+        "suites": 129,
+        "scope": "Reported test invocations/summaries include subprocess helpers, not a count of distinct test functions"
+      },
+      "log": "docs/verification/unified-post-m9/T-MIG-P3-06-legacy-local.log.gz",
+      "log_sha256": "45c655298869323c12fd0910a1d0020c30fffe18acc89edbfa04cf061e8777eb",
+      "scope": "Linux native core/CLI/Slint regression and doctests; no Windows or official CI equivalence",
+      "ignored_tests": [
+        [
+          "persistence::sqlite::tests::metadata::metadata_restart_worker",
+          "synthetic subprocess helper, invoked by metadata parent"
+        ],
+        [
+          "persistence::sqlite::tests::process_worker",
+          "subprocess helper invoked only with a synthetic archive by parent tests"
+        ],
+        [
+          "persistence::sqlite::tests::qualification::export_native_snapshot_fixture",
+          "CI exports a public synthetic database for the opposite native runner"
+        ],
+        [
+          "persistence::sqlite::tests::qualification::import_opposite_native_snapshot_fixture",
+          "CI reopens the actual synthetic database produced by the opposite OS"
+        ],
+        [
+          "report::atomic::durability_tests::process_worker",
+          "Owned subprocess helper; parent invokes it with a private synthetic destination"
+        ],
+        [
+          "measure_full_cad83_history_application",
+          "explicit CAD83 application performance qualification"
+        ],
+        [
+          "original_sioc_workbook_is_imported_through_the_production_adapter",
+          "manual qualification against the author-provided normative XLSX; no external files required by CI"
+        ],
+        [
+          "xlsx_memory_probe",
+          "explicit memory probe in a separate foreground process; LINTRA_XLSX_PROBE_ROWS controls size"
+        ],
+        [
+          "directory_sync_failure_after_rename_reports_the_published_file",
+          "Requires an unprivileged Linux account; native CI explicitly runs it"
+        ]
+      ]
+    },
     "autocrlf_checkout": {
       "exit_code": 0,
       "provenance_files": 11,
@@ -94,15 +145,954 @@
     "apps/lintra-desktop/tests/ipc.test.mjs": "ed1a96660d8c4c13f685266942e76337c99440dff9e11225b16c302edbbd6c48",
     "apps/lintra-desktop/tests/native_smoke.py": "cd66361aff3b1debf76cd2c3be05f633508710252b8674a109e155911271ac91",
     "apps/lintra-desktop/tsconfig.json": "06bb5b9fe7eacdac2fe16e94dc5fe1ac6387d1842132fcc2f5dc1a910633138a",
-    ".github/workflows/desktop.yml": "a2a91cf7c9377ad257eeb31894672590ca65db7715f7e4bbee2780d9751a2e44"
+    ".github/workflows/desktop.yml": "6a9a2b4de40a95c1855bb0790a8d89db16dd168eae8d9fc0def5c87ccce5444d",
+    ".gitattributes": "5efd3ebad8dfed1c2fa1e57cce36d56cb78d490585b3329d1697c5dc5f35e95e"
   },
-  "ci": "WAITING_FINAL_CHECKOUT_SHA",
+  "ci": {
+    "desktop": {
+      "conclusion": "success",
+      "headSha": "ce344d425c9046e10e6e54c61679b53c15dbc0a9",
+      "jobs": [
+        {
+          "completedAt": "2026-11-15T20:33:00Z",
+          "conclusion": "success",
+          "databaseId": 132947863222,
+          "name": "Linux desktop build and X11 smoke (not CachyOS qualification)",
+          "startedAt": "2026-11-15T20:31:15Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-11-15T20:31:17Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-11-15T20:31:16Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:31:20Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 2,
+              "startedAt": "2026-11-15T20:31:17Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:31:25Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+              "number": 3,
+              "startedAt": "2026-11-15T20:31:20Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:31:29Z",
+              "conclusion": "success",
+              "name": "Run actions/cache@caa296126883cff596d87d8935842f9db880ef25",
+              "number": 4,
+              "startedAt": "2026-11-15T20:31:25Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:13Z",
+              "conclusion": "success",
+              "name": "Install native WebView and virtual display prerequisites",
+              "number": 5,
+              "startedAt": "2026-11-15T20:31:29Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:15Z",
+              "conclusion": "success",
+              "name": "Install locked frontend, lint, test and build",
+              "number": 6,
+              "startedAt": "2026-11-15T20:32:13Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:52Z",
+              "conclusion": "success",
+              "name": "Check and build isolated native adapter",
+              "number": 7,
+              "startedAt": "2026-11-15T20:32:15Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:57Z",
+              "conclusion": "success",
+              "name": "Smoke native React and raw IPC in Xvfb",
+              "number": 8,
+              "startedAt": "2026-11-15T20:32:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:58Z",
+              "conclusion": "success",
+              "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+              "number": 9,
+              "startedAt": "2026-11-15T20:32:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:58Z",
+              "conclusion": "success",
+              "name": "Post Run actions/cache@caa296126883cff596d87d8935842f9db880ef25",
+              "number": 16,
+              "startedAt": "2026-11-15T20:32:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:59Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+              "number": 17,
+              "startedAt": "2026-11-15T20:32:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:59Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 18,
+              "startedAt": "2026-11-15T20:32:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:59Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 19,
+              "startedAt": "2026-11-15T20:32:59Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/UraganoAngelina/lintra/actions/runs/43758529844/job/132947863222"
+        },
+        {
+          "completedAt": "2026-11-15T20:34:10Z",
+          "conclusion": "success",
+          "databaseId": 132947863588,
+          "name": "Windows desktop build (not Windows 11 qualification)",
+          "startedAt": "2026-11-15T20:31:17Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-11-15T20:31:22Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-11-15T20:31:19Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:31:34Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 2,
+              "startedAt": "2026-11-15T20:31:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:31:43Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+              "number": 3,
+              "startedAt": "2026-11-15T20:31:34Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:11Z",
+              "conclusion": "success",
+              "name": "Run actions/cache@caa296126883cff596d87d8935842f9db880ef25",
+              "number": 4,
+              "startedAt": "2026-11-15T20:31:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:19Z",
+              "conclusion": "success",
+              "name": "Install locked frontend, lint, test and build",
+              "number": 5,
+              "startedAt": "2026-11-15T20:32:11Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:43Z",
+              "conclusion": "success",
+              "name": "Check native Rust boundaries",
+              "number": 6,
+              "startedAt": "2026-11-15T20:32:19Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:33:42Z",
+              "conclusion": "success",
+              "name": "Build the separate desktop binary",
+              "number": 7,
+              "startedAt": "2026-11-15T20:32:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:33:47Z",
+              "conclusion": "success",
+              "name": "Smoke native React and raw IPC on Windows Server",
+              "number": 8,
+              "startedAt": "2026-11-15T20:33:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:33:49Z",
+              "conclusion": "success",
+              "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+              "number": 9,
+              "startedAt": "2026-11-15T20:33:47Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:34:03Z",
+              "conclusion": "success",
+              "name": "Post Run actions/cache@caa296126883cff596d87d8935842f9db880ef25",
+              "number": 16,
+              "startedAt": "2026-11-15T20:33:49Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:34:06Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38",
+              "number": 17,
+              "startedAt": "2026-11-15T20:34:03Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:34:08Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "number": 18,
+              "startedAt": "2026-11-15T20:34:06Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:34:08Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 19,
+              "startedAt": "2026-11-15T20:34:08Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/UraganoAngelina/lintra/actions/runs/43758529844/job/132947863588"
+        }
+      ],
+      "status": "completed",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/43758529844",
+      "run_id": 43758529844,
+      "smokes": [
+        {
+          "binary_sha256": "52e497775300d25da9fbe9af8dcc8f91778dcb61d4887ddbf63bcd0f491084d5",
+          "exit_code": 0,
+          "stdout": "LINTRA_DESKTOP_READY\n",
+          "stderr": "\n(lintra-desktop:4618): dbind-WARNING **: 20:32:55.612: AT-SPI: Error retrieving accessibility bus address: org.freedesktop.DBus.Error.ServiceUnknown: The name org.a11y.Bus was not provided by any .service files\n"
+        },
+        {
+          "binary_sha256": "4d9e85d183f5fbd11d06e90afe51d027aaba2ae7b35bcadf7f7b79f86e4eb50e",
+          "exit_code": 0,
+          "stdout": "LINTRA_DESKTOP_READY\n",
+          "stderr": "[1115/203346.643:ERROR:ui\\gfx\\win\\window_impl.cc:172] Failed to unregister class Chrome_WidgetWin_0. Error = 1412\n"
+        }
+      ],
+      "log": {
+        "path": "docs/verification/unified-post-m9/T-MIG-P3-06-desktop-ci.log.gz",
+        "sha256": "33dd67b23f911f4c301fa098edc39a01b54a5ae08715f26fc13ff5c91ae4e7d0"
+      }
+    },
+    "official_core_slint": {
+      "conclusion": "",
+      "headSha": "ce344d425c9046e10e6e54c61679b53c15dbc0a9",
+      "jobs": [
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "databaseId": 132948015616,
+          "name": "Verify (x86_64-unknown-linux-gnu)",
+          "startedAt": "2026-11-15T20:31:47Z",
+          "status": "in_progress",
+          "steps": [
+            {
+              "completedAt": "2026-11-15T20:31:50Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-11-15T20:31:48Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:31:56Z",
+              "conclusion": "success",
+              "name": "Check out source",
+              "number": 2,
+              "startedAt": "2026-11-15T20:31:50Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:31:56Z",
+              "conclusion": "skipped",
+              "name": "Prepare controlled Windows test deployment",
+              "number": 3,
+              "startedAt": "2026-11-15T20:31:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:31:56Z",
+              "conclusion": "skipped",
+              "name": "Prepare synthetic loopback SMB export destinations",
+              "number": 4,
+              "startedAt": "2026-11-15T20:31:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:31:56Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+              "number": 5,
+              "startedAt": "2026-11-15T20:31:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:31:58Z",
+              "conclusion": "success",
+              "name": "Test release tooling without credentials",
+              "number": 6,
+              "startedAt": "2026-11-15T20:31:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:41Z",
+              "conclusion": "success",
+              "name": "Install Linux desktop build prerequisite",
+              "number": 7,
+              "startedAt": "2026-11-15T20:31:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:51Z",
+              "conclusion": "success",
+              "name": "Install pinned Rust toolchain",
+              "number": 8,
+              "startedAt": "2026-11-15T20:32:41Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:51Z",
+              "conclusion": "success",
+              "name": "Install native target",
+              "number": 9,
+              "startedAt": "2026-11-15T20:32:51Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:52Z",
+              "conclusion": "success",
+              "name": "Check formatting",
+              "number": 10,
+              "startedAt": "2026-11-15T20:32:51Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:34:09Z",
+              "conclusion": "success",
+              "name": "Clippy",
+              "number": 11,
+              "startedAt": "2026-11-15T20:32:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:37:49Z",
+              "conclusion": "success",
+              "name": "Test",
+              "number": 12,
+              "startedAt": "2026-11-15T20:34:09Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:37:59Z",
+              "conclusion": "success",
+              "name": "Clippy all features",
+              "number": 13,
+              "startedAt": "2026-11-15T20:37:49Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Test all features",
+              "number": 14,
+              "startedAt": "2026-11-15T20:37:59Z",
+              "status": "in_progress"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Qualify actual Windows shared export consent and canonical files",
+              "number": 15,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Qualify actual Linux directory-sync failure after publication",
+              "number": 16,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Remove only this job's synthetic SMB fixture",
+              "number": 17,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Test core without embedded bundle",
+              "number": 18,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Verify workspace and core dependency boundary",
+              "number": 19,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Verify actual build rejects missing embedded font",
+              "number": 20,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload native desktop pixels",
+              "number": 21,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload production visual regression pixels",
+              "number": 22,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload desktop captures and contrast evidence",
+              "number": 23,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Smoke synthetic benchmark and verify expected validation counts",
+              "number": 24,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Smoke the real SQLite adapter with indexed lookups and process restart",
+              "number": 25,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Qualify synthetic five-trace memory and SQLite profiles",
+              "number": 26,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload synthetic persistence profile measurements",
+              "number": 27,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Export a closed synthetic SQLite database for the opposite OS",
+              "number": 28,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload the synthetic database and transport manifest",
+              "number": 29,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Check tooling formatting",
+              "number": 30,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Clippy tooling",
+              "number": 31,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Test tooling and extracted data bundle",
+              "number": 32,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Build reproducible release and verify artifact",
+              "number": 33,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Execute README quickstart in native shell from a fresh install",
+              "number": 34,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload native README acceptance evidence",
+              "number": 35,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Package synthetic data for native bundle probe",
+              "number": 36,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Exercise native release and executable-relative bundle resolution",
+              "number": 37,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload raw JSONL from native runner",
+              "number": 38,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+              "number": 75,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Post Check out source",
+              "number": 76,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            }
+          ],
+          "url": "https://github.com/UraganoAngelina/lintra/actions/runs/43758531087/job/132948015616"
+        },
+        {
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "databaseId": 132948015948,
+          "name": "Verify (x86_64-pc-windows-msvc)",
+          "startedAt": "2026-11-15T20:31:47Z",
+          "status": "in_progress",
+          "steps": [
+            {
+              "completedAt": "2026-11-15T20:31:49Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-11-15T20:31:48Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:00Z",
+              "conclusion": "success",
+              "name": "Check out source",
+              "number": 2,
+              "startedAt": "2026-11-15T20:31:49Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:01Z",
+              "conclusion": "success",
+              "name": "Prepare controlled Windows test deployment",
+              "number": 3,
+              "startedAt": "2026-11-15T20:32:00Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:04Z",
+              "conclusion": "success",
+              "name": "Prepare synthetic loopback SMB export destinations",
+              "number": 4,
+              "startedAt": "2026-11-15T20:32:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:04Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+              "number": 5,
+              "startedAt": "2026-11-15T20:32:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:27Z",
+              "conclusion": "success",
+              "name": "Test release tooling without credentials",
+              "number": 6,
+              "startedAt": "2026-11-15T20:32:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:27Z",
+              "conclusion": "skipped",
+              "name": "Install Linux desktop build prerequisite",
+              "number": 7,
+              "startedAt": "2026-11-15T20:32:27Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:42Z",
+              "conclusion": "success",
+              "name": "Install pinned Rust toolchain",
+              "number": 8,
+              "startedAt": "2026-11-15T20:32:27Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:43Z",
+              "conclusion": "success",
+              "name": "Install native target",
+              "number": 9,
+              "startedAt": "2026-11-15T20:32:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:32:45Z",
+              "conclusion": "success",
+              "name": "Check formatting",
+              "number": 10,
+              "startedAt": "2026-11-15T20:32:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-11-15T20:35:43Z",
+              "conclusion": "success",
+              "name": "Clippy",
+              "number": 11,
+              "startedAt": "2026-11-15T20:32:45Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Test",
+              "number": 12,
+              "startedAt": "2026-11-15T20:35:43Z",
+              "status": "in_progress"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Clippy all features",
+              "number": 13,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Test all features",
+              "number": 14,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Qualify actual Windows shared export consent and canonical files",
+              "number": 15,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Qualify actual Linux directory-sync failure after publication",
+              "number": 16,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Remove only this job's synthetic SMB fixture",
+              "number": 17,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Test core without embedded bundle",
+              "number": 18,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Verify workspace and core dependency boundary",
+              "number": 19,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Verify actual build rejects missing embedded font",
+              "number": 20,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload native desktop pixels",
+              "number": 21,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload production visual regression pixels",
+              "number": 22,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload desktop captures and contrast evidence",
+              "number": 23,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Smoke synthetic benchmark and verify expected validation counts",
+              "number": 24,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Smoke the real SQLite adapter with indexed lookups and process restart",
+              "number": 25,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Qualify synthetic five-trace memory and SQLite profiles",
+              "number": 26,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload synthetic persistence profile measurements",
+              "number": 27,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Export a closed synthetic SQLite database for the opposite OS",
+              "number": 28,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload the synthetic database and transport manifest",
+              "number": 29,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Check tooling formatting",
+              "number": 30,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Clippy tooling",
+              "number": 31,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Test tooling and extracted data bundle",
+              "number": 32,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Build reproducible release and verify artifact",
+              "number": 33,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Execute README quickstart in native shell from a fresh install",
+              "number": 34,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload native README acceptance evidence",
+              "number": 35,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Package synthetic data for native bundle probe",
+              "number": 36,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Exercise native release and executable-relative bundle resolution",
+              "number": 37,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Upload raw JSONL from native runner",
+              "number": 38,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+              "number": 75,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            },
+            {
+              "completedAt": "0001-01-01T00:00:00Z",
+              "conclusion": "",
+              "name": "Post Check out source",
+              "number": 76,
+              "startedAt": "0001-01-01T00:00:00Z",
+              "status": "pending"
+            }
+          ],
+          "url": "https://github.com/UraganoAngelina/lintra/actions/runs/43758531087/job/132948015948"
+        },
+        {
+          "completedAt": "2026-11-15T20:31:45Z",
+          "conclusion": "skipped",
+          "databaseId": 132948016514,
+          "name": "Qualify UI archives",
+          "startedAt": "2026-11-15T20:31:45Z",
+          "status": "completed",
+          "steps": [],
+          "url": "https://github.com/UraganoAngelina/lintra/actions/runs/43758531087/job/132948016514"
+        }
+      ],
+      "status": "in_progress",
+      "url": "https://github.com/UraganoAngelina/lintra/actions/runs/43758531087",
+      "run_id": 43758531087
+    }
+  },
   "not_claimed": [
-    "Native Windows smoke on new source",
-    "CI Linux/Windows on new source",
     "P4 application services",
     "G-MIG-3 PASS",
-    "VM/installer/release qualification"
+    "VM/installer/release qualification",
+    "PASS of pending official core/Slint CI43758531087"
   ],
   "first_ci": {
     "desktop": {
@@ -110,12 +1100,24 @@
       "head_sha": "f482918a036372ba6d3d29fc4d3970e75c165a24",
       "windows_job": 132945581958,
       "windows_result": "FAIL: asset OFL copy converted to CRLF; 15/16 Node cases passed, native Rust steps skipped",
-      "linux_status": "IN_PROGRESS"
+      "linux_status": "SUCCESS: lint, 16 Node tests, 11 Rust tests, Clippy, release and X11 native smoke"
     },
     "legacy": {
       "run_id": 43757791728,
       "head_sha": "f482918a036372ba6d3d29fc4d3970e75c165a24",
-      "status": "IN_PROGRESS"
+      "status": "CANCELLED automatically by existing workflow concurrency when ce344d4 CI was dispatched; no manual cancel executed"
     }
+  },
+  "checked_utc": "2026-11-15T20:39:02.577011+00:00",
+  "qualified_source": "ce344d425c9046e10e6e54c61679b53c15dbc0a9",
+  "handoff": {
+    "state": "WAITING_GATE",
+    "gate": "G-MIG-3 NOT_VERIFIED",
+    "independent_ready_tasks": [],
+    "next_task": "T-MIG-P4-01 after P3-06/G-MIG-3 PASS",
+    "global_done": 52,
+    "global_total": 128,
+    "local_processes": "All owned native test/capture and Cargo processes completed and joined",
+    "vm_used": false
   }
 }
