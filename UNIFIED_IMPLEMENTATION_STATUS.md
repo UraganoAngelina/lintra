@@ -89,7 +89,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P2-09 | T-MIG-P2-03, T-MIG-P2-04, T-MIG-P2-05, T-MIG-P2-06, T-MIG-P2-07, T-MIG-P2-08 | DONE | [Parity/fixture](docs/verification/unified-post-m9/T-MIG-P2-09.md) |14scenari/64file con SHA e attesi indipendenti; comparatore/negativi PASS, native parity NOT_RUN | Gate design; G-MIG-2 NOT_VERIFIED |
 | T-MIG-P2-10 | T-MIG-P2-01, T-MIG-P2-02, T-MIG-P2-03, T-MIG-P2-04, T-MIG-P2-05, T-MIG-P2-06, T-MIG-P2-07, T-MIG-P2-08, T-MIG-P2-09, T-MIG-P2-11 | DONE | [Ratifica gate](docs/verification/unified-post-m9/T-MIG-P2-10.md) | Approvazione esplicita autore15/11 del pacchetto45fce38; prerequisiti verificati | G-MIG-2 APPROVED design; ingresso P3 autorizzato |
 | T-MIG-P2-11 | T-MIG-P2-03, T-MIG-P2-05, T-MIG-P2-08 | DONE | [Full ratificato](docs/verification/unified-post-m9/T-MIG-P2-11.md) | DTO/ownership e18casi verificati; ratifica autore15/11 in G-MIG-2 | Acceptance design PASS; integrazione nativa ai task previsti |
-| T-MIG-P3-01 | T-MIG-P2-10 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-01.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
+| T-MIG-P3-01 | T-MIG-P2-10 | IN_PROGRESS | [Scaffold Rust/React](docs/verification/unified-post-m9/T-MIG-P3-01.md) | c8ad22e: build release Linux,2test Rust,TS strict/Vite PASS; CI Windows43731922567 in corso | Windows CI pendente; G-MIG-3 NOT_VERIFIED |
 | T-MIG-P3-02 | T-MIG-P3-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-02.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
 | T-MIG-P3-03 | T-MIG-P3-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-03.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
 | T-MIG-P3-04 | T-MIG-P3-01, T-MIG-P3-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P3-04.md) | —; Non eseguite | G-MIG-3 NOT_VERIFIED |
@@ -317,3 +317,11 @@ avanzamento dopo ratifica complessiva: chiudere P2-11/P2-10, avviare P3.
 15 novembre2026: autore approva esplicitamente **G-MIG-2 e avvioP3** sul
 pacchetto45fce38. P2-11/P2-10 DONE,47/128 (36,7%); avviataP3-01 scaffold
 affiancato. Nessuna ripetizione CI/VM o reference Python per la sola ratifica.
+
+
+P3-01 implementata su c8ad22e:4file Rust nel nuovo adapter, manifest/lock
+separati e core/CLI/Slint invariati. Build release Linux e2test Rust mirati
+PASS, frontend strict PASS. CI Windows43731922567 in corso; task non DONE.
+Corretto separatamente il comando YAML inline del workflow diagnostico
+SQLite (persistence::), senza cambiare il comando di test o il suo trigger
+manuale. La failure43731921269 non ha eseguito job/test SQLite.

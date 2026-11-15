@@ -38,7 +38,14 @@
     ],
     "git_diff_exit_code": 0
   },
-  "windows_CI": "PENDING; not qualified yet",
+  "windows_CI": {
+    "run": 43731922567,
+    "source_sha": "c8ad22ecc5b4213e7ad6547dcd307e6744acf63c",
+    "status": "in_progress",
+    "last_observed_step": "Check native Rust boundaries",
+    "frontend_windows": "PASS",
+    "native_result": "PENDING"
+  },
   "native_GUI_smoke": "NOT_RUN; P3-04/06 checkpoint",
   "sha256": {
     "apps/lintra-desktop/package.json": "7434a39d787eeeb5be976fe38f5f7a73894f9aab8ba2ee060b69979e13e66cdf",
