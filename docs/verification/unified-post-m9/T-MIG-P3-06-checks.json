@@ -96,7 +96,7 @@
     "apps/lintra-desktop/tsconfig.json": "06bb5b9fe7eacdac2fe16e94dc5fe1ac6387d1842132fcc2f5dc1a910633138a",
     ".github/workflows/desktop.yml": "a2a91cf7c9377ad257eeb31894672590ca65db7715f7e4bbee2780d9751a2e44"
   },
-  "ci": "NOT_STARTED",
+  "ci": "WAITING_FINAL_CHECKOUT_SHA",
   "not_claimed": [
     "Native Windows smoke on new source",
     "CI Linux/Windows on new source",

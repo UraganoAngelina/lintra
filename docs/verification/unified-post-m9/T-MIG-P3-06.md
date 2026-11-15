@@ -42,3 +42,6 @@ in corso. La correzione dei soli attributi checkout è verificata localmente
 con `core.autocrlf=true`; nessun DTO/decoder/guard o expected è cambiato.
 La CI ufficiale43757791728 è partita su f482918: non qualifica automaticamente
 il checkout corretto. Il gate richiede gli esiti pertinenti del nuovo SHA.
+
+Il filtro path del workflow desktop include ora `.gitattributes`: una modifica
+alla preservazione dei byte deve attivare le stesse prove dell'adapter.

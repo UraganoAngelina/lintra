@@ -6,6 +6,7 @@ on:
     paths:
       - apps/lintra-desktop/**
       - .github/workflows/desktop.yml
+      - .gitattributes
   workflow_dispatch:
 
 permissions:
