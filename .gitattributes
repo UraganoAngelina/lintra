@@ -23,6 +23,12 @@ spikes/ui-prototype/ui/fonts/*.ttf -text
 ui/ui/fonts/OFL.md text eol=lf
 ui/licenses/SLINT-ROYALTY-FREE-2.0.md text eol=lf
 
+# Desktop asset provenance hashes refer to these exact Git bytes on both OSes.
+apps/lintra-desktop/public/fonts/OFL.md text eol=lf
+ui/ui/tokens.slint text eol=lf
+docs/ui-design-documentation/MIGRATION_TAURI_BRIEF.md text eol=lf
+docs/ui-design-documentation/LINTRA_OFFICIAL_BRAND.md text eol=lf
+
 # Approved CAD source datasets and hashed membership assets retain exact bytes.
 schemas/cad/components/2024-06.clinical-lookups.1/source/** -text
 schemas/cad/components/2024-06.clinical-lookups.1/data/** -text

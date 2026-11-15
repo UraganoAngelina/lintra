@@ -29,7 +29,12 @@
       "exit_code": 0,
       "findings": []
     },
-    "legacy_workspace_tests": "IN_PROGRESS"
+    "legacy_workspace_tests": "IN_PROGRESS",
+    "autocrlf_checkout": {
+      "exit_code": 0,
+      "provenance_files": 11,
+      "scope": "git checkout-index under core.autocrlf=true; compare copies and hashes with no test normalization"
+    }
   },
   "effective_acl": {
     "passed": true,
@@ -98,5 +103,19 @@
     "P4 application services",
     "G-MIG-3 PASS",
     "VM/installer/release qualification"
-  ]
+  ],
+  "first_ci": {
+    "desktop": {
+      "run_id": 43757790267,
+      "head_sha": "f482918a036372ba6d3d29fc4d3970e75c165a24",
+      "windows_job": 132945581958,
+      "windows_result": "FAIL: asset OFL copy converted to CRLF; 15/16 Node cases passed, native Rust steps skipped",
+      "linux_status": "IN_PROGRESS"
+    },
+    "legacy": {
+      "run_id": 43757791728,
+      "head_sha": "f482918a036372ba6d3d29fc4d3970e75c165a24",
+      "status": "IN_PROGRESS"
+    }
+  }
 }

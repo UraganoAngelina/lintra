@@ -34,3 +34,11 @@ servizio normativo, storia, SQLite/CAS o chiave HMAC entra nel renderer.
 
 G-MIG-4..9 e G-REL restano aperti. P4-01 richiede G-MIG-3 effettivo: nessun
 adapter applicativo anticipato. Niente VM o nuova qualifica installer in P3.
+
+Prima pubblicazione runtime f482918; CI desktop43757790267: frontend Windows
+15/16 PASS, fallimento asset CRLF, non fallimento del wire. Log originale
+conservato in `T-MIG-P3-06-windows-first.log.gz`. Linux dello stesso run ancora
+in corso. La correzione dei soli attributi checkout è verificata localmente
+con `core.autocrlf=true`; nessun DTO/decoder/guard o expected è cambiato.
+La CI ufficiale43757791728 è partita su f482918: non qualifica automaticamente
+il checkout corretto. Il gate richiede gli esiti pertinenti del nuovo SHA.

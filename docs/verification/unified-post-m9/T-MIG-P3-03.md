@@ -32,3 +32,12 @@ di prodotto/icone restano da preparare nelle task UI e packaging pertinenti.
 Questa prova non qualifica tutti i viewport, scale o il tema chiaro nativo.
 Controllo meccanico Impeccable sul delta: nessun rilievo; nessun hook aggiunto.
 Segue P3-06 per le verifiche aggregate obbligatorie, senza cicli VM.
+
+Prima CI Windows su f482918: test asset FAIL perché autocrlf trasformava in
+CRLF la copia della licenza OFL; i 14 test IPC e il controllo CSS PASS. Nessun
+Rust eseguito da quel job. Correzione circoscritta `.gitattributes`: LF esplicito
+per la copia OFL e per le tre fonti testuali citate con hash. Le sorgenti
+mantengono così i byte Git canonici, come già previsto per la licenza Slint.
+Checkout temporaneo con `core.autocrlf=true`: tutte le 11 risorse di provenienza
+confrontate byte per byte/hash PASS. Nessuna normalizzazione nel test o soglia
+indebolita; CI Windows del checkout corretto ancora da completare in P3-06.
