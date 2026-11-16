@@ -2,6 +2,7 @@
 
 mod configuration;
 mod ipc;
+mod jobs;
 mod native_picker;
 mod security;
 mod state;

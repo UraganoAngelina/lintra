@@ -36,7 +36,7 @@ pub(crate) enum ConfigurationRequest {
     },
 }
 
-fn fields(payload: &Map<String, Value>, names: &[&str]) -> Result<(), ErrorCode> {
+pub(crate) fn fields(payload: &Map<String, Value>, names: &[&str]) -> Result<(), ErrorCode> {
     if payload.len() == names.len() + 1 && names.iter().all(|name| payload.contains_key(*name)) {
         Ok(())
     } else {
@@ -44,7 +44,7 @@ fn fields(payload: &Map<String, Value>, names: &[&str]) -> Result<(), ErrorCode>
     }
 }
 
-fn handle(payload: &Map<String, Value>, key: &str) -> Result<String, ErrorCode> {
+pub(crate) fn handle(payload: &Map<String, Value>, key: &str) -> Result<String, ErrorCode> {
     payload
         .get(key)
         .and_then(Value::as_str)
@@ -820,9 +820,43 @@ pub(crate) struct Configuration {
     selected: Option<SelectedConfiguration>,
     plan_number: u64,
     plan: Option<DraftPlan>,
+    jobs: crate::jobs::Jobs,
 }
 
 impl Configuration {
+    pub(crate) fn cancel_on_close(&self) {
+        self.jobs.cancel_on_close();
+    }
+
+    pub(crate) fn job(
+        &mut self,
+        request: crate::jobs::JobRequest,
+        request_id: &str,
+    ) -> Result<Vec<u8>, ErrorCode> {
+        match request {
+            crate::jobs::JobRequest::Start { plan, mode } => {
+                let intent = self
+                    .plan
+                    .as_ref()
+                    .filter(|p| p.reference == plan)
+                    .and_then(|p| p.prepared.clone())
+                    .ok_or(ErrorCode::StaleContext)?;
+                // Full execution is integrated in P4-11, never silently downgraded.
+                if mode != ValidationMode::LocalOnly || intent.request.mode != mode {
+                    return Err(ErrorCode::InvalidState);
+                }
+                self.jobs.start(
+                    &self.instance,
+                    request_id,
+                    plan,
+                    intent,
+                    self.bundle.references(),
+                )
+            }
+            request => self.jobs.dispatch(request, request_id),
+        }
+    }
+
     pub(crate) fn resolve() -> Result<Self, ErrorCode> {
         let executable = std::env::current_exe().map_err(|_| ErrorCode::TechnicalFailure)?;
         let bundle = AnalysisBundle::resolve(
@@ -845,6 +879,7 @@ impl Configuration {
             selected: None,
             plan_number: 0,
             plan: None,
+            jobs: crate::jobs::Jobs::default(),
         })
     }
 

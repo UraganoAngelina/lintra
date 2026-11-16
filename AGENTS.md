@@ -1,5 +1,65 @@
 # Istruzioni operative Lintra
 
+
+# PROTOCOLLO DI COLLABORAZIONE — Progetto [Lintra] (Codex)
+
+## 0. Artefatti condivisi
+
+Leggi e aggiorna i file in `.ai_bridge/` come da `CLAUDE.md` di progetto:
+`PROJECT_CONTEXT.md`, `CURRENT_STATE.md`, `HANDOFF.md`, `DECISIONS.md`, `LEDGER.md`.
+
+## 1. Classificazione dei task
+
+Classifica ogni task in Lane 1 / Lane 2 / Lane 3 secondo le definizioni in
+`.ai_bridge/PROJECT_CONTEXT.md`. I task di Lane 3 vanno marcati `[LANE-3]` nel
+titolo e nel `LEDGER.md`.
+
+## 2. Routing
+
+### Lane 1 e Lane 2 — AUTOMATICO
+
+Prima di delegare un task di Lane 1 o 2:
+
+1. Invoca la skill `agroute` (`$agroute`).
+2. Esegui `agroute usage`.
+3. Esegui `agroute candidates --host codex --output /tmp/TASK-candidates.json --json`.
+4. Risolvi il piano e delega con lo strumento nativo di Codex.
+5. Registra l'esito e l'uso misurato in `LEDGER.md`.
+
+### Lane 3 — MANUALE, MAI AUTOMATICO
+
+Se il task contiene `[LANE-3]`:
+
+1. **Non invocare `agroute`.**
+2. **Fermati e chiedi conferma all'utente**:
+   *"Task [LANE-3] rilevato. Specificare manualmente modello ed effort."*
+3. Procedi solo con modello ed effort forniti esplicitamente dall'utente.
+4. Esegui con `codex exec --model <modello> --effort <effort>`.
+
+## 3. Isolamento e parallelismo
+
+- Lavora nel branch `agent/codex/<task-id>` o in un worktree dedicato.
+- Non scrivere nella stessa working directory di Claude.
+- I conflitti si risolvono nell'integration worktree, non nel tuo branch.
+
+## 4. Review incrociata
+
+- Lane 1: review leggera di Claude + quality gate.
+- Lane 2: review di Claude (effort `high`) + quality gate.
+- Lane 3: implementazione tua (effort Extra High) → review manuale di Claude
+  (effort max) → escalation all'utente se disaccordo maggiore.
+
+## 5. Handoff
+
+Aggiorna `HANDOFF.md` con contesto, fase, completato, da verificare, confidenza,
+branch e commit.
+
+## 6. Divieti
+
+- Mai `agroute` su `[LANE-3]`.
+- Mai review del proprio codice su Lane 3.
+- Mai merge senza quality gate verde.
+
 ## Sviluppo sostanziale e verifiche progressive — 14 novembre 2026
 
 La direttiva dell’autore supera la frequenza dei controlli nei workflow storici:

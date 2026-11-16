@@ -23,6 +23,9 @@ type RequestPayloads = {
   plan_input_choose: { schemaVersion: 1; plan_ref: string; trace_ref: string };
   plan_parameter_set: { schemaVersion: 1; plan_ref: string; parameter_ref: string; value: { schemaVersion: 1; kind: "text" | "integer"; text: string } };
   plan_prepare: { schemaVersion: 1; plan_ref: string };
+  validation_start: { schemaVersion: 1; plan_ref: string; mode: "local_only" | "full" };
+  validation_state: { schemaVersion: 1; run: RunRef | null };
+  validation_acknowledge: { schemaVersion: 1; run: RunRef };
 };
 type Operation = keyof RequestPayloads;
 type ObjectDto = Record<string, unknown>;
@@ -132,7 +135,7 @@ export function decodeReply(raw: unknown, requestId: string): ObjectDto {
 
 export function encodeRequest<K extends Operation>(operation: K, requestId: string, payload: RequestPayloads[K]): Uint8Array {
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(requestId)
-      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare"].includes(operation)) invalid();
+      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge"].includes(operation)) invalid();
   const bytes = new TextEncoder().encode(JSON.stringify({
     schemaVersion: 1, request_id: requestId, kind: "request", operation,
     payload,
@@ -319,6 +322,76 @@ export async function planPrepare(planRef: string): Promise<PreparedPlan> {
   if (!/^[0-9a-f]{64}$/.test(hash)) invalid();
   return { schemaVersion: 1, plan_ref: planRef, mode: dto.mode, ready: true, schema_hash: hash,
     input_count: unsigned(dto.input_count), parameter_count: unsigned(dto.parameter_count), provenance: provenance(dto.provenance) };
+}
+
+export type RunRef = { schemaVersion: 1; instance_id: string; run_id: string };
+export type RunOutcome =
+  | { schemaVersion: 1; kind: "validation"; status: "completed_valid" | "completed_invalid" | "cancelled"; completeness: "complete" | "partial"; truncated: boolean; report_available: boolean }
+  | { schemaVersion: 1; kind: "technical_failure"; error: { schemaVersion: 1; category: "technical"; code: "IPC_TECHNICAL_FAILURE" } }
+  | { schemaVersion: 1; kind: "not_started"; reason: "cancelled" };
+export type RunSnapshot =
+  | { schemaVersion: 1; state: "idle"; run: null; outcome: null }
+  | { schemaVersion: 1; state: "preparing" | "running" | "cancelling" | "finalizing" | "terminal"; run: RunRef; plan_ref: string; mode: "local_only" | "full"; cancel_requested: boolean; outcome: RunOutcome | null };
+
+function readRun(value: unknown): RunRef {
+  const dto = object(value);
+  version(dto); exact(dto, ["schemaVersion", "instance_id", "run_id"]);
+  if (typeof dto.instance_id !== "string" || !/^[0-9a-f]{32}$/.test(dto.instance_id) || unsigned(dto.run_id) === "0") invalid();
+  return { schemaVersion: 1, instance_id: dto.instance_id, run_id: unsigned(dto.run_id) };
+}
+function sameRun(left: RunRef, right: RunRef): boolean {
+  return left.instance_id === right.instance_id && left.run_id === right.run_id;
+}
+function readOutcome(value: unknown): RunOutcome {
+  const dto = object(value);
+  version(dto);
+  if (dto.kind === "not_started") {
+    exact(dto, ["schemaVersion", "kind", "reason"]);
+    if (dto.reason !== "cancelled") invalid();
+    return { schemaVersion: 1, kind: "not_started", reason: "cancelled" };
+  }
+  if (dto.kind === "technical_failure") {
+    exact(dto, ["schemaVersion", "kind", "error"]);
+    const error = object(dto.error); version(error); exact(error, ["schemaVersion", "category", "code"]);
+    if (error.category !== "technical" || error.code !== "IPC_TECHNICAL_FAILURE") invalid();
+    return { schemaVersion: 1, kind: "technical_failure", error: { schemaVersion: 1, category: "technical", code: "IPC_TECHNICAL_FAILURE" } };
+  }
+  exact(dto, ["schemaVersion", "kind", "status", "completeness", "truncated", "report_available"]);
+  if (dto.kind !== "validation" || !["completed_valid", "completed_invalid", "cancelled"].includes(String(dto.status))
+      || (dto.completeness !== "complete" && dto.completeness !== "partial") || typeof dto.truncated !== "boolean" || typeof dto.report_available !== "boolean") invalid();
+  const partial = dto.status === "cancelled" || dto.truncated;
+  if ((partial && dto.completeness !== "partial") || dto.report_available === partial) invalid();
+  return { schemaVersion: 1, kind: "validation", status: dto.status as "completed_valid" | "completed_invalid" | "cancelled", completeness: dto.completeness, truncated: dto.truncated, report_available: dto.report_available };
+}
+export async function validationStart(planRef: string, mode: "local_only" | "full"): Promise<RunRef> {
+  opaque(planRef);
+  if (mode !== "local_only" && mode !== "full") invalid();
+  return readRun(await exchange("validation_start", { schemaVersion: 1, plan_ref: planRef, mode }));
+}
+export async function validationState(run: RunRef | null = null): Promise<RunSnapshot> {
+  if (run !== null) readRun(run);
+  const dto = await exchange("validation_state", { schemaVersion: 1, run });
+  if (dto.state === "idle") {
+    exact(dto, ["schemaVersion", "state", "run", "outcome"]);
+    if (run !== null || dto.run !== null || dto.outcome !== null) invalid();
+    return { schemaVersion: 1, state: "idle", run: null, outcome: null };
+  }
+  exact(dto, ["schemaVersion", "state", "run", "plan_ref", "mode", "cancel_requested", "outcome"]);
+  const current = readRun(dto.run);
+  if (run !== null && !sameRun(run, current)) invalid();
+  if (!(["preparing", "running", "cancelling", "finalizing", "terminal"] as unknown[]).includes(dto.state)
+      || (dto.mode !== "local_only" && dto.mode !== "full") || typeof dto.cancel_requested !== "boolean") invalid();
+  if ((dto.state === "terminal") !== (dto.outcome !== null)) invalid();
+  const outcome = dto.outcome === null ? null : readOutcome(dto.outcome);
+  if (outcome?.kind === "not_started" && !dto.cancel_requested) invalid();
+  return { schemaVersion: 1, state: dto.state as Exclude<RunSnapshot["state"], "idle">, run: current,
+    plan_ref: opaque(dto.plan_ref), mode: dto.mode, cancel_requested: dto.cancel_requested, outcome };
+}
+export async function validationAcknowledge(run: RunRef): Promise<void> {
+  readRun(run);
+  const dto = await exchange("validation_acknowledge", { schemaVersion: 1, run });
+  exact(dto, ["schemaVersion", "run", "acknowledged"]);
+  if (!sameRun(run, readRun(dto.run)) || dto.acknowledged !== true) invalid();
 }
 
 export function errorText(error: unknown): string {

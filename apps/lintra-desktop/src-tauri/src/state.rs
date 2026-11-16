@@ -43,6 +43,11 @@ impl AppState {
 
     pub(crate) fn close(&self) {
         self.closed.store(true, Ordering::Release);
+        if let Ok(permit) = self.gate.try_lock()
+            && let Some(configuration) = permit.as_ref()
+        {
+            configuration.cancel_on_close();
+        }
     }
     pub(crate) fn closed(&self) -> bool {
         self.closed.load(Ordering::Acquire)
@@ -81,6 +86,25 @@ impl AppState {
             Err(code) => return ipc::error(None, code),
         };
         let id = &request.request_id;
+        if matches!(
+            request.operation.as_str(),
+            "validation_start" | "validation_state" | "validation_acknowledge"
+        ) {
+            let command =
+                match crate::jobs::JobRequest::decode(&request.operation, &request.payload) {
+                    Ok(command) => command,
+                    Err(code) => return ipc::error(Some(id), code),
+                };
+            if !self.info_sent.load(Ordering::Acquire) {
+                return ipc::error(Some(id), ErrorCode::InvalidState);
+            }
+            return match permit.as_mut() {
+                Some(configuration) => configuration
+                    .job(command, id)
+                    .unwrap_or_else(|code| ipc::error(Some(id), code)),
+                None => ipc::error(Some(id), ErrorCode::InvalidState),
+            };
+        }
         if matches!(
             request.operation.as_str(),
             "catalog_page"
