@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **56/128 DONE;72 rimanenti** (18U-* e54MIG).
+Conteggio unificato: **59/128 DONE;69 rimanenti** (18U-* e51MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -99,9 +99,9 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P4-01 | T-MIG-P3-06 | DONE | [Catalogo e selezione](docs/verification/unified-post-m9/T-MIG-P4-01.md) | 16 Rust/20 Node/8 regressioni configurazione Slint PASS locali; versioni registry già qualificate; CI nativa al blocco | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-02 | T-MIG-P4-01 | DONE | [Broker file e preflight](docs/verification/unified-post-m9/T-MIG-P4-02.md) | 19 Rust/22 Node/8 regressioni Slint PASS locali; vero dialogo GTK sintetico PASS; Windows al blocco | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-03 | T-MIG-P4-01, T-MIG-P4-02 | DONE | [Preparazione immutabile](docs/verification/unified-post-m9/T-MIG-P4-03.md) | 23 Rust/24 Node/8 Slint PASS locali; GTK selezione/teardown PASS; MSVC al checkpoint blocco | G-MIG-4 NOT_VERIFIED |
-| T-MIG-P4-04 | T-MIG-P4-03 | WAITING_GATE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-04.md) | 32 Rust/28 Node/25 regressioni PASS; lint/build/Clippy/smoke nativo PASS; CI del blocco pendente | G-MIG-4 NOT_VERIFIED |
-| T-MIG-P4-05 | T-MIG-P4-04 | WAITING_GATE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-05.md) | 32 Rust/28 Node/25 regressioni PASS; lint/build/Clippy/smoke nativo PASS; CI del blocco pendente | G-MIG-4 NOT_VERIFIED |
-| T-MIG-P4-06 | T-MIG-P4-04, T-MIG-P4-05 | WAITING_GATE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-06.md) | 32 Rust/28 Node/25 regressioni PASS; lint/build/Clippy/smoke nativo PASS; CI del blocco pendente | G-MIG-4 NOT_VERIFIED |
+| T-MIG-P4-04 | T-MIG-P4-03 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-04.md) | 5e3acdb;32 Rust/28 Node/25 regressioni locali PASS;CI44065663299 SUCCESS Linux/Windows,build e smoke nativi PASS | Acceptance adapter PASS; G-MIG-4 aggregato resta aperto |
+| T-MIG-P4-05 | T-MIG-P4-04 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-05.md) | 5e3acdb;32 Rust/28 Node/25 regressioni locali PASS;CI44065663299 SUCCESS Linux/Windows,build e smoke nativi PASS | Acceptance adapter PASS; G-MIG-4 aggregato resta aperto |
+| T-MIG-P4-06 | T-MIG-P4-04, T-MIG-P4-05 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-06.md) | 5e3acdb;32 Rust/28 Node/25 regressioni locali PASS;CI44065663299 SUCCESS Linux/Windows,build e smoke nativi PASS | Acceptance adapter PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P4-07 | T-MIG-P4-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-07.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-08 | T-MIG-P4-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-08.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-09 | T-MIG-P4-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-09.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
@@ -383,3 +383,12 @@ Parità byte degli input runtime verificata rispetto alla build locale; incluse
 le due correzioni native preesistenti di d78e8d0. Autorizzazione autore al
 push del blocco e completamento CI; repository pubblico di UraganoAngelina
 verificato in sola lettura. Hook e configurazioni preservati.
+
+Chiusura blocco P4-04/05/06, 17 novembre 2026: **DONE**, **59/128 (46,1%)**,
+69 rimanenti. Runtime5e3acdb, CI44065663299 **SUCCESS** per entrambi i job
+Linux/Windows e i singoli step nativi Rust/TS/build/smoke. Parità completa
+degli input runtime con il commit locale f6318d6 verificata; il commit di
+chiusura aggiunge soltanto evidenze/status, senza duplicare CI. G-MIG-4 e
+G-REL restano aperti; UI prodotto e Full appartengono ai blocchi successivi.
+**STOP richiesto dall'autore dopo commit/push e CI: nessuna nuova task.**
+Prossime tecnicamente disponibili P4-07 e P4-11, da riprendere solo su mandato.

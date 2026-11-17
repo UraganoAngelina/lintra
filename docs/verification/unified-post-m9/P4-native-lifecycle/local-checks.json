@@ -79,12 +79,24 @@
     "remaining_findings": []
   },
   "ci": {
-    "status": "PENDING",
+    "status": "SUCCESS",
     "workflow": "desktop.yml",
-    "source_commit": "resolve with git log of this receipt"
+    "run_id": 44065663299,
+    "source_commit": "5e3acdb87301439da55ff0a48036807c3f815fb9",
+    "url": "https://github.com/UraganoAngelina/lintra/actions/runs/44065663299",
+    "jobs": [
+      {
+        "name": "Linux desktop build and X11 smoke (not CachyOS qualification)",
+        "conclusion": "success"
+      },
+      {
+        "name": "Windows desktop build (not Windows 11 qualification)",
+        "conclusion": "success"
+      }
+    ],
+    "evidence_sha256": "7dbf2788a33035a4d2e75ad3149321d5fbc66b574026ac6389b0bf40e2b72344"
   },
   "not_checked": [
-    "Windows native CI pending",
     "Full execution P4-11",
     "results paging P4-07/08/09",
     "P5 product views",
@@ -105,5 +117,6 @@
     "original_local_commit": "f6318d60bab382b4a5a8c86f14feb58d45865755",
     "reason": "publish only the functional block; three earlier local governance/configuration commits excluded",
     "source_parity": "all application/core/CLI/Slint/schema/reference/lock/workflow inputs identical to locally verified source; includes the two native fixes from d78e8d0"
-  }
+  },
+  "source_parity_after_ci": "PASS; publication and local runtime inputs byte-identical"
 }

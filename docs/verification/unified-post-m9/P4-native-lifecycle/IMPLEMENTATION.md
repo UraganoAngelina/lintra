@@ -99,3 +99,10 @@ Il flag app_info.validation_available resta false perché la shell P3 non ha
 ancora i controlli P5. Nessuna nuova UI o persistenza esposta. Full rimane
 rifiutato fino a P4-11; G-MIG-4 e G-REL restano aperti. Nessuna nuova suite
 workspace, VM, installer, dipendenza o modifica di CI/golden/core/CLI/Slint.
+
+CI desktop44065663299 SUCCESS sul commit5e3acdb: job Linux e Windows,
+test/lint/build e smoke React/raw IPC nativi tutti positivi. Ricevuta dei
+singoli step allegata. La qualifica Windows Server resta distinta da
+installer/Windows11. Il commit conclusivo aggiorna soltanto dossier/status:
+nessun delta runtime richiede una seconda CI equivalente. Fine del blocco,
+nessuna prosecuzione P4-07/Full secondo lo stop dell'autore.
