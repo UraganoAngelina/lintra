@@ -1,8 +1,8 @@
 # Lintra desktop
 
 Adapter React/Tauri affiancato a CLI e Slint; P4 in sviluppo, non release utenti.
-Manifest e lock separati; preparazione collegata alla library, worker e
-persistenza non ancora disponibili nella UI.
+Manifest e lock separati; preparazione e worker LocalOnly collegati alla library.
+La shell P3 non espone ancora i controlli di analisi P5 o la persistenza.
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund
@@ -22,7 +22,12 @@ v1, massimo 1 MiB completo e profondità 32. La capability vale soltanto per la
 finestra locale `main`, con ricontrollo Rust dell'origine. Il registry comprende
 `app_info`, `client_ready`, catalogo e selezione esplicita, pagine dei
 descrittori, `plan_create`, `plan_input_choose`, `plan_parameter_set` e
-`plan_prepare`. Il selettore nativo conserva PathBuf in Rust; il client riceve
+`plan_prepare`. Il registry del worker comprende `validation_start`,
+`validation_state`, `validation_progress`, `validation_cancel` e
+`validation_acknowledge`: un thread posseduto, un solo campione progresso,
+terminale conservato fino all’ack e report temporanei legati al RunRef.
+La chiusura richiede cancel e attende il thread prima del cleanup. Full
+resta rifiutato fino a P4-11. Il selettore nativo conserva PathBuf in Rust; il client riceve
 solo riferimenti opachi e contatori. Parametri tipizzati restano testo esatto,
 anche per interi oltre il limite JavaScript. La preparazione congela schema,
 mode e binding mediante i validator della library: non avvia record validation.

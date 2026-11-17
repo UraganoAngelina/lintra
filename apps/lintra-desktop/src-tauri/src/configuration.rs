@@ -756,6 +756,79 @@ mod tests {
             Err(ErrorCode::InvalidState)
         );
     }
+
+    #[test]
+    fn worker_accepts_only_prepared_local_plan_and_keeps_capture_when_form_changes() {
+        use crate::jobs::JobRequest;
+        let (directory, mut state) = fixture(2);
+        let (plan, trace) = local_plan(&mut state);
+        assert_eq!(
+            state.job(
+                JobRequest::Start {
+                    plan: plan.clone(),
+                    mode: ValidationMode::LocalOnly
+                },
+                "start"
+            ),
+            Err(ErrorCode::StaleContext)
+        );
+        let input = directory.path().join("SYNTHETIC.txt");
+        fs::write(&input, b"001A  \n").unwrap();
+        let bytes = state
+            .dispatch(
+                ConfigurationRequest::ChooseInput {
+                    plan_ref: plan,
+                    trace_ref: trace,
+                },
+                "choose",
+                &|| Ok(Some(input.clone())),
+            )
+            .unwrap();
+        let response: Value = serde_json::from_slice(&bytes).unwrap();
+        let plan = response["payload"]["plan_ref"].as_str().unwrap().to_owned();
+        call(
+            &mut state,
+            ConfigurationRequest::Prepare {
+                plan_ref: plan.clone(),
+            },
+        );
+        assert_eq!(
+            state.job(
+                JobRequest::Start {
+                    plan: plan.clone(),
+                    mode: ValidationMode::Full
+                },
+                "start"
+            ),
+            Err(ErrorCode::InvalidState)
+        );
+        state
+            .job(
+                JobRequest::Start {
+                    plan: plan.clone(),
+                    mode: ValidationMode::LocalOnly,
+                },
+                "start",
+            )
+            .unwrap();
+        let next = state.schema_ref(1);
+        call(
+            &mut state,
+            ConfigurationRequest::Select { schema_ref: next },
+        );
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
+        loop {
+            let bytes = state.job(JobRequest::State { run: None }, "state").unwrap();
+            let response: Value = serde_json::from_slice(&bytes).unwrap();
+            if response["payload"]["state"] == "terminal" {
+                assert_eq!(response["payload"]["plan_ref"], plan);
+                assert_eq!(response["payload"]["outcome"]["status"], "completed_valid");
+                break;
+            }
+            assert!(std::time::Instant::now() < deadline);
+            std::thread::yield_now();
+        }
+    }
 }
 
 pub(crate) struct SelectedConfiguration {

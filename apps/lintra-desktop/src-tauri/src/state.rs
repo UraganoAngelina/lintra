@@ -49,6 +49,20 @@ impl AppState {
             configuration.cancel_on_close();
         }
     }
+    /// Called after the window loop exits: cancel, join, then drop owned spools.
+    pub(crate) fn shutdown(&self) {
+        self.closed.store(true, Ordering::Release);
+        let mut permit = self
+            .gate
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        let configuration = permit.take();
+        drop(permit);
+        if let Some(configuration) = configuration {
+            configuration.cancel_on_close();
+            drop(configuration);
+        }
+    }
     pub(crate) fn closed(&self) -> bool {
         self.closed.load(Ordering::Acquire)
     }
@@ -88,7 +102,11 @@ impl AppState {
         let id = &request.request_id;
         if matches!(
             request.operation.as_str(),
-            "validation_start" | "validation_state" | "validation_acknowledge"
+            "validation_start"
+                | "validation_state"
+                | "validation_acknowledge"
+                | "validation_cancel"
+                | "validation_progress"
         ) {
             let command =
                 match crate::jobs::JobRequest::decode(&request.operation, &request.payload) {
@@ -389,13 +407,7 @@ mod tests {
             call(&state, Some(b"\xff"))["error"]["code"],
             "IPC_INVALID_MESSAGE"
         );
-        for operation in [
-            "approve",
-            "persist",
-            "read_file",
-            "execute_sql",
-            "validation_start",
-        ] {
+        for operation in ["approve", "persist", "read_file", "execute_sql"] {
             assert_eq!(
                 call(
                     &state,
@@ -404,6 +416,13 @@ mod tests {
                 "IPC_UNKNOWN_OPERATION"
             );
         }
+        assert_eq!(
+            call(
+                &state,
+                Some(&request("validation_start", json!({"schemaVersion":1})))
+            )["error"]["code"],
+            "IPC_INVALID_MESSAGE"
+        );
         assert_eq!(
             call(
                 &state,

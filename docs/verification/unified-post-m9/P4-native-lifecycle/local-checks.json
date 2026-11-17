@@ -1,0 +1,109 @@
+{
+  "date": "2026-11-17",
+  "timezone": "Europe/Rome",
+  "baseline": "d78e8d08afa3352b58858bfb788b2b6f392ccd3e",
+  "branch": "work/p4-native-lifecycle",
+  "tasks": [
+    "T-MIG-P4-04",
+    "T-MIG-P4-05",
+    "T-MIG-P4-06"
+  ],
+  "workflow": "single agent; one functional block implemented before local verification and CI activation",
+  "sources": {
+    "apps/lintra-desktop/src-tauri/src/configuration.rs": "db64306784ca918856e8fd842a26d67e11a3052658bb4c7cf845e75dee84ed16",
+    "apps/lintra-desktop/src-tauri/src/jobs.rs": "56984e4c1c9a19d8ebd082e874d03cd6f24c9950617b4c8c42ecd1e9912ae3fd",
+    "apps/lintra-desktop/src-tauri/src/main.rs": "9d0bc3593ba599c2949af9910bb77a5625196b05bd20e924b6d533da28a8017f",
+    "apps/lintra-desktop/src-tauri/src/state.rs": "a0bc078214a36d6a2cd48a7710e938c63099fb7a5ee17416ba1393ec885faf95",
+    "apps/lintra-desktop/src-tauri/src/progress.rs": "daecd87a30abef38d539356e0e904321b9eecb16e8f236eb4bc1a9832c922675",
+    "apps/lintra-desktop/src/ipc.ts": "35689b72e7648d5a13947863039124ffab066b70c77d82a2b2c5398895b7065b",
+    "apps/lintra-desktop/tests/jobs.test.mjs": "e1b9b8e9663742edf925f790d47e948075cb83504ee0c7fc2cae66414a4e68f0"
+  },
+  "checks": [
+    {
+      "command": "cargo test --manifest-path apps/lintra-desktop/src-tauri/Cargo.toml --locked --offline -j 2",
+      "exit_code": 0,
+      "passed": 32,
+      "ignored": 1,
+      "ignored_reason": "existing GTK picker requires owned interactive display"
+    },
+    {
+      "command": "cargo clippy --manifest-path apps/lintra-desktop/src-tauri/Cargo.toml --locked --offline --all-targets -j 2 -- -D warnings",
+      "exit_code": 0
+    },
+    {
+      "command": "cargo build --manifest-path apps/lintra-desktop/src-tauri/Cargo.toml --locked --offline -j 2",
+      "exit_code": 0
+    },
+    {
+      "command": "cargo fmt --manifest-path apps/lintra-desktop/src-tauri/Cargo.toml -- --check",
+      "exit_code": 0
+    },
+    {
+      "command": "npm run lint && npm test && npm run build",
+      "cwd": "apps/lintra-desktop",
+      "exit_code": 0,
+      "node_tests_passed": 28
+    },
+    {
+      "command": "cargo test --locked --offline --test golden --test atomic_report -j 2",
+      "exit_code": 0,
+      "passed": 25
+    },
+    {
+      "command": "python3 scripts/check_unified_plan.py",
+      "exit_code": 0,
+      "tasks": 128,
+      "sources": 140
+    },
+    {
+      "command": "python3 apps/lintra-desktop/tests/native_smoke.py apps/lintra-desktop/src-tauri/target/debug/lintra-desktop",
+      "exit_code": 0,
+      "binary_sha256": "173ddf2b8022dbdf8ca15f394a37a53c8a7ab936104ad2de677ab478d56ee1aa",
+      "marker": "NATIVE_DESKTOP_SMOKE_PASS",
+      "scope": "local native React/raw IPC bootstrap and process exit; worker exercised in native Rust tests"
+    }
+  ],
+  "logs_sha256": {
+    "native-tests.log.gz": "b5a91ff43151908d2796a179f11d9274186000ee2f410d3b8959a9aa45d1c6ad",
+    "clippy.log.gz": "c4b6ccf5bc8bf63f31f7346a7d7fb53af173429fb193dce5972b4a4c4c5dec9f",
+    "clippy-first-failure.log.gz": "7bfe612f59e6ed78f879679c40fa5f5eb1bf0455bfb9e200ec343db212d7b59d",
+    "build.log.gz": "7532bab727c250a3965821e6c8864937b8547ad0864cba8e9c3af725a08dd8b1",
+    "golden-atomic-report.log.gz": "1b059f017ac839809e8c9e7c5ac2bed6f7a913814cbac125adb608c0429ab4e6",
+    "native-smoke.log.gz": "1a4a8b518f22d82d8329a41f8a9c954e79303452546a17ef92637152cfdbe2b8",
+    "unified-plan-check.json.gz": "ce76b234fc3b85cfefe9c5fc09518b93ebb7f000b6ce3f7f57488a770511f0a4"
+  },
+  "review": {
+    "skill": "ponytail-review",
+    "mode": "single agent",
+    "fixed": "progress mutex poison must not hide joined terminal; regression added",
+    "remaining_findings": []
+  },
+  "ci": {
+    "status": "PENDING",
+    "workflow": "desktop.yml",
+    "source_commit": "resolve with git log of this receipt"
+  },
+  "not_checked": [
+    "Windows native CI pending",
+    "Full execution P4-11",
+    "results paging P4-07/08/09",
+    "P5 product views",
+    "Win11 installer/VM",
+    "aggregate G-MIG-4/G-REL"
+  ],
+  "unchanged": [
+    "root Cargo.toml/Cargo.lock",
+    "core/CLI/Slint",
+    "tests/golden",
+    "CI workflows",
+    "aiproto config/hooks",
+    "AGENTS.md/CLAUDE.md"
+  ],
+  "publication": {
+    "branch": "work/p4-native-lifecycle-publish",
+    "parent": "fa57d358f5aeea8b30413dd23d658b2eb4eb6d44",
+    "original_local_commit": "f6318d60bab382b4a5a8c86f14feb58d45865755",
+    "reason": "publish only the functional block; three earlier local governance/configuration commits excluded",
+    "source_parity": "all application/core/CLI/Slint/schema/reference/lock/workflow inputs identical to locally verified source; includes the two native fixes from d78e8d0"
+  }
+}

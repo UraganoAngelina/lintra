@@ -26,6 +26,8 @@ type RequestPayloads = {
   validation_start: { schemaVersion: 1; plan_ref: string; mode: "local_only" | "full" };
   validation_state: { schemaVersion: 1; run: RunRef | null };
   validation_acknowledge: { schemaVersion: 1; run: RunRef };
+  validation_cancel: { schemaVersion: 1; run: RunRef };
+  validation_progress: { schemaVersion: 1; run: RunRef };
 };
 type Operation = keyof RequestPayloads;
 type ObjectDto = Record<string, unknown>;
@@ -135,7 +137,7 @@ export function decodeReply(raw: unknown, requestId: string): ObjectDto {
 
 export function encodeRequest<K extends Operation>(operation: K, requestId: string, payload: RequestPayloads[K]): Uint8Array {
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(requestId)
-      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge"].includes(operation)) invalid();
+      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress"].includes(operation)) invalid();
   const bytes = new TextEncoder().encode(JSON.stringify({
     schemaVersion: 1, request_id: requestId, kind: "request", operation,
     payload,
@@ -392,6 +394,36 @@ export async function validationAcknowledge(run: RunRef): Promise<void> {
   const dto = await exchange("validation_acknowledge", { schemaVersion: 1, run });
   exact(dto, ["schemaVersion", "run", "acknowledged"]);
   if (!sameRun(run, readRun(dto.run)) || dto.acknowledged !== true) invalid();
+}
+
+export type RunProgress = {
+  schemaVersion: 1; run: RunRef; sequence: string;
+  phase: "preflight" | "local_validation" | "cross_record_validation" | "finalizing_report" | null;
+  trace_ref: string | null; trace_records: string; cross_records: string;
+};
+export async function validationProgress(run: RunRef): Promise<RunProgress> {
+  readRun(run);
+  const dto = await exchange("validation_progress", { schemaVersion: 1, run });
+  exact(dto, ["schemaVersion", "run", "sequence", "phase", "trace_ref", "trace_records", "cross_records"]);
+  if (!sameRun(run, readRun(dto.run)) || !([null, "preflight", "local_validation", "cross_record_validation", "finalizing_report"] as unknown[]).includes(dto.phase)) invalid();
+  const trace = dto.trace_ref === null ? null : opaque(dto.trace_ref);
+  const traceRecords = unsigned(dto.trace_records);
+  if ((trace !== null && trace.length > 64) || (trace === null && traceRecords !== "0")
+      || (dto.phase === "cross_record_validation" && trace !== null)) invalid();
+  return { schemaVersion: 1, run, sequence: unsigned(dto.sequence), phase: dto.phase as RunProgress["phase"],
+    trace_ref: trace, trace_records: traceRecords, cross_records: unsigned(dto.cross_records) };
+}
+// Pure consumer rule: a terminal run cannot reopen after a late progress reply.
+export function acceptRunProgress(sample: RunProgress, run: RunRef, previousSequence: string | null, terminalSeen: boolean): boolean {
+  return !terminalSeen && sameRun(sample.run, run)
+    && (previousSequence === null || BigInt(sample.sequence) > BigInt(previousSequence));
+}
+export async function validationCancel(run: RunRef): Promise<"requested" | "already_requested" | "too_late" | "already_terminal"> {
+  readRun(run);
+  const dto = await exchange("validation_cancel", { schemaVersion: 1, run });
+  exact(dto, ["schemaVersion", "run", "disposition"]);
+  if (!sameRun(run, readRun(dto.run)) || !["requested", "already_requested", "too_late", "already_terminal"].includes(String(dto.disposition))) invalid();
+  return dto.disposition as "requested" | "already_requested" | "too_late" | "already_terminal";
 }
 
 export function errorText(error: unknown): string {

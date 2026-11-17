@@ -4,6 +4,7 @@ mod configuration;
 mod ipc;
 mod jobs;
 mod native_picker;
+mod progress;
 mod security;
 mod state;
 #[cfg(target_os = "windows")]
@@ -95,6 +96,11 @@ fn main() {
             }
         })
         .invoke_handler(tauri::generate_handler![lintra_ipc])
-        .run(tauri::generate_context!())
-        .expect("cannot run the desktop adapter");
+        .build(tauri::generate_context!())
+        .expect("cannot build the desktop adapter")
+        .run(|app, event| {
+            if matches!(event, tauri::RunEvent::Exit) {
+                app.state::<AppState>().shutdown();
+            }
+        });
 }

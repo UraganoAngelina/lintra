@@ -1,6 +1,6 @@
 # Stato unificato post-M9
 
-Aggiornato: 2026-11-15, Europe/Rome. Un agente; task tracciate singolarmente,
+Aggiornato: 2026-11-17, Europe/Rome. Un agente; task tracciate singolarmente,
 sviluppo sequenziale per blocchi coerenti secondo AGENTS.md.
 Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md),
 [master v1.0](docs/unified-post-m9/MASTER_PLAN_UNIFICATO.md) e
@@ -99,9 +99,9 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P4-01 | T-MIG-P3-06 | DONE | [Catalogo e selezione](docs/verification/unified-post-m9/T-MIG-P4-01.md) | 16 Rust/20 Node/8 regressioni configurazione Slint PASS locali; versioni registry già qualificate; CI nativa al blocco | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-02 | T-MIG-P4-01 | DONE | [Broker file e preflight](docs/verification/unified-post-m9/T-MIG-P4-02.md) | 19 Rust/22 Node/8 regressioni Slint PASS locali; vero dialogo GTK sintetico PASS; Windows al blocco | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-03 | T-MIG-P4-01, T-MIG-P4-02 | DONE | [Preparazione immutabile](docs/verification/unified-post-m9/T-MIG-P4-03.md) | 23 Rust/24 Node/8 Slint PASS locali; GTK selezione/teardown PASS; MSVC al checkpoint blocco | G-MIG-4 NOT_VERIFIED |
-| T-MIG-P4-04 | T-MIG-P4-03 | IN_PROGRESS | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-04.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
-| T-MIG-P4-05 | T-MIG-P4-04 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-05.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
-| T-MIG-P4-06 | T-MIG-P4-04, T-MIG-P4-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-06.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
+| T-MIG-P4-04 | T-MIG-P4-03 | WAITING_GATE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-04.md) | 32 Rust/28 Node/25 regressioni PASS; lint/build/Clippy/smoke nativo PASS; CI del blocco pendente | G-MIG-4 NOT_VERIFIED |
+| T-MIG-P4-05 | T-MIG-P4-04 | WAITING_GATE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-05.md) | 32 Rust/28 Node/25 regressioni PASS; lint/build/Clippy/smoke nativo PASS; CI del blocco pendente | G-MIG-4 NOT_VERIFIED |
+| T-MIG-P4-06 | T-MIG-P4-04, T-MIG-P4-05 | WAITING_GATE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-06.md) | 32 Rust/28 Node/25 regressioni PASS; lint/build/Clippy/smoke nativo PASS; CI del blocco pendente | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-07 | T-MIG-P4-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-07.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-08 | T-MIG-P4-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-08.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-09 | T-MIG-P4-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-09.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
@@ -359,3 +359,27 @@ PASS; prima prova del driver di teardown FAIL conservata e corretta.
 CI MSVC del blocco in avvio; nessuna qualifica Windows UI anticipata.
 La precedente CI ufficiale P3 43758531087 è ora interamente SUCCESS.
 G-MIG-4 aperto; **AUTO_CONTINUE P4-04**, poi progresso/cancel/esito.
+
+Ripresa 17 novembre 2026: mandato autore per workflow monoagente e una sola
+verifica/attivazione CI dopo implementazione di un blocco funzionale coerente.
+Selezionato P4-04/05/06; baseline d78e8d0, branch work/p4-native-lifecycle.
+Worker parziale completato con progresso/cancel, report legato al RunRef e
+shutdown con join. Blocco IN_PROGRESS fino agli esiti finali locali e nativi;
+56/128 DONE invariato, nessun gate o prerequisito sostituito. Nessuna delega,
+VM, modifica aiproto/istruzioni/CI. P4-07 e Full attendono la qualifica del blocco.
+
+Checkpoint locale P4-04/05/06 del 17 novembre: implementazione completa,
+32 Rust/28 Node/25 regressioni PASS; un ignored GTK preesistente esplicito.
+Fmt/Clippy/lint/strict/build e smoke nativo React/IPC PASS. Dossier e receipt
+con digest dei sorgenti/log conservati; stato WAITING_GATE sulla CI desktop
+Linux/Windows del commit del blocco. L'autore richiede stop dopo commit/push,
+con completamento della CI necessaria: nessuna task successiva autorizzata
+in questa ripresa. G-MIG-4/G-REL aperti e conteggio56/128 invariato.
+
+Pubblicazione del blocco isolata su work/p4-native-lifecycle-publish dal parent
+remoto fa57d35. Commit locale originario f6318d6 e tre precedenti commit locali
+di governance/configurazione conservati nel worktree originale, non inviati.
+Parità byte degli input runtime verificata rispetto alla build locale; incluse
+le due correzioni native preesistenti di d78e8d0. Autorizzazione autore al
+push del blocco e completamento CI; repository pubblico di UraganoAngelina
+verificato in sola lettura. Hook e configurazioni preservati.
