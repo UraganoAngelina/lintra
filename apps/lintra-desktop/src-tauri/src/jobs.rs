@@ -191,14 +191,14 @@ fn execute(
         .map_err(|_| ErrorCode::TechnicalFailure)?;
     let report = match published {
         AtomicOutputOutcome::Published => {
-            // RunCompleted seals the service result; report preparation remains
-            // on this owned worker, never in the polling callback or renderer.
+            // The final service checkpoint fixes the outcome: late cancellation
+            // must not discard a published report during index preparation.
             let index = JsonlReportIndex::scan(
                 File::open(directory.path().join("errors.jsonl"))
                     .map_err(|_| ErrorCode::TechnicalFailure)?,
                 &outcome.summary,
                 &ReportFilter::default(),
-                || token.is_cancelled(),
+                || false,
             )
             .map_err(|_| ErrorCode::TechnicalFailure)?;
             let report = Report {
@@ -634,6 +634,33 @@ mod tests {
         assert!(old_path.exists());
         drop(jobs);
         assert!(!old_path.exists());
+    }
+
+    #[test]
+    fn cancellation_after_final_checkpoint_preserves_completed_report() {
+        let (_directory, intent, refs) = fixture();
+        let token = CancellationToken::default();
+        let mut observer = |event| {
+            // RunCompleted follows the final checkpoint and precedes index preparation.
+            if event == ProgressEvent::RunCompleted {
+                token.cancel();
+            }
+        };
+        let completion = execute(intent, refs, &mut observer, &token).unwrap();
+        assert!(token.is_cancelled());
+        let Completion::Validation { outcome, report } = completion else {
+            panic!("service was entered")
+        };
+        assert_eq!(outcome.status, RunStatus::CompletedInvalid);
+        assert_eq!(
+            outcome.summary.completeness(),
+            ValidationCompleteness::Complete
+        );
+        let mut report = report.unwrap();
+        let report = Arc::get_mut(&mut report).unwrap();
+        assert!(report._directory.path().join("errors.jsonl").exists());
+        assert_eq!(report._index.row_count(), 1);
+        assert!(report._index.read_row(0).unwrap().is_some());
     }
 
     #[test]

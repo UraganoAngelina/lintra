@@ -2,8 +2,8 @@
 
 18 novembre 2026. Autore Codex, Lane 3. Baseline:
 `45abfdcbcca4d2f099469295ba578e615fd3b933`, branch
-`agent/codex/T-MIG-P4-07`. Stato: **implementazione verificata localmente;
-gate AIProto completo PASS, in consegna per review indipendente**.
+`agent/codex/T-MIG-P4-07`. Prima consegna: `565623b`, review Claude **CHANGES**.
+Stato corrente: **correzione della cancellazione tardiva verificata, pronta per nuova review**.
 Nessun gate aggregato, review indipendente o compatibilità Windows attestati.
 
 ## Perimetro e comportamento
@@ -43,8 +43,10 @@ Questo valore misura il payload degli offset, non capacità allocata o RSS.
 La cache è limitata per numero di righe; dimensioni di diagnostiche e buffer
 dipendono dalla singola riga canonica. Non viene dichiarato un limite RSS.
 La scansione verifica una diagnostica alla volta e scarta il valore dopo
-aver aggiornato offset/contatori; la cache nasce vuota. Cancellazione cooperativa
-tra righe tramite callback, senza introdurre thread o sincronizzazione nuovi.
+aver aggiornato offset/contatori; la cache nasce vuota. La libreria supporta
+cancellazione cooperativa tra righe tramite callback. Tauri completa l'indice
+del report pubblicato senza osservare il token della run, il cui esito è già
+fissato dal checkpoint finale del servizio. Nessun thread o sincronizzazione nuovo.
 
 Motore, DSL, storage, writer JSONL, golden e test protetti restano invariati.
 Solo fixture sintetiche. Nessun cambiamento di dipendenze o configurazioni.
@@ -85,7 +87,7 @@ Le regressioni esistenti coprono contesto raw, tutti i filtri, corruzione,
 conteggi/istogramma/ambito, file troncato, golden byte-identici e report precedente
 preservato dopo una nuova analisi fallita.
 
-### Gate completo nella ripresa controllata
+### Gate completo della prima consegna (`565623b`)
 
 `python3 .ai_runtime/bin/aiproto.py gate`: **GATE VERDE, exit 0**.
 Tutti i nove comandi di `protocol.toml` sono stati eseguiti senza modifiche.
@@ -112,7 +114,7 @@ di directory sync che richiede un account Linux non privilegiato. Il picker
 GTK nativo richiede un display interattivo. Nessuna esclusione è stata aggiunta.
 
 Le prove hanno eseguito il delta non ancora committato sulla baseline indicata,
-con i sei digest codice/test riportati sotto; solo il dossier è aggiornato dopo
+con i sei digest codice/test della prima consegna riportati sotto; solo il dossier è aggiornato dopo
 il gate. Lo SHA di consegna è registrato nell'handoff runtime dopo il commit.
 I risultati delle prove precedenti e del gate si sovrappongono e non si sommano.
 Nessuna CI, prova Windows o VM eseguita per questo delta; G-MIG-4 resta aperto.
@@ -135,7 +137,7 @@ con exit 0, gate completo PASS e handoff scritto nel runtime configurato.
 Nessun hook, configurazione
 o permesso modificato; nessun runtime alternativo creato.
 
-I sei digest sotto coincidono con quelli delle prove precedenti. Manifest e
+I sei digest della prima consegna sotto coincidono con quelli delle prove precedenti. Manifest e
 lockfile Rust/frontend sono identici alla baseline; il delta applicativo è
 invariato. I log esistenti confermano 121 PASS e 2 ignored. Queste evidenze
 sono riutilizzate; il nuovo lint TypeScript strict è passato con exit 0.
@@ -144,7 +146,7 @@ da AIProto e approvazione/merge dell'utente restano necessari.
 G-MIG-4 aggregato resta aperto; P4-08 dipende dall'integrazione
 approvata di questa task.
 
-## Identificazione dei sorgenti
+## Identificazione dei sorgenti della prima consegna (`565623b`)
 
 SHA-256 del codice e dei test del delta; il decoder Slint duplicato
 `ui/src/results/diagnostic.rs` è eliminato. Gli altri file nel write_set
@@ -164,3 +166,42 @@ Log locali conservati in `/tmp`: `T-MIG-P4-07-results.log`,
 `T-MIG-P4-07-native-baseline.log`, `T-MIG-P4-07-clippy.log`,
 `T-MIG-P4-07-native-clippy.log`, `T-MIG-P4-07-node.log` e
 `T-MIG-P4-07-frontend-build.log`. Questi log non sono artefatti CI.
+
+## Correzione della review Claude
+
+Riferimento: `review-1795010898045000002.log`, verdetto CHANGES su `565623b`.
+Il servizio fissa l'esito al checkpoint finale: se il token viene cancellato
+dopo quel punto, la preparazione dell'indice non deve riclassificare la run
+completata come errore tecnico né eliminare il report pubblicato.
+`execute` passa quindi `|| false` alla scansione dopo `AtomicOutputOutcome::Published`.
+Gli errori reali di I/O o integrità restano errori tecnici. La cancellazione
+prima del checkpoint mantiene esito Cancelled e report non pubblicato.
+
+Il test `cancellation_after_final_checkpoint_preserves_completed_report`
+cancella il token su `RunCompleted`, dopo il checkpoint e prima della scansione,
+senza temporizzazioni o thread aggiuntivi. Verifica esito CompletedInvalid,
+completezza Complete, presenza dello spool e lettura della diagnostica indicizzata.
+Prima della correzione il test fallisce con `TechnicalFailure`, exit 101:
+`/tmp/T-MIG-P4-07-late-cancel-before.log`.
+
+Il delta della correzione interessa soltanto `jobs.rs` e questo dossier.
+SHA-256 corrente di `jobs.rs`:
+`c615de17163d0a4675189ec76555938fb04c598323d65df2d5a450e9da09cd6f`.
+Indice, cache, decoder, IPC, manifest e test protetti sono invariati.
+Verifiche successive alla correzione: **PASS**, exit 0. Il gate completo
+`python3 .ai_runtime/bin/aiproto.py gate` ha eseguito nuovamente tutti i nove
+comandi configurati, senza modifiche: 1.112 test workspace, 28 test Node e
+34 test nativi Tauri superati, zero fallimenti, 10 ignored preesistenti.
+Totale: **1.174 PASS**. Log:
+`.ai_runtime/tasks/T-MIG-P4-07/gate-1795012494.log`, SHA-256
+`0df0836e4e86586ad581e706ea2c47ed52f2feae61f94765a315c48ad2a0b32a`.
+Il ledger runtime registra `ok: true` il 18 novembre alle 15:44:49 CET.
+Il digest di `jobs.rs` sopra coincide con il sorgente corrente verificato.
+Le altre cinque impronte codice/test della prima consegna sono invariate;
+solo questo dossier viene aggiornato dopo il gate.
+
+La prova mirata `jobs::tests` passa con 8 test, zero esclusioni e exit 0;
+log `/tmp/T-MIG-P4-07-late-cancel-after.log`. Il test di regressione è presente
+anche nel gate nativo completo. Nuova review indipendente, checkpoint umano
+Lane 3 e gate sull'integrazione restano necessari. Nessuna CI o prova Windows
+aggiunta; G-MIG-4 e G-REL restano aperti. P4-08 non viene iniziata.
