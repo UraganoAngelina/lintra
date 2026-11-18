@@ -566,6 +566,100 @@ pub(crate) mod tests {
         });
         (directory, intent, bundle.references())
     }
+
+    mod full_schema {
+        include!(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../../tests/support/full_schema.rs"
+        ));
+    }
+    /// Captured Full intent over the shared synthetic two-trace schema
+    /// (`S` joins `T` on KEY and compares DATA), inputs in schema order.
+    fn full_fixture(
+        source: &[u8],
+        target: &[u8],
+    ) -> (
+        tempfile::TempDir,
+        Arc<PreparedIntent>,
+        Arc<dyn ReferenceDataPreparer>,
+    ) {
+        let directory = tempfile::tempdir().unwrap();
+        let raw: RawFlowSchema = serde_json::from_value(full_schema::raw()).unwrap();
+        let traces = [("S", source), ("T", target)]
+            .into_iter()
+            .map(|(id, bytes)| {
+                let path = directory.path().join(format!("{id}=synthetic.txt"));
+                fs::write(&path, bytes).unwrap();
+                TraceValidationInput {
+                    trace_id: TraceId(id.into()),
+                    source: InputSource::Path(path),
+                }
+            })
+            .collect();
+        let bundle = AnalysisBundle::builtin().unwrap();
+        let intent = Arc::new(PreparedIntent {
+            request: ValidationRequest {
+                schema_key: SchemaKey {
+                    flow_id: FlowId(raw.flow_id.clone()),
+                    version: SchemaVersion(raw.schema_version.clone()),
+                },
+                scope: ValidationScope::Flow(FlowValidationInput { traces }),
+                mode: ValidationMode::Full,
+                options: ValidationOptions {
+                    record_length_policy: RecordLengthPolicy::StrictSkipRecord,
+                    newline_policy: NewlinePolicy::AutoLfOrCrlf,
+                    max_errors: None,
+                },
+            },
+            parameters: Default::default(),
+            raw: Arc::new(raw),
+            audit: bundle.audit().clone(),
+        });
+        (directory, intent, bundle.references())
+    }
+    /// Direct call to the public service with the same captured request,
+    /// parameters and reference preparer used by the native worker.
+    fn direct(
+        intent: &PreparedIntent,
+        refs: Arc<dyn ReferenceDataPreparer>,
+    ) -> (ValidationRunOutcome, Vec<u8>) {
+        let mut repo = InMemorySchemaRepository::new();
+        repo.insert((*intent.raw).clone()).unwrap();
+        let service = ValidationService::new(Arc::new(SchemaRegistry::new(
+            Arc::new(repo),
+            SchemaCompiler,
+            RawResolvedEncoding::Utf8,
+        )))
+        .with_reference_data(
+            refs,
+            DatasetPreparationPolicy::ContinueWithAvailableEvidence,
+        );
+        let mut sink = JsonlSink::new(Vec::new());
+        let outcome = service
+            .validate_with_typed_parameters(
+                intent.request.clone(),
+                intent.parameters.clone(),
+                &mut sink,
+                &mut |_| {},
+                &CancellationToken::default(),
+            )
+            .unwrap();
+        (outcome, sink.finish().unwrap())
+    }
+    /// Wall clock and elapsed are runtime metadata, not diagnostics.
+    fn normalize(bytes: &[u8]) -> Vec<Value> {
+        String::from_utf8_lossy(bytes)
+            .lines()
+            .map(|line| {
+                let mut row: Value = serde_json::from_str(line).unwrap();
+                if let Some(obj) = row.as_object_mut() {
+                    obj.remove("started_at");
+                    obj.remove("elapsed");
+                }
+                row
+            })
+            .collect()
+    }
     fn value(bytes: Vec<u8>) -> Value {
         serde_json::from_slice(&bytes).unwrap()
     }
@@ -1003,5 +1097,171 @@ pub(crate) mod tests {
             Err(ErrorCode::TechnicalFailure)
         );
         assert!(jobs.current.is_none());
+    }
+
+    /// P4-11 acceptance: one owned Full worker per bundle produces exactly the
+    /// outcome, summary and canonical JSONL of a direct call to the public
+    /// service, across valid, cross-invalid, missing-related and Unknown/Partial
+    /// synthetic bundles. Only wall clock/elapsed runtime metadata may differ.
+    #[test]
+    fn full_worker_matches_direct_service_outcome_summary_and_canonical_jsonl() {
+        for (source, target, status, completeness, code) in [
+            (
+                &b"01AAOK\n"[..],
+                &b"11AAOK\n"[..],
+                RunStatus::CompletedValid,
+                ValidationCompleteness::Complete,
+                None,
+            ),
+            (
+                b"01AANO\n02BBOK\n",
+                b"11AAOK\n12BBOK\n",
+                RunStatus::CompletedInvalid,
+                ValidationCompleteness::Complete,
+                Some("E_CROSS_FIELD"),
+            ),
+            (
+                b"01CCOK\n",
+                b"11AAOK\n",
+                RunStatus::CompletedInvalid,
+                ValidationCompleteness::Complete,
+                Some("E_RELATED_RECORD_MISSING"),
+            ),
+            (
+                b"01AAOK\n",
+                b"bad\n11BBOK\n",
+                RunStatus::CompletedInvalid,
+                ValidationCompleteness::Partial,
+                Some("E_RECORD_LENGTH"),
+            ),
+        ] {
+            let (directory, intent, refs) = full_fixture(source, target);
+            let mut jobs = Jobs::default();
+            start(&mut jobs, intent.clone(), refs.clone(), "start_full");
+            let terminal = wait(&mut jobs);
+            assert_eq!(terminal["mode"], "full");
+            assert_eq!(terminal["outcome"]["report_available"], true);
+            // Per-trace/pass progress stays a valid single sample of one run.
+            let run = run(&jobs);
+            let progress = value(
+                jobs.dispatch(JobRequest::Progress { run: run.clone() }, "progress")
+                    .unwrap(),
+            )["payload"]
+                .clone();
+            assert_eq!(progress["run"], run.dto());
+            assert!(
+                ["cross_record_validation", "finalizing_report"]
+                    .contains(&progress["phase"].as_str().unwrap()),
+                "{progress}"
+            );
+            let job = jobs.current.as_ref().unwrap();
+            let Some(Ok(Completion::Validation {
+                outcome,
+                report: Some(report),
+            })) = &job.result
+            else {
+                panic!("Full run must publish its report")
+            };
+            let (expected, expected_jsonl) = direct(&intent, refs);
+            assert_eq!(outcome.status, status);
+            assert_eq!(outcome.summary.completeness(), completeness);
+            assert_eq!(outcome.summary.validation_mode, ValidationMode::Full);
+            assert!(matches!(
+                &outcome.summary.scope_summary,
+                ScopeSummary::Flow { trace_ids }
+                    if trace_ids.iter().map(|t| t.0.as_str()).collect::<Vec<_>>() == ["S", "T"]
+            ));
+            let mut actual = outcome.summary.clone();
+            actual.started_at = expected.summary.started_at;
+            actual.elapsed = expected.summary.elapsed;
+            assert_eq!(outcome.status, expected.status);
+            assert_eq!(actual, expected.summary);
+            let bytes = fs::read(report._directory.path().join("errors.jsonl")).unwrap();
+            assert_eq!(normalize(&bytes), normalize(&expected_jsonl));
+            assert_eq!(report._index.total(), outcome.summary.total_errors);
+            assert_eq!(
+                report._index.row_count() as u64,
+                outcome.summary.total_errors
+            );
+            assert_eq!(report._index.decoded_rows(), 0, "no eager decoding");
+            assert!(
+                !terminal
+                    .to_string()
+                    .contains(directory.path().to_str().unwrap())
+            );
+            // Canonical service order is preserved: no adapter merge or sort.
+            let codes = normalize(&bytes)
+                .iter()
+                .filter_map(|row| row.get("code").and_then(Value::as_str).map(str::to_owned))
+                .collect::<Vec<_>>();
+            match code {
+                None => assert!(codes.is_empty(), "{codes:?}"),
+                Some(code) => assert!(codes.iter().any(|c| c == code), "{codes:?}"),
+            }
+        }
+    }
+
+    /// Cooperative cancellation inside PASS1 and PASS2 of a Full bundle stays
+    /// a Cancelled/Partial outcome without a published report; a missing
+    /// bundle input is technical, never completed_valid/invalid.
+    #[test]
+    fn full_cancel_in_each_pass_and_input_failure_never_publish_or_complete() {
+        for phase in [
+            ValidationPhase::LocalValidation,
+            ValidationPhase::CrossRecordValidation,
+        ] {
+            let (_directory, intent, refs) = full_fixture(b"01AANO\n", b"11AAOK\n");
+            let token = CancellationToken::default();
+            let mut observer = |event| {
+                if event == ProgressEvent::PhaseStarted(phase) {
+                    token.cancel();
+                }
+            };
+            match execute(intent, refs, &mut observer, &token).unwrap() {
+                Completion::Validation { outcome, report } => {
+                    assert_eq!(outcome.status, RunStatus::Cancelled, "{phase:?}");
+                    assert_eq!(
+                        outcome.summary.completeness(),
+                        ValidationCompleteness::Partial
+                    );
+                    assert!(report.is_none(), "{phase:?}");
+                }
+                Completion::NotStarted => panic!("service was entered"),
+            }
+        }
+        let (_directory, intent, refs) = full_fixture(b"01AAOK\n", b"11AAOK\n");
+        let ValidationScope::Flow(flow) = &intent.request.scope else {
+            unreachable!()
+        };
+        let InputSource::Path(path) = &flow.traces[1].source;
+        fs::remove_file(path).unwrap();
+        let mut jobs = Jobs::default();
+        start(&mut jobs, intent, refs, "start_missing");
+        let terminal = wait(&mut jobs);
+        assert_eq!(terminal["outcome"]["kind"], "technical_failure");
+        assert!(jobs.last_report.is_none());
+    }
+
+    /// The operational error limit truncates a Full bundle: Partial, never
+    /// exportable, and no report is published.
+    #[test]
+    fn truncated_full_bundle_is_partial_without_published_report() {
+        let (_directory, mut intent, refs) = full_fixture(b"01AANO\n02BBNO\n", b"11AAOK\n12BBOK\n");
+        Arc::get_mut(&mut intent)
+            .unwrap()
+            .request
+            .options
+            .max_errors = Some(1);
+        match execute(intent, refs, &mut |_| {}, &CancellationToken::default()).unwrap() {
+            Completion::Validation { outcome, report } => {
+                assert!(outcome.summary.truncated);
+                assert_eq!(
+                    outcome.summary.completeness(),
+                    ValidationCompleteness::Partial
+                );
+                assert!(report.is_none());
+            }
+            Completion::NotStarted => panic!("service was entered"),
+        }
     }
 }

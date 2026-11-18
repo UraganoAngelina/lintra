@@ -73,3 +73,14 @@ test("cancel and ack require the same run; bad handles fail before transport", a
   }
   assert.equal(calls, 0);
 });
+test("Full start sends the exact mode and keeps Full snapshots and partial outcomes distinct", async () => {
+  mock(run, r => assert.deepEqual(r.payload, { schemaVersion: 1, plan_ref: "plan_1", mode: "full" }));
+  assert.deepEqual(await validationStart("plan_1", "full"), run);
+  const full = { ...snapshot, mode: "full", outcome: { ...snapshot.outcome, completeness: "partial" } };
+  mock(full);
+  assert.deepEqual(await validationState(run), full);
+  for (const mode of ["FULL", "flow", "", null]) {
+    await assert.rejects(validationStart("plan_1", mode), IpcError);
+    mock({ ...full, mode }); await assert.rejects(validationState(run), IpcError);
+  }
+});

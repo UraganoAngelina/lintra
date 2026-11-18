@@ -626,6 +626,166 @@ mod tests {
         );
     }
 
+    /// Prepare a real Full plan through the native broker, assigning the
+    /// synthetic `S` and `T` inputs in schema order, and return its plan_ref.
+    fn prepared_full_plan(
+        state: &mut Configuration,
+        directory: &std::path::Path,
+        data: [&[u8]; 2],
+    ) -> String {
+        let reference = state.schema_ref(0);
+        call(
+            state,
+            ConfigurationRequest::Select {
+                schema_ref: reference,
+            },
+        );
+        let selected = state.selected.as_ref().unwrap().reference.clone();
+        let draft = call(
+            state,
+            ConfigurationRequest::CreatePlan {
+                configuration_ref: selected.clone(),
+                mode: ValidationMode::Full,
+                trace_ref: None,
+            },
+        );
+        let mut plan_ref = draft["payload"]["plan_ref"].as_str().unwrap().to_owned();
+        for (index, bytes) in data.into_iter().enumerate() {
+            let path = directory.join(format!("bridge-{index}.txt"));
+            fs::write(&path, bytes).unwrap();
+            let response: Value = serde_json::from_slice(
+                &state
+                    .dispatch(
+                        ConfigurationRequest::ChooseInput {
+                            plan_ref,
+                            trace_ref: format!("{selected}_trace_{index}"),
+                        },
+                        "choose",
+                        &|| Ok(Some(path.clone())),
+                    )
+                    .unwrap(),
+            )
+            .unwrap();
+            plan_ref = response["payload"]["plan_ref"].as_str().unwrap().to_owned();
+        }
+        let prepared = call(
+            state,
+            ConfigurationRequest::Prepare {
+                plan_ref: plan_ref.clone(),
+            },
+        );
+        assert_eq!(prepared["payload"]["mode"], "full");
+        plan_ref
+    }
+
+    /// P4-11 acceptance through the bridge dispatcher: a prepared Full plan
+    /// starts one Full run whose terminal outcome equals a direct call to the
+    /// public service on the same captured request. A mode mismatch is
+    /// rejected before any worker exists, in both directions.
+    #[test]
+    fn full_bridge_runs_prepared_flow_once_and_matches_direct_service_outcome() {
+        use crate::jobs::JobRequest;
+        for (data, status, completeness) in [
+            (
+                [&b"01AAOK\n"[..], &b"11AAOK\n"[..]],
+                "completed_valid",
+                "complete",
+            ),
+            (
+                [&b"01AANO\n02BBOK\n"[..], &b"11AAOK\n12BBOK\n"[..]],
+                "completed_invalid",
+                "complete",
+            ),
+            // Malformed related context: Unknown keeps the run Partial.
+            (
+                [&b"01AAOK\n"[..], &b"bad\n11BBOK\n"[..]],
+                "completed_invalid",
+                "partial",
+            ),
+        ] {
+            let (directory, mut state) = fixture_model(1, full_schema::raw());
+            let plan = prepared_full_plan(&mut state, directory.path(), data);
+            assert_eq!(
+                state.job(
+                    JobRequest::Start {
+                        plan: plan.clone(),
+                        mode: ValidationMode::LocalOnly
+                    },
+                    "start_local"
+                ),
+                Err(ErrorCode::InvalidState)
+            );
+            let idle: Value =
+                serde_json::from_slice(&state.job(JobRequest::State { run: None }, "s").unwrap())
+                    .unwrap();
+            assert_eq!(idle["payload"]["state"], "idle", "no downgraded run");
+            let run: Value = serde_json::from_slice(
+                &state
+                    .job(
+                        JobRequest::Start {
+                            plan: plan.clone(),
+                            mode: ValidationMode::Full,
+                        },
+                        "start_full",
+                    )
+                    .unwrap(),
+            )
+            .unwrap();
+            assert_eq!(run["payload"]["run_id"], "1");
+            let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
+            let terminal = loop {
+                let bytes = state.job(JobRequest::State { run: None }, "state").unwrap();
+                let response: Value = serde_json::from_slice(&bytes).unwrap();
+                if response["payload"]["state"] == "terminal" {
+                    break response["payload"].clone();
+                }
+                assert!(std::time::Instant::now() < deadline);
+                std::thread::yield_now();
+            };
+            assert_eq!(terminal["mode"], "full");
+            assert_eq!(terminal["plan_ref"], plan);
+            assert_eq!(terminal["outcome"]["status"], status);
+            assert_eq!(terminal["outcome"]["completeness"], completeness);
+            assert_eq!(terminal["outcome"]["truncated"], false);
+            assert_eq!(terminal["outcome"]["report_available"], true);
+            assert!(
+                !terminal
+                    .to_string()
+                    .contains(directory.path().to_str().unwrap())
+            );
+            // Direct invocation of the same public service on the captured intent.
+            let intent = state.plan.as_ref().unwrap().prepared.clone().unwrap();
+            let mut repository = InMemorySchemaRepository::new();
+            repository.insert((*intent.raw).clone()).unwrap();
+            let service = ValidationService::new(Arc::new(SchemaRegistry::new(
+                Arc::new(repository),
+                SchemaCompiler,
+                RawResolvedEncoding::Utf8,
+            )))
+            .with_reference_data(
+                state.bundle.references(),
+                DatasetPreparationPolicy::ContinueWithAvailableEvidence,
+            );
+            let direct = service
+                .validate_with_typed_parameters(
+                    intent.request.clone(),
+                    intent.parameters.clone(),
+                    &mut JsonlSink::new(Vec::new()),
+                    &mut |_| {},
+                    &CancellationToken::default(),
+                )
+                .unwrap();
+            assert_eq!(
+                serde_json::to_value(direct.status).unwrap(),
+                terminal["outcome"]["status"]
+            );
+            assert_eq!(
+                serde_json::to_value(direct.summary.completeness()).unwrap(),
+                terminal["outcome"]["completeness"]
+            );
+        }
+    }
+
     #[test]
     fn typed_parameter_domains_reuse_core_validation_and_keep_large_integers_exact() {
         let mut raw = full_schema::raw();
@@ -914,8 +1074,12 @@ impl Configuration {
                     .filter(|p| p.reference == plan)
                     .and_then(|p| p.prepared.clone())
                     .ok_or(ErrorCode::StaleContext)?;
-                // Full execution is integrated in P4-11, never silently downgraded.
-                if mode != ValidationMode::LocalOnly || intent.request.mode != mode {
+                // P4-11: LocalOnly and Full both run the captured request
+                // unchanged on the same worker. The requested mode must equal
+                // the prepared one: a Full plan never downgrades to LocalOnly
+                // (and vice versa), because scope, required inputs and the
+                // Flow preflight were fixed by `plan_prepare` in Rust.
+                if intent.request.mode != mode {
                     return Err(ErrorCode::InvalidState);
                 }
                 self.jobs.start(
