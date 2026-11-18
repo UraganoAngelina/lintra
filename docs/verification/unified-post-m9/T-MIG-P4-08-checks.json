@@ -1,0 +1,84 @@
+{
+  "task": "T-MIG-P4-08",
+  "status": "IN_REVIEW",
+  "baseline": "42aa890 (integration)",
+  "checks": {
+    "results_module_tests": {
+      "command": "cargo test --manifest-path apps/lintra-desktop/src-tauri/Cargo.toml --locked --offline --release --features tauri/custom-protocol -j 2 results::",
+      "exit_code": 0,
+      "passed": 9
+    },
+    "native_rust_tests": {
+      "command": "cargo test --manifest-path apps/lintra-desktop/src-tauri/Cargo.toml --locked --offline --release --features tauri/custom-protocol -j 2",
+      "exit_code": 0,
+      "passed": 43,
+      "ignored": 1
+    },
+    "native_clippy": {
+      "command": "cargo clippy --manifest-path apps/lintra-desktop/src-tauri/Cargo.toml --locked --offline --release --all-targets --features tauri/custom-protocol -j 2 -- -D warnings",
+      "exit_code": 0
+    },
+    "workspace_tests": {
+      "command": "cargo test --workspace --locked --offline -j 2",
+      "exit_code": 0,
+      "passed": 1112,
+      "ignored": 9
+    },
+    "workspace_tests_all_features": {
+      "command": "cargo test --workspace --all-features --locked --offline -j 2",
+      "exit_code": 0,
+      "passed": 1112,
+      "ignored": 9
+    },
+    "workspace_clippy": {
+      "command": "cargo clippy --workspace --all-targets --locked --offline -j 2 -- -D warnings",
+      "exit_code": 0
+    },
+    "workspace_clippy_all_features": {
+      "command": "cargo clippy --workspace --all-targets --all-features --locked --offline -j 2 -- -D warnings",
+      "exit_code": 0
+    },
+    "fmt": {
+      "command": "cargo fmt --all -- --check; cargo fmt --manifest-path apps/lintra-desktop/src-tauri/Cargo.toml -- --check",
+      "exit_code": 0
+    },
+    "frontend_lint": {
+      "command": "npm --prefix apps/lintra-desktop run lint",
+      "exit_code": 0
+    },
+    "frontend_tests": {
+      "command": "npm --prefix apps/lintra-desktop test",
+      "exit_code": 0,
+      "passed": 31
+    },
+    "frontend_typecheck_build": {
+      "command": "npm --prefix apps/lintra-desktop run build",
+      "exit_code": 0
+    },
+    "native_smoke_linux_wayland": {
+      "command": "python3 apps/lintra-desktop/tests/native_smoke.py apps/lintra-desktop/src-tauri/target/release/lintra-desktop",
+      "result": "NATIVE_DESKTOP_SMOKE_PASS",
+      "binary_exit_code": 0
+    }
+  },
+  "first_round_failures_fixed": [
+    "rustfmt in jobs.rs/results.rs",
+    "clippy write_with_newline in results test",
+    "ui/tests/results.rs exhaustive ReportFilter literal missing trace field"
+  ],
+  "remote_ci": "NOT_RUN",
+  "windows": "NOT_RUN; deferred to P4 block checkpoint",
+  "gate": "G-MIG-4 NOT_VERIFIED",
+  "sha256": {
+    "src/report/index.rs": "022942bc35fc93a241b76fe4a5ea7c92821d9517211e3f710755760ce8224077",
+    "ui/src/results/controller.rs": "252e1f54831737c84c6e05227659c5bac8c376d3e081ecb22aa0cb30ffe26bc0",
+    "ui/tests/results.rs": "8724408018c7ab69b93f7c7b2479d134c1a1b40c580ea7351d603e0661b4bb83",
+    "apps/lintra-desktop/src-tauri/src/results.rs": "cf673acac5c94a4c79f67fb1ea649db0a111d9d9bf86c1c67598355f49ec5436",
+    "apps/lintra-desktop/src-tauri/src/jobs.rs": "4b0c08178cfff06a25d51d006dded433f61637718964397c352f170e5167c01b",
+    "apps/lintra-desktop/src-tauri/src/state.rs": "56ccee59a38b9dbeb07b29fd3eed88fe7ff48fd144ee9a5197e82e995f77d09a",
+    "apps/lintra-desktop/src-tauri/src/configuration.rs": "6a5ff63fb8276ba5d56e19e552402b06da6dff93e9520d5ff7a069dfacbba874",
+    "apps/lintra-desktop/src-tauri/src/main.rs": "8d60fb57060862bef1e023f008e25fe8eb250d3632acd1e7d898ffcdcda32a63",
+    "apps/lintra-desktop/src/ipc.ts": "2d94f54737f0baf3dce96bae5ff885d9236530e8f4aee323096401f09b2b743e",
+    "apps/lintra-desktop/tests/results.test.mjs": "e61bfb38c618cff8b4a9bcd1ac41e9f8af3a56e3a2a1e4a2f57357c4583b7911"
+  }
+}

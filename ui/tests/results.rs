@@ -122,6 +122,7 @@ fn all_five_filters_are_exact_combinable_and_do_not_reinterpret_null_or_case() {
             record: "SYNTH-RECORD".into(),
             fiscal_code: "SYNTH-FISCAL".into(),
             line: Some(7),
+            trace: None,
         },
     ] {
         let i = index(&bytes, &small_summary(), &filter).unwrap();

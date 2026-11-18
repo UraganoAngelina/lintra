@@ -28,6 +28,9 @@ type RequestPayloads = {
   validation_acknowledge: { schemaVersion: 1; run: RunRef };
   validation_cancel: { schemaVersion: 1; run: RunRef };
   validation_progress: { schemaVersion: 1; run: RunRef };
+  results_query: { schemaVersion: 1; run: RunRef; filters: ResultsFilter };
+  results_query_state: { schemaVersion: 1; query_ref: string };
+  results_page: { schemaVersion: 1; query_ref: string; offset: string; limit: number };
 };
 type Operation = keyof RequestPayloads;
 type ObjectDto = Record<string, unknown>;
@@ -137,7 +140,7 @@ export function decodeReply(raw: unknown, requestId: string): ObjectDto {
 
 export function encodeRequest<K extends Operation>(operation: K, requestId: string, payload: RequestPayloads[K]): Uint8Array {
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(requestId)
-      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress"].includes(operation)) invalid();
+      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress", "results_query", "results_query_state", "results_page"].includes(operation)) invalid();
   const bytes = new TextEncoder().encode(JSON.stringify({
     schemaVersion: 1, request_id: requestId, kind: "request", operation,
     payload,
@@ -424,6 +427,101 @@ export async function validationCancel(run: RunRef): Promise<"requested" | "alre
   exact(dto, ["schemaVersion", "run", "disposition"]);
   if (!sameRun(run, readRun(dto.run)) || !["requested", "already_requested", "too_late", "already_terminal"].includes(String(dto.disposition))) invalid();
   return dto.disposition as "requested" | "already_requested" | "too_late" | "already_terminal";
+}
+
+// Results browsing (T-MIG-P4-08). Filtering, ordering and paging run in Rust;
+// this client only sends exact DTOs and checks that each bounded page is
+// internally consistent. It never receives or rebuilds an index or dataset.
+export const DEFAULT_PAGE_ROWS = 64;
+export const MAX_PAGE_ROWS = 128;
+const PREVIEW_BYTES = 256;
+export type ResultsFilter = {
+  schemaVersion: 1; code?: string; field?: string; record?: string; fiscal_code?: string;
+  line?: string | null; trace_ref?: string | null;
+};
+export type QueryStatus = {
+  schemaVersion: 1; run: RunRef; query_ref: string; state: "building" | "ready" | "failed";
+  total_matches: string | null; total_diagnostics: string | null;
+};
+export type Preview = { schemaVersion: 1; text: string; complete: boolean };
+export type ResultRow = {
+  schemaVersion: 1; diagnostic_ref: string; ordinal: string; line: string; trace_ref: string;
+  code: Preview; field: Preview | null;
+};
+export type ResultsPage = {
+  schemaVersion: 1; query_ref: string; run: RunRef; page_generation: string; offset: string;
+  rows: ResultRow[]; next_offset: string; has_more: boolean; total_matches: string; total_diagnostics: string;
+};
+
+function identifier(value: unknown): string {
+  const result = opaque(value);
+  if (result.length > 64) invalid();
+  return result;
+}
+function readFilter(filters: ResultsFilter): ResultsFilter {
+  const dto = object(filters);
+  version(dto);
+  if (!Object.keys(dto).every(key => ["schemaVersion", "code", "field", "record", "fiscal_code", "line", "trace_ref"].includes(key))) invalid();
+  for (const key of ["code", "field", "record", "fiscal_code"]) if (Object.hasOwn(dto, key) && typeof dto[key] !== "string") invalid();
+  if (Object.hasOwn(dto, "line") && dto.line !== null && (typeof dto.line !== "string" || !/^[0-9]*$/.test(dto.line))) invalid();
+  if (Object.hasOwn(dto, "trace_ref") && dto.trace_ref !== null) identifier(dto.trace_ref);
+  return filters;
+}
+function readStatus(dto: ObjectDto, queryRef: string | null, run: RunRef | null): QueryStatus {
+  exact(dto, ["schemaVersion", "run", "query_ref", "state", "total_matches", "total_diagnostics"]);
+  const current = readRun(dto.run);
+  const reference = identifier(dto.query_ref);
+  if ((run !== null && !sameRun(run, current)) || (queryRef !== null && queryRef !== reference)
+      || !["building", "ready", "failed"].includes(String(dto.state))) invalid();
+  if (dto.state !== "ready") {
+    if (dto.total_matches !== null || dto.total_diagnostics !== null) invalid();
+    return { schemaVersion: 1, run: current, query_ref: reference, state: dto.state as "building" | "failed", total_matches: null, total_diagnostics: null };
+  }
+  const matches = unsigned(dto.total_matches);
+  const total = unsigned(dto.total_diagnostics);
+  if (BigInt(matches) > BigInt(total)) invalid();
+  return { schemaVersion: 1, run: current, query_ref: reference, state: "ready", total_matches: matches, total_diagnostics: total };
+}
+function readPreview(value: unknown): Preview {
+  const dto = object(value);
+  version(dto); exact(dto, ["schemaVersion", "text", "complete"]);
+  if (typeof dto.text !== "string" || typeof dto.complete !== "boolean"
+      || new TextEncoder().encode(dto.text).byteLength > PREVIEW_BYTES) invalid();
+  return { schemaVersion: 1, text: dto.text, complete: dto.complete };
+}
+export async function resultsQuery(run: RunRef, filters: ResultsFilter): Promise<QueryStatus> {
+  readRun(run); readFilter(filters);
+  const status = readStatus(await exchange("results_query", { schemaVersion: 1, run, filters }), null, run);
+  if (status.state === "failed") invalid();
+  return status;
+}
+export async function resultsQueryState(queryRef: string): Promise<QueryStatus> {
+  identifier(queryRef);
+  return readStatus(await exchange("results_query_state", { schemaVersion: 1, query_ref: queryRef }), queryRef, null);
+}
+export async function resultsPage(queryRef: string, offset = "0", limit = DEFAULT_PAGE_ROWS): Promise<ResultsPage> {
+  identifier(queryRef); unsigned(offset);
+  if (!Number.isInteger(limit) || limit < 1 || limit > MAX_PAGE_ROWS) invalid();
+  const dto = await exchange("results_page", { schemaVersion: 1, query_ref: queryRef, offset, limit });
+  exact(dto, ["schemaVersion", "query_ref", "run", "page_generation", "offset", "rows", "next_offset", "has_more", "total_matches", "total_diagnostics"]);
+  if (dto.query_ref !== queryRef || dto.offset !== offset || !Array.isArray(dto.rows) || dto.rows.length > limit || typeof dto.has_more !== "boolean") invalid();
+  const start = BigInt(offset);
+  const rows = dto.rows.map((value, index): ResultRow => {
+    const row = object(value);
+    version(row); exact(row, ["schemaVersion", "diagnostic_ref", "ordinal", "line", "trace_ref", "code", "field"]);
+    const ordinal = unsigned(row.ordinal);
+    const line = unsigned(row.line);
+    if (BigInt(ordinal) !== start + BigInt(index) || line === "0") invalid();
+    return { schemaVersion: 1, diagnostic_ref: identifier(row.diagnostic_ref), ordinal, line,
+      trace_ref: identifier(row.trace_ref), code: readPreview(row.code), field: row.field === null ? null : readPreview(row.field) };
+  });
+  const next = unsigned(dto.next_offset);
+  const matches = unsigned(dto.total_matches);
+  const total = unsigned(dto.total_diagnostics);
+  if (BigInt(next) !== start + BigInt(rows.length) || BigInt(next) > BigInt(matches)
+      || BigInt(matches) > BigInt(total) || dto.has_more !== BigInt(next) < BigInt(matches)) invalid();
+  return { schemaVersion: 1, query_ref: queryRef, run: readRun(dto.run), page_generation: unsigned(dto.page_generation),
+    offset, rows, next_offset: next, has_more: dto.has_more, total_matches: matches, total_diagnostics: total };
 }
 
 export function errorText(error: unknown): string {

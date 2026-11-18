@@ -230,6 +230,8 @@ impl ResultsController {
             record: ui.get_filter_record().to_string(),
             fiscal_code: ui.get_filter_fiscal().to_string(),
             line,
+            // Slint exposes the five historical filters only; no trace restriction.
+            trace: None,
         };
         match IndexJob::start(report.clone(), summary.clone(), filter) {
             Ok(job) => {

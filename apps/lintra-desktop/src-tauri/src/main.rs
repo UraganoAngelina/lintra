@@ -5,6 +5,7 @@ mod ipc;
 mod jobs;
 mod native_picker;
 mod progress;
+mod results;
 mod security;
 mod state;
 #[cfg(target_os = "windows")]

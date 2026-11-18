@@ -19,7 +19,7 @@ pub(crate) struct RunRef {
     number: u64,
 }
 impl RunRef {
-    fn decode(value: &Value) -> Result<Self, ErrorCode> {
+    pub(crate) fn decode(value: &Value) -> Result<Self, ErrorCode> {
         let dto = value.as_object().ok_or(ErrorCode::InvalidMessage)?;
         ipc::version(dto)?;
         fields(dto, &["instance_id", "run_id"])?;
@@ -44,7 +44,7 @@ impl RunRef {
             number,
         })
     }
-    fn dto(&self) -> Value {
+    pub(crate) fn dto(&self) -> Value {
         json!({"schemaVersion":1,"instance_id":self.instance,"run_id":self.number.to_string()})
     }
 }
@@ -107,14 +107,66 @@ struct WorkerState {
     sealed: bool,
     progress: Progress,
 }
-struct Report {
-    // Shared library index/cache stays in Rust. The reader must drop before
-    // TempDir on Windows; paging/DTO commands are added in P4-08, not here.
-    _index: JsonlReportIndex,
+/// A published private report. Field order is drop order: the shared reader
+/// must close before the TempDir is deleted (required on Windows).
+pub(crate) struct Report {
+    // Unfiltered library index/cache built once at publication (P4-07). The
+    // Mutex only grants interior mutability for the row cache through Arc:
+    // every access happens on the single serialized IPC gate (P4-08 paging).
+    index: Mutex<JsonlReportIndex>,
     // Ownership keeps the private canonical JSONL alive, never a wire path.
-    _directory: tempfile::TempDir,
+    directory: tempfile::TempDir,
+    // Captured summary: scope, totals and histogram that filtered rescans
+    // must verify again before a new query can be published.
+    summary: ValidationSummary,
     // Captured schema, paths, parameters and provenance belong to this report.
     _intent: Arc<PreparedIntent>,
+}
+impl Report {
+    const FILE: &'static str = "errors.jsonl";
+
+    /// Verify and index the committed spool. Any malformed, out-of-scope or
+    /// miscounted row is a technical failure; no partial report is exposed.
+    pub(crate) fn publish(
+        directory: tempfile::TempDir,
+        summary: ValidationSummary,
+        intent: Arc<PreparedIntent>,
+    ) -> Result<Self, ErrorCode> {
+        let file = File::open(directory.path().join(Self::FILE))
+            .map_err(|_| ErrorCode::TechnicalFailure)?;
+        let index = JsonlReportIndex::scan(file, &summary, &ReportFilter::default(), || false)
+            .map_err(|_| ErrorCode::TechnicalFailure)?;
+        Ok(Self {
+            index: Mutex::new(index),
+            directory,
+            summary,
+            _intent: intent,
+        })
+    }
+    /// Open an independent reader on the owned spool for a filtered rescan.
+    /// The path is Rust-private and never derived from renderer input.
+    pub(crate) fn open(&self) -> std::io::Result<File> {
+        File::open(self.directory.path().join(Self::FILE))
+    }
+    pub(crate) fn summary(&self) -> &ValidationSummary {
+        &self.summary
+    }
+    /// Captured scope traces in canonical order; position `i` is `trace_{i}`,
+    /// the same opaque handle scheme already used by native progress.
+    pub(crate) fn traces(&self) -> &[TraceId] {
+        match &self.summary.scope_summary {
+            ScopeSummary::Trace { trace_id } => std::slice::from_ref(trace_id),
+            ScopeSummary::Flow { trace_ids } => trace_ids,
+        }
+    }
+    /// Run `read` against the shared unfiltered index. A poisoned lock means a
+    /// previous reader panicked mid-read: report a technical failure.
+    pub(crate) fn with_index<T>(
+        &self,
+        read: impl FnOnce(&mut JsonlReportIndex) -> Result<T, ErrorCode>,
+    ) -> Result<T, ErrorCode> {
+        read(&mut *self.index.lock().map_err(|_| ErrorCode::TechnicalFailure)?)
+    }
 }
 enum Completion {
     Validation {
@@ -193,20 +245,11 @@ fn execute(
         AtomicOutputOutcome::Published => {
             // The final service checkpoint fixes the outcome: late cancellation
             // must not discard a published report during index preparation.
-            let index = JsonlReportIndex::scan(
-                File::open(directory.path().join("errors.jsonl"))
-                    .map_err(|_| ErrorCode::TechnicalFailure)?,
-                &outcome.summary,
-                &ReportFilter::default(),
-                || false,
-            )
-            .map_err(|_| ErrorCode::TechnicalFailure)?;
-            let report = Report {
-                _index: index,
-                _directory: directory,
-                _intent: intent,
-            };
-            Some(Arc::new(report))
+            Some(Arc::new(Report::publish(
+                directory,
+                outcome.summary.clone(),
+                intent,
+            )?))
         }
         AtomicOutputOutcome::Unpublished { .. } => {
             directory.close().map_err(|_| ErrorCode::TechnicalFailure)?;
@@ -287,6 +330,9 @@ impl Drop for Job {
 pub(crate) struct Jobs {
     number: u64,
     current: Option<Job>,
+    // Queries and their worker are dropped (cancelled and joined) before the
+    // report they borrow through Arc.
+    results: crate::results::Results,
     last_report: Option<(RunRef, Arc<Report>)>,
 }
 impl Jobs {
@@ -294,6 +340,37 @@ impl Jobs {
         if let Some(job) = &self.current {
             job.token.cancel();
         }
+        self.results.cancel_on_close();
+    }
+    /// Join a finished worker without blocking and retain its published report.
+    /// A different published run invalidates every query of the previous one.
+    fn refresh(&mut self) {
+        let Some(job) = &mut self.current else {
+            return;
+        };
+        job.poll();
+        if let Some(Ok(Completion::Validation {
+            report: Some(report),
+            ..
+        })) = &job.result
+            && self
+                .last_report
+                .as_ref()
+                .is_none_or(|(run, _)| run != &job.run)
+        {
+            self.results.reset();
+            self.last_report = Some((job.run.clone(), report.clone()));
+        }
+    }
+    /// Filtered queries and pages over the last published report (P4-08).
+    pub(crate) fn results(
+        &mut self,
+        request: crate::results::ResultsRequest,
+        id: &str,
+    ) -> Result<Vec<u8>, ErrorCode> {
+        self.refresh();
+        self.results
+            .dispatch(request, self.last_report.as_ref(), id)
     }
     pub(crate) fn start(
         &mut self,
@@ -389,20 +466,13 @@ impl Jobs {
         if requested.is_some_and(|run| self.current.as_ref().is_none_or(|job| &job.run != run)) {
             return Err(ErrorCode::StaleContext);
         }
+        self.refresh();
         let Some(job) = &mut self.current else {
             return ipc::response(
                 id,
                 json!({"schemaVersion":1,"state":"idle","run":null,"outcome":null}),
             );
         };
-        job.poll();
-        if let Some(Ok(Completion::Validation {
-            report: Some(report),
-            ..
-        })) = &job.result
-        {
-            self.last_report = Some((job.run.clone(), report.clone()));
-        }
         match request {
             JobRequest::State { .. } => ipc::response(id, job.snapshot()?),
             JobRequest::Progress { .. } => {
@@ -451,7 +521,7 @@ impl Jobs {
 }
 
 #[cfg(test)]
-mod tests {
+pub(crate) mod tests {
     use super::*;
     use std::{
         fs,
@@ -460,7 +530,7 @@ mod tests {
     };
     const INSTANCE: &str = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-    fn fixture() -> (
+    pub(crate) fn fixture() -> (
         tempfile::TempDir,
         Arc<PreparedIntent>,
         Arc<dyn ReferenceDataPreparer>,
@@ -541,11 +611,14 @@ mod tests {
         let first = run(&jobs);
         let (identity, report) = jobs.last_report.as_ref().unwrap();
         assert_eq!(*identity, first);
-        assert_eq!(report._index.row_count(), 1);
-        assert_eq!(report._index.total(), 1);
-        assert_eq!(report._index.cache_len(), 0);
-        assert_eq!(report._index.decoded_rows(), 0);
-        let old_path = report._directory.path().to_owned();
+        {
+            let index = report.index.lock().unwrap();
+            assert_eq!(index.row_count(), 1);
+            assert_eq!(index.total(), 1);
+            assert_eq!(index.cache_len(), 0);
+            assert_eq!(index.decoded_rows(), 0);
+        }
+        let old_path = report.directory.path().to_owned();
         let bytes = fs::read(old_path.join("errors.jsonl")).unwrap();
         assert!(!terminal.to_string().contains(old_path.to_str().unwrap()));
         // Compare canonical output with a direct call to the same public service.
@@ -658,9 +731,10 @@ mod tests {
         );
         let mut report = report.unwrap();
         let report = Arc::get_mut(&mut report).unwrap();
-        assert!(report._directory.path().join("errors.jsonl").exists());
-        assert_eq!(report._index.row_count(), 1);
-        assert!(report._index.read_row(0).unwrap().is_some());
+        assert!(report.directory.path().join("errors.jsonl").exists());
+        let index = report.index.get_mut().unwrap();
+        assert_eq!(index.row_count(), 1);
+        assert!(index.read_row(0).unwrap().is_some());
     }
 
     #[test]
@@ -688,8 +762,8 @@ mod tests {
                 }
             );
             let mut report = report.unwrap();
-            let path = report._directory.path().to_owned();
-            let index = &mut Arc::get_mut(&mut report).unwrap()._index;
+            let path = report.directory.path().to_owned();
+            let index = Arc::get_mut(&mut report).unwrap().index.get_mut().unwrap();
             assert_eq!(index.row_count(), usize::from(!valid));
             assert_eq!(index.offset_bytes(), usize::from(!valid) * 8);
             assert_eq!(index.decoded_rows(), 0);
@@ -745,6 +819,7 @@ mod tests {
             Jobs {
                 number: 1,
                 current: Some(job),
+                results: Default::default(),
                 last_report: None,
             },
             tx,

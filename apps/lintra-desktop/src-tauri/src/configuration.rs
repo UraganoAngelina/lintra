@@ -930,6 +930,15 @@ impl Configuration {
         }
     }
 
+    /// Query/page commands over the last published report; see `results.rs`.
+    pub(crate) fn results(
+        &mut self,
+        request: crate::results::ResultsRequest,
+        request_id: &str,
+    ) -> Result<Vec<u8>, ErrorCode> {
+        self.jobs.results(request, request_id)
+    }
+
     pub(crate) fn resolve() -> Result<Self, ErrorCode> {
         let executable = std::env::current_exe().map_err(|_| ErrorCode::TechnicalFailure)?;
         let bundle = AnalysisBundle::resolve(

@@ -1,7 +1,7 @@
 //! Shared disk-backed canonical JSONL index for native adapters. The streaming
 //! scan retains only byte offsets; requested diagnostics use a 128-row FIFO.
 //! Offset memory is O(matches), not a constant-memory claim for the full index.
-use crate::{ScopeSummary, ValidationError, ValidationSummary};
+use crate::{ScopeSummary, TraceId, ValidationError, ValidationSummary};
 use std::{
     collections::{BTreeMap, VecDeque},
     error::Error,
@@ -57,6 +57,9 @@ impl From<io::Error> for ReportIndexError {
 
 /// Exact, case-sensitive AND filters. Empty text means no restriction. Input
 /// values are never trimmed/coerced into patient identifiers or schema values.
+/// `trace` is the optional trace restriction of the IPC v1 Filter DTO
+/// (`trace_ref`, resolved by the native adapter against the captured scope);
+/// `None` keeps the five Slint filters unchanged.
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct ReportFilter {
     pub code: String,
@@ -64,6 +67,7 @@ pub struct ReportFilter {
     pub record: String,
     pub fiscal_code: String,
     pub line: Option<u64>,
+    pub trace: Option<TraceId>,
 }
 impl ReportFilter {
     pub fn parse_line(text: &str) -> Result<Option<u64>, ReportIndexError> {
@@ -79,7 +83,10 @@ impl ReportFilter {
             .map(Some)
             .ok_or(ReportIndexError::InvalidLineFilter)
     }
-    fn matches(&self, error: &ValidationError) -> bool {
+    /// True when the decoded diagnostic satisfies every active restriction.
+    /// Public so adapters can re-verify a lazily read row against the
+    /// immutable query that produced its offset.
+    pub fn matches(&self, error: &ValidationError) -> bool {
         (self.code.is_empty() || error.code.as_symbol().is_ok_and(|v| v == self.code))
             && (self.field.is_empty() || error.field.as_ref().is_some_and(|v| v.id.0 == self.field))
             && (self.record.is_empty()
@@ -87,6 +94,7 @@ impl ReportFilter {
             && (self.fiscal_code.is_empty()
                 || error.record_identity.fiscal_code.as_deref() == Some(&self.fiscal_code))
             && self.line.is_none_or(|v| v == error.line_number)
+            && self.trace.as_ref().is_none_or(|v| *v == error.trace_id)
     }
 }
 
