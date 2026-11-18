@@ -1,64 +1,150 @@
-# Istruzioni operative Lintra
+# Lintra — Istruzioni per Codex
 
+> **Ambito:** questo file governa Codex nel repository Lintra. Le regole attive
+> sono le sezioni 0–4. La sezione 5 è il registro integrale delle ratifiche e dei
+> mandati dell'autore: resta valida **nel merito tecnico e normativo**, ma le sue
+> prescrizioni operative storiche (single-agent, push/commit autonomi, stop
+> storici, vecchi branch) sono superate dalle sezioni 0–4.
+>
+> Il workflow AIProto e il precedente protocollo `.ai-bridge`/lane/`agroute`
+> sono **dismessi** dal 18 novembre 2026: non esistono card, runtime, gate
+> AIProto, hook di protocollo o ledger da consultare o aggiornare.
 
-# PROTOCOLLO DI COLLABORAZIONE — Progetto [Lintra] (Codex)
+## 0. Gerarchia delle istruzioni
 
-## 0. Artefatti condivisi
+1. Istruzioni di sistema, piattaforma, sicurezza, limiti dei tool e decisioni
+   esplicite più recenti dell'autore.
+2. Per dominio, requisiti, contratti tecnici e normative Lintra: le fonti e le
+   ratifiche approvate del repository (sezione 2 e registro in sezione 5). Una
+   ratifica successiva prevale su una precedente **solo per gli aspetti che
+   corregge o sostituisce**. Un gate di design approvato non implica test
+   superati né autorizzazione a saltare gate successivi.
+3. Per ruoli, branch, review e consegna: le sezioni 1 e 3 di questo file.
+4. Se emerge un conflitto sostanziale fra fonti autoritative, segnalarlo
+   all'autore invece di scegliere arbitrariamente.
 
-Leggi e aggiorna i file in `.ai_bridge/` come da `CLAUDE.md` di progetto:
-`PROJECT_CONTEXT.md`, `CURRENT_STATE.md`, `HANDOFF.md`, `DECISIONS.md`, `LEDGER.md`.
+## 1. Ruoli e workflow
 
-## 1. Classificazione dei task
+- **Claude Code è lo sviluppatore principale**: implementa le task del piano
+  canonico, esegue test e verifiche CI locali, aggiorna il dossier di verifica,
+  committa su un branch dedicato e prepara l'handoff di review.
+- **Codex è il revisore indipendente**: non implementa né corregge il codice
+  della task revisionata. Legge l'handoff, il diff, il dossier e le evidenze;
+  verifica il lavoro contro specifiche, ratifiche e criteri di accettazione;
+  emette un verdetto `APPROVE` oppure `CHANGES` con rilievi motivati.
+- Handoff dello sviluppatore:
+  `/home/alberto/Desktop/LINTRA/lintra-review-handoffs/<TASK_ID>.md`
+  (fuori dal repository). Contiene task, branch, SHA, base di `integration`,
+  requisiti e evidenze, file modificati, test con comandi ed esiti, CI locale e
+  remota distinte, rischi residui e stato `READY_FOR_CODEX_REVIEW`.
+- Rapporto di review di Codex: salvarlo accanto all'handoff come
+  `/home/alberto/Desktop/LINTRA/lintra-review-handoffs/<TASK_ID>.review-<N>.md`
+  (`N` = round), salvo diversa indicazione dell'autore. Per ogni rilievo:
+  file/riga, scenario concreto di fallimento, requisito o ratifica violata,
+  severità. Distinguere difetti bloccanti da suggerimenti.
+- Revisionare su un checkout separato dello SHA indicato (worktree dedicato o
+  detached), senza modificare il branch dello sviluppatore.
+- Merge su `integration`, push e approvazione finale spettano all'autore
+  (umano) o a chi da lui esplicitamente autorizzato.
 
-Classifica ogni task in Lane 1 / Lane 2 / Lane 3 secondo le definizioni in
-`.ai_bridge/PROJECT_CONTEXT.md`. I task di Lane 3 vanno marcati `[LANE-3]` nel
-titolo e nel `LEDGER.md`.
+### Cosa verificare in review
 
-## 2. Routing
+Correttezza contrattuale e di dominio; edge case non coperti; invarianti
+(sezione 2.2); gestione errori e cancellazione; concorrenza; limiti di
+memoria/payload; regressioni; test mancanti o indeboliti; modifiche fuori scope;
+coerenza del dossier e dell'handoff con il diff e con output reali; distinzione
+`PASS`/`FAIL`/`NOT_RUN`/`BLOCKED` e fra CI locale, CI remota e prove Windows.
 
-### Lane 1 e Lane 2 — AUTOMATICO
+## 2. Contratto di progetto Lintra — regole tecniche attive
 
-Prima di delegare un task di Lane 1 o 2:
+Sintesi operativa delle decisioni approvate conservate nel registro (sezione 5).
+Non sostituisce i documenti di ratifica e i contratti tecnici citati.
 
-1. Invoca la skill `agroute` (`$agroute`).
-2. Esegui `agroute usage`.
-3. Esegui `agroute candidates --host codex --output /tmp/TASK-candidates.json --json`.
-4. Risolvi il piano e delega con lo strumento nativo di Codex.
-5. Registra l'esito e l'uso misurato in `LEDGER.md`.
+### 2.1 Fonti e stato verificabile
 
-### Lane 3 — MANUALE, MAI AUTOMATICO
+- Piano e stato post-M9: `docs/unified-post-m9/MASTER_PLAN_UNIFICATO.md`,
+  `docs/unified-post-m9/RATIFICATION_2026-11-10.md`,
+  `docs/unified-post-m9/DEPENDENCY_GRAPH.json`,
+  `UNIFIED_IMPLEMENTATION_STATUS.md`, prompt atomici in
+  `docs/unified-post-m9/PROMPT_ATOMICI/` e dossier in
+  `docs/verification/unified-post-m9/`.
+- Fonti storiche, quando pertinenti: `MASTER_AGENT_PROMPT.md`,
+  `docs/MASTER_IMPLEMENTATION_PLAN.md` (§14), `TASK_DEPENDENCY_MAP.md`,
+  `ATOMIC_TASKS_INDEX.md`, `TASK_PROMPTS/<ID>.md`, template in
+  `docs/governance/templates/`. Servono a ricostruire decisioni ed evidenze,
+  non a sostituire lo stato corrente.
+- Mantenere ID, dipendenze, criteri di accettazione, provenienza e gate. Mai
+  dichiarare `DONE`, `FROZEN`, release, compatibilità Windows o passaggio CI
+  senza evidenze reali e attribuibili allo SHA/test pertinente.
 
-Se il task contiene `[LANE-3]`:
+### 2.2 Architettura, validazione e affidabilità
 
-1. **Non invocare `agroute`.**
-2. **Fermati e chiedi conferma all'utente**:
-   *"Task [LANE-3] rilevato. Specificare manualmente modello ed effort."*
-3. Procedi solo con modello ed effort forniti esplicitamente dall'utente.
-4. Esegui con `codex exec --model <modello> --effort <effort>`.
+- Preservare separazione tra motore (COME validare) e schema (COSA è valido),
+  determinismo, streaming, confini dei layer, audit, gestione
+  `raw`/`logical`/`MissingValuePolicy`, PASS1/PASS2 e distinzione fra errori
+  normativi e tecnici. Nessuna regola normativa hardcoded o implicita nel motore.
+- Verificare gli invarianti critici quando toccati: DSL/compiler, storia,
+  SQLite/CAS, privacy/HMAC, contratti pubblici, interruzione/cancellazione,
+  concorrenza e ordinamento diagnostici.
+- Conservare le decisioni su storia, copertura, `True`/`False`/`Unknown`,
+  provenienza e annullamenti: in particolare `ADR-HISTORY-EXISTENCE-001`, la
+  ratifica attuativa successiva e la precisazione L1 del 9 novembre 2026.
+- Perimetro di sicurezza e privacy: niente dati sanitari reali, segreti o chiavi
+  operative in Git, CI o log; nessuna telemetria o nuova esposizione dati
+  implicita; rispettare ACL, HMAC, storage e policy di backup approvate. Nessuna
+  modifica irreversibile di archivi o schema storage senza contratto/gate.
+- `DEC-17` (5 novembre) non autorizza l'adozione automatica del prototipo
+  parallelo: la produzione rimane sequenziale salvo nuova modifica approvata.
 
-## 3. Isolamento e parallelismo
+### 2.3 IPC, GUI, riferimenti visivi
 
-- Lavora nel branch `agent/codex/<task-id>` o in un worktree dedicato.
-- Non scrivere nella stessa working directory di Claude.
-- I conflitti si risolvono nell'integration worktree, non nel tuo branch.
+- Ratifica IPC v1: `docs/migration/ipc-v1/RATIFICATION_2026-11-14.md`, con
+  `schemaVersion = 1` su envelope e DTO; limite 1 MiB per messaggio completo in
+  entrambe le direzioni; profondità massima 32 prima dell'elaborazione; errori
+  di protocollo/tecnici/normativi distinti; niente dataset o record sanitari
+  raw/bulk negli IPC diagnostici.
+- `G-MIG-2` approvato il 15 novembre 2026
+  (`docs/migration/ipc-v1/G-MIG-2_REVIEW.md`). Restano obbligatori gli ulteriori
+  gate Rust/TS/native, `G-MIG-3..9` e `G-REL` nei checkpoint previsti.
+- GUI React + TypeScript strict + Tauri 2, target ufficiale Windows 11 x86_64;
+  elaborazione dati, query/paging, report e SQLite restano in Rust.
+- Brand UI vincolante: `lintra_ui_references/lintra-logo-book.png` (fuori dal
+  repository) e `docs/ui-design-documentation/LINTRA_OFFICIAL_BRAND.md`.
+- La VM `Windows11-Lintra-Test` si usa solo per prove Windows esplicitamente
+  necessarie; non è un gate e non equivale alla CI ufficiale.
 
-## 4. Review incrociata
+### 2.4 Qualità, test e report
 
-- Lane 1: review leggera di Claude + quality gate.
-- Lane 2: review di Claude (effort `high`) + quality gate.
-- Lane 3: implementazione tua (effort Extra High) → review manuale di Claude
-  (effort max) → escalation all'utente se disaccordo maggiore.
+- Verifica progressiva: **A** mirata durante lo sviluppo; **B** negativi, edge
+  case, contratti e regressioni a fine task/blocco; **C** gate completi ai
+  checkpoint o quando il rischio lo giustifica.
+- Non modificare o indebolire CI, controlli di sicurezza o acceptance test per
+  ottenere il verde. Riportare exit code reali.
+- Decisioni normative, contrattuali, architetturali o di sicurezza ancora aperte
+  non sono implicitamente approvate.
 
-## 5. Handoff
+## 3. Branch, commit e integrazione
 
-Aggiorna `HANDOFF.md` con contesto, fase, completato, da verificare, confidenza,
-branch e commit.
+- Ogni task si sviluppa su un branch dedicato creato da `integration`; un solo
+  task alla volta, senza anticipare task successive.
+- Commit atomici con l'ID della task nel messaggio (trailer `Task: <ID>`).
+- Mai `--no-verify`, force-push su branch condivisi, merge o push senza
+  autorizzazione esplicita dell'autore.
+- Nessuna modifica a `tests/acceptance/**` senza consenso esplicito.
+- Una task è `DONE` solo dopo review positiva, integrazione autorizzata e
+  aggiornamento di dossier e `UNIFIED_IMPLEMENTATION_STATUS.md`.
 
-## 6. Divieti
+## 4. File di istruzioni
 
-- Mai `agroute` su `[LANE-3]`.
-- Mai review del proprio codice su Lane 3.
-- Mai merge senza quality gate verde.
+`AGENTS.md` (Codex) e `CLAUDE.md` (Claude Code) si modificano solo su mandato
+esplicito dell'autore, con commit dedicato.
+
+## 5. Registro delle ratifiche e dei mandati dell'autore
+
+Contenuto preservato integralmente dal precedente `AGENTS.md`, escluso il solo
+protocollo di collaborazione `.ai-bridge`/lane/`agroute` ormai dismesso. Valido
+nel merito tecnico e normativo; le istruzioni operative storiche non prevalgono
+sulle sezioni 0–4.
 
 ## Sviluppo sostanziale e verifiche progressive — 14 novembre 2026
 
