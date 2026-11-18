@@ -281,3 +281,76 @@ fn three_hundred_thousand_and_one_million_rows_keep_only_offsets_and_a_bounded_c
         assert_eq!(model.read_row(count - 1).unwrap().unwrap().line, "8");
     }
 }
+
+#[test]
+fn shared_library_index_is_lazy_and_evicts_diagnostics_by_row() {
+    let row = fixture().split(|b| *b == b'\n').nth(1).unwrap().to_vec();
+    let mut file = tempfile::tempfile().unwrap();
+    for _ in 0..129 {
+        file.write_all(&row).unwrap();
+        file.write_all(b"\n").unwrap();
+    }
+    let mut index = JsonlReportIndex::scan(
+        file,
+        &summary(129, &[("E_RECORD_LENGTH", 129)]),
+        &ReportFilter::default(),
+        || false,
+    )
+    .unwrap();
+    assert_eq!(index.cache_len(), 0);
+    assert_eq!(index.decoded_rows(), 0);
+    let first = index.read_row(0).unwrap().unwrap();
+    assert_eq!(first.code.as_symbol().unwrap(), "E_RECORD_LENGTH");
+    assert_eq!(index.read_row(0).unwrap().unwrap(), first);
+    assert_eq!(index.decoded_rows(), 1);
+    for n in 1..129 {
+        assert_eq!(index.read_row(n).unwrap().unwrap(), first);
+        assert_eq!(index.cache_len(), (n + 1).min(128));
+    }
+    assert_eq!(index.decoded_rows(), 129);
+    assert_eq!(index.read_row(0).unwrap().unwrap(), first);
+    assert_eq!(index.decoded_rows(), 130, "oldest row was evicted");
+    assert_eq!(index.cache_len(), 128);
+    assert_eq!(index.read_row(usize::MAX).unwrap(), None);
+    assert_eq!(index.decoded_rows(), 130);
+    assert_eq!(index.highest_requested_row(), 128);
+}
+
+#[test]
+fn shared_scan_cancels_between_rows_and_validates_rows_excluded_by_filters() {
+    let mut file = tempfile::tempfile().unwrap();
+    file.write_all(&fixture()).unwrap();
+    let mut checkpoints = 0;
+    assert!(matches!(
+        JsonlReportIndex::scan(file, &small_summary(), &ReportFilter::default(), || {
+            checkpoints += 1;
+            checkpoints == 2
+        }),
+        Err(ReportIndexError::Cancelled)
+    ));
+    assert_eq!(checkpoints, 2);
+
+    let mut rows: Vec<serde_json::Value> = fixture()
+        .split(|b| *b == b'\n')
+        .filter(|b| !b.is_empty())
+        .map(|b| serde_json::from_slice(b).unwrap())
+        .collect();
+    rows[1]["line"] = 0.into();
+    let mut file = tempfile::tempfile().unwrap();
+    for row in rows {
+        serde_json::to_writer(&mut file, &row).unwrap();
+        file.write_all(b"\n").unwrap();
+    }
+    assert!(matches!(
+        JsonlReportIndex::scan(
+            file,
+            &small_summary(),
+            &ReportFilter {
+                code: "E_SYNTHETIC_RULE".into(),
+                ..Default::default()
+            },
+            || false
+        ),
+        Err(ReportIndexError::Malformed)
+    ));
+}

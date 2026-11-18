@@ -7,6 +7,7 @@ use crate::{
 use lintra::*;
 use serde_json::{Map, Value, json};
 use std::{
+    fs::File,
     io::BufWriter,
     sync::{Arc, Mutex},
     thread::{self, JoinHandle},
@@ -107,6 +108,9 @@ struct WorkerState {
     progress: Progress,
 }
 struct Report {
+    // Shared library index/cache stays in Rust. The reader must drop before
+    // TempDir on Windows; paging/DTO commands are added in P4-08, not here.
+    _index: JsonlReportIndex,
     // Ownership keeps the private canonical JSONL alive, never a wire path.
     _directory: tempfile::TempDir,
     // Captured schema, paths, parameters and provenance belong to this report.
@@ -187,7 +191,18 @@ fn execute(
         .map_err(|_| ErrorCode::TechnicalFailure)?;
     let report = match published {
         AtomicOutputOutcome::Published => {
+            // RunCompleted seals the service result; report preparation remains
+            // on this owned worker, never in the polling callback or renderer.
+            let index = JsonlReportIndex::scan(
+                File::open(directory.path().join("errors.jsonl"))
+                    .map_err(|_| ErrorCode::TechnicalFailure)?,
+                &outcome.summary,
+                &ReportFilter::default(),
+                || token.is_cancelled(),
+            )
+            .map_err(|_| ErrorCode::TechnicalFailure)?;
             let report = Report {
+                _index: index,
                 _directory: directory,
                 _intent: intent,
             };
@@ -526,6 +541,10 @@ mod tests {
         let first = run(&jobs);
         let (identity, report) = jobs.last_report.as_ref().unwrap();
         assert_eq!(*identity, first);
+        assert_eq!(report._index.row_count(), 1);
+        assert_eq!(report._index.total(), 1);
+        assert_eq!(report._index.cache_len(), 0);
+        assert_eq!(report._index.decoded_rows(), 0);
         let old_path = report._directory.path().to_owned();
         let bytes = fs::read(old_path.join("errors.jsonl")).unwrap();
         assert!(!terminal.to_string().contains(old_path.to_str().unwrap()));
@@ -615,6 +634,61 @@ mod tests {
         assert!(old_path.exists());
         drop(jobs);
         assert!(!old_path.exists());
+    }
+
+    #[test]
+    fn native_report_owns_shared_lazy_index_for_valid_and_invalid_output() {
+        for valid in [true, false] {
+            let (_input_directory, intent, refs) = fixture();
+            if valid {
+                let ValidationScope::Trace(input) = &intent.request.scope else {
+                    unreachable!()
+                };
+                let InputSource::Path(path) = &input.source;
+                fs::write(path, b"001A  \n").unwrap();
+            }
+            let completion =
+                execute(intent, refs, &mut |_| {}, &CancellationToken::default()).unwrap();
+            let Completion::Validation { outcome, report } = completion else {
+                panic!("service was entered")
+            };
+            assert_eq!(
+                outcome.status,
+                if valid {
+                    RunStatus::CompletedValid
+                } else {
+                    RunStatus::CompletedInvalid
+                }
+            );
+            let mut report = report.unwrap();
+            let path = report._directory.path().to_owned();
+            let index = &mut Arc::get_mut(&mut report).unwrap()._index;
+            assert_eq!(index.row_count(), usize::from(!valid));
+            assert_eq!(index.offset_bytes(), usize::from(!valid) * 8);
+            assert_eq!(index.decoded_rows(), 0);
+            assert_eq!(index.cache_len(), 0);
+            if valid {
+                assert_eq!(index.read_row(0).unwrap(), None);
+            } else {
+                let error = index.read_row(0).unwrap().unwrap();
+                assert_eq!(error.code.as_symbol().unwrap(), "E_RECORD_LENGTH");
+                assert_eq!(error.line_number, 2);
+                assert_eq!(index.read_row(0).unwrap().unwrap(), error);
+                assert_eq!(index.decoded_rows(), 1);
+                assert_eq!(index.cache_len(), 1);
+            }
+            let retained = report.clone();
+            drop(report);
+            assert!(
+                path.exists(),
+                "a retained report still owns reader and spool"
+            );
+            drop(retained);
+            assert!(
+                !path.exists(),
+                "dropping the last reader releases the spool"
+            );
+        }
     }
 
     // A real owned thread holds finalization open so control races are deterministic.
