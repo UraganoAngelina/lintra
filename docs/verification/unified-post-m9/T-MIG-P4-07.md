@@ -3,8 +3,8 @@
 18 novembre 2026. Autore Codex, Lane 3. Baseline:
 `45abfdcbcca4d2f099469295ba578e615fd3b933`, branch
 `agent/codex/T-MIG-P4-07`. Prima consegna: `565623b`, review Claude **CHANGES**.
-Stato corrente: **correzione della cancellazione tardiva verificata, pronta per nuova review**.
-Nessun gate aggregato, review indipendente o compatibilità Windows attestati.
+Stato finale: **DONE**; commit pubblicati `a68d17d` e `5e9cacd` (vedi
+"Chiusura"). Nessun gate aggregato o compatibilità Windows attestati.
 
 ## Perimetro e comportamento
 
@@ -205,3 +205,25 @@ log `/tmp/T-MIG-P4-07-late-cancel-after.log`. Il test di regressione è presente
 anche nel gate nativo completo. Nuova review indipendente, checkpoint umano
 Lane 3 e gate sull'integrazione restano necessari. Nessuna CI o prova Windows
 aggiunta; G-MIG-4 e G-REL restano aperti. P4-08 non viene iniziata.
+
+## Chiusura (18 novembre 2026)
+
+- Review Claude round 2 su `3b15f0a`: **approve** (evidenza runtime
+  `review-1795013666944511928.log`, SHA-256
+  `f59c8a0367a47c2682dfe1e7580e04e9e9c1862c04c8054b56d5906ba8b39575`).
+- Checkpoint umano Lane 3 confermato su `3b15f0a` (15:59 CET).
+- Gate di merge locale sul risultato dell'integrazione: 9 comandi configurati,
+  1.146 test Rust e 28 Node superati, 0 falliti, 10 ignored preesistenti.
+  Log `gate-merge-1795013997.log`, SHA-256
+  `a54a1324cbd9ef901ae1ff245d1edeca86911f82adc57c30c1c7b90f393b22ad`.
+- Merge locale in `integration`: `f358db6`. Nessun file di `tests/acceptance` modificato.
+- Pubblicazione: `integration` ricostruita linearmente sul remoto `9171501`,
+  escludendo i commit di governance del workflow AIProto dismesso. `a68d17d` e
+  `5e9cacd` riapplicano `565623b` e `3b15f0a`; `git diff f358db6` sul codice è
+  vuoto, cambiano solo i file di istruzioni degli agenti. I log runtime citati
+  (`.ai_runtime/...`, gate di merge) sono conservati nell'archivio locale
+  del runtime, fuori dal repository.
+- **Non eseguito:** CI remota e prove Windows su `5e9cacd`. La qualifica
+  nativa Linux/Windows è rinviata al checkpoint del blocco P4, come per
+  P4-01..03; G-MIG-4 e G-REL restano aperti.
+- Prossime task READY: T-MIG-P4-08 (query/paging in Rust) e T-MIG-P4-11.

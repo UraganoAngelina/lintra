@@ -1,13 +1,13 @@
 # Stato unificato post-M9
 
-Aggiornato: 2026-11-17, Europe/Rome. Un agente; task tracciate singolarmente,
+Aggiornato: 2026-11-18, Europe/Rome. Un agente; task tracciate singolarmente,
 sviluppo sequenziale per blocchi coerenti secondo AGENTS.md.
 Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md),
 [master v1.0](docs/unified-post-m9/MASTER_PLAN_UNIFICATO.md) e
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **59/128 DONE;69 rimanenti** (18U-* e51MIG).
+Conteggio unificato: **60/128 DONE;68 rimanenti** (18U-* e51MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -102,7 +102,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P4-04 | T-MIG-P4-03 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-04.md) | 5e3acdb;32 Rust/28 Node/25 regressioni locali PASS;CI44065663299 SUCCESS Linux/Windows,build e smoke nativi PASS | Acceptance adapter PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P4-05 | T-MIG-P4-04 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-05.md) | 5e3acdb;32 Rust/28 Node/25 regressioni locali PASS;CI44065663299 SUCCESS Linux/Windows,build e smoke nativi PASS | Acceptance adapter PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P4-06 | T-MIG-P4-04, T-MIG-P4-05 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-06.md) | 5e3acdb;32 Rust/28 Node/25 regressioni locali PASS;CI44065663299 SUCCESS Linux/Windows,build e smoke nativi PASS | Acceptance adapter PASS; G-MIG-4 aggregato resta aperto |
-| T-MIG-P4-07 | T-MIG-P4-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-07.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
+| T-MIG-P4-07 | T-MIG-P4-06 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-07.md) | a68d17d+5e9cacd (=565623b/3b15f0a);gate merge locale su albero codice identico 1.146 Rust+28 Node PASS/0 fail;review Claude approve round 2;CI nativa al checkpoint blocco | Acceptance indice/cache PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P4-08 | T-MIG-P4-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-08.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-09 | T-MIG-P4-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-09.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-10 | T-MIG-P4-06, T-MIG-P4-08, T-MIG-P4-09, T-MIG-P4-12 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-10.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
@@ -392,3 +392,18 @@ chiusura aggiunge soltanto evidenze/status, senza duplicare CI. G-MIG-4 e
 G-REL restano aperti; UI prodotto e Full appartengono ai blocchi successivi.
 **STOP richiesto dall'autore dopo commit/push e CI: nessuna nuova task.**
 Prossime tecnicamente disponibili P4-07 e P4-11, da riprendere solo su mandato.
+
+Chiusura T-MIG-P4-07, 18 novembre 2026: **DONE**, **60/128 (46,9%)**, 68
+rimanenti. Autore Codex (Lane 3), commit 565623b + correzione 3b15f0a; review
+Claude CHANGES al round 1 e approve al round 2 su 3b15f0a; approvazione umana
+registrata; merge locale f358db6. Gate di merge locale (9 comandi
+configurati) PASS: 1.146 test Rust e 28 Node superati, 0 falliti, 10 ignored
+preesistenti; log `gate-merge-1795013997.log`, SHA-256
+a54a1324cbd9ef901ae1ff245d1edeca86911f82adc57c30c1c7b90f393b22ad, conservato
+nell'archivio locale del runtime dismesso. Integration è stata poi ricostruita
+linearmente sul remoto 9171501 senza i commit di governance AIProto: i commit
+pubblicati a68d17d e 5e9cacd riapplicano 565623b/3b15f0a e il codice è
+identico byte per byte a quello di f358db6 (differiscono solo file di
+istruzioni agenti). Nessuna CI remota o prova Windows su questi SHA: la qualifica nativa resta al checkpoint del
+blocco P4, come per P4-01..03. G-MIG-4 e G-REL aperti. Workflow AIProto
+dismesso; sviluppo successivo autorizzato all'autore Claude, review Codex. Prossime tecnicamente disponibili P4-08 e P4-11.
