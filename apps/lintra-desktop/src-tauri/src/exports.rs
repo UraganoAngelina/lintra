@@ -374,11 +374,10 @@ impl Exports {
             return cancelled("native_selection_cancelled");
         };
         let spool = report.spool();
-        let inputs = report.inputs();
         let source = ExportSource {
             jsonl: &spool,
             private_root: report.private_root(),
-            protected_inputs: &inputs,
+            protected_inputs: report.inputs(),
             audit: report.audit(),
         };
         // Destination structure and protection are checked before asking
@@ -489,11 +488,10 @@ impl Exports {
             .name("lintra-desktop-export".into())
             .spawn(move || {
                 let spool = report.spool();
-                let inputs = report.inputs();
                 let source = ExportSource {
                     jsonl: &spool,
                     private_root: report.private_root(),
-                    protected_inputs: &inputs,
+                    protected_inputs: report.inputs(),
                     audit: report.audit(),
                 };
                 lintra::export_captured_report_with_authorization(
@@ -796,7 +794,7 @@ mod tests {
             for format in [ExportFormat::Jsonl, ExportFormat::Csv, ExportFormat::Xlsx] {
                 let path = out.path().join(format!("{mode}.{}", format.extension()));
                 let dialogs = Dialogs::saving(Some(&path));
-                let mut forbidden: Vec<&Path> = inputs.iter().map(PathBuf::as_path).collect();
+                let mut forbidden: Vec<&Path> = inputs.iter().map(ProtectedInput::path).collect();
                 forbidden.push(&path);
                 forbidden.push(report.private_root());
                 let ready = prepare(
@@ -902,6 +900,91 @@ mod tests {
             fs::read(summary_path(&path)).unwrap(),
             canonical(&report, ExportFormat::Csv).1
         );
+    }
+
+    /// Codex P410-01 through the bridge, on a real Full run: input T was read
+    /// through an alias that becomes unreachable, input S is named like the
+    /// summary sidecar of a candidate report. Neither output file may land on
+    /// an input in prepare, and execute refuses once the protection is no
+    /// longer verifiable; input bytes never change.
+    #[cfg(unix)]
+    #[test]
+    fn inputs_behind_unreachable_aliases_are_never_overwritten() {
+        use std::os::unix::fs::{PermissionsExt, symlink};
+        let (inputs_dir, intent, refs) = full_fixture(b"01AAOK\n", b"11AAOK\n");
+        let root = inputs_dir.path();
+        let (real, gated) = (root.join("real"), root.join("gated"));
+        fs::create_dir(&real).unwrap();
+        fs::create_dir(&gated).unwrap();
+        symlink(&real, gated.join("alias")).unwrap();
+        let mut intent = Arc::try_unwrap(intent).unwrap_or_else(|_| unreachable!());
+        let ValidationScope::Flow(flow) = &mut intent.request.scope else {
+            unreachable!()
+        };
+        // S: real/out.csv.summary.json; T: read as gated/alias/T.csv.
+        for (trace, name) in flow
+            .traces
+            .iter_mut()
+            .zip(["out.csv.summary.json", "T.csv"])
+        {
+            let InputSource::Path(path) = &mut trace.source;
+            fs::rename(&*path, real.join(name)).unwrap();
+            *path = if name == "T.csv" {
+                gated.join("alias").join(name)
+            } else {
+                real.join(name)
+            };
+        }
+        let (mut jobs, run) = published(Arc::new(intent), refs);
+        let report_ref = about(&mut jobs, &run)["report_ref"].clone();
+        let set_gate =
+            |mode| fs::set_permissions(&gated, fs::Permissions::from_mode(mode)).unwrap();
+        let unchanged = || {
+            assert_eq!(
+                fs::read(real.join("out.csv.summary.json")).unwrap(),
+                b"01AAOK\n"
+            );
+            assert_eq!(fs::read(real.join("T.csv")).unwrap(), b"11AAOK\n");
+        };
+        let rejected =
+            json!({"schemaVersion":1,"state":"rejected","reason":"destination_not_allowed"});
+
+        set_gate(0o000);
+        assert!(
+            fs::canonicalize(gated.join("alias/T.csv")).is_err(),
+            "run as non-root"
+        );
+        for target in [real.join("T.csv"), real.join("out.csv")] {
+            // T itself, and a report whose summary sidecar is input S.
+            let dialogs = Dialogs::saving(Some(&target)).answering(&[true, true]);
+            let answer = prepare(&mut jobs, &report_ref, "csv", &dialogs, &[]).unwrap();
+            assert_eq!(answer, rejected, "{target:?}");
+            assert!(
+                dialogs.asked.borrow().is_empty(),
+                "refused before any confirmation"
+            );
+        }
+        set_gate(0o755);
+        unchanged();
+
+        // Prepared while verifiable; the alias becomes unreachable before execute.
+        let unrelated = real.join("report.csv");
+        let ready = prepare(
+            &mut jobs,
+            &report_ref,
+            "csv",
+            &Dialogs::saving(Some(&unrelated)),
+            &[],
+        )
+        .unwrap();
+        assert_eq!(ready["state"], "ready");
+        set_gate(0o000);
+        let receipt = execute(&mut jobs, &ready["export_ref"], &[]);
+        set_gate(0o755);
+        assert_eq!(receipt["state"], "failed", "{receipt}");
+        assert_eq!(receipt["published_roles"], json!([]));
+        assert!(!unrelated.exists() && !summary_path(&unrelated).exists());
+        unchanged();
     }
 
     /// Handles are bound to the published report and plans are consumed:

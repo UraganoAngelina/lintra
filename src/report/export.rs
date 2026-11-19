@@ -16,6 +16,49 @@ use std::{
     path::{Path, PathBuf},
 };
 
+/// An input file of a run, identified when its report was produced.
+///
+/// Capture right after the validation, while the input has just been read
+/// (`capture`). The export then protects the input by its spelling, by the
+/// canonical path resolved at capture and, on Unix, by its file identity
+/// (device and inode, which also covers hard links). A later change of
+/// permissions or aliases therefore cannot hide the input behind another
+/// path (Codex P410-01).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProtectedInput {
+    path: PathBuf,
+    canonical: Option<PathBuf>,
+    identity: Option<FileIdentity>,
+}
+#[cfg(unix)]
+type FileIdentity = (u64, u64);
+#[cfg(not(unix))]
+type FileIdentity = ();
+#[cfg(unix)]
+fn file_identity(metadata: &fs::Metadata) -> Option<FileIdentity> {
+    use std::os::unix::fs::MetadataExt;
+    Some((metadata.dev(), metadata.ino()))
+}
+#[cfg(not(unix))]
+fn file_identity(_: &fs::Metadata) -> Option<FileIdentity> {
+    None
+}
+impl ProtectedInput {
+    /// Resolve the input now. A failed resolution is kept as unknown, and
+    /// the export then refuses to run unless the input is verifiable again.
+    pub fn capture(path: &Path) -> Self {
+        Self {
+            path: path.to_owned(),
+            canonical: fs::canonicalize(path).ok(),
+            identity: fs::metadata(path).ok().as_ref().and_then(file_identity),
+        }
+    }
+    /// The input path exactly as the run received it.
+    pub fn path(&self) -> &Path {
+        &self.path
+    }
+}
+
 /// The captured report an export reads, and every path it must never write.
 ///
 /// `jsonl` is the committed canonical spool; `private_root` is its private
@@ -25,7 +68,7 @@ use std::{
 pub struct ExportSource<'a> {
     pub jsonl: &'a Path,
     pub private_root: &'a Path,
-    pub protected_inputs: &'a [PathBuf],
+    pub protected_inputs: &'a [ProtectedInput],
     pub audit: &'a BundleAudit,
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -48,6 +91,7 @@ pub enum ExportError {
     InvalidPath,
     InvalidExtension,
     ProtectedSource,
+    ProtectionUnverifiable,
     NotRegularFile,
     OverwriteRequired,
     Destination(ReportDestinationError),
@@ -76,6 +120,7 @@ impl fmt::Display for ExportError {
             Self::InvalidPath=>"Inserisci il percorso completo del file in una cartella esistente.",
             Self::InvalidExtension=>"L’estensione del file deve corrispondere al formato scelto.",
             Self::ProtectedSource=>"Scegli un altro file: questa destinazione coincide con il file analizzato o con il report sorgente.",
+            Self::ProtectionUnverifiable=>"Non è possibile verificare che la destinazione sia diversa dai file analizzati. Controlla l’accesso ai file di input o scegli un’altra cartella.",
             Self::NotRegularFile=>"La destinazione è una cartella o un collegamento. Scegli un file regolare.",
             Self::OverwriteRequired=>"Il report o il relativo riepilogo esiste già. Conferma la sostituzione oppure cambia nome.",
             Self::Destination(ReportDestinationError::ConfirmationRequired(assessment)) if assessment.counts().undetermined_files > 0 =>"Non è possibile determinare se la destinazione è locale o condivisa. Verifica gli accessi alla cartella e conferma il salvataggio.",
@@ -226,30 +271,43 @@ fn preflight(
     // Compare like representations on Windows too (extended-length prefixes).
     // Protect the entire private report root, including future sidecars.
     let protected_root = fs::canonicalize(source.private_root).map_err(ExportError::Io)?;
-    // Each input is compared both as given and canonicalized, so neither a
-    // relative/aliased spelling nor a missing file weakens the protection.
-    let inputs: Vec<PathBuf> = source
-        .protected_inputs
-        .iter()
-        .flat_map(|input| [Some(input.clone()), fs::canonicalize(input).ok()])
-        .flatten()
-        .collect();
+    // Each input is protected by its spelling, its canonical path at capture
+    // and its current canonical path, plus its captured file identity. A
+    // resolution failure never degrades to a weaker comparison: unless the
+    // input is simply gone (NotFound) and was resolved at capture, the
+    // protection is unverifiable and the export is refused (fail closed).
+    let mut inputs: Vec<PathBuf> = Vec::new();
+    let mut identities: Vec<FileIdentity> = Vec::new();
+    for input in source.protected_inputs {
+        inputs.push(input.path.clone());
+        inputs.extend(input.canonical.clone());
+        identities.extend(input.identity);
+        match fs::canonicalize(&input.path) {
+            Ok(current) => inputs.push(current),
+            Err(e) if e.kind() == io::ErrorKind::NotFound && input.canonical.is_some() => {}
+            Err(_) => return Err(ExportError::ProtectionUnverifiable),
+        }
+    }
     let paths = vec![path.to_owned(), summary_path(path)];
     for destination in &paths {
         let parent = destination.parent().ok_or(ExportError::InvalidPath)?;
         let parent = fs::canonicalize(parent).map_err(ExportError::Io)?;
         let normalized = parent.join(destination.file_name().ok_or(ExportError::InvalidPath)?);
-        let canonical = match fs::symlink_metadata(destination) {
+        let (canonical, identity) = match fs::symlink_metadata(destination) {
             Ok(metadata) => {
                 if !metadata.is_file() || metadata.file_type().is_symlink() {
                     return Err(ExportError::NotRegularFile);
                 }
-                fs::canonicalize(destination).map_err(ExportError::Io)?
+                (
+                    fs::canonicalize(destination).map_err(ExportError::Io)?,
+                    file_identity(&metadata),
+                )
             }
-            Err(e) if e.kind() == io::ErrorKind::NotFound => normalized,
+            Err(e) if e.kind() == io::ErrorKind::NotFound => (normalized, None),
             Err(e) => return Err(ExportError::Io(e)),
         };
-        if inputs.contains(&canonical) || canonical.starts_with(&protected_root) {
+        let same_file = identity.is_some_and(|identity| identities.contains(&identity));
+        if same_file || inputs.contains(&canonical) || canonical.starts_with(&protected_root) {
             return Err(ExportError::ProtectedSource);
         }
         if destination.exists() && !overwrite {
@@ -509,12 +567,14 @@ mod tests {
         for input in &inputs {
             fs::write(input, b"input").unwrap();
         }
+        let captured: Vec<ProtectedInput> =
+            inputs.iter().map(|p| ProtectedInput::capture(p)).collect();
         let audit = BundleAudit::external(None);
         let jsonl = private.join("errors.jsonl");
         let source = ExportSource {
             jsonl: &jsonl,
             private_root: &private,
-            protected_inputs: &inputs,
+            protected_inputs: &captured,
             audit: &audit,
         };
         for destination in [
@@ -536,6 +596,124 @@ mod tests {
             preflight(&source, &other, ExportFormat::Jsonl, false).unwrap(),
             [other.clone(), summary_path(&other)]
         );
+    }
+
+    fn source_for<'a>(
+        private: &'a Path,
+        jsonl: &'a Path,
+        inputs: &'a [ProtectedInput],
+        audit: &'a BundleAudit,
+    ) -> ExportSource<'a> {
+        ExportSource {
+            jsonl,
+            private_root: private,
+            protected_inputs: inputs,
+            audit,
+        }
+    }
+
+    /// Codex P410-01: the input was read through an alias that later becomes
+    /// unreachable, while the same file stays writable through its real path.
+    /// The captured canonical path still protects it, and an unverifiable
+    /// current resolution refuses even unrelated destinations (fail closed).
+    #[cfg(unix)]
+    #[test]
+    fn an_input_behind_an_alias_that_becomes_unreachable_stays_protected() {
+        use std::os::unix::fs::{PermissionsExt, symlink};
+        let root = tempfile::tempdir().unwrap();
+        let (real, gated, private) = (
+            root.path().join("real"),
+            root.path().join("gated"),
+            root.path().join("private"),
+        );
+        for dir in [&real, &gated, &private] {
+            fs::create_dir(dir).unwrap();
+        }
+        fs::write(real.join("input.csv"), b"001A  \nX\n").unwrap();
+        symlink(&real, gated.join("alias")).unwrap();
+        let captured = [ProtectedInput::capture(&gated.join("alias/input.csv"))];
+        let (audit, jsonl) = (BundleAudit::external(None), private.join("errors.jsonl"));
+        let source = source_for(&private, &jsonl, &captured, &audit);
+        fs::set_permissions(&gated, fs::Permissions::from_mode(0o000)).unwrap();
+        let blocked = fs::canonicalize(gated.join("alias/input.csv")).is_err();
+        let target = real.join("input.csv");
+        let direct = preflight(&source, &target, ExportFormat::Csv, true);
+        let unrelated = preflight(
+            &source,
+            &root.path().join("out.csv"),
+            ExportFormat::Csv,
+            true,
+        );
+        fs::set_permissions(&gated, fs::Permissions::from_mode(0o755)).unwrap();
+        // The real path is refused whether or not the alias is still readable.
+        assert!(
+            matches!(
+                direct,
+                Err(ExportError::ProtectedSource | ExportError::ProtectionUnverifiable)
+            ),
+            "{direct:?}"
+        );
+        if blocked {
+            assert!(matches!(
+                unrelated,
+                Err(ExportError::ProtectionUnverifiable)
+            ));
+        } else {
+            // Running with privileges that ignore directory permissions.
+            assert!(unrelated.is_ok());
+        }
+        assert_eq!(fs::read(&target).unwrap(), b"001A  \nX\n");
+    }
+
+    /// A hard link to an input, a re-created file at the captured canonical
+    /// path of a deleted input and a never-resolved input are all refused.
+    #[cfg(unix)]
+    #[test]
+    fn hard_links_deleted_and_never_resolved_inputs_are_handled_closed() {
+        let root = tempfile::tempdir().unwrap();
+        let private = root.path().join("private");
+        fs::create_dir(&private).unwrap();
+        let input = root.path().join("input.csv");
+        fs::write(&input, b"input").unwrap();
+        let link = root.path().join("link.csv");
+        fs::hard_link(&input, &link).unwrap();
+        let (audit, jsonl) = (BundleAudit::external(None), private.join("errors.jsonl"));
+        let captured = [ProtectedInput::capture(&input)];
+        let source = source_for(&private, &jsonl, &captured, &audit);
+        assert!(matches!(
+            preflight(&source, &link, ExportFormat::Csv, true),
+            Err(ExportError::ProtectedSource)
+        ));
+        // Deleted after the run: other destinations are fine, the captured
+        // path itself (re-created) stays protected.
+        fs::remove_file(&input).unwrap();
+        fs::remove_file(&link).unwrap();
+        assert!(
+            preflight(
+                &source,
+                &root.path().join("out.csv"),
+                ExportFormat::Csv,
+                true
+            )
+            .is_ok()
+        );
+        fs::write(&input, b"new").unwrap();
+        assert!(matches!(
+            preflight(&source, &input, ExportFormat::Csv, true),
+            Err(ExportError::ProtectedSource)
+        ));
+        // Never resolved and absent now: nothing verifiable, refuse.
+        let missing = [ProtectedInput::capture(&root.path().join("never.csv"))];
+        let source = source_for(&private, &jsonl, &missing, &audit);
+        assert!(matches!(
+            preflight(
+                &source,
+                &root.path().join("out.csv"),
+                ExportFormat::Csv,
+                true
+            ),
+            Err(ExportError::ProtectionUnverifiable)
+        ));
     }
     /// Returning Interrupted here would cause standard read_until/write_all to
     /// retry forever. Check the kind before exercising those convenience loops.

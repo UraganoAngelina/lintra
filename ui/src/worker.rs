@@ -71,6 +71,9 @@ pub struct AnalysisReport {
     directory: tempfile::TempDir,
     audit: BundleAudit,
     input_path: std::path::PathBuf,
+    // Identity of the input captured right after the run: exports protect it
+    // even if its path later becomes unreachable (P4-10, Codex P410-01).
+    protected_input: lintra::ProtectedInput,
     schema: Arc<CompiledFlowSchema>,
     references: Option<Arc<PreparedReferenceEvidence>>,
 }
@@ -82,6 +85,10 @@ impl AnalysisReport {
         &self.schema
     }
     /// Captured from the validated run, never from the currently edited form.
+    /// The analysed input as captured when the report was produced.
+    pub fn protected_input(&self) -> &lintra::ProtectedInput {
+        &self.protected_input
+    }
     pub fn input_path(&self) -> &Path {
         &self.input_path
     }
@@ -267,6 +274,7 @@ fn execute(
         AtomicOutputOutcome::Published => Some(Arc::new(AnalysisReport {
             directory,
             audit: prepared.audit,
+            protected_input: lintra::ProtectedInput::capture(&input_path),
             input_path,
             schema: prepared.schema,
             references,

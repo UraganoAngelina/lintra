@@ -30,11 +30,10 @@ pub fn preferred_format(reports: ReportSelection) -> ExportFormat {
 /// directory and its single analysed input are the protected sources.
 fn with_source<T>(report: &AnalysisReport, export: impl FnOnce(&ExportSource<'_>) -> T) -> T {
     let jsonl = report.jsonl_path();
-    let inputs = [report.input_path().to_owned()];
     export(&ExportSource {
         jsonl: &jsonl,
         private_root: report.directory(),
-        protected_inputs: &inputs,
+        protected_inputs: std::slice::from_ref(report.protected_input()),
         audit: report.audit(),
     })
 }

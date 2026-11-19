@@ -119,6 +119,10 @@ pub(crate) struct Report {
     // Captured summary: scope, totals and histogram that filtered rescans
     // must verify again before a new query can be published.
     summary: ValidationSummary,
+    // Every input of the run, identified right after the validation, so an
+    // export protects them even if their paths later become unreachable
+    // (P4-10, Codex P410-01).
+    inputs: Vec<ProtectedInput>,
     // Compiled schema and reference evidence used by this very run (P4-09):
     // details, guides and domains never consult the current form or catalog.
     captured: Captured,
@@ -153,10 +157,18 @@ impl Report {
             .map_err(|_| ErrorCode::TechnicalFailure)?;
         let index = JsonlReportIndex::scan(file, &summary, &ReportFilter::default(), || false)
             .map_err(|_| ErrorCode::TechnicalFailure)?;
+        let path = |input: &TraceValidationInput| match &input.source {
+            InputSource::Path(path) => ProtectedInput::capture(path),
+        };
+        let inputs = match &intent.request.scope {
+            ValidationScope::Trace(input) => vec![path(input)],
+            ValidationScope::Flow(flow) => flow.traces.iter().map(path).collect(),
+        };
         Ok(Self {
             index: Mutex::new(index),
             directory,
             summary,
+            inputs,
             captured,
             _intent: intent,
         })
@@ -170,15 +182,10 @@ impl Report {
     pub(crate) fn private_root(&self) -> &std::path::Path {
         self.directory.path()
     }
-    /// Every input file of the run, in scope order (one trace or a Full bundle).
-    pub(crate) fn inputs(&self) -> Vec<std::path::PathBuf> {
-        let path = |input: &TraceValidationInput| match &input.source {
-            InputSource::Path(path) => path.clone(),
-        };
-        match &self._intent.request.scope {
-            ValidationScope::Trace(input) => vec![path(input)],
-            ValidationScope::Flow(flow) => flow.traces.iter().map(path).collect(),
-        }
+    /// Every input of the run in scope order (one trace or a Full bundle),
+    /// as captured at publication.
+    pub(crate) fn inputs(&self) -> &[ProtectedInput] {
+        &self.inputs
     }
     /// Bundle provenance captured with the run (embedded/external, version, manifest).
     pub(crate) fn audit(&self) -> &BundleAudit {

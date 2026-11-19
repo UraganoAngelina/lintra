@@ -164,8 +164,9 @@ pub use report::columns::{ERROR_COLUMNS, ErrorColumn};
 pub use report::csv::CsvSink;
 /// Shared native-adapter export of a captured report (T-MIG-P4-10).
 pub use report::export::{
-    ExportError, ExportFailure, ExportFormat, ExportReceipt, ExportSource, export_captured_report,
-    export_captured_report_with_authorization, export_destinations, summary_path,
+    ExportError, ExportFailure, ExportFormat, ExportReceipt, ExportSource, ProtectedInput,
+    export_captured_report, export_captured_report_with_authorization, export_destinations,
+    summary_path,
 };
 pub use report::jsonl::JsonlSink;
 

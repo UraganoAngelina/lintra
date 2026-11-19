@@ -2,9 +2,9 @@
 
 19 novembre 2026. Autore Claude Code, revisore Codex. Baseline `integration`
 `ec6a9e0` (P4-06, P4-08, P4-09 e P4-12 DONE), branch `work/T-MIG-P4-10`.
-Stato: **IN_REVIEW**. Le verifiche locali sono PASS; mancano la review Codex,
-la CI remota e le prove Windows. G-MIG-4 resta aperto fino al checkpoint
-nativo del blocco P4.
+Stato: **IN_REVIEW**, rework 1 dopo CHANGES_REQUESTED, in attesa di nuova
+review. Le verifiche locali sono PASS; mancano review positiva, CI remota e
+prove Windows. G-MIG-4 resta aperto fino al checkpoint nativo del blocco P4.
 
 Specifica: `docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-10.md`.
 Acceptance: bridge LocalOnly+Full completo, export e provenance; test di
@@ -24,15 +24,65 @@ lato backend.
    esistente `windows =0.62.2`, per le conferme native su Windows. Nessun
    crate nuovo; `Cargo.lock` invariato.
 
+## Rework 1 — rilievo Codex P410-01 (BLOCKER)
+
+Rapporto: `lintra-review-handoffs/T-MIG-P4-10-CODEX-REVIEW.md` (fuori repo).
+Il rilievo è fondato. Il preflight canonicalizzava ogni input con `.ok()`:
+se la risoluzione falliva (per esempio PermissionDenied su una directory
+alias) restava solo lo spelling originale. Un input raggiunto da un altro
+percorso poteva quindi essere sovrascritto, con ricevuta di successo.
+
+Correzione nel motore condiviso (`src/report/export.rs`):
+- **`ProtectedInput::capture`.** Subito dopo il run, quando l'input è appena
+  stato letto, cattura lo spelling, il percorso canonico e, su Unix,
+  l'identità del file (dispositivo e inode, che copre anche gli hardlink).
+  `ExportSource.protected_inputs` è ora `&[ProtectedInput]`.
+- **Confronto.** Il preflight confronta la destinazione con lo spelling, il
+  canonico catturato, il canonico attuale e l'identità del file.
+- **Fail-closed.** Se il canonico attuale non è risolvibile per un motivo
+  diverso da "file assente con canonico catturato", oppure al run non era
+  stato risolto, l'export viene rifiutato con il nuovo errore
+  `ExportError::ProtectionUnverifiable`, anziché degradare a un confronto più
+  debole. Vale sia in `prepare` (`export_destinations`) sia in `execute`
+  (preflight prima dello staging e prima della pubblicazione), per entrambi i
+  file di output.
+- **Adattatori.** Il `Report` desktop cattura tutti gli input del bundle in
+  `publish`; l'`AnalysisReport` di Slint cattura il suo input alla
+  pubblicazione (`ui/src/worker.rs`), e il wrapper Slint lo usa.
+
+Regressioni:
+- **Libreria:**
+  - `an_input_behind_an_alias_that_becomes_unreachable_stays_protected`, lo
+    scenario di Codex: alias inaccessibile e percorso reale scrivibile; il
+    percorso reale è rifiutato e anche una destinazione estranea è
+    rifiutata come non verificabile; byte dell'input invariati;
+  - `hard_links_deleted_and_never_resolved_inputs_are_handled_closed`:
+    hardlink rifiutato; input cancellato con altra destinazione ammessa e
+    percorso catturato ricreato ancora protetto; input mai risolto
+    rifiutato.
+- **Desktop:** `inputs_behind_unreachable_aliases_are_never_overwritten` su un
+  run Full reale. `prepare` rifiuta, senza conferme, l'input T raggiunto dal
+  percorso reale e un report il cui sidecar `.summary.json` coincide con
+  l'input S. Un piano preparato quando la protezione era verificabile viene
+  rifiutato da `execute` se l'alias diventa inaccessibile: ricevuta `failed`,
+  nessun ruolo pubblicato, nessun file creato, byte degli input invariati. I
+  test girano come utente non root (uid 1000), quindi il ramo con il
+  permesso negato è esercitato davvero.
+
+Mutazione: reintroducendo il comportamento originale (`.ok()`, senza
+identità catturata) falliscono 3 test (2 di libreria, 1 desktop). Il
+sorgente è stato ripristinato con SHA identico (`04f2e906…1768`).
+
 ## Cosa cambia
 
 - **Libreria**:
   - `src/report/export.rs` (nuovo) contiene il motore di export estratto da
     `ui/src/export.rs`, con stessi tipi, messaggi, preflight, conferme D04,
     writer canonici, `AtomicReportFile` e ricevuta parziale;
-  - unica differenza di comportamento: `ExportSource.protected_inputs` è un
-    elenco, quindi un bundle Full protegge **tutti** i suoi input. Ogni input
-    è confrontato sia come scritto sia canonicalizzato;
+  - differenze di comportamento: `ExportSource.protected_inputs` è un elenco
+    di `ProtectedInput` catturati al run, quindi un bundle Full protegge
+    **tutti** i suoi input, anche dietro alias diventati irraggiungibili; una
+    protezione non verificabile rifiuta l'export (rework 1);
   - nuove API pubbliche (`src/lib.rs`): `ExportSource`,
     `export_captured_report`, `export_captured_report_with_authorization`,
     `export_destinations` (preflight strutturale per la preparazione), più i
@@ -109,49 +159,52 @@ fallisce. Il sorgente è stato ripristinato con SHA identico (`6ea27293…f9f8`)
 
 ## Verifiche locali (Linux CachyOS, rustc 1.99.1, Node v26.13.0)
 
+Rework 1, sui sorgenti finali:
+
 | Comando | Esito |
 |---|---|
 | `npm ci` / `npm run lint` / `npm test` / `npm run build` (in `apps/lintra-desktop`) | 0 / 0 / 41 PASS / 0 |
 | `cargo fmt --manifest-path src-tauri/Cargo.toml -- --check` | PASS / 0 |
-| `cargo test … --release --target x86_64-unknown-linux-gnu --features tauri/custom-protocol -j 2` | 61 PASS, 1 ignored GTK preesistente / 0 (58 + 3 nuovi) |
+| `cargo test … --release --target x86_64-unknown-linux-gnu --features tauri/custom-protocol -j 2` | 62 PASS, 1 ignored GTK preesistente / 0 |
 | `cargo clippy … --all-targets … -- -D warnings` | PASS / 0 |
 | `cargo build … --release` | PASS / 0 |
-| `python3 tests/native_smoke.py …/release/lintra-desktop` | PASS / 0, binario `3d5f2290…6c46`; display reale, non Xvfb |
+| `python3 tests/native_smoke.py …/release/lintra-desktop` | PASS / 0, binario `aa4a3dd5…97fe`; display reale, non Xvfb |
 | `cargo fmt --all -- --check` | PASS / 0 |
 | `cargo clippy --workspace --all-targets [--all-features] --locked -j 2 -- -D warnings` | PASS / 0, in entrambe le configurazioni |
-| `cargo test --workspace [--all-features] --locked -j 2` | 1.114 PASS, 0 fail, 9 ignored / 0, in entrambe (inclusi i test Slint `exports`) |
-| `cargo test -p lintra-ui --all-features --locked --test exports directory_sync_failure_after_rename_reports_the_published_file -- --exact --ignored` (step Linux di `ci.yml`) | 1 PASS / 0 |
+| `cargo test --workspace [--all-features] --locked -j 2` | 1.116 PASS, 0 fail, 9 ignored / 0, in entrambe (inclusi i test Slint) |
+| `cargo test -p lintra-ui --all-features --locked --test exports directory_sync_failure_after_rename_reports_the_published_file -- --exact --ignored` | 1 PASS / 0 |
 | `git diff --check` | PASS / 0 |
 
-Log fuori repo: `lintra-review-handoffs/T-MIG-P4-10.gate.log`, SHA-256
-`0bc94b1cd11c8bb04d88c8bd9b08d41217e107ac2536d61e7bb9c4a57bcc190d`.
+Il primo giro del gate del rework aveva Clippy desktop FAIL/101 (import
+inutilizzato). L'ho corretto e ho rieseguito l'intero gate. Log fuori repo:
+`lintra-review-handoffs/T-MIG-P4-10.r1-gate.log`, SHA-256
+`290fd5757805d3ea26133700cf7cfd3dd17011cacc47d1743aae8ea941692692`. Il log
+della consegna originale (`T-MIG-P4-10.gate.log`, `0bc94b1c…190d`) resta
+evidenza storica.
 
-**BLOCKED in locale:** `cargo check --target x86_64-pc-windows-gnu` del
-codice Windows nuovo (`save`, `confirm`). La build di `libsqlite3-sys` per
-Windows richiede `x86_64-w64-mingw32-gcc`, non installato. Il codice Windows
-nuovo non è quindi compilato localmente: la verifica è rinviata al job
-Windows di `desktop.yml` al checkpoint P4.
+**BLOCKED in locale:** `cargo check --target x86_64-pc-windows-gnu` (manca
+`x86_64-w64-mingw32-gcc` per `libsqlite3-sys`). Nella prima review Codex ha
+eseguito, a parte, un check isolato dei binding Win32 di `native_picker.rs`,
+con esito PASS. Su Windows `ProtectedInput` non cattura l'identità del file
+(nessuna API stabile): restano spelling, canonico catturato, canonico
+attuale e fail-closed.
 
-**NOT_RUN:**
-- step Windows di `ci.yml` (`shared_export_cli` e `shared_exports
-  --ignored`, con la fixture SMB della CI);
-- CI remota `desktop.yml`/`ci.yml`;
-- prove Windows/VM;
-- dialoghi nativi reali (GTK e Windows) con interazione: i test usano
-  dialoghi sintetici iniettati.
+**NOT_RUN:** step Windows di `ci.yml`, CI remota, prove Windows/VM e dialoghi
+nativi interattivi.
 
 ## Sorgenti verificati
 
 | File | SHA-256 |
 |---|---|
-| `src/report/export.rs` | `4a6fed4ef95f9d7a2aedc4ec6a24b9e68000fb120d48bee0e8fb52cebd06c6e7` |
+| `src/report/export.rs` | `04f2e9068c7939e7d46448533ce37d328ae3bbb41226d98ca6c665bc5ac41768` |
 | `src/report/mod.rs` | `feb7a47b7feca2a885bf4f3aa13fdfec3756e65aed2d1da72b1116a88cbca37a` |
-| `src/lib.rs` | `ed411b56f272d84f78c32bb8d6a19bc73094a87b931640b6b2831b988e5c1c33` |
-| `ui/src/export.rs` | `8de8e7ef51cab6f952c6af677afafb0c7ca6cf1510758d57364117eb06b15206` |
+| `src/lib.rs` | `176e125fab8a291e10bdeae38aa0c95b9450a332ad24f9729bc14bac027f4a34` |
+| `ui/src/export.rs` | `7d255b83ee9e55ab2abfee4e62569eb1571060451486e70edcb56657936f4b46` |
+| `ui/src/worker.rs` | `ff97b14fa6acda369d7fd1b110316e2abcd05bee1b3d1df9283ad9efab6351a3` |
 | `ui/src/export_controller.rs` | `ee28f467c2090a405ea61549d4ab6e42c10beecd123314ef989590e667868f39` |
 | `apps/lintra-desktop/src-tauri/Cargo.toml` | `0a0d257da488e8f327857a4ae2462b6241edf87d4a8553217810187cad322168` |
-| `apps/lintra-desktop/src-tauri/src/exports.rs` | `6ea27293708418bc637100fa7afbde6ba74d260b15d66c8208558ca8c83bf9f8` |
-| `apps/lintra-desktop/src-tauri/src/jobs.rs` | `9748f59034c952a9b08a73cc85a40299c0e499055b45a8c8f68536fcef48a3f2` |
+| `apps/lintra-desktop/src-tauri/src/exports.rs` | `ca9ac9d3d61ec82dcde6ec1da80a6effe8f00cf4e63578608ff04a091e3c0c8e` |
+| `apps/lintra-desktop/src-tauri/src/jobs.rs` | `2a5e62b02f7628f08d4cfe7155debd6ba9ef9daaceba3dad01de885f8492d85a` |
 | `apps/lintra-desktop/src-tauri/src/state.rs` | `ad94e6dddfde6e2f3695fa6f79781376f8d4a705814e8d181302bda4626dc407` |
 | `apps/lintra-desktop/src-tauri/src/configuration.rs` | `d3b9f345e19ce98e57357dab58b67bf83a3b1ed1b50125134cd324c8650d1086` |
 | `apps/lintra-desktop/src-tauri/src/main.rs` | `b94e8d8547da1a17445cba61c1fae1dd5b955ca4a5651c2a77c11bcf69683477` |
