@@ -146,6 +146,29 @@ impl AppState {
         }
         if matches!(
             request.operation.as_str(),
+            "results_select"
+                | "results_text"
+                | "results_context"
+                | "results_domain"
+                | "results_domain_state"
+        ) {
+            let command =
+                match crate::results::DetailRequest::decode(&request.operation, &request.payload) {
+                    Ok(command) => command,
+                    Err(code) => return ipc::error(Some(id), code),
+                };
+            if !self.info_sent.load(Ordering::Acquire) {
+                return ipc::error(Some(id), ErrorCode::InvalidState);
+            }
+            return match permit.as_mut() {
+                Some(configuration) => configuration
+                    .detail(command, id)
+                    .unwrap_or_else(|code| ipc::error(Some(id), code)),
+                None => ipc::error(Some(id), ErrorCode::InvalidState),
+            };
+        }
+        if matches!(
+            request.operation.as_str(),
             "catalog_page"
                 | "configuration_select"
                 | "configuration_page"

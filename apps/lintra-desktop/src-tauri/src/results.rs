@@ -11,6 +11,13 @@
 //! is published only when a later call joins a finished worker and the
 //! candidate is still the current intention. The unfiltered query reuses the
 //! index already verified at report publication (P4-07) and is ready at once.
+//!
+//! The selected diagnostic, its bounded texts, context and captured domains
+//! (T-MIG-P4-09) live in the `detail` submodule and are pinned to the
+//! current query: a new query or report drops the selection.
+mod detail;
+pub(crate) use detail::DetailRequest;
+
 use crate::{
     configuration::fields,
     ipc::{self, ErrorCode},
@@ -242,18 +249,20 @@ enum Source {
 }
 
 /// A published immutable query. `source` is declared (and dropped) before
-/// `report`, so an owned reader never outlives the spool directory.
+/// `report`, so an owned reader never outlives the spool directory; the
+/// selection, with any pending domain read, is dropped first of all.
 struct Query {
+    selection: Option<detail::Selection>,
     source: Source,
     report: Arc<Report>,
     run: RunRef,
     query_ref: String,
     filter: ReportFilter,
     generation: u64,
-    // Diagnostic references of the retained pages, oldest first. P4-09 will
-    // resolve a selected reference through this registry; an evicted page's
-    // references are stale and never reopen the file by themselves.
-    pages: VecDeque<Vec<String>>,
+    // Diagnostic references of the retained pages, oldest first, each with
+    // the query row it names. Selection (P4-09) resolves a reference only
+    // through this registry: an evicted page's references are stale.
+    pages: VecDeque<Vec<(String, usize)>>,
 }
 impl Query {
     fn read<T>(
@@ -276,7 +285,7 @@ impl Query {
     fn holds(&self, token: &str) -> bool {
         self.pages
             .iter()
-            .any(|page| page.iter().any(|t| t == token))
+            .any(|page| page.iter().any(|(t, _)| t == token))
     }
 }
 
@@ -297,6 +306,9 @@ impl Results {
     pub(crate) fn cancel_on_close(&self) {
         if let Some(candidate) = &self.candidate {
             candidate.token.cancel();
+        }
+        if let Some(selection) = self.current.as_ref().and_then(|q| q.selection.as_ref()) {
+            selection.cancel();
         }
     }
     /// Publish a finished candidate without blocking on a running worker. A
@@ -324,6 +336,7 @@ impl Results {
                     filter: std::mem::take(&mut candidate.filter),
                     generation: 0,
                     pages: VecDeque::new(),
+                    selection: None,
                 });
                 self.failed = None;
             }
@@ -356,6 +369,61 @@ impl Results {
                 offset,
                 limit,
             } => self.page(&query_ref, offset, limit, id),
+        }
+    }
+
+    /// Detail operations over the current query (P4-09). `results_select`
+    /// needs the query to be the current one; the other operations need the
+    /// pinned selection, which a newer query or report has already dropped.
+    pub(crate) fn detail(
+        &mut self,
+        request: DetailRequest,
+        id: &str,
+    ) -> Result<Vec<u8>, ErrorCode> {
+        self.poll();
+        let query = self.current.as_mut();
+        if let DetailRequest::Select {
+            query_ref,
+            diagnostic_ref,
+        } = &request
+        {
+            let pending = self
+                .candidate
+                .as_ref()
+                .is_some_and(|c| &c.query_ref == query_ref);
+            return match query.filter(|q| &q.query_ref == query_ref) {
+                Some(query) => detail::select(query, diagnostic_ref, id),
+                None if pending => Err(ErrorCode::InvalidState),
+                None => Err(ErrorCode::StaleContext),
+            };
+        }
+        let wanted = request.selection_ref().ok_or(ErrorCode::TechnicalFailure)?;
+        let query = query.ok_or(ErrorCode::StaleContext)?;
+        let report = query.report.clone();
+        let selection = query
+            .selection
+            .as_mut()
+            .filter(|s| s.selection_ref == wanted)
+            .ok_or(ErrorCode::StaleContext)?;
+        match request {
+            DetailRequest::Select { .. } => Err(ErrorCode::TechnicalFailure),
+            DetailRequest::Text {
+                component_ref,
+                offset,
+                limit,
+                ..
+            } => detail::text(selection, &component_ref, offset, limit, id),
+            DetailRequest::Context { offset, limit, .. } => {
+                detail::context(selection, &report, offset, limit, id)
+            }
+            DetailRequest::Domain {
+                source_ref,
+                cursor_ref,
+                ..
+            } => detail::domain(selection, &report, &source_ref, cursor_ref.as_deref(), id),
+            DetailRequest::DomainState { read_ref, .. } => {
+                detail::domain_state(selection, &report, &read_ref, id)
+            }
         }
     }
 
@@ -394,6 +462,7 @@ impl Results {
                 filter,
                 generation: 0,
                 pages: VecDeque::new(),
+                selection: None,
             });
             return Ok(bytes);
         }
@@ -486,7 +555,7 @@ impl Results {
                 .as_symbol()
                 .map_err(|_| ErrorCode::TechnicalFailure)?;
             let token = nonce("d")?;
-            if tokens.contains(&token) || query.holds(&token) {
+            if tokens.iter().any(|(t, _)| t == &token) || query.holds(&token) {
                 return Err(ErrorCode::TechnicalFailure);
             }
             // Row DTO: references and previews only; actual, raw bytes,
@@ -495,7 +564,7 @@ impl Results {
                 "ordinal":position.to_string(),"line":error.line_number.to_string(),
                 "trace_ref":format!("trace_{trace}"),"code":preview(code),
                 "field":error.field.as_ref().map(|field| preview(&field.name))}));
-            tokens.push(token);
+            tokens.push((token, row));
         }
         // Encode the whole frame within 1 MiB before publishing any token or
         // generation: an oversized page changes no state and is never cut.
@@ -516,9 +585,12 @@ impl Results {
 }
 
 #[cfg(test)]
-mod tests {
+pub(super) mod tests {
     use super::*;
-    use crate::jobs::{JobRequest, Jobs, tests::fixture};
+    use crate::jobs::{
+        JobRequest, Jobs,
+        tests::{captured, fixture},
+    };
     use lintra::*;
     use std::{
         collections::{BTreeMap, HashSet},
@@ -554,7 +626,7 @@ mod tests {
     ];
 
     /// The two canonical synthetic diagnostics: [field-level, record-level].
-    fn base() -> Vec<Value> {
+    pub(super) fn base() -> Vec<Value> {
         FIXTURE
             .split(|byte| *byte == b'\n')
             .filter(|line| !line.is_empty())
@@ -598,7 +670,7 @@ mod tests {
         }
     }
     /// Publish synthetic rows through the production `Report::publish` path.
-    fn report(rows: &[Value], traces: &[&str]) -> (Arc<Report>, PathBuf) {
+    pub(super) fn report(rows: &[Value], traces: &[&str]) -> (Arc<Report>, PathBuf) {
         let directory = tempfile::tempdir().unwrap();
         let path = directory.path().join("errors.jsonl");
         let mut by_code = BTreeMap::new();
@@ -616,13 +688,15 @@ mod tests {
         let (_input, intent, _) = fixture();
         let summary = summary(rows.len() as u64, by_code, traces);
         (
-            Arc::new(Report::publish(directory, summary, intent).unwrap()),
+            Arc::new(
+                Report::publish(directory, summary, intent.clone(), captured(&intent)).unwrap(),
+            ),
             path,
         )
     }
     /// `count` rows alternating field/record diagnostics, lines 1..=count,
     /// traces cycling over `traces`.
-    fn rows(count: usize, traces: &[&str]) -> Vec<Value> {
+    pub(super) fn rows(count: usize, traces: &[&str]) -> Vec<Value> {
         let base = base();
         (0..count)
             .map(|i| {
@@ -633,7 +707,7 @@ mod tests {
             })
             .collect()
     }
-    fn run(number: u64) -> RunRef {
+    pub(super) fn run(number: u64) -> RunRef {
         RunRef::decode(
             &json!({"schemaVersion":1,"instance_id":INSTANCE,"run_id":number.to_string()}),
         )
@@ -642,7 +716,7 @@ mod tests {
     fn decode(operation: &str, payload: Value) -> Result<ResultsRequest, ErrorCode> {
         ResultsRequest::decode(operation, payload.as_object().unwrap())
     }
-    fn call(
+    pub(super) fn call(
         results: &mut Results,
         operation: &str,
         payload: Value,
@@ -653,7 +727,7 @@ mod tests {
         let frame: Value = serde_json::from_slice(&bytes).unwrap();
         Ok(frame["payload"].clone())
     }
-    fn query(
+    pub(super) fn query(
         results: &mut Results,
         published: &(RunRef, Arc<Report>),
         filters: Value,
@@ -673,7 +747,7 @@ mod tests {
             None,
         )
     }
-    fn settle(results: &mut Results, query_ref: &Value) -> Value {
+    pub(super) fn settle(results: &mut Results, query_ref: &Value) -> Value {
         let deadline = Instant::now() + Duration::from_secs(120);
         loop {
             let status = state(results, query_ref).unwrap();
@@ -684,7 +758,7 @@ mod tests {
             thread::sleep(Duration::from_millis(5));
         }
     }
-    fn page(
+    pub(super) fn page(
         results: &mut Results,
         query_ref: &Value,
         offset: &str,
@@ -1353,7 +1427,9 @@ mod tests {
             BTreeMap::from([("E_RECORD_LENGTH".to_owned(), COUNT)]),
             &["T1"],
         );
-        let report = Arc::new(Report::publish(directory, summary, intent).unwrap());
+        let report = Arc::new(
+            Report::publish(directory, summary, intent.clone(), captured(&intent)).unwrap(),
+        );
         let published = (run(1), report.clone());
         let mut results = Results::default();
         let all = query(&mut results, &published, json!({"schemaVersion":1})).unwrap();

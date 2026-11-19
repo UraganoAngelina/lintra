@@ -31,6 +31,11 @@ type RequestPayloads = {
   results_query: { schemaVersion: 1; run: RunRef; filters: ResultsFilter };
   results_query_state: { schemaVersion: 1; query_ref: string };
   results_page: { schemaVersion: 1; query_ref: string; offset: string; limit: number };
+  results_select: { schemaVersion: 1; query_ref: string; diagnostic_ref: string };
+  results_text: { schemaVersion: 1; selection_ref: string; component_ref: string; offset: string; limit: number };
+  results_context: { schemaVersion: 1; selection_ref: string; offset: string; limit: number };
+  results_domain: { schemaVersion: 1; selection_ref: string; source_ref: string; cursor_ref: string | null };
+  results_domain_state: { schemaVersion: 1; selection_ref: string; read_ref: string };
 };
 type Operation = keyof RequestPayloads;
 type ObjectDto = Record<string, unknown>;
@@ -140,7 +145,7 @@ export function decodeReply(raw: unknown, requestId: string): ObjectDto {
 
 export function encodeRequest<K extends Operation>(operation: K, requestId: string, payload: RequestPayloads[K]): Uint8Array {
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(requestId)
-      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress", "results_query", "results_query_state", "results_page"].includes(operation)) invalid();
+      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress", "results_query", "results_query_state", "results_page", "results_select", "results_text", "results_context", "results_domain", "results_domain_state"].includes(operation)) invalid();
   const bytes = new TextEncoder().encode(JSON.stringify({
     schemaVersion: 1, request_id: requestId, kind: "request", operation,
     payload,
@@ -522,6 +527,175 @@ export async function resultsPage(queryRef: string, offset = "0", limit = DEFAUL
       || BigInt(matches) > BigInt(total) || dto.has_more !== BigInt(next) < BigInt(matches)) invalid();
   return { schemaVersion: 1, query_ref: queryRef, run: readRun(dto.run), page_generation: unsigned(dto.page_generation),
     offset, rows, next_offset: next, has_more: dto.has_more, total_matches: matches, total_diagnostics: total };
+}
+
+// Selected diagnostic detail (T-MIG-P4-09). Rust resolves the reference, pins
+// one diagnostic and exposes texts only as previews or bounded chunks; this
+// client keeps at most the current chunk and never rebuilds a report, schema
+// or domain. Counters and offsets stay decimal strings (no Number casts).
+export const MAX_TEXT_BYTES = 16_384;
+export const MAX_DETAIL_ENTRIES = 64;
+export type DetailComponent = {
+  schemaVersion: 1; component_ref: string;
+  kind: "code" | "message" | "expected" | "field_name" | "guide" | "actual" | "sioc_record_id" | "fiscal_code" | "episode_id";
+  preview: Preview;
+};
+export type DomainSourceKind = "allowed_values" | "range" | "fallback" | "reference" | "regex" | "non_enumerable";
+export type DomainSource = {
+  schemaVersion: 1; source_ref: string; kind: DomainSourceKind; conditional: boolean; rule: Preview | null;
+  dataset: { schemaVersion: 1; id: Preview; version: Preview } | null; comparison: Preview;
+};
+export type SelectedDiagnostic = {
+  schemaVersion: 1; selection_ref: string; query_ref: string; diagnostic_ref: string; run: RunRef;
+  line: string; trace_ref: string;
+  field_position: { schemaVersion: 1; start: string; end: string; units: "one_based_inclusive_bytes" } | null;
+  actual_visibility: "available" | "not_present" | "local_report_only_record_scope";
+  components: DetailComponent[]; domain_sources: DomainSource[];
+};
+export type TextChunk = { schemaVersion: 1; offset: string; text: string; next_offset: string; has_more: boolean };
+export type ContextEntry = {
+  schemaVersion: 1; trace: Preview; field: Preview; component_ref: string | null; value: Preview | null;
+  visibility: "available" | "local_report_only_record_scope";
+};
+export type ContextPage = { schemaVersion: 1; selection_ref: string; offset: string; entries: ContextEntry[]; next_offset: string; has_more: boolean };
+export type DomainStatus = "available" | "available_empty" | "degraded" | "unavailable" | "not_captured" | "unsupported" | "cancelled" | "not_enumerable";
+export type DomainPage = {
+  schemaVersion: 1; kind: DomainSourceKind; conditional: boolean; expected_sha256: string | null; actual_sha256: string | null;
+  status: DomainStatus; entries: { schemaVersion: 1; component_ref: string; preview: Preview }[] | null; next_cursor: string | null;
+};
+export type DomainAnswer =
+  | { schemaVersion: 1; selection_ref: string; source_ref: string; state: "loading"; read_ref: string; domain: null }
+  | { schemaVersion: 1; selection_ref: string; source_ref: string; state: "ready"; read_ref: null; domain: DomainPage };
+
+function oneOf<T extends string>(value: unknown, values: readonly T[]): T {
+  if (typeof value !== "string" || !(values as readonly string[]).includes(value)) invalid();
+  return value as T;
+}
+function nullable<T>(value: unknown, read: (value: unknown) => T): T | null {
+  return value === null ? null : read(value);
+}
+function sha256(value: unknown): string {
+  if (typeof value !== "string" || !/^[0-9a-f]{64}$/.test(value)) invalid();
+  return value;
+}
+function versioned(value: unknown, keys: string[]): ObjectDto {
+  const dto = object(value);
+  version(dto); exact(dto, keys);
+  return dto;
+}
+function readSource(value: unknown): DomainSource {
+  const dto = versioned(value, ["schemaVersion", "source_ref", "kind", "conditional", "rule", "dataset", "comparison"]);
+  if (typeof dto.conditional !== "boolean" || (dto.conditional !== (dto.rule !== null))) invalid();
+  const dataset = nullable(dto.dataset, item => {
+    const key = versioned(item, ["schemaVersion", "id", "version"]);
+    return { schemaVersion: 1 as const, id: readPreview(key.id), version: readPreview(key.version) };
+  });
+  const kind = oneOf(dto.kind, ["allowed_values", "range", "fallback", "reference", "regex", "non_enumerable"] as const);
+  if ((kind === "reference") !== (dataset !== null)) invalid();
+  return { schemaVersion: 1, source_ref: identifier(dto.source_ref), kind, conditional: dto.conditional,
+    rule: nullable(dto.rule, readPreview), dataset, comparison: readPreview(dto.comparison) };
+}
+export async function resultsSelect(queryRef: string, diagnosticRef: string): Promise<SelectedDiagnostic> {
+  identifier(queryRef); identifier(diagnosticRef);
+  const dto = await exchange("results_select", { schemaVersion: 1, query_ref: queryRef, diagnostic_ref: diagnosticRef });
+  exact(dto, ["schemaVersion", "selection_ref", "query_ref", "diagnostic_ref", "run", "line", "trace_ref", "field_position", "actual_visibility", "components", "domain_sources"]);
+  if (dto.query_ref !== queryRef || dto.diagnostic_ref !== diagnosticRef || !Array.isArray(dto.components)
+      || !Array.isArray(dto.domain_sources) || dto.domain_sources.length > MAX_DETAIL_ENTRIES) invalid();
+  const line = unsigned(dto.line);
+  if (line === "0") invalid();
+  const position = nullable(dto.field_position, value => {
+    const range = versioned(value, ["schemaVersion", "start", "end", "units"]);
+    const start = unsigned(range.start), end = unsigned(range.end);
+    if (start === "0" || BigInt(end) < BigInt(start) || range.units !== "one_based_inclusive_bytes") invalid();
+    return { schemaVersion: 1 as const, start, end, units: "one_based_inclusive_bytes" as const };
+  });
+  const seen = new Set<string>();
+  const components = dto.components.map((value): DetailComponent => {
+    const item = versioned(value, ["schemaVersion", "component_ref", "kind", "preview"]);
+    const kind = oneOf(item.kind, ["code", "message", "expected", "field_name", "guide", "actual", "sioc_record_id", "fiscal_code", "episode_id"] as const);
+    if (seen.has(kind)) invalid();
+    seen.add(kind);
+    return { schemaVersion: 1, component_ref: identifier(item.component_ref), kind, preview: readPreview(item.preview) };
+  });
+  const visibility = oneOf(dto.actual_visibility, ["available", "not_present", "local_report_only_record_scope"] as const);
+  if (!seen.has("code") || !seen.has("message") || seen.has("actual") !== (visibility === "available")) invalid();
+  return { schemaVersion: 1, selection_ref: identifier(dto.selection_ref), query_ref: queryRef, diagnostic_ref: diagnosticRef,
+    run: readRun(dto.run), line, trace_ref: identifier(dto.trace_ref), field_position: position, actual_visibility: visibility,
+    components, domain_sources: dto.domain_sources.map(readSource) };
+}
+export async function resultsText(selectionRef: string, componentRef: string, offset = "0", limit = MAX_TEXT_BYTES): Promise<TextChunk> {
+  identifier(selectionRef); identifier(componentRef); unsigned(offset);
+  if (!Number.isInteger(limit) || limit < 1 || limit > MAX_TEXT_BYTES) invalid();
+  const dto = await exchange("results_text", { schemaVersion: 1, selection_ref: selectionRef, component_ref: componentRef, offset, limit });
+  exact(dto, ["schemaVersion", "offset", "text", "next_offset", "has_more"]);
+  if (dto.offset !== offset || typeof dto.text !== "string" || typeof dto.has_more !== "boolean") invalid();
+  const size = new TextEncoder().encode(dto.text).byteLength;
+  const next = unsigned(dto.next_offset);
+  if (size > limit || BigInt(next) !== BigInt(offset) + BigInt(size) || (size === 0 && dto.has_more)) invalid();
+  return { schemaVersion: 1, offset, text: dto.text, next_offset: next, has_more: dto.has_more };
+}
+export async function resultsContext(selectionRef: string, offset = "0", limit = MAX_DETAIL_ENTRIES): Promise<ContextPage> {
+  identifier(selectionRef); unsigned(offset);
+  if (!Number.isInteger(limit) || limit < 1 || limit > MAX_DETAIL_ENTRIES) invalid();
+  const dto = await exchange("results_context", { schemaVersion: 1, selection_ref: selectionRef, offset, limit });
+  exact(dto, ["schemaVersion", "selection_ref", "offset", "entries", "next_offset", "has_more"]);
+  if (dto.selection_ref !== selectionRef || dto.offset !== offset || !Array.isArray(dto.entries)
+      || dto.entries.length > limit || typeof dto.has_more !== "boolean") invalid();
+  const entries = dto.entries.map((value): ContextEntry => {
+    const item = versioned(value, ["schemaVersion", "trace", "field", "component_ref", "value", "visibility"]);
+    const visibility = oneOf(item.visibility, ["available", "local_report_only_record_scope"] as const);
+    const available = visibility === "available";
+    if ((item.component_ref !== null) !== available || (item.value !== null) !== available) invalid();
+    return { schemaVersion: 1, trace: readPreview(item.trace), field: readPreview(item.field),
+      component_ref: nullable(item.component_ref, identifier), value: nullable(item.value, readPreview), visibility };
+  });
+  const next = unsigned(dto.next_offset);
+  if (BigInt(next) !== BigInt(offset) + BigInt(entries.length) || (entries.length === 0 && dto.has_more)) invalid();
+  return { schemaVersion: 1, selection_ref: selectionRef, offset, entries, next_offset: next, has_more: dto.has_more };
+}
+function readDomain(value: unknown): DomainPage {
+  const dto = versioned(value, ["schemaVersion", "kind", "conditional", "expected_sha256", "actual_sha256", "status", "entries", "next_cursor"]);
+  const status = oneOf(dto.status, ["available", "available_empty", "degraded", "unavailable", "not_captured", "unsupported", "cancelled", "not_enumerable"] as const);
+  if (typeof dto.conditional !== "boolean") invalid();
+  const listed = status === "available" || status === "available_empty";
+  if ((dto.entries !== null) !== listed || (!listed && dto.next_cursor !== null)) invalid();
+  const entries = dto.entries === null ? null : (() => {
+    if (!Array.isArray(dto.entries) || dto.entries.length > MAX_DETAIL_ENTRIES
+        || (dto.entries.length === 0) !== (status === "available_empty")) invalid();
+    return dto.entries.map(item => {
+      const entry = versioned(item, ["schemaVersion", "component_ref", "preview"]);
+      return { schemaVersion: 1 as const, component_ref: identifier(entry.component_ref), preview: readPreview(entry.preview) };
+    });
+  })();
+  const cursor = nullable(dto.next_cursor, identifier);
+  if (cursor !== null && entries !== null && entries.length === 0) invalid();
+  return { schemaVersion: 1, kind: oneOf(dto.kind, ["allowed_values", "range", "fallback", "reference", "regex", "non_enumerable"] as const),
+    conditional: dto.conditional, expected_sha256: nullable(dto.expected_sha256, sha256), actual_sha256: nullable(dto.actual_sha256, sha256),
+    status, entries, next_cursor: cursor };
+}
+function readDomainAnswer(dto: ObjectDto, selectionRef: string, sourceRef: string | null): DomainAnswer {
+  exact(dto, ["schemaVersion", "selection_ref", "source_ref", "state", "read_ref", "domain"]);
+  const source = identifier(dto.source_ref);
+  if (dto.selection_ref !== selectionRef || (sourceRef !== null && source !== sourceRef)) invalid();
+  if (dto.state === "loading") {
+    if (dto.domain !== null) invalid();
+    return { schemaVersion: 1, selection_ref: selectionRef, source_ref: source, state: "loading", read_ref: identifier(dto.read_ref), domain: null };
+  }
+  if (dto.state !== "ready" || dto.read_ref !== null) invalid();
+  return { schemaVersion: 1, selection_ref: selectionRef, source_ref: source, state: "ready", read_ref: null, domain: readDomain(dto.domain) };
+}
+export async function resultsDomain(selectionRef: string, sourceRef: string, cursorRef: string | null = null): Promise<DomainAnswer> {
+  identifier(selectionRef); identifier(sourceRef);
+  if (cursorRef !== null) identifier(cursorRef);
+  const dto = await exchange("results_domain", { schemaVersion: 1, selection_ref: selectionRef, source_ref: sourceRef, cursor_ref: cursorRef });
+  return readDomainAnswer(dto, selectionRef, sourceRef);
+}
+export async function resultsDomainState(selectionRef: string, readRef: string): Promise<DomainAnswer> {
+  identifier(selectionRef); identifier(readRef);
+  const dto = await exchange("results_domain_state", { schemaVersion: 1, selection_ref: selectionRef, read_ref: readRef });
+  const answer = readDomainAnswer(dto, selectionRef, null);
+  if (answer.state === "loading" && answer.read_ref !== readRef) invalid();
+  return answer;
 }
 
 export function errorText(error: unknown): string {

@@ -119,8 +119,24 @@ pub(crate) struct Report {
     // Captured summary: scope, totals and histogram that filtered rescans
     // must verify again before a new query can be published.
     summary: ValidationSummary,
-    // Captured schema, paths, parameters and provenance belong to this report.
+    // Compiled schema and reference evidence used by this very run (P4-09):
+    // details, guides and domains never consult the current form or catalog.
+    captured: Captured,
+    // Captured raw schema, paths, parameters and provenance belong to this report.
     _intent: Arc<PreparedIntent>,
+}
+/// Read-only snapshot taken by the worker that produced a report.
+///
+/// `schema` is the `CompiledFlowSchema` resolved by the same registry that ran
+/// the validation (its hash is checked against the summary before publication).
+/// `references` is the exact `PreparedReferenceEvidence` handed to the
+/// service, retained only when it matches the summary audit; `None` means the
+/// run had no reference dependency or its evidence could not be confirmed, and
+/// the detail reports `not_captured` rather than an empty domain.
+#[derive(Clone)]
+pub(crate) struct Captured {
+    pub(crate) schema: Arc<CompiledFlowSchema>,
+    pub(crate) references: Option<Arc<PreparedReferenceEvidence>>,
 }
 impl Report {
     const FILE: &'static str = "errors.jsonl";
@@ -131,6 +147,7 @@ impl Report {
         directory: tempfile::TempDir,
         summary: ValidationSummary,
         intent: Arc<PreparedIntent>,
+        captured: Captured,
     ) -> Result<Self, ErrorCode> {
         let file = File::open(directory.path().join(Self::FILE))
             .map_err(|_| ErrorCode::TechnicalFailure)?;
@@ -140,8 +157,17 @@ impl Report {
             index: Mutex::new(index),
             directory,
             summary,
+            captured,
             _intent: intent,
         })
+    }
+    /// Compiled schema of the run, used for field coverage, guides and domains.
+    pub(crate) fn schema(&self) -> &CompiledFlowSchema {
+        &self.captured.schema
+    }
+    /// Reference evidence of the run, or `None` when not captured.
+    pub(crate) fn references(&self) -> Option<&Arc<PreparedReferenceEvidence>> {
+        self.captured.references.as_ref()
     }
     /// Open an independent reader on the owned spool for a filtered rescan.
     /// The path is Rust-private and never derived from renderer input.
@@ -177,6 +203,51 @@ enum Completion {
 }
 type WorkerResult = Result<Completion, ErrorCode>;
 
+/// Records the exact evidence the service prepared, as the Slint worker does.
+/// The clone shares the lookup `Arc`s: a dataset changed on disk after the
+/// run is never reread, so the detail shows what the validation consulted.
+struct CapturingReferences {
+    inner: Arc<dyn ReferenceDataPreparer>,
+    captured: Arc<Mutex<Option<Arc<PreparedReferenceEvidence>>>>,
+}
+impl ReferenceDataPreparer for CapturingReferences {
+    fn prepare(
+        &self,
+        dependencies: &[ReferenceDependency],
+        policy: DatasetPreparationPolicy,
+    ) -> Result<PreparedReferenceEvidence, ReferencePreparationError> {
+        let prepared = self.inner.prepare(dependencies, policy)?;
+        *self
+            .captured
+            .lock()
+            .map_err(|_| ReferencePreparationError::InconsistentEvidence)? =
+            Some(Arc::new(prepared.clone()));
+        Ok(prepared)
+    }
+}
+
+/// Keep captured evidence only when it is exactly the evidence the summary
+/// audit declares (same datasets, digests, availability and declared keys).
+/// Anything else is dropped, so a domain can never come from other bytes.
+fn confirmed_references(
+    captured: Option<Arc<PreparedReferenceEvidence>>,
+    summary: &ValidationSummary,
+) -> Option<Arc<PreparedReferenceEvidence>> {
+    captured.filter(|captured| {
+        summary.reference_validation.as_ref().is_some_and(|audit| {
+            audit.datasets.len() == captured.datasets().len()
+                && audit.datasets.iter().all(|item| {
+                    captured.evidence(&item.requested).is_some_and(|e| {
+                        e.expected_sha256() == &item.expected_sha256
+                            && e.actual_sha256() == item.actual_sha256.as_ref()
+                            && e.availability() == item.availability
+                            && e.declared_key() == item.declared.as_ref()
+                    })
+                })
+        })
+    })
+}
+
 fn execute(
     intent: Arc<PreparedIntent>,
     references: Arc<dyn ReferenceDataPreparer>,
@@ -195,8 +266,12 @@ fn execute(
     let expected = registry
         .resolve_with_hash(&intent.request.schema_key)
         .map_err(|_| ErrorCode::TechnicalFailure)?;
+    let captured_references = Arc::new(Mutex::new(None));
     let service = ValidationService::new(registry).with_reference_data(
-        references,
+        Arc::new(CapturingReferences {
+            inner: references,
+            captured: captured_references.clone(),
+        }),
         DatasetPreparationPolicy::ContinueWithAvailableEvidence,
     );
     let directory = tempfile::Builder::new()
@@ -245,10 +320,19 @@ fn execute(
         AtomicOutputOutcome::Published => {
             // The final service checkpoint fixes the outcome: late cancellation
             // must not discard a published report during index preparation.
+            let references = captured_references
+                .lock()
+                .map_err(|_| ErrorCode::TechnicalFailure)?
+                .take();
+            let captured = Captured {
+                schema: expected.schema().clone(),
+                references: confirmed_references(references, &outcome.summary),
+            };
             Some(Arc::new(Report::publish(
                 directory,
                 outcome.summary.clone(),
                 intent,
+                captured,
             )?))
         }
         AtomicOutputOutcome::Unpublished { .. } => {
@@ -371,6 +455,22 @@ impl Jobs {
         self.refresh();
         self.results
             .dispatch(request, self.last_report.as_ref(), id)
+    }
+    /// Last published report, after joining a finished worker (tests only).
+    #[cfg(test)]
+    pub(crate) fn published(&mut self) -> Option<(RunRef, Arc<Report>)> {
+        self.refresh();
+        self.last_report.clone()
+    }
+    /// Selected detail, texts, context and domains of the current query (P4-09).
+    /// `refresh` first, so a newly published report has already dropped them.
+    pub(crate) fn detail(
+        &mut self,
+        request: crate::results::DetailRequest,
+        id: &str,
+    ) -> Result<Vec<u8>, ErrorCode> {
+        self.refresh();
+        self.results.detail(request, id)
     }
     pub(crate) fn start(
         &mut self,
@@ -565,6 +665,26 @@ pub(crate) mod tests {
             audit: bundle.audit().clone(),
         });
         (directory, intent, bundle.references())
+    }
+
+    /// Compile the intent's schema exactly as the worker does, without a run;
+    /// synthetic reports published by tests capture no reference evidence.
+    pub(crate) fn captured(intent: &PreparedIntent) -> Captured {
+        let mut repository = InMemorySchemaRepository::new();
+        repository.insert((*intent.raw).clone()).unwrap();
+        let registry = SchemaRegistry::new(
+            Arc::new(repository),
+            SchemaCompiler,
+            RawResolvedEncoding::Utf8,
+        );
+        Captured {
+            schema: registry
+                .resolve_with_hash(&intent.request.schema_key)
+                .unwrap()
+                .schema()
+                .clone(),
+            references: None,
+        }
     }
 
     mod full_schema {
