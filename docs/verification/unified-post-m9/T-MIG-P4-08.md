@@ -1,8 +1,9 @@
 # T-MIG-P4-08 — Query filtrate e pagina risultati in Rust
 
 18 novembre 2026. Autore Claude Code, revisore Codex. Baseline `integration`
-`42aa890`. Stato: **IN_REVIEW** — verifiche locali PASS, review Codex,
-CI remota e prove Windows non ancora eseguite. G-MIG-4 resta aperto.
+`42aa890`. Stato: **DONE** (19 novembre 2026) — review Codex APPROVED su
+`ab679c5`, integrazione autorizzata dall'autore. CI remota e prove Windows
+non eseguite, rinviate al checkpoint del blocco P4. G-MIG-4 resta aperto.
 
 Specifica: `docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-08.md`
 (accettazione: parità filtri Slint, nessuna query da JS su 1M errori, limite
@@ -136,3 +137,22 @@ del blocco P4 come per P4-01..07.
   task sul contratto ratificato: da confermare in review.
 
 Prossima task tecnicamente disponibile dopo integrazione: T-MIG-P4-09.
+
+## Chiusura
+
+- Review Codex su `ab679c5c9daf08edc5d963a5bc21c32cb8343186`: **APPROVED**,
+  nessun rilievo BLOCKER/MAJOR/MINOR (rapporto
+  `lintra-review-handoffs/T-MIG-P4-08-CODEX-REVIEW.md`, fuori repo).
+- Repliche indipendenti di Codex su una copia isolata, tutte exit 0: 43 test
+  nativi PASS e 1 ignored GTK (incluso lo stress da 1M), Clippy
+  `--all-targets -D warnings`, fmt, 31 Node PASS, lint, build, `git diff
+  --check`. I dieci SHA-256 della ricevuta coincidono con lo SHA consegnato.
+  Codex non ha rieseguito la suite workspace, lo smoke grafico né Windows:
+  queste restano evidenze dichiarate dall'autore.
+- Integrazione autorizzata dall'autore il 19/11/2026. Il commit era già
+  lineare su `integration` sopra `42aa890`: non serve un merge. Si aggiunge
+  questo solo commit documentale.
+- **Non eseguito:** CI remota e prove Windows/MSVC su `ab679c5`, rinviate al
+  checkpoint del blocco P4. G-MIG-4 e G-REL restano aperti.
+- Rischi residui accettati in review: scansione O(N), join cooperativo del
+  candidato superato senza latenza massima garantita, RSS/p95 non misurati.
