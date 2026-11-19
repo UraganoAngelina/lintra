@@ -1176,14 +1176,16 @@ pub(crate) mod tests {
             actual.elapsed = expected.summary.elapsed;
             assert_eq!(outcome.status, expected.status);
             assert_eq!(actual, expected.summary);
-            let bytes = fs::read(report._directory.path().join("errors.jsonl")).unwrap();
+            let bytes = fs::read(report.directory.path().join("errors.jsonl")).unwrap();
             assert_eq!(normalize(&bytes), normalize(&expected_jsonl));
-            assert_eq!(report._index.total(), outcome.summary.total_errors);
-            assert_eq!(
-                report._index.row_count() as u64,
-                outcome.summary.total_errors
-            );
-            assert_eq!(report._index.decoded_rows(), 0, "no eager decoding");
+            // The report is shared (Arc) since P4-08: read the unfiltered index
+            // through its Mutex accessor, without consuming any row.
+            let (total, rows, decoded) = report
+                .with_index(|index| Ok((index.total(), index.row_count(), index.decoded_rows())))
+                .unwrap();
+            assert_eq!(total, outcome.summary.total_errors);
+            assert_eq!(rows as u64, outcome.summary.total_errors);
+            assert_eq!(decoded, 0, "no eager decoding");
             assert!(
                 !terminal
                     .to_string()
