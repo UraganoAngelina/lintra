@@ -44,7 +44,7 @@ impl ExportController {
         let Some((report, summary, reports)) = self.results.borrow().displayed_analysis() else {
             return;
         };
-        let format = ExportFormat::preferred(reports);
+        let format = crate::export::preferred_format(reports);
         let path = report
             .input_path()
             .parent()

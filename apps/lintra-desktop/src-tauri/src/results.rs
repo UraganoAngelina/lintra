@@ -48,7 +48,7 @@ const FILTER_KEYS: [&str; 7] = [
 ];
 
 /// Wire identifier grammar of IPC v1 (`[A-Za-z0-9_-]{1,64}`).
-fn identifier(value: &Value) -> Result<String, ErrorCode> {
+pub(crate) fn identifier(value: &Value) -> Result<String, ErrorCode> {
     value
         .as_str()
         .filter(|text| {
@@ -197,7 +197,7 @@ impl ResultsRequest {
 
 /// OS-random opaque reference: not an offset, HMAC key or capability derived
 /// from a predictable name. Collisions are checked by the caller.
-fn nonce(prefix: &str) -> Result<String, ErrorCode> {
+pub(crate) fn nonce(prefix: &str) -> Result<String, ErrorCode> {
     let mut bytes = [0u8; 16];
     getrandom::fill(&mut bytes).map_err(|_| ErrorCode::TechnicalFailure)?;
     Ok(bytes.iter().fold(format!("{prefix}_"), |text, byte| {
@@ -207,7 +207,7 @@ fn nonce(prefix: &str) -> Result<String, ErrorCode> {
 
 /// Metadata preview DTO: at most 256 UTF-8 bytes on a character boundary with
 /// an explicit completeness flag, so a prefix is never mistaken for the value.
-fn preview(text: &str) -> Value {
+pub(crate) fn preview(text: &str) -> Value {
     let mut end = text.len().min(PREVIEW_BYTES);
     while !text.is_char_boundary(end) {
         end -= 1;

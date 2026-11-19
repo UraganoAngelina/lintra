@@ -161,6 +161,29 @@ impl Report {
             _intent: intent,
         })
     }
+    /// Private committed canonical spool (never a wire path).
+    pub(crate) fn spool(&self) -> std::path::PathBuf {
+        self.directory.path().join(Self::FILE)
+    }
+    /// Private report directory: protected export destination and the XLSX
+    /// writer's temporary directory.
+    pub(crate) fn private_root(&self) -> &std::path::Path {
+        self.directory.path()
+    }
+    /// Every input file of the run, in scope order (one trace or a Full bundle).
+    pub(crate) fn inputs(&self) -> Vec<std::path::PathBuf> {
+        let path = |input: &TraceValidationInput| match &input.source {
+            InputSource::Path(path) => path.clone(),
+        };
+        match &self._intent.request.scope {
+            ValidationScope::Trace(input) => vec![path(input)],
+            ValidationScope::Flow(flow) => flow.traces.iter().map(path).collect(),
+        }
+    }
+    /// Bundle provenance captured with the run (embedded/external, version, manifest).
+    pub(crate) fn audit(&self) -> &BundleAudit {
+        &self._intent.audit
+    }
     /// Compiled schema of the run, used for field coverage, guides and domains.
     pub(crate) fn schema(&self) -> &CompiledFlowSchema {
         &self.captured.schema
@@ -436,6 +459,8 @@ pub(crate) struct Jobs {
     // Queries and their worker are dropped (cancelled and joined) before the
     // report they borrow through Arc.
     results: crate::results::Results,
+    // The export job is cancelled and joined before the report it holds.
+    exports: crate::exports::Exports,
     last_report: Option<(RunRef, Arc<Report>)>,
     // Test-only observation points for the integration tests of the Full
     // lifecycle (T-MIG-P4-12): a probe called by the worker after each
@@ -455,6 +480,7 @@ impl Jobs {
             job.token.cancel();
         }
         self.results.cancel_on_close();
+        self.exports.cancel_on_close();
     }
     /// Join a finished worker without blocking and retain its published report.
     /// A different published run invalidates every query of the previous one.
@@ -491,6 +517,17 @@ impl Jobs {
     pub(crate) fn published(&mut self) -> Option<(RunRef, Arc<Report>)> {
         self.refresh();
         self.last_report.clone()
+    }
+    /// Provenance and native export of the published report (P4-10).
+    pub(crate) fn export(
+        &mut self,
+        request: crate::exports::ExportRequest,
+        dialogs: &dyn crate::exports::ExportDialogs,
+        id: &str,
+    ) -> Result<Vec<u8>, ErrorCode> {
+        self.refresh();
+        self.exports
+            .dispatch(request, self.last_report.as_ref(), dialogs, id)
     }
     /// Selected detail, texts, context and domains of the current query (P4-09).
     /// `refresh` first, so a newly published report has already dropped them.
@@ -742,7 +779,7 @@ pub(crate) mod tests {
     }
     /// Captured Full intent over the shared synthetic two-trace schema
     /// (`S` joins `T` on KEY and compares DATA), inputs in schema order.
-    pub(super) fn full_fixture(
+    pub(crate) fn full_fixture(
         source: &[u8],
         target: &[u8],
     ) -> (
@@ -1081,6 +1118,7 @@ pub(crate) mod tests {
                 number: 1,
                 current: Some(job),
                 results: Default::default(),
+                exports: Default::default(),
                 last_report: None,
                 probe: None,
                 spool_root: None,

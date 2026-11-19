@@ -18,6 +18,27 @@ pub(crate) struct GuardCounters {
     pub web_resource_denied: std::sync::atomic::AtomicU32,
 }
 
+/// Native capabilities of the owning window, called only on its GUI thread:
+/// the input picker of configuration and the export dialogs (T-MIG-P4-10).
+pub(crate) trait Native: crate::exports::ExportDialogs {
+    fn choose_input(&self) -> Result<Option<std::path::PathBuf>, ErrorCode>;
+}
+/// A bare picker closure (tests, or no export capability): export dialogs
+/// are unavailable and answer with a technical failure.
+impl<F: Fn() -> Result<Option<std::path::PathBuf>, ErrorCode>> crate::exports::ExportDialogs for F {
+    fn save(&self, _: &str) -> Result<Option<std::path::PathBuf>, ErrorCode> {
+        Err(ErrorCode::TechnicalFailure)
+    }
+    fn confirm(&self, _: &str, _: &str) -> Result<bool, ErrorCode> {
+        Err(ErrorCode::TechnicalFailure)
+    }
+}
+impl<F: Fn() -> Result<Option<std::path::PathBuf>, ErrorCode>> Native for F {
+    fn choose_input(&self) -> Result<Option<std::path::PathBuf>, ErrorCode> {
+        self()
+    }
+}
+
 pub(crate) struct AppState {
     gate: Mutex<Option<Configuration>>,
     closed: AtomicBool,
@@ -75,8 +96,9 @@ impl AppState {
         label: &str,
         origin: &Url,
         raw: Option<&[u8]>,
-        choose: &dyn Fn() -> Result<Option<std::path::PathBuf>, ErrorCode>,
+        native: &dyn Native,
     ) -> Vec<u8> {
+        let choose = &|| native.choose_input();
         if label != "main" || !local_asset_origin(origin) {
             return ipc::error(None, ErrorCode::Unauthorized);
         }
@@ -164,6 +186,25 @@ impl AppState {
             return match permit.as_mut() {
                 Some(configuration) => configuration
                     .detail(command, id)
+                    .unwrap_or_else(|code| ipc::error(Some(id), code)),
+                None => ipc::error(Some(id), ErrorCode::InvalidState),
+            };
+        }
+        if matches!(
+            request.operation.as_str(),
+            "report_about" | "export_prepare" | "export_execute" | "export_state" | "export_cancel"
+        ) {
+            let command =
+                match crate::exports::ExportRequest::decode(&request.operation, &request.payload) {
+                    Ok(command) => command,
+                    Err(code) => return ipc::error(Some(id), code),
+                };
+            if !self.info_sent.load(Ordering::Acquire) {
+                return ipc::error(Some(id), ErrorCode::InvalidState);
+            }
+            return match permit.as_mut() {
+                Some(configuration) => configuration
+                    .export(command, id, native)
                     .unwrap_or_else(|code| ipc::error(Some(id), code)),
                 None => ipc::error(Some(id), ErrorCode::InvalidState),
             };

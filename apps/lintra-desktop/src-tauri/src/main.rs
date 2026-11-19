@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod configuration;
+mod exports;
 mod ipc;
 mod jobs;
 mod native_picker;
@@ -19,6 +20,35 @@ use state::AppState;
 use state::GuardCounters;
 use tauri::{Manager, State, WebviewWindow, WebviewWindowBuilder, webview::NewWindowResponse};
 
+/// Native dialogs owned by the calling window. Each answer obtained while
+/// the application is closing is stale: a late dialog cannot resurrect a
+/// selection or a confirmation of a closed instance.
+struct WindowNative<'a> {
+    window: &'a WebviewWindow,
+    state: &'a AppState,
+}
+impl WindowNative<'_> {
+    fn live<T>(&self, answer: T) -> Result<T, ipc::ErrorCode> {
+        if self.state.closed() {
+            return Err(ipc::ErrorCode::StaleContext);
+        }
+        Ok(answer)
+    }
+}
+impl state::Native for WindowNative<'_> {
+    fn choose_input(&self) -> Result<Option<std::path::PathBuf>, ipc::ErrorCode> {
+        self.live(native_picker::choose(self.window)?)
+    }
+}
+impl exports::ExportDialogs for WindowNative<'_> {
+    fn save(&self, extension: &str) -> Result<Option<std::path::PathBuf>, ipc::ErrorCode> {
+        self.live(native_picker::save(self.window, extension)?)
+    }
+    fn confirm(&self, title: &str, message: &str) -> Result<bool, ipc::ErrorCode> {
+        self.live(native_picker::confirm(self.window, title, message)?)
+    }
+}
+
 #[tauri::command]
 fn lintra_ipc(
     window: WebviewWindow,
@@ -31,13 +61,15 @@ fn lintra_ipc(
                 tauri::ipc::InvokeBody::Raw(bytes) => Some(bytes.as_slice()),
                 tauri::ipc::InvokeBody::Json(_) => None,
             };
-            state.handle(window.label(), &origin, raw, &|| {
-                let selected = native_picker::choose(&window)?;
-                if state.closed() {
-                    return Err(ipc::ErrorCode::StaleContext);
-                }
-                Ok(selected)
-            })
+            state.handle(
+                window.label(),
+                &origin,
+                raw,
+                &WindowNative {
+                    window: &window,
+                    state: &state,
+                },
+            )
         }
         Err(_) => ipc::error(None, ipc::ErrorCode::TechnicalFailure),
     };

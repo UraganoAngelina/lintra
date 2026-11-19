@@ -37,6 +37,11 @@ type RequestPayloads = {
   results_sources: { schemaVersion: 1; selection_ref: string; offset: string; limit: number };
   results_domain: { schemaVersion: 1; selection_ref: string; source_ref: string; cursor_ref: string | null };
   results_domain_state: { schemaVersion: 1; selection_ref: string; read_ref: string };
+  report_about: { schemaVersion: 1; run: RunRef };
+  export_prepare: { schemaVersion: 1; report_ref: string; format: ExportFormat };
+  export_execute: { schemaVersion: 1; export_ref: string };
+  export_state: { schemaVersion: 1; export_ref: string };
+  export_cancel: { schemaVersion: 1; export_ref: string };
 };
 type Operation = keyof RequestPayloads;
 type ObjectDto = Record<string, unknown>;
@@ -146,7 +151,7 @@ export function decodeReply(raw: unknown, requestId: string): ObjectDto {
 
 export function encodeRequest<K extends Operation>(operation: K, requestId: string, payload: RequestPayloads[K]): Uint8Array {
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(requestId)
-      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress", "results_query", "results_query_state", "results_page", "results_select", "results_text", "results_context", "results_sources", "results_domain", "results_domain_state"].includes(operation)) invalid();
+      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress", "results_query", "results_query_state", "results_page", "results_select", "results_text", "results_context", "results_sources", "results_domain", "results_domain_state", "report_about", "export_prepare", "export_execute", "export_state", "export_cancel"].includes(operation)) invalid();
   const bytes = new TextEncoder().encode(JSON.stringify({
     schemaVersion: 1, request_id: requestId, kind: "request", operation,
     payload,
@@ -722,6 +727,119 @@ export async function resultsDomainState(selectionRef: string, readRef: string):
   const answer = readDomainAnswer(dto, selectionRef, null);
   if (answer.state === "loading" && answer.read_ref !== readRef) invalid();
   return answer;
+}
+
+// Report provenance and native export (T-MIG-P4-10). The renderer sends only
+// opaque handles and a format: the save dialog, the destination warning and
+// the overwrite confirmation are native, and no path, file name or report
+// content ever reaches this client.
+export type ExportFormat = "jsonl" | "csv" | "xlsx";
+export type ReportAbout = {
+  schemaVersion: 1; report_ref: string; run: RunRef; app_version: string; validator_version: Preview;
+  flow_id: Preview; schema_version: Preview; schema_hash: Preview; mode: "local_only" | "full";
+  status: "completed_valid" | "completed_invalid" | "cancelled"; completeness: "complete" | "partial";
+  truncated: boolean; exportable: boolean; trace_count: string; reference_dataset_count: string;
+  bundle: BundleProvenance;
+};
+export type DestinationCounts = { schemaVersion: 1; local_files: string; remote_files: string; undetermined_files: string; warning_acknowledged: boolean };
+export type ExportPlan =
+  | { schemaVersion: 1; state: "ready"; export_ref: string; report_ref: string; run: RunRef; format: ExportFormat; destination: DestinationCounts }
+  | { schemaVersion: 1; state: "cancelled"; reason: "native_selection_cancelled" | "native_confirmation_declined" }
+  | { schemaVersion: 1; state: "rejected"; reason: "destination_not_allowed" };
+export type ExportResult =
+  | { schemaVersion: 1; export_ref: string; state: "writing" }
+  | { schemaVersion: 1; export_ref: string; report_ref: string; run: RunRef; format: ExportFormat;
+      state: "succeeded" | "failed" | "cancelled"; published_roles: ("report" | "summary")[];
+      cleanup_failed: boolean; durability_confirmed: boolean; destination: DestinationCounts;
+      error: { schemaVersion: 1; category: "technical"; code: "IPC_TECHNICAL_FAILURE" } | null };
+
+function readCounts(value: unknown): DestinationCounts {
+  const dto = versioned(value, ["schemaVersion", "local_files", "remote_files", "undetermined_files", "warning_acknowledged"]);
+  const local = unsigned(dto.local_files), remote = unsigned(dto.remote_files), undetermined = unsigned(dto.undetermined_files);
+  // Exactly the report file and its summary sidecar are classified.
+  if (BigInt(local) + BigInt(remote) + BigInt(undetermined) !== 2n || typeof dto.warning_acknowledged !== "boolean"
+      || (dto.warning_acknowledged && remote === "0" && undetermined === "0")) invalid();
+  return { schemaVersion: 1, local_files: local, remote_files: remote, undetermined_files: undetermined, warning_acknowledged: dto.warning_acknowledged };
+}
+function readProvenance(value: unknown): BundleProvenance {
+  const dto = versioned(value, ["schemaVersion", "bundle_source", "bundle_version", "bundle_manifest_status"]);
+  const source = oneOf(dto.bundle_source, ["embedded", "external"] as const);
+  const manifest = oneOf(dto.bundle_manifest_status, ["present", "absent"] as const);
+  if (dto.bundle_version !== null && typeof dto.bundle_version !== "string") invalid();
+  return { schemaVersion: 1, bundle_source: source, bundle_version: dto.bundle_version as string | null, bundle_manifest_status: manifest };
+}
+export async function reportAbout(run: RunRef): Promise<ReportAbout> {
+  readRun(run);
+  const dto = await exchange("report_about", { schemaVersion: 1, run });
+  exact(dto, ["schemaVersion", "report_ref", "run", "app_version", "validator_version", "flow_id", "schema_version", "schema_hash", "mode", "status", "completeness", "truncated", "exportable", "trace_count", "reference_dataset_count", "bundle"]);
+  const current = readRun(dto.run);
+  if (!sameRun(run, current) || typeof dto.app_version !== "string" || !/^[A-Za-z0-9.+-]{1,64}$/.test(dto.app_version)
+      || typeof dto.truncated !== "boolean" || typeof dto.exportable !== "boolean") invalid();
+  const status = oneOf(dto.status, ["completed_valid", "completed_invalid", "cancelled"] as const);
+  const traces = unsigned(dto.trace_count);
+  if (traces === "0" || (dto.exportable && (status === "cancelled" || dto.truncated))) invalid();
+  return { schemaVersion: 1, report_ref: identifier(dto.report_ref), run: current, app_version: dto.app_version,
+    validator_version: readPreview(dto.validator_version), flow_id: readPreview(dto.flow_id), schema_version: readPreview(dto.schema_version),
+    schema_hash: readPreview(dto.schema_hash), mode: oneOf(dto.mode, ["local_only", "full"] as const), status,
+    completeness: oneOf(dto.completeness, ["complete", "partial"] as const), truncated: dto.truncated, exportable: dto.exportable,
+    trace_count: traces, reference_dataset_count: unsigned(dto.reference_dataset_count), bundle: readProvenance(dto.bundle) };
+}
+export async function exportPrepare(reportRef: string, format: ExportFormat): Promise<ExportPlan> {
+  identifier(reportRef); oneOf(format, ["jsonl", "csv", "xlsx"] as const);
+  const dto = await exchange("export_prepare", { schemaVersion: 1, report_ref: reportRef, format });
+  if (dto.state === "cancelled") {
+    exact(dto, ["schemaVersion", "state", "reason"]);
+    return { schemaVersion: 1, state: "cancelled", reason: oneOf(dto.reason, ["native_selection_cancelled", "native_confirmation_declined"] as const) };
+  }
+  if (dto.state === "rejected") {
+    exact(dto, ["schemaVersion", "state", "reason"]);
+    return { schemaVersion: 1, state: "rejected", reason: oneOf(dto.reason, ["destination_not_allowed"] as const) };
+  }
+  exact(dto, ["schemaVersion", "export_ref", "report_ref", "run", "format", "state", "destination"]);
+  if (dto.state !== "ready" || dto.report_ref !== reportRef || dto.format !== format) invalid();
+  return { schemaVersion: 1, state: "ready", export_ref: identifier(dto.export_ref), report_ref: reportRef, run: readRun(dto.run),
+    format, destination: readCounts(dto.destination) };
+}
+function readExportResult(dto: ObjectDto, exportRef: string): ExportResult {
+  if (dto.export_ref !== exportRef) invalid();
+  if (dto.state === "writing") {
+    exact(dto, ["schemaVersion", "export_ref", "state"]);
+    return { schemaVersion: 1, export_ref: exportRef, state: "writing" };
+  }
+  exact(dto, ["schemaVersion", "export_ref", "report_ref", "run", "format", "state", "published_roles", "cleanup_failed", "durability_confirmed", "destination", "error"]);
+  const state = oneOf(dto.state, ["succeeded", "failed", "cancelled"] as const);
+  if (!Array.isArray(dto.published_roles) || typeof dto.cleanup_failed !== "boolean" || typeof dto.durability_confirmed !== "boolean") invalid();
+  const roles = dto.published_roles.map(role => oneOf(role, ["report", "summary"] as const));
+  if (new Set(roles).size !== roles.length) invalid();
+  // Success means both files published and durable, with nothing left over.
+  if (state === "succeeded" && (roles.length !== 2 || dto.cleanup_failed || !dto.durability_confirmed || dto.error !== null)) invalid();
+  let error: { schemaVersion: 1; category: "technical"; code: "IPC_TECHNICAL_FAILURE" } | null = null;
+  if (state === "failed") {
+    const item = versioned(dto.error, ["schemaVersion", "category", "code"]);
+    if (item.category !== "technical" || item.code !== "IPC_TECHNICAL_FAILURE") invalid();
+    error = { schemaVersion: 1, category: "technical", code: "IPC_TECHNICAL_FAILURE" };
+  } else if (dto.error !== null) invalid();
+  return { schemaVersion: 1, export_ref: exportRef, report_ref: identifier(dto.report_ref), run: readRun(dto.run),
+    format: oneOf(dto.format, ["jsonl", "csv", "xlsx"] as const), state, published_roles: roles,
+    cleanup_failed: dto.cleanup_failed, durability_confirmed: dto.durability_confirmed, destination: readCounts(dto.destination), error };
+}
+export async function exportExecute(exportRef: string): Promise<ExportResult> {
+  identifier(exportRef);
+  const dto = await exchange("export_execute", { schemaVersion: 1, export_ref: exportRef });
+  const result = readExportResult(dto, exportRef);
+  if (result.state !== "writing") invalid();
+  return result;
+}
+export async function exportState(exportRef: string): Promise<ExportResult> {
+  identifier(exportRef);
+  return readExportResult(await exchange("export_state", { schemaVersion: 1, export_ref: exportRef }), exportRef);
+}
+export async function exportCancel(exportRef: string): Promise<"requested" | "already_requested" | "already_terminal"> {
+  identifier(exportRef);
+  const dto = await exchange("export_cancel", { schemaVersion: 1, export_ref: exportRef });
+  exact(dto, ["schemaVersion", "export_ref", "disposition"]);
+  if (dto.export_ref !== exportRef) invalid();
+  return oneOf(dto.disposition, ["requested", "already_requested", "already_terminal"] as const);
 }
 
 export function errorText(error: unknown): string {

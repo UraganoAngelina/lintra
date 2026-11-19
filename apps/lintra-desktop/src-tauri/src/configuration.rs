@@ -1102,6 +1102,15 @@ impl Configuration {
     ) -> Result<Vec<u8>, ErrorCode> {
         self.jobs.results(request, request_id)
     }
+    /// Report provenance and native export; see `exports.rs`.
+    pub(crate) fn export(
+        &mut self,
+        request: crate::exports::ExportRequest,
+        request_id: &str,
+        dialogs: &dyn crate::exports::ExportDialogs,
+    ) -> Result<Vec<u8>, ErrorCode> {
+        self.jobs.export(request, dialogs, request_id)
+    }
     /// Selected diagnostic and captured domains; see `results/detail.rs`.
     pub(crate) fn detail(
         &mut self,
