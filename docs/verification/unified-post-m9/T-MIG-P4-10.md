@@ -2,9 +2,10 @@
 
 19 novembre 2026. Autore Claude Code, revisore Codex. Baseline `integration`
 `ec6a9e0` (P4-06, P4-08, P4-09 e P4-12 DONE), branch `work/T-MIG-P4-10`.
-Stato: **IN_REVIEW**, rework 1 dopo CHANGES_REQUESTED, in attesa di nuova
-review. Le verifiche locali sono PASS; mancano review positiva, CI remota e
-prove Windows. G-MIG-4 resta aperto fino al checkpoint nativo del blocco P4.
+Stato: **DONE** (19 novembre 2026): review Codex round 2 APPROVED su
+`8ec47f8`, integrazione autorizzata dall'autore. CI remota e prove Windows non
+eseguite in review, rinviate al checkpoint nativo del blocco P4. G-MIG-4 resta
+aperto.
 
 Specifica: `docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-10.md`.
 Acceptance: bridge LocalOnly+Full completo, export e provenance; test di
@@ -247,3 +248,32 @@ nativi interattivi.
 
 Prossimo passo: checkpoint G-MIG-4 (CI nativa del blocco P4), poi
 T-MIG-P5-01.
+
+## Chiusura
+
+- Review Codex round 1 su `40ebd23`: CHANGES_REQUESTED, P410-01 BLOCKER
+  (input raggiungibile tramite alias inaccessibile sovrascrivibile). Corretto
+  da `8ec47f8` (rework 1).
+- Review Codex round 2 su `8ec47f88cc1b49d56ad535e420a7bb6ec08d21ed`:
+  **APPROVED**, P410-01 risolto, nessun rilievo BLOCKER/MAJOR/MINOR aperto
+  (rapporti `lintra-review-handoffs/T-MIG-P4-10-CODEX-REVIEW.md` e
+  `T-MIG-P4-10-CODEX-REVIEW-2.md`, fuori repo).
+- Repliche indipendenti di Codex, tutte exit 0:
+  - 62 test nativi PASS (1 ignored GTK), Clippy desktop;
+  - 41 Node PASS, lint, build, fmt;
+  - sonda esterna sul caso P410-01: `ProtectionUnverifiable`, input invariati;
+    export verso destinazione distinta dopo cancellazione dell'input riuscito;
+  - test export Slint rieseguiti sul binario dello sviluppatore (5 PASS più
+    il caso ignored di durabilità).
+  Digest dei 16 sorgenti e del binario smoke coincidenti. Workspace completo,
+  ricompilazione Slint, smoke e mutazioni non rieseguiti dal revisore.
+- Integrazione autorizzata dall'autore il 19/11/2026: fast-forward di
+  `integration` da `ec6a9e0` a `8ec47f8`, senza merge; si aggiunge questo solo
+  commit documentale.
+- **Non eseguito in review:** CI remota e prove Windows/MSVC/VM; check
+  Windows GNU locale BLOCKED (mingw). G-MIG-4 e G-REL aperti fino al
+  checkpoint nativo del blocco P4.
+- Rischi residui accettati in review: su Windows protezione per soli percorsi
+  (nessun file ID); un input non più risolvibile per PermissionDenied blocca
+  anche export verso percorsi distinti (comportamento conservativo voluto);
+  cancel e join cooperativi.
