@@ -4,9 +4,9 @@
 revisore Codex. Baseline: `integration` @ `ab679c5c9daf08edc5d963a5bc21c32cb8343186`
 (P4-08, approvata da Codex il 19/11; consegna originale su `42aa890`),
 branch `work/T-MIG-P4-11`, worktree `../lintra-p4-11`.
-Stato: **IN_REVIEW** (rework 1 dopo CHANGES_REQUESTED, in attesa di nuova
-review). Non DONE: mancano review positiva, integrazione autorizzata e CI
-remota/Windows.
+Stato: **DONE** (19 novembre 2026), integrazione autorizzata dall'autore.
+Il rework 1 non ha avuto una seconda review Codex: l'autore vi ha rinunciato
+esplicitamente. CI remota e Windows sono rinviate al checkpoint del blocco P4.
 
 Prompt: `docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-11.md`.
 Contratto: `docs/migration/ipc-v1/FULL.md` e `full-cases.json` (P2-11, ratificati
@@ -131,3 +131,33 @@ Linux/Windows: **NOT_RUN** (richiede push autorizzato). Prove Windows/VM: NOT_RU
 - G-MIG-4 aggregato resta aperto: servono P4-08..12 e la CI nativa Linux/Windows.
 - Prossima task tecnicamente pronta dopo l'integrazione: T-MIG-P4-12
   (dipende da P4-11 e P4-05).
+
+## Chiusura
+
+- Review Codex su `caab33d`: **CHANGES_REQUESTED**, con il solo rilievo
+  P411-01 (MAJOR). Nessun altro rilievo sul delta di produzione, che Codex ha
+  replicato con esito positivo.
+- Il rework 1 corregge P411-01 (vedi sopra). L'autore ha autorizzato il
+  19/11/2026 l'integrazione **senza una seconda review Codex** del rework.
+  Il rework tocca solo test (9+/7−); questo è registrato come deroga
+  dell'autore, non come approvazione Codex.
+- Integrazione lineare su `integration`: P4-08 (`ab679c5`) e la sua chiusura
+  documentale (`6925385`), poi P4-11 ribasato su `6925385` (`f97cb7c` +
+  `1f33be8`, contenuto identico a `9456931`/`8b84dec`) e fast-forward.
+  Rispetto a `8b84dec` cambiano solo file documentali di P4-08.
+- Gate di merge locale sull'albero integrato (`1f33be8`), tutto exit 0:
+  - sequenza Linux di `desktop.yml`, 9 comandi: 32 Node PASS, 47 nativi PASS
+    + 1 ignored GTK, Clippy, build release, smoke `NATIVE_DESKTOP_SMOKE_PASS`
+    sul display reale (non Xvfb);
+  - workspace di `ci.yml`: fmt, Clippy con e senza `--all-features`, test
+    1.112 PASS / 0 fail / 9 ignored in entrambe le configurazioni.
+
+  Log fuori repo: `lintra-review-handoffs/T-MIG-P4-11.merge-gate.log`, SHA-256
+  `f1a903b223795d4ab0bda0db860fbaf550f59a9c70aa78976ad125aebd64cd3c`.
+- **Non eseguiti:**
+  - gli step speciali di `ci.yml` (test `--ignored`, `--no-default-features`,
+    bench smoke, script Python e xtask);
+  - CI remota e prove Windows/MSVC/VM. La qualifica nativa resta al
+    checkpoint del blocco P4.
+
+  G-MIG-4 e G-REL restano aperti.
