@@ -3,8 +3,9 @@
 19 novembre 2026. Autore Claude Code, revisore Codex. Baseline `integration`
 `02f5000` (P4-09 DONE; P4-11 e P4-05 DONE), branch `work/T-MIG-P4-12`,
 worktree `../lintra-p4-12`.
-Stato: **IN_REVIEW**. Le verifiche locali sono PASS; mancano la review Codex,
-la CI remota e le prove Windows. G-MIG-4 resta aperto.
+Stato: **DONE** (19 novembre 2026): review Codex APPROVED su `cab4a04`,
+integrazione autorizzata dall'autore. CI remota e prove Windows non eseguite,
+rinviate al checkpoint del blocco P4. G-MIG-4 resta aperto.
 
 Specifica: `docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-12.md`.
 Acceptance: dimostrare con test di integrazione nessun report falso, nessun
@@ -144,3 +145,24 @@ P4-09. CI remota e prove Windows/VM: **NOT_RUN**.
 
 Prossima task tecnicamente disponibile: T-MIG-P4-10 (dipende da P4-06,
 P4-08, P4-09 e P4-12).
+
+## Chiusura
+
+- Review Codex su `cab4a041d2a2f5063ab67c150487682c448da7e6`: **APPROVED**,
+  nessun rilievo BLOCKER/MAJOR/MINOR (rapporto
+  `lintra-review-handoffs/T-MIG-P4-12-CODEX-REVIEW.md`, fuori repo).
+- Repliche indipendenti di Codex, tutte exit 0:
+  - 58 test nativi PASS (1 ignored GTK), inclusi i 3 nuovi test Full;
+  - 38 Node PASS;
+  - lint, build, fmt, Clippy e `git diff --check`.
+  I digest dei sorgenti coincidono, e quello del binario coincide con il log
+  dello smoke. Build di produzione, smoke, mutazione e workspace non sono
+  stati rieseguiti dal revisore.
+- Integrazione autorizzata dall'autore il 19/11/2026: fast-forward di
+  `integration` da `02f5000` a `cab4a04`, senza merge; si aggiunge questo
+  solo commit documentale. Nessun push.
+- **Non eseguito:** CI remota e prove Windows/MSVC/VM, rinviate al checkpoint
+  del blocco P4. G-MIG-4 e G-REL aperti.
+- Rischi residui accettati in review:
+  - cancel cooperativo tra record, senza latenza massima per I/O bloccato;
+  - spool di sistema che possono sopravvivere a un kill del processo.

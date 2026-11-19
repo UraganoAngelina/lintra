@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **63/128 DONE;65 rimanenti** (18U-* e51MIG).
+Conteggio unificato: **64/128 DONE;64 rimanenti** (18U-* e51MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -107,7 +107,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P4-09 | T-MIG-P4-08 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-09.md) | 5027ee4+7d5cdbc;55 nativi/38 Node/1.113 workspace PASS locali,smoke PASS;review Codex round 2 APPROVED con repliche native/Node;CI nativa al checkpoint blocco | Acceptance dettaglio/guide/reference PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P4-10 | T-MIG-P4-06, T-MIG-P4-08, T-MIG-P4-09, T-MIG-P4-12 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-10.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-11 | T-MIG-P4-06, T-MIG-P2-11 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-11.md) | f97cb7c+1f33be8;gate merge locale 47 nativi/32 Node/1.112 workspace PASS,smoke PASS;review Codex CHANGES su P411-01,rework senza 2ª review per deroga autore;CI nativa al checkpoint blocco | Acceptance bridge Full PASS; G-MIG-4 aggregato resta aperto |
-| T-MIG-P4-12 | T-MIG-P4-11, T-MIG-P4-05 | IN_REVIEW | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-12.md) | Base 02f5000;58 nativi/38 Node PASS locali,smoke PASS;CI remota e Windows NOT_RUN | Review Codex pendente; G-MIG-4 NOT_VERIFIED |
+| T-MIG-P4-12 | T-MIG-P4-11, T-MIG-P4-05 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-12.md) | cab4a04;58 nativi/38 Node PASS locali,smoke PASS;review Codex APPROVED con repliche native/Node;CI nativa al checkpoint blocco | Acceptance progresso/cancel/cleanup Full PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P5-01 | T-MIG-P4-10 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-01.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-02 | T-MIG-P5-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-02.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-03 | T-MIG-P5-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-03.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
@@ -436,3 +436,12 @@ Integrazione autorizzata dall'autore: fast-forward di integration su
 7d5cdbc. Nessuna CI remota o prova Windows: la qualifica resta al checkpoint
 del blocco P4. G-MIG-4 e G-REL aperti. Prossima tecnicamente disponibile
 P4-12, poi P4-10.
+
+Chiusura T-MIG-P4-12, 19 novembre 2026: **DONE**, **64/128 (50,0%)**, 64
+rimanenti. Autore Claude Code, commit cab4a04 su base 02f5000 (sviluppato da
+56627a1 e ribasato dopo P4-09). Review Codex APPROVED senza rilievi, con
+repliche indipendenti (58 nativi, 38 Node, lint, build, fmt, Clippy) tutte
+exit 0. Integrazione autorizzata dall'autore: fast-forward di integration su
+cab4a04, nessun push. Nessuna CI remota o prova Windows: la qualifica resta al
+checkpoint del blocco P4. G-MIG-4 e G-REL aperti. Prossima tecnicamente
+disponibile P4-10, ultima task del blocco P4.
