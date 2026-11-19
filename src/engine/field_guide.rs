@@ -344,6 +344,19 @@ mod paging_tests {
     }
 }
 
+/// Guard of a local rule, as the same controlled text the engine renders for
+/// `{condition}` in that rule's diagnostics (operators and quoted literals,
+/// never a Debug AST). Read-only explanation: the rule is not evaluated.
+/// `None` when a literal cannot be rendered as text; the caller must then
+/// say the condition is unavailable rather than present the rule as
+/// unconditional.
+pub fn rule_condition_guide(
+    rule: &crate::schema::compiled::CompiledRule,
+    record: &crate::schema::compiled::CompiledRecordSchema,
+) -> Option<String> {
+    super::rule_diagnostics::condition_text(&rule.when, record).ok()
+}
+
 /// Explains which bytes a declaration compares, without executing that rule.
 pub fn constraint_comparison_guide(constraint: &CompiledConstraint) -> &'static str {
     use crate::ValueTarget;

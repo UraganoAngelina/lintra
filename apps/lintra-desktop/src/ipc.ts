@@ -34,6 +34,7 @@ type RequestPayloads = {
   results_select: { schemaVersion: 1; query_ref: string; diagnostic_ref: string };
   results_text: { schemaVersion: 1; selection_ref: string; component_ref: string; offset: string; limit: number };
   results_context: { schemaVersion: 1; selection_ref: string; offset: string; limit: number };
+  results_sources: { schemaVersion: 1; selection_ref: string; offset: string; limit: number };
   results_domain: { schemaVersion: 1; selection_ref: string; source_ref: string; cursor_ref: string | null };
   results_domain_state: { schemaVersion: 1; selection_ref: string; read_ref: string };
 };
@@ -145,7 +146,7 @@ export function decodeReply(raw: unknown, requestId: string): ObjectDto {
 
 export function encodeRequest<K extends Operation>(operation: K, requestId: string, payload: RequestPayloads[K]): Uint8Array {
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(requestId)
-      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress", "results_query", "results_query_state", "results_page", "results_select", "results_text", "results_context", "results_domain", "results_domain_state"].includes(operation)) invalid();
+      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress", "results_query", "results_query_state", "results_page", "results_select", "results_text", "results_context", "results_sources", "results_domain", "results_domain_state"].includes(operation)) invalid();
   const bytes = new TextEncoder().encode(JSON.stringify({
     schemaVersion: 1, request_id: requestId, kind: "request", operation,
     payload,
@@ -541,16 +542,22 @@ export type DetailComponent = {
   preview: Preview;
 };
 export type DomainSourceKind = "allowed_values" | "range" | "fallback" | "reference" | "regex" | "non_enumerable";
+// `condition` is the native guard of a conditional source (readable in full
+// through resultsText); null for unconditional sources, or when the guard has
+// no textual rendering, in which case `conditional` still says it applies
+// only under that rule.
 export type DomainSource = {
   schemaVersion: 1; source_ref: string; kind: DomainSourceKind; conditional: boolean; rule: Preview | null;
+  condition: { schemaVersion: 1; component_ref: string; preview: Preview } | null;
   dataset: { schemaVersion: 1; id: Preview; version: Preview } | null; comparison: Preview;
 };
+export type SourcesPage = { schemaVersion: 1; selection_ref: string; offset: string; sources: DomainSource[]; next_offset: string; has_more: boolean };
 export type SelectedDiagnostic = {
   schemaVersion: 1; selection_ref: string; query_ref: string; diagnostic_ref: string; run: RunRef;
   line: string; trace_ref: string;
   field_position: { schemaVersion: 1; start: string; end: string; units: "one_based_inclusive_bytes" } | null;
   actual_visibility: "available" | "not_present" | "local_report_only_record_scope";
-  components: DetailComponent[]; domain_sources: DomainSource[];
+  components: DetailComponent[]; source_count: string;
 };
 export type TextChunk = { schemaVersion: 1; offset: string; text: string; next_offset: string; has_more: boolean };
 export type ContextEntry = {
@@ -584,8 +591,13 @@ function versioned(value: unknown, keys: string[]): ObjectDto {
   return dto;
 }
 function readSource(value: unknown): DomainSource {
-  const dto = versioned(value, ["schemaVersion", "source_ref", "kind", "conditional", "rule", "dataset", "comparison"]);
-  if (typeof dto.conditional !== "boolean" || (dto.conditional !== (dto.rule !== null))) invalid();
+  const dto = versioned(value, ["schemaVersion", "source_ref", "kind", "conditional", "rule", "condition", "dataset", "comparison"]);
+  if (typeof dto.conditional !== "boolean" || (dto.conditional !== (dto.rule !== null))
+      || (!dto.conditional && dto.condition !== null)) invalid();
+  const condition = nullable(dto.condition, item => {
+    const guard = versioned(item, ["schemaVersion", "component_ref", "preview"]);
+    return { schemaVersion: 1 as const, component_ref: identifier(guard.component_ref), preview: readPreview(guard.preview) };
+  });
   const dataset = nullable(dto.dataset, item => {
     const key = versioned(item, ["schemaVersion", "id", "version"]);
     return { schemaVersion: 1 as const, id: readPreview(key.id), version: readPreview(key.version) };
@@ -593,14 +605,14 @@ function readSource(value: unknown): DomainSource {
   const kind = oneOf(dto.kind, ["allowed_values", "range", "fallback", "reference", "regex", "non_enumerable"] as const);
   if ((kind === "reference") !== (dataset !== null)) invalid();
   return { schemaVersion: 1, source_ref: identifier(dto.source_ref), kind, conditional: dto.conditional,
-    rule: nullable(dto.rule, readPreview), dataset, comparison: readPreview(dto.comparison) };
+    rule: nullable(dto.rule, readPreview), condition, dataset, comparison: readPreview(dto.comparison) };
 }
 export async function resultsSelect(queryRef: string, diagnosticRef: string): Promise<SelectedDiagnostic> {
   identifier(queryRef); identifier(diagnosticRef);
   const dto = await exchange("results_select", { schemaVersion: 1, query_ref: queryRef, diagnostic_ref: diagnosticRef });
-  exact(dto, ["schemaVersion", "selection_ref", "query_ref", "diagnostic_ref", "run", "line", "trace_ref", "field_position", "actual_visibility", "components", "domain_sources"]);
-  if (dto.query_ref !== queryRef || dto.diagnostic_ref !== diagnosticRef || !Array.isArray(dto.components)
-      || !Array.isArray(dto.domain_sources) || dto.domain_sources.length > MAX_DETAIL_ENTRIES) invalid();
+  exact(dto, ["schemaVersion", "selection_ref", "query_ref", "diagnostic_ref", "run", "line", "trace_ref", "field_position", "actual_visibility", "components", "source_count"]);
+  if (dto.query_ref !== queryRef || dto.diagnostic_ref !== diagnosticRef || !Array.isArray(dto.components)) invalid();
+  const sourceCount = unsigned(dto.source_count);
   const line = unsigned(dto.line);
   if (line === "0") invalid();
   const position = nullable(dto.field_position, value => {
@@ -621,7 +633,21 @@ export async function resultsSelect(queryRef: string, diagnosticRef: string): Pr
   if (!seen.has("code") || !seen.has("message") || seen.has("actual") !== (visibility === "available")) invalid();
   return { schemaVersion: 1, selection_ref: identifier(dto.selection_ref), query_ref: queryRef, diagnostic_ref: diagnosticRef,
     run: readRun(dto.run), line, trace_ref: identifier(dto.trace_ref), field_position: position, actual_visibility: visibility,
-    components, domain_sources: dto.domain_sources.map(readSource) };
+    components, source_count: sourceCount };
+}
+// Domain sources are listed in pages of at most 64: their number never
+// limits opening a diagnostic, and no complete list is kept by the client.
+export async function resultsSources(selectionRef: string, offset = "0", limit = MAX_DETAIL_ENTRIES): Promise<SourcesPage> {
+  identifier(selectionRef); unsigned(offset);
+  if (!Number.isInteger(limit) || limit < 1 || limit > MAX_DETAIL_ENTRIES) invalid();
+  const dto = await exchange("results_sources", { schemaVersion: 1, selection_ref: selectionRef, offset, limit });
+  exact(dto, ["schemaVersion", "selection_ref", "offset", "sources", "next_offset", "has_more"]);
+  if (dto.selection_ref !== selectionRef || dto.offset !== offset || !Array.isArray(dto.sources)
+      || dto.sources.length > limit || typeof dto.has_more !== "boolean") invalid();
+  const sources = dto.sources.map(readSource);
+  const next = unsigned(dto.next_offset);
+  if (BigInt(next) !== BigInt(offset) + BigInt(sources.length) || (sources.length === 0 && dto.has_more)) invalid();
+  return { schemaVersion: 1, selection_ref: selectionRef, offset, sources, next_offset: next, has_more: dto.has_more };
 }
 export async function resultsText(selectionRef: string, componentRef: string, offset = "0", limit = MAX_TEXT_BYTES): Promise<TextChunk> {
   identifier(selectionRef); identifier(componentRef); unsigned(offset);

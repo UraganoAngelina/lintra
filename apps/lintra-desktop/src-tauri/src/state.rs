@@ -149,6 +149,7 @@ impl AppState {
             "results_select"
                 | "results_text"
                 | "results_context"
+                | "results_sources"
                 | "results_domain"
                 | "results_domain_state"
         ) {

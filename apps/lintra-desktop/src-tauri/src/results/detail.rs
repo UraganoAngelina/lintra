@@ -38,11 +38,8 @@ use std::{
 
 /// Maximum UTF-8 bytes returned by one text read.
 pub(super) const MAX_TEXT_BYTES: u64 = 16_384;
-/// Maximum context entries or domain values per page.
+/// Maximum context entries, domain sources or domain values per page.
 pub(super) const MAX_PAGE_ENTRIES: u64 = 64;
-/// Upper bound on the domain sources listed for one selected field. Compiled
-/// fields declare a handful; exceeding it is a technical failure, not a cut.
-const MAX_SOURCES: usize = 64;
 
 /// Exact DTOs of the detail operations, decoded before any state is touched.
 #[derive(Debug, PartialEq, Eq)]
@@ -58,6 +55,11 @@ pub(crate) enum DetailRequest {
         limit: u64,
     },
     Context {
+        selection_ref: String,
+        offset: u64,
+        limit: u64,
+    },
+    Sources {
         selection_ref: String,
         offset: u64,
         limit: u64,
@@ -107,6 +109,14 @@ impl DetailRequest {
                     limit: limit(&dto["limit"], MAX_PAGE_ENTRIES)?,
                 })
             }
+            "results_sources" => {
+                fields(dto, &["selection_ref", "offset", "limit"])?;
+                Ok(Self::Sources {
+                    selection_ref: identifier(&dto["selection_ref"])?,
+                    offset: canonical_u64(&dto["offset"])?,
+                    limit: limit(&dto["limit"], MAX_PAGE_ENTRIES)?,
+                })
+            }
             "results_domain" => {
                 fields(dto, &["selection_ref", "source_ref", "cursor_ref"])?;
                 Ok(Self::Domain {
@@ -133,6 +143,7 @@ impl DetailRequest {
             Self::Select { .. } => None,
             Self::Text { selection_ref, .. }
             | Self::Context { selection_ref, .. }
+            | Self::Sources { selection_ref, .. }
             | Self::Domain { selection_ref, .. }
             | Self::DomainState { selection_ref, .. } => Some(selection_ref),
         }
@@ -218,21 +229,31 @@ impl SourceKind {
     }
 }
 
+/// RuleId of a local rule and its position in the captured trace's rules.
+type RuleRef = (Arc<str>, usize);
+
 /// One declaration consultable for the selected field. A conditional source
-/// keeps the RuleId of its local rule: its values are never presented as an
-/// unconditional field constraint. Reference sources name the dataset only.
+/// keeps the RuleId and the position of its local rule in the captured trace,
+/// so its guard is rendered natively with the source page: its values are
+/// never presented as an unconditional field constraint. Reference sources
+/// name the dataset only.
 struct Source {
     token: String,
     kind: SourceKind,
-    rule: Option<Arc<str>>,
+    rule: Option<RuleRef>,
     constraint: CompiledConstraint,
     dataset: Option<DatasetKey>,
 }
 impl Source {
-    fn dto(&self) -> Value {
+    /// `condition` is the guard component of a conditional source on the
+    /// current source page, or `None` when the source is unconditional or
+    /// its guard has no textual rendering (the source stays `conditional`).
+    fn dto(&self, condition: Option<&Component>) -> Value {
         json!({"schemaVersion":1,"source_ref":self.token,"kind":self.kind.name(),
             "conditional":self.rule.is_some(),
-            "rule":self.rule.as_deref().map(preview),
+            "rule":self.rule.as_ref().map(|(id, _)| preview(id)),
+            "condition":condition.map(|c| json!({"schemaVersion":1,
+                "component_ref":c.token,"preview":preview(&c.text)})),
             "dataset":self.dataset.as_ref().map(|key| json!({"schemaVersion":1,
                 "id":preview(&key.id.0),"version":preview(&key.version.0)})),
             "comparison":preview(lintra::constraint_comparison_guide(&self.constraint))})
@@ -254,9 +275,9 @@ fn sources(
     let Some(spec) = record.field(field) else {
         return Ok(Vec::new());
     };
-    let mut declarations: Vec<(&CompiledConstraint, Option<Arc<str>>)> =
+    let mut declarations: Vec<(&CompiledConstraint, Option<RuleRef>)> =
         spec.constraints().iter().map(|c| (c, None)).collect();
-    for rule in record.local_rules() {
+    for (position, rule) in record.local_rules().iter().enumerate() {
         for assertion in &rule.assertions {
             if let CompiledAssertion::Constraint {
                 field: ResolvedFieldRef::Local { field_id, .. },
@@ -264,15 +285,14 @@ fn sources(
             } = assertion
                 && field_id == field
             {
-                declarations.push((constraint, Some(rule.id.clone())));
+                declarations.push((constraint, Some((rule.id.clone(), position))));
             }
         }
     }
     let mut result: Vec<Source> = Vec::new();
-    let mut push = |kind, constraint: &CompiledConstraint, rule: &Option<Arc<str>>, dataset| {
-        if result.len() == MAX_SOURCES {
-            return Err(ErrorCode::TechnicalFailure);
-        }
+    // No count limit: sources are listed in pages of at most 64 entries, so
+    // the number of declarations never prevents opening the diagnostic.
+    let mut push = |kind, constraint: &CompiledConstraint, rule: &Option<RuleRef>, dataset| {
         let token = nonce("o")?;
         if result.iter().any(|s| s.token == token) {
             return Err(ErrorCode::TechnicalFailure);
@@ -356,6 +376,9 @@ pub(super) struct Selection {
     components: Vec<Component>,
     context: Vec<Component>,
     sources: Vec<Source>,
+    // Guard components of the conditional sources on the current source
+    // page; a new page replaces them, like context and domain values.
+    conditions: Vec<Component>,
     domain: Option<DomainRead>,
 }
 impl Selection {
@@ -363,6 +386,7 @@ impl Selection {
         self.components
             .iter()
             .chain(&self.context)
+            .chain(&self.conditions)
             .chain(self.domain.iter().flat_map(|d| &d.components))
             .find(|c| c.token == token)
             .map(|c| c.text.as_str())
@@ -511,7 +535,7 @@ pub(super) fn select(
         "actual_visibility":visibility,
         "components":components.iter().zip(&kinds).map(|(c, kind)| json!({"schemaVersion":1,
             "component_ref":c.token,"kind":kind,"preview":preview(&c.text)})).collect::<Vec<_>>(),
-        "domain_sources":sources.iter().map(Source::dto).collect::<Vec<_>>()});
+        "source_count":sources.len().to_string()});
     let bytes = ipc::response(id, dto)?;
     // Replacing the selection drops (cancels and joins) its pending read.
     query.selection = Some(Selection {
@@ -520,6 +544,7 @@ pub(super) fn select(
         components,
         context: Vec::new(),
         sources,
+        conditions: Vec::new(),
         domain: None,
     });
     Ok(bytes)
@@ -563,7 +588,7 @@ pub(super) fn context(
         let allowed = compiled_field(report.schema(), &item.trace_id, &item.field_id)
             .is_some_and(|(_, proper)| proper);
         let token = if allowed {
-            let token = mint("k", &[&selection.components], &page)?;
+            let token = mint("k", &[&selection.components, &selection.conditions], &page)?;
             page.push(Component {
                 token: token.clone(),
                 text: item.value.display.clone(),
@@ -584,6 +609,52 @@ pub(super) fn context(
             "has_more":end < total}),
     )?;
     selection.context = page;
+    Ok(bytes)
+}
+
+/// One page of at most 64 domain sources of the selected field. Each
+/// conditional source carries its guard as a native guide component (the
+/// rule's condition text, readable by `results_text`); a new page replaces
+/// the previous page's guard handles once its frame has been encoded.
+pub(super) fn sources_page(
+    selection: &mut Selection,
+    report: &Report,
+    offset: u64,
+    limit: u64,
+    id: &str,
+) -> Result<Vec<u8>, ErrorCode> {
+    let total = selection.sources.len();
+    let start = usize::try_from(offset).map_err(|_| ErrorCode::InvalidMessage)?;
+    if start > total {
+        return Err(ErrorCode::InvalidMessage);
+    }
+    let limit = usize::try_from(limit).map_err(|_| ErrorCode::InvalidMessage)?;
+    let end = start.saturating_add(limit).min(total);
+    let record = report.schema().trace(&selection.error.trace_id);
+    let mut page: Vec<Component> = Vec::new();
+    let mut entries = Vec::new();
+    for source in &selection.sources[start..end] {
+        let guard = source.rule.as_ref().and_then(|(_, position)| {
+            let record = record?;
+            lintra::rule_condition_guide(record.local_rules().get(*position)?, record)
+        });
+        let condition = match guard {
+            Some(text) => {
+                let token = mint("g", &[&selection.components, &selection.context], &page)?;
+                page.push(Component { token, text });
+                page.last()
+            }
+            None => None,
+        };
+        entries.push(source.dto(condition));
+    }
+    let bytes = ipc::response(
+        id,
+        json!({"schemaVersion":1,"selection_ref":selection.selection_ref,
+            "offset":offset.to_string(),"sources":entries,"next_offset":end.to_string(),
+            "has_more":end < total}),
+    )?;
+    selection.conditions = page;
     Ok(bytes)
 }
 
@@ -641,7 +712,15 @@ fn page_components(
     }
     let mut page: Vec<Component> = Vec::new();
     for text in values {
-        let token = mint("v", &[&selection.components, &selection.context], &page)?;
+        let token = mint(
+            "v",
+            &[
+                &selection.components,
+                &selection.context,
+                &selection.conditions,
+            ],
+            &page,
+        )?;
         page.push(Component { token, text });
     }
     let cursor = more.then(|| nonce("c")).transpose()?;
@@ -953,6 +1032,27 @@ mod tests {
             offset = chunk["next_offset"].as_str().unwrap().to_owned();
         }
     }
+    /// Every domain source of a selection, read page by page (64 at most).
+    fn all_sources(jobs: &mut Jobs, selection: &Value) -> Vec<Value> {
+        let (mut sources, mut offset) = (Vec::new(), "0".to_owned());
+        loop {
+            let page = job_detail(
+                jobs,
+                "results_sources",
+                json!({"schemaVersion":1,"selection_ref":selection["selection_ref"],
+                    "offset":offset,"limit":64}),
+            )
+            .unwrap();
+            let entries = page["sources"].as_array().unwrap();
+            assert!(entries.len() <= 64);
+            sources.extend(entries.iter().cloned());
+            if page["has_more"] == false {
+                assert_eq!(sources.len().to_string(), selection["source_count"]);
+                return sources;
+            }
+            offset = page["next_offset"].as_str().unwrap().to_owned();
+        }
+    }
     fn component<'a>(selection: &'a Value, kind: &str) -> Option<&'a Value> {
         selection["components"]
             .as_array()
@@ -972,6 +1072,10 @@ mod tests {
         sha256: String,
     }
     fn bundle(verified: bool) -> Bundle {
+        bundle_with(verified, |_| {})
+    }
+    /// `edit` adjusts the synthetic schema before it is written and resolved.
+    fn bundle_with(verified: bool, edit: impl FnOnce(&mut Value)) -> Bundle {
         let cases: Vec<Value> = serde_json::from_slice(CASES).unwrap();
         let case = &cases[0];
         let hex = case["bytes_hex"].as_str().unwrap();
@@ -1002,6 +1106,7 @@ mod tests {
             "assertions":[{"kind":"constraint","field":{"field":"F2"},
                 "constraint":{"kind":"allowed_values","values":["A"],"target":"logical"}}],
             "error_code":"E_CROSS_FIELD","message_template":"Regola {rule_id}."}]);
+        edit(&mut schema);
         fs::write(
             folder.join("flow.json"),
             serde_json::to_vec(&schema).unwrap(),
@@ -1172,11 +1277,11 @@ mod tests {
                         exact(&mut read, "actual").unwrap(),
                         error.actual.as_ref().unwrap().display
                     );
-                    assert!(!selection["domain_sources"].as_array().unwrap().is_empty());
+                    assert_ne!(selection["source_count"], "0");
                 }
                 None => {
                     assert_eq!(selection["field_position"], Value::Null);
-                    assert_eq!(selection["domain_sources"], json!([]));
+                    assert_eq!(selection["source_count"], "0");
                     assert!(component(&selection, "guide").is_none());
                     let count = error.actual.as_ref().is_some_and(|a| {
                         a.raw_hex.is_none()
@@ -1253,7 +1358,8 @@ mod tests {
         };
 
         let f2 = select(&mut jobs, "Synthetic text code");
-        let sources = f2["domain_sources"].as_array().unwrap().clone();
+        let sources = all_sources(&mut jobs, &f2);
+        let f2_first = sources[0].clone();
         let kinds: Vec<_> = sources
             .iter()
             .map(|s| (s["kind"].clone(), s["conditional"].clone()))
@@ -1267,6 +1373,9 @@ mod tests {
             ]
         );
         assert_eq!(sources[2]["rule"]["text"], "COND-F2");
+        // The guard is the engine's own condition text, never omitted.
+        assert_eq!(sources[2]["condition"]["preview"]["text"], "F1 = \"1\"");
+        assert!(sources[..2].iter().all(|s| s["condition"].is_null()));
         assert_eq!(sources[1]["dataset"]["id"]["text"], "union-A");
         assert_eq!(sources[1]["dataset"]["version"]["text"], "1");
         let fallback = open(&mut jobs, &f2, &sources[0], Value::Null).unwrap();
@@ -1325,7 +1434,7 @@ mod tests {
         assert_eq!(values(&conditional["domain"]), ["\"A\""]);
 
         let f1 = select(&mut jobs, "Synthetic numeric code");
-        let sources = f1["domain_sources"].as_array().unwrap().clone();
+        let sources = all_sources(&mut jobs, &f1);
         let kinds: Vec<_> = sources
             .iter()
             .map(|s| s["kind"].as_str().unwrap())
@@ -1382,13 +1491,163 @@ mod tests {
         );
         // Selecting another diagnostic makes the old sources stale.
         assert_eq!(
-            open(
-                &mut jobs,
-                &f2,
-                &json!({"source_ref":f2["domain_sources"][0]["source_ref"]}),
-                Value::Null
-            ),
+            open(&mut jobs, &f2, &f2_first, Value::Null),
             Err(ErrorCode::StaleContext)
+        );
+    }
+
+    /// More than 64 declarations never prevent opening a diagnostic: sources
+    /// are paged, every conditional source carries its own native guard, and
+    /// a change of the guard alone changes the readable guide.
+    #[test]
+    fn sources_are_paged_without_a_count_limit_and_carry_native_guards() {
+        let long = "à😀".repeat(400);
+        let rules = 70;
+        let bundle = bundle_with(true, |schema| {
+            let template = schema["traces"][0]["rules"][0].clone();
+            let rules_json = schema["traces"][0]["rules"].as_array_mut().unwrap();
+            for i in 0..rules {
+                let mut rule = template.clone();
+                rule["id"] = json!(format!("COND-{i:02}"));
+                let value = if i == rules - 1 {
+                    long.clone()
+                } else {
+                    format!("{}", i + 2)
+                };
+                rule["when"] = json!({"eq":{"ref":{"field":"F1"},"value":value}});
+                rule["assertions"][0]["constraint"]["values"] = json!([format!("B{i}")]);
+                rules_json.push(rule);
+            }
+        });
+        let (mut jobs, query_ref, page) = run_bundle(&bundle);
+        let row = page["rows"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|row| row["field"]["text"] == "Synthetic text code")
+            .unwrap()
+            .clone();
+        let selection = job_detail(
+            &mut jobs,
+            "results_select",
+            json!({"schemaVersion":1,
+            "query_ref":query_ref,"diagnostic_ref":row["diagnostic_ref"]}),
+        )
+        .unwrap();
+        // fallback + reference + COND-F2 + 70 conditional rules.
+        assert_eq!(selection["source_count"], (3 + rules).to_string());
+        let sel = selection["selection_ref"].clone();
+        let sources_page = |jobs: &mut Jobs, offset: &str, limit: u64| {
+            job_detail(
+                jobs,
+                "results_sources",
+                json!({"schemaVersion":1,
+                "selection_ref":sel,"offset":offset,"limit":limit}),
+            )
+        };
+        let first = sources_page(&mut jobs, "0", 64).unwrap();
+        assert_eq!(first["sources"].as_array().unwrap().len(), 64);
+        assert_eq!(
+            (first["next_offset"].clone(), first["has_more"].clone()),
+            (json!("64"), json!(true))
+        );
+        let guard = first["sources"][10]["condition"]["component_ref"].clone();
+        let read = |jobs: &mut Jobs, component: &Value| {
+            job_detail(
+                jobs,
+                "results_text",
+                json!({"schemaVersion":1,"selection_ref":sel,
+                "component_ref":component,"offset":"0","limit":16384}),
+            )
+        };
+        // Source 10 is COND-07 (index 3 + 7), guarded by F1 = "9".
+        assert_eq!(first["sources"][10]["rule"]["text"], "COND-07");
+        assert_eq!(read(&mut jobs, &guard).unwrap()["text"], "F1 = \"9\"");
+        let second = sources_page(&mut jobs, "64", 64).unwrap();
+        let tail = second["sources"].as_array().unwrap().clone();
+        assert_eq!(tail.len(), 9);
+        assert_eq!(second["has_more"], false);
+        // A new page replaces the previous page's guard handles.
+        assert_eq!(read(&mut jobs, &guard), Err(ErrorCode::StaleContext));
+        // The long Unicode guard is a bounded preview plus exact chunked text.
+        let last = tail.last().unwrap();
+        assert_eq!(last["rule"]["text"], format!("COND-{:02}", rules - 1));
+        assert_eq!(last["condition"]["preview"]["complete"], false);
+        let mut reader = |payload| job_detail(&mut jobs, "results_text", payload);
+        assert_eq!(
+            read_all(&mut reader, &sel, &last["condition"]["component_ref"], 100),
+            format!("F1 = {}", serde_json::to_string(&long).unwrap())
+        );
+        // A source beyond the first page opens its own domain.
+        let domain = job_detail(
+            &mut jobs,
+            "results_domain",
+            json!({"schemaVersion":1,
+            "selection_ref":sel,"source_ref":tail[0]["source_ref"],"cursor_ref":null}),
+        )
+        .unwrap();
+        assert_eq!(domain["domain"]["conditional"], true);
+        assert_eq!(domain["domain"]["entries"][0]["preview"]["text"], "\"B61\"");
+        assert_eq!(
+            sources_page(&mut jobs, "74", 1),
+            Err(ErrorCode::InvalidMessage)
+        );
+        assert_eq!(
+            DetailRequest::decode(
+                "results_sources",
+                json!({"schemaVersion":1,
+                "selection_ref":"s","offset":"0","limit":65})
+                .as_object()
+                .unwrap()
+            ),
+            Err(ErrorCode::InvalidMessage)
+        );
+
+        // Only the guard differs: the guide differs, the rest of the source does not.
+        let guide = |value: &str| {
+            let bundle = bundle_with(true, |schema| {
+                schema["traces"][0]["rules"][0]["when"] =
+                    json!({"eq":{"ref":{"field":"F1"},"value":value}});
+            });
+            let (mut jobs, query_ref, page) = run_bundle(&bundle);
+            let row = page["rows"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .find(|row| row["field"]["text"] == "Synthetic text code")
+                .unwrap()
+                .clone();
+            let selection = job_detail(
+                &mut jobs,
+                "results_select",
+                json!({"schemaVersion":1,
+                "query_ref":query_ref,"diagnostic_ref":row["diagnostic_ref"]}),
+            )
+            .unwrap();
+            let mut source = all_sources(&mut jobs, &selection)
+                .into_iter()
+                .find(|s| s["conditional"] == true)
+                .unwrap();
+            let text = job_detail(
+                &mut jobs,
+                "results_text",
+                json!({"schemaVersion":1,
+                "selection_ref":selection["selection_ref"],
+                "component_ref":source["condition"]["component_ref"],"offset":"0","limit":64}),
+            )
+            .unwrap()["text"]
+                .clone();
+            for key in ["source_ref", "condition"] {
+                source.as_object_mut().unwrap().remove(key);
+            }
+            (source, text)
+        };
+        let (one, one_text) = guide("1");
+        let (two, two_text) = guide("2");
+        assert_eq!(one, two);
+        assert_eq!(
+            (one_text, two_text),
+            (json!("F1 = \"1\""), json!("F1 = \"2\""))
         );
     }
 
@@ -1410,10 +1669,8 @@ mod tests {
             "query_ref":query_ref,"diagnostic_ref":row["diagnostic_ref"]}),
         )
         .unwrap();
-        let source = selection["domain_sources"]
-            .as_array()
-            .unwrap()
-            .iter()
+        let source = all_sources(&mut jobs, &selection)
+            .into_iter()
             .find(|s| s["kind"] == "reference")
             .unwrap()
             .clone();
@@ -1484,7 +1741,7 @@ mod tests {
         );
         // F1 exists in the captured schema: its guide is native, but no domain.
         assert!(component(&first, "guide").is_some());
-        assert_eq!(first["domain_sources"], json!([]));
+        assert_eq!(first["source_count"], "0");
         let sel = first["selection_ref"].clone();
         let message = component(&first, "message").unwrap();
         assert_eq!(message["preview"]["complete"], false);

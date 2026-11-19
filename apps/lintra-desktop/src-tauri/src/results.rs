@@ -416,6 +416,9 @@ impl Results {
             DetailRequest::Context { offset, limit, .. } => {
                 detail::context(selection, &report, offset, limit, id)
             }
+            DetailRequest::Sources { offset, limit, .. } => {
+                detail::sources_page(selection, &report, offset, limit, id)
+            }
             DetailRequest::Domain {
                 source_ref,
                 cursor_ref,

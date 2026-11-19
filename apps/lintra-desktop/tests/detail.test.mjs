@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import { mockIPC, clearMocks } from "@tauri-apps/api/mocks";
-import { resultsSelect, resultsText, resultsContext, resultsDomain, resultsDomainState, MAX_TEXT_BYTES, MAX_DETAIL_ENTRIES, IpcError } from "../src/ipc.ts";
+import { resultsSelect, resultsText, resultsContext, resultsSources, resultsDomain, resultsDomainState, MAX_TEXT_BYTES, MAX_DETAIL_ENTRIES, IpcError } from "../src/ipc.ts";
 
 globalThis.window = { crypto: globalThis.crypto };
 afterEach(clearMocks);
@@ -11,11 +11,11 @@ const d = "d_" + "1".repeat(32);
 const s = "s_" + "2".repeat(32);
 const preview = (text, complete = true) => ({ schemaVersion: 1, text, complete });
 const part = (kind, text, complete = true) => ({ schemaVersion: 1, component_ref: "x_" + kind, kind, preview: preview(text, complete) });
-const source = { schemaVersion: 1, source_ref: "o_1", kind: "reference", conditional: false, rule: null,
+const source = { schemaVersion: 1, source_ref: "o_1", kind: "reference", conditional: false, rule: null, condition: null,
   dataset: { schemaVersion: 1, id: preview("union-A"), version: preview("1") }, comparison: preview("Confronto sui byte esatti.") };
 const selection = { schemaVersion: 1, selection_ref: s, query_ref: q, diagnostic_ref: d, run, line: "18446744073709551615", trace_ref: "trace_0",
   field_position: { schemaVersion: 1, start: "4", end: "6", units: "one_based_inclusive_bytes" }, actual_visibility: "available",
-  components: [part("code", "E_REFERENCE"), part("message", "Valore", false), part("actual", "XX")], domain_sources: [source] };
+  components: [part("code", "E_REFERENCE"), part("message", "Valore", false), part("actual", "XX")], source_count: "18446744073709551615" };
 const digest = "b".repeat(64);
 const available = { schemaVersion: 1, kind: "reference", conditional: false, expected_sha256: digest, actual_sha256: digest,
   status: "available", entries: [{ schemaVersion: 1, component_ref: "v_1", preview: preview("\"AA\"") }], next_cursor: "c_1" };
@@ -33,14 +33,13 @@ function never() { mockIPC(() => assert.fail("invalid request must not reach Rus
 test("selection sends exact refs and keeps u64 coordinates as text", async () => {
   mock(selection, r => { assert.equal(r.operation, "results_select"); assert.deepEqual(r.payload, { schemaVersion: 1, query_ref: q, diagnostic_ref: d }); });
   assert.deepEqual(await resultsSelect(q, d), selection);
-  const record = { ...selection, field_position: null, actual_visibility: "not_present", components: [part("code", "E_RECORD_LENGTH"), part("message", "Corto")], domain_sources: [] };
+  const record = { ...selection, field_position: null, actual_visibility: "not_present", components: [part("code", "E_RECORD_LENGTH"), part("message", "Corto")], source_count: "0" };
   mock(record);
   assert.deepEqual(await resultsSelect(q, d), record);
   for (const bad of ["d/1", "", 1]) { never(); await assert.rejects(() => resultsSelect(q, bad), IpcError); }
 });
 
 test("selection rejects raw values, foreign refs and inconsistent visibility", async () => {
-  const sources = (extra) => ({ ...selection, domain_sources: [{ ...source, ...extra }] });
   for (const payload of [{ ...selection, query_ref: "q_other" }, { ...selection, diagnostic_ref: "d_other" },
     { ...selection, raw_hex: "00" }, { ...selection, line: "0" }, { ...selection, line: 7 },
     { ...selection, actual_visibility: "local_report_only_record_scope" },
@@ -51,9 +50,8 @@ test("selection rejects raw values, foreign refs and inconsistent visibility", a
     { ...selection, components: [{ ...part("code", "E"), preview: preview("à".repeat(129), false) }, part("message", "M"), part("actual", "X")] },
     { ...selection, field_position: { schemaVersion: 1, start: "5", end: "4", units: "one_based_inclusive_bytes" } },
     { ...selection, field_position: { schemaVersion: 1, start: "1", end: "4", units: "zero_based" } },
-    { ...selection, domain_sources: Array(MAX_DETAIL_ENTRIES + 1).fill(source) },
-    sources({ kind: "invented" }), sources({ conditional: true }), sources({ rule: preview("R") }),
-    sources({ dataset: null }), sources({ kind: "range" }), sources({ path: "A.json" })]) {
+    { ...selection, source_count: 3 }, { ...selection, source_count: "-1" },
+    { ...selection, domain_sources: [source] }]) {
     mock(payload); await assert.rejects(() => resultsSelect(q, d), IpcError);
   }
 });
@@ -119,4 +117,25 @@ test("domains distinguish loading, verified pages and every non-listing status",
   mock({ ...loading, read_ref: "r_2" });
   await assert.rejects(() => resultsDomainState(s, "r_1"), IpcError);
   never(); await assert.rejects(() => resultsDomain(s, "o_1", "c/1"), IpcError);
+});
+
+test("sources are paged, guards are handles and the count is not a cap", async () => {
+  const guard = { schemaVersion: 1, component_ref: "g_1", preview: preview("F1 = \"1\"") };
+  const conditional = { ...source, source_ref: "o_2", kind: "allowed_values", dataset: null, conditional: true, rule: preview("COND-F2"), condition: guard };
+  const unknown = { ...conditional, source_ref: "o_3", condition: null };
+  const page = { schemaVersion: 1, selection_ref: s, offset: "64", sources: [source, conditional, unknown], next_offset: "67", has_more: false };
+  mock(page, r => { assert.equal(r.operation, "results_sources"); assert.deepEqual(r.payload, { schemaVersion: 1, selection_ref: s, offset: "64", limit: 64 }); });
+  assert.deepEqual(await resultsSources(s, "64"), page);
+  for (const [offset, limit] of [["01", 1], ["0", 0], ["0", 65], ["0", 1.5]]) {
+    never(); await assert.rejects(() => resultsSources(s, offset, limit), IpcError);
+  }
+  const bad = extra => ({ ...page, sources: [{ ...source, ...extra }], next_offset: "65" });
+  for (const payload of [bad({ kind: "invented" }), bad({ conditional: true }), bad({ rule: preview("R") }),
+    bad({ condition: guard }), bad({ dataset: null }), bad({ kind: "range" }), bad({ path: "A.json" }),
+    bad({ condition: { ...guard, text: "F1" } }), { ...page, next_offset: "66" }, { ...page, offset: "0" },
+    { ...page, selection_ref: "s_other" }, { ...page, sources: [], next_offset: "64", has_more: true }]) {
+    mock(payload); await assert.rejects(() => resultsSources(s, "64"), IpcError);
+  }
+  mock({ ...page, sources: [source, conditional, unknown] });
+  await assert.rejects(() => resultsSources(s, "64", 2), IpcError);
 });

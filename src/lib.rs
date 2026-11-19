@@ -409,7 +409,7 @@ pub use report::replay::{CanonicalReplayError, replay_canonical_report};
 /// Schema-derived diagnostic guidance and bounded domain enumeration.
 pub use engine::field_guide::{
     DeclaredDomain, DomainPage, DomainPosition, constraint_comparison_guide, declared_domain,
-    declared_domain_page, domain_literal, field_format_guide,
+    declared_domain_page, domain_literal, field_format_guide, rule_condition_guide,
 };
 
 pub use engine::namespace_context::VerifiedRunContext;

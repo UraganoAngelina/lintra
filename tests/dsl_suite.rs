@@ -212,3 +212,43 @@ fn dynamic_conflicts_remain_runtime_errors_and_decisive_false_is_not_a_conflict(
     value["traces"][0]["fields"][0]["presence"] = json!({"base":"required","required_if":[],"forbidden_if":[{"and":[{"is_present":{"ref":{"field":"ORIGIN"}}},{"const":false}]}]});
     compile(value).unwrap();
 }
+
+/// The public rule guard guide is exactly the text the engine renders for
+/// `{condition}` in the golden diagnostics, and differs when only the guard
+/// differs (T-MIG-P4-09 detail sources).
+#[test]
+fn rule_condition_guide_matches_the_golden_condition_text() {
+    let schema = compile(value()).unwrap();
+    let record = &schema.traces()[0];
+    let guide = |id: &str| {
+        let rule = record
+            .local_rules()
+            .iter()
+            .find(|rule| &*rule.id == id)
+            .unwrap();
+        lintra::rule_condition_guide(rule, record).unwrap()
+    };
+    let golden = include_str!("golden/dsl/v1/invalid/expected.errors.jsonl");
+    for (id, expected) in [
+        ("REQUIRED-DETAIL", "ORIGIN NOT IN [\"01\", \"02\"]"),
+        ("FORBID-X", "(DETAIL presente AND DETAIL = \"X\")"),
+    ] {
+        assert_eq!(guide(id), expected);
+        let message = golden
+            .lines()
+            .map(|line| serde_json::from_str::<Value>(line).unwrap())
+            .find(|row| row["message"].as_str().unwrap().contains(id))
+            .unwrap();
+        assert!(message["message"].as_str().unwrap().contains(expected));
+    }
+    let mut changed = value();
+    changed["traces"][0]["rules"][0]["when"] =
+        json!({"not_in":{"ref":{"field":"ORIGIN"},"values":["03"]}});
+    let schema = compile(changed).unwrap();
+    let record = &schema.traces()[0];
+    let rule = &record.local_rules()[0];
+    assert_eq!(
+        lintra::rule_condition_guide(rule, record).unwrap(),
+        "ORIGIN NOT IN [\"03\"]"
+    );
+}
