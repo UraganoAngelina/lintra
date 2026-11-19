@@ -2,9 +2,9 @@
 
 19 novembre 2026. Autore Claude Code, revisore Codex. Baseline `integration`
 `56627a1` (P4-08 e P4-11 DONE), branch `work/T-MIG-P4-09`.
-Stato: **IN_REVIEW**, rework 1 dopo CHANGES_REQUESTED, in attesa di nuova
-review. Le verifiche locali sono PASS; mancano review positiva, CI remota e
-prove Windows. G-MIG-4 resta aperto.
+Stato: **DONE** (19 novembre 2026): review Codex round 2 APPROVED su
+`7d5cdbc`, integrazione autorizzata dall'autore. CI remota e prove Windows non
+eseguite, rinviate al checkpoint del blocco P4. G-MIG-4 resta aperto.
 
 Specifica: `docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-09.md`.
 Acceptance: valori e diagnostici corrispondono al report originale e alla
@@ -253,3 +253,28 @@ Windows/VM.
 
 Prossima task tecnicamente disponibile: T-MIG-P4-12 (P4-10 dipende anche da
 P4-12).
+
+## Chiusura
+
+- Review Codex round 1 su `5027ee4`: **CHANGES_REQUESTED** per P409-01 e
+  P409-02 (MAJOR), corretti nel rework 1 `7d5cdbc`.
+- Review Codex round 2 su `7d5cdbcabf8505ebcd1826ac064ec97419f7fab9`:
+  **APPROVED**, nessun rilievo aperto (rapporti
+  `lintra-review-handoffs/T-MIG-P4-09-CODEX-REVIEW.md` e `-REVIEW-2.md`, fuori
+  repo).
+- Repliche indipendenti di Codex, tutte exit 0:
+  - 55 test nativi PASS (1 ignored GTK) e 38 Node PASS;
+  - Clippy, lint, build e fmt;
+  - suite DSL (5 PASS);
+  - riproduzione con 2, 64 e 65 fonti e con guardie distinte.
+  I dieci digest sorgente coincidono. Workspace completo, smoke e mutazioni
+  sono stati verificati da Codex sul log locale dell'autore, non rieseguiti.
+- Integrazione autorizzata dall'autore il 19/11/2026: fast-forward di
+  `integration` da `56627a1` a `7d5cdbc`, senza merge; si aggiunge questo
+  solo commit documentale.
+- **Non eseguito:** CI remota, prove Windows/MSVC/VM e step speciali di
+  `ci.yml`, rinviati al checkpoint del blocco P4. G-MIG-4 e G-REL aperti.
+- Rischi residui accettati in review:
+  - lettura reference O(N log 64) sul worker;
+  - join cooperativo di una lettura superata, non misurato su Windows;
+  - test di dettaglio prevalentemente su run LocalOnly.

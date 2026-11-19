@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **62/128 DONE;66 rimanenti** (18U-* e51MIG).
+Conteggio unificato: **63/128 DONE;65 rimanenti** (18U-* e51MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -104,7 +104,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P4-06 | T-MIG-P4-04, T-MIG-P4-05 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-06.md) | 5e3acdb;32 Rust/28 Node/25 regressioni locali PASS;CI44065663299 SUCCESS Linux/Windows,build e smoke nativi PASS | Acceptance adapter PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P4-07 | T-MIG-P4-06 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-07.md) | a68d17d+5e9cacd (=565623b/3b15f0a);gate merge locale su albero codice identico 1.146 Rust+28 Node PASS/0 fail;review Claude approve round 2;CI nativa al checkpoint blocco | Acceptance indice/cache PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P4-08 | T-MIG-P4-07 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-08.md) | ab679c5;43 nativi/1.112 workspace/31 Node PASS locali, smoke Wayland PASS;review Codex APPROVED con repliche native/Node;CI nativa al checkpoint blocco | Acceptance query/paging PASS; G-MIG-4 aggregato resta aperto |
-| T-MIG-P4-09 | T-MIG-P4-08 | IN_REVIEW | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-09.md) | Base 56627a1;rework 1: 55 nativi/38 Node/1.113 workspace PASS locali,smoke PASS;CI remota e Windows NOT_RUN | Review Codex del rework pendente; G-MIG-4 NOT_VERIFIED |
+| T-MIG-P4-09 | T-MIG-P4-08 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-09.md) | 5027ee4+7d5cdbc;55 nativi/38 Node/1.113 workspace PASS locali,smoke PASS;review Codex round 2 APPROVED con repliche native/Node;CI nativa al checkpoint blocco | Acceptance dettaglio/guide/reference PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P4-10 | T-MIG-P4-06, T-MIG-P4-08, T-MIG-P4-09, T-MIG-P4-12 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-10.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
 | T-MIG-P4-11 | T-MIG-P4-06, T-MIG-P2-11 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-11.md) | f97cb7c+1f33be8;gate merge locale 47 nativi/32 Node/1.112 workspace PASS,smoke PASS;review Codex CHANGES su P411-01,rework senza 2ª review per deroga autore;CI nativa al checkpoint blocco | Acceptance bridge Full PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P4-12 | T-MIG-P4-11, T-MIG-P4-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P4-12.md) | —; Non eseguite | G-MIG-4 NOT_VERIFIED |
@@ -426,3 +426,13 @@ Gate di merge locale PASS sull'albero integrato: 47 test nativi, 32 Node e
 `T-MIG-P4-11.merge-gate.log` fuori repo, SHA-256 f1a903b2…cd3c. Nessuna CI
 remota o prova Windows: la qualifica resta al checkpoint del blocco P4.
 G-MIG-4 e G-REL aperti. Prossime tecnicamente disponibili P4-09 e P4-12.
+
+Chiusura T-MIG-P4-09, 19 novembre 2026: **DONE**, **63/128 (49,2%)**, 65
+rimanenti. Autore Claude Code, commit 5027ee4 + rework 7d5cdbc. Review Codex
+CHANGES_REQUESTED al round 1 (P409-01: tetto di 64 fonti; P409-02: guardia
+`rule.when` omessa) e APPROVED al round 2, senza rilievi e con repliche
+indipendenti (55 nativi, 38 Node, Clippy, DSL, riproduzioni 64/65 fonti).
+Integrazione autorizzata dall'autore: fast-forward di integration su
+7d5cdbc. Nessuna CI remota o prova Windows: la qualifica resta al checkpoint
+del blocco P4. G-MIG-4 e G-REL aperti. Prossima tecnicamente disponibile
+P4-12, poi P4-10.
