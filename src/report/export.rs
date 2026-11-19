@@ -598,6 +598,8 @@ mod tests {
         );
     }
 
+    /// Only the Unix-only identity regressions build sources by hand.
+    #[cfg(unix)]
     fn source_for<'a>(
         private: &'a Path,
         jsonl: &'a Path,
