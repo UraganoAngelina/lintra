@@ -11,23 +11,29 @@ pub(crate) struct Progress {
     trace_records: u64,
     cross_records: u64,
     traces: Vec<TraceId>,
+    // Traces whose PASS1 has started. A Full bundle reads each trace once, so
+    // a second start (or a return to a completed trace) is an incoherent event
+    // that would otherwise make the sample regress to a finished trace.
+    started: Vec<bool>,
     failed: bool,
     sealed: bool,
 }
 impl Progress {
     pub(crate) fn new(scope: &ValidationScope) -> Self {
+        let traces: Vec<TraceId> = match scope {
+            ValidationScope::Trace(input) => vec![input.trace_id.clone()],
+            ValidationScope::Flow(input) => {
+                input.traces.iter().map(|t| t.trace_id.clone()).collect()
+            }
+        };
         Self {
             sequence: 0,
             phase: None,
             trace: None,
             trace_records: 0,
             cross_records: 0,
-            traces: match scope {
-                ValidationScope::Trace(input) => vec![input.trace_id.clone()],
-                ValidationScope::Flow(input) => {
-                    input.traces.iter().map(|t| t.trace_id.clone()).collect()
-                }
-            },
+            started: vec![false; traces.len()],
+            traces,
             failed: false,
             sealed: false,
         }
@@ -63,12 +69,17 @@ impl Progress {
             }
             ProgressEvent::TraceStarted { trace_id } => {
                 let trace = self.traces.iter().position(|id| id == trace_id);
-                if self.phase != Some(ValidationPhase::LocalValidation) || trace.is_none() {
-                    false
-                } else {
-                    self.trace = trace;
-                    self.trace_records = 0;
-                    true
+                match trace {
+                    Some(index)
+                        if self.phase == Some(ValidationPhase::LocalValidation)
+                            && !self.started[index] =>
+                    {
+                        self.started[index] = true;
+                        self.trace = Some(index);
+                        self.trace_records = 0;
+                        true
+                    }
+                    _ => false,
                 }
             }
             ProgressEvent::RecordsProcessed { trace_id, count }
@@ -174,6 +185,28 @@ mod tests {
             p.update(&event);
             assert_eq!(p.dto(Value::Null), Err(ErrorCode::TechnicalFailure));
         }
+        // A Full trace that starts again would regress to a finished trace.
+        let mut p = Progress::new(&ValidationScope::Flow(lintra::FlowValidationInput {
+            traces: ["S", "T"]
+                .map(|id| TraceValidationInput {
+                    trace_id: TraceId(id.into()),
+                    source: InputSource::Path("SYNTHETIC".into()),
+                })
+                .into(),
+        }));
+        p.update(&ProgressEvent::PhaseStarted(
+            ValidationPhase::LocalValidation,
+        ));
+        for id in ["S", "T"] {
+            p.update(&ProgressEvent::TraceStarted {
+                trace_id: TraceId(id.into()),
+            });
+        }
+        assert_eq!(p.dto(Value::Null).unwrap()["trace_ref"], "trace_1");
+        p.update(&ProgressEvent::TraceStarted {
+            trace_id: TraceId("S".into()),
+        });
+        assert_eq!(p.dto(Value::Null), Err(ErrorCode::TechnicalFailure));
         let mut p = sample();
         p.sequence = u64::MAX;
         p.update(&ProgressEvent::PhaseStarted(

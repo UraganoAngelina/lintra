@@ -248,11 +248,27 @@ fn confirmed_references(
     })
 }
 
+/// Run in the system temporary directory. The production worker calls
+/// `execute_in` with its configured root; this form serves unit tests that
+/// drive the validation without the job manager.
+#[cfg(test)]
 fn execute(
     intent: Arc<PreparedIntent>,
     references: Arc<dyn ReferenceDataPreparer>,
     observer: &mut dyn ProgressObserver,
     token: &CancellationToken,
+) -> WorkerResult {
+    execute_in(intent, references, observer, token, None)
+}
+
+/// `spool_root` is `None` in production (system temporary directory); tests
+/// pass a private directory so cleanup of every run spool is observable.
+fn execute_in(
+    intent: Arc<PreparedIntent>,
+    references: Arc<dyn ReferenceDataPreparer>,
+    observer: &mut dyn ProgressObserver,
+    token: &CancellationToken,
+    spool_root: Option<&std::path::Path>,
 ) -> WorkerResult {
     let mut repository = InMemorySchemaRepository::new();
     repository
@@ -274,10 +290,13 @@ fn execute(
         }),
         DatasetPreparationPolicy::ContinueWithAvailableEvidence,
     );
-    let directory = tempfile::Builder::new()
-        .prefix("lintra-desktop-run-")
-        .tempdir()
-        .map_err(|_| ErrorCode::TechnicalFailure)?;
+    let mut builder = tempfile::Builder::new();
+    builder.prefix("lintra-desktop-run-");
+    let directory = match spool_root {
+        Some(root) => builder.tempdir_in(root),
+        None => builder.tempdir(),
+    }
+    .map_err(|_| ErrorCode::TechnicalFailure)?;
     let mut pending = AtomicReportFile::create_replacing(
         &directory.path().join("errors.jsonl"),
         PartialOutputPolicy::Delete,
@@ -418,7 +437,18 @@ pub(crate) struct Jobs {
     // report they borrow through Arc.
     results: crate::results::Results,
     last_report: Option<(RunRef, Arc<Report>)>,
+    // Test-only observation points for the integration tests of the Full
+    // lifecycle (T-MIG-P4-12): a probe called by the worker after each
+    // progress event is recorded, and a private root for run spools.
+    #[cfg(test)]
+    probe: Option<Probe>,
+    #[cfg(test)]
+    spool_root: Option<std::path::PathBuf>,
 }
+/// Test probe: runs on the worker thread after the event updated the shared
+/// state and released its lock, so it may block to hold the worker at a point.
+#[cfg(test)]
+pub(crate) type Probe = Arc<dyn Fn(&ProgressEvent) + Send + Sync>;
 impl Jobs {
     pub(crate) fn cancel_on_close(&self) {
         if let Some(job) = &self.current {
@@ -507,6 +537,10 @@ impl Jobs {
         let token = CancellationToken::default();
         let cancellation = token.clone();
         let mode = intent.request.mode;
+        #[cfg(test)]
+        let (probe, spool_root) = (self.probe.clone(), self.spool_root.clone());
+        #[cfg(not(test))]
+        let spool_root: Option<std::path::PathBuf> = None;
         let thread = thread::Builder::new()
             .name("lintra-desktop-validation".into())
             .spawn(move || {
@@ -533,10 +567,20 @@ impl Jobs {
                             state.sealed = true;
                         }
                     }
+                    #[cfg(test)]
+                    if let Some(probe) = &probe {
+                        probe(&event);
+                    }
                 };
                 // Unwinding drops pending report guards; a panic is never normative invalidity.
                 std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                    execute(intent, references, &mut observer, &cancellation)
+                    execute_in(
+                        intent,
+                        references,
+                        &mut observer,
+                        &cancellation,
+                        spool_root.as_deref(),
+                    )
                 }))
                 .unwrap_or(Err(ErrorCode::TechnicalFailure))
             })
@@ -621,6 +665,9 @@ impl Jobs {
 }
 
 #[cfg(test)]
+mod full_lifecycle;
+
+#[cfg(test)]
 pub(crate) mod tests {
     use super::*;
     use std::{
@@ -695,7 +742,7 @@ pub(crate) mod tests {
     }
     /// Captured Full intent over the shared synthetic two-trace schema
     /// (`S` joins `T` on KEY and compares DATA), inputs in schema order.
-    fn full_fixture(
+    pub(super) fn full_fixture(
         source: &[u8],
         target: &[u8],
     ) -> (
@@ -1035,6 +1082,8 @@ pub(crate) mod tests {
                 current: Some(job),
                 results: Default::default(),
                 last_report: None,
+                probe: None,
+                spool_root: None,
             },
             tx,
         )
