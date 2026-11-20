@@ -3,9 +3,15 @@
 > Claude Code è lo **sviluppatore principale** di Lintra; Codex è il **revisore
 > indipendente**. Il workflow AIProto e il precedente protocollo
 > `.ai-bridge`/lane/`agroute` sono dismessi dal 18 novembre 2026: niente card,
-> runtime, ledger o gate di protocollo.
->
-> Per contratto tecnico, ratifiche e fonti canoniche vale `AGENTS.md`
+> runtime, ledger o gate di protocollo, per tutte le task che richiedono scrittura di codice eseguire il tool 
+> Ponytail (reperibile al repo Github se non installato: https://github.com/dietrichgebert/ponytail).
+> Poi installa le skill i-have-adhd (https://github.com/ayghri/i-have-adhd) humanizer (dhttps://github.com/blader/humanizer da utilizzare ogni volta che produci del testo) e ogni qual volta
+> sia coinvolta una task che genera codice o riguarda ui/ux usare la skill ui-ux-pro-max (reperibile direttamente 
+> dallo skill marketplace oppure dalla repo Github https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+
+
+> Se non sai come gestire un processo di progetto consulta integralmente il file `AGENTS.md`.
+> Per contratto tecnico, ratifiche e fonti canoniche vale 
 > **sezioni 0, 2, 3** (sezione 5 = registro delle ratifiche, da consultare in
 > modo mirato). La sezione 1 di `AGENTS.md` descrive il ruolo di Codex come
 > revisore e il formato del suo rapporto.
