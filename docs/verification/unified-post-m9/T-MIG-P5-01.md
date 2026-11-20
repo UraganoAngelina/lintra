@@ -1,7 +1,8 @@
 # T-MIG-P5-01 — Shell React responsive e tema
 
-Data 20 novembre 2026. Stato: **IN REVIEW**, non DONE prima della review Codex
-e dell'integrazione. Prerequisiti: T-MIG-P4-10 DONE e G-MIG-4 PASS
+Data 20 novembre 2026. Stato: **APPROVED** dalla review Codex round 3 sul
+delta funzionale fino a `e726310` (consegnato in `8337525`); **WAITING_INTEGRATION**,
+non DONE prima dell'integrazione autorizzata. Prerequisiti: T-MIG-P4-10 DONE e G-MIG-4 PASS
 ([checkpoint](G-MIG-4.md), CI44706977518/desktop44706949307 su 1ab34d8).
 Branch `work/T-MIG-P5-01`, basato sul commit del checkpoint G-MIG-4
 (`73e28ee`, non ancora integrato) a sua volta su `integration` 1ab34d8.
@@ -171,8 +172,12 @@ non parte del delta funzionale della task.
 ## Rischi residui
 
 - Windows 1024×768/1366×768/1920×1080 a 1× e scala 2× su monitor più grandi
-  non provati; entrambi i layout (sotto/sopra 960 px) provati su entrambi gli
-  OS e a entrambe le scale.
+  non provati. A 1× entrambi i layout (barra superiore sotto 960 px CSS,
+  colonna laterale da 960 px) sono provati su entrambi gli OS; a 2× tutte le
+  work area provate restano sotto 960 px CSS (Linux 640/890, Windows 947),
+  quindi è provata soltanto la barra superiore. La colonna laterale a 2×
+  richiede un monitor con work area di almeno 1920 px fisici di larghezza
+  utile oltre la cornice e non è provata (review Codex round 3, P501-04).
 - Prove VM e personali, distinte dalla CI: la CI desktop sul delta resta
   NOT_RUN (nessun push).
 - La correzione della finestra vale all'avvio; uno spostamento successivo su
