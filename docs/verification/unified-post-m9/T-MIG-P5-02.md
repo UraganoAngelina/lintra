@@ -1,7 +1,8 @@
 # T-MIG-P5-02 — Flow/schema/trace state machine UI
 
-Data 20 novembre 2026. Stato: **IN REVIEW**, non DONE prima della review Codex
-e dell'integrazione. Prerequisito T-MIG-P5-01 DONE (integrato in
+Data 20 novembre 2026. Stato: **DONE**. Review Codex APPROVED senza rilievi
+su `375e42b`; integrazione autorizzata dall'autore per fast-forward di
+`integration` e `work/p1-foundations`, senza push. CI remota NOT_RUN. Prerequisito T-MIG-P5-01 DONE (integrato in
 `integration` `ad974a5`). Branch `work/T-MIG-P5-02` da `integration`
 `ad974a5`, worktree dedicato `/home/alberto/Desktop/LINTRA/lintra-p5-02`.
 

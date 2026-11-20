@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **66/128 DONE;62 rimanenti** (18U-* e50MIG).
+Conteggio unificato: **67/128 DONE;61 rimanenti** (18U-* e49MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -110,7 +110,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P4-11 | T-MIG-P4-06, T-MIG-P2-11 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-11.md) | f97cb7c+1f33be8;gate merge locale 47 nativi/32 Node/1.112 workspace PASS,smoke PASS;review Codex CHANGES su P411-01,rework senza 2ª review per deroga autore;CI nativa al checkpoint blocco | Acceptance bridge Full PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P4-12 | T-MIG-P4-11, T-MIG-P4-05 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-12.md) | cab4a04;58 nativi/38 Node PASS locali,smoke PASS;review Codex APPROVED con repliche native/Node;CI nativa al checkpoint blocco | Acceptance progresso/cancel/cleanup Full PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P5-01 | T-MIG-P4-10 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-01.md) | 50 Node, 68 Rust Linux/67 MSVC, Clippy PASS; capture/tastiera native 1× Linux 10/10, Win11 VM 11/11, 2× 7/7+7/7; e3c316c+e726310;review Codex round 3 APPROVED;CI delta NOT_RUN,al checkpoint blocco | Acceptance shell/tema PASS; G-MIG-5 NOT_VERIFIED |
-| T-MIG-P5-02 | T-MIG-P5-01 | IN_REVIEW | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-02.md) | 60 Node/lint/build PASS; parità Slint analysis_configuration 8/8 e schema_binding 1/1; selezione nativa Linux 12/12; CI delta NOT_RUN | G-MIG-5 NOT_VERIFIED |
+| T-MIG-P5-02 | T-MIG-P5-01 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-02.md) | 60 Node/lint/build PASS; parità Slint analysis_configuration 8/8 e schema_binding 1/1; selezione nativa Linux 12/12; 375e42b;review Codex APPROVED;CI delta NOT_RUN,al checkpoint blocco | Acceptance selezione PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-03 | T-MIG-P5-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-03.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-04 | T-MIG-P5-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-04.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-05 | T-MIG-P5-03, T-MIG-P5-04 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-05.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
@@ -478,3 +478,13 @@ incluso su sua richiesta. Integrazione autorizzata dall'autore:
 fast-forward di integration e work/p1-foundations, nessun push. CI remota sul
 delta NOT_RUN, al checkpoint del blocco P5. G-MIG-5 e G-REL aperti. Prossima
 tecnicamente disponibile T-MIG-P5-02.
+
+Chiusura T-MIG-P5-02, 20 novembre 2026: **DONE**, **67/128 (52,3%)**, 61
+rimanenti. Autore Claude Code, commit 375e42b su base ad974a5. Review Codex
+round 1 APPROVED senza rilievi, con repliche indipendenti (lint, 60 Node,
+build, test Slint 8+1, probe IPC su 133 descrittori/3 pagine e risposte fuori
+ordine, quattro scenari nativi Linux) tutte PASS. Integrazione autorizzata
+dall'autore: fast-forward di integration e work/p1-foundations, nessun push.
+CI remota, prova Windows e scala 2× del form NOT_RUN, al checkpoint del
+blocco P5. G-MIG-5 e G-REL aperti. Prossime tecnicamente disponibili
+T-MIG-P5-03 e T-MIG-P5-04.
