@@ -1,0 +1,143 @@
+{
+ "task": "T-MIG-P5-01",
+ "source": "work/T-MIG-P5-01 after e1874f6 plus the window fit (src-tauri/src/window_fit.rs, main.rs); the commit carrying this manifest",
+ "windows_build": {
+  "vm": "Windows11-Lintra-Test",
+  "uuid": "8e50e338-7593-4e13-8556-bdf22097bcc6",
+  "os_version": "10.0.26300.0",
+  "account": "lintra-agent (standard)",
+  "commands": [
+   "cargo build",
+   "cargo clippy --all-targets -- -D warnings",
+   "cargo test"
+  ],
+  "common_args": "--manifest-path src-tauri/Cargo.toml --locked --release --target x86_64-pc-windows-msvc --features tauri/custom-protocol -j 4",
+  "results": {
+   "build": 0,
+   "clippy": "0, no warnings",
+   "test": "67 passed, 0 failed (6 window_fit)"
+  },
+  "exe_sha256": "32ec4b77f9d2dd5d13831458b2cccf360749497b748618c05c2a5a901f65801e",
+  "exe_bytes": 17959936,
+  "frontend_dist_assets": [
+   "index-C7DZeOx8.css",
+   "index-TIfr-Ihh.js"
+  ]
+ },
+ "harness_sha256": "f187d5ef51594b9ab3681dad8d31b4518c17398bf1684a8a12a13f905dbc9f67",
+ "console_logon": {
+  "tool": "Sysinternals Autologon64.exe",
+  "signature": "Valid, CN=Microsoft Corporation",
+  "sha256": "5d96bbc4e5b726d87c7cf547f5fe98f8f05434ec2130bd60cbf5671fd3a7381b",
+  "password": "random, generated in the VM, never printed",
+  "plaintext_winlogon_password": false
+ },
+ "restore": {
+  "snapshot": "LINTRA-P5-01-PRETEST-20261120",
+  "domain_xml_sha256_prefix": "0c8ee64f16b60834 (original)",
+  "checks_after_revert": {
+   "AutoAdminLogon": "empty",
+   "DefaultPassword_present": false,
+   "tasks": 0,
+   "admin_dir": false,
+   "agent_P5_dir": false,
+   "agent_P1_04_dir": true,
+   "agent_ssh_standard": true
+  },
+  "final_state": "shut off",
+  "firmware_nvram": "OVMF preferred resolution set to 1920x1080 through the firmware menu for the 200% run; backup of the VARS file taken by the operator before the change, restore by the operator (outside the libvirt snapshot)"
+ },
+ "run": "200% scaling: Windows 1920x1080 at 192 DPI (work area 1920x984 physical, 960x492 logical), PASS 7/7, default window exactly [0,0,1920,984]; Linux headless Hyprland output 1920x1080 at scale 2, PASS 7/7",
+ "linux": {
+  "binary_sha256": "0e4c0d1c01831cd5d05eea1e1e0c4736f0cc85b794148e00c263da840b5104dc",
+  "output": "headless LINTRA-P501 created and removed by the operator session; real monitor eDP-1 unchanged"
+ },
+ "files": [
+  {
+   "path": "linux/receipt.json",
+   "bytes": 3593,
+   "sha256": "133727f04dc31250a4d88ac040ed8c9b16fdfe701d2e065490af6913f1386b03"
+  },
+  {
+   "path": "linux/scale2-analisi-640x480.png",
+   "bytes": 49696,
+   "sha256": "aceb371253c751998bf3208094970fc147d7594a9bcbd48c449e4faab7107d26"
+  },
+  {
+   "path": "linux/scale2-analisi-workarea.png",
+   "bytes": 53913,
+   "sha256": "7be4b365060fcd1c9484179c1b7da1c66d9214b3f0694edbce951cd0b74964ba"
+  },
+  {
+   "path": "linux/scale2-keyboard-informazioni-640x480.png",
+   "bytes": 44452,
+   "sha256": "4e46e8fd3ff31b1ffb9aac0c8da872b16a8426a1547300f93a4d0aa5659f7f80"
+  },
+  {
+   "path": "linux/scale2-keyboard-risultati-workarea.png",
+   "bytes": 58515,
+   "sha256": "98bc5d9aa0170d00e8904894da714fbc439470b206a81e59f722a7b0c0243037"
+  },
+  {
+   "path": "linux/scale2-keyboard-skip-link-640x480.png",
+   "bytes": 52233,
+   "sha256": "c8c8c055635ce8df9962d6be93d28321c7092bbaf53413b32141bc23284ea0b9"
+  },
+  {
+   "path": "linux/scale2-keyboard-theme-dark-workarea.png",
+   "bytes": 53882,
+   "sha256": "d017b6b23c1b82ebc2306408dc7d962aa9c4fbca7ce0d43707cd77ea8773e131"
+  },
+  {
+   "path": "linux/scale2-keyboard-theme-light-640x480.png",
+   "bytes": 50815,
+   "sha256": "967793da33f909a37048aa619f6e88e9143c5b53471b2a73b06589b8ac339574"
+  },
+  {
+   "path": "windows/receipt.json.gz",
+   "bytes": 922,
+   "sha256": "b17bcf6627a7fa62cff05ee33fa306250a90ef910796d1e8845b8b9b9234ecad"
+  },
+  {
+   "path": "windows/scale2-analisi-system-dark-workarea.png",
+   "bytes": 35217,
+   "sha256": "df9eb7591bb0d99d2409ae5ff56fac7270cb79c7296746172204fbcc1a36083c"
+  },
+  {
+   "path": "windows/scale2-analisi-workarea.png",
+   "bytes": 36342,
+   "sha256": "367bbb38a6a38dd0a96807cb48b4e7779665ffa567d90cc5c57a76bb25aabbb7"
+  },
+  {
+   "path": "windows/scale2-keyboard-informazioni-workarea.png",
+   "bytes": 34655,
+   "sha256": "081c1955807068b73c60ac9d28230db87934d4608cb2e7a3332373e017eb6e2b"
+  },
+  {
+   "path": "windows/scale2-keyboard-risultati-workarea.png",
+   "bytes": 39785,
+   "sha256": "7387bd6a120b369c2be403294c91ecc60d6d95a76ff0133ec8bd681170f3d88c"
+  },
+  {
+   "path": "windows/scale2-keyboard-skip-link-workarea.png",
+   "bytes": 37843,
+   "sha256": "a04e0eb43fe4beaa13fde85b2d380d4cff78664ee6b3f881bc4b408578b232b7"
+  },
+  {
+   "path": "windows/scale2-keyboard-theme-dark-workarea.png",
+   "bytes": 36529,
+   "sha256": "eeaa412bb4e5206e193ace75534c8fb01112e5d05ed5a4855e1e0a6651985f0d"
+  },
+  {
+   "path": "windows/scale2-keyboard-theme-light-on-dark-workarea.png",
+   "bytes": 37583,
+   "sha256": "1e4c4de2c376bea6a287f982456a0262c0312a4c408d03b1916d09b3a133e163"
+  },
+  {
+   "path": "windows/windows_display_200.ps1",
+   "bytes": 2451,
+   "sha256": "86746e0886fed0fb1480d28ff69a4badb3c21bd957009b58ede3e5ec98f657cb"
+  }
+ ],
+ "windows_receipt_raw_sha256": "a038b41e85788a2e4d81b861bd75f3c7c17ea436422ebc17523e7069a40ac594"
+}

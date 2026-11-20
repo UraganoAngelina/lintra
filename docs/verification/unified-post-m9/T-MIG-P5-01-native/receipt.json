@@ -1,5 +1,5 @@
 {
-  "binary_sha256": "3f8cdb864aed55e1ca3b0a1698f8ce9796542e29be98e2cbc582874393263e34",
+  "binary_sha256": "0e4c0d1c01831cd5d05eea1e1e0c4736f0cc85b794148e00c263da840b5104dc",
   "scenarios": [
     {
       "name": "analisi-640x480",
@@ -11,8 +11,18 @@
         640,
         480
       ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
       "keys": [],
-      "image_sha256": "3e3908202ff2cc1f8a3b4fb4a6f03945ec75ba1025545becf5540789da5688c5"
+      "image_sha256": "6d57f4249d92ff079a627a8d67259b9817f8f689b62564cfb458c5739794f684"
     },
     {
       "name": "analisi-1024x768",
@@ -24,8 +34,18 @@
         1024,
         768
       ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1024,
+        768
+      ],
       "keys": [],
-      "image_sha256": "cd960c0735bc93f438460b62cfa2cad99b8cb3cb10e7ed4dca29ea046a48c51d"
+      "image_sha256": "f51f9f83fd78e0018a6afaf9f71cf57296338dacd23bc5305fb6abe7cf09c4d6"
     },
     {
       "name": "analisi-1366x768",
@@ -34,24 +54,44 @@
         768
       ],
       "captured": [
-        1366,
+        1367,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1367,
         768
       ],
       "keys": [],
-      "image_sha256": "b2bd444845d18311e3b913fc6f888438ac069d38c176b121be65f59432c9ed41"
+      "image_sha256": "b45db2cf86e9e3407e88b560dea48a52a70f4d1314c2ab33df5398d81b52aa32"
     },
     {
       "name": "analisi-workarea",
       "requested": [
-        1780,
-        1040
+        1850,
+        1060
       ],
       "captured": [
-        1780,
-        1040
+        1851,
+        1060
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1851,
+        1060
       ],
       "keys": [],
-      "image_sha256": "28aa2d4afd3f41cb6ea6a4cff6b89d8bdebfb549e665976aab04500ccc80d49e"
+      "image_sha256": "2d5198a3148b4a03b2a37782a876f1f87c70ce07752a4c1cac78f12826d1796a"
     },
     {
       "name": "keyboard-skip-link-1024x768",
@@ -63,10 +103,20 @@
         1024,
         768
       ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1024,
+        768
+      ],
       "keys": [
         "Tab"
       ],
-      "image_sha256": "b96ef9f951b5d4594a29f3a85a42bc255a8a7adef9fe25b4e430f539e149492f"
+      "image_sha256": "a17c8391f7e2ab20ff6eabc4233fbd9316af291a9d2808bbe5e5666c5346fb07"
     },
     {
       "name": "keyboard-risultati-1366x768",
@@ -75,7 +125,17 @@
         768
       ],
       "captured": [
-        1366,
+        1367,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1367,
         768
       ],
       "keys": [
@@ -84,7 +144,7 @@
         "Tab",
         "Return"
       ],
-      "image_sha256": "ec396259c6dfa6828af780f9e11f85af22e3dfe9ba760010fad5d179aded2694"
+      "image_sha256": "6ec63585aa422d654c0fc695fcb7e1e16c52845bd4abcaf720cae0d1eedd7572"
     },
     {
       "name": "keyboard-informazioni-640x480",
@@ -96,6 +156,16 @@
         640,
         480
       ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
       "keys": [
         "Tab",
         "Tab",
@@ -103,7 +173,7 @@
         "Tab",
         "Return"
       ],
-      "image_sha256": "bfcb357d0accb8c0359ddb2c97728f3b150c00f9567c9546fbd9fa44bf03819a"
+      "image_sha256": "f697ad346286d9cb5a1442aecbfa4e6fac029ae7377cffebebec3c359fbf098d"
     },
     {
       "name": "keyboard-theme-light-1366x768",
@@ -112,7 +182,17 @@
         768
       ],
       "captured": [
-        1366,
+        1367,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1367,
         768
       ],
       "keys": [
@@ -123,7 +203,7 @@
         "Tab",
         "Down"
       ],
-      "image_sha256": "2ab2aeb2af42bd0e11115849bda89d831c94e7e904c42354e55045bcfc16ba22"
+      "image_sha256": "ad5ea99854b0fcb371acfa4b7c1a081fba1b7d4dd3afbe7a5608999600c1a97b"
     },
     {
       "name": "keyboard-theme-light-640x480",
@@ -135,6 +215,16 @@
         640,
         480
       ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
       "keys": [
         "Tab",
         "Tab",
@@ -143,7 +233,7 @@
         "Tab",
         "Down"
       ],
-      "image_sha256": "53e94d1e6c2a90174f61db4f956dccb891de8064bedfcef8622e342457f31083"
+      "image_sha256": "06b43d8365db47ae68b72642c7d1879de963c61d056b6ba693f0c68a8dc7be2f"
     },
     {
       "name": "keyboard-theme-dark-1366x768",
@@ -152,7 +242,17 @@
         768
       ],
       "captured": [
-        1366,
+        1367,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1367,
         768
       ],
       "keys": [
@@ -164,7 +264,7 @@
         "Down",
         "Down"
       ],
-      "image_sha256": "a98b3c432cc79cb0514f07913f60f89023b9895125a8eec6a1ff4edc429b3707"
+      "image_sha256": "58291042468a04250caddacad6cd36febb27651fbd1f09b51c5c041934c2f05c"
     }
   ]
 }

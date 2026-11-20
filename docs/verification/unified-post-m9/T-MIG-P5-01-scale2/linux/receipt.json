@@ -1,0 +1,194 @@
+{
+  "binary_sha256": "0e4c0d1c01831cd5d05eea1e1e0c4736f0cc85b794148e00c263da840b5104dc",
+  "scenarios": [
+    {
+      "name": "scale2-analisi-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "LINTRA-P501",
+      "scale": 2,
+      "work_area": [
+        890,
+        520
+      ],
+      "image_pixels": [
+        1280,
+        960
+      ],
+      "keys": [],
+      "image_sha256": "aceb371253c751998bf3208094970fc147d7594a9bcbd48c449e4faab7107d26"
+    },
+    {
+      "name": "scale2-analisi-workarea",
+      "requested": [
+        890,
+        520
+      ],
+      "captured": [
+        890,
+        520
+      ],
+      "monitor": "LINTRA-P501",
+      "scale": 2,
+      "work_area": [
+        890,
+        520
+      ],
+      "image_pixels": [
+        1780,
+        1040
+      ],
+      "keys": [],
+      "image_sha256": "7be4b365060fcd1c9484179c1b7da1c66d9214b3f0694edbce951cd0b74964ba"
+    },
+    {
+      "name": "scale2-keyboard-skip-link-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "LINTRA-P501",
+      "scale": 2,
+      "work_area": [
+        890,
+        520
+      ],
+      "image_pixels": [
+        1280,
+        960
+      ],
+      "keys": [
+        "Tab"
+      ],
+      "image_sha256": "c8c8c055635ce8df9962d6be93d28321c7092bbaf53413b32141bc23284ea0b9"
+    },
+    {
+      "name": "scale2-keyboard-risultati-workarea",
+      "requested": [
+        890,
+        520
+      ],
+      "captured": [
+        890,
+        520
+      ],
+      "monitor": "LINTRA-P501",
+      "scale": 2,
+      "work_area": [
+        890,
+        520
+      ],
+      "image_pixels": [
+        1780,
+        1040
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return"
+      ],
+      "image_sha256": "98bc5d9aa0170d00e8904894da714fbc439470b206a81e59f722a7b0c0243037"
+    },
+    {
+      "name": "scale2-keyboard-informazioni-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "LINTRA-P501",
+      "scale": 2,
+      "work_area": [
+        890,
+        520
+      ],
+      "image_pixels": [
+        1280,
+        960
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return"
+      ],
+      "image_sha256": "4e46e8fd3ff31b1ffb9aac0c8da872b16a8426a1547300f93a4d0aa5659f7f80"
+    },
+    {
+      "name": "scale2-keyboard-theme-light-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "LINTRA-P501",
+      "scale": 2,
+      "work_area": [
+        890,
+        520
+      ],
+      "image_pixels": [
+        1280,
+        960
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down"
+      ],
+      "image_sha256": "967793da33f909a37048aa619f6e88e9143c5b53471b2a73b06589b8ac339574"
+    },
+    {
+      "name": "scale2-keyboard-theme-dark-workarea",
+      "requested": [
+        890,
+        520
+      ],
+      "captured": [
+        890,
+        520
+      ],
+      "monitor": "LINTRA-P501",
+      "scale": 2,
+      "work_area": [
+        890,
+        520
+      ],
+      "image_pixels": [
+        1780,
+        1040
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "Down"
+      ],
+      "image_sha256": "d017b6b23c1b82ebc2306408dc7d962aa9c4fbca7ce0d43707cd77ea8773e131"
+    }
+  ]
+}

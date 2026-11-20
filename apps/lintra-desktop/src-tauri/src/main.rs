@@ -9,6 +9,9 @@ mod progress;
 mod results;
 mod security;
 mod state;
+// Applied on Windows only; the pure fitting logic is tested on every OS.
+#[cfg(any(target_os = "windows", test))]
+mod window_fit;
 #[cfg(target_os = "windows")]
 mod windows_request_guard;
 
@@ -114,6 +117,19 @@ fn main() {
                 security::restrict_document_connections(response.headers_mut());
             });
             let built = window.build()?;
+            // Windows lets the app place its window, so it must keep it inside
+            // the work area (Tauri brief). Wayland compositors own placement and
+            // apply size requests asynchronously, so no fit is attempted there.
+            // Best effort: an unmeasurable monitor keeps the configured size.
+            #[cfg(target_os = "windows")]
+            window_fit::fit_window(
+                &built,
+                (
+                    config.min_width.unwrap_or(0.0),
+                    config.min_height.unwrap_or(0.0),
+                ),
+            )
+            .ok();
             #[cfg(target_os = "windows")]
             windows_request_guard::install(&built, app.state::<AppState>().guards.clone())?;
             #[cfg(not(target_os = "windows"))]

@@ -38,6 +38,8 @@ mode e binding mediante i validator della library: non avvia record validation.
 Nessuna operazione SQL o storia. Le API P4 sono provate attraverso i
 dispatcher reali; la shell P5-01 non le richiama ancora oltre al bootstrap.
 CSP e guard WebView2 qualificati in P1-04 restano applicati.
+Su Windows, all'avvio, la finestra viene ridotta e spostata dentro la work
+area del monitor (anche a 200%); su Wayland decide il compositor.
 
 `--shell-smoke-test` verifica caricamento del documento e chiusura; `--smoke-test`
 aspetta anche l'ack React/IPC dopo il rendering. Entrambi terminano con exit 0
