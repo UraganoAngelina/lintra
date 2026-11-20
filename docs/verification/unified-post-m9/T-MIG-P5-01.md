@@ -1,8 +1,9 @@
 # T-MIG-P5-01 — Shell React responsive e tema
 
-Data 20 novembre 2026. Stato: **APPROVED** dalla review Codex round 3 sul
-delta funzionale fino a `e726310` (consegnato in `8337525`); **WAITING_INTEGRATION**,
-non DONE prima dell'integrazione autorizzata. Prerequisiti: T-MIG-P4-10 DONE e G-MIG-4 PASS
+Data 20 novembre 2026. Stato: **DONE**. Review Codex round 3 APPROVED sul
+delta funzionale fino a `e726310`; integrazione autorizzata dall'autore per
+fast-forward di `integration` e `work/p1-foundations`, senza push. CI remota
+sul delta NOT_RUN, al checkpoint del blocco P5; G-MIG-5 aperto. Prerequisiti: T-MIG-P4-10 DONE e G-MIG-4 PASS
 ([checkpoint](G-MIG-4.md), CI44706977518/desktop44706949307 su 1ab34d8).
 Branch `work/T-MIG-P5-01`, basato sul commit del checkpoint G-MIG-4
 (`73e28ee`, non ancora integrato) a sua volta su `integration` 1ab34d8.

@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **65/128 DONE;63 rimanenti** (18U-* e51MIG).
+Conteggio unificato: **66/128 DONE;62 rimanenti** (18U-* e50MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -109,7 +109,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P4-10 | T-MIG-P4-06, T-MIG-P4-08, T-MIG-P4-09, T-MIG-P4-12 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-10.md) | 40ebd23+8ec47f8;62 nativi/41 Node/1.116 workspace PASS locali,smoke PASS;review Codex round 2 APPROVED con repliche native/Node;check Windows BLOCKED (mingw);CI nativa al checkpoint blocco | Acceptance export/About/bridge PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P4-11 | T-MIG-P4-06, T-MIG-P2-11 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-11.md) | f97cb7c+1f33be8;gate merge locale 47 nativi/32 Node/1.112 workspace PASS,smoke PASS;review Codex CHANGES su P411-01,rework senza 2ª review per deroga autore;CI nativa al checkpoint blocco | Acceptance bridge Full PASS; G-MIG-4 aggregato resta aperto |
 | T-MIG-P4-12 | T-MIG-P4-11, T-MIG-P4-05 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P4-12.md) | cab4a04;58 nativi/38 Node PASS locali,smoke PASS;review Codex APPROVED con repliche native/Node;CI nativa al checkpoint blocco | Acceptance progresso/cancel/cleanup Full PASS; G-MIG-4 aggregato resta aperto |
-| T-MIG-P5-01 | T-MIG-P4-10 | WAITING_INTEGRATION | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-01.md) | 50 Node, 68 Rust Linux/67 MSVC, Clippy PASS; capture/tastiera native 1× Linux 10/10, Win11 VM 11/11, 2× 7/7+7/7; CI delta NOT_RUN; review Codex round 3 APPROVED | G-MIG-5 NOT_VERIFIED |
+| T-MIG-P5-01 | T-MIG-P4-10 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-01.md) | 50 Node, 68 Rust Linux/67 MSVC, Clippy PASS; capture/tastiera native 1× Linux 10/10, Win11 VM 11/11, 2× 7/7+7/7; e3c316c+e726310;review Codex round 3 APPROVED;CI delta NOT_RUN,al checkpoint blocco | Acceptance shell/tema PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-02 | T-MIG-P5-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-02.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-03 | T-MIG-P5-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-03.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-04 | T-MIG-P5-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-04.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
@@ -464,3 +464,17 @@ cross-OS, profili memoria) e Desktop adapter 44706949307 (61/62 nativi, 41
 Node, smoke X11) tutte success. Non qualifica Windows 11, installer o release:
 G-MIG-8 e G-REL aperti. Conteggio task invariato 65/128. Prossima
 tecnicamente disponibile T-MIG-P5-01.
+
+Chiusura T-MIG-P5-01, 20 novembre 2026: **DONE**, **66/128 (51,6%)**, 62
+rimanenti. Autore Claude Code, commit funzionali e3c316c+e726310 (prove
+e1874f6, documentazione 3af2b3b) sul checkpoint G-MIG-4 73e28ee. Review
+Codex round 1 BLOCKED (P501-01 consegna non isolata, P501-02 prove Windows
+assenti), round 2 BLOCKED (P501-03 scala 2×), round 3 APPROVED con P501-04
+MINOR documentale corretto. La prova a 200% su Windows ha rivelato una
+finestra aperta oltre lo schermo: corretta in e726310 (finestra dentro la
+work area su Windows). Evidenze native 1×/2× Linux e Windows 11 VM sui
+binari finali. Commit separato dell'autore 8337525 (CLAUDE.md, graphify-out)
+incluso su sua richiesta. Integrazione autorizzata dall'autore:
+fast-forward di integration e work/p1-foundations, nessun push. CI remota sul
+delta NOT_RUN, al checkpoint del blocco P5. G-MIG-5 e G-REL aperti. Prossima
+tecnicamente disponibile T-MIG-P5-02.
