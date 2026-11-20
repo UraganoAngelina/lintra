@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import { useEffect, useState } from "react";
 import { appInfo, clientReady, errorText, type AppInfo } from "./ipc";
 import { AppShell, type ServiceState } from "./AppShell";
+import { AnalysisForm, useAnalysisSelection } from "./AnalysisForm";
 import { INITIAL_THEME, INITIAL_VIEW, applyTheme, type ThemePreference, type ViewId } from "./shell";
 import "./style.css";
 
@@ -33,9 +34,11 @@ function App() {
   }, [info]);
   const service: ServiceState = error ? { kind: "error", message: error }
     : ready && info ? { kind: "ready", version: info.app_version } : { kind: "starting" };
+  const [selection, onSelection] = useAnalysisSelection(service.kind === "ready");
   // No report exists until the P5 run views connect the Rust job lifecycle.
   return <AppShell view={view} onView={setView} theme={theme} onTheme={setTheme}
-    service={service} reportAvailable={false} />;
+    service={service} reportAvailable={false}
+    analysis={service.kind === "ready" ? <AnalysisForm state={selection} onEvent={onSelection} /> : null} />;
 }
 
 const root = document.getElementById("root");

@@ -36,6 +36,10 @@ SCENARIOS = [
     ("keyboard-theme-light-1366x768", (1366, 768), ["Tab"] * 5 + ["Down"]),
     ("keyboard-theme-light-640x480", (640, 480), ["Tab"] * 5 + ["Down"]),
     ("keyboard-theme-dark-1366x768", (1366, 768), ["Tab"] * 5 + ["Down", "Down"]),
+    # T-MIG-P5-02: flow, explicit version and trace from the real Rust catalog.
+    # "wait" lets Rust capture the schema before the trace field is enabled.
+    ("keyboard-selection-1366x768", (1366, 768), ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Down", "wait"]),
+    ("keyboard-selection-640x480", (640, 480), ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Down", "wait"]),
 ]
 # 200% scale: logical sizes inside the scaled monitor's work area. The
 # minimum window (640x480 logical) and the whole work area cover both sides
@@ -118,6 +122,9 @@ def scenario(binary, output, monitor_name, name, size, keys):
             hypr(f'hl.dsp.focus({{{target}}})')
             time.sleep(3)  # bootstrap IPC, fonts and two animation frames
             for key in keys:
+                if key == "wait":  # a Rust round trip (schema capture, plan) in progress
+                    time.sleep(1.5)
+                    continue
                 # Re-focus: focus rings are painted only in the active window.
                 hypr(f'hl.dsp.focus({{{target}}})')
                 hypr(f'hl.dsp.send_shortcut({{mods="", key="{key}", {target}}})')

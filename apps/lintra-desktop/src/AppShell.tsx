@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { THEMES, VIEWS, isThemePreference, type ThemePreference, type ViewId } from "./shell";
 
 /** Local service state as reported by the Rust bootstrap (app_info + ack). */
@@ -15,6 +15,8 @@ export type ShellProps = {
   service: ServiceState;
   /** Availability of a real report, owned by the Rust job lifecycle. */
   reportAvailable: boolean;
+  /** Analysis selection shown in the Analisi section (T-MIG-P5-02). */
+  analysis?: ReactNode;
 };
 
 /**
@@ -22,7 +24,7 @@ export type ShellProps = {
  * theme, service state) and the main region of the selected section.
  * Purely presentational; every state shown comes from props.
  */
-export function AppShell({ view, onView, theme, onTheme, service, reportAvailable }: ShellProps) {
+export function AppShell({ view, onView, theme, onTheme, service, reportAvailable, analysis }: ShellProps) {
   const heading = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
   useEffect(() => {
@@ -61,7 +63,7 @@ export function AppShell({ view, onView, theme, onTheme, service, reportAvailabl
     </header>
     <main id="content" tabIndex={-1}>
       <h1 ref={heading} tabIndex={-1}>{title}</h1>
-      <ViewBody view={view} service={service} reportAvailable={reportAvailable} />
+      <ViewBody view={view} service={service} reportAvailable={reportAvailable} analysis={analysis} />
     </main>
   </div>;
 }
@@ -74,13 +76,14 @@ function ServiceStatus({ service }: { service: ServiceState }) {
 }
 
 /** Section bodies show only real states; forms and results arrive in P5/P6. */
-function ViewBody({ view, service, reportAvailable }:
-  { view: ViewId; service: ServiceState; reportAvailable: boolean }) {
+function ViewBody({ view, service, reportAvailable, analysis }:
+  { view: ViewId; service: ServiceState; reportAvailable: boolean; analysis?: ReactNode }) {
   switch (view) {
     case "analisi":
       return <section aria-label="Stato dell'analisi">
         <p className="lead">Prepara una nuova analisi.</p>
         <p>Nessuna analisi in corso.</p>
+        {analysis}
       </section>;
     case "risultati":
       return <section aria-label="Disponibilità del report">

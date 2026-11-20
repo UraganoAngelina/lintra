@@ -1,12 +1,12 @@
 // T-MIG-P5-01: shell model, semantic markup of the real component and theme
-// contrast. The component is compiled with the Oxc transform already shipped
-// by Vite (no new dependency) and rendered with react-dom/server.
+// contrast. The component is compiled by tests/tsx.mjs and rendered with
+// react-dom/server.
 import assert from "node:assert/strict";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { transformWithOxc } from "vite";
+import { loadComponent } from "./tsx.mjs";
 import { INITIAL_THEME, INITIAL_VIEW, THEMES, VIEWS, applyTheme, isThemePreference, isViewId } from "../src/shell.ts";
 
 const base = new URL("../", import.meta.url);
@@ -41,19 +41,7 @@ test("an explicit theme sets data-theme and the system theme removes it", () => 
   assert.equal("theme" in root.dataset, false);
 });
 
-async function loadShell() {
-  const source = readFileSync(new URL("src/AppShell.tsx", base), "utf8");
-  const { code } = await transformWithOxc(source, "AppShell.tsx", { lang: "tsx", jsx: { runtime: "automatic" } });
-  const model = new URL("src/shell.ts", base).href;
-  assert.match(code, /from "\.\/shell";/);
-  // Written under node_modules so bare imports (react) resolve as in the app.
-  const directory = new URL("node_modules/.cache/lintra-shell-test/", base);
-  mkdirSync(directory, { recursive: true });
-  const file = new URL("AppShell.mjs", directory);
-  writeFileSync(file, code.replace(/from "\.\/shell";/, `from ${JSON.stringify(model)};`));
-  return import(file.href);
-}
-const { AppShell } = await loadShell();
+const { AppShell } = await loadComponent("AppShell");
 const noop = () => {};
 function render(props) {
   return renderToStaticMarkup(createElement(AppShell, {

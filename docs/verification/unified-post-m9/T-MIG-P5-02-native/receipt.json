@@ -1,0 +1,346 @@
+{
+  "binary_sha256": "94585f79b304e40b7ff23771b496d8d6cf6b282d87553183fded6cf2acee9f3b",
+  "scenarios": [
+    {
+      "name": "analisi-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [],
+      "image_sha256": "513688399bdc577fb61337861e579f10443ec22b09d7babde0f9e9fe2bbecd38"
+    },
+    {
+      "name": "analisi-1024x768",
+      "requested": [
+        1024,
+        768
+      ],
+      "captured": [
+        1024,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1024,
+        768
+      ],
+      "keys": [],
+      "image_sha256": "096f00c7337069a5899b662abdaf6217532770478775db72b69e9e02c82443c2"
+    },
+    {
+      "name": "analisi-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1367,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1367,
+        768
+      ],
+      "keys": [],
+      "image_sha256": "25522edb6278000155e8a251d552d31a5f1228265651a8278308819b522d7c49"
+    },
+    {
+      "name": "analisi-workarea",
+      "requested": [
+        1850,
+        1060
+      ],
+      "captured": [
+        1851,
+        1060
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1851,
+        1060
+      ],
+      "keys": [],
+      "image_sha256": "8ad6c3c1a881a886e5d8fe8b83d42f385080900b0bdcbd81732276daf4adcc18"
+    },
+    {
+      "name": "keyboard-skip-link-1024x768",
+      "requested": [
+        1024,
+        768
+      ],
+      "captured": [
+        1024,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1024,
+        768
+      ],
+      "keys": [
+        "Tab"
+      ],
+      "image_sha256": "147f512b222c4356b7dec0f9a1994369a76bfaedee14e67690883506cdaf17d6"
+    },
+    {
+      "name": "keyboard-risultati-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1367,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1367,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return"
+      ],
+      "image_sha256": "6ec63585aa422d654c0fc695fcb7e1e16c52845bd4abcaf720cae0d1eedd7572"
+    },
+    {
+      "name": "keyboard-informazioni-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return"
+      ],
+      "image_sha256": "f697ad346286d9cb5a1442aecbfa4e6fac029ae7377cffebebec3c359fbf098d"
+    },
+    {
+      "name": "keyboard-theme-light-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1367,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1367,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down"
+      ],
+      "image_sha256": "77af0047762d788703a1fb770379ee8fa537001bfe76c7e750cfa0fbcb010dce"
+    },
+    {
+      "name": "keyboard-theme-light-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down"
+      ],
+      "image_sha256": "bb943a3f067d9f6a5c6042ffbca4036610f85cc941c6003396788e92fd3e1a7a"
+    },
+    {
+      "name": "keyboard-theme-dark-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1367,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1367,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "Down"
+      ],
+      "image_sha256": "8146b8c5f83b8013e58a0076bb6cfb54848bd88d267aa7756b2d4bad3b5bd5ca"
+    },
+    {
+      "name": "keyboard-selection-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1367,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        1367,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait"
+      ],
+      "image_sha256": "ff1ed4462dcdece8b0e34fcb0eceab02ef05d36bcae4c9df6d28ef93675f9f35"
+    },
+    {
+      "name": "keyboard-selection-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1060
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait"
+      ],
+      "image_sha256": "bb399b47cc8e69838a28839affe2f7a80d54637fa3a5252a83e04afa756b78cd"
+    }
+  ]
+}

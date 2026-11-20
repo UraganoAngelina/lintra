@@ -3,7 +3,9 @@
 Adapter React/Tauri affiancato a CLI e Slint; P4 in sviluppo, non release utenti.
 Manifest e lock separati; preparazione e worker LocalOnly collegati alla library.
 Shell P5-01: sezioni Analisi/Risultati/Informazioni e tema Sistema/Chiaro/Scuro
-(solo di sessione); i controlli di analisi P5 arrivano con le task successive.
+(solo di sessione). P5-02: selezione flusso, versione esplicita e tracciato
+sul catalogo Rust, con piano LocalOnly creato dal servizio; file, formati e
+avvio arrivano con le task successive.
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund
