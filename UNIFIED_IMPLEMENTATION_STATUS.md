@@ -1,6 +1,6 @@
 # Stato unificato post-M9
 
-Aggiornato: 2026-11-19, Europe/Rome. Un agente; task tracciate singolarmente,
+Aggiornato: 2026-11-20, Europe/Rome. Un agente; task tracciate singolarmente,
 sviluppo sequenziale per blocchi coerenti secondo AGENTS.md.
 Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md),
 [master v1.0](docs/unified-post-m9/MASTER_PLAN_UNIFICATO.md) e
@@ -17,7 +17,8 @@ G-DUR PASS software su3aa0d14/CI43078048297; hardware NOT_TESTED_HARDWARE.
 G-MIG-1 PASS/GO tecnico piattaforme: dossier P1-02/03/04/05/07 e decisioneP1-06.
 G-MIG-2 APPROVED design, ratifica autore15/11 sul pacchetto45fce38.
 G-MIG-3 PASS: CI desktop43758529844 e step QG-1/2/3 nativi della CI43758531087 su ce344d4.
-G-OPS0/1/2, G-SIOC1, G-MIG-4..9, G-CADUI0..3, G-PERF e G-REL:
+G-MIG-4 PASS: [checkpoint P4](docs/verification/unified-post-m9/G-MIG-4.md), CI44706977518 e desktop44706949307 su 1ab34d8.
+G-OPS0/1/2, G-SIOC1, G-MIG-5..9, G-CADUI0..3, G-PERF e G-REL:
 NOT_VERIFIED. Prove Win11/offline/due desktop e scale osservate distinte dalla
 CI Windows Server; VM ripristinata/spenta. Non è un gate di distribuzione.
 G-REAL riguarda autorizzazioni effettive per specifici dati, non presunte.
@@ -454,3 +455,12 @@ fmt, Clippy, sonda P410-01) tutte exit 0. Integrazione autorizzata
 dall'autore: fast-forward di integration su 8ec47f8. Tutte le task del blocco
 P4 sono DONE; G-MIG-4 resta aperto fino al checkpoint CI nativo Linux/Windows
 del blocco. G-REL aperto. Prossimo passo: checkpoint G-MIG-4, poi T-MIG-P5-01.
+
+Checkpoint G-MIG-4, 20 novembre 2026: **PASS** su 1ab34d8 (fix test-only del
+`dead_code` Windows emerso nella CI44588006731 su 1ea8220). Push autorizzato di
+integration e work/p1-foundations allo stesso SHA; CI44706977518 (7 job,
+Verify MSVC 3.287 e Linux 3.323 test, layer, JSONL byte-identici, snapshot
+cross-OS, profili memoria) e Desktop adapter 44706949307 (61/62 nativi, 41
+Node, smoke X11) tutte success. Non qualifica Windows 11, installer o release:
+G-MIG-8 e G-REL aperti. Conteggio task invariato 65/128. Prossima
+tecnicamente disponibile T-MIG-P5-01.
