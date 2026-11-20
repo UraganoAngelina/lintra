@@ -62,6 +62,8 @@ generato non è usato: palette e font sono già ratificati.
 | `cargo fmt --manifest-path src-tauri/Cargo.toml --check` | PASS rc 0 |
 | src-tauri test/Clippy release Linux | vedi handoff |
 | `npm ci` locale | NOT_RUN valido: engine pin node 26.13.0, locale 26.13.1 (ambientale) |
+| Build release Windows MSVC (VM) | PASS exit 0, binario `657b7303…3c61` |
+| `tests/windows_capture.ps1` (VM, console) | PASS 11/11 al run 2; run 1 FAIL per dimensioni, conservato |
 
 `tests/shell.test.mjs` compila il componente reale con `transformWithOxc` di
 Vite e lo rende con `react-dom/server`: landmark e ordine, una sola sezione
@@ -91,12 +93,63 @@ dieci immagini, verificati. Osservate con vision:
 work area intera la sostituisce. `GTK_THEME` non cambia `prefers-color-scheme`
 in WebKitGTK 2.54: il chiaro è provato via scelta esplicita, non via sistema.
 
+## Prove native Windows 11 (VM, review Codex round 1 — P501-02)
+
+Binario costruito nella VM `Windows11-Lintra-Test` dai sorgenti esatti di
+`e3c316c` (`git archive`, SHA-256 `bed791fc…f81f`) con il `dist` prodotto dal
+worktree pulito (stessi asset `index-C7DZeOx8.css`/`index-TIfr-Ihh.js`):
+`cargo build --locked --release --target x86_64-pc-windows-msvc --features
+tauri/custom-protocol`, account standard `lintra-agent`, exit 0,
+`lintra-desktop.exe` SHA-256 `657b7303…3c61`. Il frontend non è ricompilato
+con Node del guest; lock invariato da 1ab34d8.
+
+`tests/windows_capture.ps1` (gemello di `native_capture.py`) gira in una task
+pianificata Interactive/Limited nella vera sessione console 1 di
+`lintra-agent`, non elevata; rifiuta token elevati, sessione 0 e sessioni
+diverse dalla console. Per ogni scenario avvia il proprio processo, verifica
+finestra visibile/titolo/sessione, ridimensiona l'area client, invia i tasti
+con SendKeys solo mentre la finestra possiede il foreground, cattura l'area
+client, chiude normalmente ed esige exit 0; il tema di sistema usa
+`AppsUseLightTheme` dell'utente, ripristinato a fine run.
+
+Windows 10.0.26300, DPI 96, area client massima 1264×713 sul monitor della VM.
+
+- **Run 1 FAIL** (conservata in `T-MIG-P5-01-windows/run1-size-fail/`):
+  4/11 PASS; 1024×768 e 1366×768 rifiutati esplicitamente perché non entrano
+  nella work area. Nessun difetto della shell osservato.
+- **Run 2 PASS 11/11** con scenari adattati: 640×480 (barra in alto) e work
+  area 1264×713 (colonna laterale), tema di sistema chiaro e scuro, Tab sullo
+  skip link, Tab×3+Invio → Risultati (entrambe le larghezze), Tab×4+Invio →
+  Informazioni (versione `0.1.1-rc.3`), frecce sul gruppo tema → Scuro e
+  Chiaro sopra il sistema scuro. Task result 0, exit 0 per ogni processo,
+  hash immagini verificati, guard di pixel diversi dalla baseline; immagini
+  osservate con vision.
+
+[Manifest](T-MIG-P5-01-windows/manifest.json) con hash di sorgenti, dist,
+binario, harness, log build e capture.
+
+Console reale: autologon temporaneo via Sysinternals Autologon (firma
+Microsoft valida, SHA `5d96bbc4…381b`) con password casuale generata nella VM,
+mai stampata né in chiaro in Winlogon, come in P1-02/P1-04. Snapshot
+`LINTRA-P5-01-PRETEST-20261120` creato a VM spenta prima della prova; dopo la
+raccolta: UUID/disco verificati, revert, avvio e controlli PASS (nessun
+autologon/password/task/cartelle della prova; stato P1-04 conservato; SSH
+admin elevato e `lintra-agent` standard), stato finale spento.
+
+## Consegna (review Codex round 1 — P501-01)
+
+Revisionare il worktree dedicato pulito `/home/alberto/Desktop/LINTRA/lintra-p5-01`
+sul branch `work/T-MIG-P5-01`. Il repository principale resta su
+`work/G-MIG-4-checkpoint` con le modifiche dell'autore a `CLAUDE.md` e le 965
+aggiunte staged `graphify-out/` preservate intatte (status invariato prima e
+dopo il cambio di branch); non fanno parte della consegna.
+
 ## Rischi residui
 
-- **Windows: screenshot e interazione nativa NOT_RUN.** I test Node girano
-  nella CI desktop Windows al prossimo run autorizzato; mancano capture
-  WebView2. Da coprire al checkpoint G-MIG-5 o su VM Windows 11.
-- Scala 2×/zoom 200% non provata (monitor 1×).
+- Windows 1024×768, 1366×768, 1920×1080 e scala 2× non provati: i monitor
+  disponibili (VM 1264×713, PC 1780×1040 utili) non li contengono. Le larghezze
+  provate coprono entrambi i layout, sotto e sopra 960 px.
+- Prova VM, non CI: la CI desktop Windows sul delta resta NOT_RUN (nessun push).
 - Il titolo focalizzato mostra un anello largo quanto il contenuto: estetico,
   non bloccante.
 - Tema non persistente tra avvii: richiede impostazioni lato Rust, fuori scope.

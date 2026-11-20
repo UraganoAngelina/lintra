@@ -1,0 +1,163 @@
+{
+ "task": "T-MIG-P5-01",
+ "source_commit": "e3c316cd4dc2b32e5d9d6a7e39bd926361868b99",
+ "source_archive": {
+  "command": "git archive --format=zip e3c316c -- . ':!docs' ':!spikes' ':!graphify-out'",
+  "sha256": "bed791fc9e541265c87cefb871fc75bb5c5a9eae346973988f54130ac3ced81f",
+  "files": 996
+ },
+ "frontend_dist": {
+  "built_on": "CachyOS clean worktree, npm run build, Node 26.13.1, lock unchanged since 1ab34d8",
+  "zip_sha256": "6bbc7340753ba6d32d7543a52326ea2b5ddcb8ff12d475bfd1e7f4e55535abea",
+  "assets": [
+   "index-C7DZeOx8.css",
+   "index-TIfr-Ihh.js"
+  ]
+ },
+ "windows_build": {
+  "command": "cargo build --manifest-path src-tauri/Cargo.toml --locked --release --target x86_64-pc-windows-msvc --features tauri/custom-protocol -j 4",
+  "account": "lintra-agent (standard)",
+  "exit": 0,
+  "exe_sha256": "657b73034a5ed7df39ad05c629ef6da7d5fe51e00a04e11a1f671f8e83d3c61c",
+  "exe_bytes": 17953280
+ },
+ "harness": {
+  "path": "apps/lintra-desktop/tests/windows_capture.ps1",
+  "run1_sha256": "d5a7e93b7871249b7247854f96010e72a04134ed71c8e553f7f060d738a66dbf",
+  "run2_sha256": "1e9add23a8c81a5fed9acf7c431ae71b2ff21ea37168be80751420495413f1cd"
+ },
+ "environment": {
+  "vm": "Windows11-Lintra-Test",
+  "uuid": "8e50e338-7593-4e13-8556-bdf22097bcc6",
+  "os_version": "10.0.26300.0",
+  "session": "console 1, lintra-agent non-elevated, Interactive/Limited scheduled task",
+  "dpi": 96,
+  "work_area_client": [
+   1264,
+   713
+  ]
+ },
+ "console_logon": {
+  "tool": "Sysinternals Autologon64.exe",
+  "signature": "Valid, CN=Microsoft Corporation",
+  "sha256": "5d96bbc4e5b726d87c7cf547f5fe98f8f05434ec2130bd60cbf5671fd3a7381b",
+  "password": "random, generated in the VM, never printed or stored outside LSA",
+  "plaintext_winlogon_password": false
+ },
+ "runs": {
+  "run1": "FAIL: 4/11 PASS, 7 scenarios refused because 1024x768/1366x768 do not fit the VM work area; kept as evidence",
+  "run2": "PASS 11/11, task result 0, exit codes 0, image hashes verified"
+ },
+ "restore": {
+  "snapshot": "LINTRA-P5-01-PRETEST-20261120 (created shut off before the test)",
+  "uuid_and_disk_checked": true,
+  "checks_after_revert": {
+   "AutoAdminLogon": "empty",
+   "DefaultPassword_present": false,
+   "task_present": false,
+   "admin_dir": false,
+   "agent_P5_dir": false,
+   "agent_P1_04_dir": true,
+   "admin_ssh_elevated": true,
+   "agent_ssh_elevated": false
+  },
+  "final_state": "shut off"
+ },
+ "files": [
+  {
+   "path": "analisi-640x480.png",
+   "bytes": 9766,
+   "sha256": "691a35bacb158afa72129ae71a95fba8ff7f1eb8b44a7ac30f1a269e2943d8c4"
+  },
+  {
+   "path": "analisi-system-dark-640x480.png",
+   "bytes": 9460,
+   "sha256": "f1dda50a8148107d226ffd42658ed5ef2b30bdd44ccdf471067e85caa4c39517"
+  },
+  {
+   "path": "analisi-system-dark-workarea.png",
+   "bytes": 14836,
+   "sha256": "e841c76c9f80072be251f7dd3b25328e9711332c3c4cfaeae51a0cfff1e5c92f"
+  },
+  {
+   "path": "analisi-workarea.png",
+   "bytes": 15389,
+   "sha256": "c6cac1a058c3c5a1710950bd987bd6af6a66f3f3cd717a01e435a6bb3d420166"
+  },
+  {
+   "path": "keyboard-informazioni-640x480.png",
+   "bytes": 9259,
+   "sha256": "194366a6a0df009078e0ecff90e015ede4d34d748b8349aab2992c1d44c28fad"
+  },
+  {
+   "path": "keyboard-risultati-640x480.png",
+   "bytes": 10816,
+   "sha256": "b886553e6497e6405bb61506f23b097cb32b4a44eac097a574c2bf7d15c8b109"
+  },
+  {
+   "path": "keyboard-risultati-workarea.png",
+   "bytes": 16557,
+   "sha256": "adb940c4f3e8c5e33897aa4781eccf8c4347942add70f5a2d93788aced92f0ef"
+  },
+  {
+   "path": "keyboard-skip-link-workarea.png",
+   "bytes": 16377,
+   "sha256": "b4d47995cbac3fec59f1c8156965d989d91977019511fa9d076619e2fb2a483a"
+  },
+  {
+   "path": "keyboard-theme-dark-640x480.png",
+   "bytes": 10101,
+   "sha256": "8dd5e4dae90636a5ab5e3272635cb6ad67d25c94b4dfd8212b284876acb116eb"
+  },
+  {
+   "path": "keyboard-theme-dark-workarea.png",
+   "bytes": 15523,
+   "sha256": "6336cbc75ca45c10c633fe74f4c8302377c2321bb2a9c1e681b344b8b2ff7758"
+  },
+  {
+   "path": "keyboard-theme-light-on-dark-workarea.png",
+   "bytes": 16055,
+   "sha256": "ab19379b3c81880d8ce87600e751f18a9b965e2237e6d835aa53ed44affc3c23"
+  },
+  {
+   "path": "receipt.json.gz",
+   "bytes": 1052,
+   "sha256": "08bfc7e782effa17d775d18bae407af714a1e3c11cc41526a648fdcfd2a927b4"
+  },
+  {
+   "path": "windows-build.log.gz",
+   "bytes": 2830,
+   "sha256": "d0645c7f7399da3da82e31da7b9cff6263e129f48f04e194d2d5a948e092526f"
+  },
+  {
+   "path": "run1-size-fail/analisi-640x480.png",
+   "bytes": 9766,
+   "sha256": "691a35bacb158afa72129ae71a95fba8ff7f1eb8b44a7ac30f1a269e2943d8c4"
+  },
+  {
+   "path": "run1-size-fail/analisi-workarea.png",
+   "bytes": 15389,
+   "sha256": "c6cac1a058c3c5a1710950bd987bd6af6a66f3f3cd717a01e435a6bb3d420166"
+  },
+  {
+   "path": "run1-size-fail/keyboard-informazioni-640x480.png",
+   "bytes": 9259,
+   "sha256": "194366a6a0df009078e0ecff90e015ede4d34d748b8349aab2992c1d44c28fad"
+  },
+  {
+   "path": "run1-size-fail/keyboard-theme-dark-640x480.png",
+   "bytes": 10101,
+   "sha256": "8dd5e4dae90636a5ab5e3272635cb6ad67d25c94b4dfd8212b284876acb116eb"
+  },
+  {
+   "path": "run1-size-fail/receipt.json.gz",
+   "bytes": 795,
+   "sha256": "2280d47a2da1c552f4e413e38532d9c4f26ffa178d2b780a4206e8ac9248ebfd"
+  }
+ ],
+ "receipts_raw_sha256": {
+  "receipt.json": "c577c547c3de927ac9b114618d9b4058bf7d1ab6035681b6006a02cd07f2cfd9",
+  "run1-size-fail/receipt.json": "e96ec4a03140b2d5ba806246470e672bfa9dd84c586b5a8d11b5b0a4824b1470"
+ },
+ "receipts_note": "PowerShell 5 UTF-8 BOM/CRLF receipts stored gzip-compressed so Git line-ending normalization cannot alter their bytes"
+}

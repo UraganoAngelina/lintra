@@ -17,8 +17,9 @@ Node e npm ammessi sono in `engines`/`.nvmrc`, con engine-strict e lifecycle
 scripts disabilitati in `.npmrc`. Il lint usa le regole statiche TypeScript
 unused/fallthrough; `build` include anche il typecheck strict. Nessun ESLint
 aggiuntivo. `npm test` esegue i decoder IPC, verifica asset/licenze locali e la shell
-(markup semantico, tema, contrasti). `tests/native_capture.py` produce le
-capture native su Hyprland personale; non è un gate CI.
+(markup semantico, tema, contrasti). `tests/native_capture.py` (Hyprland
+personale) e `tests/windows_capture.ps1` (sessione console Windows) producono
+capture e prove di tastiera native; non sono gate CI.
 
 L'unico comando `lintra_ipc` riceve e restituisce byte raw UTF-8: envelope e DTO
 v1, massimo 1 MiB completo e profondità 32. La capability vale soltanto per la
