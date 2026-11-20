@@ -20,6 +20,11 @@ import sys
 import tempfile
 import time
 
+# Synthetic inputs for the native file dialog (only [a-z0-9/.] so they can be
+# typed key by key); created before the scenarios and removed afterwards.
+SAMPLE_DIR = str(Path.home() / "lintrap503")
+SELECT = ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Down", "wait"]
+
 # name, logical window size, keys sent to the owned window.
 # Tab order: skip link, Analisi, Risultati, Informazioni, theme radio group.
 # The session theme of this PC is dark; light is exercised by the explicit
@@ -40,6 +45,11 @@ SCENARIOS = [
     # "wait" lets Rust capture the schema before the trace field is enabled.
     ("keyboard-selection-1366x768", (1366, 768), ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Down", "wait"]),
     ("keyboard-selection-640x480", (640, 480), ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Down", "wait"]),
+    # T-MIG-P5-03: the real native dialog opened by Rust. "dialog:<path>" types
+    # the path in the GTK chooser of the owned process; synthetic files only.
+    ("keyboard-input-partial-1366x768", (1366, 768), SELECT + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/partial.txt", "wait"]),
+    ("keyboard-input-whole-640x480", (640, 480), SELECT + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/whole.txt", "wait"]),
+    ("keyboard-input-cancel-1366x768", (1366, 768), SELECT + ["Tab", "Return", "dialog-cancel", "wait"]),
 ]
 # 200% scale: logical sizes inside the scaled monitor's work area. The
 # minimum window (640x480 logical) and the whole work area cover both sides
@@ -80,6 +90,55 @@ def png_size(path):
     """Width/height from the PNG header: physical pixels of the capture."""
     header = path.read_bytes()[16:24]
     return int.from_bytes(header[:4], "big"), int.from_bytes(header[4:], "big")
+
+
+def owned_dialog(pid, main_address, deadline):
+    """A second window of the same process: the native file dialog."""
+    while time.monotonic() < deadline:
+        clients = json.loads(subprocess.run(["hyprctl", "clients", "-j"], capture_output=True,
+                                            text=True, timeout=10, check=True).stdout)
+        for client in clients:
+            if client["pid"] == pid and client["mapped"] and client["address"] != main_address:
+                return client
+        time.sleep(0.2)
+    raise RuntimeError("native dialog not mapped")
+
+
+def drive_dialog(pid, main_address, step):
+    dialog = owned_dialog(pid, main_address, time.monotonic() + 15)
+    target = f'window="address:{dialog["address"]}"'
+    hypr(f'hl.dsp.focus({{{target}}})')
+    time.sleep(1)
+    if step == "dialog-cancel":
+        keys = ["Escape"]
+    else:
+        path = step.removeprefix("dialog:")
+        if not all(c.islower() or c.isdigit() or c in "/." for c in path):
+            raise RuntimeError("dialog path must be typeable")
+        names = {"/": "KP_Divide", ".": "period"}  # keypad slash: same on every layout
+        keys = [names.get(c, c) for c in path]
+    if step != "dialog-cancel":
+        # GTK4 opens in "Recent" with type-to-search; Ctrl+L opens the location field.
+        hypr(f'hl.dsp.send_shortcut({{mods="CTRL", key="l", {target}}})')
+        time.sleep(0.5)
+    for key in keys:
+        hypr(f'hl.dsp.send_shortcut({{mods="", key="{key}", {target}}})')
+        time.sleep(0.12)
+    if step == "dialog-cancel":
+        return
+    # GTK4 may consume a first Enter to accept the autocompletion: confirm
+    # until the dialog window is gone (bounded). The dialog may close between
+    # the check and the key, so "window not found" on Enter means accepted.
+    for _ in range(3):
+        time.sleep(0.5)
+        try:
+            owned_dialog(pid, main_address, time.monotonic() + 0.5)
+            hypr(f'hl.dsp.send_shortcut({{mods="", key="Return", {target}}})')
+        except RuntimeError as error:
+            if "not mapped" in str(error) or "window not found" in str(error):
+                return
+            raise
+    raise RuntimeError("native dialog did not accept the file")
 
 
 def owned_window(pid, deadline):
@@ -125,6 +184,9 @@ def scenario(binary, output, monitor_name, name, size, keys):
                 if key == "wait":  # a Rust round trip (schema capture, plan) in progress
                     time.sleep(1.5)
                     continue
+                if key.startswith("dialog"):
+                    drive_dialog(process.pid, client["address"], key)
+                    continue
                 # Re-focus: focus rings are painted only in the active window.
                 hypr(f'hl.dsp.focus({{{target}}})')
                 hypr(f'hl.dsp.send_shortcut({{mods="", key="{key}", {target}}})')
@@ -160,7 +222,16 @@ def main():
     output.mkdir(parents=True, exist_ok=True)
     monitor_name = sys.argv[3] if len(sys.argv) > 3 else None
     scenarios = SCALED_SCENARIOS if monitor_name else SCENARIOS
-    results = [scenario(binary, output, monitor_name, *item) for item in scenarios]
+    samples = Path(SAMPLE_DIR)
+    samples.mkdir(exist_ok=False)
+    try:
+        (samples / "partial.txt").write_bytes(b"001A  \n" * 20000)  # 140000 bytes > 64 KiB sample
+        (samples / "whole.txt").write_bytes(b"001A  \n001B  \r\n")  # 15 bytes, LF and CRLF
+        results = [scenario(binary, output, monitor_name, *item) for item in scenarios]
+    finally:
+        for file in samples.iterdir():
+            file.unlink()
+        samples.rmdir()
     # A key sequence that changes the view or theme must change the pixels
     # compared with the untouched Analisi capture of the same size.
     baseline = {tuple(item["captured"]): item["image_sha256"] for item in results if not item["keys"]}

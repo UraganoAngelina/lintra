@@ -80,6 +80,16 @@ h2 { font-size: var(--body-size); font-weight: 600; margin: 0 0 var(--control-ga
 .selection-status { margin: var(--space-block) 0; }
 .selection-status[role="alert"] { color: var(--error); }
 .selection-summary { margin-top: var(--space-block); }
+/* Input file (T-MIG-P5-03). */
+.input-choice { margin-top: var(--section-gap); }
+h3 { font-size: var(--body-size); font-weight: 600; margin: 0 0 var(--control-gap); }
+.input-choice button {
+  min-height: var(--control-height); padding: 0 var(--space-block);
+  border: 1px solid var(--accent); border-radius: var(--radius);
+  background: var(--accent); color: var(--surface); font: inherit; font-weight: 600; cursor: pointer;
+}
+.input-choice button:disabled { border-color: var(--border); background: var(--surface); color: var(--muted); cursor: progress; }
+.sample-note { margin-top: var(--space-row); }
 dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-row) var(--page-padding); margin: 0; }
 dt { color: var(--muted); }
 dd { margin: 0; font-family: var(--font-mono); overflow-wrap: anywhere; }

@@ -97,8 +97,9 @@ test("late replies for a replaced choice are ignored", () => {
   state = reduce(state, { type: "select_trace", traceRef: "config_1_trace_0" });
   assert.notEqual(state.plan.token, token);
   state = reduce(state, { type: "plan_created", token: state.plan.token, draft });
-  assert.deepEqual(state.plan, { status: "ready", draft });
-  assert.equal(missingChoice(state), null);
+  assert.deepEqual(state.plan, { status: "ready", draft, input: { chosen: null, activity: { status: "idle" } } });
+  // T-MIG-P5-03: once Rust accepts the plan, the file is the next choice.
+  assert.equal(missingChoice(state), "Scegli il file del tracciato.");
   // A reply after the plan is ready, or a failure for an old token, changes nothing.
   assert.deepEqual(reduce(state, { type: "plan_failed", token, message: "x" }), state);
 });
@@ -231,7 +232,7 @@ test("the summary shows the schema captured by Rust and failures are announced",
   state = reduce(state, { type: "select_trace", traceRef: "config_1_trace_0" });
   state = reduce(state, { type: "plan_created", token: state.plan.token, draft });
   html = render(state);
-  assert.match(html, /role="status">Selezione accettata dal servizio\./);
+  assert.match(html, /role="status">Scegli il file del tracciato\./);
   assert.match(html, /<dt>Tracciato<\/dt><dd>T1<\/dd>/);
   const failed = reduce(reduce(state, { type: "select_version", schemaRef: "s_v1" }), { type: "configuration_failed", token: 3, message: SELECTION_FAILED });
   html = render(failed);

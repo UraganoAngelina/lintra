@@ -4,13 +4,24 @@
 // schema_binding.rs) without any normative logic: the catalog, the captured
 // schema and the trace list come from Rust, and Rust alone validates the
 // selection when it creates the plan. Full mode and its per-trace inputs
-// belong to T-MIG-P5-09; file choice to T-MIG-P5-03.
-import type { BundleProvenance, ConfigurationSelection, PlanDraft, SchemaDescriptor } from "./ipc";
+// belong to T-MIG-P5-09.
+//
+// T-MIG-P5-03: the input file is chosen in the native dialog owned by Rust
+// (plan_input_choose). The renderer never sees a path, a name or a byte: it
+// receives the new plan reference and the bounded preview counters only.
+import type { BundleProvenance, ConfigurationSelection, InputPreviewDto, PlanDraft, SchemaDescriptor } from "./ipc";
 
 export type TraceOption = { trace_ref: string; trace_id: string };
 
 /** A request in flight is identified by a token; late replies are ignored. */
 type Pending = { token: number };
+
+/** Input of the plan's trace. `chosen` survives a cancelled dialog or a
+ * failed new choice, exactly like the binding kept by Rust. */
+export type InputState = {
+  chosen: InputPreviewDto | null;
+  activity: { status: "idle" } | ({ status: "choosing" } & Pending) | { status: "failed"; message: string } | { status: "cancelled" };
+};
 
 export type SelectionState = {
   catalog: { status: "loading" } | { status: "ready"; entries: SchemaDescriptor[]; provenance: BundleProvenance } | { status: "failed"; message: string };
@@ -19,7 +30,7 @@ export type SelectionState = {
   configuration: { status: "idle" } | ({ status: "loading" } & Pending)
     | { status: "ready"; selection: ConfigurationSelection; traces: TraceOption[] } | { status: "failed"; message: string };
   traceRef: string | null;
-  plan: { status: "idle" } | ({ status: "creating" } & Pending) | { status: "ready"; draft: PlanDraft } | { status: "failed"; message: string };
+  plan: { status: "idle" } | ({ status: "creating" } & Pending) | { status: "ready"; draft: PlanDraft; input: InputState } | { status: "failed"; message: string };
   nextToken: number;
 };
 
@@ -32,7 +43,11 @@ export type SelectionEvent =
   | { type: "configuration_failed"; token: number; message: string }
   | { type: "select_trace"; traceRef: string | null }
   | { type: "plan_created"; token: number; draft: PlanDraft }
-  | { type: "plan_failed"; token: number; message: string };
+  | { type: "plan_failed"; token: number; message: string }
+  | { type: "choose_input" }
+  | { type: "input_chosen"; token: number; planRef: string; assignedInputCount: string; preview: InputPreviewDto }
+  | { type: "input_cancelled"; token: number }
+  | { type: "input_failed"; token: number; message: string };
 
 export const INITIAL_SELECTION: SelectionState = {
   catalog: { status: "loading" }, flow: null, schemaRef: null,
@@ -85,7 +100,25 @@ export function reduce(state: SelectionState, event: SelectionEvent): SelectionS
     case "plan_failed": {
       if (state.plan.status !== "creating" || state.plan.token !== event.token) return state;
       if (event.type === "plan_failed") return { ...state, plan: { status: "failed", message: event.message } };
-      return { ...state, plan: { status: "ready", draft: event.draft } };
+      return { ...state, plan: { status: "ready", draft: event.draft, input: { chosen: null, activity: { status: "idle" } } } };
+    }
+    case "choose_input": {
+      // One dialog at a time, only for a plan Rust has accepted.
+      if (state.plan.status !== "ready" || state.plan.input.activity.status === "choosing") return state;
+      const input = { ...state.plan.input, activity: { status: "choosing" as const, token: state.nextToken } };
+      return { ...state, plan: { ...state.plan, input }, nextToken: state.nextToken + 1 };
+    }
+    case "input_chosen":
+    case "input_cancelled":
+    case "input_failed": {
+      if (state.plan.status !== "ready") return state;
+      const { input } = state.plan;
+      if (input.activity.status !== "choosing" || input.activity.token !== event.token) return state;
+      if (event.type === "input_cancelled") return { ...state, plan: { ...state.plan, input: { ...input, activity: { status: "cancelled" } } } };
+      if (event.type === "input_failed") return { ...state, plan: { ...state.plan, input: { ...input, activity: { status: "failed", message: event.message } } } };
+      // Every accepted input gives the plan a new reference in Rust.
+      const draft = { ...state.plan.draft, plan_ref: event.planRef, assigned_input_count: event.assignedInputCount };
+      return { ...state, plan: { status: "ready", draft, input: { chosen: event.preview, activity: { status: "idle" } } } };
     }
   }
 }
@@ -97,12 +130,14 @@ export function missingChoice(state: SelectionState): string | null {
   if (state.schemaRef === null) return "Scegli la versione dello schema: nessuna versione viene scelta in automatico.";
   if (state.configuration.status !== "ready") return null;
   if (state.traceRef === null) return "Scegli il tracciato da analizzare.";
+  if (state.plan.status === "ready" && state.plan.input.chosen === null) return "Scegli il file del tracciato.";
   return null;
 }
 
 export const SELECTION_FAILED = "Non è stato possibile caricare lo schema scelto. Scegli di nuovo la versione; se il problema resta, chiudi e riapri Lintra.";
 export const PLAN_FAILED = "Il servizio non ha accettato la selezione. Scegli di nuovo il tracciato; se il problema resta, chiudi e riapri Lintra.";
 export const CATALOG_FAILED = "Non è stato possibile leggere il catalogo degli schemi. Chiudi e riapri Lintra.";
+export const INPUT_FAILED = "Non è stato possibile usare il file scelto: potrebbe essere illeggibile o iniziare con un BOM non ammesso. La scelta precedente resta valida; scegli un altro file.";
 
 /** IPC operations the controller needs; injected so tests can replace them. */
 export type SelectionApi = {
@@ -110,6 +145,7 @@ export type SelectionApi = {
   configurationSelect: (schemaRef: string, encoding: "utf8") => Promise<ConfigurationSelection>;
   configurationPage: (configurationRef: string, offset?: string) => Promise<{ descriptors: ({ kind: "trace"; trace_ref: string; trace_id: string } | { kind: "parameter" })[]; next_offset: string | null }>;
   planCreate: (configurationRef: string, mode: "local_only", traceRef: string) => Promise<PlanDraft>;
+  planInputChoose: (planRef: string, traceRef: string) => Promise<{ plan_ref: string; trace_ref: string; disposition: "selected" | "cancelled"; assigned_input_count: string; preview: InputPreviewDto | null }>;
 };
 type Dispatch = (event: SelectionEvent) => void;
 
@@ -165,5 +201,19 @@ export async function createPlan(api: SelectionApi, dispatch: Dispatch, token: n
     dispatch({ type: "plan_created", token, draft });
   } catch {
     dispatch({ type: "plan_failed", token, message: PLAN_FAILED });
+  }
+}
+
+/** Opens the native dialog through Rust for the plan's trace. A cancelled
+ * dialog keeps the plan reference; an accepted file returns a new one. */
+export async function chooseInput(api: SelectionApi, dispatch: Dispatch, token: number, planRef: string, traceRef: string): Promise<void> {
+  try {
+    const choice = await api.planInputChoose(planRef, traceRef);
+    if (choice.trace_ref !== traceRef) throw new Error("choice for another trace");
+    if (choice.disposition === "cancelled") dispatch({ type: "input_cancelled", token });
+    else if (choice.preview !== null && choice.plan_ref !== planRef) dispatch({ type: "input_chosen", token, planRef: choice.plan_ref, assignedInputCount: choice.assigned_input_count, preview: choice.preview });
+    else throw new Error("selected input without a new plan or preview");
+  } catch {
+    dispatch({ type: "input_failed", token, message: INPUT_FAILED });
   }
 }
