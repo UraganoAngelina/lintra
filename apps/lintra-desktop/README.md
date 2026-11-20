@@ -2,7 +2,8 @@
 
 Adapter React/Tauri affiancato a CLI e Slint; P4 in sviluppo, non release utenti.
 Manifest e lock separati; preparazione e worker LocalOnly collegati alla library.
-La shell P3 non espone ancora i controlli di analisi P5 o la persistenza.
+Shell P5-01: sezioni Analisi/Risultati/Informazioni e tema Sistema/Chiaro/Scuro
+(solo di sessione); i controlli di analisi P5 arrivano con le task successive.
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund
@@ -15,7 +16,9 @@ npm run tauri -- build --no-bundle -- --locked -j 2
 Node e npm ammessi sono in `engines`/`.nvmrc`, con engine-strict e lifecycle
 scripts disabilitati in `.npmrc`. Il lint usa le regole statiche TypeScript
 unused/fallthrough; `build` include anche il typecheck strict. Nessun ESLint
-aggiuntivo. `npm test` esegue i decoder IPC e verifica asset/licenze locali.
+aggiuntivo. `npm test` esegue i decoder IPC, verifica asset/licenze locali e la shell
+(markup semantico, tema, contrasti). `tests/native_capture.py` produce le
+capture native su Hyprland personale; non è un gate CI.
 
 L'unico comando `lintra_ipc` riceve e restituisce byte raw UTF-8: envelope e DTO
 v1, massimo 1 MiB completo e profondità 32. La capability vale soltanto per la
@@ -31,8 +34,8 @@ resta rifiutato fino a P4-11. Il selettore nativo conserva PathBuf in Rust; il c
 solo riferimenti opachi e contatori. Parametri tipizzati restano testo esatto,
 anche per interi oltre il limite JavaScript. La preparazione congela schema,
 mode e binding mediante i validator della library: non avvia record validation.
-Nessuna operazione SQL o storia. La shell React resta quella P3 fino alle
-viste P5; le API P4 sono provate attraverso i dispatcher reali.
+Nessuna operazione SQL o storia. Le API P4 sono provate attraverso i
+dispatcher reali; la shell P5-01 non le richiama ancora oltre al bootstrap.
 CSP e guard WebView2 qualificati in P1-04 restano applicati.
 
 `--shell-smoke-test` verifica caricamento del documento e chiusura; `--smoke-test`

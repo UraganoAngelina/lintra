@@ -1,12 +1,17 @@
 import { createRoot } from "react-dom/client";
 import { useEffect, useState } from "react";
 import { appInfo, clientReady, errorText, type AppInfo } from "./ipc";
+import { AppShell, type ServiceState } from "./AppShell";
+import { INITIAL_THEME, INITIAL_VIEW, applyTheme, type ThemePreference, type ViewId } from "./shell";
 import "./style.css";
 
 function App() {
   const [info, setInfo] = useState<AppInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
+  const [view, setView] = useState<ViewId>(INITIAL_VIEW);
+  const [theme, setTheme] = useState<ThemePreference>(INITIAL_THEME);
+  useEffect(() => { applyTheme(document.documentElement, theme); }, [theme]);
   useEffect(() => {
     let active = true;
     void appInfo().then(value => { if (active) setInfo(value); })
@@ -26,15 +31,11 @@ function App() {
     }).catch(reason => { if (active) setError(errorText(reason)); });
     return () => { active = false; };
   }, [info]);
-  return <main>
-    <header><span className="app-name">Lintra</span></header>
-    <section aria-labelledby="welcome">
-      <h1 id="welcome">Il tuo spazio di validazione</h1>
-      {error ? <p role="alert">{error}</p> : <p role="status">
-        {ready ? "Nessuna analisi in corso." : "Avvio del servizio…"}
-      </p>}
-    </section>
-  </main>;
+  const service: ServiceState = error ? { kind: "error", message: error }
+    : ready && info ? { kind: "ready", version: info.app_version } : { kind: "starting" };
+  // No report exists until the P5 run views connect the Rust job lifecycle.
+  return <AppShell view={view} onView={setView} theme={theme} onTheme={setTheme}
+    service={service} reportAvailable={false} />;
 }
 
 const root = document.getElementById("root");

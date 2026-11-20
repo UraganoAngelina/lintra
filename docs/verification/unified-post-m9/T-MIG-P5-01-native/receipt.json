@@ -1,0 +1,170 @@
+{
+  "binary_sha256": "3f8cdb864aed55e1ca3b0a1698f8ce9796542e29be98e2cbc582874393263e34",
+  "scenarios": [
+    {
+      "name": "analisi-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "keys": [],
+      "image_sha256": "3e3908202ff2cc1f8a3b4fb4a6f03945ec75ba1025545becf5540789da5688c5"
+    },
+    {
+      "name": "analisi-1024x768",
+      "requested": [
+        1024,
+        768
+      ],
+      "captured": [
+        1024,
+        768
+      ],
+      "keys": [],
+      "image_sha256": "cd960c0735bc93f438460b62cfa2cad99b8cb3cb10e7ed4dca29ea046a48c51d"
+    },
+    {
+      "name": "analisi-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "keys": [],
+      "image_sha256": "b2bd444845d18311e3b913fc6f888438ac069d38c176b121be65f59432c9ed41"
+    },
+    {
+      "name": "analisi-workarea",
+      "requested": [
+        1780,
+        1040
+      ],
+      "captured": [
+        1780,
+        1040
+      ],
+      "keys": [],
+      "image_sha256": "28aa2d4afd3f41cb6ea6a4cff6b89d8bdebfb549e665976aab04500ccc80d49e"
+    },
+    {
+      "name": "keyboard-skip-link-1024x768",
+      "requested": [
+        1024,
+        768
+      ],
+      "captured": [
+        1024,
+        768
+      ],
+      "keys": [
+        "Tab"
+      ],
+      "image_sha256": "b96ef9f951b5d4594a29f3a85a42bc255a8a7adef9fe25b4e430f539e149492f"
+    },
+    {
+      "name": "keyboard-risultati-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return"
+      ],
+      "image_sha256": "ec396259c6dfa6828af780f9e11f85af22e3dfe9ba760010fad5d179aded2694"
+    },
+    {
+      "name": "keyboard-informazioni-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return"
+      ],
+      "image_sha256": "bfcb357d0accb8c0359ddb2c97728f3b150c00f9567c9546fbd9fa44bf03819a"
+    },
+    {
+      "name": "keyboard-theme-light-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down"
+      ],
+      "image_sha256": "2ab2aeb2af42bd0e11115849bda89d831c94e7e904c42354e55045bcfc16ba22"
+    },
+    {
+      "name": "keyboard-theme-light-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down"
+      ],
+      "image_sha256": "53e94d1e6c2a90174f61db4f956dccb891de8064bedfcef8622e342457f31083"
+    },
+    {
+      "name": "keyboard-theme-dark-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "Down"
+      ],
+      "image_sha256": "a98b3c432cc79cb0514f07913f60f89023b9895125a8eec6a1ff4edc429b3707"
+    }
+  ]
+}

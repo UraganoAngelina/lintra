@@ -20,37 +20,40 @@
   font-display: swap;
 }
 :root {
+  /* Single theme registry. Each colour is light-dark(light, dark); the
+     resolved scheme is the system one unless the user picks a theme, which
+     sets data-theme on <html> (src/shell.ts). Values: ratified logo book
+     palette (LINTRA_OFFICIAL_BRAND.md) and contrast-checked text roles. */
   color-scheme: light dark;
   --font-sans: "IBM Plex Sans", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
-  --bg: #f5f4f0;
-  --surface: #ffffff;
-  --ink: #20272b;
-  --muted: #56616a;
-  --border: #cbcfcf;
   --brand: #0b2a5b;
   --brand-cyan: #00c2e8;
   --brand-slate: #6b7a90;
   --brand-light: #e5eaf2;
-  --accent: var(--brand);
-  --error: #ae2925;
-  --warn: #855408;
+  --bg: light-dark(#f5f4f0, #101112);
+  --surface: light-dark(#ffffff, #1b1d1f);
+  --ink: light-dark(#20272b, #f5f4f0);
+  --muted: light-dark(#56616a, #b6babc);
+  --border: light-dark(#cbcfcf, #60676b);
+  --accent: light-dark(var(--brand), var(--brand-cyan));
+  --selected-bg: light-dark(var(--brand-light), var(--brand));
+  --selected-ink: light-dark(var(--brand), var(--brand-cyan));
+  --error: light-dark(#ae2925, #ff9288);
+  --warn: light-dark(#855408, #efc177);
   --title-size: 28px;
   --body-size: 14px;
+  --data-size: 12px;
+  --control-height: 36px;
+  --radius: 4px;
+  --focus-width: 2px;
   --space-small: 4px;
+  --space-row: 8px;
   --control-gap: 12px;
+  --space-block: 16px;
   --page-padding: 24px;
   --section-gap: 32px;
+  --bar-width: 224px;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #101112;
-    --surface: #1b1d1f;
-    --ink: #f5f4f0;
-    --muted: #b6babc;
-    --border: #60676b;
-    --accent: var(--brand-cyan);
-    --error: #ff9288;
-    --warn: #efc177;
-  }
-}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
