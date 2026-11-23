@@ -289,6 +289,14 @@ function unappliedParameters(plan: ReadyPlan): boolean {
   return Object.values(plan.parameters).some(parameter => parameter.text !== (parameter.applied ?? ""));
 }
 
+/** Traces of the plan's bundle in schema order (Full: those with a file;
+ * LocalOnly: the chosen trace), frozen with the run to name its samples. */
+export function runTraces(state: SelectionState): TraceOption[] {
+  if (state.plan.status !== "ready" || state.configuration.status !== "ready") return [];
+  const inputs = state.plan.inputs;
+  return state.configuration.traces.filter(trace => inputs[trace.trace_ref]?.chosen != null);
+}
+
 /** The plan "Avvia analisi" may send, or null. LocalOnly: the trace has a
  * file. Full: at least one file and every typed value accepted by Rust;
  * whether the required traces and parameters are all there is decided by

@@ -7,17 +7,25 @@
 // snapshot, one progress sample and, while undecided, one budget gate are
 // kept, so memory stays bounded for runs of any length (PROGRESS.md).
 import type { BudgetConfigState, BudgetGate, RunOutcome, RunProgress, RunRef, RunSnapshot } from "./ipc";
-import type { ReportSelection } from "./analysis";
+import type { ReportSelection, TraceOption } from "./analysis";
+
+// T-MIG-P5-10: Full monitor. The context of a run (mode and the traces of its
+// bundle, in schema order) is frozen when "Avvia" is pressed: the sample's
+// trace_ref is the plan handle of the running trace (Rust, progress.rs) and is
+// resolved only through this list. Nothing is kept per trace: with throttled
+// reads the last count seen for a finished trace may be below its real count,
+// so no per-trace or Full total is ever shown (PROGRESS.md).
+export type RunContext = { mode: "local_only" | "full"; traces: TraceOption[] };
 
 /** Interval between two reads of the run (at most ~4 renders per second). */
 export const POLL_MS = 250;
 
 export type RunView =
   | { status: "idle" }
-  | { status: "starting"; token: number; reports: ReportSelection }
-  | { status: "active"; run: RunRef; reports: ReportSelection; snapshot: RunSnapshot | null; progress: RunProgress | null;
+  | { status: "starting"; token: number; reports: ReportSelection; context: RunContext | null }
+  | { status: "active"; run: RunRef; reports: ReportSelection; context: RunContext | null; snapshot: RunSnapshot | null; progress: RunProgress | null;
       gate: BudgetGate | null; deciding: boolean; decisionFailed: boolean; cancel: CancelState }
-  | { status: "terminal"; run: RunRef; reports: ReportSelection; outcome: RunOutcome; progress: RunProgress | null; gate: BudgetGate | null;
+  | { status: "terminal"; run: RunRef; reports: ReportSelection; context: RunContext | null; outcome: RunOutcome; progress: RunProgress | null; gate: BudgetGate | null;
       acknowledged: boolean }
   | { status: "failed"; message: string };
 
@@ -36,7 +44,7 @@ export type RunState = { view: RunView; budget: BudgetConfigState | null; budget
 export type RunEvent =
   | { type: "budget_loaded"; budget: BudgetConfigState }
   | { type: "budget_failed" }
-  | { type: "start"; reports: ReportSelection }
+  | { type: "start"; reports: ReportSelection; context?: RunContext }
   | { type: "started"; token: number; run: RunRef }
   | { type: "start_failed"; token: number; message: string }
   | { type: "snapshot"; snapshot: RunSnapshot }
@@ -74,10 +82,10 @@ export function reduceRun(state: RunState, event: RunEvent): RunState {
     case "budget_failed": return { ...state, budget: null, budgetFailed: true };
     case "start":
       if (busy(state)) return state;
-      return { ...state, view: { status: "starting", token: state.nextToken, reports: event.reports }, nextToken: state.nextToken + 1 };
+      return { ...state, view: { status: "starting", token: state.nextToken, reports: event.reports, context: event.context ?? null }, nextToken: state.nextToken + 1 };
     case "started":
       if (view.status !== "starting" || view.token !== event.token) return state;
-      return { ...state, lastRun: event.run, view: { status: "active", run: event.run, reports: view.reports, snapshot: null, progress: null,
+      return { ...state, lastRun: event.run, view: { status: "active", run: event.run, reports: view.reports, context: view.context, snapshot: null, progress: null,
         gate: null, deciding: false, decisionFailed: false, cancel: "none" } };
     case "start_failed":
       if (view.status !== "starting" || view.token !== event.token) return state;
@@ -108,7 +116,7 @@ export function reduceRun(state: RunState, event: RunEvent): RunState {
       // A terminal of this run is final: late samples cannot reopen it.
       if (view.status !== "active" || !same(view.run, event.run)) return state;
       return { ...state, report: event.outcome.kind === "validation" && event.outcome.report_available ? view.run : state.report,
-        view: { status: "terminal", run: view.run, reports: view.reports, outcome: event.outcome,
+        view: { status: "terminal", run: view.run, reports: view.reports, context: view.context, outcome: event.outcome,
         progress: view.progress, gate: view.gate, acknowledged: event.acknowledged } };
     case "acknowledged":
       if (view.status !== "terminal" || !same(view.run, event.run)) return state;
@@ -184,8 +192,61 @@ export function activeText(view: Extract<RunView, { status: "active" }>): string
   return "Analisi in corso.";
 }
 
-export function phaseText(progress: RunProgress | null): string | null {
-  return progress?.phase ? PHASES[progress.phase] : null;
+/** Full words: PASS1 runs trace by trace, PASS2 across the traces. */
+const FULL_PHASES: Record<NonNullable<RunProgress["phase"]>, string> = {
+  preflight: "Controlli preliminari",
+  local_validation: "Controlli sui singoli tracciati",
+  cross_record_validation: "Controlli tra tracciati",
+  finalizing_report: "Scrittura del report",
+};
+
+export function phaseText(progress: RunProgress | null, context: RunContext | null = null): string | null {
+  return progress?.phase ? (context?.mode === "full" ? FULL_PHASES : PHASES)[progress.phase] : null;
+}
+
+/** Name of the trace a sample is about, or null: no trace (PASS2, before the
+ * first trace) or a handle outside the run's context, which is never guessed. */
+export function sampleTrace(progress: RunProgress | null, context: RunContext | null): string | null {
+  if (progress === null || progress.trace_ref === null || context === null) return null;
+  return context.traces.find(trace => trace.trace_ref === progress.trace_ref)?.trace_id ?? null;
+}
+
+/** Counters of the last sample, labelled as the service defines them:
+ * trace_records only while a trace is running (PASS2 has none, its zero is
+ * not a count), cross_records only once PASS2 has counted. LocalOnly keeps the
+ * P5-05 labels. */
+export function counterRows(progress: RunProgress | null, context: RunContext | null): { label: string; value: string }[] {
+  const count = (value: string) => BigInt(value).toLocaleString("it-IT");
+  if (context?.mode !== "full") {
+    const rows = [{ label: "Record del tracciato", value: progress ? count(progress.trace_records) : "—" }];
+    if (progress && progress.cross_records !== "0") rows.push({ label: "Record nei controlli tra record", value: count(progress.cross_records) });
+    return rows;
+  }
+  const rows = [{ label: "Tracciati nell'analisi", value: context.traces.map(trace => trace.trace_id).join(", ") }];
+  if (progress?.trace_ref != null) {
+    const name = sampleTrace(progress, context);
+    rows.push({ label: name === null ? "Record del tracciato in corso" : `Record del tracciato ${name}`, value: count(progress.trace_records) });
+  }
+  if (progress && (progress.phase === "cross_record_validation" || progress.cross_records !== "0")) {
+    rows.push({ label: "Record nei controlli tra tracciati", value: count(progress.cross_records) });
+  }
+  return rows;
+}
+
+/** Trace named beside the phase: only in PASS1, the per-trace phase. After a
+ * cancel in PASS1 Rust moves to finalizing_report keeping the last trace in
+ * the sample; writing the report is not per trace (native P5-10 capture). */
+export function phaseTrace(progress: RunProgress | null, context: RunContext | null): string | null {
+  return progress?.phase === "local_validation" ? sampleTrace(progress, context) : null;
+}
+
+/** Full terminal without a published report of this run (cancel, technical
+ * failure): where the service last said it was. An observation, not a cause. */
+export function lastPhaseText(outcome: RunOutcome, progress: RunProgress | null, context: RunContext | null): string | null {
+  if (context?.mode !== "full" || !progress?.phase) return null;
+  if (outcome.kind === "validation" && outcome.report_available) return null;
+  const trace = phaseTrace(progress, context);
+  return `Ultima fase comunicata dal servizio: ${FULL_PHASES[progress.phase]}${trace === null ? "" : `, tracciato ${trace}`}.`;
 }
 
 /** Outcome words; NotApplicable/Unknown/Partial are never merged into success.

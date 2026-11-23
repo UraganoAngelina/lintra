@@ -1127,6 +1127,7 @@ mod tests {
         .unwrap();
         let raw: RawFlowSchema = serde_json::from_value(schema).unwrap();
         let intent = Arc::new(PreparedIntent {
+            trace_refs: vec!["config_1_trace_0".into()],
             request: ValidationRequest {
                 schema_key: SchemaKey {
                     flow_id: FlowId(raw.flow_id.clone()),

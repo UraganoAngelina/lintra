@@ -43,6 +43,12 @@ INVALID_BUDGET = b'{"version":1,"measurement_source":"","input_bytes":65536,"ref
 FULL = ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Down", "wait"]
 FULL_S = FULL + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/fulls.txt", "wait"]
 FULL_ST = FULL_S + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/fullt.txt", "wait"]
+# T-MIG-P5-10: parameters applied, then the four Tab to «Avvia analisi».
+FULL_PARAMS_START = ["Tab", "type:a", "Tab", "wait", "type:2026", "Tab", "wait"] + ["Tab"] * 3 + ["Return"]
+# S is big.txt (245 MB, records 001A: PK 00, KEY 1A; no second large file),
+# T the one record every S row joins.
+FULL_BIG = FULL + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/big.txt", "wait",
+                   "Tab", "Return", f"dialog:{SAMPLE_DIR}/onet.txt", "wait"]
 
 # name, logical window size, keys sent to the owned window.
 # Tab order: skip link, Analisi, Risultati, Informazioni, theme radio group.
@@ -123,6 +129,16 @@ SCENARIOS = [
     # S and T, unit a and year 2026: the run completes in Full.
     ("full-run-completed-1366x768", (1366, 768),
      FULL_ST + ["Tab", "type:a", "Tab", "wait", "type:2026", "Tab", "wait"] + ["Tab"] * 3 + ["Return", "wait", "wait", "wait"], None, True),
+    # T-MIG-P5-10: Full monitor. PASS1 of the large S, named from the plan
+    # handle in the sample; a later capture of the same run; a cancel in
+    # PASS1 with the last phase Rust reported; an invalid bundle (T's DATA
+    # differs from S's) whose terminal is Rust's "Violazioni rilevate".
+    ("full-monitor-pass1-1366x768", (1366, 768), FULL_BIG + FULL_PARAMS_START + ["wait"], None, True),
+    ("full-monitor-later-1366x768", (1366, 768), FULL_BIG + FULL_PARAMS_START + ["wait"] * 6, None, True),
+    ("full-run-cancelled-1366x768", (1366, 768), FULL_BIG + FULL_PARAMS_START + ["wait", "Tab", "Return", "wait", "wait", "wait"], None, True),
+    ("full-run-invalid-1366x768", (1366, 768),
+     FULL + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/fulls.txt", "wait", "Tab", "Return", f"dialog:{SAMPLE_DIR}/badt.txt", "wait"]
+     + FULL_PARAMS_START + ["wait", "wait", "wait"], None, True),
 ]
 # 200% scale: logical sizes inside the scaled monitor's work area. The
 # minimum window (640x480 logical) and the whole work area cover both sides
@@ -362,6 +378,8 @@ def main():
         (samples / "whole.txt").write_bytes(b"001A  \n001B  \r\n")  # 15 bytes, LF and CRLF
         (samples / "fulls.txt").write_bytes(b"01AAXX\n02BBYY\n")  # Full trace S (PK, KEY, DATA)
         (samples / "fullt.txt").write_bytes(b"01AAXX\n02BBYY\n")  # Full trace T: same KEY/DATA
+        (samples / "badt.txt").write_bytes(b"01AAZZ\n02BBYY\n")  # T: DATA of AA differs from S
+        (samples / "onet.txt").write_bytes(b"001A  \n")  # T: the record every big.txt row joins
         with (samples / "big.txt").open("wb") as big:  # 35 M records, 245 MB
             for _ in range(350):
                 big.write(b"001A  \n" * 100_000)

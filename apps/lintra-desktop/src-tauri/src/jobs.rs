@@ -748,7 +748,7 @@ impl Jobs {
         let shared = Arc::new(Mutex::new(WorkerState {
             stage: "preparing",
             sealed: false,
-            progress: Progress::new(&intent.request.scope),
+            progress: Progress::new(&intent.request.scope, &intent.trace_refs),
             // Published before the run is observable: a configured budget is
             // "checking" until the worker decides, never "unconfigured" (P505-01).
             gate: if preflight.is_some() {
@@ -987,6 +987,7 @@ pub(crate) mod tests {
         ))
         .unwrap();
         let intent = Arc::new(PreparedIntent {
+            trace_refs: vec!["config_1_trace_0".into()],
             request: ValidationRequest {
                 schema_key: SchemaKey {
                     flow_id: FlowId(raw.flow_id.clone()),
@@ -1061,6 +1062,7 @@ pub(crate) mod tests {
             .collect();
         let bundle = AnalysisBundle::builtin().unwrap();
         let intent = Arc::new(PreparedIntent {
+            trace_refs: vec!["config_1_trace_0".into(), "config_1_trace_1".into()],
             request: ValidationRequest {
                 schema_key: SchemaKey {
                     flow_id: FlowId(raw.flow_id.clone()),
@@ -1356,7 +1358,7 @@ pub(crate) mod tests {
         let shared = Arc::new(Mutex::new(WorkerState {
             stage: "finalizing",
             sealed,
-            progress: Progress::new(&intent.request.scope),
+            progress: Progress::new(&intent.request.scope, &intent.trace_refs),
             gate: Gate::Unconfigured,
         }));
         let job = Job {

@@ -11,6 +11,8 @@ pub(crate) struct Progress {
     trace_records: u64,
     cross_records: u64,
     traces: Vec<TraceId>,
+    // Plan handles of `traces`, same order: the sample's `trace_ref`.
+    refs: Vec<String>,
     // Traces whose PASS1 has started. A Full bundle reads each trace once, so
     // a second start (or a return to a completed trace) is an incoherent event
     // that would otherwise make the sample regress to a finished trace.
@@ -19,7 +21,10 @@ pub(crate) struct Progress {
     sealed: bool,
 }
 impl Progress {
-    pub(crate) fn new(scope: &ValidationScope) -> Self {
+    /// `refs` are the plan trace handles of the scope, in scope order. A list
+    /// of another length cannot name the traces: only the progress channel
+    /// is sealed as technical (the run and its outcome are unaffected).
+    pub(crate) fn new(scope: &ValidationScope, refs: &[String]) -> Self {
         let traces: Vec<TraceId> = match scope {
             ValidationScope::Trace(input) => vec![input.trace_id.clone()],
             ValidationScope::Flow(input) => {
@@ -33,8 +38,9 @@ impl Progress {
             trace_records: 0,
             cross_records: 0,
             started: vec![false; traces.len()],
+            failed: refs.len() != traces.len(),
+            refs: refs.to_vec(),
             traces,
-            failed: false,
             sealed: false,
         }
     }
@@ -125,7 +131,7 @@ impl Progress {
         });
         Ok(
             json!({"schemaVersion":1,"run":run,"sequence":self.sequence.to_string(),"phase":phase,
-            "trace_ref":self.trace.map(|i|format!("trace_{i}")),"trace_records":self.trace_records.to_string(),"cross_records":self.cross_records.to_string()}),
+            "trace_ref":self.trace.map(|i|self.refs[i].as_str()),"trace_records":self.trace_records.to_string(),"cross_records":self.cross_records.to_string()}),
         )
     }
 }
@@ -135,10 +141,13 @@ mod tests {
     use super::*;
     use lintra::{InputSource, TraceValidationInput};
     fn sample() -> Progress {
-        Progress::new(&ValidationScope::Trace(TraceValidationInput {
-            trace_id: TraceId("T1".into()),
-            source: InputSource::Path("SYNTHETIC".into()),
-        }))
+        Progress::new(
+            &ValidationScope::Trace(TraceValidationInput {
+                trace_id: TraceId("T1".into()),
+                source: InputSource::Path("SYNTHETIC".into()),
+            }),
+            &["config_1_trace_0".into()],
+        )
     }
     #[test]
     fn slow_consumer_keeps_one_latest_immutable_sample_and_exact_u64() {
@@ -186,14 +195,18 @@ mod tests {
             assert_eq!(p.dto(Value::Null), Err(ErrorCode::TechnicalFailure));
         }
         // A Full trace that starts again would regress to a finished trace.
-        let mut p = Progress::new(&ValidationScope::Flow(lintra::FlowValidationInput {
+        let flow = ValidationScope::Flow(lintra::FlowValidationInput {
             traces: ["S", "T"]
                 .map(|id| TraceValidationInput {
                     trace_id: TraceId(id.into()),
                     source: InputSource::Path("SYNTHETIC".into()),
                 })
                 .into(),
-        }));
+        });
+        let mut p = Progress::new(
+            &flow,
+            &["config_1_trace_0".into(), "config_1_trace_2".into()],
+        );
         p.update(&ProgressEvent::PhaseStarted(
             ValidationPhase::LocalValidation,
         ));
@@ -202,7 +215,9 @@ mod tests {
                 trace_id: TraceId(id.into()),
             });
         }
-        assert_eq!(p.dto(Value::Null).unwrap()["trace_ref"], "trace_1");
+        // The plan handle of T (schema index 2 here: an unassigned trace in
+        // between), never the position in the bundle (T-MIG-P5-10).
+        assert_eq!(p.dto(Value::Null).unwrap()["trace_ref"], "config_1_trace_2");
         p.update(&ProgressEvent::TraceStarted {
             trace_id: TraceId("S".into()),
         });
@@ -221,5 +236,17 @@ mod tests {
             ValidationPhase::LocalValidation,
         ));
         assert_eq!(p.dto(Value::Null), Err(ErrorCode::TechnicalFailure));
+    }
+    #[test]
+    fn handles_that_do_not_match_the_scope_seal_only_progress() {
+        let scope = ValidationScope::Trace(TraceValidationInput {
+            trace_id: TraceId("T1".into()),
+            source: InputSource::Path("SYNTHETIC".into()),
+        });
+        for refs in [vec![], vec!["a".to_string(), "b".to_string()]] {
+            let mut p = Progress::new(&scope, &refs);
+            p.update(&ProgressEvent::RunStarted);
+            assert_eq!(p.dto(Value::Null), Err(ErrorCode::TechnicalFailure));
+        }
     }
 }

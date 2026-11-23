@@ -624,6 +624,11 @@ mod tests {
         assert!(
             matches!(&prepared.request.scope,ValidationScope::Flow(flow) if flow.traces.iter().map(|t|t.trace_id.0.as_str()).collect::<Vec<_>>()==["S","T"])
         );
+        // P5-10: progress names traces with the descriptor handles, in scope order.
+        assert_eq!(
+            prepared.trace_refs,
+            [format!("{selected}_trace_0"), format!("{selected}_trace_1")]
+        );
     }
 
     /// Prepare a real Full plan through the native broker, assigning the
@@ -1130,6 +1135,11 @@ struct DraftPlan {
 /// Owned, immutable execution input. No record validation or output allocation here.
 pub(crate) struct PreparedIntent {
     pub request: ValidationRequest,
+    /// Plan trace handles (`configuration_page` `trace_ref`), one per trace of
+    /// `request.scope` in the same order. The progress sample names the
+    /// running trace with them, so the renderer resolves it through the
+    /// descriptors it already holds instead of decoding an index (T-MIG-P5-10).
+    pub trace_refs: Vec<String>,
     pub parameters: BTreeMap<String, JoinParameterValue>,
     pub raw: Arc<RawFlowSchema>,
     pub audit: BundleAudit,
@@ -1567,9 +1577,13 @@ impl Configuration {
                 source: InputSource::Path(chosen.path.clone()),
             })
         };
+        let handle = |index: usize| format!("{}_trace_{index}", selected.reference);
+        let mut trace_refs = Vec::new();
         let scope = match plan.mode {
             ValidationMode::LocalOnly => {
-                ValidationScope::Trace(input(plan.trace.ok_or(ErrorCode::InvalidState)?)?)
+                let index = plan.trace.ok_or(ErrorCode::InvalidState)?;
+                trace_refs.push(handle(index));
+                ValidationScope::Trace(input(index)?)
             }
             ValidationMode::Full => {
                 let inputs = plan
@@ -1577,7 +1591,10 @@ impl Configuration {
                     .iter()
                     .enumerate()
                     .filter(|(_, source)| source.is_some())
-                    .map(|(index, _)| input(index))
+                    .map(|(index, _)| {
+                        trace_refs.push(handle(index));
+                        input(index)
+                    })
                     .collect::<Result<Vec<_>, _>>()?;
                 if inputs.is_empty() {
                     return Err(ErrorCode::InvalidState);
@@ -1628,6 +1645,7 @@ impl Configuration {
         }
         Ok(PreparedIntent {
             request,
+            trace_refs,
             parameters: plan.parameters.clone(),
             raw: Arc::new(selected.raw.clone()),
             audit: self.bundle.audit().clone(),

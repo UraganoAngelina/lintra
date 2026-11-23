@@ -1,12 +1,12 @@
-import { useEffect, useLayoutEffect, useReducer, useRef } from "react";
+import { Fragment, useEffect, useLayoutEffect, useReducer, useRef } from "react";
 import {
   planPrepare, resourceBudgetState, validationAcknowledge, validationBudget, validationBudgetDecide, validationCancel,
-  validationProgress, validationStart, validationState, type BudgetGate, type RunRef,
+  validationProgress, validationStart, validationState, type BudgetGate, type RunProgress, type RunRef,
 } from "./ipc";
-import { startablePlan, type SelectionState } from "./analysis";
+import { runTraces, startablePlan, type SelectionState } from "./analysis";
 import {
-  INITIAL_RUN, POLL_MS, acknowledge, activeText, budgetText, bytes, canCancel, canStart, cancelRun, decide, gateOpen, loadBudget, outcomeText, phaseText, pollRun,
-  reduceRun, startRun, BUDGET_UNREADABLE, CANCEL_FAILED, CANCEL_TOO_LATE, DECISION_FAILED, type RunApi, type RunEvent, type RunState,
+  INITIAL_RUN, POLL_MS, acknowledge, activeText, budgetText, bytes, canCancel, canStart, cancelRun, counterRows, decide, gateOpen, lastPhaseText, loadBudget,
+  outcomeText, phaseText, phaseTrace, pollRun, reduceRun, startRun, BUDGET_UNREADABLE, CANCEL_FAILED, CANCEL_TOO_LATE, DECISION_FAILED, type RunApi, type RunContext, type RunEvent, type RunState,
 } from "./run";
 
 const api: RunApi = {
@@ -97,7 +97,8 @@ export function RunPanel({ state, selection, onEvent, onStart, onDecide, onCance
     {state.budgetFailed ? <p className="selection-status" role="alert">{BUDGET_UNREADABLE}</p>
       : state.budget && <p className="selection-status" role={state.budget.state === "invalid" ? "alert" : "status"}>{budgetText(state.budget)}</p>}
     <button type="button" ref={startButton} className="primary" aria-disabled={!ready}
-      onClick={() => { if (ready && plan) { onStart({ planRef: plan.plan_ref, mode: plan.mode }); onEvent({ type: "start", reports: selection.reports }); } }}>
+      onClick={() => { if (ready && plan) { onStart({ planRef: plan.plan_ref, mode: plan.mode });
+        onEvent({ type: "start", reports: selection.reports, context: { mode: plan.mode, traces: runTraces(selection) } }); } }}>
       Avvia analisi
     </button>
     {/* Offered only while Rust can still stop the work; kept in place (not
@@ -123,14 +124,17 @@ function RunStatus({ state }: { state: RunState }) {
   const formats = Object.entries(view.reports).filter(([, on]) => on).map(([id]) => id.toUpperCase()).join(", ") || "nessuno";
   if (view.status === "terminal") {
     const { title, detail } = outcomeText(view.outcome, previousReport(state.report, view.run));
+    const last = lastPhaseText(view.outcome, view.progress, view.context);
     return <div className="run-state" role="status">
       <h3>{title}</h3>
       <p>{detail}</p>
+      {last && <p>{last}</p>}
       <GateNote gate={view.gate} />
-      <RunCounters progress={view.progress} formats={formats} />
+      <RunCounters progress={view.progress} context={view.context} formats={formats} />
     </div>;
   }
-  const phase = phaseText(view.progress);
+  const trace = view.context?.mode === "full" ? phaseTrace(view.progress, view.context) : null;
+  const phase = phaseText(view.progress, view.context);
   return <div className="run-state">
     <p className="selection-status" role="status">{activeText(view)}</p>
     {/* Indeterminate: Rust gives no total, so no percentage or ETA is shown. */}
@@ -138,9 +142,9 @@ function RunStatus({ state }: { state: RunState }) {
     {view.decisionFailed && <p className="selection-status" role="alert">{DECISION_FAILED}</p>}
     {view.cancel === "too_late" && <p className="selection-status" role="status">{CANCEL_TOO_LATE}</p>}
     {view.cancel === "failed" && <p className="selection-status" role="status">{CANCEL_FAILED}</p>}
-    {phase && <p>{phase}</p>}
+    {phase && <p>{trace === null ? phase : `${phase}: tracciato ${trace}`}</p>}
     <GateNote gate={view.gate} />
-    <RunCounters progress={view.progress} formats={formats} />
+    <RunCounters progress={view.progress} context={view.context} formats={formats} />
   </div>;
 }
 
@@ -157,10 +161,10 @@ function GateNote({ gate }: { gate: BudgetGate | null }) {
   return null;
 }
 
-function RunCounters({ progress, formats }: { progress: { trace_records: string; cross_records: string; trace_ref: string | null } | null; formats: string }) {
+/** Last Rust sample as counted by the service; no total, share or ETA. */
+function RunCounters({ progress, context, formats }: { progress: RunProgress | null; context: RunContext | null; formats: string }) {
   return <dl className="selection-summary" aria-label="Contatori del servizio">
-    <dt>Record del tracciato</dt><dd>{progress ? BigInt(progress.trace_records).toLocaleString("it-IT") : "—"}</dd>
-    {progress && progress.cross_records !== "0" && <><dt>Record nei controlli tra record</dt><dd>{BigInt(progress.cross_records).toLocaleString("it-IT")}</dd></>}
+    {counterRows(progress, context).map(row => <Fragment key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd></Fragment>)}
     <dt>Formati del report</dt><dd>{formats}</dd>
   </dl>;
 }

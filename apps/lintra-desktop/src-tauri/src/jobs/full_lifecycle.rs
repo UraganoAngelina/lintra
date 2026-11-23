@@ -232,7 +232,7 @@ fn full_progress_is_one_bounded_sample_per_trace_and_pass() {
                 traces_seen.push(trace_id.0.clone());
                 assert_eq!(
                     sample["trace_ref"],
-                    format!("trace_{}", traces_seen.len() - 1)
+                    format!("config_1_trace_{}", traces_seen.len() - 1)
                 );
                 assert_eq!(sample["trace_records"], "0");
                 trace_records = 0;
