@@ -1,6 +1,6 @@
 # T-MIG-P5-07 — Informazioni/provenienza e licenze
 
-Data 23 novembre 2026. Stato: **IN_REVIEW** (READY_FOR_CODEX_REVIEW), non DONE
+Data 23 novembre 2026. Stato: **IN_REVIEW** (READY_FOR_CODEX_REVIEW, round 2), non DONE
 prima della review e dell'integrazione. Prerequisiti T-MIG-P5-01 e T-MIG-P5-06
 DONE (`integration` `db3cd7c`). Branch `work/T-MIG-P5-07` da `db3cd7c`,
 worktree `/home/alberto/Desktop/LINTRA/lintra-p5-07`.
@@ -26,7 +26,7 @@ IPC v1 `EXPORT.md` (`report_about`); dossier T-MIG-P3-02 (origine di
   scroll da tastiera). Il report e la selezione restano separati e il report
   dichiara che riguarda l'analisi che lo ha prodotto: è la stessa distinzione
   di Slint (vista risultati contro selezione), mostrata insieme.
-- `src/about.ts` (nuovo): `splitNotices` (taglio esatto dei blocchi, testo
+- `src/information.ts` (nuovo; `about.ts` nel round 1, vedi P507-01): `splitNotices` (taglio esatto dei blocchi, testo
   verbatim), `previewText` (anteprima Rust troncata marcata con «…»),
   `reportStatusText` (stato, completezza e troncamento come li dichiara Rust;
   annullato o troncato non diventano mai una conformità).
@@ -47,7 +47,7 @@ IPC v1 `EXPORT.md` (`report_about`); dossier T-MIG-P3-02 (origine di
 - `.gitattributes`: `THIRD_PARTY_NOTICES` con `eol=lf`, come `OFL.md`, perché
   gli hash valgano anche sul checkout Windows.
 - `src/style.css`: stili della sezione con i token esistenti.
-- Test: `tests/about.test.mjs` (8), tre scenari in `tests/native_capture.py`.
+- Test: `tests/information.test.mjs` (9), tre scenari in `tests/native_capture.py`.
 - README desktop.
 
 ## Cosa NON cambia
@@ -70,7 +70,7 @@ fuori scope.
 
 | Verifica | Esito |
 | --- | --- |
-| `npm run lint` / `npm test` / `npm run build` | PASS / 103 PASS (95 + 8) / PASS |
+| `npm run lint` / `npm test` / `npm run build` | PASS / 104 PASS (95 + 9) / PASS |
 | desktop `cargo fmt … -- --check` | PASS |
 | desktop `cargo test … --release --target x86_64-unknown-linux-gnu --features tauri/custom-protocol -j 2` | PASS 82, 0 fail, 1 ignored |
 | desktop `cargo clippy … --release --all-targets … -- -D warnings` | PASS |
@@ -84,6 +84,30 @@ Prova nativa (Hyprland, controllata a vista): Informazioni da tastiera, Tab
 sulla prima licenza, Invio la apre, Tab porta il focus sul testo scorrevole,
 a 1366×768 e a 640×480; dopo un run completo, «Ultimo report» mostra la
 provenienza Rust e la barra «Report disponibile».
+
+## Rework dopo review Codex round 1
+
+Review round 1 CHANGES_REQUESTED su `3b314d0`, un MAJOR.
+
+- **P507-01 — `./About` risolto a `about.ts` su filesystem senza
+  distinzione di maiuscole.** Fondato: il resolver TypeScript prova
+  `About.ts` prima di `About.tsx`, e su Windows (target ufficiale) trova il
+  modello `about.ts`, che non esporta `About` né `useReportAbout` (due
+  TS2305). Correzione: il modello si chiama ora `src/information.ts`; import
+  di `About.tsx`, `main.tsx` e del test aggiornati (test rinominato
+  `tests/information.test.mjs`). Nessun cambio di contenuto, strict o gate.
+  Test nuovo: nessuna coppia di moduli in `src/` con lo stesso nome a meno di
+  maiuscole o estensione; ricreando `src/about.ts` accanto ad `About.tsx` il
+  test fallisce. Probe di Codex (`casefold_probe.mjs`, API TypeScript 7.0.2
+  con lookup case-insensitive su `src/`) rieseguito sul rework: zero
+  diagnostici sia Linux sia case-insensitive, `About.ts` ora non esiste e la
+  risoluzione passa ad `About.tsx`. Resta una riproduzione su Linux, non un
+  checkout Windows reale.
+
+Binario ricostruito: SHA-256 identico al round 1 (`efb43ac6…a198008`),
+perché il bundle Vite non contiene i nomi dei moduli sorgente. Smoke nativo e
+34 capture rieseguiti su questo binario (rc 0). Rust di produzione, IPC e
+core invariati.
 
 ## Rischi residui
 

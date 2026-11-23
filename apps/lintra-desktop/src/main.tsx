@@ -5,7 +5,7 @@ import { AppShell, type ServiceState } from "./AppShell";
 import { AnalysisForm, useAnalysisSelection } from "./AnalysisForm";
 import { RunPanel, useRun } from "./RunPanel";
 import { About, useReportAbout } from "./About";
-import { splitNotices } from "./about";
+import { splitNotices } from "./information";
 import fontLicense from "../public/fonts/OFL.md?raw";
 import thirdPartyNotices from "../public/THIRD_PARTY_NOTICES?raw";
 import { busy } from "./run";

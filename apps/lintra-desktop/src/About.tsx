@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { reportAbout, type BundleProvenance, type RunRef } from "./ipc";
 import { provenanceText, type SelectionState } from "./analysis";
-import { previewText, reportStatusText, type AboutReport, type Notice } from "./about";
+import { previewText, reportStatusText, type AboutReport, type Notice } from "./information";
 
 /** Reads the provenance of the report Rust holds as last published, each
  * time the section is shown and whenever that report changes. A late reply

@@ -3,12 +3,12 @@
 // it; the Tauri notices are correct.
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { loadComponent } from "./tsx.mjs";
-import { previewText, reportStatusText, splitNotices } from "../src/about.ts";
+import { previewText, reportStatusText, splitNotices } from "../src/information.ts";
 import { INITIAL_SELECTION, provenanceText } from "../src/analysis.ts";
 
 const base = new URL("../", import.meta.url);
@@ -81,6 +81,14 @@ test("bounded previews are marked when cut and outcomes never overstate conformi
   assert.deepEqual(splitNotices(""), []);
   assert.deepEqual(splitNotices("MIT License\nreact / README\n"), []);
   assert.deepEqual(splitNotices("a 1 / LICENSE\nX\n\nb 2 / LICENSE-MIT\nY\n"), [{ title: "a 1 / LICENSE", body: "X" }, { title: "b 2 / LICENSE-MIT", body: "Y" }]);
+});
+
+test("no two source modules differ only by case or extension (P507-01)", () => {
+  // "./About" must resolve to one file on a case-insensitive file system
+  // too: Windows, the official target, tries About.ts before About.tsx.
+  const stems = readdirSync(new URL("src/", base)).filter(name => /\.(ts|tsx)$/.test(name))
+    .map(name => name.replace(/\.tsx?$/, "").toLowerCase());
+  assert.deepEqual(stems.filter((stem, index) => stems.indexOf(stem) !== index), []);
 });
 
 const { About } = await loadComponent("About");

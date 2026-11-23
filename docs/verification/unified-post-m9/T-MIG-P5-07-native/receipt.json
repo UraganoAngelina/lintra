@@ -23,7 +23,7 @@
       ],
       "keys": [],
       "budget": null,
-      "image_sha256": "12805262287fca5db5184149be22944d8e34b885eb6586ceaec532dad2eb30b2"
+      "image_sha256": "7edf010a0c186b0a684860913e4b46333ed3e6cd9fbf63c5afa08d480bef07a4"
     },
     {
       "name": "analisi-1024x768",
@@ -242,7 +242,7 @@
         "Down"
       ],
       "budget": null,
-      "image_sha256": "c6f12646d462c4cb1240caa54386836a52e9652474a05f74d49e9e17ca9c94fa"
+      "image_sha256": "662a49a405ce63bc384953a1b84a23e21231fd03614abce89679efb3d0963e7b"
     },
     {
       "name": "keyboard-theme-dark-1366x768",
@@ -313,7 +313,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "d2908df0858eae90f95adef5dc890e3f8b716fe8bf969f12a4e0dd62be9d777a"
+      "image_sha256": "6d34a115cde9b40b1a67d734de6d69f876a2b5eea6f9a07aba18acf963d517a9"
     },
     {
       "name": "keyboard-selection-640x480",
@@ -395,7 +395,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "07b1377681c0ed24b5e2d768c10934d056c053d4280a8388cf6b8a98522e9b57"
+      "image_sha256": "e287a3090ce3ef9f65d5725dbec6aebb3951226dcfc808b6b3db003f8d7193d6"
     },
     {
       "name": "keyboard-input-whole-640x480",
@@ -438,7 +438,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "8bd0d69bc0ef5a00cbb72fc8225fb07e8246575ce977c058ba35c0f4fc22f136"
+      "image_sha256": "462bb4b27c3d839853f6017af43d48f8dd245e4a02928da516812e2687414229"
     },
     {
       "name": "keyboard-input-cancel-1366x768",
@@ -617,7 +617,7 @@
         "space"
       ],
       "budget": null,
-      "image_sha256": "e516a13b84b2e6683c77790e3f9519927a3fafd0612f96c082f5eb8e75eb3c22"
+      "image_sha256": "5aee242e7b0dd4972dbc3298bc6db4f36ac7aede30706fdeadd4b66890f2738b"
     },
     {
       "name": "keyboard-run-unconfigured-1366x768",
@@ -814,7 +814,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "eea9a64a4decf4dca569ab3100fde90bfa16a32d7a549fd1985b5990af8104dc"
+      "image_sha256": "cf7f3fd646db64a92ec7b56419bb38bb5f46b6b863c5c6ff79485434d12af1c5"
     },
     {
       "name": "keyboard-budget-warning-640x480",
@@ -919,7 +919,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "f336e0c103d7d422cca43ba82455efce869719bfb4d2375bbf9f9f2c82ae040f"
+      "image_sha256": "f63547284387ab9898d6c71cebc7f968bff1558b7c6719fa2ac22902fd0f0a06"
     },
     {
       "name": "keyboard-budget-annulla-1366x768",
@@ -972,7 +972,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "93e11d0445ce74109a5b1d6bf305d920f1d3d9608dedbbf26953b2810e2e008d"
+      "image_sha256": "b5d8191a4e3a7894e3738aedbdebf701ec93483f735e742e3f1c866a82191f32"
     },
     {
       "name": "keyboard-budget-escape-1366x768",
@@ -1079,7 +1079,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "baf2884354a3eb0d50db8f08060f64323ee418c504400d536cb79cd6b8214224"
+      "image_sha256": "dfbd1e0f064fa24ae2a7f0c353e13265595756c22b2560549e8613b30c50c9ee"
     },
     {
       "name": "keyboard-budget-invalid-removed-1366x768",
@@ -1183,7 +1183,7 @@
         "Tab"
       ],
       "budget": null,
-      "image_sha256": "7dcf4990e289a7cd847ff2a6dfddd19b4118cbcdde7d56cbd2747799c1878195"
+      "image_sha256": "b6557a805af5fbbacccaf9632c8a99fec4cd7b70d1c264aaa047775c81b79a83"
     },
     {
       "name": "keyboard-run-cancelled-1366x768",
@@ -1237,7 +1237,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "b723f50ee1c4d910b4bef721c3c171af9f010f34ed3285d1f33c4183119090f8"
+      "image_sha256": "826473d338a123d3849731907ae19b663fb56595def68734cf9cb0155ade3667"
     },
     {
       "name": "keyboard-run-cancelled-previous-report-1366x768",
@@ -1307,7 +1307,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "8f99d9239b2380b06480e88eff346ccf36ebbd9f4d295c4a79c0c423bf0c9461"
+      "image_sha256": "66dcb096caa3411b9d3c3d7e88658468e08939063cb7c64443bd6cb79b2f0bce"
     },
     {
       "name": "keyboard-informazioni-license-1366x768",
@@ -1436,7 +1436,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "3c1c67a7d88f8231df1db842d5dab7867b895dda5c56f35f9fe28dc4fcbe1353"
+      "image_sha256": "26cf403f9e46604f382013b5b4c760695090a07ec1d3574e0f728d987b194cb3"
     }
   ]
 }
