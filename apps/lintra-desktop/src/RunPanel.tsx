@@ -3,7 +3,7 @@ import {
   planPrepare, resourceBudgetState, validationAcknowledge, validationBudget, validationBudgetDecide, validationCancel,
   validationProgress, validationStart, validationState, type BudgetGate, type RunRef,
 } from "./ipc";
-import type { SelectionState } from "./analysis";
+import { startablePlan, type SelectionState } from "./analysis";
 import {
   INITIAL_RUN, POLL_MS, acknowledge, activeText, budgetText, bytes, canCancel, canStart, cancelRun, decide, gateOpen, loadBudget, outcomeText, phaseText, pollRun,
   reduceRun, startRun, BUDGET_UNREADABLE, CANCEL_FAILED, CANCEL_TOO_LATE, DECISION_FAILED, type RunApi, type RunEvent, type RunState,
@@ -17,14 +17,15 @@ const api: RunApi = {
 
 /** Owns the run screen state for the window lifetime and drives the
  * throttled polling of the active run (one request in flight at a time). */
-export function useRun(serviceReady: boolean): [RunState, (event: RunEvent) => void, (planRef: string) => void, (decision: "proceed" | "cancel") => void, () => void] {
+type StartRequest = { planRef: string; mode: "local_only" | "full" };
+export function useRun(serviceReady: boolean): [RunState, (event: RunEvent) => void, (plan: StartRequest) => void, (decision: "proceed" | "cancel") => void, () => void] {
   const [state, dispatch] = useReducer(reduceRun, INITIAL_RUN);
   useEffect(() => { if (serviceReady) void loadBudget(api, dispatch); }, [serviceReady]);
   const startToken = state.view.status === "starting" ? state.view.token : null;
-  const pending = useRef<string | null>(null);
+  const pending = useRef<StartRequest | null>(null);
   useEffect(() => {
     if (startToken === null || pending.current === null) return;
-    void startRun(api, dispatch, startToken, pending.current, state.lastRun);
+    void startRun(api, dispatch, startToken, pending.current.planRef, state.lastRun, pending.current.mode);
   }, [startToken]);
   const view = state.view;
   const run = view.status === "active" ? view.run : null;
@@ -57,7 +58,7 @@ export function useRun(serviceReady: boolean): [RunState, (event: RunEvent) => v
     timer = setTimeout(() => void retry(), POLL_MS);
     return () => { alive = false; if (timer !== undefined) clearTimeout(timer); };
   }, [unacknowledged?.instance_id, unacknowledged?.run_id]);
-  const start = (planRef: string) => { pending.current = planRef; };
+  const start = (plan: StartRequest) => { pending.current = plan; };
   const choose = (decision: "proceed" | "cancel") => {
     if (view.status === "active" && view.gate && !view.deciding) void decide(api, dispatch, view.gate, decision);
   };
@@ -68,10 +69,10 @@ export function useRun(serviceReady: boolean): [RunState, (event: RunEvent) => v
 /** "Avvia analisi", budget configuration status, progress and outcome. */
 export function RunPanel({ state, selection, onEvent, onStart, onDecide, onCancel }: {
   state: RunState; selection: SelectionState; onEvent: (event: RunEvent) => void;
-  onStart: (planRef: string) => void; onDecide: (decision: "proceed" | "cancel") => void; onCancel: () => void;
+  onStart: (plan: StartRequest) => void; onDecide: (decision: "proceed" | "cancel") => void; onCancel: () => void;
 }) {
   const view = state.view;
-  const plan = selection.plan.status === "ready" && selection.plan.input.chosen !== null ? selection.plan.draft : null;
+  const plan = startablePlan(selection);
   const busy = view.status === "starting" || view.status === "active";
   // The stored budget state is information only: "Avvia" reads the file
   // again, so a corrected or removed file is honoured (P505-02).
@@ -96,7 +97,7 @@ export function RunPanel({ state, selection, onEvent, onStart, onDecide, onCance
     {state.budgetFailed ? <p className="selection-status" role="alert">{BUDGET_UNREADABLE}</p>
       : state.budget && <p className="selection-status" role={state.budget.state === "invalid" ? "alert" : "status"}>{budgetText(state.budget)}</p>}
     <button type="button" ref={startButton} className="primary" aria-disabled={!ready}
-      onClick={() => { if (ready && plan) { onStart(plan.plan_ref); onEvent({ type: "start", reports: selection.reports }); } }}>
+      onClick={() => { if (ready && plan) { onStart({ planRef: plan.plan_ref, mode: plan.mode }); onEvent({ type: "start", reports: selection.reports }); } }}>
       Avvia analisi
     </button>
     {/* Offered only while Rust can still stop the work; kept in place (not
@@ -105,7 +106,9 @@ export function RunPanel({ state, selection, onEvent, onStart, onDecide, onCance
       onClick={() => { if (canCancel(view)) onCancel(); }}>
       {view.cancel === "none" || view.cancel === "failed" ? "Interrompi analisi" : "Interruzione richiesta"}
     </button>}
-    {!busy && plan === null && <p className="selection-status">Completa la selezione e scegli il file per avviare l'analisi.</p>}
+    {!busy && plan === null && <p className="selection-status">{selection.mode === "full"
+      ? "Completa la selezione, scegli i file dei tracciati e applica i parametri per avviare l'analisi."
+      : "Completa la selezione e scegli il file per avviare l'analisi."}</p>}
     <div ref={outcome}><RunStatus state={state} /></div>
     {view.status === "active" && view.gate?.state === "confirmation_required" &&
       <BudgetDialog gate={view.gate} deciding={view.deciding} onDecide={onDecide} />}

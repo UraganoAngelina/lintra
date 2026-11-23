@@ -146,6 +146,9 @@ export const CANCEL_FAILED = "Non è stato possibile confermare la richiesta di 
 
 /** Words of the interface (MIGRATION_TAURI_BRIEF.md, "Stati e parole"). */
 export const START_FAILED = "Non è stato possibile avviare l'analisi. Controlla la selezione e il file, poi riprova; se il problema resta, chiudi e riapri Lintra.";
+/** Full: Rust refuses the plan without saying which trace or value; the
+ * words name what plan_prepare checks, without guessing which one failed. */
+export const START_FAILED_FULL = "Il servizio non ha accettato l'analisi del flusso completo: potrebbe mancare il file di un tracciato richiesto o il valore di un parametro richiesto. Controlla i file e i parametri, poi riprova; se il problema resta, chiudi e riapri Lintra.";
 export const BUDGET_INVALID = "Il file di configurazione dei budget di risorse non è valido: correggilo o rimuovilo, poi avvia di nuovo l'analisi.";
 export const BUDGET_UNREADABLE = "Non è stato possibile leggere lo stato dei budget di risorse. Chiudi e riapri Lintra.";
 export const DECISION_FAILED = "La scelta non è stata registrata: la richiesta non è più valida. Attendi lo stato aggiornato.";
@@ -208,7 +211,7 @@ export function outcomeText(outcome: RunOutcome, previousReport = false): { titl
 export type RunApi = {
   resourceBudgetState: () => Promise<BudgetConfigState>;
   planPrepare: (planRef: string) => Promise<{ plan_ref: string; mode: "local_only" | "full" }>;
-  validationStart: (planRef: string, mode: "local_only") => Promise<RunRef>;
+  validationStart: (planRef: string, mode: "local_only" | "full") => Promise<RunRef>;
   validationState: (run: RunRef | null) => Promise<RunSnapshot>;
   validationProgress: (run: RunRef) => Promise<RunProgress>;
   validationBudget: (run: RunRef) => Promise<BudgetGate>;
@@ -223,28 +226,30 @@ export async function loadBudget(api: RunApi, dispatch: Dispatch): Promise<void>
   catch { dispatch({ type: "budget_failed" }); }
 }
 
-/** Freezes the plan in Rust and starts it. The budget is read again first,
- * so a file corrected, removed or broken meanwhile decides this start. */
-export async function startRun(api: RunApi, dispatch: Dispatch, token: number, planRef: string, previous: RunRef | null): Promise<void> {
+/** Freezes the plan in Rust and starts it in the plan's own mode (a Full
+ * plan is never started as LocalOnly, nor the reverse). The budget is read
+ * again first, so a file corrected, removed or broken meanwhile decides it. */
+export async function startRun(api: RunApi, dispatch: Dispatch, token: number, planRef: string, previous: RunRef | null,
+  mode: "local_only" | "full" = "local_only"): Promise<void> {
   try {
     const budget = await api.resourceBudgetState();
     dispatch({ type: "budget_loaded", budget });
     if (budget.state === "invalid") return dispatch({ type: "start_failed", token, message: BUDGET_INVALID });
     const prepared = await api.planPrepare(planRef);
-    if (prepared.plan_ref !== planRef || prepared.mode !== "local_only") throw new Error("prepared another plan");
-    dispatch({ type: "started", token, run: await api.validationStart(planRef, "local_only") });
+    if (prepared.plan_ref !== planRef || prepared.mode !== mode) throw new Error("prepared another plan");
+    dispatch({ type: "started", token, run: await api.validationStart(planRef, mode) });
   } catch {
     // The reply may be lost after Rust accepted the start (LIFECYCLE.md):
     // read the current run instead of repeating a non-idempotent start, and
     // attach only to a run of this plan that is not the previous one.
     try {
       const current = await api.validationState(null);
-      if (current.state !== "idle" && current.plan_ref === planRef && current.mode === "local_only"
+      if (current.state !== "idle" && current.plan_ref === planRef && current.mode === mode
           && (previous === null || !same(previous, current.run))) {
         return dispatch({ type: "started", token, run: current.run });
       }
     } catch { /* no authoritative state: report the failure */ }
-    dispatch({ type: "start_failed", token, message: START_FAILED });
+    dispatch({ type: "start_failed", token, message: mode === "full" ? START_FAILED_FULL : START_FAILED });
     void loadBudget(api, dispatch);
   }
 }

@@ -320,10 +320,18 @@ export async function planInputChoose(planRef: string, traceRef: string): Promis
     assigned_input_count: unsigned(dto.assigned_input_count), preview };
 }
 
+/** Wire syntax of an integer parameter (FULL.md: exact text, parsed by Rust
+ * as IntegerLiteral): optional minus and decimal digits. Range and allowed
+ * values are checked by Rust only. */
+export function integerText(text: string): boolean {
+  return /^-?[0-9]+$/.test(text);
+}
+
 export async function planParameterSet(planRef: string, parameterRef: string, value: { kind: "text" | "integer"; text: string }): Promise<PlanDraft> {
   opaque(planRef); opaque(parameterRef);
   exact(object(value), ["kind", "text"]);
   if ((value.kind !== "text" && value.kind !== "integer") || typeof value.text !== "string") invalid();
+  if (value.kind === "integer" && !integerText(value.text)) invalid();
   const dto = await exchange("plan_parameter_set", { schemaVersion: 1, plan_ref: planRef, parameter_ref: parameterRef,
     value: { schemaVersion: 1, kind: value.kind, text: value.text } });
   const draft = readPlanDraft(dto);

@@ -71,12 +71,12 @@ h2 { font-size: var(--body-size); font-weight: 600; margin: 0 0 var(--control-ga
 .fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--control-gap) var(--page-padding); }
 .field { display: flex; flex-direction: column; gap: var(--space-small); min-width: 0; }
 .field label { font-weight: 600; }
-.field select {
+.field select, .field input[type="text"] {
   min-height: var(--control-height); padding: 0 var(--space-row);
   border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--surface); color: var(--ink); font: inherit;
 }
-.field select:disabled { color: var(--muted); cursor: not-allowed; }
+.field select:disabled, .field input:disabled { color: var(--muted); cursor: not-allowed; }
 .selection-status { margin: var(--space-block) 0; }
 .selection-status[role="alert"] { color: var(--error); }
 .selection-summary { margin-top: var(--space-block); }
@@ -115,6 +115,17 @@ h3 { font-size: var(--body-size); font-weight: 600; margin: 0 0 var(--control-ga
 .dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--control-gap); margin-top: var(--section-gap); }
 .sample-note { margin-top: var(--space-row); }
 /* Report formats (T-MIG-P5-04): native checkboxes, as the theme radios. */
+/* Mode and Full parameters (T-MIG-P5-09), styled as the report formats. */
+.analysis-mode, .full-parameters { margin: var(--section-gap) 0 0; padding: 0; border: 0; min-width: 0; }
+.analysis-mode legend, .full-parameters legend { padding: 0; margin-bottom: var(--control-gap); font-weight: 600; }
+.analysis-mode { display: flex; flex-wrap: wrap; gap: var(--space-row) var(--page-padding); }
+.analysis-mode legend { flex-basis: 100%; }
+.analysis-mode label { display: inline-flex; align-items: center; gap: var(--space-small); min-height: var(--control-height); cursor: pointer; }
+.analysis-mode input { margin: 0; }
+.full-parameters .field { max-width: 24rem; }
+.field input[aria-invalid="true"] { border-color: var(--error); }
+.full-inputs { margin-top: var(--section-gap); }
+.full-inputs .input-choice { margin-top: var(--control-gap); padding-top: var(--control-gap); border-top: 1px solid var(--border); }
 .report-formats { margin: var(--section-gap) 0 0; padding: 0; border: 0; }
 .report-formats legend { padding: 0; margin-bottom: var(--control-gap); font-weight: 600; }
 .report-options { display: flex; flex-wrap: wrap; gap: var(--space-row) var(--page-padding); }

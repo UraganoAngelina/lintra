@@ -97,7 +97,7 @@ test("late replies for a replaced choice are ignored", () => {
   state = reduce(state, { type: "select_trace", traceRef: "config_1_trace_0" });
   assert.notEqual(state.plan.token, token);
   state = reduce(state, { type: "plan_created", token: state.plan.token, draft });
-  assert.deepEqual(state.plan, { status: "ready", draft, input: { chosen: null, activity: { status: "idle" } } });
+  assert.deepEqual(state.plan, { status: "ready", draft, inputs: { config_1_trace_0: { chosen: null, activity: { status: "idle" } } }, parameters: {} });
   // T-MIG-P5-03: once Rust accepts the plan, the file is the next choice.
   assert.equal(missingChoice(state), "Scegli il file del tracciato.");
   // A reply after the plan is ready, or a failure for an old token, changes nothing.
@@ -109,7 +109,7 @@ function fakeApi(overrides = {}) {
   const api = {
     catalogPage: async offset => { calls.push(["catalog", offset]); return { entries: catalog, next_offset: null, provenance }; },
     configurationSelect: async (ref, encoding) => { calls.push(["select", ref, encoding]); return configuration(); },
-    configurationPage: async (ref, offset) => { calls.push(["page", ref, offset]); return { descriptors: [{ kind: "trace", ...traces[0] }, { kind: "parameter" }], next_offset: null }; },
+    configurationPage: async (ref, offset) => { calls.push(["page", ref, offset]); return { descriptors: [{ kind: "trace", ...traces[0] }], next_offset: null }; },
     planCreate: async (ref, mode, trace) => { calls.push(["plan", ref, mode, trace]); return draft; },
     ...overrides,
   };
@@ -146,7 +146,16 @@ test("the schema shown is the schema Rust captured (schema_binding parity)", asy
   let sink = collect();
   await loadConfiguration(api, sink.dispatch, 7, chosen);
   assert.deepEqual(calls, [["select", "s_v2", "utf8"], ["page", "config_1", "0"]]);
-  assert.deepEqual(sink.events, [{ type: "configuration_loaded", token: 7, selection: configuration(), traces }]);
+  assert.deepEqual(sink.events, [{ type: "configuration_loaded", token: 7, selection: configuration(), traces, parameters: [] }]);
+  // T-MIG-P5-09: parameters are kept with their declared kind and counted too.
+  const parameter = { parameter_ref: "config_1_parameter_0", parameter_id: "unit", value_kind: "text" };
+  sink = collect();
+  await loadConfiguration(fakeApi({ configurationSelect: async () => ({ ...configuration(), parameter_count: "1" }),
+    configurationPage: async () => ({ descriptors: [{ kind: "trace", ...traces[0] }, { kind: "parameter", ...parameter }], next_offset: null }) }).api, sink.dispatch, 7, chosen);
+  assert.deepEqual(sink.events[0].parameters, [parameter]);
+  sink = collect();
+  await loadConfiguration(fakeApi({ configurationPage: async () => ({ descriptors: [{ kind: "trace", ...traces[0] }, { kind: "parameter", ...parameter }], next_offset: null }) }).api, sink.dispatch, 7, chosen);
+  assert.deepEqual(sink.events, [{ type: "configuration_failed", token: 7, message: SELECTION_FAILED }], "parameter count mismatch");
   for (const reply of [configuration("SYNTHETIC", "v1"), configuration("OTHER", "v2"), configuration("SYNTHETIC", "v2", "config_1", "2")]) {
     sink = collect();
     await loadConfiguration(fakeApi({ configurationSelect: async () => reply }).api, sink.dispatch, 7, chosen);
@@ -160,14 +169,30 @@ test("the schema shown is the schema Rust captured (schema_binding parity)", asy
 test("the LocalOnly plan is created by Rust for the captured configuration and trace only", async () => {
   let { api, calls } = fakeApi();
   let sink = collect();
-  await createPlan(api, sink.dispatch, 3, "config_1", "config_1_trace_0");
+  await createPlan(api, sink.dispatch, 3, "config_1", "local_only", "config_1_trace_0");
   assert.deepEqual(calls, [["plan", "config_1", "local_only", "config_1_trace_0"]]);
   assert.deepEqual(sink.events, [{ type: "plan_created", token: 3, draft }]);
   for (const reply of [{ ...draft, configuration_ref: "config_2" }, { ...draft, mode: "full" }]) {
     sink = collect();
-    await createPlan(fakeApi({ planCreate: async () => reply }).api, sink.dispatch, 3, "config_1", "config_1_trace_0");
+    await createPlan(fakeApi({ planCreate: async () => reply }).api, sink.dispatch, 3, "config_1", "local_only", "config_1_trace_0");
     assert.deepEqual(sink.events, [{ type: "plan_failed", token: 3, message: PLAN_FAILED }]);
   }
+  // T-MIG-P5-09: a Full plan names no trace, and a mode/trace mismatch is never sent.
+  ({ api, calls } = fakeApi({ planCreate: async (ref, mode, trace) => { calls.push(["plan", ref, mode, trace]); return { ...draft, mode: "full" }; } }));
+  sink = collect();
+  await createPlan(api, sink.dispatch, 4, "config_1", "full", null);
+  assert.deepEqual(calls, [["plan", "config_1", "full", null]]);
+  assert.deepEqual(sink.events, [{ type: "plan_created", token: 4, draft: { ...draft, mode: "full" } }]);
+  for (const [mode, trace] of [["full", "config_1_trace_0"], ["local_only", null]]) {
+    ({ api, calls } = fakeApi());
+    sink = collect();
+    await createPlan(api, sink.dispatch, 5, "config_1", mode, trace);
+    assert.deepEqual(calls, [], `${mode} ${trace}`);
+    assert.deepEqual(sink.events, [{ type: "plan_failed", token: 5, message: PLAN_FAILED }]);
+  }
+  sink = collect();
+  await createPlan(fakeApi().api, sink.dispatch, 6, "config_1", "full", null);
+  assert.deepEqual(sink.events, [{ type: "plan_failed", token: 6, message: PLAN_FAILED }], "a LocalOnly reply to a Full request");
 });
 
 test("the real IPC client wires the controller to the exact v1 operations", async () => {
@@ -188,7 +213,7 @@ test("the real IPC client wires the controller to the exact v1 operations", asyn
   const sink = collect();
   await loadCatalog(api, sink.dispatch);
   await loadConfiguration(api, sink.dispatch, 1, catalog[1]);
-  await createPlan(api, sink.dispatch, 2, "config_1", "config_1_trace_0");
+  await createPlan(api, sink.dispatch, 2, "config_1", "local_only", "config_1_trace_0");
   assert.deepEqual(seen, ["catalog_page", "configuration_select", "configuration_page", "plan_create"]);
   assert.deepEqual(sink.events.map(event => event.type), ["catalog_loaded", "configuration_loaded", "plan_created"]);
 });
@@ -227,7 +252,7 @@ test("the summary shows the schema captured by Rust and failures are announced",
   assert.match(render(state), /role="status">Il servizio acquisisce lo schema scelto…/);
   state = reduce(state, { type: "configuration_loaded", token: 1, selection: { ...configuration(), schema_hash: "0123456789abcdef".repeat(4) }, traces });
   let html = render(state);
-  assert.match(html, /<dl class="selection-summary" aria-label="Schema acquisito dal servizio"><dt>Schema<\/dt><dd>SYNTHETIC · v2<\/dd><dt>Codifica<\/dt><dd>UTF-8<\/dd><dt>Impronta<\/dt><dd>0123456789abcdef<\/dd><dt>Origine<\/dt><dd>schemi incorporati, versione synthetic-v1<\/dd><\/dl>/);
+  assert.match(html, /<dl class="selection-summary" aria-label="Schema acquisito dal servizio"><dt>Schema<\/dt><dd>SYNTHETIC · v2<\/dd><dt>Codifica<\/dt><dd>UTF-8<\/dd><dt>Impronta<\/dt><dd>0123456789abcdef<\/dd><dt>Origine<\/dt><dd>schemi incorporati, versione synthetic-v1<\/dd><dt>Analisi<\/dt><dd>Singolo tracciato<\/dd><\/dl>/);
   assert.match(html, /<select id="selection-trace"><option value="" selected="">Scegli il tracciato<\/option><option value="config_1_trace_0">T1<\/option><\/select>/);
   state = reduce(state, { type: "select_trace", traceRef: "config_1_trace_0" });
   state = reduce(state, { type: "plan_created", token: state.plan.token, draft });

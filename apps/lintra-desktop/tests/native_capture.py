@@ -23,7 +23,9 @@ import time
 # Synthetic inputs for the native file dialog (only [a-z0-9/.] so they can be
 # typed key by key); created before the scenarios and removed afterwards.
 SAMPLE_DIR = str(Path.home() / "lintrap503")
-SELECT = ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Down", "wait"]
+# T-MIG-P5-09: the "Tipo di analisi" radio group (one Tab stop, LocalOnly
+# checked) sits between the version and the trace.
+SELECT = ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Tab", "Down", "wait"]
 # P5-05: the 140000-byte file assigned, then four Tab (XLSX, JSONL, CSV,
 # Avvia analisi) and Return. A configured input threshold of 64 KiB is
 # crossed by that file; the invalid file has an empty measurement source.
@@ -34,6 +36,13 @@ BUDGET = b'{"version":1,"measurement_source":"misura sintetica","input_bytes":65
 FILE_BIG = SELECT + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/big.txt", "wait"]
 START_NOWAIT = ["Tab"] * 4 + ["Return", "wait"]
 INVALID_BUDGET = b'{"version":1,"measurement_source":"","input_bytes":65536,"reference_bytes":null}'
+# T-MIG-P5-09: Full on an external synthetic bundle with traces S and T and
+# two parameters (FULL_SCHEMA below). Down on the radio group selects Full;
+# Tab then reaches the file button of S, then the one of T, then the
+# parameters unit and year. "type:<text>" types into the focused field.
+FULL = ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Down", "wait"]
+FULL_S = FULL + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/fulls.txt", "wait"]
+FULL_ST = FULL_S + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/fullt.txt", "wait"]
 
 # name, logical window size, keys sent to the owned window.
 # Tab order: skip link, Analisi, Risultati, Informazioni, theme radio group.
@@ -53,8 +62,8 @@ SCENARIOS = [
     ("keyboard-theme-dark-1366x768", (1366, 768), ["Tab"] * 5 + ["Down", "Down"]),
     # T-MIG-P5-02: flow, explicit version and trace from the real Rust catalog.
     # "wait" lets Rust capture the schema before the trace field is enabled.
-    ("keyboard-selection-1366x768", (1366, 768), ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Down", "wait"]),
-    ("keyboard-selection-640x480", (640, 480), ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Down", "wait"]),
+    ("keyboard-selection-1366x768", (1366, 768), SELECT),
+    ("keyboard-selection-640x480", (640, 480), SELECT),
     # T-MIG-P5-03: the real native dialog opened by Rust. "dialog:<path>" types
     # the path in the GTK chooser of the owned process; synthetic files only.
     ("keyboard-input-partial-1366x768", (1366, 768), SELECT + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/partial.txt", "wait"]),
@@ -95,12 +104,25 @@ SCENARIOS = [
      + START_NOWAIT + ["Tab", "Return", "wait", "wait", "wait"]),
     # T-MIG-P5-07: Informazioni. After Return focus is on the h1, so Tab
     # reaches the first license disclosure; Return opens it, Tab focuses its
-    # scrollable text. After a completed run, nine shift-Tab from «Avvia
-    # analisi» reach the Informazioni button: report provenance beside the
-    # selection's.
+    # scrollable text. After a completed run, ten shift-Tab from «Avvia
+    # analisi» (nine before the P5-09 mode group) reach the Informazioni
+    # button: report provenance beside the selection's.
     ("keyboard-informazioni-license-1366x768", (1366, 768), ["Tab"] * 4 + ["Return", "Tab", "Return", "Tab"]),
     ("keyboard-informazioni-license-640x480", (640, 480), ["Tab"] * 4 + ["Return", "Tab", "Return", "Tab"]),
-    ("keyboard-informazioni-report-1366x768", (1366, 768), FILE + START + ["wait", "wait"] + ["shift-Tab"] * 9 + ["Return", "wait"]),
+    ("keyboard-informazioni-report-1366x768", (1366, 768), FILE + START + ["wait", "wait"] + ["shift-Tab"] * 10 + ["Return", "wait"]),
+    # T-MIG-P5-09: Full selection on the external bundle (last item True).
+    ("full-selection-1366x768", (1366, 768), FULL, None, True),
+    ("full-selection-640x480", (640, 480), FULL, None, True),
+    # Both files assigned; unit applied on leaving the field; year "20x6"
+    # is refused in React (never sent) and announced at the field; the last
+    # Tab (no new request: the field is already failed) scrolls it into view.
+    ("full-parameter-blocked-1366x768", (1366, 768),
+     FULL_ST + ["Tab", "type:a", "Tab", "wait", "type:20x6", "Return", "wait", "Tab"], None, True),
+    # Only S assigned, no parameter: Rust refuses the plan at Avvia.
+    ("full-prepare-refused-1366x768", (1366, 768), FULL_S + ["Tab", "Tab", "Tab"] + START, None, True),
+    # S and T, unit a and year 2026: the run completes in Full.
+    ("full-run-completed-1366x768", (1366, 768),
+     FULL_ST + ["Tab", "type:a", "Tab", "wait", "type:2026", "Tab", "wait"] + ["Tab"] * 3 + ["Return", "wait", "wait", "wait"], None, True),
 ]
 # 200% scale: logical sizes inside the scaled monitor's work area. The
 # minimum window (640x480 logical) and the whole work area cover both sides
@@ -203,7 +225,39 @@ def owned_window(pid, deadline):
     raise RuntimeError("owned window not mapped")
 
 
-def scenario(binary, output, monitor_name, name, size, keys, budget=None):
+def full_bundle(root):
+    """External synthetic bundle for the Full scenarios: the golden schema
+    with traces S and T joined on KEY (as tests/support/full_schema.rs) and
+    the parameters unit (text, a/b, a join namespace) and year (integer)."""
+    raw = json.loads((Path(__file__).resolve().parents[3] / "tests/golden/synthetic/v1/schema.json").read_text())
+    trace = raw["traces"][0]
+    trace["record_length"] = 6
+    field = trace["fields"][0]
+    trace["fields"] = [{**json.loads(json.dumps(field)), "id": fid,
+                        "physical": {**field["physical"], "start": i * 2 + 1, "length": 2}}
+                       for i, fid in enumerate(["PK", "KEY", "DATA"])]
+    trace["record_key"]["fields"] = ["PK"]
+    raw["traces"] = [{**json.loads(json.dumps(trace)), "id": tid} for tid in ("S", "T")]
+    raw["required_capabilities"] = ["local.v1", "expressions.v1", "joins.v1"]
+    policy = {"policy": "violation", "error_code": "E_RELATED_RECORD_MISSING",
+              "diagnostic": {"code": "SYNTHETIC_MISSING", "message_template": "Missing related record for {rule_id}"}}
+    raw["traces"][0]["joins"] = [{"id": "S_T", "target_trace": "T", "source_fields": ["KEY"], "target_fields": ["KEY"],
+                                  "cardinality": "zero_or_one", "scope": "current_submission",
+                                  "namespace_parameters": ["unit"], "on_missing_record": policy, "on_missing_trace": policy}]
+    raw["traces"][0]["rules"] = [{"id": "COMPARE", "when": {"const": True}, "assertions": [{
+        "kind": "field_compare", "left": {"ref": {"field": "DATA"}}, "operator": "==",
+        "right": {"ref": {"trace": "T", "field": "DATA", "join": "S_T"}}, "value_type": "bytes"}],
+        "error_code": "E_CROSS_FIELD", "message_template": "Synthetic {rule_id}: {condition}"}]
+    raw["parameters"] = [{"id": "unit", "type": "string", "allowed_values": ["a", "b"]},
+                         {"id": "year", "type": "integer", "min": 1, "max": 9999}]
+    folder = root / "schemas" / raw["flow_id"] / raw["schema_version"]
+    folder.mkdir(parents=True)
+    (folder / "flow.json").write_text(json.dumps(raw))
+    (root / "reference-data").mkdir()
+    return root / "schemas", root / "reference-data"
+
+
+def scenario(binary, output, monitor_name, name, size, keys, budget=None, full=False):
     with tempfile.TemporaryDirectory(prefix="lintra-desktop-capture-") as temporary:
         env = os.environ.copy()
         for key, folder in [("XDG_DATA_HOME", "data"), ("XDG_CONFIG_HOME", "config"),
@@ -212,6 +266,12 @@ def scenario(binary, output, monitor_name, name, size, keys, budget=None):
             directory.mkdir(mode=0o700)
             env[key] = str(directory)
         # Tauri app_config_dir on Linux: $XDG_CONFIG_HOME/<identifier>.
+        if full:
+            schemas, references = full_bundle(Path(temporary) / "bundle")
+            env["LINTRA_SCHEMA_DIR"], env["LINTRA_REFERENCE_DATA_DIR"] = str(schemas), str(references)
+        else:  # the embedded bundle, whatever the calling shell exports
+            env.pop("LINTRA_SCHEMA_DIR", None)
+            env.pop("LINTRA_REFERENCE_DATA_DIR", None)
         config = Path(env["XDG_CONFIG_HOME"]) / "it.lintra.desktop"
         if budget is not None:
             config.mkdir(mode=0o700)
@@ -243,6 +303,14 @@ def scenario(binary, output, monitor_name, name, size, keys, budget=None):
                 if key.startswith("dialog"):
                     drive_dialog(process.pid, client["address"], key)
                     continue
+                if key.startswith("type:"):  # characters typed into the focused field
+                    hypr(f'hl.dsp.focus({{{target}}})')
+                    for char in key.removeprefix("type:"):
+                        if not (char.islower() or char.isdigit()):
+                            raise RuntimeError("typed text must be [a-z0-9]")
+                        hypr(f'hl.dsp.send_shortcut({{mods="", key="{char}", {target}}})')
+                        time.sleep(0.12)
+                    continue
                 if key == "budget-valid":  # the operator corrects the file
                     (config / "resource-budget.json").write_bytes(BUDGET)
                     continue
@@ -270,7 +338,7 @@ def scenario(binary, output, monitor_name, name, size, keys, budget=None):
             return {"name": name, "requested": list(size), "captured": [w, h],
                     "monitor": monitor["name"], "scale": monitor["scale"], "work_area": list(area),
                     "image_pixels": list(png_size(image)), "keys": keys,
-                    "budget": None if budget is None else budget.decode(),
+                    "budget": None if budget is None else budget.decode(), "full_bundle": full,
                     "image_sha256": hashlib.sha256(image.read_bytes()).hexdigest()}
         finally:
             process.terminate()
@@ -292,6 +360,8 @@ def main():
     try:
         (samples / "partial.txt").write_bytes(b"001A  \n" * 20000)  # 140000 bytes > 64 KiB sample
         (samples / "whole.txt").write_bytes(b"001A  \n001B  \r\n")  # 15 bytes, LF and CRLF
+        (samples / "fulls.txt").write_bytes(b"01AAXX\n02BBYY\n")  # Full trace S (PK, KEY, DATA)
+        (samples / "fullt.txt").write_bytes(b"01AAXX\n02BBYY\n")  # Full trace T: same KEY/DATA
         with (samples / "big.txt").open("wb") as big:  # 35 M records, 245 MB
             for _ in range(350):
                 big.write(b"001A  \n" * 100_000)

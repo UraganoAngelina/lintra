@@ -19,7 +19,12 @@ precedente. P5-07: Informazioni con versione, provenienza
 della selezione e dell'ultimo report (da `report_about`, separate) e testo
 integrale delle licenze distribuite (`public/THIRD_PARTY_NOTICES`, hash in
 `assets-provenance.json`). Nessuna notice Slint: questo eseguibile non contiene
-Slint, che conserva `AboutSlint` nella UI legacy.
+Slint, che conserva `AboutSlint` nella UI legacy. P5-09: «Tipo di analisi»
+esplicito (Singolo tracciato / Flusso completo); in Full un file nativo per
+ogni tracciato dello schema e i parametri dichiarati con il tipo dichiarato,
+inviati a Rust uno alla volta. Tracciati richiesti e valori ammessi li decide
+Rust (`plan_parameter_set`, `plan_prepare`); il run parte nella modalità del
+piano.
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund

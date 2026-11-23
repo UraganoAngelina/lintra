@@ -37,35 +37,35 @@ test("the file is chosen once per dialog and only for a plan accepted by Rust", 
   let state = planned();
   assert.equal(missingChoice(state), "Scegli il file del tracciato.");
   state = reduce(state, { type: "choose_input" });
-  const token = state.plan.input.activity.token;
-  assert.equal(state.plan.input.activity.status, "choosing");
+  const token = state.plan.inputs.config_1_trace_0.activity.token;
+  assert.equal(state.plan.inputs.config_1_trace_0.activity.status, "choosing");
   assert.deepEqual(reduce(state, { type: "choose_input" }), state, "a second dialog while one is open");
   state = reduce(state, { type: "input_chosen", token, planRef: "plan_2", assignedInputCount: "1", preview: partial });
   assert.equal(state.plan.draft.plan_ref, "plan_2");
   assert.equal(state.plan.draft.assigned_input_count, "1");
-  assert.deepEqual(state.plan.input, { chosen: partial, activity: { status: "idle" } });
+  assert.deepEqual(state.plan.inputs.config_1_trace_0, { chosen: partial, activity: { status: "idle" } });
   assert.equal(missingChoice(state), null);
 });
 
 test("cancelled dialogs and failed choices keep the previous binding, like Rust", () => {
   let state = reduce(planned(), { type: "choose_input" });
-  state = reduce(state, { type: "input_cancelled", token: state.plan.input.activity.token });
-  assert.deepEqual(state.plan.input, { chosen: null, activity: { status: "cancelled" } });
+  state = reduce(state, { type: "input_cancelled", token: state.plan.inputs.config_1_trace_0.activity.token });
+  assert.deepEqual(state.plan.inputs.config_1_trace_0, { chosen: null, activity: { status: "cancelled" } });
   assert.equal(state.plan.draft.plan_ref, "plan_1");
   state = reduce(state, { type: "choose_input" });
-  state = reduce(state, { type: "input_chosen", token: state.plan.input.activity.token, planRef: "plan_2", assignedInputCount: "1", preview: whole });
+  state = reduce(state, { type: "input_chosen", token: state.plan.inputs.config_1_trace_0.activity.token, planRef: "plan_2", assignedInputCount: "1", preview: whole });
   state = reduce(state, { type: "choose_input" });
-  state = reduce(state, { type: "input_failed", token: state.plan.input.activity.token, message: INPUT_FAILED });
-  assert.deepEqual(state.plan.input, { chosen: whole, activity: { status: "failed", message: INPUT_FAILED } });
+  state = reduce(state, { type: "input_failed", token: state.plan.inputs.config_1_trace_0.activity.token, message: INPUT_FAILED });
+  assert.deepEqual(state.plan.inputs.config_1_trace_0, { chosen: whole, activity: { status: "failed", message: INPUT_FAILED } });
   assert.equal(state.plan.draft.plan_ref, "plan_2");
   state = reduce(state, { type: "choose_input" });
-  state = reduce(state, { type: "input_cancelled", token: state.plan.input.activity.token });
-  assert.deepEqual(state.plan.input, { chosen: whole, activity: { status: "cancelled" } });
+  state = reduce(state, { type: "input_cancelled", token: state.plan.inputs.config_1_trace_0.activity.token });
+  assert.deepEqual(state.plan.inputs.config_1_trace_0, { chosen: whole, activity: { status: "cancelled" } });
 });
 
 test("late dialog replies are ignored and changing the selection drops the input", () => {
   let state = reduce(planned(), { type: "choose_input" });
-  const token = state.plan.input.activity.token;
+  const token = state.plan.inputs.config_1_trace_0.activity.token;
   for (const event of [
     { type: "input_chosen", token: token + 1, planRef: "plan_x", assignedInputCount: "1", preview: whole },
     { type: "input_cancelled", token: token - 1 }, { type: "input_failed", token: 999, message: "x" },
@@ -130,7 +130,7 @@ test("a partial sample is never presented as the whole file", () => {
   // aria-disabled keeps keyboard focus on the button while the dialog is open (P503-02).
   assert.match(html, /<button type="button" aria-disabled="true">Scegli il file<\/button><p class="selection-status" role="status">Finestra di scelta del file aperta…<\/p>/);
   assert.doesNotMatch(html, /<button[^>]* disabled=""/);
-  state = reduce(state, { type: "input_chosen", token: state.plan.input.activity.token, planRef: "plan_2", assignedInputCount: "1", preview: partial });
+  state = reduce(state, { type: "input_chosen", token: state.plan.inputs.config_1_trace_0.activity.token, planRef: "plan_2", assignedInputCount: "1", preview: partial });
   html = render(state);
   assert.match(html, /<button type="button" aria-disabled="false">Scegli un altro file<\/button>/);
   assert.match(html, /<dl class="selection-summary" aria-label="Anteprima del campione"><dt>Dimensione del file<\/dt><dd>1\.048\.576 byte<\/dd><dt>Campione letto<\/dt><dd>65\.536 byte<\/dd><dt>Fine riga nel campione<\/dt><dd>LF 8192 · CRLF 0 · CR isolati 0<\/dd><\/dl>/);
@@ -145,15 +145,15 @@ test("a partial sample is never presented as the whole file", () => {
 
 test("a first failure says no file is assigned, a later one keeps the previous file (P503-01)", () => {
   let state = reduce(planned(), { type: "choose_input" });
-  state = reduce(state, { type: "input_failed", token: state.plan.input.activity.token, message: INPUT_FAILED });
+  state = reduce(state, { type: "input_failed", token: state.plan.inputs.config_1_trace_0.activity.token, message: INPUT_FAILED });
   let html = render(state);
   assert.match(html, /role="alert">Non è stato possibile usare il file scelto: potrebbe essere illeggibile o iniziare con un BOM non ammesso\. Nessun file è assegnato al tracciato; scegline un altro\.<\/p>/);
   assert.doesNotMatch(html, /scelto prima|precedente/);
   assert.doesNotMatch(html, /Anteprima del campione/);
   state = reduce(state, { type: "choose_input" });
-  state = reduce(state, { type: "input_chosen", token: state.plan.input.activity.token, planRef: "plan_2", assignedInputCount: "1", preview: whole });
+  state = reduce(state, { type: "input_chosen", token: state.plan.inputs.config_1_trace_0.activity.token, planRef: "plan_2", assignedInputCount: "1", preview: whole });
   state = reduce(state, { type: "choose_input" });
-  state = reduce(state, { type: "input_failed", token: state.plan.input.activity.token, message: INPUT_FAILED });
+  state = reduce(state, { type: "input_failed", token: state.plan.inputs.config_1_trace_0.activity.token, message: INPUT_FAILED });
   html = render(state);
   assert.match(html, /role="alert">Non è stato possibile usare il file scelto: [^<]*\. Resta assegnato il file scelto prima; puoi sceglierne un altro\.<\/p>/);
   assert.doesNotMatch(html, /Nessun file è assegnato/);
@@ -161,12 +161,12 @@ test("a first failure says no file is assigned, a later one keeps the previous f
 
 test("cancel and failure messages keep the previous file visible", () => {
   let state = reduce(planned(), { type: "choose_input" });
-  state = reduce(state, { type: "input_cancelled", token: state.plan.input.activity.token });
+  state = reduce(state, { type: "input_cancelled", token: state.plan.inputs.config_1_trace_0.activity.token });
   assert.match(render(state), /role="status">Scelta annullata: nessun file assegnato\.<\/p>/);
   state = reduce(state, { type: "choose_input" });
-  state = reduce(state, { type: "input_chosen", token: state.plan.input.activity.token, planRef: "plan_2", assignedInputCount: "1", preview: whole });
+  state = reduce(state, { type: "input_chosen", token: state.plan.inputs.config_1_trace_0.activity.token, planRef: "plan_2", assignedInputCount: "1", preview: whole });
   state = reduce(state, { type: "choose_input" });
-  state = reduce(state, { type: "input_failed", token: state.plan.input.activity.token, message: INPUT_FAILED });
+  state = reduce(state, { type: "input_failed", token: state.plan.inputs.config_1_trace_0.activity.token, message: INPUT_FAILED });
   const html = render(state);
   assert.match(html, /role="alert">Non è stato possibile usare il file scelto/);
   assert.match(html, /aria-label="Anteprima del campione"/);

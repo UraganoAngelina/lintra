@@ -254,7 +254,7 @@ test("words follow the Rust outcome without merging partial, cancelled or techni
 const { RunPanel, BudgetDialog, BudgetChoice } = await loadComponent("RunPanel");
 const { AnalysisForm } = await loadComponent("AnalysisForm");
 const selection = { ...INITIAL_SELECTION, plan: { status: "ready", draft: { schemaVersion: 1, plan_ref: "plan_2", configuration_ref: "c", mode: "local_only", assigned_input_count: "1" },
-  input: { chosen: { schemaVersion: 1, file_size: "9", sampled_bytes: "9", lf: "2", crlf: "0", lone_cr: "0", reached_eof: true }, activity: { status: "idle" } } } };
+  inputs: { t: { chosen: { schemaVersion: 1, file_size: "9", sampled_bytes: "9", lf: "2", crlf: "0", lone_cr: "0", reached_eof: true }, activity: { status: "idle" } } }, parameters: {} } };
 const panel = (state, sel = selection) => renderToStaticMarkup(createElement(RunPanel, { state, selection: sel, onEvent: () => {}, onStart: () => {}, onDecide: () => {} }));
 
 test("the panel shows the budget status and enables Avvia analisi only when Rust allows it", () => {

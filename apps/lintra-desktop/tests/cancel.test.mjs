@@ -142,7 +142,7 @@ test("truncated and partial outcomes are never presented as conformity", () => {
 
 const { RunPanel } = await loadComponent("RunPanel");
 const selection = { ...INITIAL_SELECTION, plan: { status: "ready", draft: { schemaVersion: 1, plan_ref: "plan_1", configuration_ref: "c", mode: "local_only", assigned_input_count: "1" },
-  input: { chosen: { schemaVersion: 1, file_size: "9", sampled_bytes: "9", lf: "2", crlf: "0", lone_cr: "0", reached_eof: true }, activity: { status: "idle" } } } };
+  inputs: { t: { chosen: { schemaVersion: 1, file_size: "9", sampled_bytes: "9", lf: "2", crlf: "0", lone_cr: "0", reached_eof: true }, activity: { status: "idle" } } }, parameters: {} } };
 const panel = state => renderToStaticMarkup(createElement(RunPanel, { state, selection, onEvent: () => {}, onStart: () => {}, onDecide: () => {}, onCancel: () => {} }));
 
 test("the panel shows Interrompi analisi while it applies and keeps it in place afterwards", () => {
