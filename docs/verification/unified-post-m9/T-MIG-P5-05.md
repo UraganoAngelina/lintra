@@ -1,7 +1,8 @@
 # T-MIG-P5-05 — Run screen e progress throttled (con D09 completo)
 
-Data 23 novembre 2026. Stato: **IN REVIEW** (rework 1), non DONE prima della
-review Codex e dell'integrazione. Le evidenze native nel commit sono quelle del
+Data 23 novembre 2026. Stato: **DONE**. Review Codex round 2 APPROVED su
+`d9bf2bb` (P505-01..04 risolti); integrazione autorizzata dall'autore per
+fast-forward di `integration`, senza push. CI remota NOT_RUN. Le evidenze native nel commit sono quelle del
 rework (binario `19e71393…`); i numeri della sezione Acceptance sono quelli del
 round 1 (binario `6ea92f6d…`), confermati dal rework nella tabella dedicata. Prerequisiti T-MIG-P5-03 e T-MIG-P5-04 DONE (`integration`
 `81b4006`). Branch `work/T-MIG-P5-05` da `81b4006`, worktree
