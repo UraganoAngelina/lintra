@@ -15,7 +15,11 @@ configurazione per-utente (vedi `docs/RESOURCE_BUDGETS.md`), avviso con
 Annulla / Procedi comunque deciso in Rust. P5-06: «Interrompi analisi»
 finché Rust può fermare il lavoro; l'esito annullato dichiara che non c'è un
 report nuovo e che un eventuale report precedente riguarda l'analisi
-precedente.
+precedente. P5-07: Informazioni con versione, provenienza
+della selezione e dell'ultimo report (da `report_about`, separate) e testo
+integrale delle licenze distribuite (`public/THIRD_PARTY_NOTICES`, hash in
+`assets-provenance.json`). Nessuna notice Slint: questo eseguibile non contiene
+Slint, che conserva `AboutSlint` nella UI legacy.
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund

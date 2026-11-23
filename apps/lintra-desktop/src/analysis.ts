@@ -45,6 +45,12 @@ export function preferredFormat(reports: ReportSelection): ExportFormat {
   return reports.xlsx ? "xlsx" : reports.csv ? "csv" : "jsonl";
 }
 
+/** Origin of the configuration data, as shown by the form and by Informazioni. */
+export function provenanceText(provenance: Pick<BundleProvenance, "bundle_source" | "bundle_version">): string {
+  const source = provenance.bundle_source === "embedded" ? "schemi incorporati" : "schemi esterni";
+  return provenance.bundle_version === null ? `${source}, versione non dichiarata` : `${source}, versione ${provenance.bundle_version}`;
+}
+
 export type SelectionState = {
   catalog: { status: "loading" } | { status: "ready"; entries: SchemaDescriptor[]; provenance: BundleProvenance } | { status: "failed"; message: string };
   flow: string | null;

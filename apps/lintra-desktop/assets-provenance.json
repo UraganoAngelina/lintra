@@ -31,5 +31,146 @@
     "sha256": "85f1c48fc1d7fcbd9ac1d64edc8e48c02c729b541c06dcd2392cf0125ec038c1",
     "scope": "Approved palette only; book remains read-only outside repository, production logo variants not exported in P3"
   },
-  "visual_baseline": "Separate React/WebView baseline; no Slint pixel parity claim"
+  "visual_baseline": "Separate React/WebView baseline; no Slint pixel parity claim",
+  "notices": {
+    "task": "T-MIG-P5-07",
+    "file": "public/THIRD_PARTY_NOTICES",
+    "scope": "Runtime JavaScript packages of the bundle and Tauri runtime crates (tauri, tauri-runtime, tauri-runtime-wry, tauri-utils, wry, tao) linked into the desktop executable. The complete Rust license inventory is T-MIG-P8-02.",
+    "blocks": [
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "react",
+            "version": "19.3.1"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "react-dom",
+            "version": "19.3.1"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "scheduler",
+            "version": "0.28.0"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "@tauri-apps/api",
+            "version": "2.12.4"
+          }
+        ],
+        "file": "LICENSE-APACHE-2.0",
+        "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "@tauri-apps/api",
+            "version": "2.12.4"
+          }
+        ],
+        "file": "LICENSE-MIT",
+        "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d"
+      },
+      {
+        "ecosystem": "cargo",
+        "packages": [
+          {
+            "name": "tauri",
+            "version": "2.12.5"
+          },
+          {
+            "name": "tauri-runtime",
+            "version": "2.12.2"
+          },
+          {
+            "name": "tauri-runtime-wry",
+            "version": "2.12.3"
+          },
+          {
+            "name": "tauri-utils",
+            "version": "2.10.2"
+          }
+        ],
+        "file": "LICENSE-APACHE-2.0",
+        "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+      },
+      {
+        "ecosystem": "cargo",
+        "packages": [
+          {
+            "name": "tauri",
+            "version": "2.12.5"
+          },
+          {
+            "name": "tauri-runtime",
+            "version": "2.12.2"
+          },
+          {
+            "name": "tauri-runtime-wry",
+            "version": "2.12.3"
+          },
+          {
+            "name": "tauri-utils",
+            "version": "2.10.2"
+          }
+        ],
+        "file": "LICENSE-MIT",
+        "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d"
+      },
+      {
+        "ecosystem": "cargo",
+        "packages": [
+          {
+            "name": "wry",
+            "version": "0.57.2"
+          }
+        ],
+        "file": "LICENSE-APACHE",
+        "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+      },
+      {
+        "ecosystem": "cargo",
+        "packages": [
+          {
+            "name": "wry",
+            "version": "0.57.2"
+          }
+        ],
+        "file": "LICENSE-MIT",
+        "sha256": "ef88893533af22ffbb68ceef0724ba1389518df26165a34f3c99ad30b884df4f"
+      },
+      {
+        "ecosystem": "cargo",
+        "packages": [
+          {
+            "name": "tao",
+            "version": "0.37.2"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "6dc0e068dcf3a5bc8e054205b85b7720e1d49265bbc64bf515d2cf79197df69a"
+      }
+    ]
+  }
 }

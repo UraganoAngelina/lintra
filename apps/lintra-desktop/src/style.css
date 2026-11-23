@@ -124,6 +124,17 @@ h3 { font-size: var(--body-size); font-weight: 600; margin: 0 0 var(--control-ga
 dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-row) var(--page-padding); margin: 0; }
 dt { color: var(--muted); }
 dd { margin: 0; font-family: var(--font-mono); overflow-wrap: anywhere; }
+/* Informazioni (T-MIG-P5-07): provenance lists and the license texts,
+   closed by default; each open text scrolls in its own bounded box. */
+.about-block { max-width: 60rem; margin-top: var(--section-gap); }
+.notices { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border); }
+.notices li { border-bottom: 1px solid var(--border); }
+.notices summary { min-height: var(--control-height); padding: var(--space-row) 0; cursor: pointer; overflow-wrap: anywhere; }
+.notices pre {
+  max-height: 20rem; overflow: auto; margin: 0 0 var(--control-gap); padding: var(--control-gap);
+  border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface);
+  font-family: var(--font-mono); font-size: var(--data-size); line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere;
+}
 
 @media (min-width: 960px) {
   .shell { grid-template-rows: none; grid-template-columns: var(--bar-width) 1fr; }

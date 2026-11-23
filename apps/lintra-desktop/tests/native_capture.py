@@ -93,6 +93,14 @@ SCENARIOS = [
     ("keyboard-run-cancelled-previous-report-1366x768", (1366, 768),
      FILE + START + ["wait", "wait"] + ["shift-Tab"] * 4 + ["Return", f"dialog:{SAMPLE_DIR}/big.txt", "wait"]
      + START_NOWAIT + ["Tab", "Return", "wait", "wait", "wait"]),
+    # T-MIG-P5-07: Informazioni. After Return focus is on the h1, so Tab
+    # reaches the first license disclosure; Return opens it, Tab focuses its
+    # scrollable text. After a completed run, nine shift-Tab from «Avvia
+    # analisi» reach the Informazioni button: report provenance beside the
+    # selection's.
+    ("keyboard-informazioni-license-1366x768", (1366, 768), ["Tab"] * 4 + ["Return", "Tab", "Return", "Tab"]),
+    ("keyboard-informazioni-license-640x480", (640, 480), ["Tab"] * 4 + ["Return", "Tab", "Return", "Tab"]),
+    ("keyboard-informazioni-report-1366x768", (1366, 768), FILE + START + ["wait", "wait"] + ["shift-Tab"] * 9 + ["Return", "wait"]),
 ]
 # 200% scale: logical sizes inside the scaled monitor's work area. The
 # minimum window (640x480 logical) and the whole work area cover both sides

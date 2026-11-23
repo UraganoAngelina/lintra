@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "react";
 import { catalogPage, configurationPage, configurationSelect, planCreate, planInputChoose, type InputPreviewDto } from "./ipc";
 import {
-  INITIAL_SELECTION, REPORT_FORMATS, chooseInput, createPlan, flows, loadCatalog, loadConfiguration, missingChoice, reduce, versions,
+  INITIAL_SELECTION, REPORT_FORMATS, chooseInput, createPlan, flows, loadCatalog, loadConfiguration, missingChoice, provenanceText, reduce, versions,
   type InputState, type ReportSelection, type SelectionApi, type SelectionEvent, type SelectionState,
 } from "./analysis";
 
@@ -92,11 +92,6 @@ function SelectionStatus({ state }: { state: SelectionState }) {
       : state.plan.status === "creating" ? "Il servizio registra la selezione…"
         : missingChoice(state) ?? (state.plan.status === "ready" ? "Selezione accettata dal servizio." : null);
   return <p className="selection-status" role="status">{text}</p>;
-}
-
-function provenanceText(provenance: { bundle_source: "embedded" | "external"; bundle_version: string | null }): string {
-  const source = provenance.bundle_source === "embedded" ? "schemi incorporati" : "schemi esterni";
-  return provenance.bundle_version === null ? `${source}, versione non dichiarata` : `${source}, versione ${provenance.bundle_version}`;
 }
 
 /** Input file of the trace. The dialog is native and owned by Rust; only the

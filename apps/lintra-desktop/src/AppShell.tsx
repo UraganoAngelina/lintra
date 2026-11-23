@@ -19,6 +19,8 @@ export type ShellProps = {
   running?: boolean;
   /** Analysis selection shown in the Analisi section (T-MIG-P5-02). */
   analysis?: ReactNode;
+  /** Informazioni section: provenance and licenses (T-MIG-P5-07). */
+  information?: ReactNode;
 };
 
 /**
@@ -26,7 +28,7 @@ export type ShellProps = {
  * theme, service state) and the main region of the selected section.
  * Purely presentational; every state shown comes from props.
  */
-export function AppShell({ view, onView, theme, onTheme, service, reportAvailable, running = false, analysis }: ShellProps) {
+export function AppShell({ view, onView, theme, onTheme, service, reportAvailable, running = false, analysis, information }: ShellProps) {
   const heading = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
   useEffect(() => {
@@ -65,7 +67,7 @@ export function AppShell({ view, onView, theme, onTheme, service, reportAvailabl
     </header>
     <main id="content" tabIndex={-1}>
       <h1 ref={heading} tabIndex={-1}>{title}</h1>
-      <ViewBody view={view} service={service} reportAvailable={reportAvailable} running={running} analysis={analysis} />
+      <ViewBody view={view} service={service} reportAvailable={reportAvailable} running={running} analysis={analysis} information={information} />
     </main>
   </div>;
 }
@@ -78,8 +80,8 @@ function ServiceStatus({ service }: { service: ServiceState }) {
 }
 
 /** Section bodies show only real states; forms and results arrive in P5/P6. */
-function ViewBody({ view, service, reportAvailable, running, analysis }:
-  { view: ViewId; service: ServiceState; reportAvailable: boolean; running: boolean; analysis?: ReactNode }) {
+function ViewBody({ view, service, reportAvailable, running, analysis, information }:
+  { view: ViewId; service: ServiceState; reportAvailable: boolean; running: boolean; analysis?: ReactNode; information?: ReactNode }) {
   switch (view) {
     case "analisi":
       return <section aria-label="Stato dell'analisi">
@@ -93,6 +95,7 @@ function ViewBody({ view, service, reportAvailable, running, analysis }:
         <p>I risultati di un'analisi conclusa compaiono in questa sezione.</p>
       </section>;
     case "informazioni":
+      if (information) return information;
       return <section aria-label="Versione">
         <dl>
           <dt>Versione</dt>
