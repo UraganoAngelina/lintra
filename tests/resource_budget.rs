@@ -199,6 +199,27 @@ fn explicit_override_never_bypasses_cancel_io_or_nonregular_input() {
 
 #[test]
 fn invalid_configurations_are_rejected_without_silent_defaults() {
+    // The strict parser used by native adapters (T-MIG-P5-05).
+    for bytes in [
+        &br#"{"version":1,"measurement_source":"test","input_bytes":0,"reference_bytes":null}"#[..],
+        br#"{"version":2,"measurement_source":"test","input_bytes":1,"reference_bytes":null}"#,
+        br#"{"version":1,"measurement_source":"  ","input_bytes":1,"reference_bytes":null}"#,
+        br#"{"version":1,"measurement_source":"test","input_bytes":1,"reference_bytes":null,"extra":1}"#,
+        br#"{"version":1,"measurement_source":"test","input_bytes":-1,"reference_bytes":null}"#,
+        b"not json",
+        b"",
+    ] {
+        assert!(matches!(
+            ResourceBudget::parse(bytes),
+            Err(ResourcePreflightError::InvalidConfiguration)
+        ));
+    }
+    let parsed = ResourceBudget::parse(
+        br#"{"version":1,"measurement_source":"misura","input_bytes":10,"reference_bytes":null}"#,
+    )
+    .unwrap();
+    assert_eq!(parsed.input_bytes, NonZeroU64::new(10));
+    assert_eq!(parsed.reference_bytes, None);
     assert!(
         serde_json::from_value::<ResourceBudget>(
             json!({"version":1,"measurement_source":"test","input_bytes":0})

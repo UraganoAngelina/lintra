@@ -25,6 +25,24 @@ pub struct ResourceBudget {
     pub input_bytes: Option<NonZeroU64>,
     pub reference_bytes: Option<NonZeroU64>,
 }
+impl ResourceBudget {
+    /// Strict parse of a configuration file (version 1, explicit measurement
+    /// source, positive thresholds, no unknown field). Used by native
+    /// adapters that load the budget before any preflight (T-MIG-P5-05), so an
+    /// invalid file is reported as such instead of being silently skipped.
+    pub fn parse(bytes: &[u8]) -> Result<Self, ResourcePreflightError> {
+        let budget: Self = serde_json::from_slice(bytes)
+            .map_err(|_| ResourcePreflightError::InvalidConfiguration)?;
+        budget.check()?;
+        Ok(budget)
+    }
+    fn check(&self) -> Result<(), ResourcePreflightError> {
+        if self.version != 1 || self.measurement_source.trim().is_empty() {
+            return Err(ResourcePreflightError::InvalidConfiguration);
+        }
+        Ok(())
+    }
+}
 
 /// The caller supplies the same selected bundle as the real run. Embedded data
 /// is immutable; filesystem references are fingerprinted individually.
@@ -210,9 +228,7 @@ impl ValidationService {
         budget: &ResourceBudget,
         cancellation: &CancellationToken,
     ) -> Result<PreparedResourcePreflight, ResourcePreflightError> {
-        if budget.version != 1 || budget.measurement_source.trim().is_empty() {
-            return Err(ResourcePreflightError::InvalidConfiguration);
-        }
+        budget.check()?;
         if cancellation.is_cancelled() {
             return Err(ResourcePreflightError::Cancelled);
         }

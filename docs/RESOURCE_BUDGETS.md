@@ -40,9 +40,24 @@ nuovo preflight. L'override non evita I/O failure, overflow, file non regolari,
 confini reference o cancellazione. Il validator esegue comunque il proprio
 audit completo e non riutilizza il digest del preflight come prova di EOF.
 
-L'API Rust mantiene la conferma in un oggetto con campi privati. La futura UI
-deve conservarlo nel backend e presentare Annulla / Procedi comunque con un
-handle opaco, secondo MIG-P5-05. Non esiste ancora un dialogo Tauri qualificato.
+L'API Rust mantiene la conferma in un oggetto con campi privati.
+
+## Applicazione desktop (T-MIG-P5-05)
+
+L'app React/Tauri usa lo stesso file e lo stesso parser. Va copiato con nome
+`resource-budget.json` nella directory di configurazione per-utente dell'app
+(identifier `it.lintra.desktop`): su Windows `%APPDATA%\it.lintra.desktop`,
+su Linux `$XDG_CONFIG_HOME/it.lintra.desktop` (di solito
+`~/.config/it.lintra.desktop`). Il file viene riletto a ogni avvio di
+un'analisi, senza riavviare l'app.
+
+La sezione Esecuzione mostra sempre lo stato: «non configurato» (file
+assente, nessun avviso), le soglie configurate, oppure un errore se il file
+non è valido; in quel caso l'analisi non parte finché il file non viene
+corretto o rimosso. Se una soglia è superata, Rust mostra l'avviso con i
+byte misurati e le soglie, e l'operatore sceglie Annulla o Procedi comunque.
+La conferma resta nel backend con un handle opaco monouso; contratto IPC in
+[docs/migration/ipc-v1/BUDGET.md](migration/ipc-v1/BUDGET.md).
 La CLI `history preview` conserva il contratto audit-only corrente e non espone
 questa nuova opzione; l'integrazione del percorso snapshot resta nel bridge CAD.
 

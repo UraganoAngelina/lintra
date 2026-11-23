@@ -1,5 +1,6 @@
 //! One owned native worker; its JoinHandle is the reliable terminal slot.
 use crate::{
+    budget::Gate,
     configuration::{PreparedIntent, fields, handle},
     ipc::{self, ErrorCode},
     progress::Progress,
@@ -9,8 +10,12 @@ use serde_json::{Map, Value, json};
 use std::{
     fs::File,
     io::BufWriter,
-    sync::{Arc, Mutex},
+    sync::{
+        Arc, Mutex,
+        mpsc::{self, RecvTimeoutError},
+    },
     thread::{self, JoinHandle},
+    time::Duration,
 };
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -50,11 +55,32 @@ impl RunRef {
 }
 
 pub(crate) enum JobRequest {
-    Start { plan: String, mode: ValidationMode },
-    State { run: Option<RunRef> },
-    Acknowledge { run: RunRef },
-    Cancel { run: RunRef },
-    Progress { run: RunRef },
+    Start {
+        plan: String,
+        mode: ValidationMode,
+    },
+    State {
+        run: Option<RunRef>,
+    },
+    Acknowledge {
+        run: RunRef,
+    },
+    Cancel {
+        run: RunRef,
+    },
+    Progress {
+        run: RunRef,
+    },
+    // D09 additive operations (T-MIG-P5-05).
+    BudgetState,
+    Budget {
+        run: RunRef,
+    },
+    Decide {
+        run: RunRef,
+        handle: String,
+        proceed: bool,
+    },
 }
 impl JobRequest {
     pub(crate) fn decode(operation: &str, dto: &Map<String, Value>) -> Result<Self, ErrorCode> {
@@ -97,6 +123,29 @@ impl JobRequest {
                     run: RunRef::decode(&dto["run"])?,
                 })
             }
+            "resource_budget_state" => {
+                fields(dto, &[])?;
+                Ok(Self::BudgetState)
+            }
+            "validation_budget" => {
+                fields(dto, &["run"])?;
+                Ok(Self::Budget {
+                    run: RunRef::decode(&dto["run"])?,
+                })
+            }
+            "validation_budget_decide" => {
+                fields(dto, &["run", "confirmation_ref", "decision"])?;
+                let proceed = match dto["decision"].as_str() {
+                    Some("proceed") => true,
+                    Some("cancel") => false,
+                    _ => return Err(ErrorCode::InvalidMessage),
+                };
+                Ok(Self::Decide {
+                    run: RunRef::decode(&dto["run"])?,
+                    handle: handle(dto, "confirmation_ref")?,
+                    proceed,
+                })
+            }
             _ => Err(ErrorCode::UnknownOperation),
         }
     }
@@ -106,6 +155,103 @@ struct WorkerState {
     stage: &'static str,
     sealed: bool,
     progress: Progress,
+    gate: Gate,
+}
+
+/// Soft-budget input of a run (D09): the configured budget and the bundle
+/// whose reference source the preflight counts, the same the run reads.
+pub(crate) struct Preflight {
+    pub(crate) budget: ResourceBudget,
+    pub(crate) bundle: Arc<AnalysisBundle>,
+}
+
+/// Schema registry built from the captured raw schema only, as the run uses.
+fn registry(intent: &PreparedIntent) -> Result<Arc<SchemaRegistry>, ErrorCode> {
+    let mut repository = InMemorySchemaRepository::new();
+    repository
+        .insert((*intent.raw).clone())
+        .map_err(|_| ErrorCode::TechnicalFailure)?;
+    Ok(Arc::new(SchemaRegistry::new(
+        Arc::new(repository),
+        SchemaCompiler,
+        RawResolvedEncoding::Utf8,
+    )))
+}
+
+/// D09 gate on the worker thread, before any output is opened. Returns the
+/// accepted preflight, `None` when the run must not start (cancel, Annulla),
+/// or a technical failure for hard errors (I/O, non-regular file, overflow,
+/// reference boundary), which no decision can bypass.
+fn soft_budget_gate(
+    state: &Mutex<WorkerState>,
+    preflight: &Preflight,
+    intent: &PreparedIntent,
+    token: &CancellationToken,
+    decisions: &mpsc::Receiver<bool>,
+) -> Result<Option<AcceptedResourcePreflight>, ErrorCode> {
+    let set = |gate: Gate| {
+        state
+            .lock()
+            .map(|mut state| state.gate = gate)
+            .map_err(|_| ErrorCode::TechnicalFailure)
+    };
+    set(Gate::Checking)?;
+    let service = ValidationService::new(registry(intent)?);
+    let prepared = match preflight.bundle.resource_references().map(|source| {
+        service.resource_preflight(intent.request.clone(), source, &preflight.budget, token)
+    }) {
+        Some(Ok(prepared)) => prepared,
+        Some(Err(ResourcePreflightError::Cancelled)) => {
+            set(Gate::NotCompleted)?;
+            return Ok(None);
+        }
+        _ => {
+            set(Gate::NotCompleted)?;
+            return Err(ErrorCode::TechnicalFailure);
+        }
+    };
+    let audit = prepared.audit();
+    let mut proceed = false;
+    if audit.requires_confirmation() {
+        set(Gate::ConfirmationRequired(audit))?;
+        // Wait for the operator, still honouring cancel and app close.
+        loop {
+            if token.is_cancelled() {
+                set(Gate::Declined(audit))?;
+                return Ok(None);
+            }
+            match decisions.recv_timeout(Duration::from_millis(50)) {
+                Ok(choice) => {
+                    proceed = choice;
+                    break;
+                }
+                Err(RecvTimeoutError::Timeout) => {}
+                Err(RecvTimeoutError::Disconnected) => {
+                    set(Gate::Declined(audit))?;
+                    return Ok(None);
+                }
+            }
+        }
+        if !proceed {
+            set(Gate::Declined(audit))?;
+            return Ok(None);
+        }
+    }
+    let accepted = prepared
+        .accept(proceed)
+        .map_err(|_| ErrorCode::TechnicalFailure)?;
+    let audit = accepted.audit();
+    // Trace of the decision with the CLI's aggregate counters only (no path,
+    // digest, measurement-source text or record) on the process stderr.
+    if let Ok(line) = serde_json::to_string(&audit) {
+        eprintln!("lintra-desktop resource budget: {line}");
+    }
+    set(if audit.proceeded_over_budget {
+        Gate::Proceeded(audit)
+    } else {
+        Gate::WithinBudget(audit)
+    })?;
+    Ok(Some(accepted))
 }
 /// A published private report. Field order is drop order: the shared reader
 /// must close before the TempDir is deleted (required on Windows).
@@ -288,7 +434,7 @@ fn execute(
     observer: &mut dyn ProgressObserver,
     token: &CancellationToken,
 ) -> WorkerResult {
-    execute_in(intent, references, observer, token, None)
+    execute_in(intent, references, observer, token, None, None)
 }
 
 /// `spool_root` is `None` in production (system temporary directory); tests
@@ -299,16 +445,9 @@ fn execute_in(
     observer: &mut dyn ProgressObserver,
     token: &CancellationToken,
     spool_root: Option<&std::path::Path>,
+    accepted: Option<&AcceptedResourcePreflight>,
 ) -> WorkerResult {
-    let mut repository = InMemorySchemaRepository::new();
-    repository
-        .insert((*intent.raw).clone())
-        .map_err(|_| ErrorCode::TechnicalFailure)?;
-    let registry = Arc::new(SchemaRegistry::new(
-        Arc::new(repository),
-        SchemaCompiler,
-        RawResolvedEncoding::Utf8,
-    ));
+    let registry = registry(&intent)?;
     let expected = registry
         .resolve_with_hash(&intent.request.schema_key)
         .map_err(|_| ErrorCode::TechnicalFailure)?;
@@ -320,6 +459,16 @@ fn execute_in(
         }),
         DatasetPreparationPolicy::ContinueWithAvailableEvidence,
     );
+    // D09: the accepted preflight must still describe these exact files and
+    // request right before the validator opens them (no reuse on replaced
+    // files). The validator still reads to EOF and audits on its own.
+    if let Some(accepted) = accepted {
+        match accepted.verify_unchanged(&service, &intent.request, token) {
+            Ok(()) => {}
+            Err(ResourcePreflightError::Cancelled) => return Ok(Completion::NotStarted),
+            Err(_) => return Err(ErrorCode::TechnicalFailure),
+        }
+    }
     let mut builder = tempfile::Builder::new();
     builder.prefix("lintra-desktop-run-");
     let directory = match spool_root {
@@ -400,6 +549,11 @@ struct Job {
     request_id: String,
     plan: String,
     mode: ValidationMode,
+    // D09: budget captured at start (thresholds shown with the warning), the
+    // one-time confirmation handle and the channel of the single decision.
+    budget: Option<ResourceBudget>,
+    confirmation: String,
+    decision: Option<mpsc::Sender<bool>>,
     shared: Arc<Mutex<WorkerState>>,
     token: CancellationToken,
     thread: Option<JoinHandle<WorkerResult>>,
@@ -546,6 +700,8 @@ impl Jobs {
         self.refresh();
         self.results.detail(request, id)
     }
+    /// Start without a soft budget (unit tests of the lifecycle).
+    #[cfg(test)]
     pub(crate) fn start(
         &mut self,
         instance: &str,
@@ -553,6 +709,18 @@ impl Jobs {
         plan: String,
         intent: Arc<PreparedIntent>,
         references: Arc<dyn ReferenceDataPreparer>,
+    ) -> Result<Vec<u8>, ErrorCode> {
+        self.start_budgeted(instance, request_id, plan, intent, references, None)
+    }
+    /// Start a run; with `preflight` the worker runs the D09 gate first.
+    pub(crate) fn start_budgeted(
+        &mut self,
+        instance: &str,
+        request_id: &str,
+        plan: String,
+        intent: Arc<PreparedIntent>,
+        references: Arc<dyn ReferenceDataPreparer>,
+        preflight: Option<Preflight>,
     ) -> Result<Vec<u8>, ErrorCode> {
         if let Some(job) = &mut self.current {
             job.poll();
@@ -572,10 +740,16 @@ impl Jobs {
             number,
         };
         let bytes = ipc::response(request_id, run.dto())?;
+        let mut nonce = [0u8; 16];
+        getrandom::fill(&mut nonce).map_err(|_| ErrorCode::TechnicalFailure)?;
+        let confirmation: String = nonce.iter().map(|byte| format!("{byte:02x}")).collect();
+        let (decision, decisions) = mpsc::channel();
+        let budget = preflight.as_ref().map(|p| p.budget.clone());
         let shared = Arc::new(Mutex::new(WorkerState {
             stage: "preparing",
             sealed: false,
             progress: Progress::new(&intent.request.scope),
+            gate: Gate::Unconfigured,
         }));
         let state = shared.clone();
         let token = CancellationToken::default();
@@ -588,6 +762,22 @@ impl Jobs {
         let thread = thread::Builder::new()
             .name("lintra-desktop-validation".into())
             .spawn(move || {
+                if cancellation.is_cancelled() {
+                    return Ok(Completion::NotStarted);
+                }
+                let accepted = match &preflight {
+                    None => None,
+                    Some(preflight) => {
+                        match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                            soft_budget_gate(&state, preflight, &intent, &cancellation, &decisions)
+                        }))
+                        .unwrap_or(Err(ErrorCode::TechnicalFailure))?
+                        {
+                            Some(accepted) => Some(accepted),
+                            None => return Ok(Completion::NotStarted),
+                        }
+                    }
+                };
                 {
                     let mut state = state.lock().map_err(|_| ErrorCode::TechnicalFailure)?;
                     if cancellation.is_cancelled() {
@@ -624,6 +814,7 @@ impl Jobs {
                         &mut observer,
                         &cancellation,
                         spool_root.as_deref(),
+                        accepted.as_ref(),
                     )
                 }))
                 .unwrap_or(Err(ErrorCode::TechnicalFailure))
@@ -635,6 +826,9 @@ impl Jobs {
             request_id: request_id.into(),
             plan,
             mode,
+            budget,
+            confirmation,
+            decision: Some(decision),
             shared,
             token,
             thread: Some(thread),
@@ -648,7 +842,9 @@ impl Jobs {
             JobRequest::State { run } => run.as_ref(),
             JobRequest::Acknowledge { run }
             | JobRequest::Cancel { run }
-            | JobRequest::Progress { run } => Some(run),
+            | JobRequest::Progress { run }
+            | JobRequest::Budget { run }
+            | JobRequest::Decide { run, .. } => Some(run),
             _ => return Err(ErrorCode::InvalidState),
         };
         if requested.is_some_and(|run| self.current.as_ref().is_none_or(|job| &job.run != run)) {
@@ -692,6 +888,54 @@ impl Jobs {
                     json!({"schemaVersion":1,"run":job.run.dto(),"disposition":disposition}),
                 )
             }
+            JobRequest::Budget { .. } => {
+                let gate = job
+                    .shared
+                    .lock()
+                    .map_err(|_| ErrorCode::TechnicalFailure)?
+                    .gate
+                    .clone();
+                ipc::response(
+                    id,
+                    gate.dto(job.run.dto(), job.budget.as_ref(), Some(&job.confirmation)),
+                )
+            }
+            JobRequest::Decide {
+                handle, proceed, ..
+            } => {
+                let mut state = job.shared.lock().map_err(|_| ErrorCode::TechnicalFailure)?;
+                let Gate::ConfirmationRequired(audit) = state.gate else {
+                    // Decided, cancelled, failed or not yet warned: the handle
+                    // is no longer (or not yet) the pending decision.
+                    return Err(if job.decision.is_none() || job.result.is_some() {
+                        ErrorCode::StaleContext
+                    } else {
+                        ErrorCode::InvalidState
+                    });
+                };
+                if handle != job.confirmation || job.token.is_cancelled() {
+                    return Err(ErrorCode::StaleContext);
+                }
+                // One-time: the sender is consumed, a second decision is stale.
+                let sender = job.decision.take().ok_or(ErrorCode::StaleContext)?;
+                sender
+                    .send(proceed)
+                    .map_err(|_| ErrorCode::TechnicalFailure)?;
+                state.gate = if proceed {
+                    Gate::Proceeded(audit)
+                } else {
+                    // Annulla is a cancel request of this run: the terminal
+                    // is not_started with cancel_requested, as for cancel.
+                    job.token.cancel();
+                    state.stage = "cancelling";
+                    Gate::Declined(audit)
+                };
+                ipc::response(
+                    id,
+                    json!({"schemaVersion":1,"run":job.run.dto(),
+                        "disposition":if proceed {"proceeding"} else {"cancelled"}}),
+                )
+            }
             JobRequest::Acknowledge { .. } => {
                 if job.result.is_none() {
                     return Err(ErrorCode::InvalidState);
@@ -708,6 +952,8 @@ impl Jobs {
     }
 }
 
+#[cfg(test)]
+mod budget_lifecycle;
 #[cfg(test)]
 mod full_lifecycle;
 
@@ -1105,6 +1351,7 @@ pub(crate) mod tests {
             stage: "finalizing",
             sealed,
             progress: Progress::new(&intent.request.scope),
+            gate: Gate::Unconfigured,
         }));
         let job = Job {
             run: RunRef {
@@ -1114,6 +1361,9 @@ pub(crate) mod tests {
             request_id: "start".into(),
             plan: "plan_1".into(),
             mode: ValidationMode::LocalOnly,
+            budget: None,
+            confirmation: "h".repeat(32),
+            decision: None,
             shared,
             token: CancellationToken::default(),
             thread: Some(thread::spawn(move || rx.recv().unwrap())),

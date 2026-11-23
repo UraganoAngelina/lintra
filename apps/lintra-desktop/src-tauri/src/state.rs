@@ -41,6 +41,8 @@ impl<F: Fn() -> Result<Option<std::path::PathBuf>, ErrorCode>> Native for F {
 
 pub(crate) struct AppState {
     gate: Mutex<Option<Configuration>>,
+    // Per-user configuration directory resolved by Tauri at setup (D09).
+    pub budget_directory: std::sync::OnceLock<std::path::PathBuf>,
     closed: AtomicBool,
     info_sent: AtomicBool,
     ready: AtomicBool,
@@ -53,6 +55,7 @@ impl AppState {
     pub(crate) fn new(smoke: bool) -> Self {
         Self {
             gate: Mutex::new(None),
+            budget_directory: std::sync::OnceLock::new(),
             closed: AtomicBool::new(false),
             info_sent: AtomicBool::new(false),
             ready: AtomicBool::new(false),
@@ -129,6 +132,9 @@ impl AppState {
                 | "validation_acknowledge"
                 | "validation_cancel"
                 | "validation_progress"
+                | "resource_budget_state"
+                | "validation_budget"
+                | "validation_budget_decide"
         ) {
             let command =
                 match crate::jobs::JobRequest::decode(&request.operation, &request.payload) {
@@ -228,7 +234,12 @@ impl AppState {
             }
             if permit.is_none() {
                 match Configuration::resolve() {
-                    Ok(configuration) => *permit = Some(configuration),
+                    Ok(configuration) => {
+                        *permit = Some(
+                            configuration
+                                .with_budget_directory(self.budget_directory.get().cloned()),
+                        )
+                    }
                     Err(code) => return ipc::error(Some(id), code),
                 }
             }

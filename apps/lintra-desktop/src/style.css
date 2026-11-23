@@ -83,12 +83,31 @@ h2 { font-size: var(--body-size); font-weight: 600; margin: 0 0 var(--control-ga
 /* Input file (T-MIG-P5-03). */
 .input-choice { margin-top: var(--section-gap); }
 h3 { font-size: var(--body-size); font-weight: 600; margin: 0 0 var(--control-gap); }
-.input-choice button {
+.input-choice button, .run .primary, .budget-dialog button {
   min-height: var(--control-height); padding: 0 var(--space-block);
   border: 1px solid var(--accent); border-radius: var(--radius);
   background: var(--accent); color: var(--surface); font: inherit; font-weight: 600; cursor: pointer;
 }
-.input-choice button[aria-disabled="true"] { border-color: var(--border); background: var(--surface); color: var(--muted); cursor: progress; }
+.input-choice button[aria-disabled="true"], .run .primary[aria-disabled="true"], .budget-dialog button[aria-disabled="true"] {
+  border-color: var(--border); background: var(--surface); color: var(--muted); cursor: not-allowed;
+}
+/* Run screen and D09 dialog (T-MIG-P5-05). Configuration and run state side
+   by side when the content area allows it (brief), in one column below. */
+@media (min-width: 1280px) {
+  .analysis-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem); gap: var(--section-gap); align-items: start; }
+  .analysis-layout .run { position: sticky; top: var(--section-gap); }
+}
+.run { max-width: 60rem; margin-top: var(--section-gap); }
+.run-state { margin-top: var(--space-block); }
+.run progress { display: block; width: 100%; max-width: 24rem; margin: var(--space-row) 0; accent-color: var(--accent); }
+.budget-dialog {
+  max-width: min(36rem, calc(100vw - 2 * var(--page-padding))); padding: var(--section-gap);
+  border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--ink);
+}
+.budget-dialog::backdrop { background: color-mix(in srgb, var(--bg) 75%, transparent); }
+.budget-dialog p { color: var(--ink); }
+.budget-dialog button:not(.primary) { background: var(--surface); color: var(--ink); border-color: var(--border); }
+.dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--control-gap); margin-top: var(--section-gap); }
 .sample-note { margin-top: var(--space-row); }
 /* Report formats (T-MIG-P5-04): native checkboxes, as the theme radios. */
 .report-formats { margin: var(--section-gap) 0 0; padding: 0; border: 0; }

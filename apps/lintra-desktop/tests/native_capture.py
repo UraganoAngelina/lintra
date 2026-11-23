@@ -24,6 +24,13 @@ import time
 # typed key by key); created before the scenarios and removed afterwards.
 SAMPLE_DIR = str(Path.home() / "lintrap503")
 SELECT = ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Down", "wait"]
+# P5-05: the 140000-byte file assigned, then four Tab (XLSX, JSONL, CSV,
+# Avvia analisi) and Return. A configured input threshold of 64 KiB is
+# crossed by that file; the invalid file has an empty measurement source.
+FILE = SELECT + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/partial.txt", "wait"]
+START = ["Tab"] * 4 + ["Return", "wait", "wait"]
+BUDGET = b'{"version":1,"measurement_source":"misura sintetica","input_bytes":65536,"reference_bytes":null}'
+INVALID_BUDGET = b'{"version":1,"measurement_source":"","input_bytes":65536,"reference_bytes":null}'
 
 # name, logical window size, keys sent to the owned window.
 # Tab order: skip link, Analisi, Risultati, Informazioni, theme radio group.
@@ -57,6 +64,17 @@ SCENARIOS = [
     # (default on) and checks CSV (default off), focus left on CSV.
     ("keyboard-reports-1366x768", (1366, 768), SELECT + ["Tab", "Tab", "space", "Tab", "Tab", "space"]),
     ("keyboard-reports-640x480", (640, 480), SELECT + ["Tab", "Tab", "space", "Tab", "Tab", "space"]),
+    # T-MIG-P5-05: run screen and the D09 soft budget. The optional fourth
+    # item is resource-budget.json, written in the scenario's private
+    # XDG_CONFIG_HOME/it.lintra.desktop before launch (absent: unconfigured).
+    ("keyboard-run-unconfigured-1366x768", (1366, 768), FILE + START + ["wait", "wait"]),
+    ("keyboard-run-unconfigured-640x480", (640, 480), FILE + START + ["wait", "wait"]),
+    ("keyboard-budget-invalid-1366x768", (1366, 768), FILE, INVALID_BUDGET),
+    ("keyboard-budget-warning-1366x768", (1366, 768), FILE + START, BUDGET),
+    ("keyboard-budget-warning-640x480", (640, 480), FILE + START, BUDGET),
+    ("keyboard-budget-proceed-1366x768", (1366, 768), FILE + START + ["Tab", "Return", "wait", "wait", "wait"], BUDGET),
+    ("keyboard-budget-annulla-1366x768", (1366, 768), FILE + START + ["Return", "wait", "wait"], BUDGET),
+    ("keyboard-budget-escape-1366x768", (1366, 768), FILE + START + ["Escape", "wait", "wait"], BUDGET),
 ]
 # 200% scale: logical sizes inside the scaled monitor's work area. The
 # minimum window (640x480 logical) and the whole work area cover both sides
@@ -159,7 +177,7 @@ def owned_window(pid, deadline):
     raise RuntimeError("owned window not mapped")
 
 
-def scenario(binary, output, monitor_name, name, size, keys):
+def scenario(binary, output, monitor_name, name, size, keys, budget=None):
     with tempfile.TemporaryDirectory(prefix="lintra-desktop-capture-") as temporary:
         env = os.environ.copy()
         for key, folder in [("XDG_DATA_HOME", "data"), ("XDG_CONFIG_HOME", "config"),
@@ -167,6 +185,11 @@ def scenario(binary, output, monitor_name, name, size, keys):
             directory = Path(temporary) / folder
             directory.mkdir(mode=0o700)
             env[key] = str(directory)
+        if budget is not None:
+            # Tauri app_config_dir on Linux: $XDG_CONFIG_HOME/<identifier>.
+            config = Path(env["XDG_CONFIG_HOME"]) / "it.lintra.desktop"
+            config.mkdir(mode=0o700)
+            (config / "resource-budget.json").write_bytes(budget)
         process = subprocess.Popen([str(binary)], env=env, cwd=temporary,
                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         try:
@@ -213,6 +236,7 @@ def scenario(binary, output, monitor_name, name, size, keys):
             return {"name": name, "requested": list(size), "captured": [w, h],
                     "monitor": monitor["name"], "scale": monitor["scale"], "work_area": list(area),
                     "image_pixels": list(png_size(image)), "keys": keys,
+                    "budget": None if budget is None else budget.decode(),
                     "image_sha256": hashlib.sha256(image.read_bytes()).hexdigest()}
         finally:
             process.terminate()

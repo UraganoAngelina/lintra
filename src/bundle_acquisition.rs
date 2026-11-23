@@ -1,6 +1,12 @@
 //! Shared native-adapter bundle acquisition; listing never certifies a schema.
 use crate::*;
-use std::{collections::BTreeSet, error::Error, fs, io, path::Path, sync::Arc};
+use std::{
+    collections::BTreeSet,
+    error::Error,
+    fs, io,
+    path::{Path, PathBuf},
+    sync::Arc,
+};
 
 type Failure = Box<dyn Error + Send + Sync>;
 
@@ -9,6 +15,11 @@ pub struct AnalysisBundle {
     repository: Arc<dyn SchemaRepository>,
     references: Arc<dyn ReferenceDataPreparer>,
     audit: BundleAudit,
+    // Where the soft-budget preflight counts reference bytes: the same
+    // selected source the preparer reads, never a directory guessed later.
+    reference_root: Option<PathBuf>,
+    #[cfg(feature = "embedded-bundle")]
+    embedded: Option<EmbeddedBundle>,
 }
 impl AnalysisBundle {
     pub fn resolve(
@@ -59,6 +70,9 @@ impl AnalysisBundle {
                 repository,
                 references,
                 audit,
+                reference_root: Some(reference.to_owned()),
+                #[cfg(feature = "embedded-bundle")]
+                embedded: None,
             });
         }
         if source.is_embedded() {
@@ -80,8 +94,10 @@ impl AnalysisBundle {
         Ok(Self {
             entries,
             repository: repo,
-            references: Arc::new(EmbeddedReferenceDataPreparer::new(bundle)),
+            references: Arc::new(EmbeddedReferenceDataPreparer::new(bundle.clone())),
             audit,
+            reference_root: None,
+            embedded: Some(bundle),
         })
     }
     pub fn repository(&self) -> Arc<dyn SchemaRepository> {
@@ -89,6 +105,18 @@ impl AnalysisBundle {
     }
     pub fn references(&self) -> Arc<dyn ReferenceDataPreparer> {
         self.references.clone()
+    }
+    /// Reference source for `ValidationService::resource_preflight`, the same
+    /// one this bundle's preparer reads. `None` only if no source is retained.
+    pub fn resource_references(&self) -> Option<ResourceReferenceSource<'_>> {
+        if let Some(root) = &self.reference_root {
+            return Some(ResourceReferenceSource::Filesystem(root));
+        }
+        #[cfg(feature = "embedded-bundle")]
+        if let Some(bundle) = &self.embedded {
+            return Some(ResourceReferenceSource::Embedded(bundle));
+        }
+        None
     }
     pub fn entries(&self) -> &[SchemaCatalogEntry] {
         &self.entries

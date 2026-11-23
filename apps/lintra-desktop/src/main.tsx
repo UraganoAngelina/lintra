@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { appInfo, clientReady, errorText, type AppInfo } from "./ipc";
 import { AppShell, type ServiceState } from "./AppShell";
 import { AnalysisForm, useAnalysisSelection } from "./AnalysisForm";
+import { RunPanel, useRun } from "./RunPanel";
+import { busy } from "./run";
 import { INITIAL_THEME, INITIAL_VIEW, applyTheme, type ThemePreference, type ViewId } from "./shell";
 import "./style.css";
 
@@ -35,10 +37,16 @@ function App() {
   const service: ServiceState = error ? { kind: "error", message: error }
     : ready && info ? { kind: "ready", version: info.app_version } : { kind: "starting" };
   const [selection, onSelection] = useAnalysisSelection(service.kind === "ready");
-  // No report exists until the P5 run views connect the Rust job lifecycle.
+  const [run, onRun, onStart, onDecide] = useRun(service.kind === "ready");
+  const running = busy(run);
+  // Report availability as Rust declared it in the outcome of the last run.
+  const reportAvailable = run.view.status === "terminal" && run.view.outcome.kind === "validation" && run.view.outcome.report_available;
   return <AppShell view={view} onView={setView} theme={theme} onTheme={setTheme}
-    service={service} reportAvailable={false}
-    analysis={service.kind === "ready" ? <AnalysisForm state={selection} onEvent={onSelection} /> : null} />;
+    service={service} reportAvailable={reportAvailable} running={running}
+    analysis={service.kind === "ready" ? <div className="analysis-layout">
+      <AnalysisForm state={selection} onEvent={onSelection} busy={running} />
+      <RunPanel state={run} selection={selection} onEvent={onRun} onStart={onStart} onDecide={onDecide} />
+    </div> : null} />;
 }
 
 const root = document.getElementById("root");

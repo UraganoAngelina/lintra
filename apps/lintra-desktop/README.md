@@ -7,8 +7,12 @@ Shell P5-01: sezioni Analisi/Risultati/Informazioni e tema Sistema/Chiaro/Scuro
 sul catalogo Rust, con piano LocalOnly creato dal servizio. P5-03: file
 scelto nel dialogo nativo aperto da Rust, con anteprima del solo campione
 (mai byte o path nel renderer). P5-04: formati del report XLSX/JSONL/CSV
-come in Slint (XLSX e JSONL di default), solo intento: nessun writer JS;
-l'avvio arriva con P5-05.
+come in Slint (XLSX e JSONL di default), solo intento: nessun writer JS.
+P5-05: «Avvia analisi», progresso letto da Rust ogni 250 ms (una richiesta
+alla volta, avanzamento indeterminato) ed esito; form bloccato durante il run.
+Budget di risorse soft D09: file `resource-budget.json` nella directory di
+configurazione per-utente (vedi `docs/RESOURCE_BUDGETS.md`), avviso con
+Annulla / Procedi comunque deciso in Rust.
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund

@@ -917,6 +917,118 @@ mod tests {
         );
     }
 
+    /// D09 through the configuration adapter: the per-user budget file is
+    /// read at each start; invalid blocks, configured runs the Rust gate on
+    /// the external bundle (filesystem reference source).
+    #[test]
+    fn budget_file_is_read_at_each_start_and_invalid_never_skips_the_gate() {
+        use crate::{budget::FILE_NAME, jobs::JobRequest};
+        let (directory, state) = fixture(1);
+        let config = tempfile::tempdir().unwrap();
+        let mut state = state.with_budget_directory(Some(config.path().to_owned()));
+        let job = |state: &mut Configuration, request| -> Result<Value, ErrorCode> {
+            state
+                .job(request, "job")
+                .map(|bytes| serde_json::from_slice::<Value>(&bytes).unwrap()["payload"].clone())
+        };
+        assert_eq!(
+            job(&mut state, JobRequest::BudgetState).unwrap()["state"],
+            "unconfigured"
+        );
+        let (plan, trace) = local_plan(&mut state);
+        let input = directory.path().join("SYNTHETIC.txt");
+        fs::write(&input, b"001A  \n").unwrap();
+        let bytes = state
+            .dispatch(
+                ConfigurationRequest::ChooseInput {
+                    plan_ref: plan,
+                    trace_ref: trace,
+                },
+                "choose",
+                &|| Ok(Some(input.clone())),
+            )
+            .unwrap();
+        let plan = serde_json::from_slice::<Value>(&bytes).unwrap()["payload"]["plan_ref"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        call(
+            &mut state,
+            ConfigurationRequest::Prepare {
+                plan_ref: plan.clone(),
+            },
+        );
+        let start = |state: &mut Configuration| {
+            state.job(
+                JobRequest::Start {
+                    plan: plan.clone(),
+                    mode: ValidationMode::LocalOnly,
+                },
+                "start",
+            )
+        };
+        // Invalid file: explicit state, the start is refused and no run exists.
+        fs::write(config.path().join(FILE_NAME), b"{").unwrap();
+        assert_eq!(
+            job(&mut state, JobRequest::BudgetState).unwrap()["state"],
+            "invalid"
+        );
+        assert_eq!(start(&mut state), Err(ErrorCode::InvalidState));
+        assert_eq!(
+            job(&mut state, JobRequest::State { run: None }).unwrap()["state"],
+            "idle"
+        );
+        // A valid file edited afterwards applies to this start without restart.
+        fs::write(
+            config.path().join(FILE_NAME),
+            br#"{"version":1,"measurement_source":"misura","input_bytes":1,"reference_bytes":5}"#,
+        )
+        .unwrap();
+        assert_eq!(
+            job(&mut state, JobRequest::BudgetState).unwrap(),
+            json!({"schemaVersion":1,"state":"configured","input_bytes":"1","reference_bytes":"5"})
+        );
+        let run = crate::jobs::RunRef::decode(
+            &serde_json::from_slice::<Value>(&start(&mut state).unwrap()).unwrap()["payload"],
+        )
+        .unwrap();
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
+        let warned = loop {
+            let gate = job(&mut state, JobRequest::Budget { run: run.clone() }).unwrap();
+            if gate["state"] == "confirmation_required" {
+                break gate;
+            }
+            assert!(std::time::Instant::now() < deadline, "{gate}");
+            std::thread::yield_now();
+        };
+        assert_eq!(warned["audit"]["input_bytes"], "7");
+        assert_eq!(warned["audit"]["reference_budget"], "5");
+        assert_eq!(warned["audit"]["reference_budget_exceeded"], false);
+        let handle = warned["confirmation_ref"].as_str().unwrap().to_owned();
+        job(
+            &mut state,
+            JobRequest::Decide {
+                run: run.clone(),
+                handle,
+                proceed: true,
+            },
+        )
+        .unwrap();
+        loop {
+            let snapshot = job(&mut state, JobRequest::State { run: None }).unwrap();
+            if snapshot["state"] == "terminal" {
+                assert_eq!(snapshot["outcome"]["status"], "completed_valid");
+                break;
+            }
+            assert!(std::time::Instant::now() < deadline);
+            std::thread::yield_now();
+        }
+        assert_eq!(
+            job(&mut state, JobRequest::Budget { run }).unwrap()["state"],
+            "proceeded"
+        );
+    }
+
     #[test]
     fn worker_accepts_only_prepared_local_plan_and_keeps_capture_when_form_changes() {
         use crate::jobs::JobRequest;
@@ -1047,7 +1159,12 @@ impl DraftPlan {
 }
 
 pub(crate) struct Configuration {
-    bundle: AnalysisBundle,
+    // Shared with a run's soft-budget preflight (D09), which counts the
+    // references of this very bundle on the worker thread.
+    bundle: Arc<AnalysisBundle>,
+    // Per-user application configuration directory (Tauri), where the
+    // operator may place `resource-budget.json`; `None` means no budget.
+    budget_directory: Option<PathBuf>,
     instance: String,
     generation: u64,
     selected: Option<SelectedConfiguration>,
@@ -1082,14 +1199,34 @@ impl Configuration {
                 if intent.request.mode != mode {
                     return Err(ErrorCode::InvalidState);
                 }
-                self.jobs.start(
+                // D09: the budget is read at each start. An invalid file
+                // blocks the start (never skipped); none means no soft check.
+                let preflight =
+                    match crate::budget::BudgetConfig::load(self.budget_directory.as_deref()) {
+                        crate::budget::BudgetConfig::Invalid => {
+                            return Err(ErrorCode::InvalidState);
+                        }
+                        crate::budget::BudgetConfig::Unconfigured => None,
+                        crate::budget::BudgetConfig::Configured(budget) => {
+                            Some(crate::jobs::Preflight {
+                                budget,
+                                bundle: self.bundle.clone(),
+                            })
+                        }
+                    };
+                self.jobs.start_budgeted(
                     &self.instance,
                     request_id,
                     plan,
                     intent,
                     self.bundle.references(),
+                    preflight,
                 )
             }
+            crate::jobs::JobRequest::BudgetState => ipc::response(
+                request_id,
+                crate::budget::BudgetConfig::load(self.budget_directory.as_deref()).dto(),
+            ),
             request => self.jobs.dispatch(request, request_id),
         }
     }
@@ -1120,6 +1257,13 @@ impl Configuration {
         self.jobs.detail(request, request_id)
     }
 
+    /// Directory of the soft-budget configuration (set from the Tauri path
+    /// resolver in production, from a temporary directory in tests).
+    pub(crate) fn with_budget_directory(mut self, directory: Option<PathBuf>) -> Self {
+        self.budget_directory = directory;
+        self
+    }
+
     pub(crate) fn resolve() -> Result<Self, ErrorCode> {
         let executable = std::env::current_exe().map_err(|_| ErrorCode::TechnicalFailure)?;
         let bundle = AnalysisBundle::resolve(
@@ -1136,7 +1280,8 @@ impl Configuration {
         getrandom::fill(&mut nonce).map_err(|_| ErrorCode::TechnicalFailure)?;
         let instance = nonce.iter().map(|byte| format!("{byte:02x}")).collect();
         Ok(Self {
-            bundle,
+            bundle: Arc::new(bundle),
+            budget_directory: None,
             instance,
             generation: 0,
             selected: None,

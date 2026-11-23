@@ -1,0 +1,1031 @@
+{
+  "binary_sha256": "6ea92f6d97fba71156479b9e180ced0c817178a79d27230a726f8ee22df1e1e5",
+  "scenarios": [
+    {
+      "name": "analisi-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [],
+      "budget": null,
+      "image_sha256": "44b0cc0cd26a288797a722f1683c14cd93275ffec79aec7cde702c99afcb58fc"
+    },
+    {
+      "name": "analisi-1024x768",
+      "requested": [
+        1024,
+        768
+      ],
+      "captured": [
+        1024,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1024,
+        768
+      ],
+      "keys": [],
+      "budget": null,
+      "image_sha256": "678fd50e35b6609a63f0e6b09cb906d70ab02518ce34141a1ab5eef6d45ff71e"
+    },
+    {
+      "name": "analisi-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [],
+      "budget": null,
+      "image_sha256": "b1f01e5e25c153e2a3db5ad8d3cbee7d830decdd12592c97ed2b745d3e03b763"
+    },
+    {
+      "name": "analisi-workarea",
+      "requested": [
+        1780,
+        1160
+      ],
+      "captured": [
+        1780,
+        1160
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1780,
+        1160
+      ],
+      "keys": [],
+      "budget": null,
+      "image_sha256": "e377856a77f8e70536af48fbb0ab659b58cbdf48568d8a9d62036eab3d3a4a2d"
+    },
+    {
+      "name": "keyboard-skip-link-1024x768",
+      "requested": [
+        1024,
+        768
+      ],
+      "captured": [
+        1024,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1024,
+        768
+      ],
+      "keys": [
+        "Tab"
+      ],
+      "budget": null,
+      "image_sha256": "83451c94ca2dc5226fc8ae1ed8a49c12ad9830afb685e0af5fd605ec882ae65c"
+    },
+    {
+      "name": "keyboard-risultati-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return"
+      ],
+      "budget": null,
+      "image_sha256": "e5b3be6f6756e79b53f70d4fb5c21765e26ed292ae00ce18331d70ea0405d964"
+    },
+    {
+      "name": "keyboard-informazioni-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return"
+      ],
+      "budget": null,
+      "image_sha256": "58a924adeedf4fa4889e622e135934f210d0fc1f243a862dc2ace54ab6b0cd08"
+    },
+    {
+      "name": "keyboard-theme-light-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down"
+      ],
+      "budget": null,
+      "image_sha256": "2461aa2986a721030e175e9e9e8cb5e4e707d1170896c99e93360361fc9d9094"
+    },
+    {
+      "name": "keyboard-theme-light-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down"
+      ],
+      "budget": null,
+      "image_sha256": "70f1e3e6d902f43542c98949d8574b828f24ef49c65680a1959063de33cda6f4"
+    },
+    {
+      "name": "keyboard-theme-dark-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "Down"
+      ],
+      "budget": null,
+      "image_sha256": "6bd80cd691423d9caf93571dab9aa91b888c581d632ad14b36f617bef7b49b7c"
+    },
+    {
+      "name": "keyboard-selection-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait"
+      ],
+      "budget": null,
+      "image_sha256": "6d34a115cde9b40b1a67d734de6d69f876a2b5eea6f9a07aba18acf963d517a9"
+    },
+    {
+      "name": "keyboard-selection-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait"
+      ],
+      "budget": null,
+      "image_sha256": "dbc0228cece4df5507e012d804fc9f43851d8388aa4c19b774b475db79f387ea"
+    },
+    {
+      "name": "keyboard-input-partial-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait"
+      ],
+      "budget": null,
+      "image_sha256": "b6aaf73df5c811385dd5000c0b32e1d6a4e128b11b3ebf7313bd3818175af36a"
+    },
+    {
+      "name": "keyboard-input-whole-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/whole.txt",
+        "wait"
+      ],
+      "budget": null,
+      "image_sha256": "85388b6a77cba48fbe30107aeb82c057d93d8b5c321bb176e71871455d8bfcc9"
+    },
+    {
+      "name": "keyboard-input-cancel-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog-cancel",
+        "wait"
+      ],
+      "budget": null,
+      "image_sha256": "7be8a19ab1d754f670e23b770ab7329ce806a5ed17204a69034047859aaaf0ad"
+    },
+    {
+      "name": "keyboard-input-cancel-reopen-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog-cancel",
+        "wait",
+        "space",
+        "dialog-cancel",
+        "wait"
+      ],
+      "budget": null,
+      "image_sha256": "7be8a19ab1d754f670e23b770ab7329ce806a5ed17204a69034047859aaaf0ad"
+    },
+    {
+      "name": "keyboard-reports-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "space",
+        "Tab",
+        "Tab",
+        "space"
+      ],
+      "budget": null,
+      "image_sha256": "a9f530847702e3e34c4faee31d788e3768057cdac7a371b9492d7f71afa7d7bc"
+    },
+    {
+      "name": "keyboard-reports-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "space",
+        "Tab",
+        "Tab",
+        "space"
+      ],
+      "budget": null,
+      "image_sha256": "0f3df69fa4e0b535640df961cd5777f6b8637051996bb288b7f7253919280ab5"
+    },
+    {
+      "name": "keyboard-run-unconfigured-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "image_sha256": "f471dc1ef84ecf6c7d440804fe1133891ca7aee52e193685f73742e66376397f"
+    },
+    {
+      "name": "keyboard-run-unconfigured-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "image_sha256": "f26bb56a71c2793773b704bca6c3f672d51a6debcce9ff56df2a1d93af9bf545"
+    },
+    {
+      "name": "keyboard-budget-invalid-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "image_sha256": "948a20298c1a648a6473315c749cc2900d17531ed5e1cd625792dd7c8b6728da"
+    },
+    {
+      "name": "keyboard-budget-warning-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "image_sha256": "75fe8c73b591d844adb8eeea5f63999e1e5d4afb9f1c9ca0343fda7461a0c625"
+    },
+    {
+      "name": "keyboard-budget-warning-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "image_sha256": "70b0fe70bde0fc6e2499da91bf99d413c91bbe11363e3ba8b135f9c3c21aca69"
+    },
+    {
+      "name": "keyboard-budget-proceed-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "image_sha256": "fec24f9fb014a3d78aa6d60f9acec4c8aa2850243a1f501cc7eae6c2d491be21"
+    },
+    {
+      "name": "keyboard-budget-annulla-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "Return",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "image_sha256": "b5d8191a4e3a7894e3738aedbdebf701ec93483f735e742e3f1c866a82191f32"
+    },
+    {
+      "name": "keyboard-budget-escape-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "Escape",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "image_sha256": "7602b243f246391b6539dc3888e83562f7da2ca3ec7236fcf0e9f578c5b13ea7"
+    }
+  ]
+}

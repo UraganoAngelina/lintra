@@ -36,7 +36,7 @@ export function useAnalysisSelection(serviceReady: boolean): [SelectionState, (e
 }
 
 /** Presentational form: every choice and status comes from the state. */
-export function AnalysisForm({ state, onEvent }: { state: SelectionState; onEvent: (event: SelectionEvent) => void }) {
+export function AnalysisForm({ state, onEvent, busy = false }: { state: SelectionState; onEvent: (event: SelectionEvent) => void; busy?: boolean }) {
   const catalogReady = state.catalog.status === "ready";
   const configuration = state.configuration.status === "ready" ? state.configuration : null;
   const trace = configuration?.traces.find(item => item.trace_ref === state.traceRef) ?? null;
@@ -45,7 +45,7 @@ export function AnalysisForm({ state, onEvent }: { state: SelectionState; onEven
     <div className="fields">
       <div className="field">
         <label htmlFor="selection-flow">Flusso</label>
-        <select id="selection-flow" value={state.flow ?? ""} disabled={!catalogReady}
+        <select id="selection-flow" value={state.flow ?? ""} disabled={!catalogReady || busy}
           onChange={event => onEvent({ type: "select_flow", flow: event.target.value || null })}>
           <option value="">Scegli il flusso</option>
           {flows(state).map(flow => <option key={flow} value={flow}>{flow}</option>)}
@@ -53,7 +53,7 @@ export function AnalysisForm({ state, onEvent }: { state: SelectionState; onEven
       </div>
       <div className="field">
         <label htmlFor="selection-version">Versione dello schema</label>
-        <select id="selection-version" value={state.schemaRef ?? ""} disabled={state.flow === null}
+        <select id="selection-version" value={state.schemaRef ?? ""} disabled={state.flow === null || busy}
           onChange={event => onEvent({ type: "select_version", schemaRef: event.target.value || null })}>
           <option value="">Scegli la versione</option>
           {versions(state).map(entry => <option key={entry.schema_ref} value={entry.schema_ref}>{entry.schema_version}</option>)}
@@ -61,7 +61,7 @@ export function AnalysisForm({ state, onEvent }: { state: SelectionState; onEven
       </div>
       <div className="field">
         <label htmlFor="selection-trace">Tracciato</label>
-        <select id="selection-trace" value={state.traceRef ?? ""} disabled={configuration === null}
+        <select id="selection-trace" value={state.traceRef ?? ""} disabled={configuration === null || busy}
           onChange={event => onEvent({ type: "select_trace", traceRef: event.target.value || null })}>
           <option value="">Scegli il tracciato</option>
           {configuration?.traces.map(item => <option key={item.trace_ref} value={item.trace_ref}>{item.trace_id}</option>)}
@@ -69,8 +69,9 @@ export function AnalysisForm({ state, onEvent }: { state: SelectionState; onEven
       </div>
     </div>
     <SelectionStatus state={state} />
-    {state.plan.status === "ready" && <InputChoice input={state.plan.input} onChoose={() => onEvent({ type: "choose_input" })} />}
-    <ReportFormats reports={state.reports} onEvent={onEvent} />
+    {/* While a run is active the form is frozen, as Slint `enabled: !root.busy`. */}
+    {state.plan.status === "ready" && <InputChoice input={state.plan.input} busy={busy} onChoose={() => { if (!busy) onEvent({ type: "choose_input" }); }} />}
+    <ReportFormats reports={state.reports} busy={busy} onEvent={onEvent} />
     {configuration && <dl className="selection-summary" aria-label="Schema acquisito dal servizio">
       <dt>Schema</dt><dd>{configuration.selection.flow_id} · {configuration.selection.schema_version}</dd>
       <dt>Codifica</dt><dd>UTF-8</dd>
@@ -100,7 +101,7 @@ function provenanceText(provenance: { bundle_source: "embedded" | "external"; bu
 
 /** Input file of the trace. The dialog is native and owned by Rust; only the
  * bounded preview counters come back, and they describe a sample. */
-function InputChoice({ input, onChoose }: { input: InputState; onChoose: () => void }) {
+function InputChoice({ input, busy, onChoose }: { input: InputState; busy: boolean; onChoose: () => void }) {
   const choosing = input.activity.status === "choosing";
   return <div className="input-choice">
     <h3>File del tracciato</h3>
@@ -108,7 +109,7 @@ function InputChoice({ input, onChoose }: { input: InputState; onChoose: () => v
         while the native dialog is open, so after Esc the operator would have
         to navigate back to it (P503-02). Double opening is refused by the
         reducer while a dialog is open. */}
-    <button type="button" onClick={onChoose} aria-disabled={choosing}>
+    <button type="button" onClick={onChoose} aria-disabled={choosing || busy}>
       {input.chosen ? "Scegli un altro file" : "Scegli il file"}
     </button>
     {input.activity.status === "failed" ? <p className="selection-status" role="alert">{input.activity.message} {input.chosen
@@ -139,8 +140,8 @@ function SamplePreview({ preview }: { preview: InputPreviewDto }) {
 
 /** Requested report formats (Slint "Formati del report"): native checkboxes,
  * keyboard and screen readers handled by the platform. An intent only. */
-function ReportFormats({ reports, onEvent }: { reports: ReportSelection; onEvent: (event: SelectionEvent) => void }) {
-  return <fieldset className="report-formats" aria-describedby="report-formats-note">
+function ReportFormats({ reports, busy, onEvent }: { reports: ReportSelection; busy: boolean; onEvent: (event: SelectionEvent) => void }) {
+  return <fieldset className="report-formats" aria-describedby="report-formats-note" disabled={busy}>
     <legend>Formati del report</legend>
     <div className="report-options">
       {REPORT_FORMATS.map(format => <label key={format.id}>

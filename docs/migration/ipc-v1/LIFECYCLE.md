@@ -106,6 +106,12 @@ nuova non eredita authority dal nome; chiusura richiede cancellazione, attesa
 reale del lavoro posseduto e cleanup dei soli temporanei, senza worker staccati.
 Il processo non promette join o I/O istantanei.
 
+Con un budget di risorse configurato (T-MIG-P5-05, [D09](BUDGET.md)) il
+preflight soft e l'eventuale attesa di Annulla / Procedi comunque avvengono in
+`preparing`, prima dell'ingresso nel validatore: Annulla e cancel portano a
+`not_started` con `cancel_requested`, Procedi comunque a `running`. Gli stati
+e le transizioni di questa tabella non cambiano.
+
 ## Esiti e finalizzazione contro il codice reale
 
 ValidationService local e Full controllano CancellationToken in finalizzazione,

@@ -85,7 +85,9 @@ Questo non cambia i numeri/formati dei report canonici esistenti.
 
 Nessun fallback silenzioso alla shape vecchia. Le modifiche additive sono
 compatibili solo quando esplicitamente documentate e validate; al momento
-nessuna estensione o campo sconosciuto è accettato implicitamente. Una modifica incompatibile a
+nessuna estensione o campo sconosciuto è accettato implicitamente. Estensioni
+additive documentate: [budget di risorse soft D09](BUDGET.md) (T-MIG-P5-05).
+Una modifica incompatibile a
 campi, significati o codici richiede nuova versione e relativi test. Frontend
 e backend sono nel medesimo artefatto offline; un mismatch è un errore chiaro,
 non un motivo per saltare validazioni. Il protocollo1 sintetico dello spike,

@@ -15,6 +15,8 @@ export type ShellProps = {
   service: ServiceState;
   /** Availability of a real report, owned by the Rust job lifecycle. */
   reportAvailable: boolean;
+  /** A run is starting or active in Rust (T-MIG-P5-05). */
+  running?: boolean;
   /** Analysis selection shown in the Analisi section (T-MIG-P5-02). */
   analysis?: ReactNode;
 };
@@ -24,7 +26,7 @@ export type ShellProps = {
  * theme, service state) and the main region of the selected section.
  * Purely presentational; every state shown comes from props.
  */
-export function AppShell({ view, onView, theme, onTheme, service, reportAvailable, analysis }: ShellProps) {
+export function AppShell({ view, onView, theme, onTheme, service, reportAvailable, running = false, analysis }: ShellProps) {
   const heading = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
   useEffect(() => {
@@ -63,7 +65,7 @@ export function AppShell({ view, onView, theme, onTheme, service, reportAvailabl
     </header>
     <main id="content" tabIndex={-1}>
       <h1 ref={heading} tabIndex={-1}>{title}</h1>
-      <ViewBody view={view} service={service} reportAvailable={reportAvailable} analysis={analysis} />
+      <ViewBody view={view} service={service} reportAvailable={reportAvailable} running={running} analysis={analysis} />
     </main>
   </div>;
 }
@@ -76,13 +78,13 @@ function ServiceStatus({ service }: { service: ServiceState }) {
 }
 
 /** Section bodies show only real states; forms and results arrive in P5/P6. */
-function ViewBody({ view, service, reportAvailable, analysis }:
-  { view: ViewId; service: ServiceState; reportAvailable: boolean; analysis?: ReactNode }) {
+function ViewBody({ view, service, reportAvailable, running, analysis }:
+  { view: ViewId; service: ServiceState; reportAvailable: boolean; running: boolean; analysis?: ReactNode }) {
   switch (view) {
     case "analisi":
       return <section aria-label="Stato dell'analisi">
         <p className="lead">Prepara una nuova analisi.</p>
-        <p>Nessuna analisi in corso.</p>
+        <p>{running ? "Analisi in corso." : "Nessuna analisi in corso."}</p>
         {analysis}
       </section>;
     case "risultati":

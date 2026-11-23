@@ -28,6 +28,9 @@ type RequestPayloads = {
   validation_acknowledge: { schemaVersion: 1; run: RunRef };
   validation_cancel: { schemaVersion: 1; run: RunRef };
   validation_progress: { schemaVersion: 1; run: RunRef };
+  resource_budget_state: { schemaVersion: 1 };
+  validation_budget: { schemaVersion: 1; run: RunRef };
+  validation_budget_decide: { schemaVersion: 1; run: RunRef; confirmation_ref: string; decision: "proceed" | "cancel" };
   results_query: { schemaVersion: 1; run: RunRef; filters: ResultsFilter };
   results_query_state: { schemaVersion: 1; query_ref: string };
   results_page: { schemaVersion: 1; query_ref: string; offset: string; limit: number };
@@ -151,7 +154,7 @@ export function decodeReply(raw: unknown, requestId: string): ObjectDto {
 
 export function encodeRequest<K extends Operation>(operation: K, requestId: string, payload: RequestPayloads[K]): Uint8Array {
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(requestId)
-      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress", "results_query", "results_query_state", "results_page", "results_select", "results_text", "results_context", "results_sources", "results_domain", "results_domain_state", "report_about", "export_prepare", "export_execute", "export_state", "export_cancel"].includes(operation)) invalid();
+      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress", "resource_budget_state", "validation_budget", "validation_budget_decide", "results_query", "results_query_state", "results_page", "results_select", "results_text", "results_context", "results_sources", "results_domain", "results_domain_state", "report_about", "export_prepare", "export_execute", "export_state", "export_cancel"].includes(operation)) invalid();
   const bytes = new TextEncoder().encode(JSON.stringify({
     schemaVersion: 1, request_id: requestId, kind: "request", operation,
     payload,
@@ -431,6 +434,65 @@ export async function validationProgress(run: RunRef): Promise<RunProgress> {
 export function acceptRunProgress(sample: RunProgress, run: RunRef, previousSequence: string | null, terminalSeen: boolean): boolean {
   return !terminalSeen && sameRun(sample.run, run)
     && (previousSequence === null || BigInt(sample.sequence) > BigInt(previousSequence));
+}
+// D09 soft resource budget (T-MIG-P5-05, additive IPC v1 extension). Rust
+// reads the configuration, runs the preflight and owns the decision; the
+// renderer only shows the counters and returns the one-time handle.
+export type BudgetConfigState = { schemaVersion: 1; state: "unconfigured" | "invalid" | "configured"; input_bytes: string | null; reference_bytes: string | null };
+export type BudgetAudit = {
+  schemaVersion: 1; input_bytes: string; reference_bytes: string; missing_reference_files: string;
+  input_budget: string | null; reference_budget: string | null; input_budget_exceeded: boolean; reference_budget_exceeded: boolean;
+};
+export type BudgetGate = {
+  schemaVersion: 1; run: RunRef;
+  state: "unconfigured" | "checking" | "within_budget" | "confirmation_required" | "proceeded" | "declined" | "not_completed";
+  audit: BudgetAudit | null; confirmation_ref: string | null;
+};
+function threshold(value: unknown): string | null {
+  return nullable(value, item => { const result = unsigned(item); if (result === "0") invalid(); return result; });
+}
+export async function resourceBudgetState(): Promise<BudgetConfigState> {
+  const dto = await exchange("resource_budget_state", { schemaVersion: 1 });
+  exact(dto, ["schemaVersion", "state", "input_bytes", "reference_bytes"]);
+  const state = oneOf(dto.state, ["unconfigured", "invalid", "configured"] as const);
+  const input = threshold(dto.input_bytes), reference = threshold(dto.reference_bytes);
+  if (state !== "configured" && (input !== null || reference !== null)) invalid();
+  return { schemaVersion: 1, state, input_bytes: input, reference_bytes: reference };
+}
+function readAudit(value: unknown): BudgetAudit {
+  const dto = versioned(value, ["schemaVersion", "input_bytes", "reference_bytes", "missing_reference_files", "input_budget", "reference_budget", "input_budget_exceeded", "reference_budget_exceeded"]);
+  const audit = { schemaVersion: 1 as const, input_bytes: unsigned(dto.input_bytes), reference_bytes: unsigned(dto.reference_bytes),
+    missing_reference_files: unsigned(dto.missing_reference_files), input_budget: threshold(dto.input_budget), reference_budget: threshold(dto.reference_budget),
+    input_budget_exceeded: dto.input_budget_exceeded, reference_budget_exceeded: dto.reference_budget_exceeded };
+  // Flags must agree with the counters Rust sent: never a warning without a crossed threshold.
+  const over = (bytes: string, limit: string | null) => limit !== null && BigInt(bytes) > BigInt(limit);
+  if (audit.input_budget_exceeded !== over(audit.input_bytes, audit.input_budget)
+      || audit.reference_budget_exceeded !== over(audit.reference_bytes, audit.reference_budget)) invalid();
+  return audit as BudgetAudit;
+}
+export async function validationBudget(run: RunRef): Promise<BudgetGate> {
+  readRun(run);
+  const dto = await exchange("validation_budget", { schemaVersion: 1, run });
+  exact(dto, ["schemaVersion", "run", "state", "audit", "confirmation_ref"]);
+  if (!sameRun(run, readRun(dto.run))) invalid();
+  const state = oneOf(dto.state, ["unconfigured", "checking", "within_budget", "confirmation_required", "proceeded", "declined", "not_completed"] as const);
+  const audit = nullable(dto.audit, readAudit);
+  const withAudit = state === "within_budget" || state === "confirmation_required" || state === "proceeded" || state === "declined";
+  if (withAudit !== (audit !== null)) invalid();
+  const exceeded = audit !== null && (audit.input_budget_exceeded || audit.reference_budget_exceeded);
+  if ((state === "within_budget" && exceeded) || ((state === "confirmation_required" || state === "proceeded") && !exceeded)) invalid();
+  const handle = nullable(dto.confirmation_ref, opaque);
+  if ((state === "confirmation_required") !== (handle !== null)) invalid();
+  return { schemaVersion: 1, run, state, audit, confirmation_ref: handle };
+}
+export async function validationBudgetDecide(run: RunRef, confirmationRef: string, decision: "proceed" | "cancel"): Promise<"proceeding" | "cancelled"> {
+  readRun(run); opaque(confirmationRef); oneOf(decision, ["proceed", "cancel"] as const);
+  const dto = await exchange("validation_budget_decide", { schemaVersion: 1, run, confirmation_ref: confirmationRef, decision });
+  exact(dto, ["schemaVersion", "run", "disposition"]);
+  if (!sameRun(run, readRun(dto.run))) invalid();
+  const disposition = oneOf(dto.disposition, ["proceeding", "cancelled"] as const);
+  if ((decision === "proceed") !== (disposition === "proceeding")) invalid();
+  return disposition;
 }
 export async function validationCancel(run: RunRef): Promise<"requested" | "already_requested" | "too_late" | "already_terminal"> {
   readRun(run);

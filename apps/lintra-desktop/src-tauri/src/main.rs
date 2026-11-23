@@ -1,5 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod budget;
 mod configuration;
 mod exports;
 mod ipc;
@@ -92,6 +93,11 @@ fn main() {
             std::env::args().skip(1).any(|arg| arg == "--smoke-test"),
         ))
         .setup(move |app| {
+            // D09: per-user configuration directory for resource-budget.json.
+            // Not resolvable means no budget can be configured (documented).
+            if let Ok(directory) = app.path().app_config_dir() {
+                let _ = app.state::<AppState>().budget_directory.set(directory);
+            }
             let config = app
                 .config()
                 .app
