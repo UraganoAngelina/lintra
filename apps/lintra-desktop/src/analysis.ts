@@ -137,7 +137,8 @@ export function missingChoice(state: SelectionState): string | null {
 export const SELECTION_FAILED = "Non è stato possibile caricare lo schema scelto. Scegli di nuovo la versione; se il problema resta, chiudi e riapri Lintra.";
 export const PLAN_FAILED = "Il servizio non ha accettato la selezione. Scegli di nuovo il tracciato; se il problema resta, chiudi e riapri Lintra.";
 export const CATALOG_FAILED = "Non è stato possibile leggere il catalogo degli schemi. Chiudi e riapri Lintra.";
-export const INPUT_FAILED = "Non è stato possibile usare il file scelto: potrebbe essere illeggibile o iniziare con un BOM non ammesso. La scelta precedente resta valida; scegli un altro file.";
+// The form completes this with what is still assigned (P503-01).
+export const INPUT_FAILED = "Non è stato possibile usare il file scelto: potrebbe essere illeggibile o iniziare con un BOM non ammesso.";
 
 /** IPC operations the controller needs; injected so tests can replace them. */
 export type SelectionApi = {

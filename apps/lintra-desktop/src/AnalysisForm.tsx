@@ -103,10 +103,16 @@ function InputChoice({ input, onChoose }: { input: InputState; onChoose: () => v
   const choosing = input.activity.status === "choosing";
   return <div className="input-choice">
     <h3>File del tracciato</h3>
-    <button type="button" onClick={onChoose} disabled={choosing}>
+    {/* aria-disabled, not disabled: a disabled button loses keyboard focus
+        while the native dialog is open, so after Esc the operator would have
+        to navigate back to it (P503-02). Double opening is refused by the
+        reducer while a dialog is open. */}
+    <button type="button" onClick={onChoose} aria-disabled={choosing}>
       {input.chosen ? "Scegli un altro file" : "Scegli il file"}
     </button>
-    {input.activity.status === "failed" ? <p className="selection-status" role="alert">{input.activity.message}</p>
+    {input.activity.status === "failed" ? <p className="selection-status" role="alert">{input.activity.message} {input.chosen
+      ? "Resta assegnato il file scelto prima; puoi sceglierne un altro."
+      : "Nessun file è assegnato al tracciato; scegline un altro."}</p>
       : <p className="selection-status" role="status">{choosing ? "Finestra di scelta del file aperta…"
         : input.activity.status === "cancelled" ? (input.chosen ? "Scelta annullata: resta il file scelto prima." : "Scelta annullata: nessun file assegnato.")
           : input.chosen ? "File assegnato al tracciato." : "Nessun file assegnato."}</p>}

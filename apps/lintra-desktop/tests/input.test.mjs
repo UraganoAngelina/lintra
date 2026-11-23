@@ -127,10 +127,12 @@ const render = state => renderToStaticMarkup(createElement(AnalysisForm, { state
 test("a partial sample is never presented as the whole file", () => {
   let state = reduce(planned(), { type: "choose_input" });
   let html = render(state);
-  assert.match(html, /<button type="button" disabled="">Scegli il file<\/button><p class="selection-status" role="status">Finestra di scelta del file aperta…<\/p>/);
+  // aria-disabled keeps keyboard focus on the button while the dialog is open (P503-02).
+  assert.match(html, /<button type="button" aria-disabled="true">Scegli il file<\/button><p class="selection-status" role="status">Finestra di scelta del file aperta…<\/p>/);
+  assert.doesNotMatch(html, /<button[^>]* disabled=""/);
   state = reduce(state, { type: "input_chosen", token: state.plan.input.activity.token, planRef: "plan_2", assignedInputCount: "1", preview: partial });
   html = render(state);
-  assert.match(html, /<button type="button">Scegli un altro file<\/button>/);
+  assert.match(html, /<button type="button" aria-disabled="false">Scegli un altro file<\/button>/);
   assert.match(html, /<dl class="selection-summary" aria-label="Anteprima del campione"><dt>Dimensione del file<\/dt><dd>1\.048\.576 byte<\/dd><dt>Campione letto<\/dt><dd>65\.536 byte<\/dd><dt>Fine riga nel campione<\/dt><dd>LF 8192 · CRLF 0 · CR isolati 0<\/dd><\/dl>/);
   assert.match(html, /Il campione comprende solo i primi 65\.536 byte: i conteggi non descrivono l’intero file\./);
   assert.doesNotMatch(html, /intero file\.<\/p>.*intero file/);
@@ -139,6 +141,22 @@ test("a partial sample is never presented as the whole file", () => {
   html = render(state);
   assert.match(html, /<p class="sample-note">Il campione comprende l’intero file\.<\/p>/);
   assert.doesNotMatch(html, /solo i primi/);
+});
+
+test("a first failure says no file is assigned, a later one keeps the previous file (P503-01)", () => {
+  let state = reduce(planned(), { type: "choose_input" });
+  state = reduce(state, { type: "input_failed", token: state.plan.input.activity.token, message: INPUT_FAILED });
+  let html = render(state);
+  assert.match(html, /role="alert">Non è stato possibile usare il file scelto: potrebbe essere illeggibile o iniziare con un BOM non ammesso\. Nessun file è assegnato al tracciato; scegline un altro\.<\/p>/);
+  assert.doesNotMatch(html, /scelto prima|precedente/);
+  assert.doesNotMatch(html, /Anteprima del campione/);
+  state = reduce(state, { type: "choose_input" });
+  state = reduce(state, { type: "input_chosen", token: state.plan.input.activity.token, planRef: "plan_2", assignedInputCount: "1", preview: whole });
+  state = reduce(state, { type: "choose_input" });
+  state = reduce(state, { type: "input_failed", token: state.plan.input.activity.token, message: INPUT_FAILED });
+  html = render(state);
+  assert.match(html, /role="alert">Non è stato possibile usare il file scelto: [^<]*\. Resta assegnato il file scelto prima; puoi sceglierne un altro\.<\/p>/);
+  assert.doesNotMatch(html, /Nessun file è assegnato/);
 });
 
 test("cancel and failure messages keep the previous file visible", () => {

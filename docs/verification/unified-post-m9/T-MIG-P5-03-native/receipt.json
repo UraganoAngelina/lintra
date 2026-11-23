@@ -1,5 +1,5 @@
 {
-  "binary_sha256": "1dcefc74d9f3695f594c8cc78e26b45aef6f99f62050690ae03ea85e1fa1f294",
+  "binary_sha256": "b3225f60358a5ac39874563221df7a50463d768cf3a00b304129756afd5f3eb8",
   "scenarios": [
     {
       "name": "analisi-640x480",
@@ -11,18 +11,18 @@
         640,
         480
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
         640,
         480
       ],
       "keys": [],
-      "image_sha256": "f84235d3f4af1ce092e1a400e078c755b96f7b3c85b378bfd64f87c65b474c77"
+      "image_sha256": "a1a4c9c1d4a723bacbae532e6f7a74e00d97de94d57f229532858d48fa738992"
     },
     {
       "name": "analisi-1024x768",
@@ -34,18 +34,18 @@
         1024,
         768
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
         1024,
         768
       ],
       "keys": [],
-      "image_sha256": "096f00c7337069a5899b662abdaf6217532770478775db72b69e9e02c82443c2"
+      "image_sha256": "b5007ad204f6ae8a14a3a1f469b2fab35cf7144433e43c4bdba7b7401a77bd71"
     },
     {
       "name": "analisi-1366x768",
@@ -54,44 +54,44 @@
         768
       ],
       "captured": [
-        1367,
+        1366,
         768
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
-        1367,
+        1366,
         768
       ],
       "keys": [],
-      "image_sha256": "25522edb6278000155e8a251d552d31a5f1228265651a8278308819b522d7c49"
+      "image_sha256": "8fa425d86ab1d5e74e566e23d683fb8fd7144321b42b84ade7addd8cd3b234b8"
     },
     {
       "name": "analisi-workarea",
       "requested": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "captured": [
-        1851,
-        1060
+        1780,
+        1160
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
-        1851,
-        1060
+        1780,
+        1160
       ],
       "keys": [],
-      "image_sha256": "7f90e9257e46889096134c095905691aabd208fb570fab292c0205df6b6e2dea"
+      "image_sha256": "be213a201d612e01c4546be8defa1dbd7ed33ad9bf0c8ff29686d96912dd67bf"
     },
     {
       "name": "keyboard-skip-link-1024x768",
@@ -103,11 +103,11 @@
         1024,
         768
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
         1024,
@@ -116,7 +116,7 @@
       "keys": [
         "Tab"
       ],
-      "image_sha256": "147f512b222c4356b7dec0f9a1994369a76bfaedee14e67690883506cdaf17d6"
+      "image_sha256": "8ba5ea4db07a9f4247d9319b0e63c77d3fe9f3e70c9b3da61af0106972f47b09"
     },
     {
       "name": "keyboard-risultati-1366x768",
@@ -125,17 +125,17 @@
         768
       ],
       "captured": [
-        1367,
+        1366,
         768
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
-        1367,
+        1366,
         768
       ],
       "keys": [
@@ -144,7 +144,7 @@
         "Tab",
         "Return"
       ],
-      "image_sha256": "6ec63585aa422d654c0fc695fcb7e1e16c52845bd4abcaf720cae0d1eedd7572"
+      "image_sha256": "e5b3be6f6756e79b53f70d4fb5c21765e26ed292ae00ce18331d70ea0405d964"
     },
     {
       "name": "keyboard-informazioni-640x480",
@@ -156,11 +156,11 @@
         640,
         480
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
         640,
@@ -173,7 +173,7 @@
         "Tab",
         "Return"
       ],
-      "image_sha256": "bbfc431dd1e6f40e96b699337aef1d997cc23ba2b357a01c93c7b198fdb93008"
+      "image_sha256": "1c8dd3e1765417ea46d338383bf537ff45e9c083c6fcde390e66056b85fa0f20"
     },
     {
       "name": "keyboard-theme-light-1366x768",
@@ -182,17 +182,17 @@
         768
       ],
       "captured": [
-        1367,
+        1366,
         768
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
-        1367,
+        1366,
         768
       ],
       "keys": [
@@ -203,7 +203,7 @@
         "Tab",
         "Down"
       ],
-      "image_sha256": "77af0047762d788703a1fb770379ee8fa537001bfe76c7e750cfa0fbcb010dce"
+      "image_sha256": "dcddb82d6f2eb15f08059e637c507ba68e7b59d7f50e9dce330593917c27a003"
     },
     {
       "name": "keyboard-theme-light-640x480",
@@ -215,11 +215,11 @@
         640,
         480
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
         640,
@@ -233,7 +233,7 @@
         "Tab",
         "Down"
       ],
-      "image_sha256": "5a073c60fdc6af06ad99a60d5b4e90079032ca9aea91a4a6820d4e06adb87633"
+      "image_sha256": "4286b8e3ae5381ee631e412be4d24ed1991d61d703e69fb53146fb84adbd5cbc"
     },
     {
       "name": "keyboard-theme-dark-1366x768",
@@ -242,17 +242,17 @@
         768
       ],
       "captured": [
-        1367,
+        1366,
         768
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
-        1367,
+        1366,
         768
       ],
       "keys": [
@@ -264,7 +264,7 @@
         "Down",
         "Down"
       ],
-      "image_sha256": "8146b8c5f83b8013e58a0076bb6cfb54848bd88d267aa7756b2d4bad3b5bd5ca"
+      "image_sha256": "8ce3dda592ea5935ceba9783d5aa5a405f9ffc3733cdc1f574c84288f18d4543"
     },
     {
       "name": "keyboard-selection-1366x768",
@@ -273,17 +273,17 @@
         768
       ],
       "captured": [
-        1367,
+        1366,
         768
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
-        1367,
+        1366,
         768
       ],
       "keys": [
@@ -302,7 +302,7 @@
         "Down",
         "wait"
       ],
-      "image_sha256": "ee04496dfebaa2c1523458376881c5d0508a0e161cf07db23a25d688a610c23a"
+      "image_sha256": "72240c9fa73e0227ceb1a0d89fab5024601b44e3c4d58c15cdf8eceef5ff7d64"
     },
     {
       "name": "keyboard-selection-640x480",
@@ -314,11 +314,11 @@
         640,
         480
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
         640,
@@ -340,7 +340,7 @@
         "Down",
         "wait"
       ],
-      "image_sha256": "ef91dc81a96bb8c0462866b80d4022848c073255c740ec884d2bd25265157391"
+      "image_sha256": "c70aaffd7febc372117495c4631d7df3a392d48e49778454080c1624b720c74a"
     },
     {
       "name": "keyboard-input-partial-1366x768",
@@ -349,17 +349,17 @@
         768
       ],
       "captured": [
-        1367,
+        1366,
         768
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
-        1367,
+        1366,
         768
       ],
       "keys": [
@@ -382,7 +382,7 @@
         "dialog:/home/alberto/lintrap503/partial.txt",
         "wait"
       ],
-      "image_sha256": "54916d9c647d5c376dd17ba781359325fdb9947bd76c3efbb666f4ff2b9684b8"
+      "image_sha256": "16edeb495318920e3e2367751c99fbbd61ed4f39eb71da9c5e33df6694dbd0fd"
     },
     {
       "name": "keyboard-input-whole-640x480",
@@ -394,11 +394,11 @@
         640,
         480
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
         640,
@@ -424,7 +424,7 @@
         "dialog:/home/alberto/lintrap503/whole.txt",
         "wait"
       ],
-      "image_sha256": "6e0190453ef08e8d66faa25b5d0ebcadcc89df607a24798f7cf88ab61fa788f1"
+      "image_sha256": "f9394cfe91dda48ee250bcc69246a5d7ae68543a7f6c849d40f1a4985bc6df3a"
     },
     {
       "name": "keyboard-input-cancel-1366x768",
@@ -433,17 +433,17 @@
         768
       ],
       "captured": [
-        1367,
+        1366,
         768
       ],
-      "monitor": "eDP-1",
+      "monitor": "HDMI-A-1",
       "scale": 1,
       "work_area": [
-        1850,
-        1060
+        1780,
+        1160
       ],
       "image_pixels": [
-        1367,
+        1366,
         768
       ],
       "keys": [
@@ -466,7 +466,52 @@
         "dialog-cancel",
         "wait"
       ],
-      "image_sha256": "3ad4118a57e4f42af01b971f10ad9817aab469acd0171a9b925176ee8d71f9b7"
+      "image_sha256": "13a9a97d1b208b47ed51ce8688c517bafb02ab3423dc5e11df06b8baeaf2f6f0"
+    },
+    {
+      "name": "keyboard-input-cancel-reopen-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog-cancel",
+        "wait",
+        "space",
+        "dialog-cancel",
+        "wait"
+      ],
+      "image_sha256": "13a9a97d1b208b47ed51ce8688c517bafb02ab3423dc5e11df06b8baeaf2f6f0"
     }
   ]
 }

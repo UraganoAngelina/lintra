@@ -24,7 +24,8 @@ che non sostituiscono il binding); `MIGRATION_TAURI_BRIEF.md`.
   azzera l'input. Il controller `chooseInput` accetta solo una risposta per
   il tracciato del piano, con nuovo `plan_ref` e anteprima.
 - `src/AnalysisForm.tsx`: sezione «File del tracciato» con un pulsante
-  («Scegli il file» / «Scegli un altro file», disabilitato a dialogo aperto),
+  («Scegli il file» / «Scegli un altro file», `aria-disabled` a dialogo
+  aperto, vedi Rework 1),
   stati annunciati e anteprima del campione: dimensione del file, byte del
   campione e fine riga «nel campione»; se il campione non arriva alla fine,
   la nota dice che i conteggi riguardano solo i primi N byte e non l'intero
@@ -75,6 +76,38 @@ la barra di scorrimento a comparsa in una cattura (stesso contenuto). I primi
 tentativi dello harness sono falliti per problemi dello harness (nome del
 tasto `slash`, layout italiano, ricerca GTK4, race sulla chiusura del dialogo),
 corretti senza modificare l'app.
+
+## Rework 1 (review Codex round 1: APPROVED con due MINOR)
+
+Data 23 novembre 2026. Entrambi i rilievi accettati e corretti.
+
+- **P503-01** (primo errore che citava una «scelta precedente» inesistente):
+  `INPUT_FAILED` ora descrive solo la causa; il form aggiunge «Resta
+  assegnato il file scelto prima» se `chosen` esiste, altrimenti «Nessun file
+  è assegnato al tracciato». Nuovo test in `tests/input.test.mjs` sui due casi.
+- **P503-02** (dopo Esc il focus non tornava al pulsante): il pulsante usa
+  `aria-disabled` invece di `disabled`, quindi non perde il focus mentre il
+  dialogo è aperto. La doppia apertura resta impedita dal reducer, che
+  ignora `choose_input` a dialogo aperto (test esistente «a second dialog
+  while one is open»); il dialogo parte solo dall'effetto legato al token.
+  Stile `[aria-disabled="true"]` uguale al precedente `:disabled`. Nuovo
+  scenario nativo `keyboard-input-cancel-reopen-1366x768`: Tab, Invio, Esc,
+  poi solo Spazio deve riaprire il dialogo (lo harness fallisce se non
+  compare), quindi secondo Esc; la cattura mostra l'anello di focus sul
+  pulsante.
+
+| Verifica rework | Esito |
+| --- | --- |
+| `npm run lint` | PASS rc 0 |
+| `npm test` | PASS 69/69 |
+| `npm run build` | PASS rc 0 |
+| `npm run tauri -- build --no-bundle -- --locked -j 2` + `tests/native_smoke.py` | PASS, binario `b3225f60…` |
+| `python3 tests/native_capture.py <bin> <out>` | PASS 16/16, tre esecuzioni consecutive rc 0 (receipt e immagini aggiornati) |
+| src-tauri fmt/test/Clippy | NOT_RUN: nessun file Rust modificato |
+| CI remota | NOT_RUN (nessun push) |
+
+Limite: il messaggio del primo errore è provato dal test di rendering, non
+nativamente (lo harness non ha uno scenario con file BOM).
 
 ## Rischi residui
 
