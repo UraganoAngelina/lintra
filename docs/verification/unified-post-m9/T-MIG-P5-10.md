@@ -1,7 +1,9 @@
 # T-MIG-P5-10 — React: monitor Full e stati terminali multi-pass
 
-Data 23 novembre 2026. Stato: **IN_REVIEW** (READY_FOR_CODEX_REVIEW), non DONE
-prima della review e dell'integrazione. Prerequisiti T-MIG-P5-09 e T-MIG-P5-06
+Data 23 novembre 2026. Stato: **DONE**. Review Codex round 1 APPROVED su
+`98bdf80` (un MINOR documentale, P510-01, corretto in questa chiusura);
+integrazione autorizzata dall'autore per fast-forward di `integration`, senza
+push. CI remota NOT_RUN. Prerequisiti T-MIG-P5-09 e T-MIG-P5-06
 DONE (`integration` `76f709d`). Branch `work/T-MIG-P5-10` da `76f709d`,
 worktree `/home/alberto/Desktop/LINTRA/lintra-p5-10`.
 
@@ -132,8 +134,12 @@ per quella causa.
 
 - PROGRESS.md dichiara `trace_ref` opaco di 1..64 caratteri: l'handle di piano
   è lungo 47 caratteri più le cifre di generazione e indice (circa 49 in
-  pratica) e il decoder accetta fino a 128 come ogni handle. Supererebbe 64
-  solo con generazione e indice di 17 cifre in tutto.
+  pratica). `validationProgress` applica il limite specifico di 64
+  (`ipc.ts:436`): supererebbe 64 solo con 18 o più cifre di generazione e
+  indice in tutto, e in quel caso il client rifiuterebbe il campione mentre
+  l'esito finale, letto da `validation_state`, resterebbe indipendente.
+  Correzione P510-01 (review Codex round 1): la versione in review diceva per
+  errore «il decoder accetta fino a 128» e «17 cifre».
 - Il campione resta letto ogni 250 ms: un tracciato o PASS2 molto brevi
   possono non comparire mai nel monitor; l'esito finale resta quello di Rust.
 - CI remota e Windows/WebView2 NOT_RUN; G-MIG-5 aperto.

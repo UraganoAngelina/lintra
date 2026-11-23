@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **73/128 DONE;55 rimanenti** (18U-* e43MIG).
+Conteggio unificato: **74/128 DONE;54 rimanenti** (18U-* e42MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -118,7 +118,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P5-07 | T-MIG-P5-01, T-MIG-P5-06 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-07.md) | desktop 82, Node 104 PASS; Informazioni nativa 34/34; 3b314d0+9460199;review Codex round 2 APPROVED (P507-01 risolto);CI delta NOT_RUN,al checkpoint blocco | Acceptance provenienza/licenze PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-08 | T-MIG-P5-01, T-MIG-P5-02, T-MIG-P5-03, T-MIG-P5-04, T-MIG-P5-05, T-MIG-P5-06, T-MIG-P5-07, T-MIG-P5-10 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-08.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-09 | T-MIG-P5-03, T-MIG-P4-12 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-09.md) | Node 116 PASS, desktop 82 PASS; Full nativa 39/39; ebef511;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance selezione Full PASS; G-MIG-5 NOT_VERIFIED |
-| T-MIG-P5-10 | T-MIG-P5-09, T-MIG-P5-06 | IN_REVIEW | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-10.md) | scope esteso autorizzato: handle di piano nel progresso (adapter Rust); desktop 83, Node 124 PASS; monitor Full nativo 43/43; CI delta NOT_RUN | G-MIG-5 NOT_VERIFIED |
+| T-MIG-P5-10 | T-MIG-P5-09, T-MIG-P5-06 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-10.md) | scope esteso autorizzato: handle di piano nel progresso (adapter Rust); desktop 83, Node 124 PASS; monitor Full nativo 43/43; 98bdf80;review Codex round 1 APPROVED (P510-01 MINOR documentale corretto in chiusura);CI delta NOT_RUN,al checkpoint blocco | Acceptance monitor Full/terminali multi-pass PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P6-01 | T-MIG-P5-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-01.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-02 | T-MIG-P6-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-02.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-03 | T-MIG-P6-01, T-MIG-P6-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-03.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
@@ -552,3 +552,15 @@ fast-forward di integration, nessun push. CI remota, Windows/WebView2 e `npm ci`
 con i pin esatti NOT_RUN, al checkpoint del blocco P5. Monitor Full per
 tracciato e pass a P5-10. G-MIG-5 e G-REL aperti. Prossima tecnicamente
 disponibile T-MIG-P5-10.
+
+Chiusura T-MIG-P5-10, 23 novembre 2026: **DONE**, **74/128 (57,8%)**, 54
+rimanenti. Autore Claude Code, commit 98bdf80 su base 76f709d. Scope esteso
+autorizzato dall'autore: il campione di progresso nomina il tracciato con
+l'handle di piano (adapter Rust desktop; forma DTO, IPC v1 e core invariati);
+monitor Full e terminali multi-pass in React. Review Codex round 1 APPROVED,
+un MINOR documentale (P510-01, limite di 64 del decoder descritto in modo
+inesatto) corretto nel dossier con questa chiusura, nessun rework funzionale.
+Integrazione autorizzata dall'autore: fast-forward di integration, nessun
+push. CI remota, Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN, al
+checkpoint del blocco P5. G-MIG-5 e G-REL aperti. Prossima tecnicamente
+disponibile T-MIG-P5-08 (gate di parità del blocco P5).
