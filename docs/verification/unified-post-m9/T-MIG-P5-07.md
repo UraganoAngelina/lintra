@@ -1,7 +1,8 @@
 # T-MIG-P5-07 — Informazioni/provenienza e licenze
 
-Data 23 novembre 2026. Stato: **IN_REVIEW** (READY_FOR_CODEX_REVIEW, round 2), non DONE
-prima della review e dell'integrazione. Prerequisiti T-MIG-P5-01 e T-MIG-P5-06
+Data 23 novembre 2026. Stato: **DONE**. Review Codex round 2 APPROVED su
+`9460199` (P507-01 risolto); integrazione autorizzata dall'autore per
+fast-forward di `integration`, senza push. CI remota NOT_RUN. Prerequisiti T-MIG-P5-01 e T-MIG-P5-06
 DONE (`integration` `db3cd7c`). Branch `work/T-MIG-P5-07` da `db3cd7c`,
 worktree `/home/alberto/Desktop/LINTRA/lintra-p5-07`.
 

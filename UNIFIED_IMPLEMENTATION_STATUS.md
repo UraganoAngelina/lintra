@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **71/128 DONE;57 rimanenti** (18U-* e45MIG).
+Conteggio unificato: **72/128 DONE;56 rimanenti** (18U-* e44MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -115,7 +115,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P5-04 | T-MIG-P5-02 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-04.md) | 76 Node/lint/build PASS; caselle formati native da tastiera 18/18 ×3; 9ac6834;review Codex APPROVED;CI delta NOT_RUN,al checkpoint blocco | Acceptance formati report PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-05 | T-MIG-P5-03, T-MIG-P5-04 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-05.md) | scope esteso autorizzato: D09 completo (IPC v1 additivo, Rust/Tauri/React); rework 1 P505-01..04; workspace 1116/1071, desktop 81, Node 88 PASS; run nativo 250M record 82,6 s, renderer +26 MiB; scenari nativi 28/28 ×3; fd2a63a+d9bf2bb;review Codex round 2 APPROVED;CI delta NOT_RUN,al checkpoint blocco | Acceptance run/progress/D09 PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-06 | T-MIG-P5-05 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-06.md) | desktop 82, Node 95 PASS; cancel nativo con report precedente, scenari nativi 31/31; 6b6a961+e80c76c;review Codex round 2 APPROVED (P506-01/02 risolti);CI delta NOT_RUN,al checkpoint blocco | Acceptance cancel/terminale/report precedente PASS; G-MIG-5 NOT_VERIFIED |
-| T-MIG-P5-07 | T-MIG-P5-01, T-MIG-P5-06 | IN_REVIEW | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-07.md) | desktop 82, Node 104 PASS; Informazioni nativa 34/34; CI delta NOT_RUN | G-MIG-5 NOT_VERIFIED |
+| T-MIG-P5-07 | T-MIG-P5-01, T-MIG-P5-06 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-07.md) | desktop 82, Node 104 PASS; Informazioni nativa 34/34; 3b314d0+9460199;review Codex round 2 APPROVED (P507-01 risolto);CI delta NOT_RUN,al checkpoint blocco | Acceptance provenienza/licenze PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-08 | T-MIG-P5-01, T-MIG-P5-02, T-MIG-P5-03, T-MIG-P5-04, T-MIG-P5-05, T-MIG-P5-06, T-MIG-P5-07, T-MIG-P5-10 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-08.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-09 | T-MIG-P5-03, T-MIG-P4-12 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-09.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-10 | T-MIG-P5-09, T-MIG-P5-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-10.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
@@ -531,3 +531,14 @@ aperti. Integrazione autorizzata dall'autore: fast-forward di integration,
 nessun push. CI remota, Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN,
 al checkpoint del blocco P5. G-MIG-5 e G-REL aperti. Prossima tecnicamente
 disponibile T-MIG-P5-07.
+
+Chiusura T-MIG-P5-07, 23 novembre 2026: **DONE**, **72/128 (56,3%)**, 56
+rimanenti. Autore Claude Code, commit 3b314d0 e rework 9460199 su base
+db3cd7c. Solo frontend desktop, notice e provenienza asset: Rust di
+produzione, IPC v1 e core invariati. Review Codex round 1 CHANGES_REQUESTED
+con un MAJOR (P507-01, collisione `about.ts`/`About.tsx` su filesystem senza
+distinzione di maiuscole), corretto nel rework; round 2 APPROVED senza rilievi
+aperti. Integrazione autorizzata dall'autore: fast-forward di integration,
+nessun push. CI remota, Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN,
+al checkpoint del blocco P5. Inventario licenze Rust completo a P8-02. G-MIG-5
+e G-REL aperti. Prossima tecnicamente disponibile T-MIG-P5-09.
