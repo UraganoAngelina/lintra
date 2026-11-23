@@ -1,7 +1,8 @@
 # T-MIG-P5-04 — Selezione formati di report
 
-Data 23 novembre 2026. Stato: **IN REVIEW**, non DONE prima della review Codex
-e dell'integrazione. Prerequisito T-MIG-P5-02 DONE (`cdf8373`). Branch
+Data 23 novembre 2026. Stato: **DONE**. Review Codex round 1 APPROVED senza
+rilievi su `9ac6834`; integrazione autorizzata dall'autore per fast-forward di
+`integration`, senza push. CI remota NOT_RUN. Prerequisito T-MIG-P5-02 DONE (`cdf8373`). Branch
 `work/T-MIG-P5-04` da `integration` `9ff674d` (P5-03 integrata), worktree
 dedicato `/home/alberto/Desktop/LINTRA/lintra-p5-04`.
 
