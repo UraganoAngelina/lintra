@@ -1,7 +1,8 @@
 # T-MIG-P5-06 — Cancel, stato terminale e old report
 
-Data 23 novembre 2026. Stato: **IN REVIEW**, non DONE prima della review Codex
-e dell'integrazione. Prerequisito T-MIG-P5-05 DONE (`integration` `3a5d685`).
+Data 23 novembre 2026. Stato: **DONE**. Review Codex round 2 APPROVED su
+`e80c76c` (P506-01/02 risolti); integrazione autorizzata dall'autore per
+fast-forward di `integration`, senza push. CI remota NOT_RUN. Prerequisito T-MIG-P5-05 DONE (`integration` `3a5d685`).
 Branch `work/T-MIG-P5-06` da `3a5d685`, worktree
 `/home/alberto/Desktop/LINTRA/lintra-p5-06`.
 
