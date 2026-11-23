@@ -82,9 +82,13 @@ export function reduceRun(state: RunState, event: RunEvent): RunState {
     case "start_failed":
       if (view.status !== "starting" || view.token !== event.token) return state;
       return { ...state, view: { status: "failed", message: event.message } };
-    case "snapshot":
+    case "snapshot": {
       if (view.status !== "active" || event.snapshot.run === null || !same(view.run, event.snapshot.run)) return state;
-      return { ...state, view: { ...view, snapshot: event.snapshot } };
+      // A lost or undecodable cancel reply proves nothing (LIFECYCLE.md):
+      // once Rust shows the request recorded, the uncertainty is resolved.
+      const confirmed = event.snapshot.cancel_requested || event.snapshot.state === "cancelling";
+      return { ...state, view: { ...view, snapshot: event.snapshot, cancel: view.cancel === "failed" && confirmed ? "requested" : view.cancel } };
+    }
     case "progress": {
       if (view.status !== "active" || !same(view.run, event.progress.run)) return state;
       // A repeated or older sequence never moves the display backwards.
@@ -124,18 +128,21 @@ export function reduceRun(state: RunState, event: RunEvent): RunState {
   }
 }
 
-/** "Interrompi analisi" is offered only while Rust can still stop the work
- * (preparing or running, no cancel requested yet, no D09 decision pending:
- * there Annulla is the cancel). Finalizing is past the useful boundary. */
+/** "Interrompi analisi" is offered while the run is active and Rust may still
+ * accept it (no cancel requested yet, no D09 decision pending: there Annulla
+ * is the cancel). Finalizing is included: before the service boundary Rust
+ * still answers requested, after it too_late (LIFECYCLE.md); only Rust knows
+ * which side of the boundary the run is on. */
 export function canCancel(view: Extract<RunView, { status: "active" }>): boolean {
   const snapshot = view.snapshot?.state === "idle" ? null : view.snapshot;
   const state = snapshot?.state ?? "preparing";
   return (view.cancel === "none" || view.cancel === "failed") && !snapshot?.cancel_requested
-    && (state === "preparing" || state === "running") && view.gate?.state !== "confirmation_required";
+    && (state === "preparing" || state === "running" || state === "finalizing") && view.gate?.state !== "confirmation_required";
 }
 
 export const CANCEL_TOO_LATE = "L'analisi è già in conclusione: non è più possibile interromperla. Attendi l'esito.";
-export const CANCEL_FAILED = "La richiesta di interruzione non è stata registrata. Riprova.";
+/** Neutral: a transport error does not prove Rust ignored the request. */
+export const CANCEL_FAILED = "Non è stato possibile confermare la richiesta di interruzione. Se l'analisi prosegue, riprova.";
 
 /** Words of the interface (MIGRATION_TAURI_BRIEF.md, "Stati e parole"). */
 export const START_FAILED = "Non è stato possibile avviare l'analisi. Controlla la selezione e il file, poi riprova; se il problema resta, chiudi e riapri Lintra.";

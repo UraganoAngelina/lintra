@@ -1,5 +1,5 @@
 {
-  "binary_sha256": "d0552f7821ac9e44e3cc64e32835c66e3ccb753981ec6af9165e42050162248b",
+  "binary_sha256": "d28d99d8c673d28543f970eeb941577611c70f96a0bc97882ded99607c14453c",
   "scenarios": [
     {
       "name": "analisi-640x480",
@@ -23,7 +23,7 @@
       ],
       "keys": [],
       "budget": null,
-      "image_sha256": "899758302ddf3ef1590248dfb383168241d3b11ad807e97fb62f051d2fbe5b00"
+      "image_sha256": "e8971b84873401ee1e7fc036ec7bc91ad17e8e426a6a55c88d5dcb1fd47ee70b"
     },
     {
       "name": "analisi-1024x768",
@@ -395,7 +395,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "e287a3090ce3ef9f65d5725dbec6aebb3951226dcfc808b6b3db003f8d7193d6"
+      "image_sha256": "6dbfdb744145622566edd9402529e2ee81965329d4d47d9b4b74db20af2adc98"
     },
     {
       "name": "keyboard-input-whole-640x480",
@@ -438,7 +438,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "7964ea92ee93ed2013e3e423b53a237f57c82e731f912e3dfb160beb1b18374f"
+      "image_sha256": "462bb4b27c3d839853f6017af43d48f8dd245e4a02928da516812e2687414229"
     },
     {
       "name": "keyboard-input-cancel-1366x768",
@@ -617,7 +617,7 @@
         "space"
       ],
       "budget": null,
-      "image_sha256": "e516a13b84b2e6683c77790e3f9519927a3fafd0612f96c082f5eb8e75eb3c22"
+      "image_sha256": "5aee242e7b0dd4972dbc3298bc6db4f36ac7aede30706fdeadd4b66890f2738b"
     },
     {
       "name": "keyboard-run-unconfigured-1366x768",
@@ -764,7 +764,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "c723cd10fe23edbc60b1045e170b798792737522f7900f8cceaf767e568244fa"
+      "image_sha256": "28cb9acd96ebf1a2f4f41ad9648563fb70ac14759265dd2f364d19518a1358a9"
     },
     {
       "name": "keyboard-budget-warning-1366x768",
@@ -814,7 +814,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "82736e7202f39010bfc30f7025de5523020d9574bb80a71f379238f2c4274486"
+      "image_sha256": "914b0405aa3141b1772ea778a6ca420045103a50025df1ec6ba145e8366f238c"
     },
     {
       "name": "keyboard-budget-warning-640x480",
@@ -864,7 +864,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "0dc4f35205dacaa7de232e0458c9752f13f15627d7769b41162c10ce85db42c2"
+      "image_sha256": "ac9928c8bfe530c3d07e6dd27aca84e7cfa193f9923d6142bc55b6640c909f4f"
     },
     {
       "name": "keyboard-budget-proceed-1366x768",
@@ -972,7 +972,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "7602b243f246391b6539dc3888e83562f7da2ca3ec7236fcf0e9f578c5b13ea7"
+      "image_sha256": "b5d8191a4e3a7894e3738aedbdebf701ec93483f735e742e3f1c866a82191f32"
     },
     {
       "name": "keyboard-budget-escape-1366x768",
@@ -1025,7 +1025,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "b5d8191a4e3a7894e3738aedbdebf701ec93483f735e742e3f1c866a82191f32"
+      "image_sha256": "0dfd0366c0c2c3131ec885df64f7e7bb3ab4e5755037fe34a71c8a1faa639a3b"
     },
     {
       "name": "keyboard-budget-invalid-fixed-1366x768",
@@ -1079,7 +1079,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "d2536e332903e5e665bd7382bdd9b2c26dafaaa76c6c60e8fb06a77bc09bbdc0"
+      "image_sha256": "76e22a8a70bd6bb722c7717496e3d3f8780b00efd8cc603e1b6dd94064e6fe4c"
     },
     {
       "name": "keyboard-budget-invalid-removed-1366x768",
@@ -1133,7 +1133,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "abdc394a2831bd9e92a964869ee802ee0c478b842ca01381042724d4de7c230d"
+      "image_sha256": "4c686a77f28ad2145762dfb2512a301d704f913bfc8bfe8bd594e3c19985d66b"
     },
     {
       "name": "keyboard-run-interrupt-offered-1366x768",
@@ -1183,7 +1183,7 @@
         "Tab"
       ],
       "budget": null,
-      "image_sha256": "a1f3816f40b999a5e9564e027040940495a158767a2b26d390d6df7dfba8d321"
+      "image_sha256": "4e0382400bbe57e225143aa7347946821f7806f4ab0c4d4caf0c59d8e39a6b39"
     },
     {
       "name": "keyboard-run-cancelled-1366x768",
@@ -1237,7 +1237,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "a94f45a376670cb83332756b4a175740f34ee78f02bda805db274dbdcd20e939"
+      "image_sha256": "16bd336c3eb817c6e55d1bf28ac4f2e431f09d262d0cfdbe0925b8a9556f1efc"
     },
     {
       "name": "keyboard-run-cancelled-previous-report-1366x768",
@@ -1307,7 +1307,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "08cfc9720a7f36875ed663f6d40c9113fd1e32426ab070cd4c1aa2945d44780c"
+      "image_sha256": "ce209c24f7f084f55de8c9db65eefdf451163f0d75af6377a818b8b4098d8c8d"
     }
   ]
 }

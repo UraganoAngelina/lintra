@@ -36,9 +36,17 @@ test("cancel is offered only while Rust can stop the work, once", () => {
   assert.ok(canCancel(state.view), "preparing");
   state = running(state, first);
   assert.ok(canCancel(state.view), "running");
-  for (const stage of ["finalizing", "cancelling"]) {
-    assert.ok(!canCancel(reduceRun(state, { type: "snapshot", snapshot: snapshot(first, stage) }).view), stage);
-  }
+  assert.ok(!canCancel(reduceRun(state, { type: "snapshot", snapshot: snapshot(first, "cancelling") }).view), "cancelling");
+  // Finalizing (P506-01): Rust still accepts the request before the service
+  // boundary and answers too_late after it; the UI asks, Rust decides.
+  const finalizing = reduceRun(state, { type: "snapshot", snapshot: snapshot(first, "finalizing") });
+  assert.ok(canCancel(finalizing.view), "finalizing, before the boundary");
+  const before = reduceRun(reduceRun(finalizing, { type: "cancel" }), { type: "cancel_answer", run: first, disposition: "requested" });
+  assert.equal(before.view.cancel, "requested");
+  assert.equal(activeText(before.view), "Interruzione richiesta: attendi la conclusione comunicata dal servizio.");
+  const after = reduceRun(reduceRun(finalizing, { type: "cancel" }), { type: "cancel_answer", run: first, disposition: "too_late" });
+  assert.equal(after.view.cancel, "too_late");
+  assert.ok(!canCancel(after.view), "past the boundary: no second request");
   assert.ok(!canCancel(reduceRun(state, { type: "snapshot", snapshot: snapshot(first, "running", { cancel_requested: true }) }).view));
   const warned = { schemaVersion: 1, run: first, state: "confirmation_required", confirmation_ref: "h",
     audit: { schemaVersion: 1, input_bytes: "2", reference_bytes: "0", missing_reference_files: "0", input_budget: "1", reference_budget: null,
@@ -71,6 +79,25 @@ test("each Rust disposition is shown as such; a request is not a cancelled outco
   // Answers about another run are ignored.
   const other = reduceRun(failed, { type: "cancel_answer", run: second, disposition: "requested" });
   assert.equal(other, failed);
+});
+
+test("a lost cancel reply is resolved by the next authoritative snapshot (P506-02)", () => {
+  const lost = reduceRun(reduceRun(running(run(INITIAL_RUN, first), first), { type: "cancel" }), { type: "cancel_failed", run: first });
+  assert.equal(lost.view.cancel, "failed");
+  // Rust did record it: the warning goes away, no retry is offered.
+  for (const confirmed of [snapshot(first, "running", { cancel_requested: true }), snapshot(first, "cancelling", { cancel_requested: true })]) {
+    const next = reduceRun(lost, { type: "snapshot", snapshot: confirmed });
+    assert.equal(next.view.cancel, "requested", confirmed.state);
+    assert.ok(!canCancel(next.view));
+    assert.equal(activeText(next.view), "Interruzione richiesta: attendi la conclusione comunicata dal servizio.");
+  }
+  // Rust did not record it: the neutral note stays and retry is allowed.
+  const unrecorded = reduceRun(lost, { type: "snapshot", snapshot: snapshot(first, "running") });
+  assert.equal(unrecorded.view.cancel, "failed");
+  assert.ok(canCancel(unrecorded.view));
+  // A snapshot of another run never resolves it.
+  assert.equal(reduceRun(lost, { type: "snapshot", snapshot: snapshot(second, "cancelling", { cancel_requested: true }) }), lost);
+  assert.doesNotMatch(CANCEL_FAILED, /non è stata registrata/, "a transport error is not proof that Rust ignored it");
 });
 
 test("after a requested cancel the words wait for Rust and the outcome decides", () => {
@@ -128,7 +155,12 @@ test("the panel shows Interrompi analisi while it applies and keeps it in place 
     { type: "cancel_answer", run: first, disposition: "too_late" });
   assert.match(panel(late), /non è più possibile interromperla/);
   const failed = reduceRun(reduceRun(running(run(reduceRun(INITIAL_RUN, budget), first), first), { type: "cancel" }), { type: "cancel_failed", run: first });
-  assert.match(panel(failed), new RegExp(`role="alert">${CANCEL_FAILED.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
+  const html = text => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/'/g, "&#x27;");
+  assert.match(panel(failed), new RegExp(`role="status">${html(CANCEL_FAILED)}</p>`));
+  // Lost reply then Rust confirms: one consistent message, no retry hint.
+  const resolved = reduceRun(failed, { type: "snapshot", snapshot: snapshot(first, "cancelling", { cancel_requested: true }) });
+  assert.doesNotMatch(panel(resolved), new RegExp(html(CANCEL_FAILED)));
+  assert.match(panel(resolved), /Interruzione richiesta: attendi/);
   const done = finish(state, first, cancelled);
   assert.doesNotMatch(panel(done), /Interrompi analisi|Interruzione richiesta/, "no cancel once terminal");
   assert.match(panel(done), /<h3>Analisi annullata<\/h3>/);

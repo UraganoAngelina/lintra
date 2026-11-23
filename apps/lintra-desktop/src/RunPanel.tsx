@@ -134,7 +134,7 @@ function RunStatus({ state }: { state: RunState }) {
     <progress aria-label="Avanzamento dell'analisi" />
     {view.decisionFailed && <p className="selection-status" role="alert">{DECISION_FAILED}</p>}
     {view.cancel === "too_late" && <p className="selection-status" role="status">{CANCEL_TOO_LATE}</p>}
-    {view.cancel === "failed" && <p className="selection-status" role="alert">{CANCEL_FAILED}</p>}
+    {view.cancel === "failed" && <p className="selection-status" role="status">{CANCEL_FAILED}</p>}
     {phase && <p>{phase}</p>}
     <GateNote gate={view.gate} />
     <RunCounters progress={view.progress} formats={formats} />
