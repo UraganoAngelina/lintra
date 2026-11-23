@@ -11,7 +11,7 @@ import { loadComponent } from "./tsx.mjs";
 import { IpcError, resourceBudgetState, validationBudget, validationBudgetDecide } from "../src/ipc.ts";
 import { INITIAL_SELECTION, reduce } from "../src/analysis.ts";
 import {
-  BUDGET_INVALID, INITIAL_RUN, POLL_MS, START_FAILED, activeText, budgetText, busy, decide, gateOpen, outcomeText, pollRun,
+  BUDGET_INVALID, INITIAL_RUN, POLL_MS, START_FAILED, acknowledge, activeText, budgetText, busy, canStart, decide, gateOpen, outcomeText, pollRun,
   reduceRun, startRun,
 } from "../src/run.ts";
 
@@ -87,7 +87,7 @@ test("start freezes the plan in Rust, then starts it; an invalid budget never st
   const events = [];
   const calls = [];
   await startRun(api({ resourceBudgetState: [unconfigured], planPrepare: [{ plan_ref: "plan_1", mode: "local_only" }], validationStart: [run] }, calls),
-    e => events.push(e), state.view.token, "plan_1");
+    e => events.push(e), state.view.token, "plan_1", null);
   assert.deepEqual(calls.map(c => c[0]), ["resourceBudgetState", "planPrepare", "validationStart"]);
   for (const event of events) state = reduceRun(state, event);
   assert.equal(state.view.status, "active");
@@ -96,7 +96,7 @@ test("start freezes the plan in Rust, then starts it; an invalid budget never st
   let invalid = reduceRun(INITIAL_RUN, { type: "start", reports });
   const later = [];
   const invalidCalls = [];
-  await startRun(api({ resourceBudgetState: [{ ...unconfigured, state: "invalid" }] }, invalidCalls), e => later.push(e), invalid.view.token, "plan_1");
+  await startRun(api({ resourceBudgetState: [{ ...unconfigured, state: "invalid" }] }, invalidCalls), e => later.push(e), invalid.view.token, "plan_1", null);
   assert.deepEqual(invalidCalls.map(c => c[0]), ["resourceBudgetState"], "no prepare or start with an invalid budget");
   for (const event of later) invalid = reduceRun(invalid, event);
   assert.deepEqual(invalid.view, { status: "failed", message: BUDGET_INVALID });
@@ -104,11 +104,62 @@ test("start freezes the plan in Rust, then starts it; an invalid budget never st
   let refused = reduceRun(INITIAL_RUN, { type: "start", reports });
   const failed = [];
   await startRun(api({ resourceBudgetState: [unconfigured, unconfigured], planPrepare: [{ plan_ref: "plan_1", mode: "local_only" }],
-    validationStart: [new IpcError("IPC_BUSY")] }), e => failed.push(e), refused.view.token, "plan_1");
+    validationStart: [new IpcError("IPC_BUSY")], validationState: [{ schemaVersion: 1, state: "idle", run: null, outcome: null }] }),
+    e => failed.push(e), refused.view.token, "plan_1", null);
   await new Promise(resolve => setTimeout(resolve, 0));
   for (const event of failed) refused = reduceRun(refused, event);
   assert.deepEqual(refused.view, { status: "failed", message: START_FAILED });
   assert.ok(!busy(refused));
+});
+
+test("P505-02: a corrected or removed invalid budget is honoured by the next Avvia without restart", async () => {
+  let state = reduceRun(INITIAL_RUN, { type: "budget_loaded", budget: { ...unconfigured, state: "invalid" } });
+  assert.ok(canStart(state), "the stored invalid state never blocks the start: Avvia reads the file again");
+  for (const [budget, expected] of [[{ ...unconfigured, state: "invalid" }, "failed"],
+    [{ schemaVersion: 1, state: "configured", input_bytes: "10", reference_bytes: null }, "active"],
+    [unconfigured, "active"]]) {
+    state = reduceRun({ ...state, view: { status: "idle" } }, { type: "start", reports });
+    const events = [];
+    const calls = [];
+    await startRun(api({ resourceBudgetState: [budget], planPrepare: [{ plan_ref: "plan_1", mode: "local_only" }], validationStart: [run] }, calls),
+      e => events.push(e), state.view.token, "plan_1", null);
+    for (const event of events) state = reduceRun(state, event);
+    assert.equal(state.view.status, expected, budget.state);
+    assert.equal(state.budget.state, budget.state, "the status line shows the file just read");
+    if (budget.state === "invalid") assert.deepEqual(calls.map(c => c[0]), ["resourceBudgetState"], "still refused while invalid");
+  }
+});
+
+test("P505-04: after a lost start reply the client resynchronizes with the run Rust accepted, never restarts it", async () => {
+  const running = { schemaVersion: 1, state: "preparing", run, plan_ref: "plan_1", mode: "local_only", cancel_requested: false, outcome: null };
+  const attempt = async (current, previous) => {
+    let state = reduceRun(INITIAL_RUN, { type: "start", reports });
+    const calls = [];
+    await startRun(api({ resourceBudgetState: [unconfigured, unconfigured], planPrepare: [{ plan_ref: "plan_1", mode: "local_only" }],
+      validationStart: [new IpcError("IPC_TECHNICAL_FAILURE")], validationState: [current] }, calls),
+      e => { state = reduceRun(state, e); }, state.view.token, "plan_1", previous);
+    await new Promise(resolve => setTimeout(resolve, 0));
+    assert.equal(calls.filter(c => c[0] === "validationStart").length, 1, "no blind retry of start");
+    assert.deepEqual(calls.find(c => c[0] === "validationState"), ["validationState", null], "reads the current run");
+    return state;
+  };
+  const attached = await attempt(running, null);
+  assert.equal(attached.view.status, "active");
+  assert.deepEqual(attached.view.run, run, "monitoring resumes on the accepted run");
+  for (const [current, previous, why] of [
+    [{ schemaVersion: 1, state: "idle", run: null, outcome: null }, null, "nothing accepted"],
+    [{ ...running, plan_ref: "plan_9" }, null, "another plan"],
+    [{ ...running, state: "terminal", outcome: { schemaVersion: 1, kind: "not_started", reason: "cancelled" }, cancel_requested: true }, run, "the previous run"],
+  ]) {
+    const state = await attempt(current, previous);
+    assert.deepEqual(state.view, { status: "failed", message: START_FAILED }, why);
+  }
+  let lost = reduceRun(INITIAL_RUN, { type: "start", reports });
+  const token = lost.view.token;
+  await startRun(api({ resourceBudgetState: [unconfigured, unconfigured], planPrepare: [{ plan_ref: "plan_1", mode: "local_only" }],
+    validationStart: [new IpcError("IPC_TECHNICAL_FAILURE")], validationState: [new IpcError("IPC_TECHNICAL_FAILURE")] }),
+    e => { lost = reduceRun(lost, e); }, token, "plan_1", null);
+  assert.deepEqual(lost.view, { status: "failed", message: START_FAILED }, "no state, no guess");
 });
 
 function active() {
@@ -145,6 +196,23 @@ test("polling reads state first, keeps one sample, ignores late and foreign repl
   await pollRun(api({ validationState: [snapshot("terminal", valid)], validationProgress: [new IpcError("IPC_TECHNICAL_FAILURE")],
     validationAcknowledge: [undefined] }), e => { sealed = reduceRun(sealed, e); }, run, false);
   assert.equal(sealed.view.status, "terminal");
+  // P505-03: progress, gate and ack all failing (poisoned shared lock):
+  // the authoritative terminal is shown anyway, the ack is retried apart.
+  const technical = { schemaVersion: 1, kind: "technical_failure", error: { schemaVersion: 1, category: "technical", code: "IPC_TECHNICAL_FAILURE" } };
+  let poisoned = reduceRun(active(), { type: "gate", gate: { ...warned, state: "checking", audit: null, confirmation_ref: null } });
+  const failing = new IpcError("IPC_TECHNICAL_FAILURE");
+  assert.equal(await pollRun(api({ validationState: [snapshot("terminal", technical)], validationProgress: [failing], validationBudget: [failing],
+    validationAcknowledge: [failing] }), e => { poisoned = reduceRun(poisoned, e); }, run, true), false);
+  assert.equal(poisoned.view.status, "terminal");
+  assert.deepEqual(poisoned.view.outcome, technical);
+  assert.equal(poisoned.view.acknowledged, false);
+  assert.ok(!busy(poisoned), "the form is released");
+  assert.ok(!canStart(poisoned), "a new start waits for the ack Rust requires");
+  assert.equal(await acknowledge(api({ validationAcknowledge: [failing] }), e => { poisoned = reduceRun(poisoned, e); }, run), false);
+  assert.equal(await acknowledge(api({ validationAcknowledge: [undefined] }), e => { poisoned = reduceRun(poisoned, e); }, run), true);
+  assert.equal(poisoned.view.acknowledged, true);
+  assert.deepEqual(poisoned.view.outcome, technical, "the ack never changes the outcome");
+  assert.ok(canStart(poisoned));
   assert.equal(reduceRun(state, { type: "progress", progress: progress("99") }), state);
   assert.ok(!busy(state));
   assert.ok(POLL_MS >= 100, "throttled: never a request per record or per frame");
@@ -193,10 +261,10 @@ test("the panel shows the budget status and enables Avvia analisi only when Rust
   const ready = reduceRun(INITIAL_RUN, { type: "budget_loaded", budget: unconfigured });
   assert.match(panel(ready), /<button type="button" class="primary" aria-disabled="false">Avvia analisi<\/button>/);
   assert.match(panel(ready), /Budget di risorse non configurato/);
-  assert.match(panel(INITIAL_RUN), /aria-disabled="true">Avvia analisi/, "budget state not yet read");
+  assert.match(panel(INITIAL_RUN), /aria-disabled="false">Avvia analisi/, "Avvia reads the budget itself");
   const invalid = reduceRun(INITIAL_RUN, { type: "budget_loaded", budget: { ...unconfigured, state: "invalid" } });
-  assert.match(panel(invalid), /role="alert">Il file di configurazione dei budget di risorse non è valido/);
-  assert.match(panel(invalid), /aria-disabled="true">Avvia analisi/);
+  assert.match(panel(invalid), /role="alert">Il file di configurazione dei budget di risorse non è valido: correggilo o rimuovilo, poi avvia di nuovo/);
+  assert.match(panel(invalid), /aria-disabled="false">Avvia analisi/, "recovery stays reachable (P505-02)");
   assert.match(panel(ready, INITIAL_SELECTION), /aria-disabled="true">Avvia analisi/, "no file, no start");
   const running = reduceRun(reduceRun(ready, { type: "start", reports }), { type: "started", token: 1, run });
   const html = panel(reduceRun(running, { type: "progress", progress: progress("3", "1234567") }));

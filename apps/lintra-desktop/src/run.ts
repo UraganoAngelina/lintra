@@ -17,10 +17,13 @@ export type RunView =
   | { status: "starting"; token: number; reports: ReportSelection }
   | { status: "active"; run: RunRef; reports: ReportSelection; snapshot: RunSnapshot | null; progress: RunProgress | null;
       gate: BudgetGate | null; deciding: boolean; decisionFailed: boolean }
-  | { status: "terminal"; run: RunRef; reports: ReportSelection; outcome: RunOutcome; progress: RunProgress | null; gate: BudgetGate | null }
+  | { status: "terminal"; run: RunRef; reports: ReportSelection; outcome: RunOutcome; progress: RunProgress | null; gate: BudgetGate | null;
+      acknowledged: boolean }
   | { status: "failed"; message: string };
 
-export type RunState = { view: RunView; budget: BudgetConfigState | null; budgetFailed: boolean; nextToken: number };
+/** `lastRun`: the last run this window attached to, so a resynchronization
+ * after an uncertain start never mistakes it for the new one (P505-04). */
+export type RunState = { view: RunView; budget: BudgetConfigState | null; budgetFailed: boolean; nextToken: number; lastRun: RunRef | null };
 
 export type RunEvent =
   | { type: "budget_loaded"; budget: BudgetConfigState }
@@ -33,15 +36,23 @@ export type RunEvent =
   | { type: "gate"; gate: BudgetGate }
   | { type: "decide" }
   | { type: "decide_failed" }
-  | { type: "terminal"; run: RunRef; outcome: RunOutcome };
+  | { type: "terminal"; run: RunRef; outcome: RunOutcome; acknowledged: boolean }
+  | { type: "acknowledged"; run: RunRef };
 
-export const INITIAL_RUN: RunState = { view: { status: "idle" }, budget: null, budgetFailed: false, nextToken: 1 };
+export const INITIAL_RUN: RunState = { view: { status: "idle" }, budget: null, budgetFailed: false, nextToken: 1, lastRun: null };
 
 const same = (left: RunRef, right: RunRef) => left.instance_id === right.instance_id && left.run_id === right.run_id;
 
 /** True while the form must not change (Slint `enabled: !root.busy`). */
 export function busy(state: RunState): boolean {
   return state.view.status === "starting" || state.view.status === "active";
+}
+
+/** A new start is possible once Rust has the previous terminal acknowledged
+ * (LIFECYCLE.md: start is refused before the ack). The stored budget state
+ * never blocks it: each start reads the configuration again (P505-02). */
+export function canStart(state: RunState): boolean {
+  return !busy(state) && !(state.view.status === "terminal" && !state.view.acknowledged);
 }
 
 /** Pure transition; every Rust value is taken as is, never recomputed. */
@@ -55,7 +66,7 @@ export function reduceRun(state: RunState, event: RunEvent): RunState {
       return { ...state, view: { status: "starting", token: state.nextToken, reports: event.reports }, nextToken: state.nextToken + 1 };
     case "started":
       if (view.status !== "starting" || view.token !== event.token) return state;
-      return { ...state, view: { status: "active", run: event.run, reports: view.reports, snapshot: null, progress: null,
+      return { ...state, lastRun: event.run, view: { status: "active", run: event.run, reports: view.reports, snapshot: null, progress: null,
         gate: null, deciding: false, decisionFailed: false } };
     case "start_failed":
       if (view.status !== "starting" || view.token !== event.token) return state;
@@ -82,13 +93,16 @@ export function reduceRun(state: RunState, event: RunEvent): RunState {
       // A terminal of this run is final: late samples cannot reopen it.
       if (view.status !== "active" || !same(view.run, event.run)) return state;
       return { ...state, view: { status: "terminal", run: view.run, reports: view.reports, outcome: event.outcome,
-        progress: view.progress, gate: view.gate } };
+        progress: view.progress, gate: view.gate, acknowledged: event.acknowledged } };
+    case "acknowledged":
+      if (view.status !== "terminal" || !same(view.run, event.run)) return state;
+      return { ...state, view: { ...view, acknowledged: true } };
   }
 }
 
 /** Words of the interface (MIGRATION_TAURI_BRIEF.md, "Stati e parole"). */
 export const START_FAILED = "Non è stato possibile avviare l'analisi. Controlla la selezione e il file, poi riprova; se il problema resta, chiudi e riapri Lintra.";
-export const BUDGET_INVALID = "Il file di configurazione dei budget di risorse non è valido: correggilo o rimuovilo per avviare l'analisi.";
+export const BUDGET_INVALID = "Il file di configurazione dei budget di risorse non è valido: correggilo o rimuovilo, poi avvia di nuovo l'analisi.";
 export const BUDGET_UNREADABLE = "Non è stato possibile leggere lo stato dei budget di risorse. Chiudi e riapri Lintra.";
 export const DECISION_FAILED = "La scelta non è stata registrata: la richiesta non è più valida. Attendi lo stato aggiornato.";
 
@@ -146,7 +160,7 @@ export type RunApi = {
   resourceBudgetState: () => Promise<BudgetConfigState>;
   planPrepare: (planRef: string) => Promise<{ plan_ref: string; mode: "local_only" | "full" }>;
   validationStart: (planRef: string, mode: "local_only") => Promise<RunRef>;
-  validationState: (run: RunRef) => Promise<RunSnapshot>;
+  validationState: (run: RunRef | null) => Promise<RunSnapshot>;
   validationProgress: (run: RunRef) => Promise<RunProgress>;
   validationBudget: (run: RunRef) => Promise<BudgetGate>;
   validationBudgetDecide: (run: RunRef, confirmationRef: string, decision: "proceed" | "cancel") => Promise<"proceeding" | "cancelled">;
@@ -160,8 +174,8 @@ export async function loadBudget(api: RunApi, dispatch: Dispatch): Promise<void>
 }
 
 /** Freezes the plan in Rust and starts it. The budget is read again first,
- * so an invalid file edited meanwhile is reported instead of a vague error. */
-export async function startRun(api: RunApi, dispatch: Dispatch, token: number, planRef: string): Promise<void> {
+ * so a file corrected, removed or broken meanwhile decides this start. */
+export async function startRun(api: RunApi, dispatch: Dispatch, token: number, planRef: string, previous: RunRef | null): Promise<void> {
   try {
     const budget = await api.resourceBudgetState();
     dispatch({ type: "budget_loaded", budget });
@@ -170,6 +184,16 @@ export async function startRun(api: RunApi, dispatch: Dispatch, token: number, p
     if (prepared.plan_ref !== planRef || prepared.mode !== "local_only") throw new Error("prepared another plan");
     dispatch({ type: "started", token, run: await api.validationStart(planRef, "local_only") });
   } catch {
+    // The reply may be lost after Rust accepted the start (LIFECYCLE.md):
+    // read the current run instead of repeating a non-idempotent start, and
+    // attach only to a run of this plan that is not the previous one.
+    try {
+      const current = await api.validationState(null);
+      if (current.state !== "idle" && current.plan_ref === planRef && current.mode === "local_only"
+          && (previous === null || !same(previous, current.run))) {
+        return dispatch({ type: "started", token, run: current.run });
+      }
+    } catch { /* no authoritative state: report the failure */ }
     dispatch({ type: "start_failed", token, message: START_FAILED });
     void loadBudget(api, dispatch);
   }
@@ -177,17 +201,18 @@ export async function startRun(api: RunApi, dispatch: Dispatch, token: number, p
 
 /** One throttled read of the run: state first (the terminal is authoritative
  * and never waits for progress), then progress and, while undecided, the
- * budget gate. Returns false once the terminal has been acknowledged. */
+ * budget gate. Returns false once the terminal has been shown. */
 export async function pollRun(api: RunApi, dispatch: Dispatch, run: RunRef, gateOpen: boolean): Promise<boolean> {
   const snapshot = await api.validationState(run);
   if (snapshot.state === "terminal" && snapshot.outcome !== null) {
-    // Last sample before the terminal: TraceCompleted carries the real final
-    // count, so the terminal never shows an older intermediate counter. Best
-    // effort: a sealed progress channel never hides the terminal (PROGRESS.md).
+    // The terminal is shown whatever happens to the accessory reads: the last
+    // progress sample (final count from TraceCompleted) and the gate are best
+    // effort, because a sealed or poisoned channel must not hide it (P505-03).
     try { dispatch({ type: "progress", progress: await api.validationProgress(run) }); } catch { /* terminal still shown */ }
-    if (gateOpen) dispatch({ type: "gate", gate: await api.validationBudget(run) });
-    await api.validationAcknowledge(run);
-    dispatch({ type: "terminal", run, outcome: snapshot.outcome });
+    if (gateOpen) try { dispatch({ type: "gate", gate: await api.validationBudget(run) }); } catch { /* terminal still shown */ }
+    let acknowledged = true;
+    try { await api.validationAcknowledge(run); } catch { acknowledged = false; }
+    dispatch({ type: "terminal", run, outcome: snapshot.outcome, acknowledged });
     return false;
   }
   dispatch({ type: "snapshot", snapshot });
@@ -212,4 +237,10 @@ export async function decide(api: RunApi, dispatch: Dispatch, gate: BudgetGate, 
   } catch {
     dispatch({ type: "decide_failed" });
   }
+}
+
+/** Retry of a failed terminal ack (idempotent in Rust); the outcome shown
+ * does not change, only a new start waits for it. */
+export async function acknowledge(api: RunApi, dispatch: Dispatch, run: RunRef): Promise<boolean> {
+  try { await api.validationAcknowledge(run); dispatch({ type: "acknowledged", run }); return true; } catch { return false; }
 }

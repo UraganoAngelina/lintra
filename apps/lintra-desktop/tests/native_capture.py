@@ -75,6 +75,13 @@ SCENARIOS = [
     ("keyboard-budget-proceed-1366x768", (1366, 768), FILE + START + ["Tab", "Return", "wait", "wait", "wait"], BUDGET),
     ("keyboard-budget-annulla-1366x768", (1366, 768), FILE + START + ["Return", "wait", "wait"], BUDGET),
     ("keyboard-budget-escape-1366x768", (1366, 768), FILE + START + ["Escape", "wait", "wait"], BUDGET),
+    # P505-02: the file is corrected (or removed) while the app runs; the
+    # next Avvia reads it again. Invalid → valid shows the warning, invalid →
+    # removed runs without a budget. First Avvia is refused while invalid.
+    ("keyboard-budget-invalid-fixed-1366x768", (1366, 768),
+     FILE + START + ["budget-valid"] + ["Return", "wait", "wait"], INVALID_BUDGET),
+    ("keyboard-budget-invalid-removed-1366x768", (1366, 768),
+     FILE + START + ["budget-remove"] + ["Return", "wait", "wait"], INVALID_BUDGET),
 ]
 # 200% scale: logical sizes inside the scaled monitor's work area. The
 # minimum window (640x480 logical) and the whole work area cover both sides
@@ -185,9 +192,9 @@ def scenario(binary, output, monitor_name, name, size, keys, budget=None):
             directory = Path(temporary) / folder
             directory.mkdir(mode=0o700)
             env[key] = str(directory)
+        # Tauri app_config_dir on Linux: $XDG_CONFIG_HOME/<identifier>.
+        config = Path(env["XDG_CONFIG_HOME"]) / "it.lintra.desktop"
         if budget is not None:
-            # Tauri app_config_dir on Linux: $XDG_CONFIG_HOME/<identifier>.
-            config = Path(env["XDG_CONFIG_HOME"]) / "it.lintra.desktop"
             config.mkdir(mode=0o700)
             (config / "resource-budget.json").write_bytes(budget)
         process = subprocess.Popen([str(binary)], env=env, cwd=temporary,
@@ -216,6 +223,12 @@ def scenario(binary, output, monitor_name, name, size, keys, budget=None):
                     continue
                 if key.startswith("dialog"):
                     drive_dialog(process.pid, client["address"], key)
+                    continue
+                if key == "budget-valid":  # the operator corrects the file
+                    (config / "resource-budget.json").write_bytes(BUDGET)
+                    continue
+                if key == "budget-remove":  # the operator removes the file
+                    (config / "resource-budget.json").unlink()
                     continue
                 # Re-focus: focus rings are painted only in the active window.
                 hypr(f'hl.dsp.focus({{{target}}})')

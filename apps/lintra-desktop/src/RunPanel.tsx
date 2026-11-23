@@ -5,7 +5,7 @@ import {
 } from "./ipc";
 import type { SelectionState } from "./analysis";
 import {
-  INITIAL_RUN, POLL_MS, activeText, budgetText, bytes, decide, gateOpen, loadBudget, outcomeText, phaseText, pollRun,
+  INITIAL_RUN, POLL_MS, acknowledge, activeText, budgetText, bytes, canStart, decide, gateOpen, loadBudget, outcomeText, phaseText, pollRun,
   reduceRun, startRun, BUDGET_UNREADABLE, DECISION_FAILED, type RunApi, type RunEvent, type RunState,
 } from "./run";
 
@@ -23,7 +23,7 @@ export function useRun(serviceReady: boolean): [RunState, (event: RunEvent) => v
   const pending = useRef<string | null>(null);
   useEffect(() => {
     if (startToken === null || pending.current === null) return;
-    void startRun(api, dispatch, startToken, pending.current);
+    void startRun(api, dispatch, startToken, pending.current, state.lastRun);
   }, [startToken]);
   const view = state.view;
   const run = view.status === "active" ? view.run : null;
@@ -43,6 +43,19 @@ export function useRun(serviceReady: boolean): [RunState, (event: RunEvent) => v
     void tick();
     return () => { alive = false; if (timer !== undefined) clearTimeout(timer); };
   }, [run?.instance_id, run?.run_id]);
+  // A failed terminal ack is retried until Rust accepts it (P505-03).
+  const unacknowledged = view.status === "terminal" && !view.acknowledged ? view.run : null;
+  useEffect(() => {
+    if (unacknowledged === null) return;
+    let alive = true;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const retry = async () => {
+      if (!alive || await acknowledge(api, event => { if (alive) dispatch(event); }, unacknowledged)) return;
+      if (alive) timer = setTimeout(() => void retry(), POLL_MS);
+    };
+    timer = setTimeout(() => void retry(), POLL_MS);
+    return () => { alive = false; if (timer !== undefined) clearTimeout(timer); };
+  }, [unacknowledged?.instance_id, unacknowledged?.run_id]);
   const start = (planRef: string) => { pending.current = planRef; };
   const choose = (decision: "proceed" | "cancel") => {
     if (view.status === "active" && view.gate && !view.deciding) void decide(api, dispatch, view.gate, decision);
@@ -58,8 +71,9 @@ export function RunPanel({ state, selection, onEvent, onStart, onDecide }: {
   const view = state.view;
   const plan = selection.plan.status === "ready" && selection.plan.input.chosen !== null ? selection.plan.draft : null;
   const busy = view.status === "starting" || view.status === "active";
-  const blocked = state.budget === null || state.budget.state === "invalid";
-  const ready = plan !== null && !busy && !blocked;
+  // The stored budget state is information only: "Avvia" reads the file
+  // again, so a corrected or removed file is honoured (P505-02).
+  const ready = plan !== null && canStart(state);
   // In the single-column layout the outcome may be below the fold: bring it
   // into view once, when Rust reports the terminal (focus is not moved).
   const terminal = view.status === "terminal" ? `${view.run.instance_id}:${view.run.run_id}` : null;

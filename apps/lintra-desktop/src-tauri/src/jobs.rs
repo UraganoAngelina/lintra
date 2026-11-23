@@ -749,7 +749,13 @@ impl Jobs {
             stage: "preparing",
             sealed: false,
             progress: Progress::new(&intent.request.scope),
-            gate: Gate::Unconfigured,
+            // Published before the run is observable: a configured budget is
+            // "checking" until the worker decides, never "unconfigured" (P505-01).
+            gate: if preflight.is_some() {
+                Gate::Checking
+            } else {
+                Gate::Unconfigured
+            },
         }));
         let state = shared.clone();
         let token = CancellationToken::default();

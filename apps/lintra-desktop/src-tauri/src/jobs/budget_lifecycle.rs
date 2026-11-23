@@ -320,3 +320,29 @@ fn ipc_payloads_are_exact() {
         .is_err()
     );
 }
+
+/// P505-01: a configured run is observable before its worker is scheduled;
+/// the very first read must already say "checking" (or later), never
+/// "unconfigured", which a consumer treats as final. Repeated to cover the
+/// interleavings where the worker has not run yet.
+#[test]
+fn a_configured_run_is_never_reported_unconfigured_before_its_worker_runs() {
+    for _ in 0..50 {
+        let mut jobs = Jobs::default();
+        let _directory = start(&mut jobs, preflight(1));
+        let first = gate(&mut jobs)["state"].clone();
+        assert!(
+            first == "checking" || first == "confirmation_required",
+            "first read of a configured gate: {first}"
+        );
+        let (_, handle) = warned(&mut jobs);
+        decide(&mut jobs, &handle, false).unwrap();
+        terminal(&mut jobs);
+    }
+    // Without configuration the first read is unconfigured and stays so.
+    let mut jobs = Jobs::default();
+    let _directory = start(&mut jobs, None);
+    assert_eq!(gate(&mut jobs)["state"], "unconfigured");
+    terminal(&mut jobs);
+    assert_eq!(gate(&mut jobs)["state"], "unconfigured");
+}

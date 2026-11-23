@@ -37,8 +37,8 @@ Stati di `validation_budget` (gate del run, catturato all'avvio):
 
 | state | audit | confirmation_ref | Significato |
 | --- | --- | --- | --- |
-| `unconfigured` | null | null | run avviato senza controllo soft |
-| `checking` | null | null | il preflight legge input e reference selezionati |
+| `unconfigured` | null | null | run avviato senza controllo soft (definitivo: mai usato per un run con budget) |
+| `checking` | null | null | budget catturato: stato iniziale pubblicato prima che il run sia osservabile, poi lettura di input e reference |
 | `within_budget` | presente, nessuna soglia superata | null | il run procede |
 | `confirmation_required` | presente, almeno una soglia superata | handle | il worker attende Annulla / Procedi comunque |
 | `proceeded` | presente, soglia superata | null | Procedi comunque per questo preflight |
@@ -72,6 +72,14 @@ o dato di record attraversa l'IPC.
   errori tecnici: nessuna decisione li aggira.
 - Cancel e chiusura dell'app svegliano il worker in attesa (token controllato
   ogni 50 ms); un secondo start mentre l'avviso è aperto è `IPC_BUSY`.
+- Client: lo stato `invalid` mostrato non blocca «Avvia analisi»: ogni avvio
+  rilegge il file, quindi correzione o rimozione valgono senza riavvio.
+  Dopo uno start dall'esito incerto (risposta persa) il client legge
+  `validation_state` con `run: null` e si collega solo a un run dello stesso
+  `plan_ref`/mode diverso dall'ultimo noto; non ripete lo start. Al
+  terminale progress e gate sono letture accessorie in best effort: il
+  terminale viene mostrato anche se falliscono, e un ack fallito viene
+  ritentato a parte (il nuovo start attende l'ack, come da lifecycle).
 - La scelta è tracciata: il gate del run la espone fino al nuovo run, e il
   processo scrive su stderr la stessa riga aggregata della CLI
   (`ResourceBudgetAudit`, nessun path o identificativo).

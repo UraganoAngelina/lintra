@@ -1,5 +1,5 @@
 {
-  "binary_sha256": "6ea92f6d97fba71156479b9e180ced0c817178a79d27230a726f8ee22df1e1e5",
+  "binary_sha256": "19e7139341ea5dca8117245c3389d67f6ef46654b3701800f55e034e68de0c89",
   "scenarios": [
     {
       "name": "analisi-640x480",
@@ -23,7 +23,7 @@
       ],
       "keys": [],
       "budget": null,
-      "image_sha256": "44b0cc0cd26a288797a722f1683c14cd93275ffec79aec7cde702c99afcb58fc"
+      "image_sha256": "f50cd77967813de287b416f7380bcca410062e9f803591a123cb766bb393bfc3"
     },
     {
       "name": "analisi-1024x768",
@@ -180,7 +180,7 @@
         "Return"
       ],
       "budget": null,
-      "image_sha256": "58a924adeedf4fa4889e622e135934f210d0fc1f243a862dc2ace54ab6b0cd08"
+      "image_sha256": "16f88c8f092f33c75ec7a2c1aa913b853c6493c1afa8651bb24ad48c3731a062"
     },
     {
       "name": "keyboard-theme-light-1366x768",
@@ -242,7 +242,7 @@
         "Down"
       ],
       "budget": null,
-      "image_sha256": "70f1e3e6d902f43542c98949d8574b828f24ef49c65680a1959063de33cda6f4"
+      "image_sha256": "662a49a405ce63bc384953a1b84a23e21231fd03614abce89679efb3d0963e7b"
     },
     {
       "name": "keyboard-theme-dark-1366x768",
@@ -352,7 +352,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "dbc0228cece4df5507e012d804fc9f43851d8388aa4c19b774b475db79f387ea"
+      "image_sha256": "75e4837567d2ee65904f635a46fb34dfeb9d0ee2ec02c294a1051037f4d02388"
     },
     {
       "name": "keyboard-input-partial-1366x768",
@@ -395,7 +395,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "b6aaf73df5c811385dd5000c0b32e1d6a4e128b11b3ebf7313bd3818175af36a"
+      "image_sha256": "07b1377681c0ed24b5e2d768c10934d056c053d4280a8388cf6b8a98522e9b57"
     },
     {
       "name": "keyboard-input-whole-640x480",
@@ -438,7 +438,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "85388b6a77cba48fbe30107aeb82c057d93d8b5c321bb176e71871455d8bfcc9"
+      "image_sha256": "15ba242e1503f82828a04f7c881c402dddd3930913233c59c90216123c2bed3c"
     },
     {
       "name": "keyboard-input-cancel-1366x768",
@@ -617,7 +617,7 @@
         "space"
       ],
       "budget": null,
-      "image_sha256": "0f3df69fa4e0b535640df961cd5777f6b8637051996bb288b7f7253919280ab5"
+      "image_sha256": "5aee242e7b0dd4972dbc3298bc6db4f36ac7aede30706fdeadd4b66890f2738b"
     },
     {
       "name": "keyboard-run-unconfigured-1366x768",
@@ -669,7 +669,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "f471dc1ef84ecf6c7d440804fe1133891ca7aee52e193685f73742e66376397f"
+      "image_sha256": "eb2150fc99ecb45e16c6e697ba9ebb297b21364558ccf9c5476e7e6b8d07445e"
     },
     {
       "name": "keyboard-run-unconfigured-640x480",
@@ -721,7 +721,7 @@
         "wait"
       ],
       "budget": null,
-      "image_sha256": "f26bb56a71c2793773b704bca6c3f672d51a6debcce9ff56df2a1d93af9bf545"
+      "image_sha256": "58d6be4b2a1ba9f78d638a4bfe0e21c54dbbe89dbae7038a4dcaa559faf1eb53"
     },
     {
       "name": "keyboard-budget-invalid-1366x768",
@@ -764,7 +764,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "948a20298c1a648a6473315c749cc2900d17531ed5e1cd625792dd7c8b6728da"
+      "image_sha256": "0afe66271be2c73e8d0e0a9b84c9260e752f7e4271c944b19d6cdc71aeca1b9b"
     },
     {
       "name": "keyboard-budget-warning-1366x768",
@@ -814,7 +814,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "75fe8c73b591d844adb8eeea5f63999e1e5d4afb9f1c9ca0343fda7461a0c625"
+      "image_sha256": "8639cbaa8edc41d8f75a77946e53a36c3ac6526ea1c36dc8c645a737eb36c852"
     },
     {
       "name": "keyboard-budget-warning-640x480",
@@ -864,7 +864,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "70b0fe70bde0fc6e2499da91bf99d413c91bbe11363e3ba8b135f9c3c21aca69"
+      "image_sha256": "5da50a43cfd70519496d0111cdd23ca584bf58a74c5f2df58b7d2ba73f5d88c9"
     },
     {
       "name": "keyboard-budget-proceed-1366x768",
@@ -919,7 +919,7 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "fec24f9fb014a3d78aa6d60f9acec4c8aa2850243a1f501cc7eae6c2d491be21"
+      "image_sha256": "f63547284387ab9898d6c71cebc7f968bff1558b7c6719fa2ac22902fd0f0a06"
     },
     {
       "name": "keyboard-budget-annulla-1366x768",
@@ -1025,7 +1025,115 @@
         "wait"
       ],
       "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
-      "image_sha256": "7602b243f246391b6539dc3888e83562f7da2ca3ec7236fcf0e9f578c5b13ea7"
+      "image_sha256": "b5d8191a4e3a7894e3738aedbdebf701ec93483f735e742e3f1c866a82191f32"
+    },
+    {
+      "name": "keyboard-budget-invalid-fixed-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "budget-valid",
+        "Return",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "image_sha256": "0e402ccf19bb53d6b3752adf9396d24b63cf3be5299eb50203b4c2e592a70fc4"
+    },
+    {
+      "name": "keyboard-budget-invalid-removed-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1160
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "budget-remove",
+        "Return",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "image_sha256": "4c686a77f28ad2145762dfb2512a301d704f913bfc8bfe8bd594e3c19985d66b"
     }
   ]
 }

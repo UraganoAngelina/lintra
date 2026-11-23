@@ -1,7 +1,9 @@
 # T-MIG-P5-05 — Run screen e progress throttled (con D09 completo)
 
-Data 23 novembre 2026. Stato: **IN REVIEW**, non DONE prima della review Codex
-e dell'integrazione. Prerequisiti T-MIG-P5-03 e T-MIG-P5-04 DONE (`integration`
+Data 23 novembre 2026. Stato: **IN REVIEW** (rework 1), non DONE prima della
+review Codex e dell'integrazione. Le evidenze native nel commit sono quelle del
+rework (binario `19e71393…`); i numeri della sezione Acceptance sono quelli del
+round 1 (binario `6ea92f6d…`), confermati dal rework nella tabella dedicata. Prerequisiti T-MIG-P5-03 e T-MIG-P5-04 DONE (`integration`
 `81b4006`). Branch `work/T-MIG-P5-05` da `81b4006`, worktree
 `/home/alberto/Desktop/LINTRA/lintra-p5-05`.
 
@@ -124,6 +126,45 @@ avrebbe prodotto `not_started` senza `cancel_requested`, che il client
 rifiuta (corretto: Annulla richiede il cancel); al terminale la UI mostrava
 l'ultimo campione intermedio (3.630.080 su 4.000.000), corretto rileggendo il
 progress al terminale; il conteggio esatto è verificato nel run nativo.
+
+## Rework 1 (review Codex round 1: CHANGES_REQUESTED, quattro MAJOR)
+
+Tutti e quattro i rilievi verificati contro codice e contratti e accettati.
+
+- **P505-01** — gate iniziale `Unconfigured` anche con budget configurato,
+  trattato dal client come definitivo: `start_budgeted` pubblica `Checking`
+  prima che il run sia osservabile quando il budget è catturato. Test Rust
+  `a_configured_run_is_never_reported_unconfigured_before_its_worker_runs`
+  (50 run, prima lettura mai `unconfigured`; senza budget resta
+  `unconfigured`): fallisce senza la correzione su una sola CPU
+  (`taskset -c 0`), passa con la correzione.
+- **P505-02** — l'errore di budget memorizzato disabilitava «Avvia» e
+  rendeva irraggiungibile la rilettura: lo stato del budget è solo
+  informativo, `canStart` dipende da run attivo e ack; ogni avvio rilegge il
+  file. Test `P505-02` (non valido → rifiutato; poi configurato e assente →
+  avviato nella stessa sessione) e nativo `keyboard-budget-invalid-fixed`
+  (avviso dopo la correzione) e `keyboard-budget-invalid-removed`.
+- **P505-03** — una lettura fallita del gate nascondeva il terminale:
+  progress e gate al terminale sono best effort, il terminale viene sempre
+  applicato; l'ack fallito è registrato (`acknowledged=false`) e ritentato a
+  parte senza cambiare l'esito; un nuovo start attende l'ack. Test con
+  progress, gate e ack tutti in errore.
+- **P505-04** — risposta di start persa: dopo un errore dello start il
+  client legge lo stato corrente (`validation_state` con `run: null`) e si
+  collega al run accettato solo se è dello stesso piano e modalità e non è
+  l'ultimo run noto; nessuna ripetizione dello start. Test: risposta persa
+  dopo accettazione (collegato), idle, altro piano, run precedente e stato
+  illeggibile (fallito).
+
+| Verifica rework | Esito |
+| --- | --- |
+| desktop `cargo fmt` / `clippy -D warnings` (release, all-targets) | PASS / PASS |
+| desktop `cargo test` (release, custom-protocol) | PASS 81, 0 fail, 1 ignored |
+| `npm run lint` / `npm test` / `npm run build` | PASS / 88 PASS / PASS |
+| build release + `native_smoke.py` | PASS, binario `19e71393…` |
+| `native_capture.py` | PASS 28/28 (26 + 2 di recupero P505-02), tre esecuzioni consecutive rc 0; receipt e immagini dell'ultima in `T-MIG-P5-05-native/` |
+| `native_run.py … 250000000` | PASS: 82,6 s, 16 frame distinti, Shift+Tab entro 0,1 s, app RSS 150.116–152.272 KiB, crescita renderer 26.804 KiB; `T-MIG-P5-05-native/run/` |
+| workspace core | invariato nel rework (nessun file core modificato): esiti del round 1 |
 
 ## Rischi residui
 
