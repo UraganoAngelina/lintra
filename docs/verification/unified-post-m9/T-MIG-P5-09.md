@@ -1,7 +1,8 @@
 # T-MIG-P5-09 — React: selezione Full con input esplicito per tracciato
 
-Data 23 novembre 2026. Stato: **IN_REVIEW** (READY_FOR_CODEX_REVIEW), non DONE
-prima della review e dell'integrazione. Prerequisiti T-MIG-P5-03 e T-MIG-P4-12
+Data 23 novembre 2026. Stato: **DONE**. Review Codex round 1 APPROVED su
+`ebef511`, senza rilievi; integrazione autorizzata dall'autore per
+fast-forward di `integration`, senza push. CI remota NOT_RUN. Prerequisiti T-MIG-P5-03 e T-MIG-P4-12
 DONE (`integration` `95ed944`). Branch `work/T-MIG-P5-09` da `95ed944`,
 worktree `/home/alberto/Desktop/LINTRA/lintra-p5-09`.
 
