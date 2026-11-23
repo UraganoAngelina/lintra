@@ -30,6 +30,9 @@ SELECT = ["Tab"] * 6 + ["Down", "wait", "Tab", "Down", "wait", "Tab", "Down", "w
 FILE = SELECT + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/partial.txt", "wait"]
 START = ["Tab"] * 4 + ["Return", "wait", "wait"]
 BUDGET = b'{"version":1,"measurement_source":"misura sintetica","input_bytes":65536,"reference_bytes":null}'
+# P5-06: a 245 MB input (about 10 s of validation) leaves time to cancel.
+FILE_BIG = SELECT + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/big.txt", "wait"]
+START_NOWAIT = ["Tab"] * 4 + ["Return", "wait"]
 INVALID_BUDGET = b'{"version":1,"measurement_source":"","input_bytes":65536,"reference_bytes":null}'
 
 # name, logical window size, keys sent to the owned window.
@@ -82,6 +85,14 @@ SCENARIOS = [
      FILE + START + ["budget-valid"] + ["Return", "wait", "wait"], INVALID_BUDGET),
     ("keyboard-budget-invalid-removed-1366x768", (1366, 768),
      FILE + START + ["budget-remove"] + ["Return", "wait", "wait"], INVALID_BUDGET),
+    # T-MIG-P5-06: operator cancel. "Interrompi analisi" follows "Avvia".
+    ("keyboard-run-interrupt-offered-1366x768", (1366, 768), FILE_BIG + START_NOWAIT + ["Tab"]),
+    ("keyboard-run-cancelled-1366x768", (1366, 768), FILE_BIG + START_NOWAIT + ["Tab", "Return", "wait", "wait", "wait"]),
+    # A completed run publishes a report; a newer run is cancelled: the old
+    # report is named as the previous analysis', never as this one's result.
+    ("keyboard-run-cancelled-previous-report-1366x768", (1366, 768),
+     FILE + START + ["wait", "wait"] + ["shift-Tab"] * 4 + ["Return", f"dialog:{SAMPLE_DIR}/big.txt", "wait"]
+     + START_NOWAIT + ["Tab", "Return", "wait", "wait", "wait"]),
 ]
 # 200% scale: logical sizes inside the scaled monitor's work area. The
 # minimum window (640x480 logical) and the whole work area cover both sides
@@ -232,7 +243,9 @@ def scenario(binary, output, monitor_name, name, size, keys, budget=None):
                     continue
                 # Re-focus: focus rings are painted only in the active window.
                 hypr(f'hl.dsp.focus({{{target}}})')
-                hypr(f'hl.dsp.send_shortcut({{mods="", key="{key}", {target}}})')
+                # `key_name`, not `name`: `name` is the scenario (image file).
+                mods, key_name = ("SHIFT", key.removeprefix("shift-")) if key.startswith("shift-") else ("", key)
+                hypr(f'hl.dsp.send_shortcut({{mods="{mods}", key="{key_name}", {target}}})')
                 time.sleep(0.4)
             hypr(f'hl.dsp.focus({{{target}}})')
             time.sleep(0.6)
@@ -271,6 +284,9 @@ def main():
     try:
         (samples / "partial.txt").write_bytes(b"001A  \n" * 20000)  # 140000 bytes > 64 KiB sample
         (samples / "whole.txt").write_bytes(b"001A  \n001B  \r\n")  # 15 bytes, LF and CRLF
+        with (samples / "big.txt").open("wb") as big:  # 35 M records, 245 MB
+            for _ in range(350):
+                big.write(b"001A  \n" * 100_000)
         results = [scenario(binary, output, monitor_name, *item) for item in scenarios]
     finally:
         for file in samples.iterdir():
@@ -282,6 +298,9 @@ def main():
     for item in results:
         if item["keys"]:
             assert item["image_sha256"] != baseline.get(tuple(item["captured"])), item["name"]
+    # Every scenario has its own image (a lost file would hide a scenario).
+    names = [item["name"] for item in results]
+    assert len(set(names)) == len(names) and all((output / f"{n}.png").is_file() for n in names), "one image per scenario"
     receipt = {"binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(), "scenarios": results}
     (output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print("NATIVE_SHELL_CAPTURE_DONE", flush=True)

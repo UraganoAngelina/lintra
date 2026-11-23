@@ -99,6 +99,11 @@ h3 { font-size: var(--body-size); font-weight: 600; margin: 0 0 var(--control-ga
 }
 .run { max-width: 60rem; margin-top: var(--section-gap); }
 .run-state { margin-top: var(--space-block); }
+.run .secondary {
+  min-height: var(--control-height); margin-inline-start: var(--control-gap); padding: 0 var(--space-block);
+  border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--ink); font: inherit; cursor: pointer;
+}
+.run .secondary[aria-disabled="true"] { color: var(--muted); cursor: not-allowed; }
 .run progress { display: block; width: 100%; max-width: 24rem; margin: var(--space-row) 0; accent-color: var(--accent); }
 .budget-dialog {
   max-width: min(36rem, calc(100vw - 2 * var(--page-padding))); padding: var(--section-gap);

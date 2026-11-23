@@ -16,14 +16,22 @@ export type RunView =
   | { status: "idle" }
   | { status: "starting"; token: number; reports: ReportSelection }
   | { status: "active"; run: RunRef; reports: ReportSelection; snapshot: RunSnapshot | null; progress: RunProgress | null;
-      gate: BudgetGate | null; deciding: boolean; decisionFailed: boolean }
+      gate: BudgetGate | null; deciding: boolean; decisionFailed: boolean; cancel: CancelState }
   | { status: "terminal"; run: RunRef; reports: ReportSelection; outcome: RunOutcome; progress: RunProgress | null; gate: BudgetGate | null;
       acknowledged: boolean }
   | { status: "failed"; message: string };
 
+/** Operator cancel of the active run (T-MIG-P5-06): what Rust answered. A
+ * request proves nothing: only the terminal says whether it was cancelled. */
+export type CancelState = "none" | "requesting" | "requested" | "too_late" | "failed";
+
 /** `lastRun`: the last run this window attached to, so a resynchronization
- * after an uncertain start never mistakes it for the new one (P505-04). */
-export type RunState = { view: RunView; budget: BudgetConfigState | null; budgetFailed: boolean; nextToken: number; lastRun: RunRef | null };
+ * after an uncertain start never mistakes it for the new one (P505-04).
+ * `report`: the run whose report Rust holds as last published. A cancelled
+ * or failed newer run never replaces it nor takes its identity (LIFECYCLE.md,
+ * "errore/cancel nuovo contro report precedente"). */
+export type RunState = { view: RunView; budget: BudgetConfigState | null; budgetFailed: boolean; nextToken: number; lastRun: RunRef | null;
+  report: RunRef | null };
 
 export type RunEvent =
   | { type: "budget_loaded"; budget: BudgetConfigState }
@@ -37,9 +45,12 @@ export type RunEvent =
   | { type: "decide" }
   | { type: "decide_failed" }
   | { type: "terminal"; run: RunRef; outcome: RunOutcome; acknowledged: boolean }
-  | { type: "acknowledged"; run: RunRef };
+  | { type: "acknowledged"; run: RunRef }
+  | { type: "cancel" }
+  | { type: "cancel_answer"; run: RunRef; disposition: "requested" | "already_requested" | "too_late" | "already_terminal" }
+  | { type: "cancel_failed"; run: RunRef };
 
-export const INITIAL_RUN: RunState = { view: { status: "idle" }, budget: null, budgetFailed: false, nextToken: 1, lastRun: null };
+export const INITIAL_RUN: RunState = { view: { status: "idle" }, budget: null, budgetFailed: false, nextToken: 1, lastRun: null, report: null };
 
 const same = (left: RunRef, right: RunRef) => left.instance_id === right.instance_id && left.run_id === right.run_id;
 
@@ -67,7 +78,7 @@ export function reduceRun(state: RunState, event: RunEvent): RunState {
     case "started":
       if (view.status !== "starting" || view.token !== event.token) return state;
       return { ...state, lastRun: event.run, view: { status: "active", run: event.run, reports: view.reports, snapshot: null, progress: null,
-        gate: null, deciding: false, decisionFailed: false } };
+        gate: null, deciding: false, decisionFailed: false, cancel: "none" } };
     case "start_failed":
       if (view.status !== "starting" || view.token !== event.token) return state;
       return { ...state, view: { status: "failed", message: event.message } };
@@ -92,13 +103,39 @@ export function reduceRun(state: RunState, event: RunEvent): RunState {
     case "terminal":
       // A terminal of this run is final: late samples cannot reopen it.
       if (view.status !== "active" || !same(view.run, event.run)) return state;
-      return { ...state, view: { status: "terminal", run: view.run, reports: view.reports, outcome: event.outcome,
+      return { ...state, report: event.outcome.kind === "validation" && event.outcome.report_available ? view.run : state.report,
+        view: { status: "terminal", run: view.run, reports: view.reports, outcome: event.outcome,
         progress: view.progress, gate: view.gate, acknowledged: event.acknowledged } };
     case "acknowledged":
       if (view.status !== "terminal" || !same(view.run, event.run)) return state;
       return { ...state, view: { ...view, acknowledged: true } };
+    case "cancel":
+      if (view.status !== "active" || !canCancel(view)) return state;
+      return { ...state, view: { ...view, cancel: "requesting" } };
+    case "cancel_answer": {
+      if (view.status !== "active" || !same(view.run, event.run)) return state;
+      // already_terminal: the next state read shows the real outcome.
+      const cancel = event.disposition === "too_late" ? "too_late" : "requested";
+      return { ...state, view: { ...view, cancel } };
+    }
+    case "cancel_failed":
+      if (view.status !== "active" || !same(view.run, event.run)) return state;
+      return { ...state, view: { ...view, cancel: "failed" } };
   }
 }
+
+/** "Interrompi analisi" is offered only while Rust can still stop the work
+ * (preparing or running, no cancel requested yet, no D09 decision pending:
+ * there Annulla is the cancel). Finalizing is past the useful boundary. */
+export function canCancel(view: Extract<RunView, { status: "active" }>): boolean {
+  const snapshot = view.snapshot?.state === "idle" ? null : view.snapshot;
+  const state = snapshot?.state ?? "preparing";
+  return (view.cancel === "none" || view.cancel === "failed") && !snapshot?.cancel_requested
+    && (state === "preparing" || state === "running") && view.gate?.state !== "confirmation_required";
+}
+
+export const CANCEL_TOO_LATE = "L'analisi è già in conclusione: non è più possibile interromperla. Attendi l'esito.";
+export const CANCEL_FAILED = "La richiesta di interruzione non è stata registrata. Riprova.";
 
 /** Words of the interface (MIGRATION_TAURI_BRIEF.md, "Stati e parole"). */
 export const START_FAILED = "Non è stato possibile avviare l'analisi. Controlla la selezione e il file, poi riprova; se il problema resta, chiudi e riapri Lintra.";
@@ -129,7 +166,7 @@ const PHASES: Record<NonNullable<RunProgress["phase"]>, string> = {
 export function activeText(view: Extract<RunView, { status: "active" }>): string {
   const snapshot = view.snapshot?.state === "idle" ? null : view.snapshot;
   const state = snapshot?.state ?? "preparing";
-  if (state === "cancelling" || snapshot?.cancel_requested) return "Interruzione richiesta: attendi la conclusione comunicata dal servizio.";
+  if (state === "cancelling" || snapshot?.cancel_requested || view.cancel === "requested") return "Interruzione richiesta: attendi la conclusione comunicata dal servizio.";
   if (view.gate?.state === "checking") return "Controllo dei budget di risorse: lettura dei file selezionati…";
   if (view.gate?.state === "confirmation_required") return "I file superano la soglia di avviso configurata: scegli come procedere.";
   if (state === "preparing") return "Il servizio prepara l'analisi…";
@@ -141,13 +178,18 @@ export function phaseText(progress: RunProgress | null): string | null {
   return progress?.phase ? PHASES[progress.phase] : null;
 }
 
-/** Outcome words; NotApplicable/Unknown/Partial are never merged into success. */
-export function outcomeText(outcome: RunOutcome): { title: string; detail: string } {
+/** Outcome words; NotApplicable/Unknown/Partial are never merged into success.
+ * `previousReport`: Rust still holds the report of an earlier run; it is
+ * named as such and never presented as this run's result (T-MIG-P5-06). */
+export function outcomeText(outcome: RunOutcome, previousReport = false): { title: string; detail: string } {
+  const previous = previousReport ? " Il report dell'analisi precedente resta in Risultati: riguarda quell'analisi, non questa." : "";
   if (outcome.kind === "technical_failure") return { title: "Errore tecnico",
-    detail: "L'analisi non è stata completata. Controlla che i file siano ancora disponibili e riprova; se il problema resta, chiudi e riapri Lintra." };
-  if (outcome.kind === "not_started") return { title: "Analisi annullata", detail: "L'analisi non è iniziata: nessun report è stato prodotto." };
-  const report = outcome.report_available ? "Il report è disponibile in Risultati." : "Nessun report disponibile per questa analisi.";
+    detail: `L'analisi non è stata completata e non ha prodotto un report. Controlla che i file siano ancora disponibili e riprova; se il problema resta, chiudi e riapri Lintra.${previous}` };
+  if (outcome.kind === "not_started") return { title: "Analisi annullata", detail: `L'analisi non è iniziata: nessun report è stato prodotto.${previous}` };
+  const report = outcome.report_available ? "Il report è disponibile in Risultati." : `Nessun report completo pubblicato per questa analisi.${previous}`;
   if (outcome.status === "cancelled") return { title: "Analisi annullata", detail: `I controlli sono stati interrotti. ${report}` };
+  // Truncated (operational limit): never a conformity, whatever the status.
+  if (outcome.truncated) return { title: "Analisi parziale", detail: `Raggiunto il limite operativo. ${report}` };
   const partial = outcome.completeness === "partial";
   if (outcome.status === "completed_invalid") return { title: "Violazioni rilevate",
     detail: `${partial ? "Alcuni controlli sono incompleti. " : ""}${report}` };
@@ -165,6 +207,7 @@ export type RunApi = {
   validationBudget: (run: RunRef) => Promise<BudgetGate>;
   validationBudgetDecide: (run: RunRef, confirmationRef: string, decision: "proceed" | "cancel") => Promise<"proceeding" | "cancelled">;
   validationAcknowledge: (run: RunRef) => Promise<void>;
+  validationCancel: (run: RunRef) => Promise<"requested" | "already_requested" | "too_late" | "already_terminal">;
 };
 type Dispatch = (event: RunEvent) => void;
 
@@ -243,4 +286,12 @@ export async function decide(api: RunApi, dispatch: Dispatch, gate: BudgetGate, 
  * does not change, only a new start waits for it. */
 export async function acknowledge(api: RunApi, dispatch: Dispatch, run: RunRef): Promise<boolean> {
   try { await api.validationAcknowledge(run); dispatch({ type: "acknowledged", run }); return true; } catch { return false; }
+}
+
+/** Operator cancel: one request; Rust's disposition is shown, the terminal
+ * read later is the only proof of what happened (LIFECYCLE.md). */
+export async function cancelRun(api: RunApi, dispatch: Dispatch, run: RunRef): Promise<void> {
+  dispatch({ type: "cancel" });
+  try { dispatch({ type: "cancel_answer", run, disposition: await api.validationCancel(run) }); }
+  catch { dispatch({ type: "cancel_failed", run }); }
 }

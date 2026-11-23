@@ -12,7 +12,10 @@ P5-05: «Avvia analisi», progresso letto da Rust ogni 250 ms (una richiesta
 alla volta, avanzamento indeterminato) ed esito; form bloccato durante il run.
 Budget di risorse soft D09: file `resource-budget.json` nella directory di
 configurazione per-utente (vedi `docs/RESOURCE_BUDGETS.md`), avviso con
-Annulla / Procedi comunque deciso in Rust.
+Annulla / Procedi comunque deciso in Rust. P5-06: «Interrompi analisi»
+finché Rust può fermare il lavoro; l'esito annullato dichiara che non c'è un
+report nuovo e che un eventuale report precedente riguarda l'analisi
+precedente.
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund

@@ -431,3 +431,85 @@ fn superseded_closed_and_failed_full_runs_release_every_spool() {
     assert!(spools(root.path()).is_empty(), "close released every spool");
     drop(inputs);
 }
+
+/// T-MIG-P5-06: an operator cancel of a newer run publishes no report and
+/// never replaces the previous one, which keeps its own identity: the
+/// previous run stays queryable, the cancelled one is stale for results.
+#[test]
+fn cancel_of_a_newer_run_keeps_the_previous_report_and_publishes_nothing() {
+    let (source, target) = bundle(300);
+    let (_inputs, intent, refs) = full_fixture(&source, &target);
+    let root = spool();
+    let mut jobs = Jobs {
+        spool_root: Some(root.path().to_owned()),
+        ..Jobs::default()
+    };
+    let mut frames = Vec::new();
+    let first = start(&mut jobs, intent.clone(), refs.clone(), "start_1");
+    let done = terminal(&mut jobs, &mut frames);
+    assert_eq!(done["outcome"]["report_available"], true, "{done}");
+    let published = spools(root.path());
+    acknowledge(&mut jobs, &first);
+
+    // Hold the newer run inside PASS1, then cancel it as the operator does.
+    let hold = |e: &ProgressEvent| matches!(e, ProgressEvent::TraceStarted { trace_id } if trace_id.0 == "T");
+    let mut gate = Gate::install(&mut jobs, hold);
+    let second = start(&mut jobs, intent, refs, "start_2");
+    gate.until(hold);
+    let answer = jobs
+        .dispatch(
+            JobRequest::Cancel {
+                run: second.clone(),
+            },
+            "cancel",
+        )
+        .unwrap();
+    let answer: Value = serde_json::from_slice(&answer).unwrap();
+    assert_eq!(answer["payload"]["disposition"], "requested");
+    gate.open();
+    let end = terminal(&mut jobs, &mut frames);
+    assert_eq!(end["cancel_requested"], true);
+    assert_eq!(end["outcome"]["status"], "cancelled", "{end}");
+    assert_eq!(end["outcome"]["completeness"], "partial");
+    assert_eq!(
+        end["outcome"]["report_available"], false,
+        "no new report after cancel"
+    );
+    assert!(joined(&jobs));
+    // The previous report is still the consultable one, with its identity.
+    assert_eq!(jobs.last_report.as_ref().unwrap().0, first);
+    assert_eq!(
+        spools(root.path()),
+        published,
+        "cancelled run left no spool"
+    );
+    let query = |run: &RunRef| {
+        crate::results::ResultsRequest::decode(
+            "results_query",
+            json!({"schemaVersion":1,"run":run.dto(),"filters":{"schemaVersion":1}})
+                .as_object()
+                .unwrap(),
+        )
+        .unwrap()
+    };
+    assert!(
+        jobs.results(query(&first), "q1").is_ok(),
+        "previous report queryable"
+    );
+    assert_eq!(
+        jobs.results(query(&second), "q2"),
+        Err(ErrorCode::StaleContext)
+    );
+    // A late cancel after the terminal changes nothing.
+    let late = jobs
+        .dispatch(
+            JobRequest::Cancel {
+                run: second.clone(),
+            },
+            "cancel_2",
+        )
+        .unwrap();
+    let late: Value = serde_json::from_slice(&late).unwrap();
+    assert_eq!(late["payload"]["disposition"], "already_terminal");
+    assert_eq!(jobs.last_report.as_ref().unwrap().0, first);
+}

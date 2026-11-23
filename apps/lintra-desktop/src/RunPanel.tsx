@@ -1,22 +1,23 @@
 import { useEffect, useLayoutEffect, useReducer, useRef } from "react";
 import {
-  planPrepare, resourceBudgetState, validationAcknowledge, validationBudget, validationBudgetDecide,
-  validationProgress, validationStart, validationState, type BudgetGate,
+  planPrepare, resourceBudgetState, validationAcknowledge, validationBudget, validationBudgetDecide, validationCancel,
+  validationProgress, validationStart, validationState, type BudgetGate, type RunRef,
 } from "./ipc";
 import type { SelectionState } from "./analysis";
 import {
-  INITIAL_RUN, POLL_MS, acknowledge, activeText, budgetText, bytes, canStart, decide, gateOpen, loadBudget, outcomeText, phaseText, pollRun,
-  reduceRun, startRun, BUDGET_UNREADABLE, DECISION_FAILED, type RunApi, type RunEvent, type RunState,
+  INITIAL_RUN, POLL_MS, acknowledge, activeText, budgetText, bytes, canCancel, canStart, cancelRun, decide, gateOpen, loadBudget, outcomeText, phaseText, pollRun,
+  reduceRun, startRun, BUDGET_UNREADABLE, CANCEL_FAILED, CANCEL_TOO_LATE, DECISION_FAILED, type RunApi, type RunEvent, type RunState,
 } from "./run";
 
 const api: RunApi = {
   resourceBudgetState, planPrepare, validationStart: (planRef, mode) => validationStart(planRef, mode),
   validationState: run => validationState(run), validationProgress, validationBudget, validationBudgetDecide, validationAcknowledge,
+  validationCancel,
 };
 
 /** Owns the run screen state for the window lifetime and drives the
  * throttled polling of the active run (one request in flight at a time). */
-export function useRun(serviceReady: boolean): [RunState, (event: RunEvent) => void, (planRef: string) => void, (decision: "proceed" | "cancel") => void] {
+export function useRun(serviceReady: boolean): [RunState, (event: RunEvent) => void, (planRef: string) => void, (decision: "proceed" | "cancel") => void, () => void] {
   const [state, dispatch] = useReducer(reduceRun, INITIAL_RUN);
   useEffect(() => { if (serviceReady) void loadBudget(api, dispatch); }, [serviceReady]);
   const startToken = state.view.status === "starting" ? state.view.token : null;
@@ -60,13 +61,14 @@ export function useRun(serviceReady: boolean): [RunState, (event: RunEvent) => v
   const choose = (decision: "proceed" | "cancel") => {
     if (view.status === "active" && view.gate && !view.deciding) void decide(api, dispatch, view.gate, decision);
   };
-  return [state, dispatch, start, choose];
+  const interrupt = () => { if (view.status === "active" && canCancel(view)) void cancelRun(api, dispatch, view.run); };
+  return [state, dispatch, start, choose, interrupt];
 }
 
 /** "Avvia analisi", budget configuration status, progress and outcome. */
-export function RunPanel({ state, selection, onEvent, onStart, onDecide }: {
+export function RunPanel({ state, selection, onEvent, onStart, onDecide, onCancel }: {
   state: RunState; selection: SelectionState; onEvent: (event: RunEvent) => void;
-  onStart: (planRef: string) => void; onDecide: (decision: "proceed" | "cancel") => void;
+  onStart: (planRef: string) => void; onDecide: (decision: "proceed" | "cancel") => void; onCancel: () => void;
 }) {
   const view = state.view;
   const plan = selection.plan.status === "ready" && selection.plan.input.chosen !== null ? selection.plan.draft : null;
@@ -78,15 +80,31 @@ export function RunPanel({ state, selection, onEvent, onStart, onDecide }: {
   // into view once, when Rust reports the terminal (focus is not moved).
   const terminal = view.status === "terminal" ? `${view.run.instance_id}:${view.run.run_id}` : null;
   const outcome = useRef<HTMLDivElement>(null);
-  useEffect(() => { if (terminal !== null) outcome.current?.scrollIntoView?.({ block: "nearest" }); }, [terminal]);
+  const startButton = useRef<HTMLButtonElement>(null);
+  const cancelButton = useRef<HTMLButtonElement>(null);
+  // "Interrompi analisi" leaves with the terminal: if it had the keyboard
+  // focus, give it to "Avvia analisi" instead of losing it (as P503-02).
+  const cancelFocused = useRef(false);
+  cancelFocused.current = typeof document !== "undefined" && cancelButton.current !== null && document.activeElement === cancelButton.current;
+  useEffect(() => {
+    if (terminal === null) return;
+    outcome.current?.scrollIntoView?.({ block: "nearest" });
+    if (cancelFocused.current) startButton.current?.focus();
+  }, [terminal]);
   return <section className="run" aria-labelledby="run-title">
     <h2 id="run-title">Esecuzione</h2>
     {state.budgetFailed ? <p className="selection-status" role="alert">{BUDGET_UNREADABLE}</p>
       : state.budget && <p className="selection-status" role={state.budget.state === "invalid" ? "alert" : "status"}>{budgetText(state.budget)}</p>}
-    <button type="button" className="primary" aria-disabled={!ready}
+    <button type="button" ref={startButton} className="primary" aria-disabled={!ready}
       onClick={() => { if (ready && plan) { onStart(plan.plan_ref); onEvent({ type: "start", reports: selection.reports }); } }}>
       Avvia analisi
     </button>
+    {/* Offered only while Rust can still stop the work; kept in place (not
+        removed) after the request so keyboard focus is not lost. */}
+    {view.status === "active" && <button type="button" ref={cancelButton} className="secondary" aria-disabled={!canCancel(view)}
+      onClick={() => { if (canCancel(view)) onCancel(); }}>
+      {view.cancel === "none" || view.cancel === "failed" ? "Interrompi analisi" : "Interruzione richiesta"}
+    </button>}
     {!busy && plan === null && <p className="selection-status">Completa la selezione e scegli il file per avviare l'analisi.</p>}
     <div ref={outcome}><RunStatus state={state} /></div>
     {view.status === "active" && view.gate?.state === "confirmation_required" &&
@@ -101,7 +119,7 @@ function RunStatus({ state }: { state: RunState }) {
   if (view.status === "starting") return <p className="selection-status" role="status">Il servizio prepara l'analisi…</p>;
   const formats = Object.entries(view.reports).filter(([, on]) => on).map(([id]) => id.toUpperCase()).join(", ") || "nessuno";
   if (view.status === "terminal") {
-    const { title, detail } = outcomeText(view.outcome);
+    const { title, detail } = outcomeText(view.outcome, previousReport(state.report, view.run));
     return <div className="run-state" role="status">
       <h3>{title}</h3>
       <p>{detail}</p>
@@ -115,10 +133,17 @@ function RunStatus({ state }: { state: RunState }) {
     {/* Indeterminate: Rust gives no total, so no percentage or ETA is shown. */}
     <progress aria-label="Avanzamento dell'analisi" />
     {view.decisionFailed && <p className="selection-status" role="alert">{DECISION_FAILED}</p>}
+    {view.cancel === "too_late" && <p className="selection-status" role="status">{CANCEL_TOO_LATE}</p>}
+    {view.cancel === "failed" && <p className="selection-status" role="alert">{CANCEL_FAILED}</p>}
     {phase && <p>{phase}</p>}
     <GateNote gate={view.gate} />
     <RunCounters progress={view.progress} formats={formats} />
   </div>;
+}
+
+/** Rust holds the report of an earlier run, not of `run`. */
+function previousReport(report: RunRef | null, run: RunRef): boolean {
+  return report !== null && (report.instance_id !== run.instance_id || report.run_id !== run.run_id);
 }
 
 /** Trace of the D09 choice for this run, as Rust recorded it. */

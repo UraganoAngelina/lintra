@@ -37,15 +37,17 @@ function App() {
   const service: ServiceState = error ? { kind: "error", message: error }
     : ready && info ? { kind: "ready", version: info.app_version } : { kind: "starting" };
   const [selection, onSelection] = useAnalysisSelection(service.kind === "ready");
-  const [run, onRun, onStart, onDecide] = useRun(service.kind === "ready");
+  const [run, onRun, onStart, onDecide, onCancel] = useRun(service.kind === "ready");
   const running = busy(run);
   // Report availability as Rust declared it in the outcome of the last run.
-  const reportAvailable = run.view.status === "terminal" && run.view.outcome.kind === "validation" && run.view.outcome.report_available;
+  // Rust keeps the last published report across cancelled or failed runs;
+  // the run screen says whose report it is (T-MIG-P5-06).
+  const reportAvailable = run.report !== null;
   return <AppShell view={view} onView={setView} theme={theme} onTheme={setTheme}
     service={service} reportAvailable={reportAvailable} running={running}
     analysis={service.kind === "ready" ? <div className="analysis-layout">
       <AnalysisForm state={selection} onEvent={onSelection} busy={running} />
-      <RunPanel state={run} selection={selection} onEvent={onRun} onStart={onStart} onDecide={onDecide} />
+      <RunPanel state={run} selection={selection} onEvent={onRun} onStart={onStart} onDecide={onDecide} onCancel={onCancel} />
     </div> : null} />;
 }
 
