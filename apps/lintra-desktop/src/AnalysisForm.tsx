@@ -1,8 +1,8 @@
 import { useEffect, useReducer } from "react";
 import { catalogPage, configurationPage, configurationSelect, planCreate, planInputChoose, type InputPreviewDto } from "./ipc";
 import {
-  INITIAL_SELECTION, chooseInput, createPlan, flows, loadCatalog, loadConfiguration, missingChoice, reduce, versions,
-  type InputState, type SelectionApi, type SelectionEvent, type SelectionState,
+  INITIAL_SELECTION, REPORT_FORMATS, chooseInput, createPlan, flows, loadCatalog, loadConfiguration, missingChoice, reduce, versions,
+  type InputState, type ReportSelection, type SelectionApi, type SelectionEvent, type SelectionState,
 } from "./analysis";
 
 const api: SelectionApi = { catalogPage, configurationSelect, configurationPage, planCreate, planInputChoose };
@@ -70,6 +70,7 @@ export function AnalysisForm({ state, onEvent }: { state: SelectionState; onEven
     </div>
     <SelectionStatus state={state} />
     {state.plan.status === "ready" && <InputChoice input={state.plan.input} onChoose={() => onEvent({ type: "choose_input" })} />}
+    <ReportFormats reports={state.reports} onEvent={onEvent} />
     {configuration && <dl className="selection-summary" aria-label="Schema acquisito dal servizio">
       <dt>Schema</dt><dd>{configuration.selection.flow_id} · {configuration.selection.schema_version}</dd>
       <dt>Codifica</dt><dd>UTF-8</dd>
@@ -134,4 +135,20 @@ function SamplePreview({ preview }: { preview: InputPreviewDto }) {
       ? "Il campione comprende l’intero file."
       : `Il campione comprende solo i primi ${bytes(preview.sampled_bytes)}: i conteggi non descrivono l’intero file.`}</p>
   </>;
+}
+
+/** Requested report formats (Slint "Formati del report"): native checkboxes,
+ * keyboard and screen readers handled by the platform. An intent only. */
+function ReportFormats({ reports, onEvent }: { reports: ReportSelection; onEvent: (event: SelectionEvent) => void }) {
+  return <fieldset className="report-formats" aria-describedby="report-formats-note">
+    <legend>Formati del report</legend>
+    <div className="report-options">
+      {REPORT_FORMATS.map(format => <label key={format.id}>
+        <input type="checkbox" checked={reports[format.id]}
+          onChange={event => onEvent({ type: "set_report", format: format.id, requested: event.target.checked })} />
+        {format.label}
+      </label>)}
+    </div>
+    <p id="report-formats-note">Nessun file viene scritto ora. Dopo l’analisi il report si salva un formato alla volta: viene proposto il primo scelto tra XLSX, CSV e JSONL, oppure JSONL se non ne scegli nessuno.</p>
+  </fieldset>;
 }

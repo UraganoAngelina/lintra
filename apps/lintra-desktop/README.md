@@ -6,7 +6,9 @@ Shell P5-01: sezioni Analisi/Risultati/Informazioni e tema Sistema/Chiaro/Scuro
 (solo di sessione). P5-02: selezione flusso, versione esplicita e tracciato
 sul catalogo Rust, con piano LocalOnly creato dal servizio. P5-03: file
 scelto nel dialogo nativo aperto da Rust, con anteprima del solo campione
-(mai byte o path nel renderer); formati e avvio arrivano con le task successive.
+(mai byte o path nel renderer). P5-04: formati del report XLSX/JSONL/CSV
+come in Slint (XLSX e JSONL di default), solo intento: nessun writer JS;
+l'avvio arriva con P5-05.
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund

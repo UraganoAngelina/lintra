@@ -9,7 +9,12 @@
 // T-MIG-P5-03: the input file is chosen in the native dialog owned by Rust
 // (plan_input_choose). The renderer never sees a path, a name or a byte: it
 // receives the new plan reference and the bounded preview counters only.
-import type { BundleProvenance, ConfigurationSelection, InputPreviewDto, PlanDraft, SchemaDescriptor } from "./ipc";
+//
+// T-MIG-P5-04: the requested report formats, as the Slint ReportSelection.
+// They are an intent only: nothing is written or converted here; the export
+// after the run passes one format to Rust (export_prepare), which owns the
+// canonical JSONL/CSV/XLSX writers.
+import type { BundleProvenance, ConfigurationSelection, ExportFormat, InputPreviewDto, PlanDraft, SchemaDescriptor } from "./ipc";
 
 export type TraceOption = { trace_ref: string; trace_id: string };
 
@@ -23,6 +28,23 @@ export type InputState = {
   activity: { status: "idle" } | ({ status: "choosing" } & Pending) | { status: "failed"; message: string } | { status: "cancelled" };
 };
 
+/** Report formats requested with the analysis (Slint `ReportSelection`). */
+export type ReportSelection = Record<ExportFormat, boolean>;
+
+/** Slint `ReportSelection::default()`: JSONL and XLSX, not CSV. */
+export const DEFAULT_REPORTS: ReportSelection = { xlsx: true, jsonl: true, csv: false };
+
+/** Order and labels of the Slint form (XLSX, JSONL, CSV). */
+export const REPORT_FORMATS: readonly { id: ExportFormat; label: string }[] = [
+  { id: "xlsx", label: "XLSX" }, { id: "jsonl", label: "JSONL" }, { id: "csv", label: "CSV" },
+];
+
+/** Format proposed when the report is saved, as Slint `preferred_format`:
+ * XLSX, then CSV, then JSONL (also when nothing is requested). */
+export function preferredFormat(reports: ReportSelection): ExportFormat {
+  return reports.xlsx ? "xlsx" : reports.csv ? "csv" : "jsonl";
+}
+
 export type SelectionState = {
   catalog: { status: "loading" } | { status: "ready"; entries: SchemaDescriptor[]; provenance: BundleProvenance } | { status: "failed"; message: string };
   flow: string | null;
@@ -31,6 +53,8 @@ export type SelectionState = {
     | { status: "ready"; selection: ConfigurationSelection; traces: TraceOption[] } | { status: "failed"; message: string };
   traceRef: string | null;
   plan: { status: "idle" } | ({ status: "creating" } & Pending) | { status: "ready"; draft: PlanDraft; input: InputState } | { status: "failed"; message: string };
+  /** Independent of flow/schema/trace: changing them keeps it, as in Slint. */
+  reports: ReportSelection;
   nextToken: number;
 };
 
@@ -47,11 +71,12 @@ export type SelectionEvent =
   | { type: "choose_input" }
   | { type: "input_chosen"; token: number; planRef: string; assignedInputCount: string; preview: InputPreviewDto }
   | { type: "input_cancelled"; token: number }
-  | { type: "input_failed"; token: number; message: string };
+  | { type: "input_failed"; token: number; message: string }
+  | { type: "set_report"; format: ExportFormat; requested: boolean };
 
 export const INITIAL_SELECTION: SelectionState = {
   catalog: { status: "loading" }, flow: null, schemaRef: null,
-  configuration: { status: "idle" }, traceRef: null, plan: { status: "idle" }, nextToken: 1,
+  configuration: { status: "idle" }, traceRef: null, plan: { status: "idle" }, reports: DEFAULT_REPORTS, nextToken: 1,
 };
 
 /** Flows in catalog order, each once. No flow is preselected. */
@@ -71,9 +96,9 @@ export function versions(state: SelectionState): SchemaDescriptor[] {
 export function reduce(state: SelectionState, event: SelectionEvent): SelectionState {
   switch (event.type) {
     case "catalog_loaded":
-      return { ...INITIAL_SELECTION, catalog: { status: "ready", entries: event.entries, provenance: event.provenance }, nextToken: state.nextToken };
+      return { ...INITIAL_SELECTION, catalog: { status: "ready", entries: event.entries, provenance: event.provenance }, reports: state.reports, nextToken: state.nextToken };
     case "catalog_failed":
-      return { ...INITIAL_SELECTION, catalog: { status: "failed", message: event.message }, nextToken: state.nextToken };
+      return { ...INITIAL_SELECTION, catalog: { status: "failed", message: event.message }, reports: state.reports, nextToken: state.nextToken };
     case "select_flow": {
       if (event.flow !== null && !flows(state).includes(event.flow)) return state;
       return { ...state, flow: event.flow, schemaRef: null, configuration: { status: "idle" }, traceRef: null, plan: { status: "idle" } };
@@ -120,6 +145,11 @@ export function reduce(state: SelectionState, event: SelectionEvent): SelectionS
       const draft = { ...state.plan.draft, plan_ref: event.planRef, assigned_input_count: event.assignedInputCount };
       return { ...state, plan: { status: "ready", draft, input: { chosen: event.preview, activity: { status: "idle" } } } };
     }
+    case "set_report":
+      // Unknown formats (not from the typed form) are ignored. Every
+      // combination is allowed, none included, as in Slint.
+      if (!REPORT_FORMATS.some(format => format.id === event.format)) return state;
+      return { ...state, reports: { ...state.reports, [event.format]: event.requested } };
   }
 }
 

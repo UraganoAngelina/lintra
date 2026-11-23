@@ -90,6 +90,13 @@ h3 { font-size: var(--body-size); font-weight: 600; margin: 0 0 var(--control-ga
 }
 .input-choice button[aria-disabled="true"] { border-color: var(--border); background: var(--surface); color: var(--muted); cursor: progress; }
 .sample-note { margin-top: var(--space-row); }
+/* Report formats (T-MIG-P5-04): native checkboxes, as the theme radios. */
+.report-formats { margin: var(--section-gap) 0 0; padding: 0; border: 0; }
+.report-formats legend { padding: 0; margin-bottom: var(--control-gap); font-weight: 600; }
+.report-options { display: flex; flex-wrap: wrap; gap: var(--space-row) var(--page-padding); }
+.report-options label { display: inline-flex; align-items: center; gap: var(--space-small); min-height: var(--control-height); cursor: pointer; }
+.report-options input { margin: 0; }
+#report-formats-note { margin-top: var(--space-row); }
 dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-row) var(--page-padding); margin: 0; }
 dt { color: var(--muted); }
 dd { margin: 0; font-family: var(--font-mono); overflow-wrap: anywhere; }

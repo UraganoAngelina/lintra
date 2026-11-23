@@ -53,6 +53,10 @@ SCENARIOS = [
     # P503-02: after Esc the button keeps focus, so Space alone reopens the
     # dialog (drive_dialog fails if it does not appear) without new Tab.
     ("keyboard-input-cancel-reopen-1366x768", (1366, 768), SELECT + ["Tab", "Return", "dialog-cancel", "wait", "space", "dialog-cancel", "wait"]),
+    # T-MIG-P5-04: report formats after the file button; Space unchecks XLSX
+    # (default on) and checks CSV (default off), focus left on CSV.
+    ("keyboard-reports-1366x768", (1366, 768), SELECT + ["Tab", "Tab", "space", "Tab", "Tab", "space"]),
+    ("keyboard-reports-640x480", (640, 480), SELECT + ["Tab", "Tab", "space", "Tab", "Tab", "space"]),
 ]
 # 200% scale: logical sizes inside the scaled monitor's work area. The
 # minimum window (640x480 logical) and the whole work area cover both sides
