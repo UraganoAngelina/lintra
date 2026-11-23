@@ -1,7 +1,8 @@
 # T-MIG-P5-03 — Conferma file e picker sicuro
 
-Data 20 novembre 2026. Stato: **IN REVIEW**, non DONE prima della review Codex
-e dell'integrazione. Prerequisito T-MIG-P5-02 DONE (integrato in
+Data 20 novembre 2026. Stato: **DONE** (23 novembre 2026). Review Codex round 2
+APPROVED su `ac54595` (P503-01/02 risolti); integrazione autorizzata
+dall'autore per fast-forward di `integration`, senza push. CI remota NOT_RUN. Prerequisito T-MIG-P5-02 DONE (integrato in
 `integration` `cdf8373`). Branch `work/T-MIG-P5-03` da `cdf8373`, worktree
 dedicato `/home/alberto/Desktop/LINTRA/lintra-p5-03`.
 
