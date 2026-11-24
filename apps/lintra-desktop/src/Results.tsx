@@ -10,7 +10,7 @@ import { createColumnHelper, tableFeatures, useTable } from "@tanstack/react-tab
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { resultsOverview, resultsPage, resultsQuery, resultsQueryState, type Preview, type ResultRow, type ResultsOverview, type ResultsPage, type RunRef } from "./ipc";
-import { Charts } from "./Charts";
+import { Charts, type ChartScope } from "./Charts";
 import { previewText, reportStatusText, type AboutReport } from "./information";
 import { PAGE_ROWS, acceptPage, cached, pageCount, pageItems, pageOffset, rangeText, remember, type ResultsView } from "./pages";
 import { Badge, Button, Card, cn } from "./ui";
@@ -246,15 +246,17 @@ export function Results({ view, about, overview, reportAvailable, onPage, onRetr
   { view: ResultsView; about: AboutReport; overview: OverviewState; reportAvailable: boolean; onPage: (page: bigint) => void; onRetry: () => void }) {
   const traces = useMemo<TraceNames>(() => overview.status === "ready"
     ? new Map(overview.overview.by_trace.map(entry => [entry.trace_ref, entry.trace])) : NO_TRACES, [overview]);
-  const incomplete = about.status === "ready"
-    && (about.about.completeness === "partial" || about.about.truncated || about.about.status === "cancelled");
+  // Only a read `report_about` can clear the qualifier; "none" means it was not requested yet.
+  const scope: ChartScope = about.status === "failed" ? "unavailable"
+    : about.status !== "ready" ? "pending"
+    : about.about.completeness === "partial" || about.about.truncated || about.about.status === "cancelled" ? "incomplete" : "complete";
   if (!reportAvailable) return <Card className="empty-card">
     <p className="lead">Nessun report disponibile.</p>
     <p>I risultati di un'analisi conclusa compaiono in questa sezione.</p>
   </Card>;
   return <>
     <Summary about={about} overview={overview} />
-    {overview.status === "ready" && <Charts overview={overview.overview} incomplete={incomplete} />}
+    {overview.status === "ready" && <Charts overview={overview.overview} scope={scope} />}
     {overview.status === "failed" && <p className="grid-message" role="alert">Non è stato possibile leggere i conteggi del report per i grafici.</p>}
     <Card className="grid-card" aria-labelledby="diagnostics-title">
       <header className="grid-head">

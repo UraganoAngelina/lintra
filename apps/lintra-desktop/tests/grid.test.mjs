@@ -213,7 +213,7 @@ test("the charts show Rust counts with text, and warn when the controls are inco
   const data = { ...overview.overview, by_code: [code("E_RECORD_LENGTH", "700000"), code("E_CROSS_FIELD", "300000")],
     by_trace: [{ schemaVersion: 1, trace_ref: "trace_0", trace: { schemaVersion: 1, text: "S", complete: true }, count: "1000000" },
       { schemaVersion: 1, trace_ref: "trace_1", trace: { schemaVersion: 1, text: "T", complete: true }, count: "0" }] };
-  const html = renderToStaticMarkup(createElement(Charts, { overview: data, incomplete: false }));
+  const html = renderToStaticMarkup(createElement(Charts, { overview: data, scope: "complete" }));
   for (const title of ["Errori per tracciato", "Tipologia errori", "Distribuzione errori", "Record senza violazioni"]) {
     assert.match(html, new RegExp(`<h2>${title}</h2>`));
   }
@@ -223,8 +223,8 @@ test("the charts show Rust counts with text, and warn when the controls are inco
   assert.match(html, /<span class="hbar-label font-mono">E_CROSS_FIELD<\/span>.*?<span class="hbar-value">300\.000<\/span>/);
   assert.match(html, /<text class="validity-value"[^>]*>16,6%<\/text>/);
   assert.match(html, /<strong>200\.000<\/strong> senza violazioni su 1\.200\.000 analizzati/);
-  assert.doesNotMatch(html, /Risultati incompleti|\sstyle=|Warning|Avviso/);
-  const partial = renderToStaticMarkup(createElement(Charts, { overview: data, incomplete: true }));
+  assert.doesNotMatch(html, /Risultati incompleti|Completezza|notice-warn|\sstyle=|Warning|Avviso/);
+  const partial = renderToStaticMarkup(createElement(Charts, { overview: data, scope: "incomplete" }));
   assert.match(partial, /<p class="notice-warn" role="note"><svg[^>]*aria-hidden="true"[^>]*>.*?<\/svg><span><strong>Risultati incompleti\.<\/strong> Non tutti i controlli sono stati eseguiti/);
   // The charts stay visible under the warning (author decision, 24 Nov 2026).
   assert.match(partial, /<h2>Record senza violazioni<\/h2>/);
@@ -235,6 +235,18 @@ test("Risultati shows the charts once the overview is read, with the warning for
   assert.match(results({ view: ready({ loading: false, current: page() }) }), /<section class="charts" aria-label="Grafici del report">/);
   assert.doesNotMatch(results({ view: ready({ loading: false, current: page() }) }), /Risultati incompleti/);
   assert.match(results({ view: ready({ loading: false, current: page() }), about: partialAbout }), /Risultati incompleti/);
+  // P601-01: the same counts never read as a complete analysis while
+  // report_about is pending or failed; the charts stay, qualified.
+  const view = ready({ loading: false, current: page() });
+  for (const [pending, role, text] of [[{ status: "loading" }, "status", "Completezza in verifica"],
+    [{ status: "none" }, "status", "Completezza in verifica"],
+    [{ status: "failed" }, "alert", "Completezza non disponibile"]]) {
+    const html = results({ view, about: pending });
+    assert.match(html, /<section class="charts" aria-label="Grafici del report">/);
+    assert.match(html, new RegExp(`<p class="notice-warn" role="${role}"><svg[^>]*aria-hidden="true"[^>]*>.*?</svg><span><strong>${text}\\.</strong>`));
+    assert.doesNotMatch(html, /Risultati incompleti/);
+  }
+  assert.doesNotMatch(results({ view }), /notice-warn/);
   assert.doesNotMatch(results({ view: ready(), overview: { status: "loading" } }), /class="charts"/);
   assert.match(results({ view: ready(), overview: { status: "failed" } }), /role="alert">Non è stato possibile leggere i conteggi del report per i grafici\./);
 });

@@ -18,7 +18,11 @@ T-MIG-P5-08 DONE (`integration` `3a91a11`, G-MIG-5 PASS). Branch
    confronto.png` (Dioxus: errori per tracciato, tipologia errori; Tauri+Leptos:
    distribuzione errori, tasso di validità). **Sempre visibili**, anche con
    controlli incompleti, con un avviso esplicito (decisione rivista
-   dall’autore nella stessa giornata).
+   dall’autore nella stessa giornata). Dopo la review round 1 (P601-01) l’avviso
+   copre anche la completezza ignota: con `report_about` in lettura i grafici
+   portano «Completezza in verifica» (`role="status"`), con `report_about`
+   fallito «Completezza non disponibile» (`role="alert"`); solo un report letto
+   e completo li mostra senza qualifica.
 5. **Motivazione nella tabella**: messaggio, valore atteso e valore trovato
    nelle righe. Modifica del contratto di paging ratificato (P2-05/G-MIG-2),
    decisa dall’autore e documentata come emendamento in `PAGING.md`.
@@ -107,7 +111,7 @@ Vedi «Test» per i comandi.
 
 | Verifica | Esito |
 | --- | --- |
-| `npm run lint` / `npm test` / `npm run build` | PASS / 138 PASS / PASS |
+| `npm run lint` / `npm test` / `npm run build` | PASS / 138 PASS / PASS (rieseguiti dopo il rework P601-01) |
 | desktop `cargo fmt` / `test --release` / `clippy -D warnings` (target Linux, `tauri/custom-protocol`) | PASS / 0 ×3: 85 test (2 nuovi), 0 fail, 1 ignored. Il primo giro clippy ha segnalato `large_enum_variant` (indice cresciuto): `Source::Owned` ora contiene `Box<JsonlReportIndex>` |
 | `python3 docs/migration/ipc-v1/verify_paging.py` | PASS 72/72 (2 nuovi) |
 | `npm run tauri -- build --no-bundle` + `native_smoke.py` (Hyprland) | PASS / 0, binario finale `8265a71e854f352c3012e067b6664751f947389450e3cc866613056fdfe49834` |
@@ -116,6 +120,24 @@ Vedi «Test» per i comandi.
 | workspace `ci.yml` (fmt; clippy e test default e `--all-features`; xtask con `LINTRA_TEST_BIN`), core toccato | PASS / 0 ×8: 1116 test, 0 fail, 9 ignored, sia default sia all-features; xtask 18/18 |
 | Windows/WebView2 e CI remota | NOT_RUN (CI remota dopo la review, come per P5-08) |
 | `npm ci` con i pin esatti | NOT_RUN in locale (Node 26.13.1, pin 26.13.0); coperto dalla CI |
+
+## Rework dopo la review Codex round 1
+
+Rilievo **P601-01 [P2]** accolto: `Results.tsx` ricavava `incomplete = false`
+per ogni stato di `report_about` diverso da `ready`, quindi con overview pronta
+e metadati in lettura o falliti i grafici apparivano senza qualifica (anello
+`100,0%` senza avviso). Ora `Charts` riceve `scope: ChartScope`
+(`complete | incomplete | pending | unavailable`) e mostra un avviso per
+ognuno tranne `complete`; lo stato `none` vale `pending`. L’avviso Partial
+resta identico. Nessuna modifica Rust, IPC o dipendenze.
+
+Test: `grid.test.mjs`, «Risultati shows the charts once the overview is
+read…», esteso con overview pronta e `about` in `loading`/`none`/`failed`
+(grafici presenti, avviso con ruolo e testo attesi, nessun «Risultati
+incompleti») e controllo Complete senza `notice-warn`. Prova di mutazione:
+con la logica precedente di `Results.tsx` il test fallisce (137/138), con
+la correzione passa (138/138). Catture native non ripetute: la modifica è
+solo di presentazione e coperta dal render del componente reale.
 
 ## Rischi residui
 

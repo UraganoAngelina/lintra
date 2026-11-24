@@ -134,17 +134,34 @@ function ValidityRing({ overview }: { overview: ResultsOverview }) {
   </Card>;
 }
 
+/** What the charts may claim about the scope of the analysis: the counts
+ * come from `results_overview`, completeness from the separate
+ * `report_about` read, so until (or unless) that read succeeds the charts
+ * must say the scope is unknown instead of implying a complete analysis. */
+export type ChartScope = "complete" | "incomplete" | "pending" | "unavailable";
+
 /**
- * The four charts. When the controls were not all performed (partial,
- * truncated or cancelled report) they stay visible, under a warning that
- * says so (author decision, 24 Nov 2026).
+ * The four charts. They stay visible whatever the completeness (author
+ * decision, 24 Nov 2026), under a qualifier unless the report is known to be
+ * complete: partial/truncated/cancelled, metadata still being read, or
+ * metadata unreadable (review P601-01).
  */
-export function Charts({ overview, incomplete }: { overview: ResultsOverview; incomplete: boolean }) {
+export function Charts({ overview, scope }: { overview: ResultsOverview; scope: ChartScope }) {
   return <section className="charts" aria-label="Grafici del report">
-    {incomplete && <p className="notice-warn" role="note">
+    {scope === "incomplete" && <p className="notice-warn" role="note">
       <AlertTriangle aria-hidden="true" />
       <span><strong>Risultati incompleti.</strong> Non tutti i controlli sono stati eseguiti: grafici e conteggi
         riguardano solo i controlli completati e non descrivono l’intero file.</span>
+    </p>}
+    {scope === "pending" && <p className="notice-warn" role="status">
+      <AlertTriangle aria-hidden="true" />
+      <span><strong>Completezza in verifica.</strong> Grafici e conteggi riguardano i controlli eseguiti; la
+        completezza dell’analisi è in lettura.</span>
+    </p>}
+    {scope === "unavailable" && <p className="notice-warn" role="alert">
+      <AlertTriangle aria-hidden="true" />
+      <span><strong>Completezza non disponibile.</strong> Non è stato possibile leggere i metadati del report:
+        grafici e conteggi riguardano i controlli eseguiti e potrebbero non descrivere l’intero file.</span>
     </p>}
     <div className="charts-grid">
       <TraceBars overview={overview} />
