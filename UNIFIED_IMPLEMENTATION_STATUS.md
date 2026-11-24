@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **74/128 DONE;54 rimanenti** (18U-* e42MIG).
+Conteggio unificato: **75/128 DONE;53 rimanenti** (18U-* e41MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -18,7 +18,8 @@ G-MIG-1 PASS/GO tecnico piattaforme: dossier P1-02/03/04/05/07 e decisioneP1-06.
 G-MIG-2 APPROVED design, ratifica autore15/11 sul pacchetto45fce38.
 G-MIG-3 PASS: CI desktop43758529844 e step QG-1/2/3 nativi della CI43758531087 su ce344d4.
 G-MIG-4 PASS: [checkpoint P4](docs/verification/unified-post-m9/G-MIG-4.md), CI44706977518 e desktop44706949307 su 1ab34d8.
-G-OPS0/1/2, G-SIOC1, G-MIG-5..9, G-CADUI0..3, G-PERF e G-REL:
+G-MIG-5 PASS: [gate P5-08](docs/verification/unified-post-m9/T-MIG-P5-08.md), galleria UX approvata dall'autore, CI45394234948 e desktop45394240320 su 3057a02.
+G-OPS0/1/2, G-SIOC1, G-MIG-6..9, G-CADUI0..3, G-PERF e G-REL:
 NOT_VERIFIED. Prove Win11/offline/due desktop e scale osservate distinte dalla
 CI Windows Server; VM ripristinata/spenta. Non è un gate di distribuzione.
 G-REAL riguarda autorizzazioni effettive per specifici dati, non presunte.
@@ -116,7 +117,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P5-05 | T-MIG-P5-03, T-MIG-P5-04 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-05.md) | scope esteso autorizzato: D09 completo (IPC v1 additivo, Rust/Tauri/React); rework 1 P505-01..04; workspace 1116/1071, desktop 81, Node 88 PASS; run nativo 250M record 82,6 s, renderer +26 MiB; scenari nativi 28/28 ×3; fd2a63a+d9bf2bb;review Codex round 2 APPROVED;CI delta NOT_RUN,al checkpoint blocco | Acceptance run/progress/D09 PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-06 | T-MIG-P5-05 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-06.md) | desktop 82, Node 95 PASS; cancel nativo con report precedente, scenari nativi 31/31; 6b6a961+e80c76c;review Codex round 2 APPROVED (P506-01/02 risolti);CI delta NOT_RUN,al checkpoint blocco | Acceptance cancel/terminale/report precedente PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-07 | T-MIG-P5-01, T-MIG-P5-06 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-07.md) | desktop 82, Node 104 PASS; Informazioni nativa 34/34; 3b314d0+9460199;review Codex round 2 APPROVED (P507-01 risolto);CI delta NOT_RUN,al checkpoint blocco | Acceptance provenienza/licenze PASS; G-MIG-5 NOT_VERIFIED |
-| T-MIG-P5-08 | T-MIG-P5-01, T-MIG-P5-02, T-MIG-P5-03, T-MIG-P5-04, T-MIG-P5-05, T-MIG-P5-06, T-MIG-P5-07, T-MIG-P5-10 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P5-08.md) | —; Non eseguite | G-MIG-5 NOT_VERIFIED |
+| T-MIG-P5-08 | T-MIG-P5-01, T-MIG-P5-02, T-MIG-P5-03, T-MIG-P5-04, T-MIG-P5-05, T-MIG-P5-06, T-MIG-P5-07, T-MIG-P5-10 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-08.md) | scope esteso autorizzato: finestra Windows nascosta/fit/show; 797447b+3057a02; nativo Linux 43/43+chiusura, Windows VM 1× 17/17 e 200% 9/9+chiusura; workspace 1.116 e desktop 83/82 PASS; review Codex round 2 APPROVED (P508-01..03 risolti); CI45394234948 e desktop45394240320 SUCCESS | G-MIG-5 PASS |
 | T-MIG-P5-09 | T-MIG-P5-03, T-MIG-P4-12 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-09.md) | Node 116 PASS, desktop 82 PASS; Full nativa 39/39; ebef511;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance selezione Full PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-10 | T-MIG-P5-09, T-MIG-P5-06 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-10.md) | scope esteso autorizzato: handle di piano nel progresso (adapter Rust); desktop 83, Node 124 PASS; monitor Full nativo 43/43; 98bdf80;review Codex round 1 APPROVED (P510-01 MINOR documentale corretto in chiusura);CI delta NOT_RUN,al checkpoint blocco | Acceptance monitor Full/terminali multi-pass PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P6-01 | T-MIG-P5-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-01.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
@@ -564,3 +565,20 @@ Integrazione autorizzata dall'autore: fast-forward di integration, nessun
 push. CI remota, Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN, al
 checkpoint del blocco P5. G-MIG-5 e G-REL aperti. Prossima tecnicamente
 disponibile T-MIG-P5-08 (gate di parità del blocco P5).
+
+Chiusura T-MIG-P5-08, 24 novembre 2026: **DONE**, **75/128 (58,6%)**, 53
+rimanenti. Autore Claude Code, commit 797447b+3057a02 su base 5e7f078. Gate di
+parità del blocco P5: parità LocalOnly/Full con il servizio diretto, flussi
+P5-02..P5-10 nativi su Linux e Windows 11 VM (1× e 200%), chiusura durante un
+run attivo. Scope esteso autorizzato dall'autore: su Windows la finestra è
+creata nascosta, adattata alla work area e poi mostrata (difetto trovato dal
+gate: 5 avvii su 32 fuori work area). Review Codex round 1 CHANGES (P508-01
+budget dell'account nell'harness, P508-02 oracolo della chiusura, P508-03
+prova 200%), round 2 APPROVED senza nuovi rilievi. Galleria UX approvata
+dall'autore. Push autorizzato (integration fino a 5e7f078 e
+work/T-MIG-P5-08); CI45394234948 e Desktop adapter45394240320 SUCCESS su
+3057a02. Integrazione autorizzata: fast-forward di integration. `npm ci` con i
+pin esatti NOT_RUN in locale (Node 26.13.1), coperto dalla CI. **G-MIG-5
+PASS**; G-REL aperto. Direttiva dell'autore per le task UI successive:
+seguire fedelmente `lintra_ui_references` (UI SaaS moderna e responsive).
+Prossima tecnicamente disponibile T-MIG-P6-01.

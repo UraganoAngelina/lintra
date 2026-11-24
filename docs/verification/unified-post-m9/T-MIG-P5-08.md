@@ -1,9 +1,12 @@
 # T-MIG-P5-08 — Gate parità configurazione/worker/UX
 
-Data 24 novembre 2026. Stato: **IN_REVIEW** (non DONE), rework dopo la
-review Codex round 1 (CHANGES, P508-01..03). Galleria UX approvata dall'autore
-il 24 novembre. Mancano l'approvazione Codex e la CI remota sullo SHA
-consegnato. Prerequisiti T-MIG-P5-01..07, 09 e 10 DONE (`integration`
+Data 24 novembre 2026. Stato: **DONE**. Review Codex round 1 CHANGES
+(P508-01..03), round 2 APPROVED su `3057a02` senza nuovi rilievi
+(`lintra-review-handoffs/T-MIG-P5-08.review-2.md`). Galleria UX approvata
+dall'autore il 24 novembre. CI remota su `3057a02`: CI `45394234948` e
+Desktop adapter `45394240320` SUCCESS (workflow_dispatch dopo push
+autorizzato). Integrazione autorizzata: fast-forward di `integration`.
+**G-MIG-5 PASS**. Prerequisiti T-MIG-P5-01..07, 09 e 10 DONE (`integration`
 `5e7f078`). Branch `work/T-MIG-P5-08` da `5e7f078`, worktree
 `/home/alberto/Desktop/LINTRA/lintra-p5-08`.
 
@@ -138,7 +141,11 @@ rieseguito senza modifiche.
 La VM è stata riportata allo snapshot `LINTRA-P5-08-PRETEST-20261123` e
 lasciata spenta: nessuna task pianificata, file di prova o binario residuo.
 
-CI remota: NOT_RUN, dopo la review Codex come deciso dall'autore.
+CI remota (dopo l'APPROVE Codex, come deciso dall'autore), su `3057a02`:
+CI `45394234948` SUCCESS (Verify Linux e Windows MSVC, reopen snapshot
+incrociati, pixel UI/tema, byte JSONL Linux/Windows); Desktop adapter
+`45394240320` SUCCESS (build e smoke Linux X11 e Windows, compreso
+`native_smoke.py`).
 
 ## Rework round 1 (review Codex `T-MIG-P5-08.review-1.md`)
 
@@ -212,5 +219,5 @@ ripristino della NVRAM dal backup resta all'autore.
   «Interrompi analisi»; il dettaglio per tracciato è sotto la piega. Il
   dettaglio Full resta provato su Linux (`full-monitor-pass1`,
   `full-monitor-later`).
-- G-MIG-5 resta aperto fino all'approvazione Codex e alla CI remota verde
-  sullo SHA.
+- `npm ci` con i pin esatti non eseguito in locale (Node 26.13.1); coperto
+  dalla CI remota.
