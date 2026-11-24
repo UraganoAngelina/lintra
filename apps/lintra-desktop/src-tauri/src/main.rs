@@ -119,9 +119,15 @@ fn main() {
                     }
                 });
             #[cfg(target_os = "windows")]
-            let window = window.on_web_resource_request(|_, response| {
-                security::restrict_document_connections(response.headers_mut());
-            });
+            // Built hidden and shown only after the fit below: when the fit
+            // ran on a visible window, the first show could restore the
+            // pre-fit placement and leave it past the work area (T-MIG-P5-08,
+            // seen on the Windows 11 VM in 2 to 5 launches out of 32).
+            let window = window
+                .on_web_resource_request(|_, response| {
+                    security::restrict_document_connections(response.headers_mut());
+                })
+                .visible(false);
             let built = window.build()?;
             // Windows lets the app place its window, so it must keep it inside
             // the work area (Tauri brief). Wayland compositors own placement and
@@ -136,6 +142,8 @@ fn main() {
                 ),
             )
             .ok();
+            #[cfg(target_os = "windows")]
+            built.show()?;
             #[cfg(target_os = "windows")]
             windows_request_guard::install(&built, app.state::<AppState>().guards.clone())?;
             #[cfg(not(target_os = "windows"))]

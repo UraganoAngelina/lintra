@@ -365,6 +365,65 @@ def scenario(binary, output, monitor_name, name, size, keys, budget=None, full=F
                 process.wait(timeout=10)
 
 
+def close_during_run(binary, output):
+    """T-MIG-P5-08, Slint parity "Annulla/chiudi": the owned window is closed
+    by the compositor while a 245 MB run is active. The process must exit on
+    its own with code 0 (cancel + join, P4-12) and leave no run spool in its
+    private TMPDIR. A capture just before closing shows the run active."""
+    with tempfile.TemporaryDirectory(prefix="lintra-desktop-close-") as temporary:
+        env = os.environ.copy()
+        for key, folder in [("XDG_DATA_HOME", "data"), ("XDG_CONFIG_HOME", "config"),
+                            ("XDG_CACHE_HOME", "cache"), ("TMPDIR", "tmp")]:
+            directory = Path(temporary) / folder
+            directory.mkdir(mode=0o700)
+            env[key] = str(directory)
+        env.pop("LINTRA_SCHEMA_DIR", None)
+        env.pop("LINTRA_REFERENCE_DATA_DIR", None)
+        process = subprocess.Popen([str(binary)], env=env, cwd=temporary,
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        try:
+            client = owned_window(process.pid, time.monotonic() + 30)
+            target = f'window="address:{client["address"]}"'
+            monitor = monitor_info(None)
+            (left, top) = monitor["origin"]
+            hypr(f'hl.dsp.window.float({{action="enable", {target}}})')
+            hypr(f'hl.dsp.window.resize({{x=1366, y=768, {target}}})')
+            hypr(f'hl.dsp.window.move({{x={left}, y={top}, {target}}})')
+            for prop in ("opaque", "no_blur"):
+                hypr(f'hl.dsp.window.set_prop({{prop="{prop}", value="1", {target}}})')
+            hypr(f'hl.dsp.focus({{{target}}})')
+            time.sleep(3)
+            for key in FILE_BIG + START_NOWAIT:
+                if key == "wait":
+                    time.sleep(1.5)
+                elif key.startswith("dialog"):
+                    drive_dialog(process.pid, client["address"], key)
+                else:
+                    hypr(f'hl.dsp.focus({{{target}}})')
+                    hypr(f'hl.dsp.send_shortcut({{mods="", key="{key}", {target}}})')
+                    time.sleep(0.4)
+            spools_running = sorted(p.name for p in (Path(temporary) / "tmp").glob("lintra-desktop-run-*"))
+            client = owned_window(process.pid, time.monotonic() + 5)
+            (x, y), (w, h) = client["at"], client["size"]
+            image = output / "close-during-run-1366x768.png"
+            subprocess.run(["grim", "-g", f"{x},{y} {w}x{h}", str(image)], check=True, timeout=15)
+            closed_at = time.monotonic()
+            hypr(f'hl.dsp.window.close({{{target}}})')
+            code = process.wait(timeout=60)
+            elapsed = round(time.monotonic() - closed_at, 2)
+            left_over = sorted(p.name for p in (Path(temporary) / "tmp").glob("lintra-desktop-run-*"))
+            result = {"name": "close-during-run-1366x768", "exit_code": code, "seconds_to_exit": elapsed,
+                      "spools_while_running": spools_running, "spools_after_exit": left_over,
+                      "image_sha256": hashlib.sha256(image.read_bytes()).hexdigest()}
+            assert spools_running, "the run had no spool: it was not active when closed"
+            assert code == 0 and not left_over, result
+            return result
+        finally:
+            if process.poll() is None:
+                process.kill()
+                process.wait(timeout=10)
+
+
 def main():
     binary = Path(sys.argv[1]).resolve(strict=True)
     output = Path(sys.argv[2]).resolve()
@@ -384,6 +443,7 @@ def main():
             for _ in range(350):
                 big.write(b"001A  \n" * 100_000)
         results = [scenario(binary, output, monitor_name, *item) for item in scenarios]
+        close = None if monitor_name else close_during_run(binary, output)
     finally:
         for file in samples.iterdir():
             file.unlink()
@@ -398,6 +458,8 @@ def main():
     names = [item["name"] for item in results]
     assert len(set(names)) == len(names) and all((output / f"{n}.png").is_file() for n in names), "one image per scenario"
     receipt = {"binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(), "scenarios": results}
+    if close is not None:
+        receipt["close_during_run"] = close
     (output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print("NATIVE_SHELL_CAPTURE_DONE", flush=True)
 
