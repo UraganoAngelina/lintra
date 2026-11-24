@@ -5,6 +5,7 @@ import { AppShell, type ServiceState } from "./AppShell";
 import { AnalysisForm, useAnalysisSelection } from "./AnalysisForm";
 import { RunPanel, useRun } from "./RunPanel";
 import { About, useReportAbout } from "./About";
+import { Results, useOverview, useResults } from "./Results";
 import { splitNotices } from "./information";
 import fontLicense from "../public/fonts/OFL.md?raw";
 import thirdPartyNotices from "../public/THIRD_PARTY_NOTICES?raw";
@@ -50,13 +51,20 @@ function App() {
   // Rust keeps the last published report across cancelled or failed runs;
   // the run screen says whose report it is (T-MIG-P5-06).
   const reportAvailable = run.report !== null;
-  const about = useReportAbout(service.kind === "ready" ? run.report : null, view === "informazioni");
+  const report = service.kind === "ready" ? run.report : null;
+  const about = useReportAbout(report, view === "informazioni" || view === "risultati");
+  const [results, onPage, onRetry] = useResults(report, view === "risultati");
+  const overview = useOverview(report, view === "risultati");
+  // Flow and version of the configuration Rust accepted for the current form.
+  const configured = selection.configuration.status === "ready" ? selection.configuration.selection : null;
+  const activeFlow = configured ? `${configured.flow_id} · ${configured.schema_version}` : null;
   return <AppShell view={view} onView={setView} theme={theme} onTheme={setTheme}
-    service={service} reportAvailable={reportAvailable} running={running}
+    service={service} reportAvailable={reportAvailable} running={running} activeFlow={activeFlow}
     analysis={service.kind === "ready" ? <div className="analysis-layout">
       <AnalysisForm state={selection} onEvent={onSelection} busy={running} />
       <RunPanel state={run} selection={selection} onEvent={onRun} onStart={onStart} onDecide={onDecide} onCancel={onCancel} />
     </div> : null}
+    results={service.kind === "ready" ? <Results view={results} about={about} overview={overview} reportAvailable={reportAvailable} onPage={onPage} onRetry={onRetry} /> : null}
     information={<About version={service.kind === "ready" ? service.version : null} selection={selection} report={about} notices={NOTICES} />} />;
 }
 

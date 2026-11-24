@@ -103,5 +103,8 @@ test("no report writer or conversion exists in the frontend", () => {
     assert.doesNotMatch(text, /new Blob|createObjectURL|download=|writeFile|writeTextFile|plugin-fs|showSaveFilePicker|sheetjs|exceljs|from "xlsx"|papaparse/i, name);
   }
   const manifest = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
-  assert.deepEqual(Object.keys(manifest.dependencies).sort(), ["@tauri-apps/api", "react", "react-dom"]);
+  // DEC-MIG-08 stack, approved by the author for T-MIG-P6-01: UI and grid
+  // libraries only; none of them reads or writes files.
+  assert.deepEqual(Object.keys(manifest.dependencies).sort(), ["@radix-ui/react-slot", "@tanstack/react-table",
+    "@tanstack/react-virtual", "@tauri-apps/api", "class-variance-authority", "clsx", "lucide-react", "react", "react-dom", "tailwind-merge"]);
 });

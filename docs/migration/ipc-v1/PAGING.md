@@ -103,3 +103,32 @@ query, LF/scope/count mismatch anche in coda, report vuoto, nonce/collisioni e
 metadati UTF-8/control lunghi con messaggio completo entro1MiB. La query non
 modifica i byte JSONL. Nessuna UI, dataset clinico, benchmark o CI nativa usata.
 Le race reali, pin e intake del bridge restano ai task/gate applicabili.
+
+## Emendamento 24 novembre 2026 — T-MIG-P6-01 (decisione dell’autore)
+
+Su richiesta esplicita dell’autore, per la tabella dei risultati con la
+motivazione di ogni diagnostica, il Row DTO aggiunge tre chiavi obbligatorie:
+`message` (preview), `expected` e `actual` (preview o null). `actual` è il
+solo valore visualizzabile (`display`) del dato trovato; restano esclusi
+`raw_hex`, `context`, `record_identity` e il record grezzo. Le tre preview
+hanno un limite di **128 byte** UTF-8 (`complete` false se tagliate), più
+stretto dei 256 dei metadati: una pagina di 128 righe con ogni testo al
+massimo dell’escaping JSON resta entro 1 MiB invece di fallire per intero.
+Il valore trovato può essere un dato personale del file analizzato: compare
+solo nelle righe disegnate (griglia virtualizzata), mai in log, console o
+storage, e non cambia la regola di cancellazione delle pagine (due al massimo).
+
+Nuova operazione `results_overview` {schemaVersion, run}, legata al run
+pubblicato (altrimenti StaleContext/InvalidState come `results_query`):
+`records_processed`, `valid_records`, `invalid_records`, `total_errors` dal
+summary verificato, `by_code` [{code preview, count}] nell’ordine del summary
+e `by_trace` [{trace_ref, trace preview, count}] per ogni tracciato dello
+scope, zero inclusi, nell’ordine dello scope. I conteggi per tracciato
+vengono dalla stessa scansione verificata dell’indice di pubblicazione;
+la loro somma e quella per codice coincidono con `total_errors`, altrimenti
+errore tecnico. Il renderer non ricava conteggi dalle righe né decodifica
+`trace_ref`: il nome del tracciato arriva da questa risposta.
+
+Reference e verifica aggiornate (`paging_reference.py`, `verify_paging.py`):
+72 casi PASS, di cui 2 nuovi sulla motivazione (assenza di raw/context/
+identità, preview esplicite entro 128 byte nel caso peggiore).

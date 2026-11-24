@@ -49,6 +49,14 @@ FULL_PARAMS_START = ["Tab", "type:a", "Tab", "wait", "type:2026", "Tab", "wait"]
 # T the one record every S row joins.
 FULL_BIG = FULL + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/big.txt", "wait",
                    "Tab", "Return", f"dialog:{SAMPLE_DIR}/onet.txt", "wait"]
+# T-MIG-P6-01: invalid.txt has 100 000 records of 4 bytes instead of 6, one
+# length diagnostic each (782 pages of 128). After the run, shift-Tab x11
+# from «Avvia analisi» reaches Risultati (Informazioni is x10); the section
+# title then has the focus: Tab reaches «Nuova analisi», the grid viewport,
+# «Pagina precedente», «Pagina 1», «Pagina 2».
+FILE_INVALID = SELECT + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/invalid.txt", "wait"]
+TO_RESULTS = ["wait", "wait"] + ["shift-Tab"] * 11 + ["Return", "wait", "wait", "wait"]
+GRID = FILE_INVALID + START + TO_RESULTS
 
 # name, logical window size, keys sent to the owned window.
 # Tab order: skip link, Analisi, Risultati, Informazioni, theme radio group.
@@ -115,6 +123,17 @@ SCENARIOS = [
     # button: report provenance beside the selection's.
     ("keyboard-informazioni-license-1366x768", (1366, 768), ["Tab"] * 4 + ["Return", "Tab", "Return", "Tab"]),
     ("keyboard-informazioni-license-640x480", (640, 480), ["Tab"] * 4 + ["Return", "Tab", "Return", "Tab"]),
+    # T-MIG-P6-01: Risultati with the summary and the virtualised grid.
+    ("results-grid-1366x768", (1366, 768), GRID),
+    ("results-grid-640x480", (640, 480), GRID),
+    ("results-grid-workarea", None, GRID),
+    ("results-grid-page-2-1366x768", (1366, 768), GRID + ["Tab"] * 5 + ["Return", "wait"]),
+    ("results-grid-scrolled-1366x768", (1366, 768), GRID + ["Tab", "Tab", "End", "wait"]),
+    # From the section title one shift-Tab reaches the theme group: Scuro.
+    ("results-grid-dark-1366x768", (1366, 768), GRID + ["shift-Tab", "Down", "Down", "wait"]),
+    ("results-valid-1366x768", (1366, 768), FILE + START + TO_RESULTS),
+    # From the section title one shift-Tab reaches the theme group: Chiaro.
+    ("results-grid-light-1366x768", (1366, 768), GRID + ["shift-Tab", "Down", "wait"]),
     ("keyboard-informazioni-report-1366x768", (1366, 768), FILE + START + ["wait", "wait"] + ["shift-Tab"] * 10 + ["Return", "wait"]),
     # T-MIG-P5-09: Full selection on the external bundle (last item True).
     ("full-selection-1366x768", (1366, 768), FULL, None, True),
@@ -448,6 +467,7 @@ def main():
         (samples / "fullt.txt").write_bytes(b"01AAXX\n02BBYY\n")  # Full trace T: same KEY/DATA
         (samples / "badt.txt").write_bytes(b"01AAZZ\n02BBYY\n")  # T: DATA of AA differs from S
         (samples / "onet.txt").write_bytes(b"001A  \n")  # T: the record every big.txt row joins
+        (samples / "invalid.txt").write_bytes(b"001A\n" * 100_000)  # P6-01: 100 000 length diagnostics
         with (samples / "big.txt").open("wb") as big:  # 35 M records, 245 MB
             for _ in range(350):
                 big.write(b"001A  \n" * 100_000)

@@ -52,16 +52,22 @@ function render(props) {
 const count = (html, pattern) => (html.match(pattern) ?? []).length;
 
 test("landmarks: skip link, banner with labelled navigation, main with one heading", () => {
-  const html = render({});
+  // React 19 server rendering hoists image preloads before the root.
+  const html = render({}).replace(/^(<link rel="preload" as="image" href="\/brand\/[a-z-]+\.png"\/>)+/, "");
   assert.ok(html.startsWith('<div class="shell"><a class="skip-link" href="#content">Vai al contenuto</a><header class="bar">'));
   assert.match(html, /<nav aria-label="Sezioni"><ul>(<li><button type="button"[^>]*>.*?<\/button><\/li>){3}<\/ul><\/nav>/);
-  assert.match(html, /<main id="content" tabindex="-1"><h1 tabindex="-1">Analisi<\/h1>/);
+  assert.match(html, /<main id="content" tabindex="-1"><div class="page-head"><div><p class="crumbs">Lintra \/ Analisi<\/p><h1 tabindex="-1">Analisi<\/h1>/);
   assert.equal(count(html, /<h1\b/g), 1);
   assert.equal(count(html, /<header\b/g), 1);
   assert.equal(count(html, /<main\b/g), 1);
-  // CSP: no inline style attributes and no images (img-src 'none').
+  // CSP: no inline style attributes; images only the two local official
+  // logo compositions (img-src 'self'), each with a text alternative.
   assert.equal(count(html, /\sstyle=/g), 0);
-  assert.equal(count(html, /<img\b/g), 0);
+  const images = [...html.matchAll(/<img\b[^>]*>/g)].map(match => match[0]);
+  assert.equal(images.length, 2);
+  for (const image of images) assert.match(image, /src="\/brand\/lintra-logo-(light|dark)\.png" alt="Lintra"/);
+  // Icons are decorative: every svg is hidden from assistive technology.
+  assert.equal(count(html, /<svg\b/g), count(html, /<svg\b[^>]*aria-hidden="true"/g));
   // Clickable things are buttons or links, never generic elements.
   assert.equal(count(html, /onclick|role="button"/gi), 0);
 });
@@ -70,7 +76,7 @@ test("exactly the selected section is marked current and titles the main region"
   for (const view of VIEWS) {
     const html = render({ view: view.id });
     assert.equal(count(html, /aria-current="page"/g), 1, view.id);
-    assert.match(html, new RegExp(`<button type="button" aria-current="page"><span>${view.label}</span>`));
+    assert.match(html, new RegExp(`<button type="button" aria-current="page"><svg[^>]*aria-hidden="true">.*?</svg><span class="nav-text"><span>${view.label}</span>`));
     assert.match(html, new RegExp(`<h1 tabindex="-1">${view.label}</h1>`));
   }
 });
@@ -78,17 +84,18 @@ test("exactly the selected section is marked current and titles the main region"
 test("the theme is a labelled radio group with the preference checked", () => {
   for (const theme of THEMES) {
     const html = render({ theme: theme.id });
-    assert.match(html, /<fieldset class="theme"><legend>Tema<\/legend>/);
+    assert.match(html, /<fieldset class="theme"><legend class="bar-label">Tema<\/legend>/);
     assert.equal(count(html, /<input type="radio" name="theme"/g), 3);
     assert.equal(count(html, /checked=""/g), 1);
-    assert.match(html, new RegExp(`<label><input type="radio" name="theme" checked="" value="${theme.id}"/>${theme.label}</label>`));
+    assert.match(html, new RegExp(`<label><input type="radio" name="theme" checked="" value="${theme.id}"/><span>${theme.label}</span></label>`));
   }
 });
 
 test("service and report states show only what the backend reported", () => {
-  assert.match(render({}), /<p class="service" role="status">Avvio del servizio…<\/p>/);
+  assert.match(render({}), /<div class="service"><p role="status">Avvio del servizio…<\/p><\/div>/);
   const ready = render({ service: { kind: "ready", version: "0.1.1-rc.3" }, view: "informazioni" });
-  assert.match(ready, /role="status">Servizio locale pronto</);
+  assert.match(ready, /role="status" class="service-ready">Servizio locale pronto</);
+  assert.match(ready, /<p class="service-version">v0\.1\.1-rc\.3 · ambiente locale<\/p>/);
   assert.match(ready, /<dt>Versione<\/dt><dd>0\.1\.1-rc\.3<\/dd>/);
   assert.match(render({ view: "informazioni" }), /<dd>Non ancora disponibile<\/dd>/);
   const failed = render({ service: { kind: "error", message: "Servizio non disponibile <x>" } });
@@ -100,6 +107,9 @@ test("service and report states show only what the backend reported", () => {
   // No invented success or KPI on the empty Analisi view.
   const empty = render({});
   assert.match(empty, /Prepara una nuova analisi\./);
+  // The selected flow is only what Rust accepted; none means none.
+  assert.match(empty, /<p class="flow-chip">Nessuno<\/p>/);
+  assert.match(render({ activeFlow: "SYNTHETIC · v1" }), /<p class="flow-chip">SYNTHETIC · v1<\/p>/);
   assert.doesNotMatch(empty, /conform|nessuna violazione|%/i);
 });
 

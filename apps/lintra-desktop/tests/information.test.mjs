@@ -141,7 +141,7 @@ test("license texts are closed disclosures with keyboard-scrollable verbatim tex
 test("the shell renders the Informazioni body it is given", () => {
   const html = renderToStaticMarkup(createElement(AppShell, { view: "informazioni", onView: () => {}, theme: "system", onTheme: () => {},
     service: { kind: "ready", version: "0.1.1-rc.3" }, reportAvailable: false, information: createElement("p", null, "corpo") }));
-  assert.match(html, /<h1 tabindex="-1">Informazioni<\/h1><p>corpo<\/p><\/main>/);
+  assert.match(html, /<h1 tabindex="-1">Informazioni<\/h1><p class="page-subtitle">[^<]*<\/p><\/div><\/div><p>corpo<\/p><\/main>/);
 });
 
 function count(html, pattern) { return (html.match(pattern) ?? []).length; }

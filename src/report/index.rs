@@ -3,7 +3,7 @@
 //! Offset memory is O(matches), not a constant-memory claim for the full index.
 use crate::{ScopeSummary, TraceId, ValidationError, ValidationSummary};
 use std::{
-    collections::{BTreeMap, VecDeque},
+    collections::{BTreeMap, HashMap, VecDeque},
     error::Error,
     fmt,
     fs::File,
@@ -117,6 +117,10 @@ pub struct JsonlReportIndex {
     reader: BufReader<File>,
     offsets: Vec<u64>,
     total: u64,
+    /// Diagnostics per trace over the whole report (not the filter), counted
+    /// in the same verified pass; the desktop results overview (T-MIG-P6-01)
+    /// reads it instead of rescanning the JSONL.
+    by_trace: HashMap<TraceId, u64>,
     buffer: Vec<u8>,
     cache: BTreeMap<usize, ValidationError>,
     fifo: VecDeque<usize>,
@@ -141,6 +145,7 @@ impl JsonlReportIndex {
         let mut offset = 0u64;
         let mut total = 0u64;
         let mut by_code = BTreeMap::new();
+        let mut by_trace = HashMap::new();
         loop {
             if is_cancelled() {
                 return Err(ReportIndexError::Cancelled);
@@ -161,6 +166,7 @@ impl JsonlReportIndex {
             }
             total = total.checked_add(1).ok_or(ReportIndexError::TooManyRows)?;
             *by_code.entry(error.code.clone()).or_insert(0u64) += 1;
+            *by_trace.entry(error.trace_id.clone()).or_insert(0u64) += 1;
             if filter.matches(&error) {
                 if offsets.len() == i32::MAX as usize {
                     return Err(ReportIndexError::TooManyRows);
@@ -178,6 +184,7 @@ impl JsonlReportIndex {
             reader,
             offsets,
             total,
+            by_trace,
             buffer,
             cache: BTreeMap::new(),
             fifo: VecDeque::new(),
@@ -190,6 +197,11 @@ impl JsonlReportIndex {
     }
     pub fn total(&self) -> u64 {
         self.total
+    }
+    /// Diagnostics per trace of the whole verified report; their sum is
+    /// `total()`. Traces without diagnostics are absent; no order is implied.
+    pub fn errors_by_trace(&self) -> &HashMap<TraceId, u64> {
+        &self.by_trace
     }
     /// Bytes of offset payload, excluding allocator/reader and the single JSON
     /// decoding buffer. This is an index-size measure, not process peak RSS.

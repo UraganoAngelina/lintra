@@ -19,7 +19,7 @@
       "devtools": false
     }],
     "security": {
-      "csp": "default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src ipc: http://ipc.localhost; img-src 'none'; object-src 'none'; base-uri 'none'; frame-src 'none'; form-action 'none'",
+      "csp": "default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src ipc: http://ipc.localhost; img-src 'self'; object-src 'none'; base-uri 'none'; frame-src 'none'; form-action 'none'",
       "capabilities": ["desktop"]
     }
   },

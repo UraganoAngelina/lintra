@@ -160,6 +160,10 @@ pub(crate) enum ResultsRequest {
         offset: u64,
         limit: u64,
     },
+    /// Report overview for the results charts (T-MIG-P6-01).
+    Overview {
+        run: RunRef,
+    },
 }
 impl ResultsRequest {
     pub(crate) fn decode(operation: &str, dto: &Map<String, Value>) -> Result<Self, ErrorCode> {
@@ -190,6 +194,12 @@ impl ResultsRequest {
                         .ok_or(ErrorCode::InvalidMessage)?,
                 })
             }
+            "results_overview" => {
+                fields(dto, &["run"])?;
+                Ok(Self::Overview {
+                    run: RunRef::decode(&dto["run"])?,
+                })
+            }
             _ => Err(ErrorCode::UnknownOperation),
         }
     }
@@ -208,7 +218,17 @@ pub(crate) fn nonce(prefix: &str) -> Result<String, ErrorCode> {
 /// Metadata preview DTO: at most 256 UTF-8 bytes on a character boundary with
 /// an explicit completeness flag, so a prefix is never mistaken for the value.
 pub(crate) fn preview(text: &str) -> Value {
-    let mut end = text.len().min(PREVIEW_BYTES);
+    bounded_preview(text, PREVIEW_BYTES)
+}
+
+/// Row texts (message, expected, value found; T-MIG-P6-01, author decision
+/// of 24 Nov 2026): shorter previews, so a page of 128 rows with every text
+/// at its worst-case JSON escaping (6 bytes per control byte) still fits the
+/// 1 MiB frame instead of failing the whole page.
+const ROW_TEXT_BYTES: usize = 128;
+
+fn bounded_preview(text: &str, limit: usize) -> Value {
+    let mut end = text.len().min(limit);
     while !text.is_char_boundary(end) {
         end -= 1;
     }
@@ -245,7 +265,9 @@ impl Drop for Candidate {
 /// Unfiltered queries share the publication index; filtered ones own theirs.
 enum Source {
     Shared,
-    Owned(JsonlReportIndex),
+    // Boxed: the index grew with per-trace counts (T-MIG-P6-01) and the
+    // shared variant carries nothing (clippy::large_enum_variant).
+    Owned(Box<JsonlReportIndex>),
 }
 
 /// A published immutable query. `source` is declared (and dropped) before
@@ -329,7 +351,7 @@ impl Results {
         match candidate.thread.take().map(JoinHandle::join) {
             Some(Ok(Ok(index))) => {
                 self.current = Some(Query {
-                    source: Source::Owned(index),
+                    source: Source::Owned(Box::new(index)),
                     report: candidate.report.clone(),
                     run: candidate.run.clone(),
                     query_ref: std::mem::take(&mut candidate.query_ref),
@@ -369,6 +391,7 @@ impl Results {
                 offset,
                 limit,
             } => self.page(&query_ref, offset, limit, id),
+            ResultsRequest::Overview { run } => overview(&run, report, id),
         }
     }
 
@@ -561,12 +584,19 @@ impl Results {
             if tokens.iter().any(|(t, _)| t == &token) || query.holds(&token) {
                 return Err(ErrorCode::TechnicalFailure);
             }
-            // Row DTO: references and previews only; actual, raw bytes,
-            // context, record identity and message stay in Rust (P2-06).
+            // Row DTO: references and previews. Since T-MIG-P6-01 (author
+            // decision, PAGING.md amendment of 24 Nov 2026) the row also
+            // carries the message, the expected text and the displayed value
+            // found, as bounded previews; raw bytes, context and record
+            // identity stay in Rust (P2-06).
+            let text = |value: &str| bounded_preview(value, ROW_TEXT_BYTES);
             rows.push(json!({"schemaVersion":1,"diagnostic_ref":token,
                 "ordinal":position.to_string(),"line":error.line_number.to_string(),
                 "trace_ref":format!("trace_{trace}"),"code":preview(code),
-                "field":error.field.as_ref().map(|field| preview(&field.name))}));
+                "field":error.field.as_ref().map(|field| preview(&field.name)),
+                "message":text(&error.message),
+                "expected":error.expected.as_deref().map(text),
+                "actual":error.actual.as_ref().map(|actual| text(&actual.display))}));
             tokens.push((token, row));
         }
         // Encode the whole frame within 1 MiB before publishing any token or
@@ -585,6 +615,57 @@ impl Results {
         }
         Ok(bytes)
     }
+}
+
+/// Overview of the published report for the results charts (T-MIG-P6-01):
+/// record counts and errors per code from the verified summary, errors per
+/// trace from the publication index (same verified pass). Every scope trace
+/// is listed, in scope order, with its own handle and name, so the renderer
+/// never decodes a `trace_ref`. Nothing is computed from rows in the renderer.
+fn overview(
+    run: &RunRef,
+    report: Option<&(RunRef, Arc<Report>)>,
+    id: &str,
+) -> Result<Vec<u8>, ErrorCode> {
+    let (published, report) = report.ok_or(ErrorCode::InvalidState)?;
+    if run != published {
+        return Err(ErrorCode::StaleContext);
+    }
+    let summary = report.summary();
+    let by_trace = report.with_index(|index| Ok(index.errors_by_trace().clone()))?;
+    let traces = report.traces();
+    // The scan already rejects out-of-scope rows; a mismatch is a defect.
+    if by_trace.keys().any(|trace| !traces.contains(trace))
+        || by_trace.values().sum::<u64>() != summary.total_errors
+    {
+        return Err(ErrorCode::TechnicalFailure);
+    }
+    let codes = summary
+        .errors_by_code
+        .iter()
+        .map(|(code, count)| {
+            let symbol = code.as_symbol().map_err(|_| ErrorCode::TechnicalFailure)?;
+            Ok(json!({"schemaVersion":1,"code":preview(symbol),"count":count.to_string()}))
+        })
+        .collect::<Result<Vec<_>, ErrorCode>>()?;
+    let per_trace: Vec<Value> = traces
+        .iter()
+        .enumerate()
+        .map(|(position, trace)| {
+            json!({"schemaVersion":1,"trace_ref":format!("trace_{position}"),
+                "trace":preview(&trace.0),
+                "count":by_trace.get(trace).copied().unwrap_or(0).to_string()})
+        })
+        .collect();
+    ipc::response(
+        id,
+        json!({"schemaVersion":1,"run":run.dto(),
+            "records_processed":summary.records_processed.to_string(),
+            "valid_records":summary.valid_records.to_string(),
+            "invalid_records":summary.invalid_records.to_string(),
+            "total_errors":summary.total_errors.to_string(),
+            "by_code":codes,"by_trace":per_trace}),
+    )
 }
 
 #[cfg(test)]
@@ -618,7 +699,7 @@ pub(super) mod tests {
         "total_matches",
         "total_diagnostics",
     ];
-    const ROW_KEYS: [&str; 7] = [
+    const ROW_KEYS: [&str; 10] = [
         "schemaVersion",
         "diagnostic_ref",
         "ordinal",
@@ -626,6 +707,9 @@ pub(super) mod tests {
         "trace_ref",
         "code",
         "field",
+        "message",
+        "expected",
+        "actual",
     ];
 
     /// The two canonical synthetic diagnostics: [field-level, record-level].
@@ -993,14 +1077,16 @@ pub(super) mod tests {
                 assert_eq!(row["trace_ref"], "trace_0");
                 assert!(seen.insert(row["diagnostic_ref"].as_str().unwrap().to_owned()));
             }
-            // Only references and previews: never values, bytes, identity or paths.
+            // References and previews only: since T-MIG-P6-01 message,
+            // expected and the displayed value found travel as previews, but
+            // never raw bytes, context, record identity or paths.
             let text = page.to_string();
             for forbidden in [
                 "raw_hex",
-                "actual",
+                "00 C3 A9",
                 "context",
                 "record_identity",
-                "message",
+                "technical_ids",
                 "SYNTHETIC-A",
                 "errors.jsonl",
                 path.parent().unwrap().to_str().unwrap(),
@@ -1376,6 +1462,10 @@ pub(super) mod tests {
                 let mut row = base[0].clone();
                 row["line"] = (i as u64 + 1).into();
                 row["field"]["name"] = "\u{1}".repeat(400).into();
+                // T-MIG-P6-01: the row texts at their worst case as well.
+                row["message"] = "\u{1}".repeat(400).into();
+                row["expected"] = "\u{1}".repeat(400).into();
+                row["actual"]["display"] = "\u{1}".repeat(400).into();
                 row
             })
             .collect();
@@ -1404,7 +1494,114 @@ pub(super) mod tests {
         for row in frame["payload"]["rows"].as_array().unwrap() {
             assert_eq!(row["field"]["text"].as_str().unwrap().len(), 256);
             assert_eq!(row["field"]["complete"], false);
+            for text in ["message", "expected", "actual"] {
+                assert_eq!(
+                    row[text]["text"].as_str().unwrap().len(),
+                    ROW_TEXT_BYTES,
+                    "{text}"
+                );
+                assert_eq!(row[text]["complete"], false, "{text}");
+            }
         }
+    }
+
+    /// T-MIG-P6-01: the row reason is the canonical diagnostic's message,
+    /// expected text and displayed value found, each a bounded preview;
+    /// absent ones are null, never an invented text.
+    #[test]
+    fn rows_carry_the_reason_as_bounded_previews() {
+        let (report, _) = report(&base(), &["T1"]);
+        let published = (run(1), report);
+        let mut results = Results::default();
+        let q = query(&mut results, &published, json!({"schemaVersion":1})).unwrap()["query_ref"]
+            .clone();
+        let first = page(&mut results, &q, "0", 2).unwrap();
+        let field = &first["rows"][0];
+        assert_eq!(
+            field["message"],
+            json!({"schemaVersion":1,"text":"Errore sintetico \"à\".","complete":true})
+        );
+        assert_eq!(
+            field["expected"],
+            json!({"schemaVersion":1,"text":"testo","complete":true})
+        );
+        assert_eq!(
+            field["actual"],
+            json!({"schemaVersion":1,"text":"\\0é","complete":true})
+        );
+        let record = &first["rows"][1];
+        assert_eq!(record["message"]["text"], "Record corto\nriga.");
+        assert_eq!(record["expected"], Value::Null);
+        assert_eq!(record["actual"], Value::Null);
+        // 'à' is two bytes: a long value is cut on a character boundary.
+        let cut = bounded_preview(&"à".repeat(100), ROW_TEXT_BYTES);
+        assert_eq!(cut["text"], "à".repeat(64));
+        assert_eq!(cut["complete"], false);
+    }
+
+    /// T-MIG-P6-01: the overview reads the verified summary and the per-trace
+    /// counts of the publication index, lists every scope trace in order
+    /// (zero included) and is bound to the published run.
+    #[test]
+    fn overview_counts_come_from_the_verified_report_and_its_scope() {
+        let all = rows(10, &["S", "T"]);
+        let (report, _) = report(&all, &["S", "T", "U"]);
+        let published = (run(1), report);
+        let ask = |run_ref: RunRef, published: Option<&(RunRef, Arc<Report>)>| {
+            Results::default().dispatch(
+                decode(
+                    "results_overview",
+                    json!({"schemaVersion":1,"run":run_ref.dto()}),
+                )
+                .unwrap(),
+                published,
+                "a",
+            )
+        };
+        let bytes = ask(run(1), Some(&published)).unwrap();
+        let frame: Value = serde_json::from_slice(&bytes).unwrap();
+        let overview = &frame["payload"];
+        assert_eq!(overview["records_processed"], "10");
+        assert_eq!(overview["valid_records"], "0");
+        assert_eq!(overview["invalid_records"], "10");
+        assert_eq!(overview["total_errors"], "10");
+        assert_eq!(
+            overview["by_code"],
+            json!([
+                {"schemaVersion":1,"code":{"schemaVersion":1,"text":"E_RECORD_LENGTH","complete":true},"count":"5"},
+                {"schemaVersion":1,"code":{"schemaVersion":1,"text":"E_SYNTHETIC_RULE","complete":true},"count":"5"}
+            ])
+        );
+        let traces: Vec<(String, String, String)> = overview["by_trace"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|t| {
+                (
+                    t["trace_ref"].as_str().unwrap().into(),
+                    t["trace"]["text"].as_str().unwrap().into(),
+                    t["count"].as_str().unwrap().into(),
+                )
+            })
+            .collect();
+        // rows() cycles traces every two rows: S gets 6, T 4, U none.
+        assert_eq!(
+            traces,
+            vec![
+                ("trace_0".into(), "S".into(), "6".into()),
+                ("trace_1".into(), "T".into(), "4".into()),
+                ("trace_2".into(), "U".into(), "0".into())
+            ]
+        );
+        assert_eq!(ask(run(2), Some(&published)), Err(ErrorCode::StaleContext));
+        assert_eq!(ask(run(1), None), Err(ErrorCode::InvalidState));
+        assert_eq!(
+            decode(
+                "results_overview",
+                json!({"schemaVersion":1,"run":run(1).dto(),"x":1})
+            ),
+            Err(ErrorCode::InvalidMessage)
+        );
     }
 
     #[test]

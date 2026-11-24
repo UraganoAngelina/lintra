@@ -153,7 +153,7 @@ impl AppState {
         }
         if matches!(
             request.operation.as_str(),
-            "results_query" | "results_query_state" | "results_page"
+            "results_query" | "results_query_state" | "results_page" | "results_overview"
         ) {
             let command = match crate::results::ResultsRequest::decode(
                 &request.operation,

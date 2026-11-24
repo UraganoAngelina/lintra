@@ -31,21 +31,45 @@
   --brand-cyan: #00c2e8;
   --brand-slate: #6b7a90;
   --brand-light: #e5eaf2;
-  --bg: light-dark(#f5f4f0, #101112);
-  --surface: light-dark(#ffffff, #1b1d1f);
-  --ink: light-dark(#20272b, #f5f4f0);
-  --muted: light-dark(#56616a, #b6babc);
-  --border: light-dark(#cbcfcf, #60676b);
+  /* T-MIG-P6-01: SaaS layout of lintra_tauri_ui.png in the logo book palette.
+     Cool neutral background, white cards, deep blue actions (white text,
+     14:1) and technical cyan only as a non-text accent on light surfaces. */
+  --bg: light-dark(#f4f6fa, #0a1120);
+  --surface: light-dark(#ffffff, #111b2e);
+  --sidebar: light-dark(#ffffff, #0d1626);
+  --subtle: light-dark(#f7f9fc, #15213a);
+  --ink: light-dark(#0f1b2d, #e6ecf5);
+  --muted: light-dark(#526073, #9ba9be);
+  --border: light-dark(#e1e7f0, #24324a);
   --accent: light-dark(var(--brand), var(--brand-cyan));
-  --selected-bg: light-dark(var(--brand-light), var(--brand));
-  --selected-ink: light-dark(var(--brand), var(--brand-cyan));
-  --error: light-dark(#ae2925, #ff9288);
-  --warn: light-dark(#855408, #efc177);
+  --on-accent: light-dark(#ffffff, #04121f);
+  --accent-bar: var(--brand-cyan);
+  --selected-bg: light-dark(#e7eef9, #12294a);
+  --selected-ink: light-dark(var(--brand), #7dd8f0);
+  --error: light-dark(#b42318, #ff8a80);
+  --error-bg: light-dark(#fdecea, #3a1715);
+  --warn: light-dark(#8a5300, #f2c26b);
+  --warn-bg: light-dark(#fdf3e1, #3a2a0f);
+  --success: light-dark(#067647, #6fd3a0);
+  --success-bg: light-dark(#e6f6ee, #0f3324);
+  --shadow: light-dark(#0f1b2d14, #00000066);
+  /* Charts (T-MIG-P6-01): categorical series for error codes, brand first;
+     values are always written next to the marks, colour never alone. */
+  --chart-1: light-dark(#0b2a5b, #4f9dff);
+  --chart-2: light-dark(#0090b0, #00c2e8);
+  --chart-3: light-dark(#d9480f, #ff8f5c);
+  --chart-4: light-dark(#b7791f, #f2c26b);
+  --chart-5: light-dark(#6741d9, #a98bff);
+  --chart-6: light-dark(#2b8a3e, #6fd3a0);
+  --chart-8: light-dark(#5c677d, #9ba9be);
+  --chart-track: light-dark(#e7ecf4, #22304a);
   --title-size: 28px;
   --body-size: 14px;
   --data-size: 12px;
   --control-height: 36px;
-  --radius: 4px;
+  --radius: 8px;
+  --card-radius: 12px;
+  --card-shadow: 0 1px 2px var(--shadow), 0 2px 6px var(--shadow);
   --focus-width: 2px;
   --space-small: 4px;
   --space-row: 8px;
@@ -53,7 +77,7 @@
   --space-block: 16px;
   --page-padding: 24px;
   --section-gap: 32px;
-  --bar-width: 224px;
+  --bar-width: 248px;
 }
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] { color-scheme: dark; }

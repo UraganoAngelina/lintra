@@ -54,7 +54,9 @@ def main():
             record('counts distinguish matched and total diagnostics', query['total_matches'] == '512' and query['total_diagnostics'] == '512')
             first = view.page('native-owner', query['query_ref'], '0')
             record('default page64 is explicit bounded data', len(first['rows']) == 64 and first['next_offset'] == '64' and first['has_more'])
-            record('row projection contains no raw/context/identities', set(first['rows'][0]) == {'schemaVersion', 'diagnostic_ref', 'ordinal', 'line', 'trace_ref', 'code', 'field'})
+            record('row projection contains no raw/context/identities', set(first['rows'][0]) == {'schemaVersion', 'diagnostic_ref', 'ordinal', 'line', 'trace_ref', 'code', 'field', 'message', 'expected', 'actual'})
+            frame = json.dumps(first)
+            record('row reason carries no raw bytes, context or identities (P6-01 amendment)', all(key not in frame for key in ['raw_hex', 'context', 'record_identity', 'SYNTH_A', 'record_0']))
             initial_token = first['rows'][0]['diagnostic_ref']
             view.page('native-owner', query['query_ref'], '64')
             record('two viewport pages retain valid selection tokens', view.selected('native-owner', query['query_ref'], initial_token)['line'] == 1)
@@ -136,11 +138,14 @@ def main():
         record('valid empty report remains a query result', empty.page('native-owner', query['query_ref'], '0')['rows'] == [])
 
         # Captured metadata can contain long/control/UTF-8 text, not HTML authority.
-        raw = b''.join(json.dumps({**row(i), 'field': {**row(i)['field'], 'name': '\u0001è😀' * 128}}, ensure_ascii=False).encode() + b'\n' for i in range(128))
+        raw = b''.join(json.dumps({**row(i), 'field': {**row(i)['field'], 'name': '\u0001è😀' * 128},
+                                   'message': '\u0001' * 400, 'expected': '\u0001' * 400,
+                                   'actual': {**(row(i)['actual'] or {'raw_hex': None}), 'display': '\u0001' * 400}}, ensure_ascii=False).encode() + b'\n' for i in range(128))
         view = server(io.BytesIO(raw), 128)
         query = view.open_query('native-owner', {'schemaVersion': 1})
         page = view.page('native-owner', query['query_ref'], '0', 128)
         record('long metadata preview is explicit, never a silent full label', all(not r['field']['complete'] and len(r['field']['text'].encode()) <= 256 for r in page['rows']))
+        record('long reason previews are explicit and bounded to 128 bytes', all(not r[key]['complete'] and len(r[key]['text'].encode()) <= 128 for r in page['rows'] for key in ['message', 'expected', 'actual']))
         frame = {'schemaVersion': 1, 'request_id': 'x' * 64, 'kind': 'result', 'payload': page}
         record('max page includes envelope/escaping within1MiB', len(json.dumps(frame, ensure_ascii=False).encode()) < 1_048_576)
     print(json.dumps({'passed': True, 'cases': len(checks), 'checks': checks,

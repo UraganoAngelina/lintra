@@ -21,12 +21,18 @@ def decimal(value):
     return int(value)
 
 
-def preview(text):
+def preview(text, limit=PREVIEW_BYTES):
     if not isinstance(text, str):
         raise ValueError("invalid captured metadata")
     raw = text.encode("utf-8", errors="strict")
-    return {"schemaVersion": 1, "text": raw[:PREVIEW_BYTES].decode("utf-8", errors="ignore"),
-            "complete": len(raw) <= PREVIEW_BYTES}
+    return {"schemaVersion": 1, "text": raw[:limit].decode("utf-8", errors="ignore"),
+            "complete": len(raw) <= limit}
+
+
+# Amendment of 24 Nov 2026 (T-MIG-P6-01, author decision): the row carries
+# the reason (message, expected, displayed value found) as shorter previews,
+# so a page of 128 rows at worst-case escaping still fits 1 MiB.
+ROW_TEXT_BYTES = 128
 
 
 class Paging:
@@ -160,7 +166,10 @@ class Paging:
                 rows.append({"schemaVersion": 1, "diagnostic_ref": token, "ordinal": str(position),
                              "line": str(row["line"]), "trace_ref": trace_ref,
                              "code": preview(row["code"]),
-                             "field": preview(field["name"]) if field is not None else None})
+                             "field": preview(field["name"]) if field is not None else None,
+                             "message": preview(row["message"], ROW_TEXT_BYTES),
+                             "expected": preview(row["expected"], ROW_TEXT_BYTES) if row["expected"] is not None else None,
+                             "actual": preview(row["actual"]["display"], ROW_TEXT_BYTES) if row["actual"] is not None else None})
                 handles[token] = position
         except (OSError, ValueError, KeyError, TypeError, StopIteration, Rejected) as error:
             raise Rejected("IPC_TECHNICAL_FAILURE") from error

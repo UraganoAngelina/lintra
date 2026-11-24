@@ -93,6 +93,149 @@
         "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d"
       },
       {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "@radix-ui/react-compose-refs",
+            "version": "1.1.5"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "@radix-ui/react-slot",
+            "version": "1.5.0"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "@tanstack/react-store",
+            "version": "0.11.4"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "cb4a7917af22bd56340e877f10a5c5aa4fded7af2459162630ff7fcb48bb45c7"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "@tanstack/react-table",
+            "version": "9.3.1"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "9db3f8ddd7031ab264b99bec49c221155d0c8649b53dd4aa007f2041d36cdf5f"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "@tanstack/react-virtual",
+            "version": "3.14.28"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "@tanstack/store",
+            "version": "0.11.3"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "cb4a7917af22bd56340e877f10a5c5aa4fded7af2459162630ff7fcb48bb45c7"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "@tanstack/table-core",
+            "version": "9.3.1"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "9db3f8ddd7031ab264b99bec49c221155d0c8649b53dd4aa007f2041d36cdf5f"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "@tanstack/virtual-core",
+            "version": "3.19.13"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "class-variance-authority",
+            "version": "0.7.1"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "0ccbf956cffc8dcf515809433cb5242ee67c94513d46e48c261d68d0880de406"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "clsx",
+            "version": "2.1.1"
+          }
+        ],
+        "file": "license",
+        "sha256": "9a9edad7baae52622bddf3c15b2ef8a33d2c89f2d25408ad13e8a7481c6b0c97"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "lucide-react",
+            "version": "1.79.0"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "tailwind-merge",
+            "version": "3.7.1"
+          }
+        ],
+        "file": "LICENSE.md",
+        "sha256": "d4c70c7ce38cea8778f0aed3fc0bef0a9dbd27f13bd8b6773cbd6d37941971e5"
+      },
+      {
+        "ecosystem": "npm",
+        "packages": [
+          {
+            "name": "use-sync-external-store",
+            "version": "1.7.0"
+          }
+        ],
+        "file": "LICENSE",
+        "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+      },
+      {
         "ecosystem": "cargo",
         "packages": [
           {
@@ -170,6 +313,32 @@
         ],
         "file": "LICENSE",
         "sha256": "6dc0e068dcf3a5bc8e054205b85b7720e1d49265bbc64bf515d2cf79197df69a"
+      }
+    ]
+  },
+  "brand_assets": {
+    "task": "T-MIG-P6-01",
+    "source": "lintra_ui_references/lintra-logo-book.png (read-only, outside the repository)",
+    "source_sha256": "85f1c48fc1d7fcbd9ac1d64edc8e48c02c729b541c06dcd2392cf0125ec038c1",
+    "note": "Crops of the ratified logo book (LINTRA_OFFICIAL_BRAND.md): artwork not redrawn or regenerated; only the panel background removed (ImageMagick 7 -fuzz/-transparent) and the result trimmed.",
+    "files": [
+      {
+        "destination": "public/brand/lintra-logo-light.png",
+        "crop": "760x270+100+90 (logo principale)",
+        "process": "-fuzz 8% -transparent white -trim -resize x128",
+        "sha256": "5c75afbe92fabb7419f4fff3ef0531f57851dd2acd01cf1d1187dbc00ee00a3d"
+      },
+      {
+        "destination": "public/brand/lintra-logo-dark.png",
+        "crop": "400x160+500+520 (versione su sfondo scuro)",
+        "process": "-fuzz 10% -transparent srgb(5,31,61) -trim",
+        "sha256": "59a657632bf4a771465bc82604707ef515e8836af6fe2778b7f4a4f830d0c244"
+      },
+      {
+        "destination": "public/brand/lintra-mark.png",
+        "crop": "170x170+82+822 (icona / app mark)",
+        "process": "-fuzz 12% -transparent white -trim -resize 128x128",
+        "sha256": "c864ebe467225fb6271bf7f88f7bc48ff5dd72aa3d7f9526d5a1a16d2533c8ce"
       }
     ]
   }

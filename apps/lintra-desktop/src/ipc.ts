@@ -34,6 +34,7 @@ type RequestPayloads = {
   results_query: { schemaVersion: 1; run: RunRef; filters: ResultsFilter };
   results_query_state: { schemaVersion: 1; query_ref: string };
   results_page: { schemaVersion: 1; query_ref: string; offset: string; limit: number };
+  results_overview: { schemaVersion: 1; run: RunRef };
   results_select: { schemaVersion: 1; query_ref: string; diagnostic_ref: string };
   results_text: { schemaVersion: 1; selection_ref: string; component_ref: string; offset: string; limit: number };
   results_context: { schemaVersion: 1; selection_ref: string; offset: string; limit: number };
@@ -154,7 +155,7 @@ export function decodeReply(raw: unknown, requestId: string): ObjectDto {
 
 export function encodeRequest<K extends Operation>(operation: K, requestId: string, payload: RequestPayloads[K]): Uint8Array {
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(requestId)
-      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress", "resource_budget_state", "validation_budget", "validation_budget_decide", "results_query", "results_query_state", "results_page", "results_select", "results_text", "results_context", "results_sources", "results_domain", "results_domain_state", "report_about", "export_prepare", "export_execute", "export_state", "export_cancel"].includes(operation)) invalid();
+      || !["app_info", "client_ready", "catalog_page", "configuration_select", "configuration_page", "plan_create", "plan_input_choose", "plan_parameter_set", "plan_prepare", "validation_start", "validation_state", "validation_acknowledge", "validation_cancel", "validation_progress", "resource_budget_state", "validation_budget", "validation_budget_decide", "results_query", "results_query_state", "results_page", "results_overview", "results_select", "results_text", "results_context", "results_sources", "results_domain", "results_domain_state", "report_about", "export_prepare", "export_execute", "export_state", "export_cancel"].includes(operation)) invalid();
   const bytes = new TextEncoder().encode(JSON.stringify({
     schemaVersion: 1, request_id: requestId, kind: "request", operation,
     payload,
@@ -525,10 +526,14 @@ export type QueryStatus = {
   total_matches: string | null; total_diagnostics: string | null;
 };
 export type Preview = { schemaVersion: 1; text: string; complete: boolean };
+/** Row DTO. Since T-MIG-P6-01 (author decision, PAGING.md amendment of 24
+ * Nov 2026) it also carries the reason: message, expected text and the
+ * displayed value found, each a preview of at most ROW_TEXT_BYTES. */
 export type ResultRow = {
   schemaVersion: 1; diagnostic_ref: string; ordinal: string; line: string; trace_ref: string;
-  code: Preview; field: Preview | null;
+  code: Preview; field: Preview | null; message: Preview; expected: Preview | null; actual: Preview | null;
 };
+export const ROW_TEXT_BYTES = 128;
 export type ResultsPage = {
   schemaVersion: 1; query_ref: string; run: RunRef; page_generation: string; offset: string;
   rows: ResultRow[]; next_offset: string; has_more: boolean; total_matches: string; total_diagnostics: string;
@@ -563,11 +568,11 @@ function readStatus(dto: ObjectDto, queryRef: string | null, run: RunRef | null)
   if (BigInt(matches) > BigInt(total)) invalid();
   return { schemaVersion: 1, run: current, query_ref: reference, state: "ready", total_matches: matches, total_diagnostics: total };
 }
-function readPreview(value: unknown): Preview {
+function readPreview(value: unknown, limit = PREVIEW_BYTES): Preview {
   const dto = object(value);
   version(dto); exact(dto, ["schemaVersion", "text", "complete"]);
   if (typeof dto.text !== "string" || typeof dto.complete !== "boolean"
-      || new TextEncoder().encode(dto.text).byteLength > PREVIEW_BYTES) invalid();
+      || new TextEncoder().encode(dto.text).byteLength > limit) invalid();
   return { schemaVersion: 1, text: dto.text, complete: dto.complete };
 }
 export async function resultsQuery(run: RunRef, filters: ResultsFilter): Promise<QueryStatus> {
@@ -589,12 +594,15 @@ export async function resultsPage(queryRef: string, offset = "0", limit = DEFAUL
   const start = BigInt(offset);
   const rows = dto.rows.map((value, index): ResultRow => {
     const row = object(value);
-    version(row); exact(row, ["schemaVersion", "diagnostic_ref", "ordinal", "line", "trace_ref", "code", "field"]);
+    version(row); exact(row, ["schemaVersion", "diagnostic_ref", "ordinal", "line", "trace_ref", "code", "field", "message", "expected", "actual"]);
     const ordinal = unsigned(row.ordinal);
     const line = unsigned(row.line);
     if (BigInt(ordinal) !== start + BigInt(index) || line === "0") invalid();
     return { schemaVersion: 1, diagnostic_ref: identifier(row.diagnostic_ref), ordinal, line,
-      trace_ref: identifier(row.trace_ref), code: readPreview(row.code), field: row.field === null ? null : readPreview(row.field) };
+      trace_ref: identifier(row.trace_ref), code: readPreview(row.code), field: row.field === null ? null : readPreview(row.field),
+      message: readPreview(row.message, ROW_TEXT_BYTES),
+      expected: row.expected === null ? null : readPreview(row.expected, ROW_TEXT_BYTES),
+      actual: row.actual === null ? null : readPreview(row.actual, ROW_TEXT_BYTES) };
   });
   const next = unsigned(dto.next_offset);
   const matches = unsigned(dto.total_matches);
@@ -603,6 +611,41 @@ export async function resultsPage(queryRef: string, offset = "0", limit = DEFAUL
       || BigInt(matches) > BigInt(total) || dto.has_more !== BigInt(next) < BigInt(matches)) invalid();
   return { schemaVersion: 1, query_ref: queryRef, run: readRun(dto.run), page_generation: unsigned(dto.page_generation),
     offset, rows, next_offset: next, has_more: dto.has_more, total_matches: matches, total_diagnostics: total };
+}
+
+// Report overview for the results charts (T-MIG-P6-01). Counts come from the
+// verified Rust summary and publication index; this client only checks that
+// they are canonical and consistent and never derives counts from rows.
+export type CodeCount = { schemaVersion: 1; code: Preview; count: string };
+export type TraceCount = { schemaVersion: 1; trace_ref: string; trace: Preview; count: string };
+export type ResultsOverview = {
+  schemaVersion: 1; run: RunRef; records_processed: string; valid_records: string; invalid_records: string;
+  total_errors: string; by_code: CodeCount[]; by_trace: TraceCount[];
+};
+export async function resultsOverview(run: RunRef): Promise<ResultsOverview> {
+  readRun(run);
+  const dto = await exchange("results_overview", { schemaVersion: 1, run });
+  exact(dto, ["schemaVersion", "run", "records_processed", "valid_records", "invalid_records", "total_errors", "by_code", "by_trace"]);
+  const current = readRun(dto.run);
+  if (!sameRun(run, current) || !Array.isArray(dto.by_code) || !Array.isArray(dto.by_trace)) invalid();
+  const processed = unsigned(dto.records_processed), valid = unsigned(dto.valid_records);
+  const invalidRecords = unsigned(dto.invalid_records), total = unsigned(dto.total_errors);
+  if (BigInt(valid) + BigInt(invalidRecords) > BigInt(processed)) invalid();
+  const byCode = dto.by_code.map((value): CodeCount => {
+    const entry = object(value);
+    version(entry); exact(entry, ["schemaVersion", "code", "count"]);
+    return { schemaVersion: 1, code: readPreview(entry.code), count: unsigned(entry.count) };
+  });
+  const byTrace = dto.by_trace.map((value): TraceCount => {
+    const entry = object(value);
+    version(entry); exact(entry, ["schemaVersion", "trace_ref", "trace", "count"]);
+    return { schemaVersion: 1, trace_ref: identifier(entry.trace_ref), trace: readPreview(entry.trace), count: unsigned(entry.count) };
+  });
+  const sum = (items: { count: string }[]) => items.reduce((acc, item) => acc + BigInt(item.count), 0n);
+  if (sum(byCode) !== BigInt(total) || sum(byTrace) !== BigInt(total)
+      || new Set(byTrace.map(item => item.trace_ref)).size !== byTrace.length) invalid();
+  return { schemaVersion: 1, run: current, records_processed: processed, valid_records: valid, invalid_records: invalidRecords,
+    total_errors: total, by_code: byCode, by_trace: byTrace };
 }
 
 // Selected diagnostic detail (T-MIG-P4-09). Rust resolves the reference, pins

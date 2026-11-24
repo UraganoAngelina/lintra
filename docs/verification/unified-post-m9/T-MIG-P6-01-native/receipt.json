@@ -1,0 +1,2583 @@
+{
+  "binary_sha256": "0541b687d2982d97f2cd6ccbdbb14e8fd70a16eafda87fd6ad3c78a047549127",
+  "scenarios": [
+    {
+      "name": "analisi-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "a71bac68f1ff02d6fbbe18903829eb191148d514d9d649e8a5be8490e52634ca"
+    },
+    {
+      "name": "analisi-1024x768",
+      "requested": [
+        1024,
+        768
+      ],
+      "captured": [
+        1024,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1024,
+        768
+      ],
+      "keys": [],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "0ae716bf6477402310476e68da87b602b6bd3df83c1d48f84c16f8a0eea75ae6"
+    },
+    {
+      "name": "analisi-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "bdab073188e406a1b436306372bd7d2d33384749b8b21065c3f006bf47bbea45"
+    },
+    {
+      "name": "analisi-workarea",
+      "requested": [
+        1780,
+        1040
+      ],
+      "captured": [
+        1780,
+        1040
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1780,
+        1040
+      ],
+      "keys": [],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "5391a453a29966fd31ca038bebf62f92018244f5a3b4885d0242a13a6f51fd53"
+    },
+    {
+      "name": "keyboard-skip-link-1024x768",
+      "requested": [
+        1024,
+        768
+      ],
+      "captured": [
+        1024,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1024,
+        768
+      ],
+      "keys": [
+        "Tab"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "0687636eeef6b90fcdb70fc872fb99afbfba3facdc31590e23f9866392ac4a3b"
+    },
+    {
+      "name": "keyboard-risultati-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "fc3379a287e3b386a4d9748aa3480c605aca3ca045af32a8d3de4273777b40a8"
+    },
+    {
+      "name": "keyboard-informazioni-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "3caef79e977f6fbcf4ae63ca5a1bbf17a3184252ec82b4bad3158590d04fc941"
+    },
+    {
+      "name": "keyboard-theme-light-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "6147329b382404652b1b5987dcb680d4035df3965de4947b8a3fb42365882ba1"
+    },
+    {
+      "name": "keyboard-theme-light-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "034da3f07b7134ac03d382b65033944fbfaf4718c6cd440fe3e5e9d3b64314e6"
+    },
+    {
+      "name": "keyboard-theme-dark-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "Down"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "415f3883b8a90093e71b3cf992384ac1c1767b9cc4be126243ea0dca9aa6b5e5"
+    },
+    {
+      "name": "keyboard-selection-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "d973084e4fa2b1a582c26bc94337567e258fe12943fc58af7f8d4c055b189556"
+    },
+    {
+      "name": "keyboard-selection-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "eb69354488b3892ed87b5e54959c9f807d3336067c7fc10dc0df490c56c0f09b"
+    },
+    {
+      "name": "keyboard-input-partial-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "d27d8bd48f7ee8f09c23cfbb3399c815b772e35cf5b02d03131650f04a03c015"
+    },
+    {
+      "name": "keyboard-input-whole-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/whole.txt",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "644ac5c9c1bd40c2c186d547454097611ecc9c603be275469a69c49cc78445a5"
+    },
+    {
+      "name": "keyboard-input-cancel-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog-cancel",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "79b4f839e137006803ce78826e84a2ef7f0a8c44c3569648447607429ed48379"
+    },
+    {
+      "name": "keyboard-input-cancel-reopen-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog-cancel",
+        "wait",
+        "space",
+        "dialog-cancel",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "e1c9dfa9a54915db176fb716c0a89c31c0a821e411d72aa72364928ac4155a14"
+    },
+    {
+      "name": "keyboard-reports-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "space",
+        "Tab",
+        "Tab",
+        "space"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "aacf123cc2cb7c7f3c6077c8f9cc5f30bc5df67e68def0de528d420878078489"
+    },
+    {
+      "name": "keyboard-reports-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "space",
+        "Tab",
+        "Tab",
+        "space"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "d3b6132a7555ecf63a907feea4312a2b10f7222243cdfae16375071849c5b6cd"
+    },
+    {
+      "name": "keyboard-run-unconfigured-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "9b3b2e7217ae6250247779d33e61c3022df5a6665e980385176711b2221baadb"
+    },
+    {
+      "name": "keyboard-run-unconfigured-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "a95a61bb92b997d1150b44d0a34e7c0b2548aba6df42292a848be97ef9c63551"
+    },
+    {
+      "name": "keyboard-budget-invalid-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "full_bundle": false,
+      "image_sha256": "dd9154f216f9430adfd8a9b576b6cc76514ce7367b40561861081f4a49162da7"
+    },
+    {
+      "name": "keyboard-budget-warning-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "full_bundle": false,
+      "image_sha256": "b1c0e513a75d8ef0fb232f266f11a9de4f07a610596dc7b27722616746c3c444"
+    },
+    {
+      "name": "keyboard-budget-warning-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "full_bundle": false,
+      "image_sha256": "266ad97884d01d0f2605384d2fa908d8c7b930719a1e39891f9afcf320e0f71c"
+    },
+    {
+      "name": "keyboard-budget-proceed-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "full_bundle": false,
+      "image_sha256": "be326dbd1ee5f087e1c57633c419a6d27d3b06ae584efc8c3ce4edc120dd298f"
+    },
+    {
+      "name": "keyboard-budget-annulla-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "Return",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "full_bundle": false,
+      "image_sha256": "102421f239aee15b7d8cfde39e9c028d456bc499c1445ea92eb46f60fce4b342"
+    },
+    {
+      "name": "keyboard-budget-escape-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "Escape",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"misura sintetica\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "full_bundle": false,
+      "image_sha256": "3eb54060362049a490f9b443df0fd602f97bf839dc9db09405018e92b4cf5458"
+    },
+    {
+      "name": "keyboard-budget-invalid-fixed-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "budget-valid",
+        "Return",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "full_bundle": false,
+      "image_sha256": "55b45a4f66dd2c3338732fa920d4e087800e21d8243722a9366b212512078005"
+    },
+    {
+      "name": "keyboard-budget-invalid-removed-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "budget-remove",
+        "Return",
+        "wait",
+        "wait"
+      ],
+      "budget": "{\"version\":1,\"measurement_source\":\"\",\"input_bytes\":65536,\"reference_bytes\":null}",
+      "full_bundle": false,
+      "image_sha256": "9b3b2e7217ae6250247779d33e61c3022df5a6665e980385176711b2221baadb"
+    },
+    {
+      "name": "keyboard-run-interrupt-offered-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/big.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "Tab"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "396ef12fc13179eeb67148b52ed8239fcdcb31a7a58af0b0a47ab1791ef6d7fa"
+    },
+    {
+      "name": "keyboard-run-cancelled-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/big.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "92fadcec05283335a19376a8634a49955d1517d24357850391eaeb423ca4ae57"
+    },
+    {
+      "name": "keyboard-run-cancelled-previous-report-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/big.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "2cb2213466a434b6ef8b115542ce4d8ef23a08c19b203841849d25e0aa00e3ae"
+    },
+    {
+      "name": "keyboard-informazioni-license-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "Tab",
+        "Return",
+        "Tab"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "aa9f8c2a2b2fea9e210bb89d86bb48d23bb9cd30f63326f92313ec79abb7494d"
+    },
+    {
+      "name": "keyboard-informazioni-license-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "Tab",
+        "Return",
+        "Tab"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "3218bd24fc12b5761cd6341305f27b9399164a76ad841b0ed5d664fce9feb246"
+    },
+    {
+      "name": "results-grid-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/invalid.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "bbf79e74acbbb2f435c84dbc372274777ce114b480cc18f510dfbe61c951d2f2"
+    },
+    {
+      "name": "results-grid-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/invalid.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "167723fafdf425988ffbb4cc8974e892557e3594ff6db06ffed11e8a4447b8f9"
+    },
+    {
+      "name": "results-grid-workarea",
+      "requested": [
+        1780,
+        1040
+      ],
+      "captured": [
+        1780,
+        1040
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1780,
+        1040
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/invalid.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "03a03e58626af49a2f991ce7036ce6c5e98559a4f3ac02c4525dab3fd108208d"
+    },
+    {
+      "name": "results-grid-page-2-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/invalid.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "7009079580b63154bb1576cc6b776df2f4b8d7b0bcfbcfbd6cd7c931776bfc7d"
+    },
+    {
+      "name": "results-grid-scrolled-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/invalid.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "Tab",
+        "Tab",
+        "End",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "ab7d0e96ca202378ac517192af65375dda000590d94443b617ce09375036b371"
+    },
+    {
+      "name": "results-grid-dark-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/invalid.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "Down",
+        "Down",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "a8682e3752222313f939ab59eeeb4610a57fcf18262c437c1d504718fc4220c6"
+    },
+    {
+      "name": "results-valid-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "99e7a4b7aba80bb33a22491929f52a1a99ac9ac9c8ace4efbd7c994a0a60acd0"
+    },
+    {
+      "name": "results-grid-light-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/invalid.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "Down",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "0dacb60ae991892b4074d9735a9fa80571665f681014e1e88b71b32a0acea28d"
+    },
+    {
+      "name": "keyboard-informazioni-report-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/partial.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "012bc7bfd2d345fbaf0fc27872d2b9567424d2473d4d6575df30cbc201e607fc"
+    },
+    {
+      "name": "full-selection-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": true,
+      "image_sha256": "59eea17b8446857ee561ccb05f5af0d1dfb83f0dfe0a87ad1c1ffa7d0a4a05df"
+    },
+    {
+      "name": "full-selection-640x480",
+      "requested": [
+        640,
+        480
+      ],
+      "captured": [
+        640,
+        480
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        640,
+        480
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": true,
+      "image_sha256": "72fc63c7c520e3a2800b6c362af869d6ed126bcfe7610d133566d52bd4baf166"
+    },
+    {
+      "name": "full-parameter-blocked-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/fulls.txt",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/fullt.txt",
+        "wait",
+        "Tab",
+        "type:a",
+        "Tab",
+        "wait",
+        "type:20x6",
+        "Return",
+        "wait",
+        "Tab"
+      ],
+      "budget": null,
+      "full_bundle": true,
+      "image_sha256": "f693fd657eb669c8b112994f673b3bb04810c9c404afd9d6ba2caf2105f58c48"
+    },
+    {
+      "name": "full-prepare-refused-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/fulls.txt",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": true,
+      "image_sha256": "855c3df47de447cf8d728a8dadcca38e54f282f40e329b808e56c9c87a7e46ce"
+    },
+    {
+      "name": "full-run-completed-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/fulls.txt",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/fullt.txt",
+        "wait",
+        "Tab",
+        "type:a",
+        "Tab",
+        "wait",
+        "type:2026",
+        "Tab",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": true,
+      "image_sha256": "ecfe01e7e7de2399307913d78e91dd27785189c149d989fece9cee95aaccd632"
+    },
+    {
+      "name": "full-monitor-pass1-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/big.txt",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/onet.txt",
+        "wait",
+        "Tab",
+        "type:a",
+        "Tab",
+        "wait",
+        "type:2026",
+        "Tab",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": true,
+      "image_sha256": "d005e49d2bbf44f4259c6ba72b1d4e2c37ae1ceedd53327110739a1f1eb85fbe"
+    },
+    {
+      "name": "full-monitor-later-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/big.txt",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/onet.txt",
+        "wait",
+        "Tab",
+        "type:a",
+        "Tab",
+        "wait",
+        "type:2026",
+        "Tab",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": true,
+      "image_sha256": "75158a23e919b383640732db3a75c387a9f2449eebaf551c93ac2c38ba3ffd78"
+    },
+    {
+      "name": "full-run-cancelled-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/big.txt",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/onet.txt",
+        "wait",
+        "Tab",
+        "type:a",
+        "Tab",
+        "wait",
+        "type:2026",
+        "Tab",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": true,
+      "image_sha256": "ed1d2cdfca722285e2c82be54bafd74dd3af5df8f29c622e58a4b11d42cc4134"
+    },
+    {
+      "name": "full-run-invalid-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "eDP-1",
+      "scale": 1,
+      "work_area": [
+        1780,
+        1040
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/fulls.txt",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/badt.txt",
+        "wait",
+        "Tab",
+        "type:a",
+        "Tab",
+        "wait",
+        "type:2026",
+        "Tab",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": true,
+      "image_sha256": "20db0d3833ac275069e693dbc9753bd564987e9c7bc68a2305d4e887ed5858a9"
+    }
+  ],
+  "close_during_run": {
+    "name": "close-during-run-1366x768",
+    "exit_code": 0,
+    "seconds_to_exit": 0.03,
+    "spools_while_running": [
+      "lintra-desktop-run-3fv4Ae"
+    ],
+    "spools_after_exit": [],
+    "image_sha256": "aadef4151add6a57d6dbc2adc3741ab2a619a5b99ecf3fe8ac23e941852dd266"
+  }
+}

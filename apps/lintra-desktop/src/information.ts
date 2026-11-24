@@ -9,7 +9,8 @@ import type { Preview, ReportAbout } from "./ipc";
 export type Notice = { title: string; body: string };
 
 // The header form written by the notices generator (assets-provenance.json).
-const HEADER = /^(.+ \/ LICENSE[A-Za-z0-9.-]*)\n/gm;
+// The file name is the package's own: clsx ships a lowercase "license".
+const HEADER = /^(.+ \/ (?:LICENSE|license)[A-Za-z0-9.-]*)\n/gm;
 
 /** Splits the notices file into its blocks, keeping each text verbatim. */
 export function splitNotices(text: string): Notice[] {

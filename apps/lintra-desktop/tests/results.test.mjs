@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import { mockIPC, clearMocks } from "@tauri-apps/api/mocks";
-import { resultsQuery, resultsQueryState, resultsPage, DEFAULT_PAGE_ROWS, MAX_PAGE_ROWS, IpcError } from "../src/ipc.ts";
+import { resultsQuery, resultsQueryState, resultsPage, resultsOverview, DEFAULT_PAGE_ROWS, MAX_PAGE_ROWS, ROW_TEXT_BYTES, IpcError } from "../src/ipc.ts";
 
 globalThis.window = { crypto: globalThis.crypto };
 afterEach(clearMocks);
@@ -12,7 +12,8 @@ const ready = { schemaVersion: 1, run, query_ref: q, state: "ready", total_match
 const building = { ...ready, state: "building", total_matches: null, total_diagnostics: null };
 const preview = text => ({ schemaVersion: 1, text, complete: true });
 const row = i => ({ schemaVersion: 1, diagnostic_ref: "d_" + String(i).padStart(32, "0"), ordinal: String(i), line: String(i + 1),
-  trace_ref: "trace_0", code: preview("E_SYNTHETIC_RULE"), field: i % 2 ? null : preview("Campo à") });
+  trace_ref: "trace_0", code: preview("E_SYNTHETIC_RULE"), field: i % 2 ? null : preview("Campo à"),
+  message: preview("Errore sintetico"), expected: i % 2 ? null : preview("testo"), actual: i % 2 ? null : preview("\\0é") });
 const page = { schemaVersion: 1, query_ref: q, run, page_generation: "1", offset: "0", rows: [row(0), row(1)],
   next_offset: "2", has_more: true, total_matches: "3", total_diagnostics: "5" };
 function mock(response, observe = () => {}) {
@@ -69,9 +70,33 @@ test("pages are bounded, ordered and contain only references and previews", asyn
     { ...page, rows: [{ ...row(0), line: "0" }, row(1)] },
     { ...page, rows: [{ ...row(0), field: { schemaVersion: 1, text: long, complete: false } }, row(1)] },
     { ...page, rows: [{ ...row(0), code: { schemaVersion: 1, text: "E" } }, row(1)] },
+    // T-MIG-P6-01: the reason is mandatory in shape and bounded to ROW_TEXT_BYTES.
+    { ...page, rows: [{ ...row(0), message: undefined }, row(1)] },
+    { ...page, rows: [{ ...row(0), message: null }, row(1)] },
+    { ...page, rows: [{ ...row(0), actual: { schemaVersion: 1, text: "x".repeat(ROW_TEXT_BYTES + 1), complete: false } }, row(1)] },
+    { ...page, rows: [{ ...row(0), expected: { schemaVersion: 1, text: "à".repeat(65), complete: false } }, row(1)] },
+    { ...page, rows: [{ ...row(0), context: [] }, row(1)] },
     { ...page, index: ["0"] }]) {
     mock(payload); await assert.rejects(() => resultsPage(q, "0", 64), IpcError);
   }
   mock({ ...page, rows: [row(0), row(1), row(2)], next_offset: "3", has_more: false });
   await assert.rejects(() => resultsPage(q, "0", 2), IpcError);
+});
+
+const overview = { schemaVersion: 1, run, records_processed: "10", valid_records: "4", invalid_records: "6", total_errors: "9",
+  by_code: [{ schemaVersion: 1, code: preview("E_RECORD_LENGTH"), count: "5" }, { schemaVersion: 1, code: preview("E_SYNTHETIC_RULE"), count: "4" }],
+  by_trace: [{ schemaVersion: 1, trace_ref: "trace_0", trace: preview("S"), count: "9" }, { schemaVersion: 1, trace_ref: "trace_1", trace: preview("T"), count: "0" }] };
+
+test("the overview is exact, bound to its run and internally consistent (T-MIG-P6-01)", async () => {
+  assert.equal(ROW_TEXT_BYTES, 128);
+  mock(overview, r => { assert.equal(r.operation, "results_overview"); assert.deepEqual(r.payload, { schemaVersion: 1, run }); });
+  assert.deepEqual(await resultsOverview(run), overview);
+  for (const payload of [{ ...overview, run: other }, { ...overview, total_errors: "8" },
+    { ...overview, valid_records: "5", invalid_records: "6" }, { ...overview, records_processed: 10 },
+    { ...overview, by_trace: [overview.by_trace[0], { ...overview.by_trace[1], trace_ref: "trace_0" }] },
+    { ...overview, by_code: [{ ...overview.by_code[0], count: "5.0" }, overview.by_code[1]] },
+    { ...overview, by_trace: [{ ...overview.by_trace[0], path: "/tmp" }, overview.by_trace[1]] },
+    { ...overview, rows: [] }, { ...overview, by_code: null }]) {
+    mock(payload); await assert.rejects(() => resultsOverview(run), IpcError);
+  }
 });
