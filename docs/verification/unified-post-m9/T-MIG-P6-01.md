@@ -1,6 +1,11 @@
 # T-MIG-P6-01 — DataGrid DOM virtualizzata paginata
 
-Data 24 novembre 2026. Stato: **IN_REVIEW** (non DONE). Prerequisito
+Data 24 novembre 2026. Stato: **DONE**. Review Codex round 1 CHANGES
+(P601-01), round 2 APPROVED su `2a6d836` senza nuovi rilievi
+(`lintra-review-handoffs/T-MIG-P6-01.review-2.md`). Integrazione autorizzata
+dall'autore per fast-forward di `integration`, senza push. CI remota e
+Windows/WebView2 NOT_RUN, al checkpoint del blocco P6; G-MIG-6 NOT_VERIFIED.
+Prerequisito
 T-MIG-P5-08 DONE (`integration` `3a91a11`, G-MIG-5 PASS). Branch
 `work/T-MIG-P6-01` da `3a91a11`, worktree `/home/alberto/Desktop/LINTRA/lintra-p6-01`.
 

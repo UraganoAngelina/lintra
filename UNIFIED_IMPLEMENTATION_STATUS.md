@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **75/128 DONE;53 rimanenti** (18U-* e41MIG).
+Conteggio unificato: **76/128 DONE;52 rimanenti** (18U-* e40MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -120,7 +120,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P5-08 | T-MIG-P5-01, T-MIG-P5-02, T-MIG-P5-03, T-MIG-P5-04, T-MIG-P5-05, T-MIG-P5-06, T-MIG-P5-07, T-MIG-P5-10 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-08.md) | scope esteso autorizzato: finestra Windows nascosta/fit/show; 797447b+3057a02; nativo Linux 43/43+chiusura, Windows VM 1× 17/17 e 200% 9/9+chiusura; workspace 1.116 e desktop 83/82 PASS; review Codex round 2 APPROVED (P508-01..03 risolti); CI45394234948 e desktop45394240320 SUCCESS | G-MIG-5 PASS |
 | T-MIG-P5-09 | T-MIG-P5-03, T-MIG-P4-12 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-09.md) | Node 116 PASS, desktop 82 PASS; Full nativa 39/39; ebef511;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance selezione Full PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-10 | T-MIG-P5-09, T-MIG-P5-06 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-10.md) | scope esteso autorizzato: handle di piano nel progresso (adapter Rust); desktop 83, Node 124 PASS; monitor Full nativo 43/43; 98bdf80;review Codex round 1 APPROVED (P510-01 MINOR documentale corretto in chiusura);CI delta NOT_RUN,al checkpoint blocco | Acceptance monitor Full/terminali multi-pass PASS; G-MIG-5 NOT_VERIFIED |
-| T-MIG-P6-01 | T-MIG-P5-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-01.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
+| T-MIG-P6-01 | T-MIG-P5-08 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-01.md) | scope esteso autorizzato: stack DEC-MIG-08, redesign shell, grafici, motivazione nelle righe (emendamento PAGING), conteggi per tracciato nel core; desktop 85, Node 138, paging 72/72 PASS; nativo 51/51+chiusura; 8c483dd+2a6d836;review Codex round 2 APPROVED (P601-01 risolto);CI delta NOT_RUN,al checkpoint blocco | Acceptance DOM/memoria bounded PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-02 | T-MIG-P6-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-02.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-03 | T-MIG-P6-01, T-MIG-P6-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-03.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-04 | T-MIG-P6-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-04.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
@@ -582,3 +582,17 @@ pin esatti NOT_RUN in locale (Node 26.13.1), coperto dalla CI. **G-MIG-5
 PASS**; G-REL aperto. Direttiva dell'autore per le task UI successive:
 seguire fedelmente `lintra_ui_references` (UI SaaS moderna e responsive).
 Prossima tecnicamente disponibile T-MIG-P6-01.
+
+Chiusura T-MIG-P6-01, 24 novembre 2026: **DONE**, **76/128 (59,4%)**, 52
+rimanenti. Autore Claude Code, commit 8c483dd+2a6d836 su base 3a91a11.
+DataGrid DOM virtualizzata e paginata (TanStack Table/Virtual, ≤ 2 pagine da
+128 righe nel renderer, 1.000.000 di diagnostiche nei test). Scope esteso
+autorizzato dall'autore: stack DEC-MIG-08 completo, redesign della shell
+secondo `lintra_ui_references`, grafici dei risultati sempre visibili con
+qualifica di completezza, messaggio/atteso/trovato nelle righe (emendamento
+datato di `PAGING.md`), conteggi per tracciato nel core. Review Codex round 1
+CHANGES (P601-01, grafici senza qualifica con `report_about` in lettura o
+fallito), round 2 APPROVED senza nuovi rilievi. Integrazione autorizzata
+dall'autore: fast-forward di integration, nessun push. CI remota,
+Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN, al checkpoint del blocco
+P6. G-MIG-6 e G-REL aperti. Prossima tecnicamente disponibile T-MIG-P6-02.
