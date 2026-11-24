@@ -9,7 +9,7 @@
 # closes it normally and requires exit code 0.
 #
 # Usage: powershell -NoProfile -ExecutionPolicy Bypass -File windows_capture.ps1 <exe> <output-dir> [-Scale2]
-#        ... windows_capture.ps1 <exe> <output-dir> -Flows <fixtures-dir>   (T-MIG-P5-08)
+#        ... windows_capture.ps1 <exe> <output-dir> -Flows <fixtures-dir> [-Scale2]   (T-MIG-P5-08)
 # Sizes are CSS pixels; the harness is per-monitor DPI aware and converts them
 # with the window DPI, so the same scenarios hold at 100% and 200% scaling.
 # -Scale2 runs the 200% set (requires a 192 DPI desktop, e.g. 1920x1080 at 200%).
@@ -36,6 +36,27 @@ public static class LintraShellWindow {
     [DllImport("user32.dll")] public static extern uint GetDpiForWindow(IntPtr w);
     [DllImport("user32.dll")] public static extern bool SetProcessDpiAwarenessContext(IntPtr value);
     [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr w, out uint pid);
+    [DllImport("user32.dll")] public static extern bool PostMessage(IntPtr w, uint msg, IntPtr wp, IntPtr lp);
+    delegate bool EnumProc(IntPtr w, IntPtr l);
+    [DllImport("user32.dll")] static extern bool EnumWindows(EnumProc f, IntPtr l);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetWindowText(IntPtr w, System.Text.StringBuilder s, int n);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetClassName(IntPtr w, System.Text.StringBuilder s, int n);
+    static string Text(IntPtr w) { var b = new System.Text.StringBuilder(256); GetWindowText(w, b, 256); return b.ToString(); }
+    static string Class(IntPtr w) { var b = new System.Text.StringBuilder(256); GetClassName(w, b, 256); return b.ToString(); }
+    // Visible top-level window of the process with this exact title, or zero.
+    public static IntPtr FindVisible(uint pid, string title) {
+        IntPtr found = IntPtr.Zero;
+        EnumWindows((w, l) => { uint p; GetWindowThreadProcessId(w, out p);
+            if (p == pid && IsWindowVisible(w) && Text(w) == title) { found = w; return false; } return true; }, IntPtr.Zero);
+        return found;
+    }
+    // Diagnostic list of every top-level window of the process.
+    public static string Describe(uint pid) {
+        var list = new System.Collections.Generic.List<string>();
+        EnumWindows((w, l) => { uint p; GetWindowThreadProcessId(w, out p);
+            if (p == pid) list.Add(Class(w) + "|" + Text(w) + "|visible=" + IsWindowVisible(w)); return true; }, IntPtr.Zero);
+        return string.Join("; ", list);
+    }
 }
 '@
 # Per-monitor v2 awareness: window, client and screen coordinates are physical.
@@ -113,9 +134,22 @@ $flowScenarios = @(
 )
 if ($Flows) {
     $Flows = (Resolve-Path -LiteralPath $Flows).Path
-    $scenarios = $flowScenarios
+    # -Scale2 -Flows (P508-03): the 200% set, the analysis form by keyboard in
+    # the minimum work area (focus scrolls the form) and the close during a run.
+    if ($Scale2) {
+        $scenarios = $scaledScenarios + @(
+            @('scale2-input-partial-workarea', $null, $file, 'light', @{}),
+            @('scale2-run-completed-workarea', $null, ($file + $start + @('WAIT')), 'light', @{})
+        )
+    } else { $scenarios = $flowScenarios }
 }
 $configDirectory = Join-Path $env:APPDATA 'it.lintra.desktop'
+# The account's own budget file is saved before the first change and put back
+# at the end (P508-01); nothing is touched before the console preflight passes.
+$budgetPath = Join-Path $configDirectory 'resource-budget.json'
+$budgetTouched = $false
+$savedBudget = $null
+$createdConfigDirectory = $false
 # One fresh TEMP per launch: WebView2 helpers of the previous instance can
 # still hold files in theirs, so a shared folder cannot be emptied in between.
 $runTempBase = Join-Path ([IO.Path]::GetTempPath()) 'lintra-p508-run-temp'
@@ -211,10 +245,15 @@ function Set-RunEnvironment($options) {
         New-Item -ItemType Directory -Path $script:runTemp -Force | Out-Null
         $env:TEMP = $runTemp; $env:TMP = $runTemp
     }
-    if (Test-Path -LiteralPath (Join-Path $configDirectory 'resource-budget.json')) { Remove-Item -LiteralPath (Join-Path $configDirectory 'resource-budget.json') }
+    if (-not $script:budgetTouched) {
+        if (Test-Path -LiteralPath $budgetPath) { $script:savedBudget = [IO.File]::ReadAllBytes($budgetPath) }
+        $script:createdConfigDirectory = -not (Test-Path -LiteralPath $configDirectory)
+        $script:budgetTouched = $true
+    }
+    if (Test-Path -LiteralPath $budgetPath) { Remove-Item -LiteralPath $budgetPath }
     if ($options.budget) {
         New-Item -ItemType Directory -Path $configDirectory -Force | Out-Null
-        [IO.File]::WriteAllText((Join-Path $configDirectory 'resource-budget.json'), $options.budget)
+        [IO.File]::WriteAllText($budgetPath, $options.budget)
     }
 }
 
@@ -227,14 +266,11 @@ function Invoke-Scenario($name, $size, $keys, $theme, $options = @{}) {
     $app = Start-Process -FilePath $Exe -PassThru
     try {
         $deadline = [DateTime]::UtcNow.AddSeconds(30)
-        do { Start-Sleep -Milliseconds 300; $app.Refresh() } until ($app.HasExited -or $app.MainWindowHandle -ne [IntPtr]::Zero -or [DateTime]::UtcNow -ge $deadline)
-        if ($app.HasExited -or $app.MainWindowHandle -eq [IntPtr]::Zero) { throw 'Owned window not created' }
-        $window = $app.MainWindowHandle
-        do { Start-Sleep -Milliseconds 300; $app.Refresh() } until ($app.HasExited -or ([LintraShellWindow]::IsWindowVisible($window) -and $app.MainWindowTitle -eq 'Lintra') -or [DateTime]::UtcNow -ge $deadline)
-        if (-not [LintraShellWindow]::IsWindowVisible($window) -or $app.MainWindowTitle -ne 'Lintra') { throw 'Unexpected window' }
-        # The app window is created hidden and shown after its work-area fit:
-        # the first handle seen can be another window of the process.
-        $window = $app.MainWindowHandle
+        # The app window is created hidden and shown after its work-area fit,
+        # and the process owns other windows: look for the visible "Lintra"
+        # window itself instead of Process.MainWindowHandle.
+        do { Start-Sleep -Milliseconds 300; $window = [LintraShellWindow]::FindVisible([uint32]$app.Id, 'Lintra') } until ($app.HasExited -or $window -ne [IntPtr]::Zero -or [DateTime]::UtcNow -ge $deadline)
+        if ($window -eq [IntPtr]::Zero) { throw "Lintra window not visible after 30 s (exited=$($app.HasExited)): $([LintraShellWindow]::Describe([uint32]$app.Id))" }
         if ($app.SessionId -ne $session) { throw 'Window outside this console session' }
         $area = [Windows.Forms.Screen]::PrimaryScreen.WorkingArea
         # Default placement after the adapter's startup fit, before any resize
@@ -283,7 +319,8 @@ function Invoke-Scenario($name, $size, $keys, $theme, $options = @{}) {
             $bitmap.Save($image, [Drawing.Imaging.ImageFormat]::Png)
             $record.image_sha256 = (Get-FileHash -LiteralPath $image -Algorithm SHA256).Hash.ToLowerInvariant()
         } finally { $graphics.Dispose(); $bitmap.Dispose() }
-        if (-not $app.CloseMainWindow() -or -not $app.WaitForExit(15000)) { throw 'Normal close failed' }
+        # WM_CLOSE to the Lintra window, as Process.CloseMainWindow would do.
+        if (-not [LintraShellWindow]::PostMessage($window, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero) -or -not $app.WaitForExit(15000)) { throw 'Normal close failed' }
         $record.exit_code = $app.ExitCode
         if ($app.ExitCode -ne 0) { throw 'Non-zero exit code' }
         $record.passed = $true
@@ -301,8 +338,8 @@ function Invoke-CloseDuringRun {
     $app = Start-Process -FilePath $Exe -PassThru
     try {
         $deadline = [DateTime]::UtcNow.AddSeconds(30)
-        do { Start-Sleep -Milliseconds 300; $app.Refresh() } until ($app.HasExited -or ($app.MainWindowHandle -ne [IntPtr]::Zero -and $app.MainWindowTitle -eq 'Lintra') -or [DateTime]::UtcNow -ge $deadline)
-        $window = $app.MainWindowHandle
+        do { Start-Sleep -Milliseconds 300; $window = [LintraShellWindow]::FindVisible([uint32]$app.Id, 'Lintra') } until ($app.HasExited -or $window -ne [IntPtr]::Zero -or [DateTime]::UtcNow -ge $deadline)
+        if ($window -eq [IntPtr]::Zero) { throw "Lintra window not visible after 30 s: $([LintraShellWindow]::Describe([uint32]$app.Id))" }
         Wait-StableRender $window 60
         foreach ($key in $fileBig + @($T, $T, $T, $T, '{ENTER}', 'WAIT', 'WAIT')) {
             if ($key -eq 'WAIT') { Start-Sleep -Milliseconds 1500; continue }
@@ -310,10 +347,26 @@ function Invoke-CloseDuringRun {
             Assert-Foreground $window
             [Windows.Forms.SendKeys]::SendWait($key); Start-Sleep -Milliseconds 400
         }
-        $record.spools_while_running = @(Get-ChildItem -LiteralPath $runTemp -Filter 'lintra-desktop-run-*' -Name)
-        if ($record.spools_while_running.Count -eq 0) { throw 'The run was not active when closed' }
+        Assert-Foreground $window
+        $client = [LintraShellWindow+Rect]::new(); [LintraShellWindow]::GetClientRect($window, [ref]$client) | Out-Null
+        $origin = [LintraShellWindow+Point]::new(); [LintraShellWindow]::ClientToScreen($window, [ref]$origin) | Out-Null
+        $bitmap = [Drawing.Bitmap]::new($client.Right, $client.Bottom)
+        $graphics = [Drawing.Graphics]::FromImage($bitmap)
+        try {
+            $graphics.CopyFromScreen([Drawing.Point]::new($origin.X, $origin.Y), [Drawing.Point]::Empty, $bitmap.Size)
+            $image = Join-Path $Output 'close-during-run.png'
+            $bitmap.Save($image, [Drawing.Imaging.ImageFormat]::Png)
+            $record.image_sha256 = (Get-FileHash -LiteralPath $image -Algorithm SHA256).Hash.ToLowerInvariant()
+        } finally { $graphics.Dispose(); $bitmap.Dispose() }
+        # Checked last before closing (P508-02): the atomic writer keeps
+        # errors.jsonl.part until publication renames it, so a spool already
+        # holding a completed report (errors.jsonl) is not an active run.
+        $record.spools_while_running = @(Get-ChildItem -LiteralPath $runTemp -Directory -Filter 'lintra-desktop-run-*' | Where-Object {
+            (Test-Path -LiteralPath (Join-Path $_.FullName 'errors.jsonl.part') -PathType Leaf) -and -not (Test-Path -LiteralPath (Join-Path $_.FullName 'errors.jsonl'))
+        } | ForEach-Object { $_.Name })
+        if ($record.spools_while_running.Count -eq 0) { throw 'No spool with a pending report: the run was not active when closed' }
         $closed = [DateTime]::UtcNow
-        if (-not $app.CloseMainWindow() -or -not $app.WaitForExit(60000)) { throw 'Close during the run did not end the process' }
+        if (-not [LintraShellWindow]::PostMessage($window, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero) -or -not $app.WaitForExit(60000)) { throw 'Close during the run did not end the process' }
         $record.seconds_to_exit = [Math]::Round(([DateTime]::UtcNow - $closed).TotalSeconds, 2)
         $record.exit_code = $app.ExitCode
         $record.spools_after_exit = @(Get-ChildItem -LiteralPath $runTemp -Filter 'lintra-desktop-run-*' -Name)
@@ -340,7 +393,13 @@ try {
 } catch { $result.error = $_.Exception.Message }
 finally {
     Remove-Item Env:LINTRA_SCHEMA_DIR, Env:LINTRA_REFERENCE_DATA_DIR -ErrorAction SilentlyContinue
-    Remove-Item -LiteralPath (Join-Path $configDirectory 'resource-budget.json') -ErrorAction SilentlyContinue
+    if ($budgetTouched) {
+        if ($null -ne $savedBudget) { [IO.File]::WriteAllBytes($budgetPath, $savedBudget) }
+        else {
+            Remove-Item -LiteralPath $budgetPath -ErrorAction SilentlyContinue
+            if ($createdConfigDirectory -and -not (Get-ChildItem -LiteralPath $configDirectory -Force -ErrorAction SilentlyContinue)) { Remove-Item -LiteralPath $configDirectory -ErrorAction SilentlyContinue }
+        }
+    }
     Remove-Item -LiteralPath $runTempBase -Recurse -Force -ErrorAction SilentlyContinue
     if ($null -eq $originalTheme) { Remove-ItemProperty -Path $themeKey -Name AppsUseLightTheme -ErrorAction SilentlyContinue }
     else { Set-ItemProperty -Path $themeKey -Name AppsUseLightTheme -Value $originalTheme -Type DWord }

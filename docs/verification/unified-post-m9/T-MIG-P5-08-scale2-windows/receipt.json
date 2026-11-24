@@ -1,0 +1,383 @@
+﻿{
+    "passed":  true,
+    "account":  "DESKTOP-RLLAD2M\\lintra-agent",
+    "os_version":  "10.0.26300.0",
+    "elevated":  false,
+    "session":  2,
+    "console_session":  2,
+    "exe_sha256":  "84b0210ecc1151aeea9340680f267c2ab03fc3e6fdc0010e51fbc79d0b0476e0",
+    "scenarios":  [
+                      {
+                          "name":  "scale2-analisi-workarea",
+                          "keys":  [
+
+                                   ],
+                          "system_theme":  "light",
+                          "options":  {
+
+                                      },
+                          "passed":  true,
+                          "default_window":  [
+                                                 0,
+                                                 0,
+                                                 1920,
+                                                 984
+                                             ],
+                          "default_window_inside_work_area":  true,
+                          "dpi":  192,
+                          "work_area_physical":  [
+                                                     1920,
+                                                     984
+                                                 ],
+                          "requested":  [
+                                            947,
+                                            456
+                                        ],
+                          "captured":  [
+                                           1894,
+                                           912
+                                       ],
+                          "image_sha256":  "bed52914c85115093ab4018ec9a4a965a23965cc8d8bcca6db16d7679f324d93",
+                          "exit_code":  0
+                      },
+                      {
+                          "name":  "scale2-analisi-system-dark-workarea",
+                          "keys":  [
+
+                                   ],
+                          "system_theme":  "dark",
+                          "options":  {
+
+                                      },
+                          "passed":  true,
+                          "default_window":  [
+                                                 0,
+                                                 0,
+                                                 1920,
+                                                 984
+                                             ],
+                          "default_window_inside_work_area":  true,
+                          "dpi":  192,
+                          "work_area_physical":  [
+                                                     1920,
+                                                     984
+                                                 ],
+                          "requested":  [
+                                            947,
+                                            456
+                                        ],
+                          "captured":  [
+                                           1894,
+                                           912
+                                       ],
+                          "image_sha256":  "9ea3feb1c56a487327c5fd3cc073557cce3e5ed684a287bd79bf5f6d33c4b972",
+                          "exit_code":  0
+                      },
+                      {
+                          "name":  "scale2-keyboard-skip-link-workarea",
+                          "keys":  [
+                                       "{TAB}"
+                                   ],
+                          "system_theme":  "light",
+                          "options":  {
+
+                                      },
+                          "passed":  true,
+                          "default_window":  [
+                                                 0,
+                                                 0,
+                                                 1920,
+                                                 984
+                                             ],
+                          "default_window_inside_work_area":  true,
+                          "dpi":  192,
+                          "work_area_physical":  [
+                                                     1920,
+                                                     984
+                                                 ],
+                          "requested":  [
+                                            947,
+                                            456
+                                        ],
+                          "captured":  [
+                                           1894,
+                                           912
+                                       ],
+                          "image_sha256":  "39a7621b87e5801b68ea59e256678e49bc771731460a4c538edf00f7f1908e5b",
+                          "exit_code":  0
+                      },
+                      {
+                          "name":  "scale2-keyboard-risultati-workarea",
+                          "keys":  [
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{ENTER}"
+                                   ],
+                          "system_theme":  "light",
+                          "options":  {
+
+                                      },
+                          "passed":  true,
+                          "default_window":  [
+                                                 0,
+                                                 0,
+                                                 1920,
+                                                 984
+                                             ],
+                          "default_window_inside_work_area":  true,
+                          "dpi":  192,
+                          "work_area_physical":  [
+                                                     1920,
+                                                     984
+                                                 ],
+                          "requested":  [
+                                            947,
+                                            456
+                                        ],
+                          "captured":  [
+                                           1894,
+                                           912
+                                       ],
+                          "image_sha256":  "7387bd6a120b369c2be403294c91ecc60d6d95a76ff0133ec8bd681170f3d88c",
+                          "exit_code":  0
+                      },
+                      {
+                          "name":  "scale2-keyboard-informazioni-workarea",
+                          "keys":  [
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{ENTER}"
+                                   ],
+                          "system_theme":  "light",
+                          "options":  {
+
+                                      },
+                          "passed":  true,
+                          "default_window":  [
+                                                 0,
+                                                 0,
+                                                 1920,
+                                                 984
+                                             ],
+                          "default_window_inside_work_area":  true,
+                          "dpi":  192,
+                          "work_area_physical":  [
+                                                     1920,
+                                                     984
+                                                 ],
+                          "requested":  [
+                                            947,
+                                            456
+                                        ],
+                          "captured":  [
+                                           1894,
+                                           912
+                                       ],
+                          "image_sha256":  "96a25cd0346f2116d39aa6f905654c074ea6adb6124c5b396b12b2b590c624a9",
+                          "exit_code":  0
+                      },
+                      {
+                          "name":  "scale2-keyboard-theme-dark-workarea",
+                          "keys":  [
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{DOWN}",
+                                       "{DOWN}"
+                                   ],
+                          "system_theme":  "light",
+                          "options":  {
+
+                                      },
+                          "passed":  true,
+                          "default_window":  [
+                                                 0,
+                                                 0,
+                                                 1920,
+                                                 984
+                                             ],
+                          "default_window_inside_work_area":  true,
+                          "dpi":  192,
+                          "work_area_physical":  [
+                                                     1920,
+                                                     984
+                                                 ],
+                          "requested":  [
+                                            947,
+                                            456
+                                        ],
+                          "captured":  [
+                                           1894,
+                                           912
+                                       ],
+                          "image_sha256":  "e07b0e31eda7b3096f4962b17121108e8c6ae969b9673d174c85a3a62188eef8",
+                          "exit_code":  0
+                      },
+                      {
+                          "name":  "scale2-keyboard-theme-light-on-dark-workarea",
+                          "keys":  [
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{DOWN}"
+                                   ],
+                          "system_theme":  "dark",
+                          "options":  {
+
+                                      },
+                          "passed":  true,
+                          "default_window":  [
+                                                 0,
+                                                 0,
+                                                 1920,
+                                                 984
+                                             ],
+                          "default_window_inside_work_area":  true,
+                          "dpi":  192,
+                          "work_area_physical":  [
+                                                     1920,
+                                                     984
+                                                 ],
+                          "requested":  [
+                                            947,
+                                            456
+                                        ],
+                          "captured":  [
+                                           1894,
+                                           912
+                                       ],
+                          "image_sha256":  "94032b062dd255d8ada7d4a8cacd1fb90dc9c9db61af982e9e5da1367e8e8309",
+                          "exit_code":  0
+                      },
+                      {
+                          "name":  "scale2-input-partial-workarea",
+                          "keys":  [
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{DOWN}",
+                                       "WAIT",
+                                       "{TAB}",
+                                       "{DOWN}",
+                                       "WAIT",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{DOWN}",
+                                       "WAIT",
+                                       "{TAB}",
+                                       "{ENTER}",
+                                       "DIALOG:partial.txt",
+                                       "WAIT"
+                                   ],
+                          "system_theme":  "light",
+                          "options":  {
+
+                                      },
+                          "passed":  true,
+                          "default_window":  [
+                                                 0,
+                                                 0,
+                                                 1920,
+                                                 984
+                                             ],
+                          "default_window_inside_work_area":  true,
+                          "dpi":  192,
+                          "work_area_physical":  [
+                                                     1920,
+                                                     984
+                                                 ],
+                          "requested":  [
+                                            947,
+                                            456
+                                        ],
+                          "captured":  [
+                                           1894,
+                                           912
+                                       ],
+                          "image_sha256":  "41e7a2e64b5ebc74e2a96ecfef20ebab6e5aacc329172ee2a72f96986d44eaf4",
+                          "exit_code":  0
+                      },
+                      {
+                          "name":  "scale2-run-completed-workarea",
+                          "keys":  [
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{DOWN}",
+                                       "WAIT",
+                                       "{TAB}",
+                                       "{DOWN}",
+                                       "WAIT",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{DOWN}",
+                                       "WAIT",
+                                       "{TAB}",
+                                       "{ENTER}",
+                                       "DIALOG:partial.txt",
+                                       "WAIT",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{TAB}",
+                                       "{ENTER}",
+                                       "WAIT",
+                                       "WAIT",
+                                       "WAIT"
+                                   ],
+                          "system_theme":  "light",
+                          "options":  {
+
+                                      },
+                          "passed":  true,
+                          "default_window":  [
+                                                 0,
+                                                 0,
+                                                 1920,
+                                                 984
+                                             ],
+                          "default_window_inside_work_area":  true,
+                          "dpi":  192,
+                          "work_area_physical":  [
+                                                     1920,
+                                                     984
+                                                 ],
+                          "requested":  [
+                                            947,
+                                            456
+                                        ],
+                          "captured":  [
+                                           1894,
+                                           912
+                                       ],
+                          "image_sha256":  "bb4030505d4c818a562c31912f6336f7777b11a94d62b4ac82ac15daa369c6e9",
+                          "exit_code":  0
+                      }
+                  ],
+    "close_during_run":  {
+                             "name":  "close-during-run",
+                             "passed":  true,
+                             "image_sha256":  "eebb79a6c37f1cb5f30970d0a637fe68b45a15baa35fd9863b4da39a78149518",
+                             "spools_while_running":  [
+                                                          "lintra-desktop-run-WevBQS"
+                                                      ],
+                             "seconds_to_exit":  0.08,
+                             "exit_code":  0,
+                             "spools_after_exit":  [
+
+                                                   ]
+                         }
+}

@@ -365,6 +365,14 @@ def scenario(binary, output, monitor_name, name, size, keys, budget=None, full=F
                 process.wait(timeout=10)
 
 
+def active_run_spools(tmp):
+    """Run spools whose report is still being written: the atomic writer keeps
+    `errors.jsonl.part` until publication renames it to `errors.jsonl`, so a
+    completed report (spool kept with `errors.jsonl`) is never counted."""
+    return sorted(p.name for p in Path(tmp).glob("lintra-desktop-run-*")
+                  if (p / "errors.jsonl.part").is_file() and not (p / "errors.jsonl").exists())
+
+
 def close_during_run(binary, output):
     """T-MIG-P5-08, Slint parity "Annulla/chiudi": the owned window is closed
     by the compositor while a 245 MB run is active. The process must exit on
@@ -402,11 +410,13 @@ def close_during_run(binary, output):
                     hypr(f'hl.dsp.focus({{{target}}})')
                     hypr(f'hl.dsp.send_shortcut({{mods="", key="{key}", {target}}})')
                     time.sleep(0.4)
-            spools_running = sorted(p.name for p in (Path(temporary) / "tmp").glob("lintra-desktop-run-*"))
             client = owned_window(process.pid, time.monotonic() + 5)
             (x, y), (w, h) = client["at"], client["size"]
             image = output / "close-during-run-1366x768.png"
             subprocess.run(["grim", "-g", f"{x},{y} {w}x{h}", str(image)], check=True, timeout=15)
+            # Checked last before closing: a run completed earlier must fail here.
+            spools_running = active_run_spools(Path(temporary) / "tmp")
+            assert spools_running, "no spool with a pending report: the run was not active when closed"
             closed_at = time.monotonic()
             hypr(f'hl.dsp.window.close({{{target}}})')
             code = process.wait(timeout=60)
@@ -415,7 +425,6 @@ def close_during_run(binary, output):
             result = {"name": "close-during-run-1366x768", "exit_code": code, "seconds_to_exit": elapsed,
                       "spools_while_running": spools_running, "spools_after_exit": left_over,
                       "image_sha256": hashlib.sha256(image.read_bytes()).hexdigest()}
-            assert spools_running, "the run had no spool: it was not active when closed"
             assert code == 0 and not left_over, result
             return result
         finally:
