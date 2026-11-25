@@ -1,6 +1,11 @@
 # T-MIG-P6-03 — Dettaglio diagnostico e selezione offset
 
-Data 25 novembre 2026. Stato: **IN_REVIEW** (non DONE). Prerequisiti
+Data 25 novembre 2026. Stato: **DONE**. Review Codex round 1 APPROVED su
+`e9fa7cc` senza rilievi (`lintra-review-handoffs/T-MIG-P6-03-CODEX-REVIEW.md`).
+Integrazione autorizzata dall'autore per fast-forward di `integration`, senza
+push. CI remota e Windows/WebView2 NOT_RUN, al checkpoint del blocco P6;
+G-MIG-6 NOT_VERIFIED.
+Prerequisiti
 T-MIG-P6-01 e T-MIG-P6-02 DONE (`integration` `860e88b`). Branch
 `work/T-MIG-P6-03` da `860e88b`, worktree `/home/alberto/Desktop/LINTRA/lintra-p6-03`.
 
@@ -147,4 +152,4 @@ il pannello fuori inquadratura a 640: corretti prima della campagna.
   frattempo la pagina è stata espulsa, Rust risponde stale e il pannello
   resta in errore finché si seleziona di nuovo la riga.
 
-Prossima task tecnicamente disponibile dopo l'integrazione: T-MIG-P6-04.
+Prossima task tecnicamente disponibile: T-MIG-P6-04.
