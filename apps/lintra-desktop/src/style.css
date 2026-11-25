@@ -277,6 +277,23 @@
   .grid-head h2 { margin: 0; }
   .grid-head h2 span { font-size: var(--data-size); font-weight: 400; color: var(--muted); }
   .grid-range { margin: 0; font-size: var(--data-size); }
+  /* Filter bar (T-MIG-P6-02): labelled fields that wrap on narrow windows, then
+     a full-width footer (hint, actions): a one-column cell cannot hold both
+     buttons; it takes the place of the reference search. */
+  .grid-filters {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); align-items: end;
+    gap: var(--control-gap); padding: var(--space-block) var(--page-padding); border-bottom: 1px solid var(--border);
+  }
+  .grid-filters .field label { font-size: var(--data-size); }
+  .grid-filters .field input[type="text"] { min-height: 36px; }
+  .grid-filters .field input[aria-invalid="true"] { border-color: var(--error); }
+  .field-error { margin: 0; font-size: var(--data-size); color: var(--error); }
+  .filter-footer {
+    grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center;
+    justify-content: space-between; gap: var(--control-gap);
+  }
+  .filter-actions { display: flex; gap: var(--space-row); margin-left: auto; }
+  .filter-hint { margin: 0; font-size: var(--data-size); color: var(--muted); }
   .grid-message { padding: var(--page-padding); }
   .grid-message p { margin-bottom: var(--control-gap); }
   .grid-message[role="alert"] p { color: var(--error); }

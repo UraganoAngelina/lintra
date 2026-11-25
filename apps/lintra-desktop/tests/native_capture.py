@@ -52,11 +52,16 @@ FULL_BIG = FULL + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/big.txt", "wait",
 # T-MIG-P6-01: invalid.txt has 100 000 records of 4 bytes instead of 6, one
 # length diagnostic each (782 pages of 128). After the run, shift-Tab x11
 # from «Avvia analisi» reaches Risultati (Informazioni is x10); the section
-# title then has the focus: Tab reaches «Nuova analisi», the grid viewport,
-# «Pagina precedente», «Pagina 1», «Pagina 2».
+# title then has the focus: Tab reaches «Nuova analisi», the five filters
+# (T-MIG-P6-02: Codice, ID campo, ID record, Codice fiscale, Riga), «Azzera»,
+# «Applica filtri», the grid viewport, «Pagina precedente», «Pagina 1», «Pagina 2».
 FILE_INVALID = SELECT + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/invalid.txt", "wait"]
 TO_RESULTS = ["wait", "wait"] + ["shift-Tab"] * 11 + ["Return", "wait", "wait", "wait"]
 GRID = FILE_INVALID + START + TO_RESULTS
+# T-MIG-P6-02: Tab x2 from the title reaches «Codice», x6 «Riga». Enter in a
+# field applies the filters; a filtered query is built by the Rust worker.
+TO_CODE = ["Tab"] * 2
+TO_LINE = ["Tab"] * 6
 
 # name, logical window size, keys sent to the owned window.
 # Tab order: skip link, Analisi, Risultati, Informazioni, theme radio group.
@@ -127,13 +132,25 @@ SCENARIOS = [
     ("results-grid-1366x768", (1366, 768), GRID),
     ("results-grid-640x480", (640, 480), GRID),
     ("results-grid-workarea", None, GRID),
-    ("results-grid-page-2-1366x768", (1366, 768), GRID + ["Tab"] * 5 + ["Return", "wait"]),
-    ("results-grid-scrolled-1366x768", (1366, 768), GRID + ["Tab", "Tab", "End", "wait"]),
+    ("results-grid-page-2-1366x768", (1366, 768), GRID + ["Tab"] * 12 + ["Return", "wait"]),
+    ("results-grid-scrolled-1366x768", (1366, 768), GRID + ["Tab"] * 9 + ["End", "wait"]),
     # From the section title one shift-Tab reaches the theme group: Scuro.
     ("results-grid-dark-1366x768", (1366, 768), GRID + ["shift-Tab", "Down", "Down", "wait"]),
     ("results-valid-1366x768", (1366, 768), FILE + START + TO_RESULTS),
     # From the section title one shift-Tab reaches the theme group: Chiaro.
     ("results-grid-light-1366x768", (1366, 768), GRID + ["shift-Tab", "Down", "wait"]),
+    # T-MIG-P6-02: the five exact filters. Line 42: one match. The code in
+    # lower case: no match (exact, case-sensitive). The exact code: every
+    # diagnostic, counted as matches. Line 0: refused next to the field, no
+    # query. Then «Azzera» (Tab from «Riga») goes back to the whole report.
+    # Tab x3 from «Riga» (x7 from «Codice») focuses the grid viewport, scrolling the rows into view.
+    ("results-filter-line-1366x768", (1366, 768), GRID + TO_LINE + ["type:42", "Return", "wait", "wait"] + ["Tab"] * 3 + ["wait"]),
+    ("results-filter-line-640x480", (640, 480), GRID + TO_LINE + ["type:42", "Return", "wait", "wait"]),
+    ("results-filter-code-nomatch-1366x768", (1366, 768), GRID + TO_CODE + ["type:e_record_length", "Return", "wait", "wait"]),
+    ("results-filter-code-1366x768", (1366, 768), GRID + TO_CODE + ["type:E_RECORD_LENGTH", "Return", "wait", "wait"] + ["Tab"] * 7 + ["wait"]),
+    ("results-filter-line-invalid-1366x768", (1366, 768), GRID + TO_LINE + ["type:0", "Return", "wait"]),
+    ("results-filter-cleared-1366x768", (1366, 768),
+     GRID + TO_LINE + ["type:42", "Return", "wait", "wait", "Tab", "Return", "wait", "wait"]),
     ("keyboard-informazioni-report-1366x768", (1366, 768), FILE + START + ["wait", "wait"] + ["shift-Tab"] * 10 + ["Return", "wait"]),
     # T-MIG-P5-09: Full selection on the external bundle (last item True).
     ("full-selection-1366x768", (1366, 768), FULL, None, True),
@@ -341,9 +358,19 @@ def scenario(binary, output, monitor_name, name, size, keys, budget=None, full=F
                 if key.startswith("type:"):  # characters typed into the focused field
                     hypr(f'hl.dsp.focus({{{target}}})')
                     for char in key.removeprefix("type:"):
-                        if not (char.islower() or char.isdigit()):
-                            raise RuntimeError("typed text must be [a-z0-9]")
-                        hypr(f'hl.dsp.send_shortcut({{mods="", key="{char}", {target}}})')
+                        # P6-02: upper case and "_" for exact filter codes.
+                        if char.isascii() and (char.islower() or char.isdigit()):
+                            mods, key_name = "", char
+                        elif char.isascii() and char.isupper():
+                            mods, key_name = "SHIFT", char.lower()
+                        elif char == "_":
+                            # Hyprland resolves keysyms on the last layout of "us,it"
+                            # (minus -> the "/" key) and the window reads us: the
+                            # physical keycode of us "-" avoids the lookup.
+                            mods, key_name = "SHIFT", "code:20"
+                        else:
+                            raise RuntimeError("typed text must be [A-Za-z0-9_]")
+                        hypr(f'hl.dsp.send_shortcut({{mods="{mods}", key="{key_name}", {target}}})')
                         time.sleep(0.12)
                     continue
                 if key == "budget-valid":  # the operator corrects the file

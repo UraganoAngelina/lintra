@@ -5,14 +5,14 @@
 // any report size. Columns hold only what a row DTO carries: line, trace
 // (named through results_overview), field, code and the reason as previews
 // (author decision of 24 Nov 2026); raw bytes, context and identity stay Rust.
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { createColumnHelper, tableFeatures, useTable } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { resultsOverview, resultsPage, resultsQuery, resultsQueryState, type Preview, type ResultRow, type ResultsOverview, type ResultsPage, type RunRef } from "./ipc";
 import { Charts, type ChartScope } from "./Charts";
 import { previewText, reportStatusText, type AboutReport } from "./information";
-import { PAGE_ROWS, acceptPage, cached, pageCount, pageItems, pageOffset, rangeText, remember, type ResultsView } from "./pages";
+import { NO_FILTERS, PAGE_ROWS, acceptPage, cached, filtering, pageCount, pageItems, pageOffset, rangeText, remember, sameRunRef, validLine, type ResultsFilters, type ResultsView } from "./pages";
 import { Badge, Button, Card, cn } from "./ui";
 
 /** Interval between query state reads while Rust builds the index. */
@@ -24,13 +24,59 @@ export const ROW_HEIGHT = 56;
 export const OVERSCAN = 6;
 
 /**
+ * Opens the Rust query of `filters` on `report`, polls it while Rust builds
+ * the index and reads its first page. Every reply is used only while `live()`
+ * holds: the caller turns it off when the report, the filters or the
+ * visibility change, so a late state or page of the query left behind never
+ * reaches the view (stale-safe, T-MIG-P6-02). Returns the timer cleanup.
+ */
+export function openQuery(report: RunRef, filters: ResultsFilters, live: () => boolean,
+  set: (update: ResultsView | ((view: ResultsView) => ResultsView)) => void, keep: (page: ResultsPage) => void): () => void {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  set({ status: "building", run: report });
+  const ready = async (queryRef: string, matches: string, total: string) => {
+    set({ status: "ready", run: report, query_ref: queryRef, total_matches: matches, total_diagnostics: total,
+      page: 0n, loading: true, pageFailed: false, current: null });
+    const page = await resultsPage(queryRef, "0", PAGE_ROWS);
+    if (!live()) return;
+    keep(page);
+    set(current => acceptPage(current, page));
+  };
+  const fail = () => { if (live()) set({ status: "failed", run: report }); };
+  const poll = (queryRef: string) => {
+    timer = setTimeout(() => {
+      resultsQueryState(queryRef).then(status => {
+        if (!live()) return;
+        if (status.state === "building") poll(queryRef);
+        else if (status.state === "ready" && status.total_matches !== null && status.total_diagnostics !== null) {
+          return ready(queryRef, status.total_matches, status.total_diagnostics);
+        } else fail();
+      }).catch(fail);
+    }, POLL_MS);
+  };
+  resultsQuery(report, { schemaVersion: 1, ...filters }).then(status => {
+    if (!live()) return;
+    if (status.state === "building") poll(status.query_ref);
+    else if (status.total_matches !== null && status.total_diagnostics !== null) {
+      return ready(status.query_ref, status.total_matches, status.total_diagnostics);
+    }
+  }).catch(fail);
+  return () => { if (timer !== undefined) clearTimeout(timer); };
+}
+
+/**
  * Query of the report Rust holds as last published, built while the section
- * is visible. Late replies for another report, query or page are dropped, so
- * a previous query never appears under a new report.
+ * is visible, with the filters last applied to that report (T-MIG-P6-02).
+ * Applying filters opens a new Rust query; every reply of the query left
+ * behind (state, first page, a page asked for later) is dropped, so rows of
+ * an old query or report never appear under the filters just applied. A new
+ * report starts unfiltered, as in Slint.
  */
 export function useResults(report: RunRef | null, visible: boolean):
-  [ResultsView, (page: bigint) => void, () => void] {
+  [ResultsView, (page: bigint) => void, () => void, ResultsFilters, (filters: ResultsFilters) => void] {
   const [view, setView] = useState<ResultsView>({ status: "none" });
+  const [applied, setApplied] = useState<{ run: RunRef | null; filters: ResultsFilters }>({ run: null, filters: NO_FILTERS });
+  const filters = report !== null && applied.run !== null && sameRunRef(applied.run, report) ? applied.filters : NO_FILTERS;
   const latest = useRef(view);
   latest.current = view;
   const cache = useRef<ResultsPage[]>([]);
@@ -39,36 +85,9 @@ export function useResults(report: RunRef | null, visible: boolean):
     cache.current = [];
     if (report === null || !visible) { setView({ status: "none" }); return; }
     let active = true;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    setView({ status: "building", run: report });
-    const ready = async (queryRef: string, matches: string, total: string) => {
-      setView({ status: "ready", run: report, query_ref: queryRef, total_matches: matches, total_diagnostics: total,
-        page: 0n, loading: true, pageFailed: false, current: null });
-      const page = await resultsPage(queryRef, "0", PAGE_ROWS);
-      if (!active) return;
-      cache.current = remember(cache.current, page);
-      setView(current => acceptPage(current, page));
-    };
-    const poll = (queryRef: string) => {
-      timer = setTimeout(() => {
-        resultsQueryState(queryRef).then(status => {
-          if (!active) return;
-          if (status.state === "building") poll(queryRef);
-          else if (status.state === "ready" && status.total_matches !== null && status.total_diagnostics !== null) {
-            return ready(queryRef, status.total_matches, status.total_diagnostics);
-          } else setView({ status: "failed", run: report });
-        }).catch(() => { if (active) setView({ status: "failed", run: report }); });
-      }, POLL_MS);
-    };
-    resultsQuery(report, { schemaVersion: 1 }).then(status => {
-      if (!active) return;
-      if (status.state === "building") poll(status.query_ref);
-      else if (status.total_matches !== null && status.total_diagnostics !== null) {
-        return ready(status.query_ref, status.total_matches, status.total_diagnostics);
-      }
-    }).catch(() => { if (active) setView({ status: "failed", run: report }); });
-    return () => { active = false; if (timer !== undefined) clearTimeout(timer); };
-  }, [report, visible, attempt]);
+    const stop = openQuery(report, filters, () => active, setView, page => { cache.current = remember(cache.current, page); });
+    return () => { active = false; stop(); };
+  }, [report, visible, attempt, filters]);
   const goTo = useCallback((page: bigint) => {
     const current = latest.current;
     if (current.status !== "ready" || page < 0n || page >= pageCount(current.total_matches)) return;
@@ -77,13 +96,17 @@ export function useResults(report: RunRef | null, visible: boolean):
     if (hit) { setView(acceptPage({ ...current, page }, hit)); return; }
     setView({ ...current, page, loading: true, pageFailed: false });
     resultsPage(current.query_ref, offset, PAGE_ROWS).then(loaded => {
-      cache.current = remember(cache.current, loaded);
+      // A page of a query already replaced must not evict the new query's pages.
+      const shown = latest.current;
+      if (shown.status === "ready" && shown.query_ref === loaded.query_ref) cache.current = remember(cache.current, loaded);
       setView(now => acceptPage(now, loaded));
     }, () => setView(now => now.status === "ready" && now.query_ref === current.query_ref && now.page === page
       ? { ...now, loading: false, pageFailed: true } : now));
   }, []);
   const retry = useCallback(() => setAttempt(value => value + 1), []);
-  return [view, goTo, retry];
+  // A new object even for the same text: applying again opens a new query, as in Slint.
+  const apply = useCallback((next: ResultsFilters) => { if (report !== null) setApplied({ run: report, filters: { ...next } }); }, [report]);
+  return [view, goTo, retry, filters, apply];
 }
 
 /** Overview of the published report (charts, counts, trace names). */
@@ -214,6 +237,56 @@ function Pager({ view, onPage }: { view: Extract<ResultsView, { status: "ready" 
   </nav>;
 }
 
+/** The five filters of the Slint view, with its labels. */
+const FILTER_FIELDS: readonly (readonly [keyof ResultsFilters, string])[] = [
+  ["code", "Codice"], ["field", "ID campo"], ["record", "ID record"], ["fiscal_code", "Codice fiscale"], ["line", "Riga"],
+];
+
+/**
+ * Filter bar of the grid (T-MIG-P6-02), in place of the reference search box:
+ * Lintra has no free-text search, only the five exact filters Rust applies.
+ * Values are sent as typed (no trim, no case folding). Enter or "Applica
+ * filtri" opens a new query; a line that Rust would reject is flagged next
+ * to the field and nothing is sent.
+ */
+export function FilterBar({ applied, onApply }: { applied: ResultsFilters; onApply: (filters: ResultsFilters) => void }) {
+  const [draft, setDraft] = useState(applied);
+  const [lineInvalid, setLineInvalid] = useState(false);
+  useEffect(() => { setDraft(applied); setLineInvalid(false); }, [applied]);
+  const clearable = filtering(draft) || filtering(applied);
+  const submit = (event: FormEvent) => {
+    event.preventDefault();
+    if (!validLine(draft.line)) { setLineInvalid(true); return; }
+    onApply(draft);
+  };
+  const clear = () => {
+    if (!clearable) return;
+    setDraft(NO_FILTERS); setLineInvalid(false);
+    if (filtering(applied)) onApply(NO_FILTERS);
+  };
+  return <form className="grid-filters" onSubmit={submit} aria-label="Filtri delle diagnostiche" noValidate>
+    {FILTER_FIELDS.map(([key, label]) => {
+      const invalid = key === "line" && lineInvalid;
+      return <div className={cn("field", key === "line" && "field-line")} key={key}>
+        <label htmlFor={`filter-${key}`}>{label}</label>
+        <input id={`filter-${key}`} type="text" value={draft[key]} spellCheck={false} autoComplete="off"
+          className={key === "code" || key === "field" ? "font-mono" : undefined}
+          inputMode={key === "line" ? "numeric" : undefined} aria-invalid={invalid}
+          aria-describedby={invalid ? "filter-line-error" : "filter-hint"}
+          onChange={event => { const text = event.target.value; setDraft(now => ({ ...now, [key]: text })); if (key === "line") setLineInvalid(false); }} />
+        {invalid && <p id="filter-line-error" className="field-error" role="alert">Numero di riga positivo, solo cifre.</p>}
+      </div>;
+    })}
+    <div className="filter-footer">
+      <p id="filter-hint" className="filter-hint">Corrispondenza esatta su tutti i filtri compilati: maiuscole e spazi contano. Invio per applicare.</p>
+      <div className="filter-actions">
+        <Button type="button" variant="ghost" aria-disabled={!clearable} onClick={clear}>Azzera</Button>
+        <Button type="submit" variant="primary">Applica filtri</Button>
+      </div>
+    </div>
+  </form>;
+}
+
 /** Summary cards of the reference: records, diagnostics, records with
  * violations and outcome, all as Rust reports them. */
 function Summary({ about, overview }: { about: AboutReport; overview: OverviewState }) {
@@ -242,8 +315,10 @@ function Summary({ about, overview }: { about: AboutReport; overview: OverviewSt
  * Risultati body. Without a report it says so; otherwise the summary, then
  * the diagnostics card with its own states (building, failed, empty, page).
  */
-export function Results({ view, about, overview, reportAvailable, onPage, onRetry }:
-  { view: ResultsView; about: AboutReport; overview: OverviewState; reportAvailable: boolean; onPage: (page: bigint) => void; onRetry: () => void }) {
+export function Results({ view, about, overview, reportAvailable, filters, onFilter, onPage, onRetry }:
+  { view: ResultsView; about: AboutReport; overview: OverviewState; reportAvailable: boolean; filters: ResultsFilters;
+    onFilter: (filters: ResultsFilters) => void; onPage: (page: bigint) => void; onRetry: () => void }) {
+  const filtered = filtering(filters);
   const traces = useMemo<TraceNames>(() => overview.status === "ready"
     ? new Map(overview.overview.by_trace.map(entry => [entry.trace_ref, entry.trace])) : NO_TRACES, [overview]);
   // Only a read `report_about` can clear the qualifier; "none" means it was not requested yet.
@@ -261,14 +336,19 @@ export function Results({ view, about, overview, reportAvailable, onPage, onRetr
     <Card className="grid-card" aria-labelledby="diagnostics-title">
       <header className="grid-head">
         <h2 id="diagnostics-title">Diagnostiche <span>/ ordine del report</span></h2>
-        {view.status === "ready" && view.current && <p className="grid-range">{rangeText(view.current)}</p>}
+        {view.status === "ready" && filtered && <p className="grid-range">
+          {grouped(view.total_matches)} {view.total_matches === "1" ? "corrispondenza" : "corrispondenze"} su {grouped(view.total_diagnostics)} diagnostiche
+        </p>}
+        {view.status === "ready" && !filtered && view.current && <p className="grid-range">{rangeText(view.current)}</p>}
       </header>
-      {view.status === "building" && <p className="grid-message" role="status">Preparazione dei risultati…</p>}
+      {view.status !== "none" && <FilterBar applied={filters} onApply={onFilter} />}
+      {view.status === "building" && <p className="grid-message" role="status">{filtered ? "Applicazione dei filtri…" : "Preparazione dei risultati…"}</p>}
       {view.status === "failed" && <div className="grid-message" role="alert">
-        <p>Non è stato possibile preparare i risultati del report.</p>
+        <p>{filtered ? "Non è stato possibile applicare i filtri: nessuna riga è mostrata." : "Non è stato possibile preparare i risultati del report."}</p>
         <Button onClick={onRetry}>Riprova</Button>
       </div>}
-      {view.status === "ready" && view.total_matches === "0" && <p className="grid-message">Il report non contiene diagnostiche.</p>}
+      {view.status === "ready" && view.total_matches === "0" && <p className="grid-message">
+        {filtered ? "Nessuna diagnostica corrisponde ai filtri." : "Il report non contiene diagnostiche."}</p>}
       {view.status === "ready" && view.total_matches !== "0" && <>
         {view.pageFailed && <div className="grid-message" role="alert">
           <p>Non è stato possibile leggere questa pagina dei risultati.</p>

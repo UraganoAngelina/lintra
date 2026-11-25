@@ -7,7 +7,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { loadComponent } from "./tsx.mjs";
 import { MAX_PAGE_ROWS } from "../src/ipc.ts";
-import { CACHE_PAGES, PAGE_ROWS, acceptPage, cached, pageCount, pageItems, pageOf, pageOffset, rangeText, remember } from "../src/pages.ts";
+import { CACHE_PAGES, NO_FILTERS, PAGE_ROWS, acceptPage, cached, pageCount, pageItems, pageOf, pageOffset, rangeText, remember } from "../src/pages.ts";
 
 const RUN = { schemaVersion: 1, instance_id: "i1", run_id: "r1" };
 const MAX_U64 = "18446744073709551615";
@@ -149,10 +149,10 @@ const overview = { status: "ready", overview: { schemaVersion: 1, run: RUN, reco
   invalid_records: "1000000", total_errors: "1000000",
   by_code: [{ schemaVersion: 1, code: { schemaVersion: 1, text: "E_RECORD_LENGTH", complete: true }, count: "1000000" }],
   by_trace: [{ schemaVersion: 1, trace_ref: "trace_0", trace: { schemaVersion: 1, text: "T1", complete: true }, count: "1000000" }] } };
-const results = props => renderToStaticMarkup(createElement(Results, { about, overview, reportAvailable: true, onPage: noop, onRetry: noop, ...props }));
+const results = props => renderToStaticMarkup(createElement(Results, { about, overview, reportAvailable: true, filters: NO_FILTERS, onFilter: noop, onPage: noop, onRetry: noop, ...props }));
 
 test("Risultati states: no report, building, failed, empty and paged", () => {
-  const none = renderToStaticMarkup(createElement(Results, { view: { status: "none" }, about: { status: "none" }, overview: { status: "none" }, reportAvailable: false, onPage: noop, onRetry: noop }));
+  const none = renderToStaticMarkup(createElement(Results, { view: { status: "none" }, about: { status: "none" }, overview: { status: "none" }, reportAvailable: false, filters: NO_FILTERS, onFilter: noop, onPage: noop, onRetry: noop }));
   assert.match(none, /Nessun report disponibile\./);
   assert.doesNotMatch(none, /<table/);
   assert.match(results({ view: { status: "building", run: RUN } }), /role="status">Preparazione dei risultati…</);

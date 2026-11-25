@@ -53,7 +53,7 @@ function App() {
   const reportAvailable = run.report !== null;
   const report = service.kind === "ready" ? run.report : null;
   const about = useReportAbout(report, view === "informazioni" || view === "risultati");
-  const [results, onPage, onRetry] = useResults(report, view === "risultati");
+  const [results, onPage, onRetry, filters, onFilter] = useResults(report, view === "risultati");
   const overview = useOverview(report, view === "risultati");
   // Flow and version of the configuration Rust accepted for the current form.
   const configured = selection.configuration.status === "ready" ? selection.configuration.selection : null;
@@ -64,7 +64,7 @@ function App() {
       <AnalysisForm state={selection} onEvent={onSelection} busy={running} />
       <RunPanel state={run} selection={selection} onEvent={onRun} onStart={onStart} onDecide={onDecide} onCancel={onCancel} />
     </div> : null}
-    results={service.kind === "ready" ? <Results view={results} about={about} overview={overview} reportAvailable={reportAvailable} onPage={onPage} onRetry={onRetry} /> : null}
+    results={service.kind === "ready" ? <Results view={results} about={about} overview={overview} reportAvailable={reportAvailable} filters={filters} onFilter={onFilter} onPage={onPage} onRetry={onRetry} /> : null}
     information={<About version={service.kind === "ready" ? service.version : null} selection={selection} report={about} notices={NOTICES} />} />;
 }
 

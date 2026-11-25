@@ -95,3 +95,30 @@ export function acceptPage(view: ResultsView, page: ResultsPage): ResultsView {
   return { ...view, loading: false, pageFailed: false, current: page,
     total_matches: page.total_matches, total_diagnostics: page.total_diagnostics };
 }
+
+/**
+ * The five filters of the Slint results view (T-MIG-P6-02), as typed. Rust
+ * applies them (ResultsFilter: exact, AND, case-sensitive, never trimmed);
+ * this module neither trims nor folds them, it only sends them as they are.
+ */
+export type ResultsFilters = { code: string; field: string; record: string; fiscal_code: string; line: string };
+export const NO_FILTERS: ResultsFilters = Object.freeze({ code: "", field: "", record: "", fiscal_code: "", line: "" });
+const U64_MAX = (1n << 64n) - 1n;
+
+/**
+ * True when `line` fits the grammar of ResultsFilter::parse_line: empty (no
+ * restriction) or ASCII digits of a positive u64, leading zeros accepted.
+ * Checked before sending so a typo gets a message next to the field, as in
+ * Slint; Rust still rejects anything else on its own.
+ */
+export function validLine(line: string): boolean {
+  if (line === "") return true;
+  if (!/^[0-9]+$/.test(line)) return false;
+  const value = BigInt(line);
+  return value > 0n && value <= U64_MAX;
+}
+
+/** At least one filter restricts the query. */
+export function filtering(filters: ResultsFilters): boolean {
+  return Object.values(filters).some(value => value !== "");
+}

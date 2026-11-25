@@ -1047,12 +1047,21 @@ pub(super) mod tests {
         assert_eq!(opened["total_matches"], "300");
         assert_eq!(opened["total_diagnostics"], "300");
         assert!(results.candidate.is_none());
+        // T-MIG-P6-02: the filter bar always sends its five fields; all empty
+        // is the same unfiltered query, not a rescan.
+        let blank =
+            json!({"schemaVersion":1,"code":"","field":"","record":"","fiscal_code":"","line":""});
+        let cleared = query(&mut results, &published, blank).unwrap();
+        assert_eq!(cleared["state"], "ready");
+        assert_eq!(cleared["total_matches"], "300");
+        assert!(results.candidate.is_none());
         report
             .with_index(|index| {
                 assert_eq!(index.decoded_rows(), 0);
                 Ok(())
             })
             .unwrap();
+        let opened = query(&mut results, &published, json!({"schemaVersion":1})).unwrap();
         let q = &opened["query_ref"];
         let mut seen = HashSet::new();
         let mut collected = Vec::new();
