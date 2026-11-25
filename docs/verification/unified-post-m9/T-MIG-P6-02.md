@@ -1,6 +1,11 @@
 # T-MIG-P6-02 — Cinque filtri paritari e query stale safe
 
-Data 24–25 novembre 2026. Stato: **IN_REVIEW** (non DONE). Prerequisito
+Data 24–25 novembre 2026. Stato: **DONE**. Review Codex round 1 APPROVED
+su `a9470ac` senza rilievi (`lintra-review-handoffs/T-MIG-P6-02-CODEX-REVIEW.md`).
+Integrazione autorizzata dall'autore per fast-forward di `integration`, senza
+push. CI remota e Windows/WebView2 NOT_RUN, al checkpoint del blocco P6;
+G-MIG-6 NOT_VERIFIED.
+Prerequisito
 T-MIG-P6-01 DONE (`integration` `d0efe88`). Branch `work/T-MIG-P6-02` da
 `d0efe88`, worktree `/home/alberto/Desktop/LINTRA/lintra-p6-02`.
 
@@ -129,4 +134,4 @@ verificato da un test DOM: `filters.test.mjs` copre solo la grammatica di
 - Filtro per tracciato (presente nel DTO), dettaglio e selezione sono fuori
   da questa task (P6-03).
 
-Prossima task tecnicamente disponibile dopo l’integrazione: T-MIG-P6-03.
+Prossima task tecnicamente disponibile: T-MIG-P6-03.

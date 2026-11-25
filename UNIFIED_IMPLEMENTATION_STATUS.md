@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **76/128 DONE;52 rimanenti** (18U-* e40MIG).
+Conteggio unificato: **77/128 DONE;51 rimanenti** (18U-* e39MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -121,7 +121,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P5-09 | T-MIG-P5-03, T-MIG-P4-12 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-09.md) | Node 116 PASS, desktop 82 PASS; Full nativa 39/39; ebef511;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance selezione Full PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P5-10 | T-MIG-P5-09, T-MIG-P5-06 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P5-10.md) | scope esteso autorizzato: handle di piano nel progresso (adapter Rust); desktop 83, Node 124 PASS; monitor Full nativo 43/43; 98bdf80;review Codex round 1 APPROVED (P510-01 MINOR documentale corretto in chiusura);CI delta NOT_RUN,al checkpoint blocco | Acceptance monitor Full/terminali multi-pass PASS; G-MIG-5 NOT_VERIFIED |
 | T-MIG-P6-01 | T-MIG-P5-08 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-01.md) | scope esteso autorizzato: stack DEC-MIG-08, redesign shell, grafici, motivazione nelle righe (emendamento PAGING), conteggi per tracciato nel core; desktop 85, Node 138, paging 72/72 PASS; nativo 51/51+chiusura; 8c483dd+2a6d836;review Codex round 2 APPROVED (P601-01 risolto);CI delta NOT_RUN,al checkpoint blocco | Acceptance DOM/memoria bounded PASS; G-MIG-6 NOT_VERIFIED |
-| T-MIG-P6-02 | T-MIG-P6-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-02.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
+| T-MIG-P6-02 | T-MIG-P6-01 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-02.md) | cinque filtri esatti Slint e query stale safe nel renderer (backend P4-08 invariato); desktop 85, Node 144 PASS; nativo 57/57+chiusura; a9470ac;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance filtri = query Rust, nessun sort/FTS PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-03 | T-MIG-P6-01, T-MIG-P6-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-03.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-04 | T-MIG-P6-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-04.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-05 | T-MIG-P6-04 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-05.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
@@ -596,3 +596,15 @@ fallito), round 2 APPROVED senza nuovi rilievi. Integrazione autorizzata
 dall'autore: fast-forward di integration, nessun push. CI remota,
 Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN, al checkpoint del blocco
 P6. G-MIG-6 e G-REL aperti. Prossima tecnicamente disponibile T-MIG-P6-02.
+
+Chiusura T-MIG-P6-02, 25 novembre 2026: **DONE**, **77/128 (60,2%)**, 51
+rimanenti. Autore Claude Code, commit a9470ac su base d0efe88. Cinque filtri
+della vista Slint (codice, ID campo, ID record, codice fiscale, riga) inviati
+come digitati alla query Rust di P4-08: corrispondenza esatta, nessun
+trim/casefold, nessun ordinamento o ricerca libera nel renderer; risposte
+tardive di una query sostituita scartate, filtri legati al RunRef e azzerati
+da un nuovo report. Review Codex round 1 APPROVED senza rilievi
+(`lintra-review-handoffs/T-MIG-P6-02-CODEX-REVIEW.md`). Integrazione
+autorizzata dall'autore: fast-forward di integration, nessun push. CI remota
+e Windows/WebView2 NOT_RUN, al checkpoint del blocco P6. G-MIG-6 e G-REL
+aperti. Prossima tecnicamente disponibile T-MIG-P6-03.
