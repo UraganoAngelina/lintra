@@ -335,8 +335,11 @@ def full_bundle(root):
 def scenario(binary, output, monitor_name, name, size, keys, budget=None, full=False):
     with tempfile.TemporaryDirectory(prefix="lintra-desktop-capture-") as temporary:
         env = os.environ.copy()
+        # A private TMPDIR too: run spools of an analysis still open when the
+        # scenario terminates the app are removed with this directory, instead
+        # of piling up in the system /tmp (a tmpfs: RAM) across campaigns.
         for key, folder in [("XDG_DATA_HOME", "data"), ("XDG_CONFIG_HOME", "config"),
-                            ("XDG_CACHE_HOME", "cache")]:
+                            ("XDG_CACHE_HOME", "cache"), ("TMPDIR", "tmp")]:
             directory = Path(temporary) / folder
             directory.mkdir(mode=0o700)
             env[key] = str(directory)
