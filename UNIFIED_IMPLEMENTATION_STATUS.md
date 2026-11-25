@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **78/128 DONE;50 rimanenti** (18U-* e38MIG).
+Conteggio unificato: **79/128 DONE;49 rimanenti** (18U-* e37MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -123,7 +123,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P6-01 | T-MIG-P5-08 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-01.md) | scope esteso autorizzato: stack DEC-MIG-08, redesign shell, grafici, motivazione nelle righe (emendamento PAGING), conteggi per tracciato nel core; desktop 85, Node 138, paging 72/72 PASS; nativo 51/51+chiusura; 8c483dd+2a6d836;review Codex round 2 APPROVED (P601-01 risolto);CI delta NOT_RUN,al checkpoint blocco | Acceptance DOM/memoria bounded PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-02 | T-MIG-P6-01 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-02.md) | cinque filtri esatti Slint e query stale safe nel renderer (backend P4-08 invariato); desktop 85, Node 144 PASS; nativo 57/57+chiusura; a9470ac;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance filtri = query Rust, nessun sort/FTS PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-03 | T-MIG-P6-01, T-MIG-P6-02 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-03.md) | selezione per ordinale della query e pannello Dettaglio controllo nel renderer (backend P4-09 invariato); desktop 85, Node 153 PASS; nativo 61/61+chiusura; e9fa7cc;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance valori da Rust, nessun HTML iniettato PASS; G-MIG-6 NOT_VERIFIED |
-| T-MIG-P6-04 | T-MIG-P6-03 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-04.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
+| T-MIG-P6-04 | T-MIG-P6-03 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-04.md) | posizione in byte e guida al campo da Rust nel pannello di dettaglio (backend P4-09 invariato); snapshot Rust+Node e oracolo field_format_guide; desktop 86, Node 158 PASS; nativo 65/65+chiusura; 46995e4;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance snapshot/oracle, nessuna regola in TS PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-05 | T-MIG-P6-04 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-05.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-06 | T-MIG-P6-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-06.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-07 | T-MIG-P6-01, T-MIG-P6-03, T-MIG-P6-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-07.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
@@ -623,3 +623,16 @@ Integrazione autorizzata dall'autore: fast-forward di integration, nessun
 push. CI remota, Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN, al
 checkpoint del blocco P6. G-MIG-6 e G-REL aperti. Prossima tecnicamente
 disponibile T-MIG-P6-04.
+
+Chiusura T-MIG-P6-04, 25 novembre 2026: **DONE**, **79/128 (61,7%)**, 49
+rimanenti. Autore Claude Code, commit 46995e4 su base 61ebb06. Nel pannello
+di dettaglio «Posizione in byte» (`start–end` come in Slint, testo u64 di
+Rust) e «Guida al campo» con il testo di `field_format_guide` sullo schema
+catturato, letto per intero su richiesta; nessuna regola ricostruita nel
+renderer. Snapshot Rust dei testi di guida/posizione dello schema sintetico
+accanto all'oracolo esistente; snapshot Node del riquadro. Review Codex
+round 1 APPROVED senza rilievi (`lintra-review-handoffs/T-MIG-P6-04-CODEX-REVIEW.md`).
+Integrazione autorizzata dall'autore: fast-forward di integration, nessun
+push. CI remota, Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN, al
+checkpoint del blocco P6. G-MIG-6 e G-REL aperti. Prossima tecnicamente
+disponibile T-MIG-P6-05.

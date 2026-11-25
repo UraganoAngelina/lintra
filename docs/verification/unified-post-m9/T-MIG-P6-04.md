@@ -1,6 +1,11 @@
 # T-MIG-P6-04 — Field guide e posizione/schema
 
-Data 25 novembre 2026. Stato: **IN_REVIEW** (non DONE). Prerequisito
+Data 25 novembre 2026. Stato: **DONE**. Review Codex round 1 APPROVED su
+`46995e4` senza rilievi (`lintra-review-handoffs/T-MIG-P6-04-CODEX-REVIEW.md`).
+Integrazione autorizzata dall'autore per fast-forward di `integration`, senza
+push. CI remota e Windows/WebView2 NOT_RUN, al checkpoint del blocco P6;
+G-MIG-6 NOT_VERIFIED.
+Prerequisito
 T-MIG-P6-03 DONE (`integration` `61ebb06`). Branch `work/T-MIG-P6-04` da
 `61ebb06`, worktree `/home/alberto/Desktop/LINTRA/lintra-p6-04`.
 
@@ -124,4 +129,4 @@ messaggio (anch'esso oltre 256 byte): ordine dei Tab corretto.
   È un comportamento preesistente del banco di prova (non dell'uscita
   normale, coperta da «chiusura durante il run»); fuori scope qui.
 
-Prossima task tecnicamente disponibile dopo l'integrazione: T-MIG-P6-05.
+Prossima task tecnicamente disponibile: T-MIG-P6-05.
