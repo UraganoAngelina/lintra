@@ -107,8 +107,8 @@ test("the panel shows Rust's values as plain text, spaces kept", () => {
   assert.match(html, /aria-label="Diagnostica 42"/);
   // Data minimisation: fiscal code and episode are not shown.
   assert.doesNotMatch(html, /RSSMRA80A01H501U|EP-9/);
-  // Guide and byte position belong to P6-04, domains to P6-05/06.
-  assert.doesNotMatch(html, /<dt>[^<]*(posizione|dominio|guida)/i);
+  // Domains belong to P6-05/06 (guide and byte position: P6-04, field-guide.test.mjs).
+  assert.doesNotMatch(html, /dominio ammesso|Fonti/i);
   // Context is read only on request.
   assert.match(html, />Mostra il contesto</);
 });

@@ -350,6 +350,13 @@
   }
   .detail-full { display: flex; flex-direction: column; gap: var(--space-small); }
   .detail-more { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-small); font-size: var(--data-size); font-weight: 400; }
+  /* Field guide (T-MIG-P6-04): the «Regola applicata» box of the reference. */
+  .detail-guide {
+    margin-top: var(--space-block); padding: var(--control-gap) var(--space-block);
+    border-left: 3px solid var(--accent-bar); border-radius: var(--radius); background: var(--subtle);
+    font-size: var(--data-size); line-height: 1.5;
+  }
+  .detail-guide h3 { margin: 0 0 var(--space-small); font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
   .detail-context { margin-top: var(--space-block); padding-top: var(--space-block); border-top: 1px solid var(--border); }
   .detail-context h3 { margin: 0 0 var(--control-gap); font-size: 14px; font-weight: 600; }
   .grid-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-row); padding: var(--control-gap) var(--page-padding); border-top: 1px solid var(--border); }

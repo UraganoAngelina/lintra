@@ -61,6 +61,10 @@ GRID = FILE_INVALID + START + TO_RESULTS
 # T-MIG-P6-02: Tab x2 from the title reaches «Codice», x6 «Riga». Enter in a
 # field applies the filters; a filtered query is built by the Rust worker.
 TO_CODE = ["Tab"] * 2
+# T-MIG-P6-04: fields.txt has field diagnostics (F1 "002" not allowed, F2 "B"
+# not allowed, F1 "00X" not numeric): their detail carries the byte position
+# and the field guide Rust writes from the captured schema.
+FIELDS = SELECT + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/fields.txt", "wait"] + START + TO_RESULTS
 TO_LINE = ["Tab"] * 6
 
 # name, logical window size, keys sent to the owned window.
@@ -160,6 +164,14 @@ SCENARIOS = [
     ("results-detail-keys-1366x768", (1366, 768), GRID + ["Tab"] * 9 + ["Down", "Down", "Down", "wait", "wait"]),
     ("results-detail-context-1366x768", (1366, 768),
      GRID + TO_LINE + ["type:42", "Return", "wait", "wait"] + ["Tab"] * 3 + ["Down", "wait", "wait", "Tab", "Return", "wait", "wait"]),
+    # Tab x9 reaches the grid, Down selects the first field diagnostic; with
+    # three rows there is no pager. In the panel Tab x1 is «Leggi il testo
+    # completo» of the message, x2 the one of the guide (both longer than the
+    # 256-byte preview), x3 «Mostra il contesto».
+    ("results-guide-1366x768", (1366, 768), FIELDS + ["Tab"] * 9 + ["Down", "wait", "wait"]),
+    ("results-guide-full-1366x768", (1366, 768), FIELDS + ["Tab"] * 9 + ["Down", "wait", "wait", "Tab", "Tab", "Return", "wait", "wait"]),
+    ("results-guide-full-640x480", (640, 480), FIELDS + ["Tab"] * 9 + ["Down", "wait", "wait", "Tab", "Tab", "Return", "wait", "wait"]),
+    ("results-guide-context-1366x768", (1366, 768), FIELDS + ["Tab"] * 9 + ["Down", "wait", "wait"] + ["Tab"] * 3 + ["Return", "wait", "wait"]),
     ("results-filter-cleared-1366x768", (1366, 768),
      GRID + TO_LINE + ["type:42", "Return", "wait", "wait", "Tab", "Return", "wait", "wait"]),
     ("keyboard-informazioni-report-1366x768", (1366, 768), FILE + START + ["wait", "wait"] + ["shift-Tab"] * 10 + ["Return", "wait"]),
@@ -506,6 +518,7 @@ def main():
         (samples / "badt.txt").write_bytes(b"01AAZZ\n02BBYY\n")  # T: DATA of AA differs from S
         (samples / "onet.txt").write_bytes(b"001A  \n")  # T: the record every big.txt row joins
         (samples / "invalid.txt").write_bytes(b"001A\n" * 100_000)  # P6-01: 100 000 length diagnostics
+        (samples / "fields.txt").write_bytes(b"002B  \n00XA  \n")  # P6-04: field diagnostics (F1, F2)
         with (samples / "big.txt").open("wb") as big:  # 35 M records, 245 MB
             for _ in range(350):
                 big.write(b"001A  \n" * 100_000)

@@ -443,8 +443,9 @@ function ContextList({ selectionRef }: { selectionRef: string }) {
 
 /**
  * «Dettaglio controllo» of the reference (T-MIG-P6-03): code, message and the
- * values of the selected diagnostic exactly as Rust captured them. Field
- * guide and byte position (P6-04) and domains (P6-05/06) come later; fiscal
+ * values of the selected diagnostic exactly as Rust captured them, with the
+ * byte position and the field guide of the captured schema (T-MIG-P6-04:
+ * written by Rust, never rebuilt here). Domains (P6-05/06) come later; fiscal
  * code and episode are not shown (data minimisation).
  */
 export function DetailPanel({ state, traces, onRetry }: { state: DetailState; traces: TraceNames; onRetry: () => void }) {
@@ -472,12 +473,19 @@ export function DetailPanel({ state, traces, onRetry }: { state: DetailState; tr
           <div><dt>Tracciato</dt><dd>{traces.has(state.detail.trace_ref)
             ? <PreviewText preview={traces.get(state.detail.trace_ref) as Preview} /> : <span className="text-muted">—</span>}</dd></div>
           <div><dt>Campo</dt><dd>{value(state.detail, "field_name")}</dd></div>
+          <div><dt>Posizione in byte</dt><dd>{state.detail.field_position
+            ? `${grouped(state.detail.field_position.start)}–${grouped(state.detail.field_position.end)}`
+            : <span className="text-muted">—</span>}</dd></div>
           <div><dt>ID record</dt><dd>{value(state.detail, "sioc_record_id")}</dd></div>
         </dl>
         <dl className="detail-pairs">
           <div><dt>Valore letto <span className="text-muted">· spazi conservati</span></dt><dd><Actual detail={state.detail} /></dd></div>
           {part(state.detail, "expected") && <div><dt>Valore atteso</dt><dd>{value(state.detail, "expected")}</dd></div>}
         </dl>
+        {part(state.detail, "guide") && <section className="detail-guide" aria-labelledby="detail-guide-title">
+          <h3 id="detail-guide-title">Guida al campo</h3>
+          {value(state.detail, "guide")}
+        </section>}
         <ContextList selectionRef={state.detail.selection_ref} />
       </div>}
     </div>

@@ -1839,6 +1839,74 @@ mod tests {
         );
     }
 
+    /// T-MIG-P6-04: snapshot of the field guide and byte position the
+    /// renderer shows for each field of the embedded synthetic schema, read
+    /// through results_text as the panel does. The oracle test above checks
+    /// the same text against `field_format_guide`; this one pins the text, so
+    /// a change of the guide wording is a visible, reviewed change.
+    #[test]
+    fn field_guides_and_positions_of_the_synthetic_schema_are_pinned() {
+        let bundle = bundle(true);
+        let (mut jobs, query_ref, page) = run_bundle(&bundle);
+        let mut seen = Vec::new();
+        for row in page["rows"].as_array().unwrap() {
+            let selection = job_detail(
+                &mut jobs,
+                "results_select",
+                json!({"schemaVersion":1,"query_ref":query_ref,"diagnostic_ref":row["diagnostic_ref"]}),
+            )
+            .unwrap();
+            let Some(guide) = component(&selection, "guide") else {
+                continue;
+            };
+            let sel = selection["selection_ref"].clone();
+            let mut read = |payload| job_detail(&mut jobs, "results_text", payload);
+            let name = component(&selection, "field_name").unwrap()["component_ref"].clone();
+            let entry = (
+                read_all(&mut read, &sel, &name, 7),
+                selection["field_position"]["start"]
+                    .as_str()
+                    .unwrap()
+                    .to_owned(),
+                selection["field_position"]["end"]
+                    .as_str()
+                    .unwrap()
+                    .to_owned(),
+                read_all(&mut read, &sel, &guide["component_ref"], 7),
+            );
+            if !seen.contains(&entry) {
+                seen.push(entry);
+            }
+        }
+        seen.sort();
+        let expected = [
+            (
+                "Synthetic numeric code",
+                "1",
+                "3",
+                "Numerico: cifre ASCII da 0 a 9, senza segno né separatori. Slot: byte 1–3 inclusi (3 byte). Contenuto a destra; posizioni residue a sinistra riempite con \"0\" (0x30); il valore logico esclude il riempimento iniziale; uno slot composto soltanto da fill produce un valore logico vuoto. Codifica: UTF-8.",
+            ),
+            (
+                "Synthetic text code",
+                "4",
+                "6",
+                "Alfanumerico: testo nella codifica dello schema; le cifre non sono vietate dal solo tipo AN. Restano applicabili i vincoli lessicali e di dominio dichiarati. Slot: byte 4–6 inclusi (3 byte). Contenuto a sinistra; posizioni residue a destra riempite con \"␠\" (0x20); il valore logico esclude il riempimento finale; uno slot composto soltanto da fill produce un valore logico vuoto. Codifica: UTF-8.",
+            ),
+        ];
+        assert_eq!(
+            seen,
+            expected
+                .iter()
+                .map(|(n, s, e, g)| (
+                    (*n).to_owned(),
+                    (*s).to_owned(),
+                    (*e).to_owned(),
+                    (*g).to_owned()
+                ))
+                .collect::<Vec<_>>()
+        );
+    }
+
     #[test]
     fn selection_is_pinned_across_eviction_and_dropped_by_a_new_query() {
         let (mut results, published, query_ref) = synthetic(&rows(300, &["T1"]));
