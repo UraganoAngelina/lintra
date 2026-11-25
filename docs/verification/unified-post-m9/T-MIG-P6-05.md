@@ -1,6 +1,12 @@
 # T-MIG-P6-05 — Dominio ammesso statico e range
 
-Data 25 novembre 2026. Stato: **IN_REVIEW** (non DONE). Prerequisito
+Data 25 novembre 2026. Stato: **DONE**. Review Codex round 1 APPROVED su
+`04af32e` (con `4b2b62f`) senza rilievi
+(`lintra-review-handoffs/T-MIG-P6-05-CODEX-REVIEW.md`). Integrazione
+autorizzata dall'autore per fast-forward di `integration`, senza push. CI
+remota e Windows/WebView2 NOT_RUN, al checkpoint del blocco P6; G-MIG-6
+NOT_VERIFIED.
+Prerequisito
 T-MIG-P6-04 DONE (`integration` `315b641`). Branch `work/T-MIG-P6-05` da
 `315b641`, worktree `/home/alberto/Desktop/LINTRA/lintra-p6-05`.
 
@@ -124,4 +130,4 @@ di Rust, fuoco sulla pagina di valori.
   per il dominio (il bottone sparisce con la risposta); non toccato in
   questa task.
 
-Prossima task tecnicamente disponibile dopo l'integrazione: T-MIG-P6-06.
+Prossima task tecnicamente disponibile: T-MIG-P6-06.

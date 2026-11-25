@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **79/128 DONE;49 rimanenti** (18U-* e37MIG).
+Conteggio unificato: **80/128 DONE;48 rimanenti** (18U-* e36MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -124,7 +124,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P6-02 | T-MIG-P6-01 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-02.md) | cinque filtri esatti Slint e query stale safe nel renderer (backend P4-08 invariato); desktop 85, Node 144 PASS; nativo 57/57+chiusura; a9470ac;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance filtri = query Rust, nessun sort/FTS PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-03 | T-MIG-P6-01, T-MIG-P6-02 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-03.md) | selezione per ordinale della query e pannello Dettaglio controllo nel renderer (backend P4-09 invariato); desktop 85, Node 153 PASS; nativo 61/61+chiusura; e9fa7cc;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance valori da Rust, nessun HTML iniettato PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-04 | T-MIG-P6-03 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-04.md) | posizione in byte e guida al campo da Rust nel pannello di dettaglio (backend P4-09 invariato); snapshot Rust+Node e oracolo field_format_guide; desktop 86, Node 158 PASS; nativo 65/65+chiusura; 46995e4;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance snapshot/oracle, nessuna regola in TS PASS; G-MIG-6 NOT_VERIFIED |
-| T-MIG-P6-05 | T-MIG-P6-04 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-05.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
+| T-MIG-P6-05 | T-MIG-P6-04 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-05.md) | dominio ammesso statico/range da Rust nel pannello di dettaglio (backend P4-09 invariato); banco di cattura con TMPDIR per scenario (autorizzato); desktop 86, Node 166 PASS; nativo 68/68+chiusura; 4b2b62f+04af32e;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance parità field_guide, big integer come testo, UI non calcola domini PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-06 | T-MIG-P6-05 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-06.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-07 | T-MIG-P6-01, T-MIG-P6-03, T-MIG-P6-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-07.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-08 | T-MIG-P6-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-08.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
@@ -636,3 +636,19 @@ Integrazione autorizzata dall'autore: fast-forward di integration, nessun
 push. CI remota, Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN, al
 checkpoint del blocco P6. G-MIG-6 e G-REL aperti. Prossima tecnicamente
 disponibile T-MIG-P6-05.
+
+Chiusura T-MIG-P6-05, 25 novembre 2026: **DONE**, **80/128 (62,5%)**, 48
+rimanenti. Autore Claude Code, commit 4b2b62f+04af32e su base 315b641.
+Sezione «Dominio ammesso» nel pannello di dettaglio: dichiarazioni del campo
+su richiesta (`results_sources`, pagine di 64, tipo/origine/guardia e
+confronto di Rust) e valori di una fonte alla volta (`results_domain`, pagine
+di 64, cursore di Rust) come letterali di Rust; interi come testo, nessun
+dominio calcolato nel renderer; non enumerabili e pagine vuote espliciti;
+fonti reference elencate senza valori (P6-06). Modifica autorizzata del banco
+di cattura: `TMPDIR` privato per scenario (spool al SIGTERM avevano riempito
+`/tmp` in P6-04 ed esaurito la memoria nella prima campagna P6-05). Review
+Codex round 1 APPROVED senza rilievi (`lintra-review-handoffs/T-MIG-P6-05-CODEX-REVIEW.md`).
+Integrazione autorizzata dall'autore: fast-forward di integration, nessun
+push. CI remota, Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN, al
+checkpoint del blocco P6. G-MIG-6 e G-REL aperti. Prossima tecnicamente
+disponibile T-MIG-P6-06.
