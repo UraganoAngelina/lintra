@@ -172,6 +172,14 @@ SCENARIOS = [
     ("results-guide-full-1366x768", (1366, 768), FIELDS + ["Tab"] * 9 + ["Down", "wait", "wait", "Tab", "Tab", "Return", "wait", "wait"]),
     ("results-guide-full-640x480", (640, 480), FIELDS + ["Tab"] * 9 + ["Down", "wait", "wait", "Tab", "Tab", "Return", "wait", "wait"]),
     ("results-guide-context-1366x768", (1366, 768), FIELDS + ["Tab"] * 9 + ["Down", "wait", "wait"] + ["Tab"] * 3 + ["Return", "wait", "wait"]),
+    # T-MIG-P6-05: in the panel Tab x3 is «Mostra il dominio»; once Rust lists
+    # the declarations the focus is on the section title, so Tab reaches
+    # «Consulta i valori» of the first one. Row 2 is F2 (values "A", "É").
+    ("results-domain-1366x768", (1366, 768), FIELDS + ["Tab"] * 9 + ["Down", "wait", "wait"] + ["Tab"] * 3 + ["Return", "wait", "wait"]),
+    ("results-domain-values-1366x768", (1366, 768),
+     FIELDS + ["Tab"] * 9 + ["Down", "Down", "wait", "wait"] + ["Tab"] * 3 + ["Return", "wait", "wait", "Tab", "Return", "wait", "wait"]),
+    ("results-domain-values-640x480", (640, 480),
+     FIELDS + ["Tab"] * 9 + ["Down", "Down", "wait", "wait"] + ["Tab"] * 3 + ["Return", "wait", "wait", "Tab", "Return", "wait", "wait"]),
     ("results-filter-cleared-1366x768", (1366, 768),
      GRID + TO_LINE + ["type:42", "Return", "wait", "wait", "Tab", "Return", "wait", "wait"]),
     ("keyboard-informazioni-report-1366x768", (1366, 768), FILE + START + ["wait", "wait"] + ["shift-Tab"] * 10 + ["Return", "wait"]),

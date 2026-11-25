@@ -357,6 +357,15 @@
     font-size: var(--data-size); line-height: 1.5;
   }
   .detail-guide h3 { margin: 0 0 var(--space-small); font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  /* Declared domain (T-MIG-P6-05): one block per declaration, values as Rust literals. */
+  .detail-domain { margin-top: var(--space-block); padding-top: var(--space-block); border-top: 1px solid var(--border); }
+  .detail-domain h3 { margin: 0 0 var(--control-gap); font-size: 14px; font-weight: 600; }
+  .domain-sources { display: grid; gap: var(--control-gap); margin: 0; padding: 0; list-style: none; }
+  .domain-source { display: grid; gap: var(--space-small); padding: var(--control-gap); border: 1px solid var(--border); border-radius: var(--radius); font-size: var(--data-size); }
+  .domain-source p { margin: 0; }
+  .domain-kind { font-weight: 600; color: var(--ink); }
+  .domain-page:focus-visible, .detail-domain h3:focus-visible { outline-offset: 2px; }
+  .domain-values { display: flex; flex-wrap: wrap; gap: var(--space-small); margin: 0; padding: 0; list-style: none; }
   .detail-context { margin-top: var(--space-block); padding-top: var(--space-block); border-top: 1px solid var(--border); }
   .detail-context h3 { margin: 0 0 var(--control-gap); font-size: 14px; font-weight: 600; }
   .grid-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-row); padding: var(--control-gap) var(--page-padding); border-top: 1px solid var(--border); }

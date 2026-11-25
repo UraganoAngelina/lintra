@@ -9,7 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type
 import { createColumnHelper, tableFeatures, useTable } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { resultsContext, resultsOverview, resultsPage, resultsQuery, resultsQueryState, resultsSelect, resultsText, type ContextPage, type DetailComponent, type Preview, type ResultRow, type ResultsOverview, type ResultsPage, type RunRef, type SelectedDiagnostic, type TextChunk } from "./ipc";
+import { resultsContext, resultsDomain, resultsOverview, resultsPage, resultsQuery, resultsQueryState, resultsSelect, resultsSources, resultsText, type ContextPage, type DetailComponent, type DomainPage, type DomainSource, type Preview, type ResultRow, type ResultsOverview, type ResultsPage, type RunRef, type SelectedDiagnostic, type SourcesPage, type TextChunk } from "./ipc";
 import { Charts, type ChartScope } from "./Charts";
 import { previewText, reportStatusText, type AboutReport } from "./information";
 import { NO_FILTERS, PAGE_ROWS, acceptPage, cached, filtering, pageCount, pageItems, pageOffset, rangeText, remember, sameRunRef, validLine, type ResultsFilters, type ResultsView } from "./pages";
@@ -441,11 +441,126 @@ function ContextList({ selectionRef }: { selectionRef: string }) {
   </section>;
 }
 
+/** Names of the declaration kinds Rust sends, in the words of the Slint view. */
+const SOURCE_KIND: Record<DomainSource["kind"], string> = {
+  allowed_values: "Valori dichiarati", range: "Intervallo dichiarato", fallback: "Fallback autorizzati",
+  reference: "Dataset di riferimento", regex: "Espressione regolare", non_enumerable: "Vincolo non enumerabile",
+};
+/** Kinds whose values Rust pages from the captured schema (T-MIG-P6-05). */
+const STATIC_KINDS: readonly DomainSource["kind"][] = ["allowed_values", "range", "fallback", "regex", "non_enumerable"];
+
+/** One page of values of one source, as Rust read it, or why there is none. */
+export function DomainValues({ selectionRef, domain }: { selectionRef: string; domain: DomainPage }) {
+  if (domain.status === "not_enumerable") return <p className="text-muted">Nessun elenco finito: il vincolo non è enumerabile. Non viene inventato un elenco di valori.</p>;
+  if (domain.status === "available_empty") return <p className="text-muted">Nessun valore in questa pagina del dominio.</p>;
+  if (domain.entries === null) return <p className="text-muted">Valori non disponibili per questa dichiarazione.</p>;
+  return <ul className="domain-values" aria-label="Valori del dominio">
+    {domain.entries.map(entry => <li key={entry.component_ref}><FullText selectionRef={selectionRef} part={entry} className="detail-value" /></li>)}
+  </ul>;
+}
+
+/** Values of one source, as DomainSection holds them. */
+export type DomainValuesState = { status: "loading"; source: string } | { status: "failed"; source: string; cursor: string | null }
+  | { status: "ready"; source: string; domain: DomainPage; first: boolean };
+
+/** One declaration of the field, and its values when they were read. */
+export function DomainSourceItem({ selectionRef, source, number, shown, onRead: read }: { selectionRef: string; source: DomainSource; number: string;
+  shown: DomainValuesState | null; onRead: (source: string, cursor: string | null) => void }) {
+  // The button pressed goes away with the answer: the keyboard focus moves to the values read.
+  const valuesRef = useRef<HTMLDivElement>(null);
+  const page = shown?.status === "ready" ? shown.domain : null;
+  useEffect(() => { if (page) valuesRef.current?.focus(); }, [page]);
+  return <li className="domain-source">
+    <p className="domain-kind">{SOURCE_KIND[source.kind]} <span className="text-muted">· dichiarazione {number} · {source.conditional
+      ? <>regola condizionale {source.rule ? <PreviewText preview={source.rule} /> : "senza nome"}</> : "campo"}</span></p>
+    {source.condition && <p className="domain-condition"><span className="text-muted">Si applica quando: </span>
+      <FullText selectionRef={selectionRef} part={source.condition} className="detail-value" /></p>}
+    {source.dataset && <p>Dataset <PreviewText preview={source.dataset.id} /> · versione <PreviewText preview={source.dataset.version} /></p>}
+    {/* The DTO has no handle for the comparison text: its preview is all there is. */}
+    <p className="domain-comparison detail-text"><PreviewText preview={source.comparison} /></p>
+    {STATIC_KINDS.includes(source.kind) && <div className="detail-more">
+      {!shown && <Button size="sm" variant="ghost" onClick={() => read(source.source_ref, null)}>Consulta i valori</Button>}
+      {shown?.status === "loading" && <span role="status">Lettura dei valori…</span>}
+      {shown?.status === "failed" && <><span role="alert">Lettura dei valori non riuscita.</span>
+        <Button size="sm" variant="ghost" onClick={() => read(source.source_ref, shown.cursor)}>Riprova</Button></>}
+    </div>}
+    {shown?.status === "ready" && <>
+      <div ref={valuesRef} tabIndex={-1} className="domain-page" aria-label={`Valori di ${SOURCE_KIND[source.kind].toLowerCase()}, dichiarazione ${number}`}>
+        <DomainValues selectionRef={selectionRef} domain={shown.domain} />
+      </div>
+      <div className="detail-more">
+        {!shown.first && <Button size="sm" variant="ghost" onClick={() => read(source.source_ref, null)}>Primi valori</Button>}
+        {shown.domain.next_cursor !== null && <Button size="sm" variant="ghost" onClick={() => read(source.source_ref, shown.domain.next_cursor)}>Valori successivi</Button>}
+      </div>
+    </>}
+  </li>;
+}
+
+/**
+ * «Dominio ammesso» of the selected field (T-MIG-P6-05): the declarations
+ * Rust lists for it in the captured schema (results_sources, pages of 64)
+ * and, one source at a time, the values Rust pages from it (results_domain,
+ * at most 64 per page, cursor kept by Rust). Literals and integers are Rust
+ * text, never parsed or computed here; a conditional declaration keeps its
+ * rule. Reference datasets are listed without values (T-MIG-P6-06).
+ */
+function DomainSection({ selectionRef }: { selectionRef: string }) {
+  type Sources = { status: "idle" } | { status: "loading"; offset: string } | { status: "failed"; offset: string } | { status: "ready"; page: SourcesPage };
+  type Values = { status: "none" } | DomainValuesState;
+  const [sources, setSources] = useState<Sources>({ status: "idle" });
+  const [values, setValues] = useState<Values>({ status: "none" });
+  const request = useRequests();
+  const valueRequest = useRequests();
+  // As for the values: the focus moves to the declarations once they are read.
+  const heading = useRef<HTMLHeadingElement>(null);
+  const listed = sources.status === "ready" ? sources.page : null;
+  useEffect(() => { if (listed) heading.current?.focus(); }, [listed]);
+  const list = (offset: string) => {
+    const mine = ++request.current;
+    valueRequest.current += 1;
+    setValues({ status: "none" });
+    setSources({ status: "loading", offset });
+    resultsSources(selectionRef, offset).then(
+      page => { if (request.current === mine) setSources({ status: "ready", page }); },
+      () => { if (request.current === mine) setSources({ status: "failed", offset }); });
+  };
+  const read = (source: string, cursor: string | null) => {
+    const mine = ++valueRequest.current;
+    setValues({ status: "loading", source });
+    resultsDomain(selectionRef, source, cursor).then(answer => {
+      if (valueRequest.current !== mine) return;
+      // Static declarations are answered at once; "loading" belongs to reference reads.
+      if (answer.state !== "ready") setValues({ status: "failed", source, cursor });
+      else setValues({ status: "ready", source, domain: answer.domain, first: cursor === null });
+    }, () => { if (valueRequest.current === mine) setValues({ status: "failed", source, cursor }); });
+  };
+  return <section className="detail-domain" aria-labelledby="detail-domain-title">
+    <h3 id="detail-domain-title" ref={heading} tabIndex={-1}>Dominio ammesso</h3>
+    {sources.status === "idle" && <Button size="sm" variant="ghost" onClick={() => list("0")}>Mostra il dominio</Button>}
+    {sources.status === "loading" && <p role="status">Lettura delle dichiarazioni…</p>}
+    {sources.status === "failed" && <div role="alert"><p>Non è stato possibile leggere le dichiarazioni del campo.</p>
+      <Button size="sm" variant="ghost" onClick={() => list(sources.offset)}>Riprova</Button></div>}
+    {sources.status === "ready" && <>
+      {sources.page.sources.length === 0 ? <p className="text-muted">Nessun dominio dichiarato per il campo.</p>
+        : <ol className="domain-sources">{sources.page.sources.map((source, index) => {
+          const shown = values.status !== "none" && values.source === source.source_ref ? values : null;
+          return <DomainSourceItem key={source.source_ref} selectionRef={selectionRef} source={source}
+            number={grouped((BigInt(sources.page.offset) + BigInt(index) + 1n).toString())} shown={shown} onRead={read} />;
+        })}</ol>}
+      <div className="detail-more">
+        {sources.page.offset !== "0" && <Button size="sm" variant="ghost" onClick={() => list("0")}>Prime dichiarazioni</Button>}
+        {sources.page.has_more && <Button size="sm" variant="ghost" onClick={() => list(sources.page.next_offset)}>Dichiarazioni successive</Button>}
+      </div>
+    </>}
+  </section>;
+}
+
 /**
  * «Dettaglio controllo» of the reference (T-MIG-P6-03): code, message and the
  * values of the selected diagnostic exactly as Rust captured them, with the
  * byte position and the field guide of the captured schema (T-MIG-P6-04:
- * written by Rust, never rebuilt here). Domains (P6-05/06) come later; fiscal
+ * written by Rust, never rebuilt here) and the declared domain of the field
+ * (P6-05; reference datasets: P6-06); fiscal
  * code and episode are not shown (data minimisation).
  */
 export function DetailPanel({ state, traces, onRetry }: { state: DetailState; traces: TraceNames; onRetry: () => void }) {
@@ -486,6 +601,7 @@ export function DetailPanel({ state, traces, onRetry }: { state: DetailState; tr
           <h3 id="detail-guide-title">Guida al campo</h3>
           {value(state.detail, "guide")}
         </section>}
+        {state.detail.field_position && <DomainSection selectionRef={state.detail.selection_ref} />}
         <ContextList selectionRef={state.detail.selection_ref} />
       </div>}
     </div>
