@@ -321,6 +321,37 @@
   .reason-message, .reason-detail { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .reason-detail { font-size: var(--data-size); color: var(--muted); }
   .reason-key { font-weight: 600; color: var(--ink); }
+  /* Selectable rows and «Dettaglio controllo» (T-MIG-P6-03): the panel sits on
+     the right of the table as in the reference when the window allows it,
+     under the table otherwise; it stays in view while the table scrolls. */
+  .grid-table tr.selectable { cursor: pointer; }
+  .grid-table tbody tr.is-selected td { background: var(--selected-bg); }
+  .grid-table tbody tr.is-selected td:first-child { box-shadow: inset 3px 0 0 var(--accent-bar); }
+  .results-split { display: grid; gap: var(--space-block); align-items: start; }
+  @media (min-width: 1200px) {
+    .results-split.with-detail { grid-template-columns: minmax(0, 1fr) 20rem; }
+    .detail-card { position: sticky; top: var(--page-padding); max-height: calc(100vh - 2 * var(--page-padding)); overflow: auto; }
+  }
+  .detail-head { padding: var(--space-block) var(--page-padding); border-bottom: 1px solid var(--border); }
+  .detail-head h2 { margin: 0; }
+  .detail-body { padding: var(--space-block) var(--page-padding); }
+  .detail-kicker { margin: 0; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .detail-code { margin: var(--space-small) 0; font-family: var(--font-mono); font-size: 22px; font-weight: 600; line-height: 1.25; color: var(--error); }
+  .detail-message { margin: 0 0 var(--space-block); font-weight: 600; color: var(--ink); }
+  .detail-pairs { margin: 0; padding: var(--space-block) 0 0; border-top: 1px solid var(--border); grid-template-columns: minmax(0, 1fr); gap: var(--control-gap); }
+  .detail-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: var(--space-block); }
+  .detail-pairs dt { font-size: var(--data-size); color: var(--muted); }
+  .detail-pairs dd { margin: 0; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+  /* Exact text: no trimming, spaces and line breaks kept, long tokens wrap. */
+  .detail-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .detail-value {
+    display: inline-block; max-width: 100%; padding: 1px var(--space-small); border: 1px dashed var(--border);
+    border-radius: var(--radius); font-family: var(--font-mono); font-weight: 400;
+  }
+  .detail-full { display: flex; flex-direction: column; gap: var(--space-small); }
+  .detail-more { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-small); font-size: var(--data-size); font-weight: 400; }
+  .detail-context { margin-top: var(--space-block); padding-top: var(--space-block); border-top: 1px solid var(--border); }
+  .detail-context h3 { margin: 0 0 var(--control-gap); font-size: 14px; font-weight: 600; }
   .grid-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-row); padding: var(--control-gap) var(--page-padding); border-top: 1px solid var(--border); }
   .grid-foot p { margin: 0; font-size: var(--data-size); }
   .pager { display: flex; align-items: center; gap: var(--space-small); }

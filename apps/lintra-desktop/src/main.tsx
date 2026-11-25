@@ -5,7 +5,7 @@ import { AppShell, type ServiceState } from "./AppShell";
 import { AnalysisForm, useAnalysisSelection } from "./AnalysisForm";
 import { RunPanel, useRun } from "./RunPanel";
 import { About, useReportAbout } from "./About";
-import { Results, useOverview, useResults } from "./Results";
+import { Results, useDetail, useOverview, useResults } from "./Results";
 import { splitNotices } from "./information";
 import fontLicense from "../public/fonts/OFL.md?raw";
 import thirdPartyNotices from "../public/THIRD_PARTY_NOTICES?raw";
@@ -54,6 +54,7 @@ function App() {
   const report = service.kind === "ready" ? run.report : null;
   const about = useReportAbout(report, view === "informazioni" || view === "risultati");
   const [results, onPage, onRetry, filters, onFilter] = useResults(report, view === "risultati");
+  const [detail, onSelect, onDetailRetry] = useDetail(results.status === "ready" ? results.query_ref : null);
   const overview = useOverview(report, view === "risultati");
   // Flow and version of the configuration Rust accepted for the current form.
   const configured = selection.configuration.status === "ready" ? selection.configuration.selection : null;
@@ -64,7 +65,7 @@ function App() {
       <AnalysisForm state={selection} onEvent={onSelection} busy={running} />
       <RunPanel state={run} selection={selection} onEvent={onRun} onStart={onStart} onDecide={onDecide} onCancel={onCancel} />
     </div> : null}
-    results={service.kind === "ready" ? <Results view={results} about={about} overview={overview} reportAvailable={reportAvailable} filters={filters} onFilter={onFilter} onPage={onPage} onRetry={onRetry} /> : null}
+    results={service.kind === "ready" ? <Results view={results} about={about} overview={overview} reportAvailable={reportAvailable} filters={filters} onFilter={onFilter} onPage={onPage} onRetry={onRetry} detail={detail} onSelect={onSelect} onDetailRetry={onDetailRetry} /> : null}
     information={<About version={service.kind === "ready" ? service.version : null} selection={selection} report={about} notices={NOTICES} />} />;
 }
 

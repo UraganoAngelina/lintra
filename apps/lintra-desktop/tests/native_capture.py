@@ -149,6 +149,17 @@ SCENARIOS = [
     ("results-filter-code-nomatch-1366x768", (1366, 768), GRID + TO_CODE + ["type:e_record_length", "Return", "wait", "wait"]),
     ("results-filter-code-1366x768", (1366, 768), GRID + TO_CODE + ["type:E_RECORD_LENGTH", "Return", "wait", "wait"] + ["Tab"] * 7 + ["wait"]),
     ("results-filter-line-invalid-1366x768", (1366, 768), GRID + TO_LINE + ["type:0", "Return", "wait"]),
+    # T-MIG-P6-03: Tab x9 from the title focuses the grid viewport; Down
+    # selects the first row and Rust pins its detail (panel on the right at
+    # 1366, under the table at 640). With line 42 there is one row and no
+    # pager: Tab from the row reaches «Mostra il contesto» in the panel.
+    ("results-detail-1366x768", (1366, 768), GRID + ["Tab"] * 9 + ["Down", "wait", "wait"]),
+    # At 640 the panel is under the table: focusing «Mostra il contesto» scrolls it into view.
+    ("results-detail-640x480", (640, 480),
+     GRID + TO_LINE + ["type:42", "Return", "wait", "wait"] + ["Tab"] * 3 + ["Down", "wait", "wait", "Tab", "wait"]),
+    ("results-detail-keys-1366x768", (1366, 768), GRID + ["Tab"] * 9 + ["Down", "Down", "Down", "wait", "wait"]),
+    ("results-detail-context-1366x768", (1366, 768),
+     GRID + TO_LINE + ["type:42", "Return", "wait", "wait"] + ["Tab"] * 3 + ["Down", "wait", "wait", "Tab", "Return", "wait", "wait"]),
     ("results-filter-cleared-1366x768", (1366, 768),
      GRID + TO_LINE + ["type:42", "Return", "wait", "wait", "Tab", "Return", "wait", "wait"]),
     ("keyboard-informazioni-report-1366x768", (1366, 768), FILE + START + ["wait", "wait"] + ["shift-Tab"] * 10 + ["Return", "wait"]),

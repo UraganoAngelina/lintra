@@ -5,11 +5,11 @@
 // any report size. Columns hold only what a row DTO carries: line, trace
 // (named through results_overview), field, code and the reason as previews
 // (author decision of 24 Nov 2026); raw bytes, context and identity stay Rust.
-import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { createColumnHelper, tableFeatures, useTable } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { resultsOverview, resultsPage, resultsQuery, resultsQueryState, type Preview, type ResultRow, type ResultsOverview, type ResultsPage, type RunRef } from "./ipc";
+import { resultsContext, resultsOverview, resultsPage, resultsQuery, resultsQueryState, resultsSelect, resultsText, type ContextPage, type DetailComponent, type Preview, type ResultRow, type ResultsOverview, type ResultsPage, type RunRef, type SelectedDiagnostic, type TextChunk } from "./ipc";
 import { Charts, type ChartScope } from "./Charts";
 import { previewText, reportStatusText, type AboutReport } from "./information";
 import { NO_FILTERS, PAGE_ROWS, acceptPage, cached, filtering, pageCount, pageItems, pageOffset, rangeText, remember, sameRunRef, validLine, type ResultsFilters, type ResultsView } from "./pages";
@@ -109,6 +109,53 @@ export function useResults(report: RunRef | null, visible: boolean):
   return [view, goTo, retry, filters, apply];
 }
 
+/**
+ * Row chosen in the grid (T-MIG-P6-03): the query it belongs to, its ordinal
+ * in that query (the selection offset, stable across pages) and the token of
+ * the page it was read from.
+ */
+export type Selection = { query_ref: string; ordinal: string; diagnostic_ref: string };
+/** Detail of the selection, as Rust pinned it (results_select). */
+export type DetailState =
+  | { status: "none" }
+  | { status: "loading"; selection: Selection }
+  | { status: "failed"; selection: Selection }
+  | { status: "ready"; selection: Selection; detail: SelectedDiagnostic };
+const NO_DETAIL: DetailState = Object.freeze({ status: "none" });
+
+/**
+ * Asks Rust to pin `selection` and shows its detail. Like openQuery, every
+ * reply is used only while `live()` holds, so the detail of a row left
+ * behind never replaces the one just chosen.
+ */
+export function openDetail(selection: Selection, live: () => boolean, set: (state: DetailState) => void): void {
+  set({ status: "loading", selection });
+  resultsSelect(selection.query_ref, selection.diagnostic_ref).then(
+    detail => { if (live()) set({ status: "ready", selection, detail }); },
+    () => { if (live()) set({ status: "failed", selection }); });
+}
+
+/**
+ * Selection and detail of the query shown. Rust keeps a pinned selection
+ * across page changes but drops it with a new query (PAGING/DETAIL v1), so a
+ * new query or report, or none, clears it and drops pending replies.
+ */
+export function useDetail(queryRef: string | null): [DetailState, (selection: Selection) => void, () => void] {
+  const [state, setState] = useState<DetailState>(NO_DETAIL);
+  const request = useRef(0);
+  useEffect(() => { request.current += 1; setState(NO_DETAIL); }, [queryRef]);
+  const select = useCallback((selection: Selection) => {
+    const mine = ++request.current;
+    openDetail(selection, () => request.current === mine, setState);
+  }, []);
+  const latest = useRef(state);
+  latest.current = state;
+  const retry = useCallback(() => { const now = latest.current; if (now.status === "failed") select(now.selection); }, [select]);
+  // Until the effect runs, a selection of another query is already hidden.
+  const shown = state.status !== "none" && state.selection.query_ref !== queryRef ? NO_DETAIL : state;
+  return [shown, select, retry];
+}
+
 /** Overview of the published report (charts, counts, trace names). */
 export type OverviewState = { status: "none" } | { status: "loading" } | { status: "failed" } | { status: "ready"; overview: ResultsOverview };
 
@@ -177,7 +224,8 @@ const NO_TRACES: TraceNames = new Map();
  * the viewport (plus OVERSCAN) are in the DOM, between two spacer rows that
  * keep the scroll height of the whole page.
  */
-export function ResultsGrid({ page, traces = NO_TRACES }: { page: ResultsPage | null; traces?: TraceNames }) {
+export function ResultsGrid({ page, traces = NO_TRACES, selected = null, onSelect }:
+  { page: ResultsPage | null; traces?: TraceNames; selected?: string | null; onSelect?: ((row: ResultRow) => void) | undefined }) {
   const data = page?.rows ?? NO_ROWS;
   const columns = useMemo(() => makeColumns(traces), [traces]);
   const table = useTable({ features, columns, data, getRowId: row => row.diagnostic_ref });
@@ -192,9 +240,25 @@ export function ResultsGrid({ page, traces = NO_TRACES }: { page: ResultsPage | 
   const before = items[0]?.start ?? 0;
   const after = virtualizer.getTotalSize() - (items.at(-1)?.end ?? 0);
   const total = page ? BigInt(page.total_matches) + 1n : 1n;
-  return <div ref={viewport} className="grid-viewport" tabIndex={0} role="region"
-    aria-label={page ? `Diagnostiche, ${rangeText(page).toLowerCase()}` : "Diagnostiche"}>
-    <table className="grid-table" aria-rowcount={Number(total) <= Number.MAX_SAFE_INTEGER ? Number(total) : -1}>
+  // Keys of the Slint table: arrows, Home/End and PageUp/PageDown move the
+  // selection, here within the page shown (pages are changed by the pager).
+  const keyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!onSelect || rows.length === 0) return;
+    const current = rows.findIndex(row => row.original.ordinal === selected);
+    const step = Math.max(1, Math.floor((viewport.current?.clientHeight ?? ROW_HEIGHT) / ROW_HEIGHT));
+    const target = { ArrowDown: current < 0 ? 0 : current + 1, ArrowUp: current < 0 ? 0 : current - 1, Home: 0, End: rows.length - 1,
+      PageDown: current + step, PageUp: current < 0 ? 0 : current - step }[event.key];
+    if (target === undefined) return;
+    event.preventDefault();
+    const index = Math.min(rows.length - 1, Math.max(0, target));
+    virtualizer.scrollToIndex(index);
+    const row = rows[index];
+    if (row && row.original.ordinal !== selected) onSelect(row.original);
+  };
+  return <div ref={viewport} className="grid-viewport" tabIndex={0} role="region" onKeyDown={keyDown}
+    aria-label={page ? `Diagnostiche, ${rangeText(page).toLowerCase()}${onSelect ? "; frecce per scegliere una riga" : ""}` : "Diagnostiche"}>
+    <table className="grid-table" role={onSelect ? "grid" : undefined} aria-readonly={onSelect ? true : undefined}
+      aria-rowcount={Number(total) <= Number.MAX_SAFE_INTEGER ? Number(total) : -1}>
       <thead>
         {table.getHeaderGroups().map(group => <tr key={group.id} aria-rowindex={1}>
           {group.headers.map(header => <th key={header.id} scope="col" className={`col-${header.column.id}`}>
@@ -207,7 +271,10 @@ export function ResultsGrid({ page, traces = NO_TRACES }: { page: ResultsPage | 
         {items.map(item => {
           const row = rows[item.index];
           if (!row) return null;
-          return <tr key={row.id} aria-rowindex={Number(BigInt(row.original.ordinal) + 2n)}>
+          const chosen = row.original.ordinal === selected;
+          return <tr key={row.id} aria-rowindex={Number(BigInt(row.original.ordinal) + 2n)}
+            aria-selected={onSelect ? chosen : undefined} className={cn(onSelect && "selectable", chosen && "is-selected") || undefined}
+            onClick={onSelect ? () => { if (!chosen) onSelect(row.original); } : undefined}>
             {row.getAllCells().map(cell => <td key={cell.id} className={`col-${cell.column.id}`}>
               <table.FlexRender cell={cell} />
             </td>)}
@@ -287,6 +354,136 @@ export function FilterBar({ applied, onApply }: { applied: ResultsFilters; onApp
   </form>;
 }
 
+/** Turns the pending replies of a component off when it goes away. */
+function useRequests() {
+  const request = useRef(0);
+  useEffect(() => () => { request.current += 1; }, []);
+  return request;
+}
+
+/**
+ * A text of the selected diagnostic: the Rust preview, and when that is not
+ * complete the exact text read through results_text in windows of at most
+ * 16 KiB, one window at a time (DETAIL v1: no hidden accumulation). Always a
+ * React text node: no HTML is ever interpreted.
+ */
+export function FullText({ selectionRef, part, className }: { selectionRef: string; part: { component_ref: string; preview: Preview }; className?: string }) {
+  const [chunk, setChunk] = useState<{ status: "idle" } | { status: "loading"; offset: string } | { status: "failed"; offset: string } | { status: "ready"; chunk: TextChunk }>({ status: "idle" });
+  const request = useRequests();
+  const read = (offset: string) => {
+    const mine = ++request.current;
+    setChunk({ status: "loading", offset });
+    resultsText(selectionRef, part.component_ref, offset).then(
+      value => { if (request.current === mine) setChunk({ status: "ready", chunk: value }); },
+      () => { if (request.current === mine) setChunk({ status: "failed", offset }); });
+  };
+  if (part.preview.complete) return <span className={cn("detail-text", className)}>{part.preview.text}</span>;
+  return <span className="detail-full">
+    {chunk.status === "ready"
+      ? <span className={cn("detail-text", className)}>{chunk.chunk.text}</span>
+      : <span className={cn("detail-text", className)}>{part.preview.text}<span className="text-muted">…</span></span>}
+    <span className="detail-more">
+      {chunk.status === "idle" && <Button size="sm" variant="ghost" onClick={() => read("0")}>Leggi il testo completo</Button>}
+      {chunk.status === "loading" && <span role="status">Lettura del testo…</span>}
+      {chunk.status === "failed" && <><span role="alert">Lettura del testo non riuscita.</span>
+        <Button size="sm" variant="ghost" onClick={() => read(chunk.offset)}>Riprova</Button></>}
+      {chunk.status === "ready" && chunk.chunk.offset !== "0" && <Button size="sm" variant="ghost" onClick={() => read("0")}>Dall'inizio</Button>}
+      {chunk.status === "ready" && chunk.chunk.has_more && <Button size="sm" variant="ghost" onClick={() => read(chunk.chunk.next_offset)}>Parte successiva</Button>}
+      {chunk.status === "ready" && !chunk.chunk.has_more && <span className="text-muted">Fine del testo.</span>}
+    </span>
+  </span>;
+}
+
+/** The value read, or why Rust does not expose one. */
+function Actual({ detail }: { detail: SelectedDiagnostic }) {
+  const actual = detail.components.find(part => part.kind === "actual");
+  if (detail.actual_visibility === "local_report_only_record_scope") return <span className="text-muted">Il valore copre l'intero record: si consulta solo nel report locale.</span>;
+  if (!actual) return <span className="text-muted">Nessun valore letto.</span>;
+  return <FullText selectionRef={detail.selection_ref} part={actual} className="detail-value" />;
+}
+
+/**
+ * Context of the selected record, on request (DETAIL v1: separate pages of
+ * at most 64 entries, one page kept). Values covering the whole record stay
+ * in the local report.
+ */
+function ContextList({ selectionRef }: { selectionRef: string }) {
+  const [state, setState] = useState<{ status: "idle" } | { status: "loading"; offset: string } | { status: "failed"; offset: string } | { status: "ready"; page: ContextPage }>({ status: "idle" });
+  const request = useRequests();
+  const read = (offset: string) => {
+    const mine = ++request.current;
+    setState({ status: "loading", offset });
+    resultsContext(selectionRef, offset).then(
+      page => { if (request.current === mine) setState({ status: "ready", page }); },
+      () => { if (request.current === mine) setState({ status: "failed", offset }); });
+  };
+  return <section className="detail-context" aria-labelledby="detail-context-title">
+    <h3 id="detail-context-title">Contesto del record</h3>
+    {state.status === "idle" && <Button size="sm" variant="ghost" onClick={() => read("0")}>Mostra il contesto</Button>}
+    {state.status === "loading" && <p role="status">Lettura del contesto…</p>}
+    {state.status === "failed" && <div role="alert"><p>Non è stato possibile leggere il contesto.</p>
+      <Button size="sm" variant="ghost" onClick={() => read(state.offset)}>Riprova</Button></div>}
+    {state.status === "ready" && <>
+      {state.page.entries.length === 0 ? <p className="text-muted">Nessun elemento di contesto.</p>
+        : <dl className="detail-pairs">{state.page.entries.map((entry, index) => <div key={`${state.page.offset}-${index}`}>
+            <dt><PreviewText preview={entry.trace} /> · <PreviewText preview={entry.field} /></dt>
+            <dd>{entry.visibility === "local_report_only_record_scope"
+              ? <span className="text-muted">Solo nel report locale.</span>
+              : entry.value === null ? <span className="text-muted">—</span>
+              : entry.component_ref === null ? <span className="detail-text detail-value">{previewText(entry.value)}</span>
+              : <FullText selectionRef={selectionRef} part={{ component_ref: entry.component_ref, preview: entry.value }} className="detail-value" />}</dd>
+          </div>)}</dl>}
+      <div className="detail-more">
+        {state.page.offset !== "0" && <Button size="sm" variant="ghost" onClick={() => read("0")}>Primi elementi</Button>}
+        {state.page.has_more && <Button size="sm" variant="ghost" onClick={() => read(state.page.next_offset)}>Elementi successivi</Button>}
+      </div>
+    </>}
+  </section>;
+}
+
+/**
+ * «Dettaglio controllo» of the reference (T-MIG-P6-03): code, message and the
+ * values of the selected diagnostic exactly as Rust captured them. Field
+ * guide and byte position (P6-04) and domains (P6-05/06) come later; fiscal
+ * code and episode are not shown (data minimisation).
+ */
+export function DetailPanel({ state, traces, onRetry }: { state: DetailState; traces: TraceNames; onRetry: () => void }) {
+  const part = (detail: SelectedDiagnostic, kind: DetailComponent["kind"]) => detail.components.find(item => item.kind === kind);
+  const value = (detail: SelectedDiagnostic, kind: DetailComponent["kind"]) => {
+    const found = part(detail, kind);
+    return found ? <FullText selectionRef={detail.selection_ref} part={found} /> : <span className="text-muted">—</span>;
+  };
+  const row = state.status === "none" ? "" : grouped((BigInt(state.selection.ordinal) + 1n).toString());
+  return <Card className="detail-card" aria-labelledby="detail-title">
+    <header className="detail-head"><h2 id="detail-title">Dettaglio controllo</h2></header>
+    <div className="detail-body">
+      {state.status === "none" && <p className="text-muted">Seleziona una riga per consultare causa e valori.</p>}
+      {state.status === "loading" && <p role="status">Lettura del dettaglio della diagnostica {row}…</p>}
+      {state.status === "failed" && <div role="alert">
+        <p>Non è stato possibile leggere il dettaglio della diagnostica {row}.</p>
+        <Button size="sm" onClick={onRetry}>Riprova</Button>
+      </div>}
+      {state.status === "ready" && <div key={state.detail.selection_ref} className="detail-content" aria-label={`Diagnostica ${row}`}>
+        <p className="detail-kicker">Codice anomalia</p>
+        <p className="detail-code">{value(state.detail, "code")}</p>
+        <p className="detail-message">{value(state.detail, "message")}</p>
+        <dl className="detail-pairs detail-grid">
+          <div><dt>Riga</dt><dd>{grouped(state.detail.line)}</dd></div>
+          <div><dt>Tracciato</dt><dd>{traces.has(state.detail.trace_ref)
+            ? <PreviewText preview={traces.get(state.detail.trace_ref) as Preview} /> : <span className="text-muted">—</span>}</dd></div>
+          <div><dt>Campo</dt><dd>{value(state.detail, "field_name")}</dd></div>
+          <div><dt>ID record</dt><dd>{value(state.detail, "sioc_record_id")}</dd></div>
+        </dl>
+        <dl className="detail-pairs">
+          <div><dt>Valore letto <span className="text-muted">· spazi conservati</span></dt><dd><Actual detail={state.detail} /></dd></div>
+          {part(state.detail, "expected") && <div><dt>Valore atteso</dt><dd>{value(state.detail, "expected")}</dd></div>}
+        </dl>
+        <ContextList selectionRef={state.detail.selection_ref} />
+      </div>}
+    </div>
+  </Card>;
+}
+
 /** Summary cards of the reference: records, diagnostics, records with
  * violations and outcome, all as Rust reports them. */
 function Summary({ about, overview }: { about: AboutReport; overview: OverviewState }) {
@@ -315,9 +512,11 @@ function Summary({ about, overview }: { about: AboutReport; overview: OverviewSt
  * Risultati body. Without a report it says so; otherwise the summary, then
  * the diagnostics card with its own states (building, failed, empty, page).
  */
-export function Results({ view, about, overview, reportAvailable, filters, onFilter, onPage, onRetry }:
+export function Results({ view, about, overview, reportAvailable, filters, onFilter, onPage, onRetry,
+  detail = NO_DETAIL, onSelect, onDetailRetry = noop }:
   { view: ResultsView; about: AboutReport; overview: OverviewState; reportAvailable: boolean; filters: ResultsFilters;
-    onFilter: (filters: ResultsFilters) => void; onPage: (page: bigint) => void; onRetry: () => void }) {
+    onFilter: (filters: ResultsFilters) => void; onPage: (page: bigint) => void; onRetry: () => void;
+    detail?: DetailState; onSelect?: (selection: Selection) => void; onDetailRetry?: () => void }) {
   const filtered = filtering(filters);
   const traces = useMemo<TraceNames>(() => overview.status === "ready"
     ? new Map(overview.overview.by_trace.map(entry => [entry.trace_ref, entry.trace])) : NO_TRACES, [overview]);
@@ -333,6 +532,7 @@ export function Results({ view, about, overview, reportAvailable, filters, onFil
     <Summary about={about} overview={overview} />
     {overview.status === "ready" && <Charts overview={overview.overview} scope={scope} />}
     {overview.status === "failed" && <p className="grid-message" role="alert">Non è stato possibile leggere i conteggi del report per i grafici.</p>}
+    <div className={cn("results-split", view.status === "ready" && view.total_matches !== "0" && "with-detail")}>
     <Card className="grid-card" aria-labelledby="diagnostics-title">
       <header className="grid-head">
         <h2 id="diagnostics-title">Diagnostiche <span>/ ordine del report</span></h2>
@@ -354,12 +554,16 @@ export function Results({ view, about, overview, reportAvailable, filters, onFil
           <p>Non è stato possibile leggere questa pagina dei risultati.</p>
           <Button onClick={() => onPage(view.page)}>Riprova</Button>
         </div>}
-        <ResultsGrid page={view.current} traces={traces} />
+        <ResultsGrid page={view.current} traces={traces} selected={detail.status === "none" ? null : detail.selection.ordinal}
+          onSelect={onSelect ? row => onSelect({ query_ref: view.query_ref, ordinal: row.ordinal, diagnostic_ref: row.diagnostic_ref }) : undefined} />
         <footer className="grid-foot">
           <p role="status">{view.loading ? "Lettura della pagina…" : view.current ? rangeText(view.current) : ""}</p>
           <Pager view={view} onPage={onPage} />
         </footer>
       </>}
     </Card>
+    {view.status === "ready" && view.total_matches !== "0" && <DetailPanel state={detail} traces={traces} onRetry={onDetailRetry} />}
+    </div>
   </>;
 }
+function noop() { /* no detail callbacks in a static rendering */ }
