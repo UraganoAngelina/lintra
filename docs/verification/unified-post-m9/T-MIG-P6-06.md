@@ -1,6 +1,11 @@
 # T-MIG-P6-06 — Dominio reference/evidenza provider
 
-Data 25 novembre 2026. Stato: **IN_REVIEW** (non DONE). Prerequisito
+Data 25 novembre 2026. Stato: **DONE**. Review Codex round 1 APPROVED su
+`dfadf53` senza rilievi (`lintra-review-handoffs/T-MIG-P6-06-CODEX-REVIEW.md`).
+Integrazione autorizzata dall'autore per fast-forward di `integration`, senza
+push. CI remota e Windows/WebView2 NOT_RUN, al checkpoint del blocco P6;
+G-MIG-6 NOT_VERIFIED.
+Prerequisito
 T-MIG-P6-05 DONE (`integration` `1ad7140`). Branch `work/T-MIG-P6-06` da
 `1ad7140`, worktree `/home/alberto/Desktop/LINTRA/lintra-p6-06`.
 
@@ -106,4 +111,4 @@ IPC v1, Rust del desktop, export, SQLite, dipendenze.
 - Il polling non ha un limite di tempo: dura quanto la lettura del worker
   Rust, interrotta cambiando fonte o selezione.
 
-Prossima task tecnicamente disponibile dopo l'integrazione: T-MIG-P6-07.
+Prossima task tecnicamente disponibile: T-MIG-P6-07.
