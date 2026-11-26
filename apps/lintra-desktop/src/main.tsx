@@ -7,6 +7,9 @@ import { RunPanel, useRun } from "./RunPanel";
 import { About, useReportAbout } from "./About";
 import { Results, useDetail, useOverview, useResults } from "./Results";
 import { splitNotices } from "./information";
+import { ExportCard, useExport } from "./Export";
+import { DEFAULT_REPORTS, preferredFormat } from "./analysis";
+import { sameRunRef } from "./pages";
 import fontLicense from "../public/fonts/OFL.md?raw";
 import thirdPartyNotices from "../public/THIRD_PARTY_NOTICES?raw";
 import { busy } from "./run";
@@ -56,6 +59,14 @@ function App() {
   const [results, onPage, onRetry, filters, onFilter] = useResults(report, view === "risultati");
   const [detail, onSelect, onDetailRetry] = useDetail(results.status === "ready" ? results.query_ref : null);
   const overview = useOverview(report, view === "risultati");
+  // Export of the published report (T-MIG-P6-08): bound to its report_ref;
+  // the proposed format is the first one requested with that run.
+  const described = about.status === "ready" && report !== null && sameRunRef(about.about.run, report) ? about.about : null;
+  const exporting = useExport(report === null ? null : `${report.instance_id}:${report.run_id}`);
+  const runView = run.view.status === "active" || run.view.status === "terminal" ? run.view : null;
+  const requested = runView && report !== null && sameRunRef(runView.run, report) ? runView.reports : DEFAULT_REPORTS;
+  const exportCard = described ? <ExportCard about={described} initial={preferredFormat(requested)} view={exporting.view}
+    onSave={exporting.save} onCancel={exporting.cancel} onCheck={exporting.check} /> : null;
   // Flow and version of the configuration Rust accepted for the current form.
   const configured = selection.configuration.status === "ready" ? selection.configuration.selection : null;
   const activeFlow = configured ? `${configured.flow_id} · ${configured.schema_version}` : null;
@@ -65,7 +76,7 @@ function App() {
       <AnalysisForm state={selection} onEvent={onSelection} busy={running} />
       <RunPanel state={run} selection={selection} onEvent={onRun} onStart={onStart} onDecide={onDecide} onCancel={onCancel} />
     </div> : null}
-    results={service.kind === "ready" ? <Results view={results} about={about} overview={overview} reportAvailable={reportAvailable} filters={filters} onFilter={onFilter} onPage={onPage} onRetry={onRetry} detail={detail} onSelect={onSelect} onDetailRetry={onDetailRetry} /> : null}
+    results={service.kind === "ready" ? <Results view={results} about={about} overview={overview} reportAvailable={reportAvailable} filters={filters} onFilter={onFilter} onPage={onPage} onRetry={onRetry} detail={detail} onSelect={onSelect} onDetailRetry={onDetailRetry} exportCard={exportCard} /> : null}
     information={<About version={service.kind === "ready" ? service.version : null} selection={selection} report={about} notices={NOTICES} />} />;
 }
 

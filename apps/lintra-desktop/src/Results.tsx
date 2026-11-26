@@ -5,7 +5,7 @@
 // any report size. Columns hold only what a row DTO carries: line, trace
 // (named through results_overview), field, code and the reason as previews
 // (author decision of 24 Nov 2026); raw bytes, context and identity stay Rust.
-import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent, type ReactNode } from "react";
 import { createColumnHelper, tableFeatures, useTable } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -698,10 +698,12 @@ function emptyText(about: AboutReport): string {
  * the diagnostics card with its own states (building, failed, empty, page).
  */
 export function Results({ view, about, overview, reportAvailable, filters, onFilter, onPage, onRetry,
-  detail = NO_DETAIL, onSelect, onDetailRetry = noop }:
+  detail = NO_DETAIL, onSelect, onDetailRetry = noop, exportCard = null }:
   { view: ResultsView; about: AboutReport; overview: OverviewState; reportAvailable: boolean; filters: ResultsFilters;
     onFilter: (filters: ResultsFilters) => void; onPage: (page: bigint) => void; onRetry: () => void;
-    detail?: DetailState; onSelect?: (selection: Selection) => void; onDetailRetry?: () => void }) {
+    detail?: DetailState; onSelect?: (selection: Selection) => void; onDetailRetry?: () => void;
+    /** «Salva il report» (T-MIG-P6-08), shown once the report is described. */
+    exportCard?: ReactNode }) {
   const filtered = filtering(filters);
   const traces = useMemo<TraceNames>(() => overview.status === "ready"
     ? new Map(overview.overview.by_trace.map(entry => [entry.trace_ref, entry.trace])) : NO_TRACES, [overview]);
@@ -749,6 +751,8 @@ export function Results({ view, about, overview, reportAvailable, filters, onFil
     </Card>
     {view.status === "ready" && view.total_matches !== "0" && <DetailPanel state={detail} traces={traces} onRetry={onDetailRetry} />}
     </div>
+    {/* Last, so the tab order of summary, filters and grid is unchanged. */}
+    {exportCard}
   </>;
 }
 function noop() { /* no detail callbacks in a static rendering */ }

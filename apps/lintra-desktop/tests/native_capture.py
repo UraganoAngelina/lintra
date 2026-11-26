@@ -68,6 +68,10 @@ FIELDS = SELECT + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/fields.txt", "wait"] +
 REFERENCE = (FIELDS + ["Tab"] * 9 + ["Down", "Down", "wait", "wait"] + ["Tab"] * 3
              + ["Return", "wait", "wait", "Tab", "Tab", "Return", "wait", "wait", "wait"])
 TO_LINE = ["Tab"] * 6
+# T-MIG-P6-08: «Salva il report», last in Risultati. With the fields.txt
+# report, Tab x10 from the heading (Nuova analisi, 5 filters, Azzera, Applica,
+# grid) reaches the format group (XLSX, the proposed format).
+EXPORT = FIELDS + ["Tab"] * 10
 
 def reference_bundle(root, verified):
     """T-MIG-P6-06: LocalOnly bundle with the embedded synthetic schema and F2
@@ -223,6 +227,15 @@ SCENARIOS = [
     ("results-reference-1366x768", (1366, 768), REFERENCE, None, verified_reference),
     ("results-reference-640x480", (640, 480), REFERENCE, None, verified_reference),
     ("results-reference-degraded-1366x768", (1366, 768), REFERENCE, None, degraded_reference),
+    # T-MIG-P6-08: Down picks JSONL; Tab reaches «Salva report…»; the real
+    # native save dialog gets SAMPLE_DIR/r (GTK keeps the proposed ".jsonl").
+    # Rust writes r.jsonl and r.jsonl.summary.json: main() records their
+    # SHA-256 in the receipt for the comparison with the CLI. Then a closed
+    # dialog: nothing written. The card at 640.
+    ("results-export-1366x768", (1366, 768),
+     EXPORT + ["Down", "wait", "Tab", "Return", f"dialog:{SAMPLE_DIR}/r", "wait", "wait", "wait"]),
+    ("results-export-cancel-1366x768", (1366, 768), EXPORT + ["Tab", "Return", "dialog-cancel", "wait"]),
+    ("results-export-640x480", (640, 480), EXPORT + ["wait"]),
     ("results-filter-cleared-1366x768", (1366, 768),
      GRID + TO_LINE + ["type:42", "Return", "wait", "wait", "Tab", "Return", "wait", "wait"]),
     ("keyboard-informazioni-report-1366x768", (1366, 768), FILE + START + ["wait", "wait"] + ["shift-Tab"] * 10 + ["Return", "wait"]),
@@ -577,6 +590,11 @@ def main():
             for _ in range(350):
                 big.write(b"001A  \n" * 100_000)
         results = [scenario(binary, output, monitor_name, *item) for item in scenarios]
+        # P6-08: the files the export scenario saved, exactly as Rust wrote them.
+        exported = {file.name: {"bytes": file.stat().st_size, "sha256": hashlib.sha256(file.read_bytes()).hexdigest()}
+                    for file in sorted(samples.glob("r.*"))}
+        if not monitor_name:
+            assert sorted(exported) == ["r.jsonl", "r.jsonl.summary.json"], exported
         close = None if monitor_name else close_during_run(binary, output)
     finally:
         for file in samples.iterdir():
@@ -594,6 +612,8 @@ def main():
     receipt = {"binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(), "scenarios": results}
     if close is not None:
         receipt["close_during_run"] = close
+    if not monitor_name:
+        receipt["export"] = exported
     (output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print("NATIVE_SHELL_CAPTURE_DONE", flush=True)
 
