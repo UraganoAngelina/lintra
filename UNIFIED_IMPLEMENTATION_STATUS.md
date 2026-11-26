@@ -683,3 +683,16 @@ nell'handoff. Integrazione autorizzata dall'autore: fast-forward di
 integration, nessun push. CI remota, Windows/WebView2 e `npm ci` con i pin
 esatti NOT_RUN, al checkpoint del blocco P6. G-MIG-6 e G-REL aperti.
 Prossima tecnicamente disponibile T-MIG-P6-08.
+
+Mini-task fuori piano FIX-RUN-PROGRESS, 26 novembre 2026: integrata, non
+conteggiata fra le 128. Barra di avanzamento indeterminata dell'analisi
+disegnata in CSS (`style.css`, `.run progress`): dal redesign `8c483dd` il
+preflight di Tailwind metteva un bordo sul `<progress>` e WebKitGTK lo
+mostrava come blocco grigio fermo. Segmento ciano che scorre, fermo con
+movimento ridotto, nessuna percentuale. Commit 616a281 (rebase di d7d33eb
+su d2cae98, patch invariata, trailer `Task: FIX-RUN-PROGRESS` aggiunto per
+il MINOR PRG-01). Review Codex round 1 APPROVED
+(`lintra-review-handoffs/FIX-RUN-PROGRESS-CODEX-REVIEW.md`); evidenze
+native fuori dal repository in `lintra-review-handoffs/FIX-RUN-PROGRESS-native/`.
+Integrazione autorizzata dall'autore: fast-forward, nessun push. CI remota e
+Windows/WebView2 NOT_RUN.
