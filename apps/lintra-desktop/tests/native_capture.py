@@ -65,7 +65,42 @@ TO_CODE = ["Tab"] * 2
 # not allowed, F1 "00X" not numeric): their detail carries the byte position
 # and the field guide Rust writes from the captured schema.
 FIELDS = SELECT + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/fields.txt", "wait"] + START + TO_RESULTS
+REFERENCE = (FIELDS + ["Tab"] * 9 + ["Down", "Down", "wait", "wait"] + ["Tab"] * 3
+             + ["Return", "wait", "wait", "Tab", "Tab", "Return", "wait", "wait", "wait"])
 TO_LINE = ["Tab"] * 6
+
+def reference_bundle(root, verified):
+    """T-MIG-P6-06: LocalOnly bundle with the embedded synthetic schema and F2
+    bound to a reference dataset (keys "AA", "ZZ"), as the Rust detail tests.
+    `verified` declares the dataset's real SHA-256; otherwise a wrong one, so
+    the run's evidence is degraded and no domain may be listed."""
+    raw = json.loads((Path(__file__).resolve().parents[3] / "bundles/embedded/schemas/SYNTHETIC/v1/flow.json").read_text())
+    dataset = json.dumps({"dataset_format_version": 1, "dataset_id": "union-A", "version": "1",
+                          "keys_hex": ["4141", "5a5a"]}).encode()
+    digest = hashlib.sha256(dataset).hexdigest() if verified else "0" * 64
+    raw["reference_data"] = [{"id": "A", "dataset_id": "union-A", "version": "1", "path": "A.json",
+                              "sha256": digest, "metadata_attributes": []}]
+    # The reference first, then F2's own allowed values ("A", "É"): with degraded
+    # evidence the reference yields no violation, but "B" still has an F2
+    # diagnostic whose sources include the reference.
+    f2 = raw["traces"][0]["fields"][1]
+    f2["constraints"] = [{"kind": "reference_data", "datasets": ["A"], "fallback_values": [],
+                          "metadata_bindings": []}] + f2["constraints"]
+    folder = root / "schemas" / raw["flow_id"] / raw["schema_version"]
+    folder.mkdir(parents=True)
+    (folder / "flow.json").write_text(json.dumps(raw))
+    (root / "reference-data").mkdir()
+    (root / "reference-data" / "A.json").write_bytes(dataset)
+    return root / "schemas", root / "reference-data"
+
+
+def verified_reference(root):
+    return reference_bundle(root, True)
+
+
+def degraded_reference(root):
+    return reference_bundle(root, False)
+
 
 # name, logical window size, keys sent to the owned window.
 # Tab order: skip link, Analisi, Risultati, Informazioni, theme radio group.
@@ -180,6 +215,14 @@ SCENARIOS = [
      FIELDS + ["Tab"] * 9 + ["Down", "Down", "wait", "wait"] + ["Tab"] * 3 + ["Return", "wait", "wait", "Tab", "Return", "wait", "wait"]),
     ("results-domain-values-640x480", (640, 480),
      FIELDS + ["Tab"] * 9 + ["Down", "Down", "wait", "wait"] + ["Tab"] * 3 + ["Return", "wait", "wait", "Tab", "Return", "wait", "wait"]),
+    # T-MIG-P6-06: fields.txt on a bundle with F2 bound to a reference
+    # dataset. Row 2 is F2 ("B"); its declarations are the allowed values (1)
+    # and the reference (2): Tab x2 from the section title reaches «Consulta i
+    # valori» of the reference, read by a Rust worker. Verified evidence lists
+    # "AA", "ZZ" with the digest; degraded evidence lists nothing.
+    ("results-reference-1366x768", (1366, 768), REFERENCE, None, verified_reference),
+    ("results-reference-640x480", (640, 480), REFERENCE, None, verified_reference),
+    ("results-reference-degraded-1366x768", (1366, 768), REFERENCE, None, degraded_reference),
     ("results-filter-cleared-1366x768", (1366, 768),
      GRID + TO_LINE + ["type:42", "Return", "wait", "wait", "Tab", "Return", "wait", "wait"]),
     ("keyboard-informazioni-report-1366x768", (1366, 768), FILE + START + ["wait", "wait"] + ["shift-Tab"] * 10 + ["Return", "wait"]),
@@ -352,8 +395,8 @@ def scenario(binary, output, monitor_name, name, size, keys, budget=None, full=F
             directory.mkdir(mode=0o700)
             env[key] = str(directory)
         # Tauri app_config_dir on Linux: $XDG_CONFIG_HOME/<identifier>.
-        if full:
-            schemas, references = full_bundle(Path(temporary) / "bundle")
+        if full:  # True: the Full bundle; otherwise a bundle builder (P6-06)
+            schemas, references = (full_bundle if full is True else full)(Path(temporary) / "bundle")
             env["LINTRA_SCHEMA_DIR"], env["LINTRA_REFERENCE_DATA_DIR"] = str(schemas), str(references)
         else:  # the embedded bundle, whatever the calling shell exports
             env.pop("LINTRA_SCHEMA_DIR", None)
@@ -434,7 +477,7 @@ def scenario(binary, output, monitor_name, name, size, keys, budget=None, full=F
             return {"name": name, "requested": list(size), "captured": [w, h],
                     "monitor": monitor["name"], "scale": monitor["scale"], "work_area": list(area),
                     "image_pixels": list(png_size(image)), "keys": keys,
-                    "budget": None if budget is None else budget.decode(), "full_bundle": full,
+                    "budget": None if budget is None else budget.decode(), "full_bundle": full if isinstance(full, bool) else full.__name__,
                     "image_sha256": hashlib.sha256(image.read_bytes()).hexdigest()}
         finally:
             process.terminate()

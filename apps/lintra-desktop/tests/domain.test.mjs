@@ -72,11 +72,11 @@ test("no list is invented: not enumerable, empty page, failure", () => {
   assert.match(failed, />Riprova</);
 });
 
-test("a reference dataset is named, without values here (T-MIG-P6-06)", () => {
+test("a reference dataset is named, and consulted like the others (evidence: reference.test.mjs)", () => {
   const html = item(source("reference", { dataset: { schemaVersion: 1, id: preview("union-A"), version: preview("1") } }));
   assert.match(html, /Dataset di riferimento/);
   assert.match(html, /Dataset union-A · versione 1/);
-  assert.doesNotMatch(html, /Consulta i valori/);
+  assert.match(html, />Consulta i valori</);
 });
 
 test("the panel offers the domain only for a field diagnostic", () => {

@@ -9,7 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type
 import { createColumnHelper, tableFeatures, useTable } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { resultsContext, resultsDomain, resultsOverview, resultsPage, resultsQuery, resultsQueryState, resultsSelect, resultsSources, resultsText, type ContextPage, type DetailComponent, type DomainPage, type DomainSource, type Preview, type ResultRow, type ResultsOverview, type ResultsPage, type RunRef, type SelectedDiagnostic, type SourcesPage, type TextChunk } from "./ipc";
+import { resultsContext, resultsDomain, resultsDomainState, resultsOverview, resultsPage, resultsQuery, resultsQueryState, resultsSelect, resultsSources, resultsText, type ContextPage, type DetailComponent, type DomainPage, type DomainSource, type Preview, type ResultRow, type ResultsOverview, type ResultsPage, type RunRef, type SelectedDiagnostic, type SourcesPage, type TextChunk } from "./ipc";
 import { Charts, type ChartScope } from "./Charts";
 import { previewText, reportStatusText, type AboutReport } from "./information";
 import { NO_FILTERS, PAGE_ROWS, acceptPage, cached, filtering, pageCount, pageItems, pageOffset, rangeText, remember, sameRunRef, validLine, type ResultsFilters, type ResultsView } from "./pages";
@@ -446,17 +446,59 @@ const SOURCE_KIND: Record<DomainSource["kind"], string> = {
   allowed_values: "Valori dichiarati", range: "Intervallo dichiarato", fallback: "Fallback autorizzati",
   reference: "Dataset di riferimento", regex: "Espressione regolare", non_enumerable: "Vincolo non enumerabile",
 };
-/** Kinds whose values Rust pages from the captured schema (T-MIG-P6-05). */
-const STATIC_KINDS: readonly DomainSource["kind"][] = ["allowed_values", "range", "fallback", "regex", "non_enumerable"];
+/**
+ * Why a reference dataset has no list (T-MIG-P6-06), in the words of the
+ * Slint view: missing or unverified evidence is never an empty valid domain.
+ */
+const REFERENCE_STATUS: Partial<Record<DomainPage["status"], string>> = {
+  not_captured: "Dataset non presente nell'evidenza di questa analisi: dominio non ricostruibile.",
+  degraded: "Integrità non verificata: i byte osservati non costituiscono un dominio ammesso. L'elenco non viene sostituito con un dominio vuoto.",
+  unavailable: "Sorgente non disponibile durante l'analisi: dominio non ricostruibile.",
+  unsupported: "Il provider del dataset non espone l'enumerazione: nessun elenco vuoto è dichiarato valido.",
+  cancelled: "Lettura annullata: nessun elenco è dichiarato.",
+};
+
+/** The digests Rust took from the run's evidence, never from the renderer. */
+function Evidence({ domain }: { domain: DomainPage }) {
+  const listed = domain.status === "available" || domain.status === "available_empty";
+  if (listed && domain.actual_sha256 !== null) return <p className="domain-evidence">Dataset verificato usato nell'analisi · SHA-256 <span className="font-mono">{domain.actual_sha256}</span></p>;
+  if (domain.expected_sha256 === null && domain.actual_sha256 === null) return null;
+  return <p className="domain-evidence text-muted">SHA-256 atteso <span className="font-mono">{domain.expected_sha256 ?? "—"}</span>
+    {" · "}osservato <span className="font-mono">{domain.actual_sha256 ?? "non disponibile"}</span></p>;
+}
 
 /** One page of values of one source, as Rust read it, or why there is none. */
-export function DomainValues({ selectionRef, domain }: { selectionRef: string; domain: DomainPage }) {
-  if (domain.status === "not_enumerable") return <p className="text-muted">Nessun elenco finito: il vincolo non è enumerabile. Non viene inventato un elenco di valori.</p>;
-  if (domain.status === "available_empty") return <p className="text-muted">Nessun valore in questa pagina del dominio.</p>;
-  if (domain.entries === null) return <p className="text-muted">Valori non disponibili per questa dichiarazione.</p>;
-  return <ul className="domain-values" aria-label="Valori del dominio">
-    {domain.entries.map(entry => <li key={entry.component_ref}><FullText selectionRef={selectionRef} part={entry} className="detail-value" /></li>)}
-  </ul>;
+export function DomainValues({ selectionRef, domain, first = true }: { selectionRef: string; domain: DomainPage; first?: boolean }) {
+  const reference = domain.kind === "reference";
+  const reason = REFERENCE_STATUS[domain.status];
+  return <>
+    {reference && <Evidence domain={domain} />}
+    {domain.status === "not_enumerable" ? <p className="text-muted">Nessun elenco finito: il vincolo non è enumerabile. Non viene inventato un elenco di valori.</p>
+      : reason ? <p className="domain-warning" role="note">{reason}</p>
+      : domain.status === "available_empty" ? <p className="text-muted">{reference && first ? "Il dataset verificato non contiene codici." : "Nessun valore in questa pagina del dominio."}</p>
+      : domain.entries === null ? <p className="text-muted">Valori non disponibili per questa dichiarazione.</p>
+      : <ul className="domain-values" aria-label="Valori del dominio">
+        {domain.entries.map(entry => <li key={entry.component_ref}><FullText selectionRef={selectionRef} part={entry} className="detail-value" /></li>)}
+      </ul>}
+  </>;
+}
+
+/**
+ * Reads one page of `source` (results_domain). A reference dataset is read by
+ * a Rust worker: the answer is "loading" with a read handle, polled with
+ * results_domain_state until Rust publishes the page or its status. Every
+ * reply is used only while `live()` holds, as in openQuery.
+ */
+export function readDomain(selectionRef: string, source: string, cursor: string | null, live: () => boolean,
+  done: (domain: DomainPage) => void, failed: () => void): void {
+  const answer = (value: Awaited<ReturnType<typeof resultsDomain>>) => {
+    if (!live()) return;
+    if (value.state === "ready") { done(value.domain); return; }
+    const readRef = value.read_ref;
+    setTimeout(() => { if (live()) resultsDomainState(selectionRef, readRef).then(answer, fail); }, POLL_MS);
+  };
+  const fail = () => { if (live()) failed(); };
+  resultsDomain(selectionRef, source, cursor).then(answer, fail);
 }
 
 /** Values of one source, as DomainSection holds them. */
@@ -478,15 +520,15 @@ export function DomainSourceItem({ selectionRef, source, number, shown, onRead: 
     {source.dataset && <p>Dataset <PreviewText preview={source.dataset.id} /> · versione <PreviewText preview={source.dataset.version} /></p>}
     {/* The DTO has no handle for the comparison text: its preview is all there is. */}
     <p className="domain-comparison detail-text"><PreviewText preview={source.comparison} /></p>
-    {STATIC_KINDS.includes(source.kind) && <div className="detail-more">
+    <div className="detail-more">
       {!shown && <Button size="sm" variant="ghost" onClick={() => read(source.source_ref, null)}>Consulta i valori</Button>}
-      {shown?.status === "loading" && <span role="status">Lettura dei valori…</span>}
+      {shown?.status === "loading" && <span role="status">{source.kind === "reference" ? "Lettura della pagina dal dataset usato nell'analisi…" : "Lettura dei valori…"}</span>}
       {shown?.status === "failed" && <><span role="alert">Lettura dei valori non riuscita.</span>
         <Button size="sm" variant="ghost" onClick={() => read(source.source_ref, shown.cursor)}>Riprova</Button></>}
-    </div>}
+    </div>
     {shown?.status === "ready" && <>
       <div ref={valuesRef} tabIndex={-1} className="domain-page" aria-label={`Valori di ${SOURCE_KIND[source.kind].toLowerCase()}, dichiarazione ${number}`}>
-        <DomainValues selectionRef={selectionRef} domain={shown.domain} />
+        <DomainValues selectionRef={selectionRef} domain={shown.domain} first={shown.first} />
       </div>
       <div className="detail-more">
         {!shown.first && <Button size="sm" variant="ghost" onClick={() => read(source.source_ref, null)}>Primi valori</Button>}
@@ -502,7 +544,8 @@ export function DomainSourceItem({ selectionRef, source, number, shown, onRead: 
  * and, one source at a time, the values Rust pages from it (results_domain,
  * at most 64 per page, cursor kept by Rust). Literals and integers are Rust
  * text, never parsed or computed here; a conditional declaration keeps its
- * rule. Reference datasets are listed without values (T-MIG-P6-06).
+ * rule. A reference dataset is read by a Rust worker from the evidence
+ * captured with the run (T-MIG-P6-06): only verified evidence lists values.
  */
 function DomainSection({ selectionRef }: { selectionRef: string }) {
   type Sources = { status: "idle" } | { status: "loading"; offset: string } | { status: "failed"; offset: string } | { status: "ready"; page: SourcesPage };
@@ -527,12 +570,9 @@ function DomainSection({ selectionRef }: { selectionRef: string }) {
   const read = (source: string, cursor: string | null) => {
     const mine = ++valueRequest.current;
     setValues({ status: "loading", source });
-    resultsDomain(selectionRef, source, cursor).then(answer => {
-      if (valueRequest.current !== mine) return;
-      // Static declarations are answered at once; "loading" belongs to reference reads.
-      if (answer.state !== "ready") setValues({ status: "failed", source, cursor });
-      else setValues({ status: "ready", source, domain: answer.domain, first: cursor === null });
-    }, () => { if (valueRequest.current === mine) setValues({ status: "failed", source, cursor }); });
+    readDomain(selectionRef, source, cursor, () => valueRequest.current === mine,
+      domain => setValues({ status: "ready", source, domain, first: cursor === null }),
+      () => setValues({ status: "failed", source, cursor }));
   };
   return <section className="detail-domain" aria-labelledby="detail-domain-title">
     <h3 id="detail-domain-title" ref={heading} tabIndex={-1}>Dominio ammesso</h3>

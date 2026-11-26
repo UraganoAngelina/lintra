@@ -365,6 +365,9 @@
   .domain-source p { margin: 0; }
   .domain-kind { font-weight: 600; color: var(--ink); }
   .domain-page:focus-visible, .detail-domain h3:focus-visible { outline-offset: 2px; }
+  /* Reference evidence (T-MIG-P6-06): digests wrap, a missing domain is a warning. */
+  .domain-evidence { overflow-wrap: anywhere; }
+  .domain-warning { padding: var(--space-small) var(--control-gap); border-left: 3px solid var(--warn); border-radius: var(--radius); background: var(--warn-bg); color: var(--ink); }
   .domain-values { display: flex; flex-wrap: wrap; gap: var(--space-small); margin: 0; padding: 0; list-style: none; }
   .detail-context { margin-top: var(--space-block); padding-top: var(--space-block); border-top: 1px solid var(--border); }
   .detail-context h3 { margin: 0 0 var(--control-gap); font-size: 14px; font-weight: 600; }
