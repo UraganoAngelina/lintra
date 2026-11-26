@@ -9,7 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type
 import { createColumnHelper, tableFeatures, useTable } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { resultsContext, resultsDomain, resultsDomainState, resultsOverview, resultsPage, resultsQuery, resultsQueryState, resultsSelect, resultsSources, resultsText, type ContextPage, type DetailComponent, type DomainPage, type DomainSource, type Preview, type ResultRow, type ResultsOverview, type ResultsPage, type RunRef, type SelectedDiagnostic, type SourcesPage, type TextChunk } from "./ipc";
+import { resultsContext, resultsDomain, resultsDomainState, resultsOverview, resultsPage, resultsQuery, resultsQueryState, resultsSelect, resultsSources, resultsText, type ContextPage, type DetailComponent, type DomainPage, type DomainSource, type Preview, type ReportAbout, type ResultRow, type ResultsOverview, type ResultsPage, type RunRef, type SelectedDiagnostic, type SourcesPage, type TextChunk } from "./ipc";
 import { Charts, type ChartScope } from "./Charts";
 import { previewText, reportStatusText, type AboutReport } from "./information";
 import { NO_FILTERS, PAGE_ROWS, acceptPage, cached, filtering, pageCount, pageItems, pageOffset, rangeText, remember, sameRunRef, validLine, type ResultsFilters, type ResultsView } from "./pages";
@@ -648,18 +648,30 @@ export function DetailPanel({ state, traces, onRetry }: { state: DetailState; tr
   </Card>;
 }
 
+const MODE: Record<ReportAbout["mode"], string> = { local_only: "Controlli locali sul tracciato", full: "Flusso completo (Full)" };
+
+/** Completeness of the report in the Slint words: partial, truncated and
+ * cancelled reports never read as a complete set of checks. */
+function incomplete(about: ReportAbout): boolean {
+  return about.completeness === "partial" || about.truncated || about.status === "cancelled";
+}
+
 /** Summary cards of the reference: records, diagnostics, records with
- * violations and outcome, all as Rust reports them. */
+ * violations and outcome, all as Rust reports them. No global conformity
+ * (T-MIG-P6-07): only a complete Full report without violations takes the
+ * success tone; a LocalOnly one stays neutral, an incomplete one a warning,
+ * and an outcome Rust could not give is an alert, never "in lettura". */
 function Summary({ about, overview }: { about: AboutReport; overview: OverviewState }) {
   const ready = about.status === "ready" ? about.about : null;
+  const failed = about.status === "failed";
   const counts = overview.status === "ready" ? overview.overview : null;
-  const tone = !ready ? "neutral" : ready.status === "completed_invalid" ? "error"
-    : ready.completeness === "partial" || ready.truncated ? "warn" : "success";
+  const tone = !ready ? null : ready.status === "completed_invalid" ? "error"
+    : incomplete(ready) ? "warn" : ready.mode === "full" ? "success" : null;
   const number = (value: string | undefined) => (value === undefined ? "—" : grouped(value));
   return <div className="summary" aria-label="Riepilogo del report">
     <Card className="kpi"><h2>Record analizzati</h2>
       <p className="kpi-value">{number(counts?.records_processed)}</p>
-      <p className="kpi-note">{ready ? (ready.mode === "local_only" ? "Controlli locali sul tracciato" : "Flusso completo (Full)") : "In lettura…"}</p></Card>
+      <p className="kpi-note">{ready ? MODE[ready.mode] : failed ? "Ambito non disponibile" : "In lettura…"}</p></Card>
     <Card className="kpi"><h2>Diagnostiche nel report</h2>
       <p className={cn("kpi-value", counts && counts.total_errors !== "0" && "tone-error")}>{number(counts?.total_errors)}</p>
       <p className="kpi-note">{counts ? `${grouped(String(counts.by_code.length))} ${counts.by_code.length === 1 ? "codice" : "codici"} di controllo` : "—"}</p></Card>
@@ -667,9 +679,18 @@ function Summary({ about, overview }: { about: AboutReport; overview: OverviewSt
       <p className={cn("kpi-value", counts && counts.invalid_records !== "0" && "tone-error")}>{number(counts?.invalid_records)}</p>
       <p className="kpi-note">{counts ? `Senza violazioni: ${grouped(counts.valid_records)}` : "—"}</p></Card>
     <Card className="kpi"><h2>Esito</h2>
-      <p className={cn("kpi-value kpi-text", `tone-${tone}`)}>{ready ? reportStatusText(ready) : "—"}</p>
-      <p className="kpi-note">{ready ? `${previewText(ready.flow_id)} · ${previewText(ready.schema_version)}` : "—"}</p></Card>
+      <p className={cn("kpi-value kpi-text", tone && `tone-${tone}`)}>{ready ? reportStatusText(ready) : failed ? "Esito non disponibile" : "—"}</p>
+      {failed ? <p className="kpi-note" role="alert">Non è stato possibile leggere l'esito del report: nessun esito è mostrato.</p>
+        : <p className="kpi-note">{ready ? `${previewText(ready.flow_id)} · ${previewText(ready.schema_version)} · verifiche ${incomplete(ready) ? "parziali" : "complete nell'ambito richiesto"}` : "—"}</p>}</Card>
   </div>;
+}
+
+/** An empty report proves no conformity beyond what Rust checked (FULL.md:
+ * a page without diagnostics does not prove VALID). */
+function emptyText(about: AboutReport): string {
+  if (about.status !== "ready") return "Il report non contiene diagnostiche.";
+  if (incomplete(about.about)) return "Il report non contiene diagnostiche, ma alcuni controlli non hanno un esito conclusivo: non è una conformità completa.";
+  return about.about.mode === "local_only" ? "Il report non contiene diagnostiche nell'ambito richiesto: controlli locali sul tracciato." : "Il report non contiene diagnostiche.";
 }
 
 /**
@@ -687,7 +708,7 @@ export function Results({ view, about, overview, reportAvailable, filters, onFil
   // Only a read `report_about` can clear the qualifier; "none" means it was not requested yet.
   const scope: ChartScope = about.status === "failed" ? "unavailable"
     : about.status !== "ready" ? "pending"
-    : about.about.completeness === "partial" || about.about.truncated || about.about.status === "cancelled" ? "incomplete" : "complete";
+    : incomplete(about.about) ? "incomplete" : "complete";
   if (!reportAvailable) return <Card className="empty-card">
     <p className="lead">Nessun report disponibile.</p>
     <p>I risultati di un'analisi conclusa compaiono in questa sezione.</p>
@@ -712,7 +733,7 @@ export function Results({ view, about, overview, reportAvailable, filters, onFil
         <Button onClick={onRetry}>Riprova</Button>
       </div>}
       {view.status === "ready" && view.total_matches === "0" && <p className="grid-message">
-        {filtered ? "Nessuna diagnostica corrisponde ai filtri." : "Il report non contiene diagnostiche."}</p>}
+        {filtered ? "Nessuna diagnostica corrisponde ai filtri." : emptyText(about)}</p>}
       {view.status === "ready" && view.total_matches !== "0" && <>
         {view.pageFailed && <div className="grid-message" role="alert">
           <p>Non è stato possibile leggere questa pagina dei risultati.</p>

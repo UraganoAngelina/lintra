@@ -159,7 +159,7 @@ test("Risultati states: no report, building, failed, empty and paged", () => {
   const failed = results({ view: { status: "failed", run: RUN } });
   assert.match(failed, /role="alert"><p>Non è stato possibile preparare i risultati del report\.<\/p><button[^>]*>Riprova<\/button>/);
   const empty = results({ view: ready({ total_matches: "0", total_diagnostics: "0", loading: false }) });
-  assert.match(empty, /Il report non contiene diagnostiche\./);
+  assert.match(empty, /Il report non contiene diagnostiche nell&#x27;ambito richiesto: controlli locali sul tracciato\./, "LocalOnly scope (P6-07)");
   assert.doesNotMatch(empty, /<table|Nessuna violazione/);
   const shown = results({ view: ready({ page: 1n, loading: false, current: page({ offset: "128" }) }) });
   assert.match(shown, /<nav class="pager" aria-label="Pagine delle diagnostiche">/);
@@ -176,7 +176,7 @@ test("the summary shows only what Rust reported, with the outcome in words", () 
   assert.match(html, /<h2>Record analizzati<\/h2><p class="kpi-value">1\.200\.000<\/p>/);
   assert.match(html, /<h2>Diagnostiche nel report<\/h2><p class="kpi-value tone-error">1\.000\.000<\/p>/);
   assert.match(html, /<h2>Record con violazioni<\/h2><p class="kpi-value tone-error">1\.000\.000<\/p><p class="kpi-note">Senza violazioni: 200\.000<\/p>/);
-  assert.match(html, /<h2>Esito<\/h2><p class="kpi-value kpi-text tone-error">Violazioni rilevate<\/p><p class="kpi-note">SYNTHETIC · v1<\/p>/);
+  assert.match(html, /<h2>Esito<\/h2><p class="kpi-value kpi-text tone-error">Violazioni rilevate<\/p><p class="kpi-note">SYNTHETIC · v1 · verifiche complete nell&#x27;ambito richiesto<\/p>/);
   // No severity Lintra does not have, no "conforme".
   assert.doesNotMatch(html, /conform|Avviso|Warning|Valido/i);
   const partial = results({ view: ready({ loading: false, current: page() }),
