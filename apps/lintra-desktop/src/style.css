@@ -180,7 +180,20 @@
     border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--ink); font: inherit; cursor: pointer;
   }
   .run .secondary[aria-disabled="true"] { color: var(--muted); cursor: not-allowed; }
-  .run progress { display: block; width: 100%; max-width: 24rem; margin: var(--space-row) 0; accent-color: var(--accent-bar); }
+  /* Indeterminate run bar drawn here: Tailwind's preflight border on <progress>
+     makes WebKitGTK drop the native animated bar for a still grey block.
+     Rust gives no total (PROGRESS.md), so a sliding segment, never a fill. */
+  .run progress {
+    display: block; width: 100%; max-width: 24rem; height: 6px; margin: var(--space-row) 0;
+    appearance: none; border-radius: 999px; overflow: hidden;
+    background: linear-gradient(var(--accent-bar), var(--accent-bar)) no-repeat 0 0 / 35% 100%, var(--border);
+    animation: run-bar 1.2s ease-in-out infinite alternate;
+  }
+  .run progress::-webkit-progress-bar { background: transparent; }
+  @keyframes run-bar { to { background-position: 100% 0, 0 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .run progress { animation: none; background-position: 50% 0, 0 0; }
+  }
   .budget-dialog {
     max-width: min(36rem, calc(100vw - 2 * var(--page-padding))); padding: var(--page-padding);
     border: 1px solid var(--border); border-radius: var(--card-radius); background: var(--surface); color: var(--ink); box-shadow: var(--card-shadow);

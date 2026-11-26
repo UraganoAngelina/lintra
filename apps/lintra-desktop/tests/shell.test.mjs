@@ -160,3 +160,13 @@ test("colours live only in tokens.css", () => {
     assert.doesNotMatch(text, /#[0-9a-f]{3,8}\b|rgb\(|hsl\(/i, file);
   }
 });
+
+test("the indeterminate run bar is drawn by the app and stops for reduced motion", () => {
+  // The Tailwind preflight border makes WebKitGTK paint <progress> as a still grey block.
+  const css = readFileSync(new URL("src/style.css", base), "utf8");
+  const bar = css.match(/\.run progress \{([^}]*)\}/)[1];
+  assert.match(bar, /appearance: none;/);
+  assert.match(bar, /animation: run-bar /);
+  assert.match(css, /@keyframes run-bar \{ to \{ background-position: 100% 0, 0 0; \} \}/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{\s*\.run progress \{ animation: none;/);
+});
