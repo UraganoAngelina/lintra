@@ -1,6 +1,12 @@
 # T-MIG-P6-07 — Stati di risultati, malformed e partial
 
-Data 26 novembre 2026. Stato: **IN_REVIEW** (non DONE). Prerequisiti
+Data 26 novembre 2026. Stato: **DONE**. Review Codex round 1 APPROVED su
+`4a6be32` (`lintra-review-handoffs/T-MIG-P6-07-CODEX-REVIEW.md`) con un
+MINOR documentale, P607-01, corretto qui sotto nella tabella Acceptance.
+Integrazione autorizzata dall'autore per fast-forward di `integration`,
+senza push. CI remota e Windows/WebView2 NOT_RUN, al checkpoint del blocco
+P6; G-MIG-6 NOT_VERIFIED.
+Prerequisiti
 T-MIG-P6-01, T-MIG-P6-03, T-MIG-P6-06 DONE (`integration` `132be9f`).
 Branch `work/T-MIG-P6-07` da `132be9f`, worktree
 `/home/alberto/Desktop/LINTRA/lintra-p6-07`.
@@ -73,7 +79,7 @@ LocalOnly completo valido e con violazioni).
 | --- | --- |
 | Nessuna conformità globale per LocalOnly | tono neutro e ambito dichiarato (test, mutazione); cattura `results-valid` |
 | Nessuna conformità per dati incompleti | parziale/troncato/annullato in avviso con «verifiche parziali», report vuoto qualificato (test, mutazione) |
-| Error states accessibili | esito non leggibile `role="alert"`; query/pagina/conteggi `role="alert"` con testo e «Riprova» (test) |
+| Error states accessibili | esito non leggibile `role="alert"`; query/pagina `role="alert"` con testo e «Riprova»; conteggi `role="alert"` senza retry diretto, riletti uscendo e rientrando in Risultati (test; P607-01) |
 
 ## Test
 
@@ -101,4 +107,4 @@ LocalOnly completo valido e con violazioni).
 - «Esito non disponibile» non offre «Riprova»: `report_about` si rilegge
   tornando alla sezione, come già in Informazioni.
 
-Prossima task tecnicamente disponibile dopo l'integrazione: T-MIG-P6-08.
+Prossima task tecnicamente disponibile: T-MIG-P6-08.

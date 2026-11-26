@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **81/128 DONE;47 rimanenti** (18U-* e35MIG).
+Conteggio unificato: **82/128 DONE;46 rimanenti** (18U-* e34MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -126,7 +126,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P6-04 | T-MIG-P6-03 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-04.md) | posizione in byte e guida al campo da Rust nel pannello di dettaglio (backend P4-09 invariato); snapshot Rust+Node e oracolo field_format_guide; desktop 86, Node 158 PASS; nativo 65/65+chiusura; 46995e4;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance snapshot/oracle, nessuna regola in TS PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-05 | T-MIG-P6-04 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-05.md) | dominio ammesso statico/range da Rust nel pannello di dettaglio (backend P4-09 invariato); banco di cattura con TMPDIR per scenario (autorizzato); desktop 86, Node 166 PASS; nativo 68/68+chiusura; 4b2b62f+04af32e;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance parità field_guide, big integer come testo, UI non calcola domini PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-06 | T-MIG-P6-05 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-06.md) | dataset reference consultabile dall'evidenza del run (worker Rust con polling), digest dall'evidenza, cinque stati non verificati senza valori (backend P4-09 invariato); desktop 86, Node 170 PASS; nativo 71/71+chiusura; dfadf53;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance reference snapshot coerente, nessun «valido» con dati mancanti/non verificati PASS; G-MIG-6 NOT_VERIFIED |
-| T-MIG-P6-07 | T-MIG-P6-01, T-MIG-P6-03, T-MIG-P6-06 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-07.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
+| T-MIG-P6-07 | T-MIG-P6-01, T-MIG-P6-03, T-MIG-P6-06 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-07.md) | riepilogo Risultati senza conformità globale: successo solo Full completo, LocalOnly neutro con ambito, parziale/troncato/annullato «verifiche parziali», esito non leggibile come alert, report vuoto qualificato (backend invariato); desktop 86, Node 174 PASS; nativo 71/71+chiusura; 4a6be32;review Codex round 1 APPROVED, MINOR documentale P607-01 recepito in chiusura;CI delta NOT_RUN,al checkpoint blocco | Acceptance nessuna conformità globale LocalOnly/incompleti, error states accessibili PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-08 | T-MIG-P6-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-08.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-09 | T-MIG-P6-02, T-MIG-P6-03, T-MIG-P6-04, T-MIG-P6-05, T-MIG-P6-06, T-MIG-P6-07, T-MIG-P6-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-09.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-10 | T-MIG-P6-09, T-MIG-P5-10 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-10.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
@@ -668,3 +668,18 @@ autorizzata dall'autore: fast-forward di integration, nessun push. CI
 remota, Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN, al checkpoint
 del blocco P6. G-MIG-6 e G-REL aperti. Prossima tecnicamente disponibile
 T-MIG-P6-07.
+
+Chiusura T-MIG-P6-07, 26 novembre 2026: **DONE**, **82/128 (64,1%)**, 46
+rimanenti. Autore Claude Code, commit 4a6be32 su base 132be9f. Riepilogo di
+Risultati senza conformità globale: tono di successo solo per Full completo
+senza violazioni; LocalOnly completo neutro con «verifiche complete
+nell'ambito richiesto»; parziale, troncato e annullato in avviso con
+«verifiche parziali»; `report_about` non leggibile come «Esito non
+disponibile» con alert; report vuoto qualificato per LocalOnly e per
+controlli incompleti. Review Codex round 1 APPROVED
+(`lintra-review-handoffs/T-MIG-P6-07-CODEX-REVIEW.md`), MINOR documentale
+P607-01 (retry dei conteggi sovradichiarato) corretto nel dossier e
+nell'handoff. Integrazione autorizzata dall'autore: fast-forward di
+integration, nessun push. CI remota, Windows/WebView2 e `npm ci` con i pin
+esatti NOT_RUN, al checkpoint del blocco P6. G-MIG-6 e G-REL aperti.
+Prossima tecnicamente disponibile T-MIG-P6-08.
