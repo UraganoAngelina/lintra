@@ -1,6 +1,10 @@
 # T-MIG-P6-10 — React Full: risultati cross-trace, detail ed export canonico
 
-Data 27 novembre 2026. Stato: **IN_REVIEW** (non DONE). Prerequisiti
+Data 27 novembre 2026. Stato: **DONE**. Review Codex round 1 APPROVED su
+`3a99726` senza BLOCKER o MAJOR (`lintra-review-handoffs/T-MIG-P6-10-CODEX-REVIEW.md`).
+Integrazione autorizzata dall'autore per fast-forward di `integration`,
+senza push iniziale. G-MIG-6 e G-REL NOT_VERIFIED fino al checkpoint del
+blocco P6 (CI remota e Windows/WebView2). Prerequisiti
 T-MIG-P6-09 DONE (`integration` `436aeca`) e T-MIG-P5-10 DONE. Branch
 `work/T-MIG-P6-10` da `436aeca`, worktree
 `/home/alberto/Desktop/LINTRA/lintra-p6-10`.
@@ -65,7 +69,7 @@ chiavi, cardinalità, tracciato correlato).
 
 **Banco nativo** `tests/native_capture.py`:
 - campione `fullsr.txt` (S con tre diagnostiche) contro `badt.txt`;
-- scenari `results-full-1366x768` (Risultati Full), 
+- scenari `results-full-1366x768` (Risultati Full),
   `results-full-detail-context-workarea` (dettaglio cross-trace con il
   contesto di S e T; area di lavoro perché a 1366×768 la seconda voce resta
   sotto il bordo del pannello) e `results-full-export-1366x768` (salvataggio

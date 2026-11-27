@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **84/128 DONE;44 rimanenti** (18U-* e32MIG).
+Conteggio unificato: **85/128 DONE;43 rimanenti** (18U-* e31MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -129,7 +129,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P6-07 | T-MIG-P6-01, T-MIG-P6-03, T-MIG-P6-06 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-07.md) | riepilogo Risultati senza conformità globale: successo solo Full completo, LocalOnly neutro con ambito, parziale/troncato/annullato «verifiche parziali», esito non leggibile come alert, report vuoto qualificato (backend invariato); desktop 86, Node 174 PASS; nativo 71/71+chiusura; 4a6be32;review Codex round 1 APPROVED, MINOR documentale P607-01 recepito in chiusura;CI delta NOT_RUN,al checkpoint blocco | Acceptance nessuna conformità globale LocalOnly/incompleti, error states accessibili PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-08 | T-MIG-P6-07 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-08.md) | «Salva il report» in Risultati: solo report_ref e formato, dialogo/conferme/writer/pubblicazioni in Rust (backend P4-10 invariato), receipt con due pubblicazioni non dette atomic pair, ruoli pubblicati, durabilità e pulizia; export per istanza conservato fra report e salvataggi, esito ignoto senza retry cieco; desktop 86, Node 185 PASS; nativo 74/74+chiusura (round 1), JSONL = CLI; 4291843+7aa8e58;review Codex round 1 CHANGES_REQUESTED (P608-01/02), round 2 APPROVED, MINOR documentale P608-03 recepito in chiusura;CI delta NOT_RUN,al checkpoint blocco | Acceptance export intero, byte del writer canonico, nessun atomic pair, overwrite nativo PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-09 | T-MIG-P6-02, T-MIG-P6-03, T-MIG-P6-04, T-MIG-P6-05, T-MIG-P6-06, T-MIG-P6-07, T-MIG-P6-08 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-09.md) | parità golden del percorso desktop: 12 scenari LocalOnly e 3 Full SIOC referential dal worker reale a overview, paging, filtri, dettaglio ed export JSONL/CSV, confrontati con gli oracoli committati; fix ordine by_code dell'overview (PAGING.md); desktop 88, Node 185 PASS; golden core 13+8 PASS; 8784db0;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,dopo P6-10 | Acceptance matrice LocalOnly + backend Full con SHA, golden byte-identici, nessuna feature futura PASS; G-MIG-6 NOT_VERIFIED (UI Full P6-10) |
-| T-MIG-P6-10 | T-MIG-P6-09, T-MIG-P5-10 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-10.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
+| T-MIG-P6-10 | T-MIG-P6-09, T-MIG-P5-10 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-10.md) | risultati, dettaglio cross-trace ed export Full in React dai DTO Rust (renderer già generico: estratto solo ContextEntries); contenuto XLSX dei 15 golden cella per cella e XLSX nativo Full = CLI validate-flow; dettaglio Full con guida/posizione del tracciato e contesto S/T; desktop 89, Node 190 PASS; nativo 3 scenari Full + 2 baseline; 3a99726;review Codex round 1 APPROVED;CI delta al checkpoint blocco P6 | Acceptance parità Full e LocalOnly con l'oracolo Rust, nessuna logica cross-record in React PASS; G-MIG-6 NOT_VERIFIED (checkpoint P6) |
 | T-MIG-P7-01 | T-MIG-P6-09 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-01.md) | —; Non eseguite | G-MIG-7 NOT_VERIFIED |
 | T-MIG-P7-02 | T-MIG-P7-01 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-02.md) | —; Non eseguite | G-MIG-7 NOT_VERIFIED |
 | T-MIG-P7-03 | T-MIG-P7-01, T-MIG-P7-02 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-03.md) | —; Non eseguite | G-MIG-7 NOT_VERIFIED |
@@ -729,3 +729,17 @@ verificato solo per firma ZIP e sidecar; catture native non ripetute. CI
 remota, Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN, una sola volta
 dopo P6-10 per decisione dell'autore. G-MIG-6 e G-REL aperti. Prossima
 tecnicamente disponibile T-MIG-P6-10.
+
+Chiusura T-MIG-P6-10, 27 novembre 2026: **DONE**, **85/128 (66,4%)**, 43
+rimanenti. Autore Claude Code, commit 3a99726 su base 436aeca. Il renderer
+mostrava già i report Full dai DTO Rust; la task ne prova la parità:
+contenuto XLSX dei 15 golden (byte = writer canonico, celle = golden e
+summary, su richiesta dell'autore), dettaglio Full cross-trace contro spool e
+schema catturato, test Node del Full e controllo che nessun sorgente React
+contenga logica PASS2, catture native Full (griglia, contesto S/T, export
+XLSX) con l'XLSX salvato uguale all'output di `lintra validate-flow`. Review
+Codex round 1 APPROVED (`lintra-review-handoffs/T-MIG-P6-10-CODEX-REVIEW.md`);
+spazio finale nel dossier rimosso in chiusura. Integrazione autorizzata
+dall'autore: fast-forward di integration. Tutte le task MIG-P6 sono DONE;
+G-MIG-6 e G-REL restano aperti fino al checkpoint del blocco P6 (CI remota e
+Windows/WebView2 sullo stesso SHA). T-MIG-P7-01 richiede G-MIG-6 APPROVED.
