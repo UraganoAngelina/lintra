@@ -403,6 +403,23 @@ function Actual({ detail }: { detail: SelectedDiagnostic }) {
 }
 
 /**
+ * One context page as Rust sent it. Each entry names its own trace, so in
+ * Full the values of the related trace's record stand next to the
+ * diagnostic's own (T-MIG-P6-10); nothing is joined or looked up here.
+ */
+export function ContextEntries({ selectionRef, page }: { selectionRef: string; page: ContextPage }) {
+  return page.entries.length === 0 ? <p className="text-muted">Nessun elemento di contesto.</p>
+    : <dl className="detail-pairs">{page.entries.map((entry, index) => <div key={`${page.offset}-${index}`}>
+        <dt><PreviewText preview={entry.trace} /> · <PreviewText preview={entry.field} /></dt>
+        <dd>{entry.visibility === "local_report_only_record_scope"
+          ? <span className="text-muted">Solo nel report locale.</span>
+          : entry.value === null ? <span className="text-muted">—</span>
+          : entry.component_ref === null ? <span className="detail-text detail-value">{previewText(entry.value)}</span>
+          : <FullText selectionRef={selectionRef} part={{ component_ref: entry.component_ref, preview: entry.value }} className="detail-value" />}</dd>
+      </div>)}</dl>;
+}
+
+/**
  * Context of the selected record, on request (DETAIL v1: separate pages of
  * at most 64 entries, one page kept). Values covering the whole record stay
  * in the local report.
@@ -424,15 +441,7 @@ function ContextList({ selectionRef }: { selectionRef: string }) {
     {state.status === "failed" && <div role="alert"><p>Non è stato possibile leggere il contesto.</p>
       <Button size="sm" variant="ghost" onClick={() => read(state.offset)}>Riprova</Button></div>}
     {state.status === "ready" && <>
-      {state.page.entries.length === 0 ? <p className="text-muted">Nessun elemento di contesto.</p>
-        : <dl className="detail-pairs">{state.page.entries.map((entry, index) => <div key={`${state.page.offset}-${index}`}>
-            <dt><PreviewText preview={entry.trace} /> · <PreviewText preview={entry.field} /></dt>
-            <dd>{entry.visibility === "local_report_only_record_scope"
-              ? <span className="text-muted">Solo nel report locale.</span>
-              : entry.value === null ? <span className="text-muted">—</span>
-              : entry.component_ref === null ? <span className="detail-text detail-value">{previewText(entry.value)}</span>
-              : <FullText selectionRef={selectionRef} part={{ component_ref: entry.component_ref, preview: entry.value }} className="detail-value" />}</dd>
-          </div>)}</dl>}
+      <ContextEntries selectionRef={selectionRef} page={state.page} />
       <div className="detail-more">
         {state.page.offset !== "0" && <Button size="sm" variant="ghost" onClick={() => read("0")}>Primi elementi</Button>}
         {state.page.has_more && <Button size="sm" variant="ghost" onClick={() => read(state.page.next_offset)}>Elementi successivi</Button>}

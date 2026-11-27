@@ -1,0 +1,674 @@
+{
+  "binary_sha256": "463631205bfd9dd8d7473c72bb529310c13681574242f580ea2d3a4b09beaa19",
+  "scenarios": [
+    {
+      "name": "analisi-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1180
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "e70093b16859dc0a8daa6662fd8ebd2ee2007976946b1820ebf2ad77e5f24b51"
+    },
+    {
+      "name": "analisi-workarea",
+      "requested": [
+        1850,
+        1180
+      ],
+      "captured": [
+        1850,
+        1180
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1180
+      ],
+      "image_pixels": [
+        1850,
+        1180
+      ],
+      "keys": [],
+      "budget": null,
+      "full_bundle": false,
+      "image_sha256": "7159491724affe7b59b27206eae5347eaeba2a6250976dc28d6c03ccf52fa730"
+    },
+    {
+      "name": "results-full-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1180
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/fullsr.txt",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/badt.txt",
+        "wait",
+        "Tab",
+        "type:a",
+        "Tab",
+        "wait",
+        "type:2026",
+        "Tab",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": true,
+      "image_sha256": "0accd1a5576faa606eaa01d602f7892302fd411824e35e0b7aaf2bbcd89427d3"
+    },
+    {
+      "name": "results-full-detail-context-workarea",
+      "requested": [
+        1850,
+        1180
+      ],
+      "captured": [
+        1850,
+        1180
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1180
+      ],
+      "image_pixels": [
+        1850,
+        1180
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/fullsr.txt",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/badt.txt",
+        "wait",
+        "Tab",
+        "type:a",
+        "Tab",
+        "wait",
+        "type:2026",
+        "Tab",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "Down",
+        "wait",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": true,
+      "image_sha256": "7348fe80626d20a047aef4aca56ee7b22b8508273e4f0aa8031a16ee07c80df7"
+    },
+    {
+      "name": "results-full-export-1366x768",
+      "requested": [
+        1366,
+        768
+      ],
+      "captured": [
+        1366,
+        768
+      ],
+      "monitor": "HDMI-A-1",
+      "scale": 1,
+      "work_area": [
+        1850,
+        1180
+      ],
+      "image_pixels": [
+        1366,
+        768
+      ],
+      "keys": [
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Down",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/fullsr.txt",
+        "wait",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/badt.txt",
+        "wait",
+        "Tab",
+        "type:a",
+        "Tab",
+        "wait",
+        "type:2026",
+        "Tab",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "shift-Tab",
+        "Return",
+        "wait",
+        "wait",
+        "wait",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Tab",
+        "Return",
+        "dialog:/home/alberto/lintrap503/rf",
+        "wait",
+        "wait",
+        "wait"
+      ],
+      "budget": null,
+      "full_bundle": true,
+      "image_sha256": "b532735152de4168dea4f4eafedf8797be27f369975828e3de3bfebe6ec1de40"
+    }
+  ],
+  "only": [
+    "results-full"
+  ],
+  "export": {
+    "rf.xlsx": {
+      "bytes": 7844,
+      "sha256": "605f48431cdec73f322c62256167cf09b1a6ab61aafaaa1c8962b6f6c29e21f9",
+      "sheets": {
+        "Riepilogo": [
+          [
+            "property",
+            "value"
+          ],
+          [
+            "/completeness",
+            "partial"
+          ],
+          [
+            "/elapsed/nanoseconds",
+            "160748"
+          ],
+          [
+            "/elapsed/seconds",
+            "0"
+          ],
+          [
+            "/errors_by_code/E_CROSS_FIELD",
+            "1"
+          ],
+          [
+            "/errors_by_code/E_RECORD_LENGTH",
+            "1"
+          ],
+          [
+            "/errors_by_code/E_RELATED_RECORD_MISSING",
+            "1"
+          ],
+          [
+            "/flow",
+            "SYNTHETIC"
+          ],
+          [
+            "/full_validation/completeness",
+            "partial"
+          ],
+          [
+            "/full_validation/controls/0/causes",
+            "[]"
+          ],
+          [
+            "/full_validation/controls/0/evaluations",
+            "2"
+          ],
+          [
+            "/full_validation/controls/0/not_applicable",
+            "0"
+          ],
+          [
+            "/full_validation/controls/0/rule_id",
+            "COMPARE"
+          ],
+          [
+            "/full_validation/controls/0/satisfied",
+            "0"
+          ],
+          [
+            "/full_validation/controls/0/skipped",
+            "1"
+          ],
+          [
+            "/full_validation/controls/0/trace_id",
+            "S"
+          ],
+          [
+            "/full_validation/controls/0/unknown",
+            "0"
+          ],
+          [
+            "/full_validation/controls/0/violations",
+            "2"
+          ],
+          [
+            "/full_validation/parameters/unit/type",
+            "string"
+          ],
+          [
+            "/full_validation/parameters/unit/value",
+            "a"
+          ],
+          [
+            "/full_validation/parameters/year/type",
+            "integer"
+          ],
+          [
+            "/full_validation/parameters/year/value",
+            "2026"
+          ],
+          [
+            "/full_validation/traces/0/coverage",
+            "partial"
+          ],
+          [
+            "/full_validation/traces/0/cross_rules_declared",
+            "1"
+          ],
+          [
+            "/full_validation/traces/0/duplicate_record_keys",
+            "0"
+          ],
+          [
+            "/full_validation/traces/0/inconclusive_record_keys",
+            "1"
+          ],
+          [
+            "/full_validation/traces/0/record_keys_checked",
+            "2"
+          ],
+          [
+            "/full_validation/traces/0/records_processed",
+            "3"
+          ],
+          [
+            "/full_validation/traces/0/trace_id",
+            "S"
+          ],
+          [
+            "/full_validation/traces/0/unprojectable_records",
+            "1"
+          ],
+          [
+            "/full_validation/traces/1/coverage",
+            "complete"
+          ],
+          [
+            "/full_validation/traces/1/cross_rules_declared",
+            "0"
+          ],
+          [
+            "/full_validation/traces/1/duplicate_record_keys",
+            "0"
+          ],
+          [
+            "/full_validation/traces/1/inconclusive_record_keys",
+            "0"
+          ],
+          [
+            "/full_validation/traces/1/record_keys_checked",
+            "2"
+          ],
+          [
+            "/full_validation/traces/1/records_processed",
+            "2"
+          ],
+          [
+            "/full_validation/traces/1/trace_id",
+            "T"
+          ],
+          [
+            "/full_validation/traces/1/unprojectable_records",
+            "0"
+          ],
+          [
+            "/inputs/0/bytes_read",
+            "18"
+          ],
+          [
+            "/inputs/0/completion/kind",
+            "complete"
+          ],
+          [
+            "/inputs/0/completion/sha256",
+            "33c9c9e68348fa966ac574372c896053a62dc6dd778a8040ed407e3e1f5938a8"
+          ],
+          [
+            "/inputs/0/file_name",
+            "fullsr.txt"
+          ],
+          [
+            "/inputs/0/file_size_bytes",
+            "18"
+          ],
+          [
+            "/inputs/0/trace_id",
+            "S"
+          ],
+          [
+            "/inputs/1/bytes_read",
+            "14"
+          ],
+          [
+            "/inputs/1/completion/kind",
+            "complete"
+          ],
+          [
+            "/inputs/1/completion/sha256",
+            "1bb91ef74a317283d247573dd9c8315bd36cb96c5c345a7e083912a0e48648ea"
+          ],
+          [
+            "/inputs/1/file_name",
+            "badt.txt"
+          ],
+          [
+            "/inputs/1/file_size_bytes",
+            "14"
+          ],
+          [
+            "/inputs/1/trace_id",
+            "T"
+          ],
+          [
+            "/invalid_records",
+            "3"
+          ],
+          [
+            "/records_processed",
+            "5"
+          ],
+          [
+            "/reference_data_versions",
+            "{}"
+          ],
+          [
+            "/result",
+            "INVALID"
+          ],
+          [
+            "/schema_hash",
+            "681ec4af6e24cfc8532f6148a0bc93b0cd06c5d5a3d16dc06a314a1dd09b34d7"
+          ],
+          [
+            "/schema_version",
+            "v1"
+          ],
+          [
+            "/scope/kind",
+            "flow"
+          ],
+          [
+            "/scope/trace_ids/0",
+            "S"
+          ],
+          [
+            "/scope/trace_ids/1",
+            "T"
+          ],
+          [
+            "/skipped_rules",
+            "1"
+          ],
+          [
+            "/started_at",
+            "2026-11-27T10:09:52.117400601Z"
+          ],
+          [
+            "/total_errors",
+            "3"
+          ],
+          [
+            "/truncated",
+            "false"
+          ],
+          [
+            "/valid_records",
+            "2"
+          ],
+          [
+            "/validation_mode",
+            "full"
+          ],
+          [
+            "/validator_version",
+            "0.1.1-rc.3"
+          ]
+        ],
+        "Errori": [
+          [
+            "code",
+            "flow",
+            "schema_version",
+            "trace",
+            "line",
+            "record_id",
+            "fiscal_code",
+            "field_id",
+            "field_name",
+            "start",
+            "end",
+            "actual",
+            "expected",
+            "message"
+          ],
+          [
+            "E_RECORD_LENGTH",
+            "SYNTHETIC",
+            "v1",
+            "S",
+            "3",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "3",
+            "6 byte",
+            "Lunghezza record non valida: attesi 6 byte, letti 3."
+          ],
+          [
+            "E_CROSS_FIELD",
+            "SYNTHETIC",
+            "v1",
+            "S",
+            "1",
+            "",
+            "",
+            "DATA",
+            "Synthetic bytes",
+            "5",
+            "6",
+            "XX",
+            "confronto tipizzato tra gli operandi dichiarati",
+            "Synthetic COMPARE: vero"
+          ],
+          [
+            "E_RELATED_RECORD_MISSING",
+            "SYNTHETIC",
+            "v1",
+            "S",
+            "2",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "record correlato richiesto",
+            "Missing related record for COMPARE"
+          ]
+        ]
+      }
+    },
+    "rf.xlsx.summary.json": {
+      "bytes": 1739,
+      "sha256": "557c7415dafefcac77e614f1ea06cfabd455b7d7c8021b452bca0a9aae8615a5"
+    }
+  }
+}

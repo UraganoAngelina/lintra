@@ -1977,6 +1977,7 @@ dependencies = [
  "tempfile",
  "webview2-com",
  "windows",
+ "zip 9.0.5",
 ]
 
 [[package]]

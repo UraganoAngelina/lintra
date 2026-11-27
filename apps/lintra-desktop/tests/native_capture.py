@@ -72,6 +72,17 @@ TO_LINE = ["Tab"] * 6
 # report, Tab x10 from the heading (Nuova analisi, 5 filters, Azzera, Applica,
 # grid) reaches the format group (XLSX, the proposed format).
 EXPORT = FIELDS + ["Tab"] * 10
+# T-MIG-P6-10: Full results. fullsr.txt (S) against badt.txt (T): DATA of AA
+# differs (E_CROSS_FIELD, context with T's value), CC has no record in T
+# (E_RELATED_RECORD_MISSING), "bad" is short (E_RECORD_LENGTH). From «Avvia
+# analisi» (Tab 16 in Full: two file buttons and two parameters instead of
+# trace and file) shift-Tab x13 reaches Risultati.
+# In the detail of the cross-trace row, Tab x3 («Leggi il testo completo» of
+# the guide, «Dominio ammesso») reaches «Mostra il contesto».
+FULL_CONTEXT = ["Tab"] * 3 + ["Return", "wait", "wait"]
+FULL_RESULTS = (FULL + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/fullsr.txt", "wait",
+                        "Tab", "Return", f"dialog:{SAMPLE_DIR}/badt.txt", "wait"]
+                + FULL_PARAMS_START + ["wait", "wait", "wait"] + ["shift-Tab"] * 13 + ["Return", "wait", "wait", "wait"])
 
 def reference_bundle(root, verified):
     """T-MIG-P6-06: LocalOnly bundle with the embedded synthetic schema and F2
@@ -238,6 +249,15 @@ SCENARIOS = [
     ("results-export-640x480", (640, 480), EXPORT + ["wait"]),
     ("results-filter-cleared-1366x768", (1366, 768),
      GRID + TO_LINE + ["type:42", "Return", "wait", "wait", "Tab", "Return", "wait", "wait"]),
+    # T-MIG-P6-10: Full results; the second row is the cross-trace
+    # diagnostic, its context lists S's and T's DATA; the Full report is
+    # saved in the proposed XLSX format as rf.xlsx.
+    ("results-full-1366x768", (1366, 768), FULL_RESULTS, None, True),
+    # Work area: the taller panel shows both context entries (S and T).
+    ("results-full-detail-context-workarea", None,
+     FULL_RESULTS + ["Tab"] * 9 + ["Down", "Down", "wait", "wait"] + FULL_CONTEXT, None, True),
+    ("results-full-export-1366x768", (1366, 768),
+     FULL_RESULTS + ["Tab"] * 10 + ["Tab", "Return", f"dialog:{SAMPLE_DIR}/rf", "wait", "wait", "wait"], None, True),
     ("keyboard-informazioni-report-1366x768", (1366, 768), FILE + START + ["wait", "wait"] + ["shift-Tab"] * 10 + ["Return", "wait"]),
     # T-MIG-P5-09: Full selection on the external bundle (last item True).
     ("full-selection-1366x768", (1366, 768), FULL, None, True),
@@ -569,12 +589,55 @@ def close_during_run(binary, output):
                 process.wait(timeout=10)
 
 
+def xlsx_cells(path):
+    """Rows of each worksheet as text (inline or shared strings), placed by
+    the cell reference column; standard library only."""
+    import re
+    import zipfile
+    from xml.etree import ElementTree
+    ns = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+    with zipfile.ZipFile(path) as archive:
+        names = [sheet.get("name") for sheet in ElementTree.fromstring(archive.read("xl/workbook.xml")).iter(f"{{{ns['m']}}}sheet")]
+        shared = []
+        if "xl/sharedStrings.xml" in archive.namelist():
+            shared = ["".join(t.text or "" for t in si.iter(f"{{{ns['m']}}}t"))
+                      for si in ElementTree.fromstring(archive.read("xl/sharedStrings.xml")).findall("m:si", ns)]
+        sheets = {}
+        for number, name in enumerate(names, start=1):
+            rows = []
+            for row in ElementTree.fromstring(archive.read(f"xl/worksheets/sheet{number}.xml")).iter(f"{{{ns['m']}}}row"):
+                values = []
+                for cell in row.findall("m:c", ns):
+                    letters = re.match(r"[A-Z]+", cell.get("r")).group(0)
+                    index = 0
+                    for letter in letters:
+                        index = index * 26 + ord(letter) - 64
+                    if cell.get("t") == "s":
+                        text = shared[int(cell.find("m:v", ns).text)]
+                    else:
+                        text = "".join(t.text or "" for t in cell.iter(f"{{{ns['m']}}}t"))
+                    values += [""] * (index - len(values))
+                    values[index - 1] = text
+                rows.append(values)
+            sheets[name] = rows
+    return sheets
+
+
 def main():
     binary = Path(sys.argv[1]).resolve(strict=True)
     output = Path(sys.argv[2]).resolve()
     output.mkdir(parents=True, exist_ok=True)
     monitor_name = sys.argv[3] if len(sys.argv) > 3 else None
     scenarios = SCALED_SCENARIOS if monitor_name else SCENARIOS
+    # LINTRA_CAPTURE_ONLY=<prefix>[,<prefix>]: only those scenarios and the
+    # untouched baselines of their sizes (the pixel-change check needs them),
+    # to capture new states without repeating the whole campaign.
+    only = [prefix for prefix in os.environ.get("LINTRA_CAPTURE_ONLY", "").split(",") if prefix]
+    if only:
+        chosen = [item for item in scenarios if any(item[0].startswith(prefix) for prefix in only)]
+        sizes = {item[1] for item in chosen}
+        scenarios = [item for item in scenarios if item in chosen or (not item[2] and item[1] in sizes)]
+        assert chosen, f"no scenario matches {only}"
     samples = Path(SAMPLE_DIR)
     samples.mkdir(exist_ok=False)
     try:
@@ -582,6 +645,7 @@ def main():
         (samples / "whole.txt").write_bytes(b"001A  \n001B  \r\n")  # 15 bytes, LF and CRLF
         (samples / "fulls.txt").write_bytes(b"01AAXX\n02BBYY\n")  # Full trace S (PK, KEY, DATA)
         (samples / "fullt.txt").write_bytes(b"01AAXX\n02BBYY\n")  # Full trace T: same KEY/DATA
+        (samples / "fullsr.txt").write_bytes(b"01AAXX\n02CCYY\nbad\n")  # P6-10: S with three diagnostics
         (samples / "badt.txt").write_bytes(b"01AAZZ\n02BBYY\n")  # T: DATA of AA differs from S
         (samples / "onet.txt").write_bytes(b"001A  \n")  # T: the record every big.txt row joins
         (samples / "invalid.txt").write_bytes(b"001A\n" * 100_000)  # P6-01: 100 000 length diagnostics
@@ -592,10 +656,17 @@ def main():
         results = [scenario(binary, output, monitor_name, *item) for item in scenarios]
         # P6-08: the files the export scenario saved, exactly as Rust wrote them.
         exported = {file.name: {"bytes": file.stat().st_size, "sha256": hashlib.sha256(file.read_bytes()).hexdigest()}
-                    for file in sorted(samples.glob("r.*"))}
+                    for file in sorted(samples.glob("r.*")) + sorted(samples.glob("rf.*"))}
+        names = {item[0] for item in scenarios}
+        wanted = (["r.jsonl", "r.jsonl.summary.json"] if "results-export-1366x768" in names else []) \
+            + (["rf.xlsx", "rf.xlsx.summary.json"] if "results-full-export-1366x768" in names else [])
         if not monitor_name:
-            assert sorted(exported) == ["r.jsonl", "r.jsonl.summary.json"], exported
-        close = None if monitor_name else close_during_run(binary, output)
+            assert sorted(exported) == sorted(wanted), exported
+        # P6-10: the cells of the Full XLSX, read back from the workbook Rust wrote.
+        workbook = samples / "rf.xlsx"
+        if workbook.exists():
+            exported["rf.xlsx"]["sheets"] = xlsx_cells(workbook)
+        close = None if monitor_name or only else close_during_run(binary, output)
     finally:
         for file in samples.iterdir():
             file.unlink()
@@ -612,6 +683,8 @@ def main():
     receipt = {"binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(), "scenarios": results}
     if close is not None:
         receipt["close_during_run"] = close
+    if only:
+        receipt["only"] = only
     if not monitor_name:
         receipt["export"] = exported
     (output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")

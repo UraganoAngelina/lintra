@@ -27,6 +27,9 @@ gtk = "=0.18.2"
 
 [dev-dependencies]
 tempfile = { version = "=3.27.0", default-features = false }
+# T-MIG-P6-10: read the exported XLSX (ZIP/XML) in tests; same pin as the
+# workspace dev-dependency, already locked through rust_xlsxwriter.
+zip = { version = "=9.0.5", default-features = false, features = ["deflate"] }
 
 [profile.dev]
 debug = 0
