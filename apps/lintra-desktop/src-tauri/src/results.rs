@@ -640,14 +640,23 @@ fn overview(
     {
         return Err(ErrorCode::TechnicalFailure);
     }
-    let codes = summary
+    // PAGING.md: in the summary's order, i.e. by code symbol as the
+    // summary document writes it (`errors_by_code` is keyed by the enum,
+    // whose declaration order differs). The renderer's chart breaks count
+    // ties on this order.
+    let mut codes = summary
         .errors_by_code
         .iter()
         .map(|(code, count)| {
             let symbol = code.as_symbol().map_err(|_| ErrorCode::TechnicalFailure)?;
-            Ok(json!({"schemaVersion":1,"code":preview(symbol),"count":count.to_string()}))
+            Ok((symbol, *count))
         })
         .collect::<Result<Vec<_>, ErrorCode>>()?;
+    codes.sort_unstable_by_key(|(symbol, _)| *symbol);
+    let codes: Vec<Value> = codes
+        .into_iter()
+        .map(|(symbol, count)| json!({"schemaVersion":1,"code":preview(symbol),"count":count.to_string()}))
+        .collect();
     let per_trace: Vec<Value> = traces
         .iter()
         .enumerate()

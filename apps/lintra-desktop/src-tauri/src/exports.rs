@@ -558,6 +558,8 @@ impl Exports {
 }
 
 #[cfg(test)]
+mod golden_parity;
+#[cfg(test)]
 mod tests {
     use super::*;
     use crate::jobs::{
@@ -592,13 +594,13 @@ mod tests {
     /// Synthetic native dialogs: queued save answers and confirmation
     /// answers, with every confirmation title recorded.
     #[derive(Default)]
-    struct Dialogs {
+    pub(super) struct Dialogs {
         saves: RefCell<VecDeque<Option<PathBuf>>>,
         answers: RefCell<VecDeque<bool>>,
         asked: RefCell<Vec<String>>,
     }
     impl Dialogs {
-        fn saving(path: Option<&Path>) -> Self {
+        pub(super) fn saving(path: Option<&Path>) -> Self {
             let dialogs = Self::default();
             dialogs
                 .saves
@@ -630,7 +632,7 @@ mod tests {
     }
 
     /// Run the production worker to a published report.
-    fn published(
+    pub(super) fn published(
         intent: Arc<crate::configuration::PreparedIntent>,
         refs: Arc<dyn ReferenceDataPreparer>,
     ) -> (Jobs, RunRef) {
@@ -673,7 +675,7 @@ mod tests {
     fn none() -> Dialogs {
         Dialogs::default()
     }
-    fn about(jobs: &mut Jobs, run: &RunRef) -> Value {
+    pub(super) fn about(jobs: &mut Jobs, run: &RunRef) -> Value {
         call(
             jobs,
             "report_about",
@@ -683,7 +685,7 @@ mod tests {
         )
         .unwrap()
     }
-    fn prepare(
+    pub(super) fn prepare(
         jobs: &mut Jobs,
         report_ref: &Value,
         format: &str,
@@ -699,7 +701,7 @@ mod tests {
         )
     }
     /// Execute a ready plan and poll its owned job to the receipt.
-    fn execute(jobs: &mut Jobs, export_ref: &Value, forbidden: &[&Path]) -> Value {
+    pub(super) fn execute(jobs: &mut Jobs, export_ref: &Value, forbidden: &[&Path]) -> Value {
         let started = call(
             jobs,
             "export_execute",
@@ -733,7 +735,7 @@ mod tests {
         }
     }
     /// Bytes the canonical writers produce directly for this report.
-    fn canonical(report: &Report, format: ExportFormat) -> (Vec<u8>, Vec<u8>) {
+    pub(super) fn canonical(report: &Report, format: ExportFormat) -> (Vec<u8>, Vec<u8>) {
         let file = std::io::BufReader::new(fs::File::open(report.spool()).unwrap());
         let token = CancellationToken::default();
         let body = match format {
