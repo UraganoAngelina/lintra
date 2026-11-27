@@ -7,7 +7,7 @@ Autorità: [ratifica D01–D15](docs/unified-post-m9/RATIFICATION_2026-11-10.md)
 [grafo completo](docs/unified-post-m9/DEPENDENCY_GRAPH.json).
 Consuntivo storico separato: **140/140 DONE**, QG-8/M9 invariati.
 
-Conteggio unificato: **82/128 DONE;46 rimanenti** (18U-* e34MIG).
+Conteggio unificato: **83/128 DONE;45 rimanenti** (18U-* e33MIG).
 Le rimanenti comprendono le task avviate, sospese e bloccate; nessun gate
 pendente viene contato come task conclusa.
 
@@ -127,7 +127,7 @@ CI antecedenti non qualificano nuovi delta runtime.
 | T-MIG-P6-05 | T-MIG-P6-04 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-05.md) | dominio ammesso statico/range da Rust nel pannello di dettaglio (backend P4-09 invariato); banco di cattura con TMPDIR per scenario (autorizzato); desktop 86, Node 166 PASS; nativo 68/68+chiusura; 4b2b62f+04af32e;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance parità field_guide, big integer come testo, UI non calcola domini PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-06 | T-MIG-P6-05 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-06.md) | dataset reference consultabile dall'evidenza del run (worker Rust con polling), digest dall'evidenza, cinque stati non verificati senza valori (backend P4-09 invariato); desktop 86, Node 170 PASS; nativo 71/71+chiusura; dfadf53;review Codex round 1 APPROVED senza rilievi;CI delta NOT_RUN,al checkpoint blocco | Acceptance reference snapshot coerente, nessun «valido» con dati mancanti/non verificati PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-07 | T-MIG-P6-01, T-MIG-P6-03, T-MIG-P6-06 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-07.md) | riepilogo Risultati senza conformità globale: successo solo Full completo, LocalOnly neutro con ambito, parziale/troncato/annullato «verifiche parziali», esito non leggibile come alert, report vuoto qualificato (backend invariato); desktop 86, Node 174 PASS; nativo 71/71+chiusura; 4a6be32;review Codex round 1 APPROVED, MINOR documentale P607-01 recepito in chiusura;CI delta NOT_RUN,al checkpoint blocco | Acceptance nessuna conformità globale LocalOnly/incompleti, error states accessibili PASS; G-MIG-6 NOT_VERIFIED |
-| T-MIG-P6-08 | T-MIG-P6-07 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-08.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
+| T-MIG-P6-08 | T-MIG-P6-07 | DONE | [Dossier](docs/verification/unified-post-m9/T-MIG-P6-08.md) | «Salva il report» in Risultati: solo report_ref e formato, dialogo/conferme/writer/pubblicazioni in Rust (backend P4-10 invariato), receipt con due pubblicazioni non dette atomic pair, ruoli pubblicati, durabilità e pulizia; export per istanza conservato fra report e salvataggi, esito ignoto senza retry cieco; desktop 86, Node 185 PASS; nativo 74/74+chiusura (round 1), JSONL = CLI; 4291843+7aa8e58;review Codex round 1 CHANGES_REQUESTED (P608-01/02), round 2 APPROVED, MINOR documentale P608-03 recepito in chiusura;CI delta NOT_RUN,al checkpoint blocco | Acceptance export intero, byte del writer canonico, nessun atomic pair, overwrite nativo PASS; G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-09 | T-MIG-P6-02, T-MIG-P6-03, T-MIG-P6-04, T-MIG-P6-05, T-MIG-P6-06, T-MIG-P6-07, T-MIG-P6-08 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-09.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P6-10 | T-MIG-P6-09, T-MIG-P5-10 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P6-10.md) | —; Non eseguite | G-MIG-6 NOT_VERIFIED |
 | T-MIG-P7-01 | T-MIG-P6-09 | NOT_STARTED | [Prompt](docs/unified-post-m9/PROMPT_ATOMICI/MIGRAZIONE_89/T-MIG-P7-01.md) | —; Non eseguite | G-MIG-7 NOT_VERIFIED |
@@ -696,3 +696,20 @@ il MINOR PRG-01). Review Codex round 1 APPROVED
 native fuori dal repository in `lintra-review-handoffs/FIX-RUN-PROGRESS-native/`.
 Integrazione autorizzata dall'autore: fast-forward, nessun push. CI remota e
 Windows/WebView2 NOT_RUN.
+
+Chiusura T-MIG-P6-08, 27 novembre 2026: **DONE**, **83/128 (64,8%)**, 45
+rimanenti. Autore Claude Code, commit 4291843 e 7aa8e58 su base a2d9f75.
+«Salva il report» in Risultati: il renderer invia solo `report_ref` e
+formato; dialogo, conferme di sovrascrittura e destinazione, writer canonici
+e pubblicazioni restano in Rust. La receipt descrive due pubblicazioni
+distinte, ruoli pubblicati, durabilità e pulizia. Review Codex round 1
+CHANGES_REQUESTED (P608-01: un nuovo report perdeva l'export in corso;
+P608-02: un nuovo salvataggio sovrascriveva un esito ignoto), corretti con
+un export per istanza conservato fino al receipt; round 2 APPROVED
+(`lintra-review-handoffs/T-MIG-P6-08-CODEX-REVIEW.md`), MINOR documentale
+P608-03 corretto nel dossier. Integrazione autorizzata dall'autore:
+fast-forward di integration, nessun push. Catture native del round 1, non
+ripetute nel rework; XLSX verificato per firma ZIP e sidecar. CI remota,
+Windows/WebView2 e `npm ci` con i pin esatti NOT_RUN, al checkpoint del
+blocco P6. G-MIG-6 e G-REL aperti. Prossima tecnicamente disponibile
+T-MIG-P6-09.

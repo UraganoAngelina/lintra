@@ -1,6 +1,13 @@
 # T-MIG-P6-08 — Export UI con receipt e overwrite
 
-Data 26 novembre 2026. Stato: **IN_REVIEW** (non DONE). Prerequisito
+Data 26 novembre 2026. Stato: **DONE**. Review Codex round 1
+CHANGES_REQUESTED su `4291843` (P608-01, P608-02), round 2 APPROVED su
+`7aa8e58` (`lintra-review-handoffs/T-MIG-P6-08-CODEX-REVIEW.md`) con un
+MINOR documentale, P608-03, corretto qui sotto nella descrizione di
+`useExport` e dei test. Integrazione autorizzata dall'autore per
+fast-forward di `integration`, senza push. CI remota e Windows/WebView2
+NOT_RUN, al checkpoint del blocco P6; G-MIG-6 NOT_VERIFIED.
+Prerequisito
 T-MIG-P6-07 DONE (`integration` `a2d9f75`, che comprende anche la mini-task
 FIX-RUN-PROGRESS). Branch `work/T-MIG-P6-08` da `a2d9f75`, worktree
 `/home/alberto/Desktop/LINTRA/lintra-p6-08`.
@@ -49,9 +56,10 @@ lato renderer, senza modifiche Rust.
   fallimento o annullamento con i ruoli pubblicati (nessuno, solo report,
   solo riepilogo, entrambi ma incompleto), durabilità non confermata,
   pulizia non riuscita (testi del core) e destinazione remota confermata.
-- `useExport`: legato all'identità del report pubblicato (RunRef), non alla
-  sezione visibile: uscire da Risultati durante la scrittura non perde la
-  receipt; un nuovo report invalida le risposte tardive.
+- `useExport`: un export per istanza (`exportStore`, dal rework del round
+  2), indipendente dalla sezione visibile e dal report mostrato: né uscire da
+  Risultati né un nuovo report perdono la job in corso o la sua receipt; un
+  nuovo report azzera solo un esito concluso (P608-03).
 - `ExportCard` «Salva il report»: formato (ordine Slint XLSX, JSONL, CSV;
   proposto il primo richiesto con l'analisi, `preferredFormat`), «Salva
   report…», stati con `role` `status`/`alert`/`note`; report annullato o
@@ -70,7 +78,8 @@ sotto `mockIPC`: richieste esatte (`export_prepare` con solo
 `export_state` con il solo `export_ref`), nessun path, nome file, overwrite
 o consenso dal renderer; dialogo chiuso, conferma rifiutata, destinazione
 rifiutata, prepare fallito senza job; risposta persa come esito ignoto e
-rilettura; polling che si ferma con un nuovo report; annullamento richiesto,
+rilettura; polling che si ferma quando `live()` non vale più (round 1: dal
+round 2 un nuovo report non lo ferma, vedi sotto); annullamento richiesto,
 tardivo o fallito; receipt per ogni combinazione di ruoli, durabilità,
 pulizia e conferma remota; scheda e ruoli accessibili; nessun Blob, download
 o writer nel sorgente. Prove di mutazione: successo detto «atomico»,
@@ -144,7 +153,7 @@ v1, CLI, golden, SQLite, dipendenze.
 | Requisito | Prova |
 | --- | --- |
 | Export sempre intero | il renderer non invia filtri né contenuto: solo `report_ref` e formato (test); nota «I filtri della tabella non limitano l'esportazione» |
-| Byte-identico al core | test Rust del bridge contro il writer canonico (3 formati, LocalOnly e Full); JSONL salvato in nativo identico all'output della CLI dello stesso albero (SHA-256 `00b012d5…1d1d`) |
+| Byte-identico al core | test Rust del bridge contro il writer canonico (LocalOnly e Full: JSONL/CSV e sidecar byte per byte, XLSX solo firma ZIP e sidecar); JSONL salvato in nativo identico all'output della CLI dello stesso albero (SHA-256 `00b012d5…1d1d`) |
 | Due pubblicazioni non dette atomic pair | testo di successo «due file pubblicati uno dopo l'altro, non un'unica scrittura»; parziali espliciti per ruolo (test, mutazione); cattura `results-export` |
 | Overwrite | conferma nativa distinta di Rust (test Rust esistente); il renderer non ha alcun flag |
 
@@ -178,4 +187,4 @@ v1, CLI, golden, SQLite, dipendenze.
   resterebbe bloccato fino al riavvio (Rust risponderebbe comunque Busy a un
   nuovo prepare finché la job è attiva).
 
-Prossima task tecnicamente disponibile dopo l'integrazione: T-MIG-P6-09.
+Prossima task tecnicamente disponibile: T-MIG-P6-09.
