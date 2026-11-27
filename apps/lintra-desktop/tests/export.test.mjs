@@ -13,7 +13,7 @@ import * as ipc from "../src/ipc.ts";
 
 globalThis.window = { crypto: globalThis.crypto };
 afterEach(() => { clearMocks(); mock.timers.reset(); });
-const { ExportCard, receiptText, startExport, followExport, cancelExport, EXPORT_POLL_MS } = await loadComponent("Export");
+const { ExportCard, receiptText, startExport, followExport, cancelExport, exportStore, EXPORT_POLL_MS } = await loadComponent("Export");
 
 const RUN = { schemaVersion: 1, instance_id: "a".repeat(32), run_id: "7" };
 const REPORT = "rep_" + "1".repeat(32);
@@ -184,8 +184,81 @@ test("the card: whole report, proposed format, states with accessible roles", ()
   const unknown = card({ view: { status: "unknown", exportRef: EXPORT } });
   assert.match(unknown, /role="alert"><p>Esito del salvataggio non disponibile: alcuni file potrebbero essere già stati salvati\./);
   assert.match(unknown, />Controlla l&#x27;esito<\/button>/);
+  // P608-02: an uncertain export blocks a new save, also in the markup.
+  assert.match(unknown, /<fieldset class="export-formats" disabled="">/);
+  assert.match(unknown, /aria-disabled="true"[^>]*>Salva report…/);
+  // P608-01: an export started from an earlier report says so, and stays
+  // reachable even when the shown report cannot be saved.
+  const earlier = card({ previous: true, about: about({ status: "cancelled", exportable: false }), view: { status: "writing", exportRef: EXPORT, cancel: "none" } });
+  assert.match(earlier, /role="note">Questo salvataggio è stato avviato dal report di un&#x27;analisi precedente/);
+  assert.match(earlier, />Annulla salvataggio<\/button>[\s\S]*Salvataggio in corso/);
+  assert.doesNotMatch(card({ previous: true }), /analisi precedente/);
   assert.match(card({ view: { status: "done", result: terminal("succeeded") } }), /role="status"><p>Report e riepilogo salvati in formato JSONL\.<\/p><p>Sono due file/);
   assert.match(card({ view: { status: "done", result: terminal("failed") } }), /role="alert"><p>Salvataggio non riuscito\.<\/p>/);
+});
+
+const OTHER = "rep_" + "3".repeat(32);
+test("P608-01: a new report keeps the running export, its controls and its receipt", async () => {
+  mock.timers.enable({ apis: ["setTimeout"] });
+  const seen = bridge({ export_prepare: [ready], export_execute: [writing], export_state: [writing, writing, terminal("succeeded")], export_cancel: [{ schemaVersion: 1, export_ref: EXPORT, disposition: "requested" }] });
+  const store = exportStore(api);
+  store.report("A");
+  store.save("A", REPORT, "jsonl");
+  await drain();
+  assert.equal(store.get().view.status, "writing");
+  store.report("B");
+  assert.deepEqual(store.get(), { owner: "A", view: { status: "writing", exportRef: EXPORT, cancel: "none" } });
+  store.save("B", OTHER, "csv");
+  store.cancel();
+  await drain();
+  assert.equal(store.get().view.cancel, "requested");
+  for (let i = 0; i < 3; i++) { mock.timers.tick(EXPORT_POLL_MS); await drain(); }
+  assert.equal(store.get().owner, "A");
+  assert.equal(store.get().view.status, "done");
+  assert.equal(store.get().view.result.export_ref, EXPORT);
+  // No second prepare while A was writing; the cancel went to A.
+  assert.deepEqual(seen.map(r => r.operation), ["export_prepare", "export_execute", "export_state", "export_cancel", "export_state", "export_state"]);
+  assert.equal(seen.find(r => r.operation === "export_cancel").payload.export_ref, EXPORT);
+  // A settled outcome is cleared by the next report, not by the same one.
+  store.report("B");
+  assert.equal(store.get().view.status, "done");
+  store.report("C");
+  assert.deepEqual(store.get(), { owner: "C", view: { status: "idle" } });
+});
+
+test("P608-02: a new save never replaces an unknown outcome; the receipt is still read", async () => {
+  mock.timers.enable({ apis: ["setTimeout"] });
+  const seen = bridge({ export_prepare: [ready], export_execute: [writing], export_state: ["fail", terminal("succeeded")] });
+  const store = exportStore(api);
+  store.report("A");
+  store.save("A", REPORT, "jsonl");
+  await drain();
+  assert.deepEqual(store.get().view, { status: "unknown", exportRef: EXPORT });
+  store.save("A", REPORT, "jsonl");
+  store.report("B");
+  store.save("B", OTHER, "jsonl");
+  await drain();
+  assert.deepEqual(store.get(), { owner: "A", view: { status: "unknown", exportRef: EXPORT } });
+  store.check();
+  await drain();
+  assert.equal(store.get().view.status, "done");
+  assert.equal(store.get().view.result.state, "succeeded");
+  assert.deepEqual(seen.map(r => r.operation), ["export_prepare", "export_execute", "export_state", "export_state"]);
+});
+
+test("store: a settled outcome allows the next save; every view is published", async () => {
+  const seen = bridge({ export_prepare: ["fail", { schemaVersion: 1, state: "cancelled", reason: "native_selection_cancelled" }] });
+  const store = exportStore(api);
+  const shown = [];
+  store.subscribe(() => shown.push(store.get().view.status));
+  store.save("A", REPORT, "jsonl");
+  await drain();
+  assert.equal(store.get().view.status, "prepare_failed");
+  store.save("A", REPORT, "jsonl");
+  await drain();
+  assert.deepEqual(store.get().view, { status: "closed", reason: "native_selection_cancelled" });
+  assert.deepEqual(shown, ["choosing", "choosing", "prepare_failed", "choosing", "choosing", "closed"]);
+  assert.equal(seen.length, 2);
 });
 
 test("no report bytes, writer or file API in the renderer export", () => {

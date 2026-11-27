@@ -59,13 +59,14 @@ function App() {
   const [results, onPage, onRetry, filters, onFilter] = useResults(report, view === "risultati");
   const [detail, onSelect, onDetailRetry] = useDetail(results.status === "ready" ? results.query_ref : null);
   const overview = useOverview(report, view === "risultati");
-  // Export of the published report (T-MIG-P6-08): bound to its report_ref;
-  // the proposed format is the first one requested with that run.
+  // Export (T-MIG-P6-08): one per instance, kept across new reports until
+  // Rust reports its outcome; the proposed format is the first one requested
+  // with the shown run.
   const described = about.status === "ready" && report !== null && sameRunRef(about.about.run, report) ? about.about : null;
   const exporting = useExport(report === null ? null : `${report.instance_id}:${report.run_id}`);
   const runView = run.view.status === "active" || run.view.status === "terminal" ? run.view : null;
   const requested = runView && report !== null && sameRunRef(runView.run, report) ? runView.reports : DEFAULT_REPORTS;
-  const exportCard = described ? <ExportCard about={described} initial={preferredFormat(requested)} view={exporting.view}
+  const exportCard = described ? <ExportCard about={described} initial={preferredFormat(requested)} view={exporting.view} previous={exporting.previous}
     onSave={exporting.save} onCancel={exporting.cancel} onCheck={exporting.check} /> : null;
   // Flow and version of the configuration Rust accepted for the current form.
   const configured = selection.configuration.status === "ready" ? selection.configuration.selection : null;

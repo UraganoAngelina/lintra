@@ -4,7 +4,7 @@
 // report with the canonical writers and publishes report and summary as two
 // separate files (EXPORT.md). Here: the format choice, the job lifecycle as
 // Rust reports it and its receipt, never a path or report content.
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { exportCancel, exportExecute, exportPrepare, exportState, type ExportFormat, type ExportResult, type ReportAbout } from "./ipc";
 import { REPORT_FORMATS } from "./analysis";
 import { Button, Card } from "./ui";
@@ -100,49 +100,89 @@ export function cancelExport(api: ExportApi, exportRef: string, live: () => bool
   }, () => { if (live()) mark("failed"); });
 }
 
+/** An export Rust may still be carrying out, or whose outcome is not known:
+ * its export_ref must stay reachable until the receipt is read. */
+export function exportPending(view: ExportView): boolean {
+  return view.status === "choosing" || view.status === "writing" || view.status === "unknown";
+}
+
+/** The export and the report (RunRef key) that started it. */
+export type ExportJob = { owner: string | null; view: ExportView };
+const IDLE: ExportView = { status: "idle" };
+
 /**
- * Export lifecycle bound to the published report (`report`, its RunRef
- * identity): only a new report makes late replies void, so leaving
- * Risultati while Rust writes never loses the receipt. One export at a
- * time, followed until Rust reports its terminal state.
+ * The instance's export, independent of the report on screen (P608-01):
+ * Rust keeps writing the captured report after a new run, so a new report
+ * clears only a settled outcome, never a pending one. While one is pending
+ * no new save starts (P608-02: Rust would answer Busy and the uncertain
+ * export_ref would be lost).
  */
+export function exportStore(api: ExportApi = IPC) {
+  let job: ExportJob = { owner: null, view: IDLE };
+  let shown: string | null = null;
+  const listeners = new Set<() => void>();
+  const update = (change: (current: ExportJob) => ExportJob) => { job = change(job); listeners.forEach(listener => listener()); };
+  // No stale replies to drop: a job starts only once the previous one settled,
+  // and a late cancel reply only marks the writing job it names.
+  const live = () => true;
+  const set: Set = view => update(current => ({ ...current, view }));
+  return {
+    get: () => job,
+    subscribe(listener: () => void) { listeners.add(listener); return () => { listeners.delete(listener); }; },
+    /** The report now shown: a change clears a settled outcome only. */
+    report(owner: string | null) {
+      if (owner === shown) return;
+      shown = owner;
+      update(current => exportPending(current.view) ? current : { owner, view: IDLE });
+    },
+    save(owner: string, reportRef: string, format: ExportFormat) {
+      if (exportPending(job.view)) return;
+      update(() => ({ owner, view: { status: "choosing" } }));
+      startExport(api, reportRef, format, live, set);
+    },
+    cancel() {
+      const view = job.view;
+      if (view.status === "writing" && view.cancel !== "requested") cancelExport(api, view.exportRef, live, change => update(current => ({ ...current, view: change(current.view) })));
+    },
+    check() {
+      const view = job.view;
+      if (view.status !== "unknown") return;
+      set({ status: "writing", exportRef: view.exportRef, cancel: "none" });
+      followExport(api, view.exportRef, live, set);
+    },
+  };
+}
+
+/** The export store for the published report `report` (RunRef key):
+ * `previous` when the shown export was started from an earlier report. */
 export function useExport(report: string | null, api: ExportApi = IPC) {
-  const [view, setView] = useState<ExportView>({ status: "idle" });
-  const generation = useRef(0);
-  useEffect(() => {
-    const mine = ++generation.current;
-    setView({ status: "idle" });
-    return () => { if (generation.current === mine) generation.current++; };
-  }, [report]);
-  const liveNow = () => { const mine = generation.current; return () => generation.current === mine; };
-  const save = (reportRef: string, format: ExportFormat) => { if (report !== null) startExport(api, reportRef, format, liveNow(), setView); };
-  const cancel = () => {
-    if (view.status === "writing" && view.cancel !== "requested") cancelExport(api, view.exportRef, liveNow(), setView);
+  const [store] = useState(() => exportStore(api));
+  const job = useSyncExternalStore(store.subscribe, store.get);
+  useEffect(() => { store.report(report); }, [store, report]);
+  return {
+    view: job.view, previous: job.owner !== null && job.owner !== report,
+    save: (reportRef: string, format: ExportFormat) => { if (report !== null) store.save(report, reportRef, format); },
+    cancel: store.cancel, check: store.check,
   };
-  const check = () => {
-    if (view.status !== "unknown") return;
-    setView({ status: "writing", exportRef: view.exportRef, cancel: "none" });
-    followExport(api, view.exportRef, liveNow(), setView);
-  };
-  return { view, save, cancel, check };
 }
 
 /** «Salva il report»: format, the native save, then Rust's receipt. */
-export function ExportCard({ about, initial, view, onSave, onCancel, onCheck }:
-  { about: ReportAbout; initial: ExportFormat; view: ExportView; onSave: (reportRef: string, format: ExportFormat) => void; onCancel: () => void; onCheck: () => void }) {
+export function ExportCard({ about, initial, view, previous = false, onSave, onCancel, onCheck }:
+  { about: ReportAbout; initial: ExportFormat; view: ExportView; previous?: boolean; onSave: (reportRef: string, format: ExportFormat) => void; onCancel: () => void; onCheck: () => void }) {
   const [format, setFormat] = useState<ExportFormat>(initial);
   useEffect(() => { setFormat(initial); }, [about.report_ref, initial]);
   // The card is last in Risultati: bring each new state into view, not only
   // to assistive technologies (role status/alert).
   const status = useRef<HTMLDivElement>(null);
   useEffect(() => { if (view.status !== "idle") status.current?.scrollIntoView({ block: "nearest" }); }, [view]);
-  const busy = view.status === "choosing" || view.status === "writing";
+  const busy = exportPending(view);
   return <Card className="export-card" aria-labelledby="export-title">
     <div className="export-head">
       <h2 id="export-title">Salva il report</h2>
       <p className="text-muted">Il salvataggio include report e riepilogo JSON con versioni e provenienza. I filtri della tabella non limitano l'esportazione.</p>
     </div>
-    {!about.exportable ? <p className="export-message" role="note">{notExportable(about)}</p> : <>
+    {previous && view.status !== "idle" && <p className="export-message" role="note">Questo salvataggio è stato avviato dal report di un'analisi precedente, non da quello mostrato.</p>}
+    {!about.exportable && !busy ? <p className="export-message" role="note">{notExportable(about)}</p> : <>
       <div className="export-actions">
         <fieldset className="export-formats" disabled={busy}>
           <legend>Formato</legend>
@@ -155,8 +195,8 @@ export function ExportCard({ about, initial, view, onSave, onCancel, onCheck }:
           ? <Button variant="ghost" aria-disabled={view.cancel === "requested"} onClick={() => { if (view.cancel !== "requested") onCancel(); }}>Annulla salvataggio</Button>
           : <Button variant="primary" aria-disabled={busy} onClick={() => { if (!busy) onSave(about.report_ref, format); }}>Salva report…</Button>}
       </div>
-      <div ref={status} className="export-status"><ExportStatus view={view} onCheck={onCheck} /></div>
     </>}
+    <div ref={status} className="export-status"><ExportStatus view={view} onCheck={onCheck} /></div>
   </Card>;
 }
 
@@ -173,7 +213,7 @@ function ExportStatus({ view, onCheck }: { view: ExportView; onCheck: () => void
       : view.cancel === "failed" ? "Annullamento non riuscito. Il salvataggio continua: attendi l'esito."
       : "Salvataggio in corso. Attendi la conferma prima di usare i file."}</p>;
     case "unknown": return <div className="export-message" role="alert">
-      <p>Esito del salvataggio non disponibile: alcuni file potrebbero essere già stati salvati. Controlla la destinazione prima di salvare di nuovo.</p>
+      <p>Esito del salvataggio non disponibile: alcuni file potrebbero essere già stati salvati. Controlla l'esito prima di avviare un altro salvataggio.</p>
       <Button size="sm" variant="ghost" onClick={onCheck}>Controlla l'esito</Button>
     </div>;
     case "done": {

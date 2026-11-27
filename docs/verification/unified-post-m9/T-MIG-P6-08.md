@@ -82,6 +82,58 @@ report di `fields.txt` in JSONL tramite il vero dialogo GTK;
 `results-export-cancel-1366x768` chiude il dialogo; `results-export-640x480`.
 Il receipt registra dimensione e SHA-256 dei due file scritti da Rust.
 
+## Rework dopo la review Codex round 1
+
+La review di `4291843` (CHANGES_REQUESTED) ha riprodotto due difetti del
+ciclo di vita dell'hook, entrambi corretti in `Export.tsx`:
+
+- **P608-01**: un nuovo report azzerava la scheda e abbandonava il polling di
+  un export ancora in corso, che Rust continua a scrivere sul report
+  catturato. Ora l'export è uno per istanza (`exportStore`), indipendente dal
+  report mostrato: un nuovo report azzera solo un esito concluso, mai uno in
+  corso o ignoto. Annullamento, polling e receipt restano disponibili; la
+  scheda del nuovo report dice «Questo salvataggio è stato avviato dal report
+  di un'analisi precedente, non da quello mostrato.», anche se il nuovo report
+  non è esportabile.
+- **P608-02**: con un esito ignoto «Salva report…» restava attivo; il
+  secondo prepare (Busy da Rust) sostituiva l'unico `export_ref` con
+  «nessun file scritto». Ora un export in scelta, in scrittura o ignoto
+  (`exportPending`) blocca un nuovo salvataggio sia nel markup (pulsante e
+  formati disabilitati) sia nel callback dello store; il testo dice «Controlla
+  l'esito prima di avviare un altro salvataggio».
+
+Il contatore di generazione dell'hook è rimosso: senza salvataggi
+sovrapposti non esistono risposte superate da scartare, e una risposta tardiva
+di annullamento modifica solo la job in scrittura che nomina.
+
+Test nuovi sullo store reale (senza DOM, client IPC reale sotto `mockIPC`):
+export A in scrittura → report B → secondo save ignorato → annullamento
+inviato ad A → receipt di A mostrata con la sua provenienza → report C che
+azzera; risposta persa → save ripetuti e cambio report ignorati → «Controlla
+l'esito» → receipt; sequenza di save dopo un esito concluso; markup con esito
+ignoto (save e formati disabilitati) e con export di un report precedente.
+Prove di mutazione: azzeramento al cambio report (2 FAIL), save senza guardia
+(2 FAIL), `busy` senza «ignoto» (1 FAIL); codice reale 10/10.
+
+`useExport` resta un collegamento di poche righe (store per istanza in
+`useState`, `useSyncExternalStore`, effetto che inoltra il report mostrato):
+tutta la logica è nello store testato. Montare l'hook richiederebbe un DOM
+renderer (jsdom/testing-library) assente dalle dipendenze; non aggiunto.
+
+Verifiche del rework (27 novembre 2026), stessi comandi di `desktop.yml`:
+`npm run lint` / `npm test` / `npm run build` PASS / 185 PASS / PASS;
+`cargo fmt -- --check`, `cargo test` (86 passed, 1 ignored), `cargo clippy
+… -D warnings`, `cargo build` sul target Linux PASS (0); `native_smoke.py`
+sul binario ricostruito PASS (0) in sessione reale (`xvfb-run` assente),
+SHA-256 `df732163eb5c747e6c89cf375620cbe092e432840afa67bcabf0f02779e04c6c`.
+Banco di catture non ripetuto: gli stati già catturati (export, dialogo
+chiuso, 640×480) hanno lo stesso markup di prima (lo stato resta l'ultimo
+elemento della scheda); i due stati nuovi (ignoto con salvataggio
+disabilitato, export di un report precedente) sono provati dai test di markup
+e il banco non sa produrli (servirebbe una risposta IPC persa o un secondo run
+durante la scrittura). Le catture e il receipt del banco si riferiscono quindi
+al binario `e0656b70…f7da` del round 1.
+
 ## Cosa NON cambia
 
 Core, writer, adapter export Rust, dialoghi e conferme native, contratto IPC
@@ -121,5 +173,9 @@ v1, CLI, golden, SQLite, dipendenze.
 - Il dialogo GTK seleziona solo il nome base del nome proposto
   (`report.<ext>`): un percorso digitato con estensione diventa
   `nome.<ext>.<ext>`. È un comportamento del dialogo, non toccato qui.
+- Un esito ignoto blocca nuovi salvataggi dell'istanza finché «Controlla
+  l'esito» non legge il receipt: se `export_state` fallisse sempre, l'export
+  resterebbe bloccato fino al riavvio (Rust risponderebbe comunque Busy a un
+  nuovo prepare finché la job è attiva).
 
 Prossima task tecnicamente disponibile dopo l'integrazione: T-MIG-P6-09.
