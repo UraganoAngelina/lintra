@@ -1,6 +1,10 @@
 # T-MIG-P6-09 — Verifica numerica e golden report
 
-Data 27 novembre 2026. Stato: **IN_REVIEW** (non DONE). Prerequisiti
+Data 27 novembre 2026. Stato: **DONE**. Review Codex round 1 APPROVED su
+`8784db0` senza rilievi (`lintra-review-handoffs/T-MIG-P6-09-CODEX-REVIEW.md`).
+Integrazione autorizzata dall'autore per fast-forward di `integration`,
+senza push. G-MIG-6 e G-REL NOT_VERIFIED: UI Full (P6-10), Windows/WebView2
+e CI remota dopo P6-10. Prerequisiti
 T-MIG-P6-02..P6-08 DONE (`integration` `107b207`). Branch
 `work/T-MIG-P6-09` da `107b207`, worktree
 `/home/alberto/Desktop/LINTRA/lintra-p6-09`.
@@ -129,5 +133,5 @@ P6-08), senza pareggi: le catture P6-08 restano valide.
 - G-MIG-6 non è dichiarato: mancano la UI Full (P6-10), Windows/WebView2 e
   CI remota sullo stesso SHA.
 
-Prossima task tecnicamente disponibile dopo l'integrazione: T-MIG-P6-10
+Prossima task tecnicamente disponibile: T-MIG-P6-10
 (dipende anche da T-MIG-P5-10, DONE).
